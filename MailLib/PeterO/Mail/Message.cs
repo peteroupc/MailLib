@@ -537,44 +537,6 @@ return this;
       this.headers.Add(String.Empty);
       return this.SetHeader(index, name, value);
     }
-   /*
-    // TODO: Consider adding the following
-
-    public Message SetSubject(string value) {
-        return this.SetHeader("subject",value);
-    }
-
-    public Message SetFrom(string value) {
-        return this.SetHeader("from",value);
-    }
-
-    public Message AddTo(params string[] strings) {
-       for (var str in strings) {
-           this.AddHeader("to",str);
-       }
-       return this;
-    }
-
-    public Message AddCc(params string[] strings) {
-       for (var str in strings) {
-           this.AddHeader("cc",str);
-       }
-       return this;
-    }
-
-    public Message AddTo(params NamedAddress[] addresses) {
-       for (var str in addresses) {
-          this.AddHeader("to",str.ToString());
-       }
-       return this;
-    }
-
-    public Message AddCc(params NamedAddress[] addresses) {
-       for (var str in addresses) {
-          this.AddHeader("cc",str);
-       }
-    }
-    */
 
     private static readonly MediaType TextHtmlAscii=
       MediaType.Parse("text/html; charset=us-ascii");
@@ -681,7 +643,7 @@ return this;
         this.Parts.Add(existingBody);
         this.Parts.Add(bodyPart);
       }
-      return this;
+      return bodyPart;
     }
     private static string BaseName(string filename) {
       for (var i = filename.Length-1;i >= 0; --i) {
@@ -761,7 +723,6 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
       }
       return MediaType.ApplicationOctetStream;
     }
-    // TODO: Make these methods return the body part, not 'this'.
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>

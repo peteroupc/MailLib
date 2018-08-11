@@ -337,7 +337,8 @@ public final void setContentType(MediaType value) {
     /**
      * Not documented yet.
      * @param headerName The parameter {@code headerName} is not documented yet.
-     * @return An IList(NamedAddress) object.
+     * @return A list of addresses, in the order in which they appear in this
+     * message's header fields of the given name.
      */
     public List<NamedAddress> GetAddresses(String headerName) {
       if ((headerName) == null) {
@@ -852,44 +853,6 @@ return this;
       this.headers.add("");
       return this.SetHeader(index, name, value);
     }
-   /*
-    // TODO: Consider adding the following
-
-    public Message SetSubject(String value) {
-        return this.SetHeader("subject",value);
-    }
-
-    public Message SetFrom(String value) {
-        return this.SetHeader("from",value);
-    }
-
-    public Message AddTo(String... strings) {
-       for (var str in strings) {
-           this.AddHeader("to",str);
-       }
-       return this;
-    }
-
-    public Message AddCc(String... strings) {
-       for (var str in strings) {
-           this.AddHeader("cc",str);
-       }
-       return this;
-    }
-
-    public Message AddTo(NamedAddress... addresses) {
-       for (var str in addresses) {
-          this.AddHeader("to",str.toString());
-       }
-       return this;
-    }
-
-    public Message AddCc(NamedAddress... addresses) {
-       for (var str in addresses) {
-          this.AddHeader("cc",str);
-       }
-    }
-    */
 
     private static final MediaType TextHtmlAscii=
       MediaType.Parse("text/html; charset=us-ascii");
@@ -1031,7 +994,7 @@ try { if (ms != null) {
         this.getParts().add(existingBody);
         this.getParts().add(bodyPart);
       }
-      return this;
+      return bodyPart;
     }
     private static String BaseName(String filename) {
       for (var i = filename.length()-1;i >= 0; --i) {
@@ -1111,7 +1074,6 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
       }
       return MediaType.ApplicationOctetStream;
     }
-    // TODO: Make these methods return the body part, not 'this'.
 
     /**
      * Adds an attachment to this message in the form of data from the given
@@ -1121,7 +1083,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * converted to an inline body part.
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
-     * @return This object.
+     * @return A Message object for the generated attachment.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
@@ -1141,8 +1103,11 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * has one of certain extensions (such as ".html"), an appropriate media
      * type will be assigned to the attachment based on that extension;
      * otherwise, the media type "application/octet-stream" is assigned. Can
-     * be null or empty, in which case no file name is assigned.
-     * @return This object.
+     * be null or empty, in which case no file name is assigned. Only the
+     * file name portion of this parameter is used, which in this case means
+     * the portion of the string after the last "/" or "&#x5c;", if either
+     * character exists, or the entire string otherwise.
+     * @return A Message object for the generated attachment.
      * @throws java.lang.NullPointerException The parameter "inputStream" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
@@ -1160,8 +1125,11 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @param filename A file name to assign to the attachment. Can be null or
-     * empty, in which case no file name is assigned.
-     * @return This object.
+     * empty, in which case no file name is assigned. Only the file name
+     * portion of this parameter is used, which in this case means the
+     * portion of the string after the last "/" or "&#x5c;", if either character
+     * exists, or the entire string otherwise.
+     * @return A Message object for the generated attachment.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
@@ -1179,7 +1147,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * to an inline body part.
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
-     * @return This object.
+     * @return A Message object for the generated body part.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
@@ -1199,8 +1167,11 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * one of certain extensions (such as ".html"), an appropriate media
      * type will be assigned to the body part based on that extension;
      * otherwise, the media type "application/octet-stream" is assigned. Can
-     * be null or empty, in which case no file name is assigned.
-     * @return This object.
+     * be null or empty, in which case no file name is assigned. Only the
+     * file name portion of this parameter is used, which in this case means
+     * the portion of the string after the last "/" or "&#x5c;", if either
+     * character exists, or the entire string otherwise.
+     * @return A Message object for the generated body part.
      * @throws java.lang.NullPointerException The parameter "inputStream" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
@@ -1217,7 +1188,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @param filename A file name to assign to the body part.
-     * @return This object.
+     * @return A Message object for the generated body part.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
@@ -2620,8 +2591,8 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         builder.append("@local.invalid");
       } else {
         builder.append("@");
-        seq = addresses[0].IsGroup ? addresses[0].Name.hashCode() :
-          addresses[0].Address.toString().hashCode();
+        seq = addresses.get(0).isGroup() ? addresses.get(0).getName().hashCode() :
+          addresses.get(0).getAddress().toString().hashCode();
         for (int i = 0; i < 8; ++i) {
           builder.append(ValueHex.charAt(seq & 15));
           seq >>= 4;

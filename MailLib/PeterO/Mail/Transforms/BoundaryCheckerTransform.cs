@@ -14,29 +14,75 @@ namespace PeterO.Mail.Transforms {
   internal sealed class BoundaryCheckerTransform : IByteReader {
     private readonly IByteReader input;
     private readonly List<string> boundaries;
-    private bool ungetting;
-    private int lastByte;
-    private byte[] buffer;
-    private int bufferIndex;
-    private int bufferCount;
+    private byte[] innerBuffer;
+    private int innerBufferIndex;
+    private int innerBufferCount;
     private bool started;
     private bool readingHeaders;
     private bool hasNewBodyPart;
     private bool endOfStream;
 
-    private void ResizeBuffer(int size) {
-      this.buffer = this.buffer ?? (new byte[size + 32]);
-      if (size > this.buffer.Length) {
-        var newbuffer = new byte[size + 32];
-        Array.Copy(this.buffer, newbuffer, this.buffer.Length);
-        this.buffer = newbuffer;
+    private void StartInnerBuffer() {
+      if (this.innerBufferCount > 0) {
+        Array.Copy(this.innerBuffer, this.innerBufferIndex,
+          this.innerBuffer, 0, this.innerBufferCount);
       }
-      this.bufferCount = size;
-      this.bufferIndex = 0;
+      this.innerBufferIndex = 0;
     }
 
-  public BoundaryCheckerTransform(IByteReader stream, string
-      initialBoundary) {
+    private void ResetInnerBuffer() {
+      this.innerBufferIndex = 0;
+    }
+
+    private void ClearInnerBuffer() {
+      this.innerBufferIndex = 0;
+      this.innerBufferCount = 0;
+    }
+
+    private int InnerBufferRead() {
+      int ret;
+      if (this.innerBufferIndex < this.innerBufferCount) {
+        ret = this.innerBuffer[this.innerBufferIndex];
+        ++this.innerBufferIndex;
+        if (this.innerBufferIndex == this.innerBufferCount) {
+          this.innerBufferCount = 0;
+          this.innerBufferIndex = 0;
+        }
+        ret &= 0xff;
+        return ret;
+      }
+      ret = this.input.ReadByte();
+      return ret;
+    }
+
+    private int InnerBufferReadAndStore() {
+      int ret;
+      if (this.innerBufferIndex < this.innerBufferCount) {
+        ret = this.innerBuffer[this.innerBufferIndex];
+        ++this.innerBufferIndex;
+        ret &= 0xff;
+        return ret;
+      }
+      ret = this.input.ReadByte();
+      if (this.innerBuffer == null ||
+         this.innerBufferIndex >= this.innerBuffer.Length) {
+        this.innerBuffer = this.innerBuffer ?? (new byte[32]);
+        if (this.innerBufferIndex >= this.innerBuffer.Length) {
+          var newbuffer = new byte[this.innerBuffer.Length + 32];
+          Array.Copy(this.innerBuffer, newbuffer, this.innerBuffer.Length);
+          this.innerBuffer = newbuffer;
+        }
+      }
+      if (ret >= 0) {
+        this.innerBuffer[this.innerBufferIndex] = (byte)(ret & 0xff);
+        ++this.innerBufferIndex;
+        ++this.innerBufferCount;
+      }
+      return ret;
+    }
+
+    public BoundaryCheckerTransform(IByteReader stream, string
+        initialBoundary) {
       this.input = stream;
       this.boundaries = new List<string>();
       this.started = true;
@@ -44,22 +90,10 @@ namespace PeterO.Mail.Transforms {
     }
 
     public int ReadByte() {
-      if (this.bufferIndex < this.bufferCount) {
-        int ret = this.buffer[this.bufferIndex];
-        ++this.bufferIndex;
-        if (this.bufferIndex == this.bufferCount) {
-          this.bufferCount = 0;
-          this.bufferIndex = 0;
-        }
-        ret &= 0xff;
-        return ret;
-      }
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-      int c = this.lastByte = this.ungetting ? this.lastByte :
-        this.input.ReadByte();
-      this.ungetting = false;
+      int c = InnerBufferRead();
       if (this.readingHeaders) {
         return c;
       }
@@ -72,15 +106,13 @@ namespace PeterO.Mail.Transforms {
       if (c == '-' && this.started) {
         // Check for a boundary at the start
         // of the body part
-        this.started = false;
-    c = this.lastByte = this.ungetting ? this.lastByte :
-          this.input.ReadByte();
-        this.ungetting = false;
+        StartInnerBuffer();
+        c = InnerBufferReadAndStore();
         if (c == '-') {
           // Possible boundary candidate
           return this.CheckBoundaries(false);
         }
-        this.ungetting = true;
+        ResetInnerBuffer();
         return '-';
       }
       this.started = false;
@@ -89,61 +121,14 @@ namespace PeterO.Mail.Transforms {
         return c;
       }
       // CR might signal next boundary or not
-    c = this.lastByte = this.ungetting ? this.lastByte :
-          this.input.ReadByte();
-        this.ungetting = false;
-        if (c == 0x0a) {
-          // Line break was read
-    c = this.lastByte = this.ungetting ? this.lastByte :
-            this.input.ReadByte();
-          this.ungetting = false;
-          if (c == -1) {
-            this.ResizeBuffer(1);
-            this.buffer[0] = 0x0a;
-            return 0x0d;
-          }
-          if (c == 0x0d) {
-            // Unget the CR, in case the next line is a boundary line
-            this.ungetting = true;
-            this.ResizeBuffer(1);
-            this.buffer[0] = 0x0a;
-            return 0x0d;
-          }
-          if (c != '-') {
-            this.ResizeBuffer(2);
-            this.buffer[0] = 0x0a;
-            this.buffer[1] = (byte)c;
-            return 0x0d;
-          }
-    c = this.lastByte = this.ungetting ? this.lastByte :
-            this.input.ReadByte();
-          this.ungetting = false;
-          if (c == -1) {
-            this.ResizeBuffer(2);
-            this.buffer[0] = 0x0a;
-            this.buffer[1] = (byte)'-';
-            return 0x0d;
-          }
-          if (c == 0x0d) {
-            // Unget the CR, in case the next line is a boundary line
-            this.ungetting = true;
-            this.ResizeBuffer(2);
-            this.buffer[0] = 0x0a;
-            this.buffer[1] = (byte)'-';
-            return 0x0d;
-          }
-          if (c != '-') {
-            this.ResizeBuffer(3);
-            this.buffer[0] = 0x0a;
-            this.buffer[1] = (byte)'-';
-            this.buffer[2] = (byte)c;
-            return 0x0d;
-          }
-          // Possible boundary candidate
-          return this.CheckBoundaries(true);
-        }
-        this.ungetting = true;
+      StartInnerBuffer();
+      if (InnerBufferReadAndStore() != 0x0a ||
+         InnerBufferReadAndStore() != '-' || InnerBufferReadAndStore() != '-') {
+        ResetInnerBuffer();
         return 0x0d;
+      }
+      // Possible boundary candidate
+      return this.CheckBoundaries(true);
     }
 
     private int CheckBoundaries(bool includeCrLf) {
@@ -151,202 +136,131 @@ namespace PeterO.Mail.Transforms {
       // boundary delimiter is read. We need to
       // check boundaries here in order to find out
       // whether to emit the CRLF before the "--".
-      #if DEBUG
-if (this.bufferCount != 0) {
-        string msg = "this.bufferCount (" + this.bufferCount +
-          ") is not equal to " + "0";
-        throw new ArgumentException(msg);
-      }
-      #endif
-
-      var done = false;
-      while (!done) {
-        done = true;
-        var bufferStart = 0;
-        if (includeCrLf) {
-          this.ResizeBuffer(3);
-          bufferStart = 3;
-          // store LF, '-', and '-' in the buffer in case
-          // the boundary check fails, in which case
-          // this method will return CR
-          this.buffer[0] = 0x0a;
-          this.buffer[1] = (byte)'-';
-          this.buffer[2] = (byte)'-';
-        } else {
-          bufferStart = 1;
-          this.ResizeBuffer(1);
-          this.buffer[0] = (byte)'-';
+      var boundaryBuffer = new byte[75];
+      // Check up to 72 bytes (the maximum size
+      // of a boundary plus 2 bytes for the closing
+      // hyphens)
+      int c;
+      var lastC = 0;
+      var bytesRead = 0;
+      string matchingBoundary = null;
+      var matchingIndex = -1;
+      for (int i = 0; i < 72; ++i) {
+        c = InnerBufferReadAndStore();
+        if (c < 0 || c >= 0x80 || c == 0x0d) {
+          lastC = c;
+          break;
         }
-        // Check up to 72 bytes (the maximum size
-        // of a boundary plus 2 bytes for the closing
-        // hyphens)
-        int c;
-        var bytesRead = 0;
-        for (int i = 0; i < 72; ++i) {
-          c = this.lastByte = this.ungetting ? this.lastByte :
-            this.input.ReadByte(); this.ungetting = false;
-          if (c < 0 || c >= 0x80 || c == 0x0d) {
-            this.ungetting = true;
+        boundaryBuffer[bytesRead++] = (byte)c;
+      }
+      // Console.WriteLine("::" + bytesRead);
+      // NOTE: All boundary strings are assumed to
+      // have only ASCII characters (with values
+      // less than 128). Check boundaries from
+      // top to bottom in the stack.
+      for (int i = this.boundaries.Count - 1; i >= 0; --i) {
+        string boundary = this.boundaries[i];
+        if (!String.IsNullOrEmpty(boundary) && boundary.Length <= bytesRead) {
+          var match = true;
+          for (int j = 0; j < boundary.Length; ++j) {
+            match &= (boundary[j] & 0xff) == (int)(boundaryBuffer[j] &
+                    0xff);
+          }
+          if (match) {
+            matchingBoundary = boundary;
+            matchingIndex = i;
             break;
           }
-          // Console.Write("" + ((char)c));
-          ++bytesRead;
-          this.ResizeBuffer(bytesRead + bufferStart);
-          this.buffer[bytesRead + bufferStart - 1] = (byte)c;
         }
-        // Console.WriteLine("::" + bytesRead);
-        // NOTE: All boundary strings are assumed to
-        // have only ASCII characters (with values
-        // less than 128). Check boundaries from
-        // top to bottom in the stack.
-        string matchingBoundary = null;
-        var matchingIndex = -1;
-        for (int i = this.boundaries.Count - 1; i >= 0; --i) {
-          string boundary = this.boundaries[i];
-          if (!String.IsNullOrEmpty(boundary) && boundary.Length <= bytesRead) {
-            var match = true;
-            for (int j = 0; j < boundary.Length; ++j) {
-   match &= (boundary[j] & 0xff) == (int)(this.buffer[j + bufferStart] &
-                0xff);
-            }
-            if (match) {
-              matchingBoundary = boundary;
-              matchingIndex = i;
-              break;
-            }
-          }
-        }
-        if (matchingBoundary != null) {
-          var closingDelim = false;
-          // Pop the stack until the matching body part
-          // is on top
-          while (this.boundaries.Count > matchingIndex + 1) {
-            this.boundaries.RemoveAt(matchingIndex + 1);
-          }
-          // Boundary line found
-          if (matchingBoundary.Length + 1 < bytesRead) {
-            closingDelim |= this.buffer[matchingBoundary.Length +
-              bufferStart] == '-' && this.buffer[matchingBoundary.Length + 1 +
-              bufferStart] == '-';
-          }
-          // Clear the buffer, the boundary line
-          // isn't part of any body data
-          this.bufferCount = 0;
-          this.bufferIndex = 0;
-          if (closingDelim) {
-            // Pop this entry, it's the top of the stack
-            this.boundaries.RemoveAt(this.boundaries.Count - 1);
-            if (this.boundaries.Count == 0) {
-              // There's nothing else significant
-              // after this boundary,
-              // so return now
-              this.hasNewBodyPart = false;
-              this.endOfStream = true;
-              this.bufferCount = 0;
-              return -1;
-            }
-            // Read to end of line. Since this is the last body
-            // part, the rest of the data before the next boundary
-            // is insignificant
-            while (true) {
-    c = this.lastByte = this.ungetting ? this.lastByte :
-                this.input.ReadByte();
-              this.ungetting = false;
-              if (c == -1) {
-                // The body higher up didn't end yet
-                throw new MessageDataException("Premature end of message");
-              }
-              if (c == 0x0d) {
-    c = this.lastByte = this.ungetting ? this.lastByte :
-                  this.input.ReadByte();
-                this.ungetting = false;
-                if (c == -1) {
-                  // The body higher up didn't end yet
-                  throw new MessageDataException("Premature end of message");
-                }
-                if (c == 0x0a) {
-                  // Start of new body part
-    c = this.lastByte = this.ungetting ? this.lastByte :
-                    this.input.ReadByte();
-                  this.ungetting = false;
-                  if (c == -1) {
-                    throw new MessageDataException("Premature end of message");
-                  }
-                  if (c == 0x0d) {
-                    // Unget the CR, in case the next line is a boundary line
-                    this.ungetting = true;
-                    continue;
-                  }
-                  if (c != '-') {
-                    // Not a boundary delimiter
-                    continue;
-                  }
-    c = this.lastByte = this.ungetting ? this.lastByte :
-                    this.input.ReadByte();
-                  this.ungetting = false;
-                  if (c == -1) {
-                    throw new MessageDataException("Premature end of message");
-                  }
-                  if (c == 0x0d) {
-                    // Unget the CR, in case the next line is a boundary line
-                    this.ungetting = true;
-                    continue;
-                  }
-                  if (c != '-') {
-                    // Not a boundary delimiter
-                    continue;
-                  }
-                  // Found the next boundary delimiter
-                  done = false;
-                  break;
-                }
-                this.ungetting = true;
-              }
-            }
-            if (!done) {
-              // Recheck the next line for a boundary delimiter
-              continue;
-            }
-          } else {
-            // Read to end of line (including CRLF; the
-            // next line will start the headers of the
-            // next body part).
-            while (true) {
-    c = this.lastByte = this.ungetting ? this.lastByte :
-                this.input.ReadByte();
-              this.ungetting = false;
-              if (c == -1) {
-                throw new MessageDataException("Premature end of message");
-              }
-              if (c == 0x0d) {
-    c = this.lastByte = this.ungetting ? this.lastByte :
-                  this.input.ReadByte();
-                this.ungetting = false;
-                if (c == -1) {
-                  throw new MessageDataException("Premature end of message");
-                }
-                if (c == 0x0a) {
-                  // Start of new body part
-                  this.hasNewBodyPart = true;
-                  this.bufferCount = 0;
-                  return -1;
-                }
-                this.ungetting = true;
-              }
-            }
-          }
-        }
-        // Not a boundary, return CR (the
-        // ReadByte method will then return LF,
-        // the hyphens, and the other bytes
-        // already read)
+      }
+      if (matchingBoundary == null) {
+        // No matching boundary
+        ResetInnerBuffer();
         return includeCrLf ? 0x0d : '-';
       }
-      // Not a boundary, return CR (the
-      // ReadByte method will then return LF,
-      // the hyphens, and the other bytes
-      // already read)
-      return includeCrLf ? 0x0d : '-';
+      var closingDelim = false;
+      // Pop the stack until the matching body part
+      // is on top
+      while (this.boundaries.Count > matchingIndex + 1) {
+        this.boundaries.RemoveAt(matchingIndex + 1);
+      }
+      // Boundary line found
+      if (matchingBoundary.Length + 1 < bytesRead) {
+        closingDelim |= includeCrLf &&
+          boundaryBuffer[matchingBoundary.Length] == '-' &&
+          boundaryBuffer[matchingBoundary.Length + 1] == '-';
+      }
+      ClearInnerBuffer();
+      if (closingDelim) {
+        // Pop this entry, it's the top of the stack
+        this.boundaries.RemoveAt(this.boundaries.Count - 1);
+        if (this.boundaries.Count == 0) {
+          // There's nothing else significant
+          // after this boundary,
+          // so return now
+          this.hasNewBodyPart = false;
+          this.endOfStream = true;
+          return -1;
+        }
+        // Since this is the last body
+        // part, the rest of the data before the next boundary
+        // is insignificant
+        var unget = true;
+        while (true) {
+          c = unget ? lastC : InnerBufferRead();
+          unget = false;
+          if (c < 0) {
+            // The body higher up didn't end yet
+            throw new MessageDataException("Premature end of message");
+          }
+          if (c == 0x0d) {
+            // CR might signal next boundary or not
+            c = InnerBufferRead();
+            if (c == 0x0d || c < 0) {
+ unget = true;
+}
+            if (c == 0x0a) {
+              // Start of new body part
+              StartInnerBuffer();
+              if (InnerBufferReadAndStore() != 0x0a ||
+                InnerBufferReadAndStore() != '-' ||
+                InnerBufferReadAndStore() != '-') {
+                // No boundary delimiter
+                ResetInnerBuffer();
+              } else {
+                // TODO: Don't use recursion here
+                if (this.CheckBoundaries(true) == -1) {
+                  return -1;
+                }
+              }
+            }
+          }
+        }
+      } else {
+        // Read to end of line (including CRLF; the
+        // next line will start the headers of the
+        // next body part).
+        var unget = true;
+        while (true) {
+          c = unget ? lastC : InnerBufferRead();
+          unget = false;
+          if (c < 0) {
+            // The body higher up didn't end yet
+            throw new MessageDataException("Premature end of message");
+          }
+          if (c == 0x0d) {
+            c = InnerBufferRead();
+            if (c == 0x0d || c < 0) {
+ unget = true;
+}
+            if (c == 0x0a) {
+              // Start of new body part
+              this.hasNewBodyPart = true;
+              return -1;
+            }
+          }
+        }
+      }
     }
 
     public int BoundaryCount() {
@@ -354,33 +268,25 @@ if (this.bufferCount != 0) {
     }
 
     public void StartBodyPartHeaders() {
-      #if DEBUG
+#if DEBUG
       if (!this.hasNewBodyPart) {
         throw new ArgumentException("doesn't satisfy this.hasNewBodyPart");
       }
       if (this.readingHeaders) {
-        throw new ArgumentException("doesn't satisfy !this.hasNewBodyPart");
+        throw new ArgumentException("doesn't satisfy !this.readingHeaders");
       }
-      if (!this.bufferCount.Equals(0)) {
-        throw new ArgumentException("this.bufferCount (" +
-          this.bufferCount + ") is not equal to " + "0");
-      }
-      #endif
+#endif
 
       this.readingHeaders = true;
       this.hasNewBodyPart = false;
     }
 
     public void EndBodyPartHeaders(string boundary) {
-      #if DEBUG
+#if DEBUG
       if (!this.readingHeaders) {
         throw new ArgumentException("doesn't satisfy this.readingHeaders");
       }
-      if (this.bufferCount != 0) {
-        throw new ArgumentException("this.bufferCount (" +
-          this.bufferCount + ") is not equal to 0");
-      }
-      #endif
+#endif
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
       this.boundaries.Add(boundary);

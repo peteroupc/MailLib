@@ -9,6 +9,8 @@ using Test;
 
 namespace MailLibTest {
   public class DataUrl {
+    // TODO: Convert Messages to mailto URIs
+    // TODO: Implement language tag matching
     public static MediaType DataUrlMediaType(string url) {
       string[] parts = URIUtility.splitIRIToStrings(
         url);
@@ -206,8 +208,9 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
         if (mediaTypePart == -1) {
           return null;
         }
-     bool usesBase64 = mediaTypePart >= 7 && path.Substring(mediaTypePart -
-       7, 7).ToLowerInvariant().Equals(";base64");
+     bool usesBase64 = mediaTypePart >= 7 && path.Substring(
+  mediaTypePart - 7,
+  7).ToLowerInvariant().Equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks

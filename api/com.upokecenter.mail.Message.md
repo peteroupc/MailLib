@@ -375,7 +375,8 @@ Not documented yet.
 
 **Returns:**
 
-* An IList(NamedAddress) object.
+* A list of addresses, in the order in which they appear in this
+ message's header fields of the given name.
 
 ### getFromAddresses
     @Deprecated public final List<NamedAddress> getFromAddresses()
@@ -898,7 +899,7 @@ Adds an attachment to this message in the form of data from the given
 
 **Returns:**
 
-* This object.
+* A Message object for the generated attachment.
 
 **Throws:**
 
@@ -923,11 +924,14 @@ Adds an attachment to this message in the form of data from the given
  has one of certain extensions (such as ".html"), an appropriate media
  type will be assigned to the attachment based on that extension;
  otherwise, the media type "application/octet-stream" is assigned. Can
- be null or empty, in which case no file name is assigned.
+ be null or empty, in which case no file name is assigned. Only the
+ file name portion of this parameter is used, which in this case means
+ the portion of the string after the last "/" or "&#x5c;", if either
+ character exists, or the entire string otherwise.
 
 **Returns:**
 
-* This object.
+* A Message object for the generated attachment.
 
 **Throws:**
 
@@ -950,11 +954,14 @@ Adds an attachment to this message in the form of data from the given
 * <code>mediaType</code> - A media type to assign to the attachment.
 
 * <code>filename</code> - A file name to assign to the attachment. Can be null or
- empty, in which case no file name is assigned.
+ empty, in which case no file name is assigned. Only the file name
+ portion of this parameter is used, which in this case means the
+ portion of the string after the last "/" or "&#x5c;", if either character
+ exists, or the entire string otherwise.
 
 **Returns:**
 
-* This object.
+* A Message object for the generated attachment.
 
 **Throws:**
 
@@ -979,7 +986,7 @@ Adds an inline body part to this message in the form of data from the given
 
 **Returns:**
 
-* This object.
+* A Message object for the generated body part.
 
 **Throws:**
 
@@ -1004,11 +1011,14 @@ Adds an inline body part to this message in the form of data from the given
  one of certain extensions (such as ".html"), an appropriate media
  type will be assigned to the body part based on that extension;
  otherwise, the media type "application/octet-stream" is assigned. Can
- be null or empty, in which case no file name is assigned.
+ be null or empty, in which case no file name is assigned. Only the
+ file name portion of this parameter is used, which in this case means
+ the portion of the string after the last "/" or "&#x5c;", if either
+ character exists, or the entire string otherwise.
 
 **Returns:**
 
-* This object.
+* A Message object for the generated body part.
 
 **Throws:**
 
@@ -1034,7 +1044,7 @@ Adds an inline body part to this message in the form of data from the given
 
 **Returns:**
 
-* This object.
+* A Message object for the generated body part.
 
 **Throws:**
 

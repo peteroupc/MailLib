@@ -26,18 +26,18 @@ namespace MailLibTest {
       }
       string ret = msg.Generate();
       if (ret == null) {
- Assert.Fail();
- }
-        int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
-          ret,
-          false,
-          String.Empty);
+        Assert.Fail();
+      }
+      int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
+        ret,
+        false,
+        String.Empty);
       if (fmtresult == 1) {
         Console.WriteLine("fmtresult=1 for " +
                     ret.Substring(0, Math.Min(ret.Length, 260)));
       }
-        string messageTemp = ret;
-        Assert.IsTrue(
+      string messageTemp = ret;
+      Assert.IsTrue(
   fmtresult != 0,
   messageTemp.Substring(0, Math.Min(messageTemp.Length, 260)));
       return ret;
@@ -69,12 +69,12 @@ namespace MailLibTest {
     }
 
     internal static Message MessageFromString(string valueMessageString) {
-        var msgobj = new Message(
+      var msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true));
-        MessageGenerate(msgobj);
-        return msgobj;
+      MessageGenerate(msgobj);
+      return msgobj;
     }
 
     internal static void MessageConstructOnly(string valueMessageString) {
@@ -82,8 +82,8 @@ namespace MailLibTest {
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true))) == null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
     }
 
     private static void TestMediaTypeRoundTrip(string valueMessageString) {
@@ -104,15 +104,15 @@ namespace MailLibTest {
         mtstring + "\r\n\r\n";
       Message mtmessage = MessageFromString(msgstring);
       {
-bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
-          msgstring,
-          false,
-          "TestGenerate") == 2;
-Assert.IsTrue(boolTemp, msgstring);
-}
+        bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
+                  msgstring,
+                  false,
+                  "TestGenerate") == 2;
+        Assert.IsTrue(boolTemp, msgstring);
+      }
       if (MessageGenerate(mtmessage) == null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
     }
 
     [Test]
@@ -138,12 +138,12 @@ Assert.IsTrue(boolTemp, msgstring);
       }
     }
 
-[Test]
+    [Test]
     public void TestGenerateLineWrap() {
       Message msg;
       string longvalue = "name1<name1@example.com>,name2<name2@example.com>," +
         "name3<name3@example.com>,name4<name4@example.com>";
-  msg = new Message();
+      msg = new Message();
       msg.SetHeader("to", longvalue);
       MessageGenerate(msg);
       msg = new Message();
@@ -167,151 +167,161 @@ Assert.IsTrue(boolTemp, msgstring);
       }
     }
 
-private static byte[] BytesFromString(string str) {
- return DataUtilities.GetUtf8Bytes(
-  str,
-  true);
-}
+    private static byte[] BytesFromString(string str) {
+      return DataUtilities.GetUtf8Bytes(
+       str,
+       true);
+    }
 
-[Test]
-public void TestAddAttachment() {
-  Message msg;
-  string stringBody = "This is a sample body.";
-  byte[] bytesBody = BytesFromString(stringBody);
-  string stringPart = "This is a sample body part.";
-  byte[] bytesPart = BytesFromString(stringPart);
-  try {
-   using (var ms = new MemoryStream(bytesPart)) {
-        MediaType mt = MediaType.TextPlainAscii;
-        try {
- new Message().AddAttachment(null, mt);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-    try {
- new Message().AddAttachment(null, (MediaType)null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-    try {
- new Message().AddAttachment(null, (string)null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-    try {
- new Message().AddAttachment(ms, (MediaType)null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-        try {
- new Message().AddAttachment(ms, (string)null);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-    try {
- new Message().AddInline(null, mt);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-    try {
- new Message().AddInline(null, (MediaType)null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-    try {
- new Message().AddInline(null, (string)null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-    try {
- new Message().AddInline(ms, (MediaType)null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-        try {
- new Message().AddInline(ms, (string)null);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-  }
-  for (var phase = 0; phase < 12; ++phase) {
-   using (var ms = new MemoryStream(bytesPart)) {
-   MediaType mt = (phase % 2 == 0) ? MediaType.TextPlainAscii :
-    MediaType.Parse("text/troff;charset=us-ascii");
-   string fn = null;
-   msg = new Message().SetTextBody(stringBody);
-   Assert.AreEqual("text/plain", msg.ContentType.TypeAndSubType);
-    switch (phase) {
-    case 0:
-    case 1:Assert.AreEqual(msg, msg.AddAttachment(ms, mt)); break;
-    case 2:
-    case 3:mt = MediaType.TextPlainAscii;
-     fn = "example.txt";
-     Assert.AreEqual(msg, msg.AddAttachment(ms, fn)); break;
-    case 4:
-    case 5:fn = "example.txt";
-     Assert.AreEqual(msg, msg.AddAttachment(ms, mt, fn)); break;
-    case 6:
-    case 7:Assert.AreEqual(msg, msg.AddInline(ms, mt)); break;
-    case 8:
-    case 9:mt = MediaType.TextPlainAscii;
-     fn = "example.txt";
-     Assert.AreEqual(msg, msg.AddInline(ms, fn)); break;
-    case 10:
-    case 11:fn = "example.txt";
-     Assert.AreEqual(msg, msg.AddInline(ms, mt, fn)); break;
-   }
-   Assert.AreEqual("multipart/mixed", msg.ContentType.TypeAndSubType);
-   Assert.AreEqual(2, msg.Parts.Count);
-   Assert.AreEqual("text/plain", msg.Parts[0].ContentType.TypeAndSubType);
-   Assert.AreEqual("inline", msg.Parts[0].ContentDisposition.DispositionType);
-   Assert.AreEqual(stringBody, msg.Parts[0].BodyString);
-   Assert.AreEqual(mt.TypeAndSubType, msg.Parts[1].ContentType.TypeAndSubType);
+    [Test]
+    public void TestAddAttachment() {
+      Message msg;
+      string stringBody = "This is a sample body.";
+      byte[] bytesBody = BytesFromString(stringBody);
+      string stringPart = "This is a sample body part.";
+      byte[] bytesPart = BytesFromString(stringPart);
+      try {
+        using (var ms = new MemoryStream(bytesPart)) {
+          MediaType mt = MediaType.TextPlainAscii;
+          try {
+            new Message().AddAttachment(null, mt);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddAttachment(null, (MediaType)null);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddAttachment(null, (string)null);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddAttachment(ms, (MediaType)null);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddAttachment(ms, (string)null);
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddInline(null, mt);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddInline(null, (MediaType)null);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddInline(null, (string)null);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddInline(ms, (MediaType)null);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+          try {
+            new Message().AddInline(ms, (string)null);
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+        }
+        for (var phase = 0; phase < 12; ++phase) {
+          using (var ms = new MemoryStream(bytesPart)) {
+            MediaType mt = (phase % 2 == 0) ? MediaType.TextPlainAscii :
+             MediaType.Parse("text/troff;charset=us-ascii");
+            string fn = null;
+            msg = new Message().SetTextBody(stringBody);
+            Assert.AreEqual("text/plain", msg.ContentType.TypeAndSubType);
+            switch (phase) {
+              case 0:
+              case 1: msg.AddAttachment(ms, mt); break;
+              case 2:
+              case 3:
+                mt = MediaType.TextPlainAscii;
+                fn = "example.txt";
+                msg.AddAttachment(ms, fn); break;
+              case 4:
+              case 5:
+                fn = "example.txt";
+                msg.AddAttachment(ms, mt, fn); break;
+              case 6:
+              case 7: msg.AddInline(ms, mt); break;
+              case 8:
+              case 9:
+                mt = MediaType.TextPlainAscii;
+                fn = "example.txt";
+                msg.AddInline(ms, fn); break;
+              case 10:
+              case 11:
+                fn = "example.txt";
+                msg.AddInline(ms, mt, fn); break;
+            }
+            Assert.AreEqual("multipart/mixed", msg.ContentType.TypeAndSubType);
+            Assert.AreEqual(2, msg.Parts.Count);
+        Assert.AreEqual(
+  "text/plain",
+  msg.Parts[0].ContentType.TypeAndSubType);
+    Assert.AreEqual(
+  "inline",
+  msg.Parts[0].ContentDisposition.DispositionType);
+            Assert.AreEqual(stringBody, msg.Parts[0].BodyString);
    Assert.AreEqual(
-      phase < 6 ? "attachment" : "inline",
-      msg.Parts[1].ContentDisposition.DispositionType);
-          Assert.AreEqual(stringPart, msg.Parts[1].BodyString);
-  }
-  }
-  } catch (IOException ioe) {
-    Assert.Fail(ioe.ToString());
-    throw new InvalidOperationException(String.Empty, ioe);
-  }
-}
+  mt.TypeAndSubType,
+  msg.Parts[1].ContentType.TypeAndSubType);
+            Assert.AreEqual(
+               phase < 6 ? "attachment" : "inline",
+               msg.Parts[1].ContentDisposition.DispositionType);
+            Assert.AreEqual(stringPart, msg.Parts[1].BodyString);
+          }
+        }
+      } catch (IOException ioe) {
+        Assert.Fail(ioe.ToString());
+        throw new InvalidOperationException(String.Empty, ioe);
+      }
+    }
 
     [Test]
     public void TestContentTypeDefaults() {
@@ -1186,10 +1196,10 @@ throw new InvalidOperationException(String.Empty, ex);
       var msg = new Message();
       Message msg2;
       string body;
-       body = EncodingTest.Repeat(
-        EncodingTest.Repeat("a", 76) + "\r\n",
-        5) +
-   "\u00e7\r\nthe end";
+      body = EncodingTest.Repeat(
+       EncodingTest.Repeat("a", 76) + "\r\n",
+       5) +
+  "\u00e7\r\nthe end";
       msg.SetTextBody(body);
       MessageGenerate(msg);
       msg2 = new Message(msg.GenerateBytes());
@@ -1452,18 +1462,18 @@ throw new InvalidOperationException(String.Empty, ex);
           message += "Test\r\n";
           message += "--b1--" + padding2 + "\r\n";
           message += "Epilogue";
-      Message msg;
-      msg = MessageFromString(message);
-      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
-      {
-        string stringTemp = msg.ContentType.GetParameter("boundary");
-        Assert.AreEqual(
-          "b1",
-          stringTemp);
-      }
-      Assert.AreEqual(1, msg.Parts.Count);
-      Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
-      Assert.AreEqual("Test", msg.Parts[0].BodyString);
+          Message msg;
+          msg = MessageFromString(message);
+          Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
+          {
+            string stringTemp = msg.ContentType.GetParameter("boundary");
+            Assert.AreEqual(
+              "b1",
+              stringTemp);
+          }
+          Assert.AreEqual(1, msg.Parts.Count);
+          Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
+          Assert.AreEqual("Test", msg.Parts[0].BodyString);
         }
       }
     }
@@ -1517,7 +1527,7 @@ throw new InvalidOperationException(String.Empty, ex);
       string message;
       string messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
-        messageStart += "Preamble\r\n";
+      messageStart += "Preamble\r\n";
       messageStart += "--b1\r\n";
       message = messageStart;
       message += "Content-Type: text/plain\r\n\r\n";
@@ -1756,29 +1766,29 @@ throw new InvalidOperationException(String.Empty, ex);
     public void TestAuthResults() {
       var msg = new Message();
       try {
-      msg.SetHeader(
-       "authentication-results",
-       "example.com from=example.net; x=y (z); from=example.org; a=b (c)");
-    } catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-  }
+        msg.SetHeader(
+         "authentication-results",
+         "example.com from=example.net; x=y (z); from=example.org; a=b (c)");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetHeader(
-  "authentication-results",
-  "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader(
+         "authentication-results",
+         "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetHeader(
-  "authentication-results",
-  "a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader(
+         "authentication-results",
+         "a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
 
     [Test]
@@ -2059,7 +2069,7 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestFWSAtSubjectEnd() {
       Message msg;
    const string ValueStringVar = "From: me@example.com\r\nSubject: Test\r\n " +
-           "\r\nX-Header: Header\r\n\r\nBody";
+              "\r\nX-Header: Header\r\n\r\nBody";
       msg = MessageFromString(ValueStringVar);
       {
         string stringTemp = msg.GetHeader("subject");
@@ -2072,8 +2082,8 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestEmptyGroup() {
     const string ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
-          "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
-          "\r\n\r\nBody";
+            "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
+            "\r\n\r\nBody";
       MessageFromString(ValueStringVar);
     }
 
@@ -2314,32 +2324,32 @@ MessageFromString(MessageFromString(msg).Generate())
       msgString = "From: me@example.com\r\n\r\nBody";
       msg = MessageFromString(msgString);
       {
-string stringTemp = msg.ContentType.ToString();
-Assert.AreEqual(
-  "text/plain;charset=us-ascii",
-  stringTemp);
-}
+        string stringTemp = msg.ContentType.ToString();
+        Assert.AreEqual(
+          "text/plain;charset=us-ascii",
+          stringTemp);
+      }
     }
 
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
    String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-         "Content-Type: text/plain\r\nContent-Disposition: " +
-        new DispositionBuilder("inline").SetParameter("filename", input)
-        .ToString() + "\r\n\r\nEmpty.";
-        msg = MessageFromString(valueMessageString);
-        Assert.AreEqual(expected, msg.FileName, valueMessageString);
-        valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-        "Content-Type: " + new MediaTypeBuilder("text", "plain")
-        .SetParameter("name", input).ToString() +
-          "\r\n\r\nEmpty.";
-        msg = MessageFromString(valueMessageString);
-        Assert.AreEqual(expected, msg.FileName);
+            "Content-Type: text/plain\r\nContent-Disposition: " +
+           new DispositionBuilder("inline").SetParameter("filename", input)
+           .ToString() + "\r\n\r\nEmpty.";
+      msg = MessageFromString(valueMessageString);
+      Assert.AreEqual(expected, msg.FileName, valueMessageString);
+      valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      "Content-Type: " + new MediaTypeBuilder("text", "plain")
+      .SetParameter("name", input).ToString() +
+        "\r\n\r\nEmpty.";
+      msg = MessageFromString(valueMessageString);
+      Assert.AreEqual(expected, msg.FileName);
     }
     [Test]
     public void TestFileName() {
       string[] fn = ContentDispositionTest.FileNames;
-for (var i = 0; i < fn.Length; i += 2) {
+      for (var i = 0; i < fn.Length; i += 2) {
         TestFileNameOne(fn[i], fn[i + 1]);
       }
     }
@@ -2349,51 +2359,52 @@ for (var i = 0; i < fn.Length; i += 2) {
              "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
       Message msg = MessageFromString(valueMessageString);
       MessageFromString(MessageGenerate(msg));
-      Assert.AreEqual(1, msg.FromAddresses.Count);
+      IList<NamedAddress> fromaddrs = msg.GetAddresses("from");
+      Assert.AreEqual(1, fromaddrs.Count);
     }
 
     [Test]
-   public void TestMbox() {
-// Test handling of Mbox convention at start of message
-string msgString;
-Message msg;
-msgString = "From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
-msg = MessageFromString(msgString);
-{
-string stringTemp = msg.GetHeader("from");
-Assert.AreEqual(
-  "me2@example.com",
-  stringTemp);
-}
-msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
-msg = MessageFromString(msgString);
-{
-string stringTemp = msg.GetHeader("from");
-Assert.AreEqual(
-  "me@example.com",
-  stringTemp);
-}
-msgString = "From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
-try {
- MessageConstructOnly(msgString);
-Assert.Fail("Should have failed");
-} catch (MessageDataException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-msgString = "From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
-try {
- MessageConstructOnly(msgString);
-Assert.Fail("Should have failed");
-} catch (MessageDataException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-}
+    public void TestMbox() {
+      // Test handling of Mbox convention at start of message
+      string msgString;
+      Message msg;
+      msgString = "From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
+      msg = MessageFromString(msgString);
+      {
+        string stringTemp = msg.GetHeader("from");
+        Assert.AreEqual(
+          "me2@example.com",
+          stringTemp);
+      }
+    msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
+      msg = MessageFromString(msgString);
+      {
+        string stringTemp = msg.GetHeader("from");
+        Assert.AreEqual(
+          "me@example.com",
+          stringTemp);
+      }
+      msgString = "From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+      try {
+        MessageConstructOnly(msgString);
+        Assert.Fail("Should have failed");
+      } catch (MessageDataException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      msgString = "From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+      try {
+        MessageConstructOnly(msgString);
+        Assert.Fail("Should have failed");
+      } catch (MessageDataException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+    }
 
     [Test]
     public void TestGetBody() {
@@ -2675,17 +2686,17 @@ throw new InvalidOperationException(String.Empty, ex);
           throw new InvalidOperationException(String.Empty, ex);
         }
         try {
-        new Message().SetHeader(
-  headerName,
-  "\"Me\u002c Me\" <x@example.com>");
+          new Message().SetHeader(
+    headerName,
+    "\"Me\u002c Me\" <x@example.com>");
         } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);
         }
         try {
-     new Message().SetHeader(
-  headerName,
-  "\"Me\u002c Me(x)\" <x@example.com>");
+          new Message().SetHeader(
+       headerName,
+       "\"Me\u002c Me(x)\" <x@example.com>");
         } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);
@@ -2753,14 +2764,14 @@ throw new InvalidOperationException(String.Empty, ex);
   string header,
   string value) {
       try {
- msg.SetHeader(header, value);
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader(header, value);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
 
     [Test]
@@ -2780,14 +2791,14 @@ throw new InvalidOperationException(String.Empty, ex);
     public void TestSetHeaderTo() {
       var msg = new Message();
       TestSetHeaderOne(msg, "to", "\"Example Example\" <example@example.com>");
-   TestSetHeaderOne(
-  msg,
-  "to",
-  "\"Example E. Example\" <example@example.com>");
-   TestSetHeaderOne(
-  msg,
-  "to",
-  "\"Example E. Example\" <example@EXAMPLE.COM>");
+      TestSetHeaderOne(
+     msg,
+     "to",
+     "\"Example E. Example\" <example@example.com>");
+      TestSetHeaderOne(
+     msg,
+     "to",
+     "\"Example E. Example\" <example@EXAMPLE.COM>");
       TestSetHeaderOne(msg, "to", "\"Example, Example\" <example@example.com>");
       TestSetHeaderOne(
   msg,

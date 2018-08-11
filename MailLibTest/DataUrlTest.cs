@@ -90,7 +90,8 @@ Assert.AreEqual(
   "me@b\u00e8.example",
   stringTemp);
 }
-      Console.WriteLine(msg.ToAddresses[0]);
+      IList<NamedAddress> toaddr = msg.GetAddresses("to");
+      Console.WriteLine(toaddr[0]);
       msg = this.TestMailToOne("mailto:me@example.com?subject=b%c3%a7");
       {
 string stringTemp = msg.GetHeader("subject");
