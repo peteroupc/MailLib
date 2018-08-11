@@ -10,6 +10,7 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
+  // TODO: Refactor to eliminate this class
   public final class TransformWithUnget implements IByteReader {
     private final IByteReader transform;
     private int lastByte;

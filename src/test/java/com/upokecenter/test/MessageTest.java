@@ -26,18 +26,18 @@ import com.upokecenter.mail.*;
       }
       String ret = msg.Generate();
       if (ret == null) {
- Assert.fail();
- }
-        int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
-          ret,
-          false,
-          "");
+        Assert.fail();
+      }
+      int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
+        ret,
+        false,
+        "");
       if (fmtresult == 1) {
         System.out.println("fmtresult=1 for " +
                     ret.substring(0, Math.min(ret.length(), 260)));
       }
-        String messageTemp = ret;
-        if (!(
+      String messageTemp = ret;
+      if (!(
   fmtresult != 0)) {
  Assert.fail(
   messageTemp.substring(0, Math.min(messageTemp.length(), 260)));
@@ -70,12 +70,12 @@ import com.upokecenter.mail.*;
     }
 
     static Message MessageFromString(String valueMessageString) {
-        Message msgobj = new Message(
+      Message msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true));
-        MessageGenerate(msgobj);
-        return msgobj;
+      MessageGenerate(msgobj);
+      return msgobj;
     }
 
     static void MessageConstructOnly(String valueMessageString) {
@@ -83,8 +83,8 @@ import com.upokecenter.mail.*;
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true))) == null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
     }
 
     private static void TestMediaTypeRoundTrip(String valueMessageString) {
@@ -109,17 +109,17 @@ import com.upokecenter.mail.*;
         mtstring + "\r\n\r\n";
       Message mtmessage = MessageFromString(msgstring);
       {
-boolean boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
-          msgstring,
-          false,
-          "TestGenerate") == 2;
-if (!(boolTemp)) {
+        boolean boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
+                  msgstring,
+                  false,
+                  "TestGenerate") == 2;
+        if (!(boolTemp)) {
  Assert.fail(msgstring);
  }
-}
+      }
       if (MessageGenerate(mtmessage) == null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
     }
 
     @Test
@@ -145,12 +145,12 @@ if (!(boolTemp)) {
       }
     }
 
-@Test
+    @Test
     public void TestGenerateLineWrap() {
       Message msg;
       String longvalue = "name1<name1@example.com>,name2<name2@example.com>," +
         "name3<name3@example.com>,name4<name4@example.com>";
-  msg = new Message();
+      msg = new Message();
       msg.SetHeader("to", longvalue);
       MessageGenerate(msg);
       msg = new Message();
@@ -174,110 +174,110 @@ if (!(boolTemp)) {
       }
     }
 
-private static byte[] BytesFromString(String str) {
- return DataUtilities.GetUtf8Bytes(
-  str,
-  true);
-}
+    private static byte[] BytesFromString(String str) {
+      return DataUtilities.GetUtf8Bytes(
+       str,
+       true);
+    }
 
-@Test
-public void TestAddAttachment() {
-  Message msg;
-  String stringBody = "This is a sample body.";
-  byte[] bytesBody = BytesFromString(stringBody);
-  String stringPart = "This is a sample body part.";
-  byte[] bytesPart = BytesFromString(stringPart);
-  try {
-   {
+    @Test
+    public void TestAddAttachment() {
+      Message msg;
+      String stringBody = "This is a sample body.";
+      byte[] bytesBody = BytesFromString(stringBody);
+      String stringPart = "This is a sample body part.";
+      byte[] bytesPart = BytesFromString(stringPart);
+      try {
+        {
 java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytesPart);
 
-        MediaType mt = MediaType.TextPlainAscii;
-        try {
- new Message().AddAttachment(null, mt);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-    try {
- new Message().AddAttachment(null, (MediaType)null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-    try {
- new Message().AddAttachment(null, (String)null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-    try {
- new Message().AddAttachment(ms, (MediaType)null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-        try {
- new Message().AddAttachment(ms, (String)null);
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-    try {
- new Message().AddInline(null, mt);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-    try {
- new Message().AddInline(null, (MediaType)null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-    try {
- new Message().AddInline(null, (String)null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-    try {
- new Message().AddInline(ms, (MediaType)null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-        try {
- new Message().AddInline(ms, (String)null);
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+          MediaType mt = MediaType.TextPlainAscii;
+          try {
+            new Message().AddAttachment(null, mt);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddAttachment(null, (MediaType)null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddAttachment(null, (String)null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddAttachment(ms, (MediaType)null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddAttachment(ms, (String)null);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddInline(null, mt);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddInline(null, (MediaType)null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddInline(null, (String)null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddInline(ms, (MediaType)null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            new Message().AddInline(ms, (String)null);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
 }
 finally {
 try { if (ms != null) {
@@ -285,47 +285,57 @@ try { if (ms != null) {
  } } catch (java.io.IOException ex) {}
 }
 }
-  for (int phase = 0; phase < 12; ++phase) {
-   {
+        for (int phase = 0; phase < 12; ++phase) {
+          {
 java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytesPart);
 
-   MediaType mt = (phase % 2 == 0) ? MediaType.TextPlainAscii :
-    MediaType.Parse("text/troff;charset=us-ascii");
-   String fn = null;
-   msg = new Message().SetTextBody(stringBody);
-   Assert.assertEquals("text/plain", msg.getContentType().getTypeAndSubType());
-    switch (phase) {
-    case 0:
-    case 1:Assert.assertEquals(msg, msg.AddAttachment(ms, mt)); break;
-    case 2:
-    case 3:mt = MediaType.TextPlainAscii;
-     fn = "example.txt";
-     Assert.assertEquals(msg, msg.AddAttachment(ms, fn)); break;
-    case 4:
-    case 5:fn = "example.txt";
-     Assert.assertEquals(msg, msg.AddAttachment(ms, mt, fn)); break;
-    case 6:
-    case 7:Assert.assertEquals(msg, msg.AddInline(ms, mt)); break;
-    case 8:
-    case 9:mt = MediaType.TextPlainAscii;
-     fn = "example.txt";
-     Assert.assertEquals(msg, msg.AddInline(ms, fn)); break;
-    case 10:
-    case 11:fn = "example.txt";
-     Assert.assertEquals(msg, msg.AddInline(ms, mt, fn)); break;
-   }
-   Assert.assertEquals("multipart/mixed", msg.getContentType().getTypeAndSubType());
-   Assert.assertEquals(2, msg.getParts().size());
-   Assert.assertEquals("text/plain", msg.getParts().get(0).getContentType().getTypeAndSubType());
-   Assert.assertEquals("inline", msg.getParts().get(0).getContentDisposition().getDispositionType());
-   Assert.assertEquals(stringBody, msg.getParts().get(0).getBodyString());
-   Assert.assertEquals(mt.getTypeAndSubType(), msg.getParts().get(1).getContentType().getTypeAndSubType());
+            MediaType mt = (phase % 2 == 0) ? MediaType.TextPlainAscii :
+             MediaType.Parse("text/troff;charset=us-ascii");
+            String fn = null;
+            msg = new Message().SetTextBody(stringBody);
+            Assert.assertEquals("text/plain", msg.getContentType().getTypeAndSubType());
+            switch (phase) {
+              case 0:
+              case 1: msg.AddAttachment(ms, mt); break;
+              case 2:
+              case 3:
+                mt = MediaType.TextPlainAscii;
+                fn = "example.txt";
+                msg.AddAttachment(ms, fn); break;
+              case 4:
+              case 5:
+                fn = "example.txt";
+                msg.AddAttachment(ms, mt, fn); break;
+              case 6:
+              case 7: msg.AddInline(ms, mt); break;
+              case 8:
+              case 9:
+                mt = MediaType.TextPlainAscii;
+                fn = "example.txt";
+                msg.AddInline(ms, fn); break;
+              case 10:
+              case 11:
+                fn = "example.txt";
+                msg.AddInline(ms, mt, fn); break;
+            }
+            Assert.assertEquals("multipart/mixed", msg.getContentType().getTypeAndSubType());
+            Assert.assertEquals(2, msg.getParts().size());
+        Assert.assertEquals(
+  "text/plain",
+  msg.getParts().get(0).getContentType().getTypeAndSubType());
+    Assert.assertEquals(
+  "inline",
+  msg.getParts().get(0).getContentDisposition().getDispositionType());
+            Assert.assertEquals(stringBody, msg.getParts().get(0).getBodyString());
    Assert.assertEquals(
-      phase < 6 ? "attachment" : "inline",
-      msg.getParts().get(1).getContentDisposition().getDispositionType());
-          Assert.assertEquals(stringPart, msg.getParts().get(1).getBodyString());
+  mt.getTypeAndSubType(),
+  msg.getParts().get(1).getContentType().getTypeAndSubType());
+            Assert.assertEquals(
+               phase < 6 ? "attachment" : "inline",
+               msg.getParts().get(1).getContentDisposition().getDispositionType());
+            Assert.assertEquals(stringPart, msg.getParts().get(1).getBodyString());
 }
 finally {
 try { if (ms != null) {
@@ -333,12 +343,12 @@ try { if (ms != null) {
  } } catch (java.io.IOException ex) {}
 }
 }
-  }
-  } catch (IOException ioe) {
-    Assert.fail(ioe.toString());
-    throw new IllegalStateException("", ioe);
-  }
-}
+        }
+      } catch (IOException ioe) {
+        Assert.fail(ioe.toString());
+        throw new IllegalStateException("", ioe);
+      }
+    }
 
     @Test
     public void TestContentTypeDefaults() {
@@ -1211,10 +1221,10 @@ try { if (ms != null) {
       Message msg = new Message();
       Message msg2;
       String body;
-       body = EncodingTest.Repeat(
-        EncodingTest.Repeat("a", 76) + "\r\n",
-        5) +
-   "\u00e7\r\nthe end";
+      body = EncodingTest.Repeat(
+       EncodingTest.Repeat("a", 76) + "\r\n",
+       5) +
+  "\u00e7\r\nthe end";
       msg.SetTextBody(body);
       MessageGenerate(msg);
       msg2 = new Message(msg.GenerateBytes());
@@ -1477,18 +1487,18 @@ try { if (ms != null) {
           message += "Test\r\n";
           message += "--b1--" + padding2 + "\r\n";
           message += "Epilogue";
-      Message msg;
-      msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
-      {
-        String stringTemp = msg.getContentType().GetParameter("boundary");
-        Assert.assertEquals(
-          "b1",
-          stringTemp);
-      }
-      Assert.assertEquals(1, msg.getParts().size());
-      Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
-      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+          Message msg;
+          msg = MessageFromString(message);
+          Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+          {
+            String stringTemp = msg.getContentType().GetParameter("boundary");
+            Assert.assertEquals(
+              "b1",
+              stringTemp);
+          }
+          Assert.assertEquals(1, msg.getParts().size());
+          Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
+          Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
         }
       }
     }
@@ -1542,7 +1552,7 @@ try { if (ms != null) {
       String message;
       String messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
-        messageStart += "Preamble\r\n";
+      messageStart += "Preamble\r\n";
       messageStart += "--b1\r\n";
       message = messageStart;
       message += "Content-Type: text/plain\r\n\r\n";
@@ -1781,29 +1791,29 @@ try { if (ms != null) {
     public void TestAuthResults() {
       Message msg = new Message();
       try {
-      msg.SetHeader(
-       "authentication-results",
-       "example.com from=example.net; x=y (z); from=example.org; a=b (c)");
-    } catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-  }
+        msg.SetHeader(
+         "authentication-results",
+         "example.com from=example.net; x=y (z); from=example.org; a=b (c)");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetHeader(
-  "authentication-results",
-  "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetHeader(
+         "authentication-results",
+         "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetHeader(
-  "authentication-results",
-  "a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com");
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetHeader(
+         "authentication-results",
+         "a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
 
     @Test
@@ -2086,7 +2096,7 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestFWSAtSubjectEnd() {
       Message msg;
    String ValueStringVar = "From: me@example.com\r\nSubject: Test\r\n " +
-           "\r\nX-Header: Header\r\n\r\nBody";
+              "\r\nX-Header: Header\r\n\r\nBody";
       msg = MessageFromString(ValueStringVar);
       {
         String stringTemp = msg.GetHeader("subject");
@@ -2099,8 +2109,8 @@ MessageFromString(MessageFromString(msg).Generate())
     @Test
     public void TestEmptyGroup() {
     String ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
-          "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
-          "\r\n\r\nBody";
+            "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
+            "\r\n\r\nBody";
       MessageFromString(ValueStringVar);
     }
 
@@ -2345,32 +2355,32 @@ MessageFromString(MessageFromString(msg).Generate())
       msgString = "From: me@example.com\r\n\r\nBody";
       msg = MessageFromString(msgString);
       {
-String stringTemp = msg.getContentType().toString();
-Assert.assertEquals(
-  "text/plain;charset=us-ascii",
-  stringTemp);
-}
+        String stringTemp = msg.getContentType().toString();
+        Assert.assertEquals(
+          "text/plain;charset=us-ascii",
+          stringTemp);
+      }
     }
 
     private static void TestFileNameOne(String input, String expected) {
       Message msg;
    String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-         "Content-Type: text/plain\r\nContent-Disposition: " +
-        new DispositionBuilder("inline").SetParameter("filename", input)
-        .toString() + "\r\n\r\nEmpty.";
-        msg = MessageFromString(valueMessageString);
-        Assert.assertEquals(valueMessageString, expected, msg.getFileName());
-        valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-        "Content-Type: " + new MediaTypeBuilder("text", "plain")
-        .SetParameter("name", input).toString() +
-          "\r\n\r\nEmpty.";
-        msg = MessageFromString(valueMessageString);
-        Assert.assertEquals(expected, msg.getFileName());
+            "Content-Type: text/plain\r\nContent-Disposition: " +
+           new DispositionBuilder("inline").SetParameter("filename", input)
+           .toString() + "\r\n\r\nEmpty.";
+      msg = MessageFromString(valueMessageString);
+      Assert.assertEquals(valueMessageString, expected, msg.getFileName());
+      valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      "Content-Type: " + new MediaTypeBuilder("text", "plain")
+      .SetParameter("name", input).toString() +
+        "\r\n\r\nEmpty.";
+      msg = MessageFromString(valueMessageString);
+      Assert.assertEquals(expected, msg.getFileName());
     }
     @Test
     public void TestFileName() {
       String[] fn = ContentDispositionTest.FileNames;
-for (int i = 0; i < fn.length(); i += 2) {
+      for (int i = 0; i < fn.length(); i += 2) {
         TestFileNameOne(fn.charAt(i), fn.charAt(i + 1));
       }
     }
@@ -2380,51 +2390,52 @@ for (int i = 0; i < fn.length(); i += 2) {
              "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
       Message msg = MessageFromString(valueMessageString);
       MessageFromString(MessageGenerate(msg));
-      Assert.assertEquals(1, msg.getFromAddresses().size());
+      List<NamedAddress> fromaddrs = msg.GetAddresses("from");
+      Assert.assertEquals(1, fromaddrs.size());
     }
 
     @Test
-   public void TestMbox() {
-// Test handling of Mbox convention at start of message
-String msgString;
-Message msg;
-msgString = "From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
-msg = MessageFromString(msgString);
-{
-String stringTemp = msg.GetHeader("from");
-Assert.assertEquals(
-  "me2@example.com",
-  stringTemp);
-}
-msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
-msg = MessageFromString(msgString);
-{
-String stringTemp = msg.GetHeader("from");
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
-}
-msgString = "From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
-try {
- MessageConstructOnly(msgString);
-Assert.fail("Should have failed");
-} catch (MessageDataException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-msgString = "From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
-try {
- MessageConstructOnly(msgString);
-Assert.fail("Should have failed");
-} catch (MessageDataException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-}
+    public void TestMbox() {
+      // Test handling of Mbox convention at start of message
+      String msgString;
+      Message msg;
+      msgString = "From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
+      msg = MessageFromString(msgString);
+      {
+        String stringTemp = msg.GetHeader("from");
+        Assert.assertEquals(
+          "me2@example.com",
+          stringTemp);
+      }
+    msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
+      msg = MessageFromString(msgString);
+      {
+        String stringTemp = msg.GetHeader("from");
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
+      }
+      msgString = "From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+      try {
+        MessageConstructOnly(msgString);
+        Assert.fail("Should have failed");
+      } catch (MessageDataException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      msgString = "From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+      try {
+        MessageConstructOnly(msgString);
+        Assert.fail("Should have failed");
+      } catch (MessageDataException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
     @Test
     public void TestGetBody() {
@@ -2706,17 +2717,17 @@ throw new IllegalStateException("", ex);
           throw new IllegalStateException("", ex);
         }
         try {
-        new Message().SetHeader(
-  headerName,
-  "\"Me\u002c Me\" <x@example.com>");
+          new Message().SetHeader(
+    headerName,
+    "\"Me\u002c Me\" <x@example.com>");
         } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
         try {
-     new Message().SetHeader(
-  headerName,
-  "\"Me\u002c Me(x)\" <x@example.com>");
+          new Message().SetHeader(
+       headerName,
+       "\"Me\u002c Me(x)\" <x@example.com>");
         } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
@@ -2784,14 +2795,14 @@ throw new IllegalStateException("", ex);
   String header,
   String value) {
       try {
- msg.SetHeader(header, value);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetHeader(header, value);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
 
     @Test
@@ -2811,14 +2822,14 @@ throw new IllegalStateException("", ex);
     public void TestSetHeaderTo() {
       Message msg = new Message();
       TestSetHeaderOne(msg, "to", "\"Example Example\" <example@example.com>");
-   TestSetHeaderOne(
-  msg,
-  "to",
-  "\"Example E. Example\" <example@example.com>");
-   TestSetHeaderOne(
-  msg,
-  "to",
-  "\"Example E. Example\" <example@EXAMPLE.COM>");
+      TestSetHeaderOne(
+     msg,
+     "to",
+     "\"Example E. Example\" <example@example.com>");
+      TestSetHeaderOne(
+     msg,
+     "to",
+     "\"Example E. Example\" <example@EXAMPLE.COM>");
       TestSetHeaderOne(msg, "to", "\"Example, Example\" <example@example.com>");
       TestSetHeaderOne(
   msg,

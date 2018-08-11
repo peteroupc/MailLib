@@ -706,9 +706,17 @@ Contains methods for parsing and generating date-time strings following the
            for information on the format of this parameter.</param>
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)">
-
-            <summary>Not documented yet.</summary><param name='dateTime'>The parameter <paramref name='dateTime'/> is not documented yet.</param><param name='gmt'>The parameter <paramref name='gmt'/> is not documented yet.</param><returns>A text string.</returns>
-
+            <summary>Generates a date-time string following the
+           Internet Message Format (RFC 5322) from an 8-element array, optionally using a "GMT" time zone indicator.
+            </summary>
+            <returns>A date-time string.</returns>
+            <exception cref='T:System.ArgumentException'>The parameter "dateTime" is
+            null or invalid.</exception>
+            <exception cref='T:System.NotSupportedException'>The time zone offset is other than 0 and "gmt" is true.</exception>
+            <param name='dateTime'>The date and time in the form of an 8-element array.  See
+           <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+           for information on the format of this parameter.</param>
+<param name='gmt'>If true, uses the string "GMT" as the time zone offset.</param>
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)">
 <summary>
@@ -908,8 +916,11 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             <returns>A text string form of this media type.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.ToUriSafeString">
-<summary>Not documented yet.</summary>
-            <returns>A text string.</returns>
+<summary>Converts this media type to a text string form
+   suitable for data URIs.  Notably, the string contains the
+   value of a Content-Type header field (without the text necessarily
+   starting with "Content-Type" followed by a space), consists of a single line, and uses percent-encoding as necessary or convenient so that the resulting string can validly appear in a URI path.</summary>
+            <returns>A text string form of this media type.</returns>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.TopLevelType">
 <summary>Gets the name of this media type's top-level type (such as
@@ -1145,7 +1156,7 @@ public static Message AddAttachmentFromBytes(this Message msg,
 </example>
             <param name='inputStream'>A readable data stream.</param>
             <param name='mediaType'>A media type to assign to the attachment.</param>
-            <returns>This object.</returns>
+            <returns>A Message object for the generated attachment.</returns>
 
             <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
             <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
@@ -1154,8 +1165,8 @@ public static Message AddAttachmentFromBytes(this Message msg,
 <summary>Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
             <param name='inputStream'>A readable data stream.</param>
             <param name='mediaType'>A media type to assign to the attachment.</param>
-            <param name='filename'>A file name to assign to the attachment.  Can be null or empty, in which case no file name is assigned.</param>
-            <returns>This object.</returns>
+            <param name='filename'>A file name to assign to the attachment.  Can be null or empty, in which case no file name is assigned.  Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.</param>
+            <returns>A Message object for the generated attachment.</returns>
 
             <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
             <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
@@ -1171,8 +1182,8 @@ public static Message AddAttachmentFromFile(this Message msg, string filename){
 </code>
 </example>
             <param name='inputStream'>A readable data stream.</param>
-            <param name='filename'>A file name to assign to the attachment.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the attachment based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.</param>
-            <returns>This object.</returns>
+            <param name='filename'>A file name to assign to the attachment.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the attachment based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.  Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.</param>
+            <returns>A Message object for the generated attachment.</returns>
 
             <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" is null.</exception>
             <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
@@ -1221,7 +1232,7 @@ public static Message AddInlineFromBytes(this Message msg,
 </example>
             <param name='inputStream'>A readable data stream.</param>
             <param name='mediaType'>A media type to assign to the body part.</param>
-            <returns>This object.</returns>
+            <returns>A Message object for the generated body part.</returns>
 
             <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
             <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
@@ -1231,7 +1242,7 @@ public static Message AddInlineFromBytes(this Message msg,
             <param name='inputStream'>A readable data stream.</param>
             <param name='mediaType'>A media type to assign to the body part.</param>
             <param name='filename'>A file name to assign to the body part.</param>
-            <returns>This object.</returns>
+            <returns>A Message object for the generated body part.</returns>
 
             <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
             <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
@@ -1247,8 +1258,8 @@ public static Message AddAttachmentFromInline(this Message msg, string filename)
 </code>
 </example>
             <param name='inputStream'>A readable data stream.</param>
-            <param name='filename'>A file name to assign to the body part.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the body part based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.</param>
-            <returns>This object.</returns>
+            <param name='filename'>A file name to assign to the body part.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the body part based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.  Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.</param>
+            <returns>A Message object for the generated body part.</returns>
 
             <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" is null.</exception>
             <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
@@ -1347,7 +1358,7 @@ header field, otherwise.</para></summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.GetAddresses(System.String)">
 
-            <summary>Not documented yet.</summary><param name='headerName'>The parameter <paramref name='headerName'/> is not documented yet.</param><returns>An IList(NamedAddress) object.</returns>
+            <summary>Not documented yet.</summary><param name='headerName'>The parameter <paramref name='headerName'/> is not documented yet.</param><returns>A list of addresses, in the order in which they appear in this message's header fields of the given name.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.GetBody">

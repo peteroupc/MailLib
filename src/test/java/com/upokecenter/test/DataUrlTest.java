@@ -90,7 +90,8 @@ Assert.assertEquals(
   "me@b\u00e8.example",
   stringTemp);
 }
-      System.out.println(msg.getToAddresses().get(0));
+      List<NamedAddress> toaddr = msg.GetAddresses("to");
+      System.out.println(toaddr.get(0));
       msg = this.TestMailToOne("mailto:me@example.com?subject=b%c3%a7");
       {
 String stringTemp = msg.GetHeader("subject");

@@ -10,6 +10,7 @@ using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
+  // TODO: Refactor to eliminate this class
   internal sealed class TransformWithUnget : IByteReader {
     private readonly IByteReader transform;
     private int lastByte;
