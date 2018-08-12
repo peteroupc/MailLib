@@ -2,10 +2,37 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using PeterO.Mail;
+using Test;
 
 namespace MailLibTest {
   [TestFixture]
   public class DataUrlTest {
+    [Test]
+    public void TestMatchLangTagsBasic() {
+      string[] langranges = { "fr-ca", "es" };
+      Assert.AreEqual(0, DataUrl.MatchLangTagsBasic(langranges, "fr-ca"));
+      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "es"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "fr-cam"));
+      Assert.AreEqual(0, DataUrl.MatchLangTagsBasic(langranges, "fr-ca-9999"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "fr-zxxx-ca"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "es-cam"));
+      Assert.AreEqual(0, DataUrl.MatchLangTagsBasic(langranges, "es-ca-9999"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "es-zxxx-ca"));
+      langranges =new string[]{ "fr-ca","*","es"};
+      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "es", false));
+      Assert.AreEqual(2, DataUrl.MatchLangTagsBasic(langranges, "es", true));
+      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "nl", false));
+      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "nl", true));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "", false));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "", true));
+      langranges = new string[] { null, "*" };
+      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", false));
+      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", true));
+      langranges = new string[] { String.Empty, "*" };
+      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", false));
+      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", true));
+    }
+
     private Message TestMailToOne(string s) {
       Console.WriteLine(s);
       Message msg = DataUrl.MailToUrlMessage(s);
@@ -14,6 +41,18 @@ namespace MailLibTest {
  Assert.Fail();
  }
       return msg;
+    }
+
+    internal static void TestDataUrlRoundTrip(string data) {
+      MediaType mt = DataUrl.DataUrlMediaType(data);
+      byte[] bytes = DataUrl.DataUrlBytes(data);
+      Assert.NotNull(mt, data);
+      Assert.NotNull(bytes, data);
+      string data2 = DataUrl.MakeDataUrl(bytes, mt);
+      MediaType mt2 = DataUrl.DataUrlMediaType(data2);
+      byte[] bytes2 = DataUrl.DataUrlBytes(data2);
+      Test.TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      Assert.AreEqual(mt, mt2, data);
     }
 
     private static void TestEmptyPathOne(string uri) {
@@ -39,6 +78,21 @@ namespace MailLibTest {
       TestEmptyPathOne("s:");
       TestEmptyPathOne("s:?x");
       TestEmptyPathOne("s:#x");
+    }
+
+    [Test]
+    public void TestExtended() {
+      string[] ranges = { "fr-ca" };
+      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-ca"));
+      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "FR-ca"));
+      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-CA"));
+      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-zxxx-ca"));
+      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-zxxx-ca-xxxxxx"));
+      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-zxxx-ca-u-xxxxxx"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr-xxxx"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr-FR"));
+      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr-u-ca"));
     }
     [Test]
     public void TestMailTo() {

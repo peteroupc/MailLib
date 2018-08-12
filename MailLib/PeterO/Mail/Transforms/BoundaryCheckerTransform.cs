@@ -222,8 +222,7 @@ namespace PeterO.Mail.Transforms {
             if (c == 0x0a) {
               // Start of new body part
               StartInnerBuffer();
-              if (InnerBufferReadAndStore() != 0x0a ||
-                InnerBufferReadAndStore() != '-' ||
+              if (InnerBufferReadAndStore() != '-' ||
                 InnerBufferReadAndStore() != '-') {
                 // No boundary delimiter
                 ResetInnerBuffer();

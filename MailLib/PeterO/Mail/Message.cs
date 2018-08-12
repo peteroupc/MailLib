@@ -14,8 +14,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     internal const int MaxRecHeaderLineLength = 78;
     internal const int MaxShortHeaderLineLength = 76;
@@ -120,7 +120,7 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
     [Obsolete("Use GetAddresses(\"Bcc\") instead.")]
-public IList<NamedAddress> BccAddresses {
+    public IList<NamedAddress> BccAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
       }
@@ -131,10 +131,10 @@ public IList<NamedAddress> BccAddresses {
     public string BodyString {
       get {
         if (this.ContentType.IsMultipart) {
- throw new
+          throw new
 
-  NotSupportedException("This is a multipart message, so it doesn't have its own body text.");
-}
+           NotSupportedException("This is a multipart message, so it doesn't have its own body text.");
+        }
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.ContentType.GetCharset(),
           true);
@@ -151,7 +151,7 @@ public IList<NamedAddress> BccAddresses {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.CCAddresses"]/*'/>
     [Obsolete("Use GetAddresses(\"Cc\") instead.")]
-public IList<NamedAddress> CCAddresses {
+    public IList<NamedAddress> CCAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("cc"));
       }
@@ -216,11 +216,11 @@ public IList<NamedAddress> CCAddresses {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
     public IList<NamedAddress> GetAddresses(string headerName) {
       if ((headerName) == null) {
-  throw new ArgumentNullException(nameof(headerName));
-}
-if ((headerName).Length == 0) {
-  throw new ArgumentException("headerName"+ " is empty.");
-}
+        throw new ArgumentNullException(nameof(headerName));
+      }
+      if ((headerName).Length == 0) {
+        throw new ArgumentException("headerName" + " is empty.");
+      }
       headerName = DataUtilities.ToLowerCaseAscii(headerName);
       if (ValueHeaderIndices.ContainsKey(headerName) &&
          ValueHeaderIndices[headerName] <= 5) {
@@ -278,7 +278,7 @@ if ((headerName).Length == 0) {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.ToAddresses"]/*'/>
     [Obsolete("Use GetAddresses(\"To\") instead.")]
-public IList<NamedAddress> ToAddresses {
+    public IList<NamedAddress> ToAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("to"));
       }
@@ -413,13 +413,13 @@ public IList<NamedAddress> ToAddresses {
       return (string[])list.ToArray();
     }
 
-/// <summary></summary>
-public Message ClearHeaders() {
-this.headers.Clear();
-        this.contentType = MediaType.TextPlainAscii;
-this.contentDisposition = null;
-return this;
-}
+    /// <summary></summary>
+    public Message ClearHeaders() {
+      this.headers.Clear();
+      this.contentType = MediaType.TextPlainAscii;
+      this.contentDisposition = null;
+      return this;
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
@@ -538,10 +538,10 @@ return this;
       return this.SetHeader(index, name, value);
     }
 
-    private static readonly MediaType TextHtmlAscii=
+    private static readonly MediaType TextHtmlAscii =
       MediaType.Parse("text/html; charset=us-ascii");
 
-    private static readonly MediaType TextHtmlUtf8=
+    private static readonly MediaType TextHtmlUtf8 =
       MediaType.Parse("text/html; charset=utf-8");
 
     /// <include file='../../docs.xml'
@@ -570,7 +570,7 @@ return this;
       // this case, the HTML version)
       var textMessage = NewBodyPart().SetTextBody(text);
       var htmlMessage = NewBodyPart().SetHtmlBody(html);
-    string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
+      string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
@@ -597,30 +597,30 @@ return this;
          string filename,
          string disposition) {
       if ((inputStream) == null) {
-  throw new ArgumentNullException(nameof(inputStream));
-}
+        throw new ArgumentNullException(nameof(inputStream));
+      }
       if ((mediaType) == null) {
-  throw new ArgumentNullException(nameof(mediaType));
-}
+        throw new ArgumentNullException(nameof(mediaType));
+      }
       Message bodyPart = NewBodyPart();
-      bodyPart.SetHeader("content-id",this.GenerateMessageID());
-    // NOTE: Using the setter because it also adds a Content-Type
-// header field
+      bodyPart.SetHeader("content-id", this.GenerateMessageID());
+      // NOTE: Using the setter because it also adds a Content-Type
+      // header field
       bodyPart.ContentType = mediaType;
       try {
-      using(var ms = new MemoryStream()) {
-        var buffer = new byte[4096];
-        while (true) {
-          int cp = inputStream.Read(buffer, 0, buffer.Length);
-          if (cp <= 0) {
- break;
-}
-          ms.Write(buffer, 0, cp);
+        using (var ms = new MemoryStream()) {
+          var buffer = new byte[4096];
+          while (true) {
+            int cp = inputStream.Read(buffer, 0, buffer.Length);
+            if (cp <= 0) {
+              break;
+            }
+            ms.Write(buffer, 0, cp);
+          }
+          bodyPart.SetBody(ms.ToArray());
         }
-        bodyPart.SetBody(ms.ToArray());
-      }
       } catch (IOException ex) {
-        throw new MessageDataException("An I/O error occurred.",ex);
+        throw new MessageDataException("An I/O error occurred.", ex);
       }
       var dispBuilder = new DispositionBuilder(disposition);
       if (!String.IsNullOrEmpty(filename)) {
@@ -635,7 +635,7 @@ return this;
         this.Parts.Add(bodyPart);
       } else {
         Message existingBody = NewBodyPart();
-        existingBody.ContentDisposition=ContentDisposition.Parse("inline");
+        existingBody.ContentDisposition = ContentDisposition.Parse("inline");
         existingBody.ContentType = this.ContentType;
         existingBody.SetBody(this.GetBody());
         string mtypestr = "multipart/mixed; boundary=\"=_Boundary00000000\"";
@@ -646,21 +646,21 @@ return this;
       return bodyPart;
     }
     private static string BaseName(string filename) {
-      for (var i = filename.Length-1;i >= 0; --i) {
-         if (filename[i]=='\\' || filename[i]=='/') {
-            return filename.Substring(i + 1);
-         }
+      for (var i = filename.Length - 1; i >= 0; --i) {
+        if (filename[i] == '\\' || filename[i] == '/') {
+          return filename.Substring(i + 1);
+        }
       }
       return filename;
     }
 
     private static string ExtensionName(string filename) {
-      for (var i = filename.Length-1;i >= 0; --i) {
-         if (filename[i]=='\\' || filename[i]=='/') {
-            return String.Empty;
-         } else if (filename[i]=='.') {
-            return filename.Substring(i);
-         }
+      for (var i = filename.Length - 1; i >= 0; --i) {
+        if (filename[i] == '\\' || filename[i] == '/') {
+          return String.Empty;
+        } else if (filename[i] == '.') {
+          return filename.Substring(i);
+        }
       }
       return String.Empty;
     }
@@ -669,57 +669,59 @@ return this;
       if (!String.IsNullOrEmpty(filename)) {
         string ext = DataUtilities.ToLowerCaseAscii(
            ExtensionName(filename));
-if (ext.Equals(".doc") || ext.Equals(".dot")) {
- return MediaType.Parse("application/msword");
-}
-if (ext.Equals(".bin") || ext.Equals(".deploy") || ext.Equals(".msp") ||
-  ext.Equals(".msu")) {
- return MediaType.Parse("application/octet-stream");
-}
-if (ext.Equals(".pdf")) {
- return MediaType.Parse("application/pdf");
-}
-if (ext.Equals(".key")) {
- return MediaType.Parse("application/pgp-keys");
-}
-if (ext.Equals(".sig")) {
- return MediaType.Parse("application/pgp-signature");
-}
-if (ext.Equals(".rtf")) {
- return MediaType.Parse("application/rtf");
-}
-if (ext.Equals(".docx")) {
- return
+        if (ext.Equals(".doc") || ext.Equals(".dot")) {
+          return MediaType.Parse("application/msword");
+        }
+        if (ext.Equals(".bin") || ext.Equals(".deploy") || ext.Equals(".msp") ||
+          ext.Equals(".msu")) {
+          return MediaType.Parse("application/octet-stream");
+        }
+        if (ext.Equals(".pdf")) {
+          return MediaType.Parse("application/pdf");
+        }
+        if (ext.Equals(".key")) {
+          return MediaType.Parse("application/pgp-keys");
+        }
+        if (ext.Equals(".sig")) {
+          return MediaType.Parse("application/pgp-signature");
+        }
+        if (ext.Equals(".rtf")) {
+          return MediaType.Parse("application/rtf");
+        }
+        if (ext.Equals(".docx")) {
+          return
 
-  MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-}
-if (ext.Equals(".zip")) {
- return MediaType.Parse("application/zip");
-}
-if (ext.Equals(".m4a") || ext.Equals(".mp2") || ext.Equals(".mp3") ||
-  ext.Equals(".mpega") || ext.Equals(".mpga")) {
- return MediaType.Parse("audio/mpeg");
-}
-if (ext.Equals(".gif")) {
- return MediaType.Parse("image/gif");
-}
-if (ext.Equals(".jpe") || ext.Equals(".jpeg") || ext.Equals(".jpg")) {
- return MediaType.Parse("image/jpeg");
-}
-if (ext.Equals(".png")) {
- return MediaType.Parse("image/png");
-}
-if (ext.Equals(".tif") || ext.Equals(".tiff")) {
- return MediaType.Parse("image/tiff");
-}
-if (ext.Equals(".eml")) {
- return MediaType.Parse("message/rfc822");
-}
-if (ext.Equals(".htm") || ext.Equals(".html") || ext.Equals(".shtml")) {
- return MediaType.Parse("text/html\u003bcharset=utf-8"); }
-if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
-  ext.Equals(".srt") || ext.Equals(".text") || ext.Equals(".txt")) {
-  return MediaType.Parse("text/plain\u003bcharset=utf-8"); }
+           MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        }
+        if (ext.Equals(".zip")) {
+          return MediaType.Parse("application/zip");
+        }
+        if (ext.Equals(".m4a") || ext.Equals(".mp2") || ext.Equals(".mp3") ||
+          ext.Equals(".mpega") || ext.Equals(".mpga")) {
+          return MediaType.Parse("audio/mpeg");
+        }
+        if (ext.Equals(".gif")) {
+          return MediaType.Parse("image/gif");
+        }
+        if (ext.Equals(".jpe") || ext.Equals(".jpeg") || ext.Equals(".jpg")) {
+          return MediaType.Parse("image/jpeg");
+        }
+        if (ext.Equals(".png")) {
+          return MediaType.Parse("image/png");
+        }
+        if (ext.Equals(".tif") || ext.Equals(".tiff")) {
+          return MediaType.Parse("image/tiff");
+        }
+        if (ext.Equals(".eml")) {
+          return MediaType.Parse("message/rfc822");
+        }
+        if (ext.Equals(".htm") || ext.Equals(".html") || ext.Equals(".shtml")) {
+          return MediaType.Parse("text/html\u003bcharset=utf-8");
+        }
+        if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
+          ext.Equals(".srt") || ext.Equals(".text") || ext.Equals(".txt")) {
+          return MediaType.Parse("text/plain\u003bcharset=utf-8");
+        }
       }
       return MediaType.ApplicationOctetStream;
     }
@@ -727,40 +729,40 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
-      return AddBodyPart(inputStream,mediaType,null,"attachment");
+      return AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
     public Message AddAttachment(Stream inputStream, string filename) {
       return
-  AddBodyPart(inputStream,SuggestMediaType(filename),filename,"attachment");
+  AddBodyPart(inputStream, SuggestMediaType(filename), filename, "attachment");
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddAttachment(Stream inputStream, MediaType mediaType,
       string filename) {
-      return AddBodyPart(inputStream,mediaType,filename,"attachment");
+      return AddBodyPart(inputStream, mediaType, filename, "attachment");
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
-      return AddBodyPart(inputStream,mediaType,null,"inline");
+      return AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, string filename) {
-  return AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
+      return AddBodyPart(inputStream, SuggestMediaType(filename), filename, "inline");
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, MediaType mediaType, string
       filename) {
-      return AddBodyPart(inputStream,mediaType,filename,"inline");
+      return AddBodyPart(inputStream, mediaType, filename, "inline");
     }
 
     internal static bool CanBeUnencoded(
@@ -934,12 +936,12 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                    // CRLF was read
-                    lineStart = true;
+                      // CRLF was read
+                      lineStart = true;
                     } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -1095,8 +1097,8 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           null);
         // NOTE: Commented out for now (see below)
         //if (atomText != typeEnd) {
-// isUtf8 = false;
-//}
+        // isUtf8 = false;
+        //}
         if (index < headerValue.Length && headerValue[atomText] == ';') {
           int addressPart = HeaderParser.ParseCFWS(
            headerValue,
@@ -1140,14 +1142,14 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
             // CFWS at the end of the address, though a conflict exists between
             // that RFC and utf-8-type-addr, which technically allows
             // parentheses to appear in the address).
-          // NOTE: The syntax for Original-Recipient and Final-Recipient header
-          // field values (in RFC 3464, delivery status notifications) has a
-          // structured part and an
-          // unstructured part (generic-address defined as "*text") (see
-          // RFC 3464 secs.
-          // 2.3.1 and 2.3.2, which uses the conventions in RFC
-          // 822, where linear white space can appear between lexical
-          // tokens of a header field).
+            // NOTE: The syntax for Original-Recipient and Final-Recipient header
+            // field values (in RFC 3464, delivery status notifications) has a
+            // structured part and an
+            // unstructured part (generic-address defined as "*text") (see
+            // RFC 3464 secs.
+            // 2.3.1 and 2.3.2, which uses the conventions in RFC
+            // 822, where linear white space can appear between lexical
+            // tokens of a header field).
             EncodeCommentsInText(encoder,
                     HeaderEncoder.TrimLeadingFWS(typePart + builder));
           } else {
@@ -1308,13 +1310,14 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         int c = DataUtilities.CodePointAt(s, i, 2);
         // NOTE: Unpaired surrogates are replaced with -1
         if (c == -1) {
- return i;
-  } else if (c >= 0x10000) {
-  { i += 2;
-}
-  } else if (c == 0x0d) {
-        if (i + 2 >= endIndex || s[i + 1] != 0x0a || (s[i + 2] != 0x09 &&
-            s[i + 2] != 0x20)) {
+          return i;
+        } else if (c >= 0x10000) {
+          {
+            i += 2;
+          }
+        } else if (c == 0x0d) {
+          if (i + 2 >= endIndex || s[i + 1] != 0x0a || (s[i + 2] != 0x09 &&
+              s[i + 2] != 0x20)) {
             // bare CR, or CRLF not followed by SP/TAB
             return i;
           }
@@ -1476,8 +1479,9 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
       var lineCount = 0;
       var bytesRead = new int[1];
       var sb = new StringBuilder();
-      var ungetStream = new TransformWithUnget(stream);
       var ss = 0;
+      bool ungetLast = false;
+      int lastByte = 0;
       while (true) {
         sb.Remove(0, sb.Length);
         var first = true;
@@ -1485,21 +1489,22 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         var wsp = false;
         lineCount = 0;
         while (true) {
-          int c = ungetStream.ReadByte();
+          int c = ungetLast ? lastByte : stream.ReadByte();
+          ungetLast = false;
           if (start && ss >= 0) {
             if (ss == 0 && c == 'F') {
- ++ss;
-  } else if (ss == 1 && c == 'r') {
- ++ss;
-  } else if (ss == 2 && c == 'o') {
- ++ss;
-  } else if (ss == 3 && c == 'm') {
- ++ss;
-  } else if (ss == 4 && c == ' ') {
- ++ss;
-} else {
- ss = -1;
-}
+              ++ss;
+            } else if (ss == 1 && c == 'r') {
+              ++ss;
+            } else if (ss == 2 && c == 'o') {
+              ++ss;
+            } else if (ss == 3 && c == 'm') {
+              ++ss;
+            } else if (ss == 4 && c == ' ') {
+              ++ss;
+            } else {
+              ss = -1;
+            }
           }
           if (c == -1) {
             throw new
@@ -1508,7 +1513,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           }
           ++lineCount;
           if (first && c == '\r') {
-            if (ungetStream.ReadByte() == '\n') {
+            if (stream.ReadByte() == '\n') {
               endOfHeaders = true;
               break;
             }
@@ -1526,7 +1531,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
             sb.Append((char)c);
           } else if (!first && c == ':') {
             if (lineCount > Message.MaxHardHeaderLineLength) {
-              // 998 characters includes the colon
+              // MaxHardHeaderLineLength characters includes the colon
               throw new MessageDataException("Header field name too long");
             }
             break;
@@ -1538,11 +1543,11 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
               var isFromField = false;
               sb.Remove(0, sb.Length);
               while (true) {
-                c = ungetStream.ReadByte();
+                c = stream.ReadByte();
                 if (c == -1) {
                   throw new MessageDataException(
   "Premature end before all headers were read (Mbox convention)");
-                } else if (c==':' && possibleMbox) {
+                } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
                   sb.Append("from");
@@ -1552,18 +1557,18 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
                   break;
                 } else if (c == '\n') {
                   // End of line was reached
-                    possibleMbox = false;
-                    start = false;
-                    wsp = false;
-                    first = true;
-                    break;
+                  possibleMbox = false;
+                  start = false;
+                  wsp = false;
+                  first = true;
+                  break;
                 } else if (c != 0x20) {
                   possibleMbox = false;
                 }
               }
               if (isFromField) {
- break;
-}
+                break;
+              }
             } else {
               wsp = true;
               first = false;
@@ -1584,12 +1589,26 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         // Clear the string builder to read the
         // header field's value
         sb.Remove(0, sb.Length);
+        ungetLast = false;
+        // Skip initial spaces in the header field value,
+        // to keep them from being added by the string builder
+        while (true) {
+          lastByte = stream.ReadByte();
+          if (lastByte != 0x20) {
+            ungetLast = true;
+            break;
+          }
+          lineCount += 1;
+        }
         // Read the header field value using UTF-8 characters
         // rather than bytes (DEVIATION: RFC 6532 allows UTF-8
         // in header field values, but not everywhere in these values,
         // as is done here for convenience)
         while (true) {
-          int c = ReadUtf8Char(ungetStream, bytesRead);
+          // We're only looking for the single-byte CR, so
+          // there's no need to use ReadUtf8Char for now
+          int c = ungetLast ? lastByte : stream.ReadByte();
+          ungetLast = false;
           if (c == -1) {
             string exstring = "Premature end before all headers were read," +
               "while reading header field value";
@@ -1598,7 +1617,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           if (c == '\r') {
             // We're only looking for the single-byte LF, so
             // there's no need to use ReadUtf8Char
-            c = ungetStream.ReadByte();
+            c = stream.ReadByte();
             if (c == '\n') {
               lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
@@ -1611,26 +1630,28 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
                 // Use ReadByte here since we're just looking for the single
                 // byte characters CR and LF
                 if (!fwsFirst) {
-                  c = ungetStream.ReadByte();
+                  c = ungetLast ? lastByte : stream.ReadByte();
+                  ungetLast = false;
                   if (c == '\r') {
-                    c = ungetStream.ReadByte();
+                    c = stream.ReadByte();
                     if (c == '\n') {
-                    // CRLF was read
-                    lineCount = 0;
+                      // CRLF was read
+                      lineCount = 0;
                     } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
-                    ungetStream.Unget();
+                    ungetLast = true;
                   }
                 }
                 fwsFirst = false;
                 // Use ReadByte here since we're just looking for the single
                 // byte characters space and tab
-                int c2 = ungetStream.ReadByte();
+                int c2 = ungetLast ? lastByte : stream.ReadByte();
+                ungetLast = false;
                 if (c2 == 0x20 || c2 == 0x09) {
                   ++lineCount;
                   // Don't write SPACE as the first character of the value
@@ -1639,7 +1660,8 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
                   }
                   haveFWS = true;
                 } else {
-                  ungetStream.Unget();
+                  ungetLast = true;
+                  lastByte = c2;
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
                   haveFWS &= lineCount != 0;
@@ -1655,15 +1677,14 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
               break;
             }
             if (c < 0) {
-              throw new
-
-  MessageDataException("Premature end before all headers were read, while looking for LF");
+              throw new MessageDataException(
+                "Premature end before all headers were read, while looking for LF");
             }
             sb.Append('\r');
-            ungetStream.Unget();
-            ++lineCount;
+            ungetLast = true;
+            lastByte = c;
+            ++lineCount; // Increment for the CR
           }
-          lineCount += bytesRead[0];
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
           // a conforming message if the name is too long
@@ -1673,7 +1694,13 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           // we can just assume the UTF-8 encoding in these cases; in
           // case the bytes are not valid UTF-8, a replacement character
           // will be output
-          if (c != 0x20 || sb.Length != 0) {
+          if (c < 0x80) {
+            sb.Append((char)c);
+            lineCount++;
+          } else {
+            int[] state = { lineCount, c, 1 };
+            c = ReadUtf8Char(stream, state);
+            lineCount = state[0];
             if (c <= 0xffff) {
               sb.Append((char)c);
             } else if (c <= 0x10ffff) {
@@ -1689,32 +1716,46 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
     }
 
     private static int ReadUtf8Char(
-      TransformWithUnget stream,
-      int[] bytesRead) {
+      IByteReader stream,
+      int[] ungetState) {
+      // ungetState is:
+      // 0: line count in bytes
+      // 1: last byte read (or -1 for EOF)
+      // 2: whether to unget the last byte (1 if true)
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
       }
+      // NOTE: Currently assumes the last byte read
+      // is 0x80 or greater (non-ASCII).  This excludes
+      // CR, which complicates a bit how line count in ungetState
+      // is handled
+      // DebugAssert.GreaterOrEqual(ungetState[1],0x80);
       var cp = 0;
       var bytesSeen = 0;
       var bytesNeeded = 0;
       var lower = 0x80;
       var upper = 0xbf;
-      var read = 0;
+      var read = ungetState[0];
       while (true) {
-        int b = stream.ReadByte();
+        int b = ungetState[2] == 1 ?
+          ungetState[1] : stream.ReadByte();
+        ungetState[2] = 0;
         ++read;
         if (b < 0) {
           if (bytesNeeded != 0) {
-            stream.Unget();
+            // Invalid multibyte character at end
+            ungetState[2] = 1; // unget last
+            ungetState[1] = b; // last byte
             --read;
-            bytesRead[0] = read;
+            ungetState[0] = read;
             return 0xfffd;
           }
           return -1;
         }
         if (bytesNeeded == 0) {
           if ((b & 0x7f) == b) {
-            bytesRead[0] = read;
+            // Valid single byte character
+            ungetState[0] = read;
             return b;
           }
           if (b >= 0xc2 && b <= 0xdf) {
@@ -1731,13 +1772,18 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
             bytesNeeded = 3;
             cp = (b - 0xf0) << 18;
           } else {
-            bytesRead[0] = read;
+            // Invalid starting byte
+            ungetState[0] = read;
             return 0xfffd;
           }
           continue;
         }
         if (b < lower || b > upper) {
-          stream.Unget();
+          // Invalid multibyte character
+          ungetState[2] = 1; // unget last
+          ungetState[1] = b; // last byte
+          --read;
+          ungetState[0] = read;
           return 0xfffd;
         }
         lower = 0x80;
@@ -1747,7 +1793,8 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         if (bytesSeen != bytesNeeded) {
           continue;
         }
-        bytesRead[0] = read;
+        // Valid multibyte character
+        ungetState[0] = read;
         return cp;
       }
     }
@@ -1816,7 +1863,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           '.';
         allTextBytes &= lineLength != 0 || i + 4 >= body.Length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
-                'm' || (body[i + 4] != ' ' && body[i+4]!='\t');
+                'm' || (body[i + 4] != ' ' && body[i + 4] != '\t');
         allTextBytes &= lineLength != 0 || i + 1 >= body.Length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
@@ -1834,7 +1881,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
       }
-      if (name.Length > 997) {
+      if (name.Length > MaxHardHeaderLineLength - 1) {
         throw new ArgumentException("Header field name too long");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
@@ -1848,7 +1895,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-       throw new ArgumentException("Header field value contains invalid text");
+          throw new ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -2303,15 +2350,15 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
             // For conformance with RFC 2049
             if (ctype.IsText) {
               if (String.IsNullOrEmpty(ctype.GetCharset())) {
-               if (!ctype.StoresCharsetInPayload()) {
-                // Used unless the media type defines how charset
-                // is determined from the payload
-                ctype = MediaType.ApplicationOctetStream;
-               }
+                if (!ctype.StoresCharsetInPayload()) {
+                  // Used unless the media type defines how charset
+                  // is determined from the payload
+                  ctype = MediaType.ApplicationOctetStream;
+                }
               } else {
-               var builder = new MediaTypeBuilder(ctype)
-                   .SetParameter("charset",ctype.GetCharset());
-               ctype = builder.ToMediaType();
+                var builder = new MediaTypeBuilder(ctype)
+                    .SetParameter("charset", ctype.GetCharset());
+                ctype = builder.ToMediaType();
               }
             }
             haveContentType = true;
@@ -2334,9 +2381,9 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         ctype = MediaType.ApplicationOctetStream;
       }
       // Update content type as appropriate
-       // NOTE: Setting the field, not the setter,
+      // NOTE: Setting the field, not the setter,
       // because it's undesirable here to add a Content-Type
-       // header field, as the setter does
+      // header field, as the setter does
       this.contentType = ctype;
       if (!haveContentEncoding && this.contentType.TypeAndSubType.Equals(
         "message/rfc822")) {
@@ -2585,12 +2632,12 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
     }
 
     private class MessageStackEntry {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
+      /// <include file='../../docs.xml'
+      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message { get; private set; }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
+      /// <include file='../../docs.xml'
+      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

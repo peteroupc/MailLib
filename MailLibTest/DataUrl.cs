@@ -9,8 +9,71 @@ using Test;
 
 namespace MailLibTest {
   public class DataUrl {
+    private static bool MatchLangTagExtended(string rangeLowerCased,
+  string tagLowerCased) {
+      string[] rangeSub = rangeLowerCased.Split('-');
+      string[] tagSub = tagLowerCased.Split('-');
+      if (rangeSub.Length == 0 || tagSub.Length == 0) return false;
+      if (!rangeSub[0].Equals("*") && !rangeSub[0].Equals(tagSub[0]))
+        return false;
+      int rangeIndex = 1;
+      int tagIndex = 1;
+      while (rangeIndex < rangeSub.Length) {
+        if (rangeSub[rangeIndex].Length == 0) return false;
+        if (rangeSub[rangeIndex].Equals("*")) {
+          continue;
+        }
+        if (tagIndex >= tagSub.Length) return false;
+        if (rangeSub[rangeIndex].Equals(tagSub[tagIndex])) {
+          rangeIndex++;
+          tagIndex++;
+        }
+        if (tagSub[tagIndex].Length == 1) return false;
+        tagIndex++;
+      }
+      return true;
+    }
+
+    public static int MatchLangTagsExtended(IList<string> ranges, string langToMatch) {
+      // ArgumentAssert.NotNull(ranges);
+      if (String.IsNullOrEmpty(langToMatch)) return -1;
+      string lclang = DataUtilities.ToLowerCaseAscii(langToMatch);
+      for (var i = 0; i < ranges.Count; i++) {
+        var r = ranges[i];
+        r = DataUtilities.ToLowerCaseAscii(r);
+        if (MatchLangTagExtended(r, lclang)) return i;
+      }
+      return -1;
+    }
+
+
+    public static int MatchLangTagsBasic(IList<string> ranges, string langToMatch, bool matchStarLast) {
+      int starMatch = -1;
+      // ArgumentAssert.NotNull(ranges);
+      if (String.IsNullOrEmpty(langToMatch)) return -1;
+      string lclang = DataUtilities.ToLowerCaseAscii(langToMatch);
+      for (var i = 0; i < ranges.Count; i++) {
+        var r = ranges[i];
+        if (String.IsNullOrEmpty(r)) throw new ArgumentException("ranges");
+        if (r.Equals("*")) {
+          if (!matchStarLast) return i;
+          else if (starMatch < 0) starMatch = i;
+        } else if (langToMatch.Length >= r.Length) {
+          r = DataUtilities.ToLowerCaseAscii(r);
+          if (r.Equals(lclang)) return i;
+          if (lclang.Length > r.Length && langToMatch[r.Length] == '-') {
+            string prefix = lclang.Substring(0, r.Length);
+            if (r.Equals(prefix)) return i;
+          }
+        }
+      }
+      return starMatch;
+    }
+
+    public static int MatchLangTagsBasic(IList<string> ranges, string langToMatch) {
+      return MatchLangTagsBasic(ranges, langToMatch, false);
+    }
     // TODO: Convert Messages to mailto URIs
-    // TODO: Implement language tag matching
     public static MediaType DataUrlMediaType(string url) {
       string[] parts = URIUtility.splitIRIToStrings(
         url);
@@ -62,17 +125,6 @@ namespace MailLibTest {
       return null;
     }
 
-    internal static void TestDataUrlRoundTrip(string data) {
-      MediaType mt = DataUrlMediaType(data);
-      byte[] bytes = DataUrlBytes(data);
-      Assert.NotNull(mt, data);
-      Assert.NotNull(bytes, data);
-      string data2 = MakeDataUrl(bytes, mt);
-      MediaType mt2 = DataUrlMediaType(data2);
-      byte[] bytes2 = DataUrlBytes(data2);
-      TestCommon.AssertByteArraysEqual(bytes, bytes2);
-      Assert.AreEqual(mt, mt2, data);
-    }
 
     private static int ToHex(char b1) {
       if (b1 >= '0' && b1 <= '9') {
@@ -97,8 +149,8 @@ namespace MailLibTest {
         if (!String.IsNullOrEmpty(parts[2])) {
           // Extract the email address
           emails = URIUtility.PercentDecode(parts[2]);
-if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
-            emails.Length) {
+          if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
+                      emails.Length) {
             Console.WriteLine(emails);
             return null;
           }
@@ -107,8 +159,8 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
           // If query string is present it must not be empty
           string query = parts[3];
           if (query.Length == 0) {
- return null;
-}
+            return null;
+          }
           var index = 0;
           while (index < query.Length) {
             int startName = index;
@@ -118,31 +170,31 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
             while (index < query.Length) {
               if (query[index] == '&') {
                 if (endName < 0) {
- return null;
-}
+                  return null;
+                }
                 endValue = index;
                 ++index;
                 break;
               } else if (query[index] == '=') {
                 if (endName >= 0) {
- return null;
-}
+                  return null;
+                }
                 endName = index;
                 startValue = index + 1;
                 ++index;
               } else {
- ++index;
-}
+                ++index;
+              }
             }
             if (endName < 0) {
- return null;
-  } else if (endValue < 0) {
- endValue = query.Length;
-}
+              return null;
+            } else if (endValue < 0) {
+              endValue = query.Length;
+            }
             string name = query.Substring(startName, endName - startName);
             string value = query.Substring(startValue, endValue - startValue);
-         name =
-  DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
+            name =
+     DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
             value = URIUtility.PercentDecode(value);
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.
@@ -158,10 +210,10 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
               msg.SetHeader(name, value);
             } else if (name.Equals("to")) {
               if (String.IsNullOrEmpty(emails)) {
- emails = value;
-} else {
- emails += "," + value;
-}
+                emails = value;
+              } else {
+                emails += "," + value;
+              }
             } else {
               Console.WriteLine(name);
               Console.WriteLine(value);
@@ -208,9 +260,9 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
         if (mediaTypePart == -1) {
           return null;
         }
-     bool usesBase64 = mediaTypePart >= 7 && path.Substring(
-  mediaTypePart - 7,
-  7).ToLowerInvariant().Equals(";base64");
+        bool usesBase64 = mediaTypePart >= 7 && path.Substring(
+     mediaTypePart - 7,
+     7).ToLowerInvariant().Equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -312,7 +364,14 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
       }
     }
 
+    public static string MakeDataUrl(string textString) {
+      return MakeDataUrl(DataUtilities.GetUtf8Bytes(textString, true),
+                         MediaType.Parse("text/plain;charset=utf-8"));
+    }
+
     public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
+      // ArgumentAssert.NotNull(bytes);
+      // ArgumentAssert.NotNull(mediaType);
       var builder = new StringBuilder();
       builder.Append("data:");
       string mediaTypeString = mediaType.ToUriSafeString();
