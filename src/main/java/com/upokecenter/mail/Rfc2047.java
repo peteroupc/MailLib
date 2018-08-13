@@ -401,7 +401,8 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
             asterisk + 1, (
             asterisk + 1)+(charset.length() - (asterisk + 1)));
                 charset = charset.substring(0, asterisk);
-             acceptedEncodedWord &= ParserUtility.IsValidLanguageTag(language);
+  acceptedEncodedWord &=
+               ParserUtility.IsPotentiallyValidLanguageTag(language);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }

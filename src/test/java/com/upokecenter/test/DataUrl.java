@@ -9,186 +9,169 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public class DataUrl {
-    // TODO: Convert Messages to mailto URIs
-    // TODO: Implement language tag matching
-    public static MediaType DataUrlMediaType(String url) {
-      String[] parts = URIUtility.splitIRIToStrings(
-        url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
-        return null;
-      }
-      String path = parts[2];
-      if (parts[0].equals("data")) {
-        int mediaTypePart = path.indexOf(',');
-        if (mediaTypePart == -1) {
+      // TODO: Convert Messages to mailto URIs
+      public static MediaType DataUrlMediaType(String url) {
+        String[] parts = URIUtility.splitIRIToStrings(
+          url);
+        if (parts == null || parts[0] == null || parts[2] == null) {
           return null;
         }
-        String mediaType = path.substring(0, mediaTypePart);
-        // Strip out ";base64" at end
-        if (mediaType.length() >= 7 &&
-           mediaType.substring(mediaType.length() - 7).toLowerCase()
-            .equals(";base64")) {
-          mediaType = mediaType.substring(0, mediaType.length() - 7);
-        }
-        if (mediaType.length() == 0 || mediaType.charAt(0) == ';') {
-          // Under RFC 2397, the type and subtype can be left
-          // out. If left out, the media
-          // type "text/plain" is assumed.
-          mediaType = "text/plain" + mediaType;
-        }
-        if (mediaType.indexOf('/') < 0) {
-        }
-        if (mediaType.indexOf('(') >= 0) {
-          // The media type String has parentheses
-          // (comment delimiters), which are not valid in Data-URL
-          // media types since ABNFs (at the time of RFC 2397) did not allow
-          // white space to be specified implicitly (RFC 2234).
-          // However, since comments are still allowed in URI paths and
-          // MediaType.Parse will skip comments when appropriate,
-          // there is a need to check for comment delimiters here.
-          // On the other hand, URIs already don't allow white space
-          // or line breaks, so there is no need to check for those
-          // here since ParseIRI already did that.
-          // NOTE: This code returns null, but another alternative
-          // is to use MediaType.TextPlainAscii, the recommended default
-          // media type for
-          // syntactically invalid Content-Type values (RFC 2045 sec. 5.2).
-          // However, returning null here is the saner thing to do,
-          // since the purported data URL might be problematic in other ways.
-          return null;
-        }
-        return MediaType.Parse(mediaType, null);
-      }
-      return null;
-    }
-
-    static void TestDataUrlRoundTrip(String data) {
-      MediaType mt = DataUrlMediaType(data);
-      byte[] bytes = DataUrlBytes(data);
-      if ((mt) == null) {
- Assert.fail(data);
- }
-      if ((bytes) == null) {
- Assert.fail(data);
- }
-      String data2 = MakeDataUrl(bytes, mt);
-      MediaType mt2 = DataUrlMediaType(data2);
-      byte[] bytes2 = DataUrlBytes(data2);
-      TestCommon.AssertByteArraysEqual(bytes, bytes2);
-      Assert.assertEquals(data, mt, mt2);
-    }
-
-    private static int ToHex(char b1) {
-      if (b1 >= '0' && b1 <= '9') {
-        return b1 - '0';
-      } else if (b1 >= 'A' && b1 <= 'F') {
-        return b1 + 10 - 'A';
-      } else {
-        return (b1 >= 'a' && b1 <= 'f') ? (b1 + 10 - 'a') : 1;
-      }
-    }
-
-    public static Message MailToUrlMessage(String url) {
-      String[] parts = URIUtility.splitIRIToStrings(
-        url);
-      if (parts == null || parts[0] == null) {
-        return null;
-      }
-
-      if (parts[0].equals("mailto")) {
-        Message msg = new Message();
-        String emails = "";
-        if (!((parts[2]) == null || (parts[2]).length() == 0)) {
-          // Extract the email address
-          emails = URIUtility.PercentDecode(parts[2]);
-if (HeaderParser.ParseHeaderEmail(emails, 0, emails.length()) !=
-            emails.length()) {
-            System.out.println(emails);
+        String path = parts[2];
+        if (parts[0].equals("data")) {
+          int mediaTypePart = path.indexOf(',');
+          if (mediaTypePart == -1) {
             return null;
           }
+          String mediaType = path.substring(0, mediaTypePart);
+          // Strip out ";base64" at end
+          if (mediaType.length() >= 7 &&
+             mediaType.substring(mediaType.length() - 7).toLowerCase()
+              .equals(";base64")) {
+            mediaType = mediaType.substring(0, mediaType.length() - 7);
+          }
+          if (mediaType.length() == 0 || mediaType.charAt(0) == ';') {
+            // Under RFC 2397, the type and subtype can be left
+            // out. If left out, the media
+            // type "text/plain" is assumed.
+            mediaType = "text/plain" + mediaType;
+          }
+          if (mediaType.indexOf('/') < 0) {
+          }
+          if (mediaType.indexOf('(') >= 0) {
+            // The media type String has parentheses
+            // (comment delimiters), which are not valid in Data-URL
+            // media types since ABNFs (at the time of RFC 2397) did not allow
+            // white space to be specified implicitly (RFC 2234).
+            // However, since comments are still allowed in URI paths and
+            // MediaType.Parse will skip comments when appropriate,
+            // there is a need to check for comment delimiters here.
+            // On the other hand, URIs already don't allow white space
+            // or line breaks, so there is no need to check for those
+            // here since ParseIRI already did that.
+            // NOTE: This code returns null, but another alternative
+            // is to use MediaType.TextPlainAscii, the recommended default
+            // media type for
+            // syntactically invalid Content-Type values (RFC 2045 sec. 5.2).
+            // However, returning null here is the saner thing to do,
+            // since the purported data URL might be problematic in other ways.
+            return null;
+          }
+          return MediaType.Parse(mediaType, null);
         }
-        if (parts[3] != null) {
-          // If query String is present it must not be empty
-          String query = parts[3];
-          if (query.length() == 0) {
- return null;
-}
-          int index = 0;
-          while (index < query.length()) {
-            int startName = index;
-            int endName = -1;
-            int startValue = -1;
-            int endValue = -1;
+        return null;
+      }
+
+      private static int ToHex(char b1) {
+        if (b1 >= '0' && b1 <= '9') {
+          return b1 - '0';
+        } else if (b1 >= 'A' && b1 <= 'F') {
+          return b1 + 10 - 'A';
+        } else {
+          return (b1 >= 'a' && b1 <= 'f') ? (b1 + 10 - 'a') : 1;
+        }
+      }
+
+      public static Message MailToUrlMessage(String url) {
+        String[] parts = URIUtility.splitIRIToStrings(
+          url);
+        if (parts == null || parts[0] == null) {
+          return null;
+        }
+
+        if (parts[0].equals("mailto")) {
+          Message msg = new Message();
+          String emails = "";
+          if (!((parts[2]) == null || (parts[2]).length() == 0)) {
+            // Extract the email address
+            emails = URIUtility.PercentDecode(parts[2]);
+            if (HeaderParser.ParseHeaderEmail(emails, 0, emails.length()) !=
+                    emails.length()) {
+              System.out.println(emails);
+              return null;
+            }
+          }
+          if (parts[3] != null) {
+            // If query String is present it must not be empty
+            String query = parts[3];
+            if (query.length() == 0) {
+              return null;
+            }
+            int index = 0;
             while (index < query.length()) {
-              if (query.charAt(index) == '&') {
-                if (endName < 0) {
- return null;
-}
-                endValue = index;
-                ++index;
-                break;
-              } else if (query.charAt(index) == '=') {
-                if (endName >= 0) {
- return null;
-}
-                endName = index;
-                startValue = index + 1;
-                ++index;
+              int startName = index;
+              int endName = -1;
+              int startValue = -1;
+              int endValue = -1;
+              while (index < query.length()) {
+                if (query.charAt(index) == '&') {
+                  if (endName < 0) {
+                    return null;
+                  }
+                  endValue = index;
+                  ++index;
+                  break;
+                } else if (query.charAt(index) == '=') {
+                  if (endName >= 0) {
+                    return null;
+                  }
+                  endName = index;
+                  startValue = index + 1;
+                  ++index;
+                } else {
+                  ++index;
+                }
+              }
+              if (endName < 0) {
+                return null;
+              } else if (endValue < 0) {
+                endValue = query.length();
+              }
+              String name = query.substring(startName, (startName)+(endName - startName));
+              String value = query.substring(startValue, (startValue)+(endValue - startValue));
+              name =
+       DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
+              value = URIUtility.PercentDecode(value);
+              // Support only To, Cc, Bcc, Subject, In-Reply-To,
+              // Keywords, Comments, and Body.
+              // Of these, the first four can appear only once in a message
+              if (name.equals("body")) {
+                msg.SetTextBody(value);
+              } else if (name.equals("keywords") || name.equals("comments")) {
+                msg.AddHeader(name, value);
+              } else if (name.equals("subject") ||
+                name.equals("to") || name.equals("cc") || name.equals("bcc") ||
+                name.equals("in-reply-to")) {
+                // TODO: Decode encoded words
+                msg.SetHeader(name, value);
+              } else if (name.equals("to")) {
+                if (((emails) == null || (emails).length() == 0)) {
+                  emails = value;
+                } else {
+                  emails += "," + value;
+                }
               } else {
- ++index;
-}
-            }
-            if (endName < 0) {
- return null;
-  } else if (endValue < 0) {
- endValue = query.length();
-}
-            String name = query.substring(startName, (startName)+(endName - startName));
-            String value = query.substring(startValue, (startValue)+(endValue - startValue));
-         name =
-  DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
-            value = URIUtility.PercentDecode(value);
-            // Support only To, Cc, Bcc, Subject, In-Reply-To,
-            // Keywords, Comments, and Body.
-            // Of these, the first four can appear only once in a message
-            if (name.equals("body")) {
-              msg.SetTextBody(value);
-            } else if (name.equals("keywords") || name.equals("comments")) {
-              msg.AddHeader(name, value);
-            } else if (name.equals("subject") ||
-              name.equals("to") || name.equals("cc") || name.equals("bcc") ||
-              name.equals("in-reply-to")) {
-              // TODO: Decode encoded words
-              msg.SetHeader(name, value);
-            } else if (name.equals("to")) {
-              if (((emails) == null || (emails).length() == 0)) {
- emails = value;
-} else {
- emails += "," + value;
-}
-            } else {
-              System.out.println(name);
-              System.out.println(value);
+                System.out.println(name);
+                System.out.println(value);
+              }
             }
           }
-        }
-        if (!((emails) == null || (emails).length() == 0)) {
-          if (emails.indexOf('(') >= 0) {
-            // Contains opening parenthesis, a comment delimiter
-            return null;
+          if (!((emails) == null || (emails).length() == 0)) {
+            if (emails.indexOf('(') >= 0) {
+              // Contains opening parenthesis, a comment delimiter
+              return null;
+            }
+            try {
+              msg.SetHeader("to", emails);
+            } catch (Exception ex) {
+              System.out.println(emails);
+              return null;
+            }
           }
-          try {
-            msg.SetHeader("to", emails);
-          } catch (Exception ex) {
-            System.out.println(emails);
-            return null;
-          }
+          System.out.println(msg.Generate());
+          return msg;
         }
-        System.out.println(msg.Generate());
-        return msg;
+        return null;
       }
-      return null;
-    }
 
     static final int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -212,9 +195,9 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.length()) !=
         if (mediaTypePart == -1) {
           return null;
         }
-     boolean usesBase64 = mediaTypePart >= 7 && path.substring(
-  mediaTypePart - 7, (
-  mediaTypePart - 7)+(7)).toLowerCase().equals(";base64");
+        boolean usesBase64 = mediaTypePart >= 7 && path.substring(
+     mediaTypePart - 7, (
+     mediaTypePart - 7)+(7)).toLowerCase().equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -316,7 +299,19 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.length()) !=
       }
     }
 
+    public static String MakeDataUrl(String textString) {
+      return MakeDataUrl(
+  DataUtilities.GetUtf8Bytes(textString, true),
+  MediaType.Parse("text/plain;charset=utf-8"));
+    }
+
     public static String MakeDataUrl(byte[] bytes, MediaType mediaType) {
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
+      if (mediaType == null) {
+        throw new NullPointerException("mediaType");
+      }
       StringBuilder builder = new StringBuilder();
       builder.append("data:");
       String mediaTypeString = mediaType.ToUriSafeString();

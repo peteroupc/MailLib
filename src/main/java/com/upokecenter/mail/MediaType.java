@@ -562,8 +562,13 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /**
-     * Not documented yet.
-     * @return A text string.
+     * Converts this media type to a text string form suitable for data URIs.
+     * Notably, the string contains the value of a Content-Type header field
+     * (without the text necessarily starting with "Content-Type" followed
+     * by a space), consists of a single line, and uses percent-encoding as
+     * necessary or convenient so that the resulting string can validly
+     * appear in a URI path.
+     * @return A text string form of this media type.
      */
     public String ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
@@ -948,7 +953,8 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       String language = value.substring(
   firstQuote + 1, (
   firstQuote + 1)+(secondQuote - (firstQuote + 1)));
-      if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
+      if (language.length() > 0 &&
+        !ParserUtility.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
         return null;
       }
@@ -981,7 +987,8 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       String language = value.substring(
   firstQuote + 1, (
   firstQuote + 1)+(secondQuote - (firstQuote + 1)));
-      if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
+      if (language.length() > 0 &&
+        !ParserUtility.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
         return USAsciiEncoding;
       }

@@ -224,7 +224,7 @@ import com.upokecenter.text.*;
      * @deprecated Use GetAddresses(\Bcc\) instead.
  */
 @Deprecated
-public final List<NamedAddress> getBccAddresses() {
+    public final List<NamedAddress> getBccAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
       }
 
@@ -239,10 +239,10 @@ public final List<NamedAddress> getBccAddresses() {
      */
     public final String getBodyString() {
         if (this.getContentType().isMultipart()) {
- throw new
+          throw new
 
   UnsupportedOperationException("This is a multipart message, so it doesn't have its own body text.");
-}
+        }
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.getContentType().GetCharset(),
           true);
@@ -261,7 +261,7 @@ public final List<NamedAddress> getBccAddresses() {
      * @deprecated Use GetAddresses(\Cc\) instead.
  */
 @Deprecated
-public final List<NamedAddress> getCCAddresses() {
+    public final List<NamedAddress> getCCAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("cc"));
       }
 
@@ -342,11 +342,11 @@ public final void setContentType(MediaType value) {
      */
     public List<NamedAddress> GetAddresses(String headerName) {
       if ((headerName) == null) {
-  throw new NullPointerException("headerName");
-}
-if ((headerName).length == 0) {
-  throw new IllegalArgumentException("headerName"+ " is empty.");
-}
+        throw new NullPointerException("headerName");
+      }
+      if ((headerName).length == 0) {
+        throw new IllegalArgumentException("headerName" + " is empty.");
+      }
       headerName = DataUtilities.ToLowerCaseAscii(headerName);
       if (ValueHeaderIndices.containsKey(headerName) &&
          ValueHeaderIndices.get(headerName) <= 5) {
@@ -413,7 +413,7 @@ public final void setSubject(String value) {
      * @deprecated Use GetAddresses(\To\) instead.
  */
 @Deprecated
-public final List<NamedAddress> getToAddresses() {
+    public final List<NamedAddress> getToAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("to"));
       }
 
@@ -654,13 +654,16 @@ public final List<NamedAddress> getToAddresses() {
       return list.toArray(new String[] { });
     }
 
-/// <summary></summary>
-public Message ClearHeaders() {
-this.headers.clear();
-        this.contentType = MediaType.TextPlainAscii;
-this.contentDisposition = null;
-return this;
-}
+    /**
+     * Not documented yet.
+     * @return A Message object.
+     */
+    public Message ClearHeaders() {
+      this.headers.clear();
+      this.contentType = MediaType.TextPlainAscii;
+      this.contentDisposition = null;
+      return this;
+    }
 
     /**
      * Removes a header field by index. <p>Updates the ContentType and
@@ -854,10 +857,10 @@ return this;
       return this.SetHeader(index, name, value);
     }
 
-    private static final MediaType TextHtmlAscii=
+    private static final MediaType TextHtmlAscii =
       MediaType.Parse("text/html; charset=us-ascii");
 
-    private static final MediaType TextHtmlUtf8=
+    private static final MediaType TextHtmlUtf8 =
       MediaType.Parse("text/html; charset=utf-8");
 
     /**
@@ -940,30 +943,30 @@ return this;
          String filename,
          String disposition) {
       if ((inputStream) == null) {
-  throw new NullPointerException("inputStream");
-}
+        throw new NullPointerException("inputStream");
+      }
       if ((mediaType) == null) {
-  throw new NullPointerException("mediaType");
-}
+        throw new NullPointerException("mediaType");
+      }
       Message bodyPart = NewBodyPart();
-      bodyPart.SetHeader("content-id",this.GenerateMessageID());
-    // NOTE: Using the setter because it also adds a Content-Type
-// header field
+      bodyPart.SetHeader("content-id", this.GenerateMessageID());
+      // NOTE: Using the setter because it also adds a Content-Type
+      // header field
       bodyPart.setContentType(mediaType);
       try {
-      java.io.ByteArrayOutputStream ms = null;
+        java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-        byte[] buffer = new byte[4096];
-        while (true) {
-          int cp = inputStream.read(buffer, 0, buffer.length);
-          if (cp <= 0) {
- break;
-}
-          ms.write(buffer, 0, cp);
-        }
-        bodyPart.SetBody(ms.toByteArray());
+          byte[] buffer = new byte[4096];
+          while (true) {
+            int cp = inputStream.read(buffer, 0, buffer.length);
+            if (cp <= 0) {
+              break;
+            }
+            ms.write(buffer, 0, cp);
+          }
+          bodyPart.SetBody(ms.toByteArray());
 }
 finally {
 try { if (ms != null) {
@@ -971,7 +974,7 @@ try { if (ms != null) {
  } } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
-        throw new MessageDataException("An I/O error occurred.",ex);
+        throw new MessageDataException("An I/O error occurred.", ex);
       }
       DispositionBuilder dispBuilder = new DispositionBuilder(disposition);
       if (!((filename) == null || (filename).length() == 0)) {
@@ -997,21 +1000,21 @@ try { if (ms != null) {
       return bodyPart;
     }
     private static String BaseName(String filename) {
-      for (var i = filename.length()-1;i >= 0; --i) {
-         if (filename.charAt(i)=='\\' || filename.charAt(i)=='/') {
-            return filename.substring(i + 1);
-         }
+      for (var i = filename.length() - 1; i >= 0; --i) {
+        if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
+          return filename.substring(i + 1);
+        }
       }
       return filename;
     }
 
     private static String ExtensionName(String filename) {
-      for (var i = filename.length()-1;i >= 0; --i) {
-         if (filename.charAt(i)=='\\' || filename.charAt(i)=='/') {
-            return "";
-         } else if (filename.charAt(i)=='.') {
-            return filename.substring(i);
-         }
+      for (var i = filename.length() - 1; i >= 0; --i) {
+        if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
+          return "";
+        } else if (filename.charAt(i) == '.') {
+          return filename.substring(i);
+        }
       }
       return "";
     }
@@ -1020,57 +1023,59 @@ try { if (ms != null) {
       if (!((filename) == null || (filename).length() == 0)) {
         String ext = DataUtilities.ToLowerCaseAscii(
            ExtensionName(filename));
-if (ext.equals(".doc") || ext.equals(".dot")) {
- return MediaType.Parse("application/msword");
-}
-if (ext.equals(".bin") || ext.equals(".deploy") || ext.equals(".msp") ||
-  ext.equals(".msu")) {
- return MediaType.Parse("application/octet-stream");
-}
-if (ext.equals(".pdf")) {
- return MediaType.Parse("application/pdf");
-}
-if (ext.equals(".key")) {
- return MediaType.Parse("application/pgp-keys");
-}
-if (ext.equals(".sig")) {
- return MediaType.Parse("application/pgp-signature");
-}
-if (ext.equals(".rtf")) {
- return MediaType.Parse("application/rtf");
-}
-if (ext.equals(".docx")) {
- return
+        if (ext.equals(".doc") || ext.equals(".dot")) {
+          return MediaType.Parse("application/msword");
+        }
+        if (ext.equals(".bin") || ext.equals(".deploy") || ext.equals(".msp") ||
+          ext.equals(".msu")) {
+          return MediaType.Parse("application/octet-stream");
+        }
+        if (ext.equals(".pdf")) {
+          return MediaType.Parse("application/pdf");
+        }
+        if (ext.equals(".key")) {
+          return MediaType.Parse("application/pgp-keys");
+        }
+        if (ext.equals(".sig")) {
+          return MediaType.Parse("application/pgp-signature");
+        }
+        if (ext.equals(".rtf")) {
+          return MediaType.Parse("application/rtf");
+        }
+        if (ext.equals(".docx")) {
+          return
 
   MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-}
-if (ext.equals(".zip")) {
- return MediaType.Parse("application/zip");
-}
-if (ext.equals(".m4a") || ext.equals(".mp2") || ext.equals(".mp3") ||
-  ext.equals(".mpega") || ext.equals(".mpga")) {
- return MediaType.Parse("audio/mpeg");
-}
-if (ext.equals(".gif")) {
- return MediaType.Parse("image/gif");
-}
-if (ext.equals(".jpe") || ext.equals(".jpeg") || ext.equals(".jpg")) {
- return MediaType.Parse("image/jpeg");
-}
-if (ext.equals(".png")) {
- return MediaType.Parse("image/png");
-}
-if (ext.equals(".tif") || ext.equals(".tiff")) {
- return MediaType.Parse("image/tiff");
-}
-if (ext.equals(".eml")) {
- return MediaType.Parse("message/rfc822");
-}
-if (ext.equals(".htm") || ext.equals(".html") || ext.equals(".shtml")) {
- return MediaType.Parse("text/html\u003bcharset=utf-8"); }
-if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
-  ext.equals(".srt") || ext.equals(".text") || ext.equals(".txt")) {
-  return MediaType.Parse("text/plain\u003bcharset=utf-8"); }
+        }
+        if (ext.equals(".zip")) {
+          return MediaType.Parse("application/zip");
+        }
+        if (ext.equals(".m4a") || ext.equals(".mp2") || ext.equals(".mp3") ||
+          ext.equals(".mpega") || ext.equals(".mpga")) {
+          return MediaType.Parse("audio/mpeg");
+        }
+        if (ext.equals(".gif")) {
+          return MediaType.Parse("image/gif");
+        }
+        if (ext.equals(".jpe") || ext.equals(".jpeg") || ext.equals(".jpg")) {
+          return MediaType.Parse("image/jpeg");
+        }
+        if (ext.equals(".png")) {
+          return MediaType.Parse("image/png");
+        }
+        if (ext.equals(".tif") || ext.equals(".tiff")) {
+          return MediaType.Parse("image/tiff");
+        }
+        if (ext.equals(".eml")) {
+          return MediaType.Parse("message/rfc822");
+        }
+        if (ext.equals(".htm") || ext.equals(".html") || ext.equals(".shtml")) {
+          return MediaType.Parse("text/html\u003bcharset=utf-8");
+        }
+        if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
+          ext.equals(".srt") || ext.equals(".text") || ext.equals(".txt")) {
+          return MediaType.Parse("text/plain\u003bcharset=utf-8");
+        }
       }
       return MediaType.ApplicationOctetStream;
     }
@@ -1089,7 +1094,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType) {
-      return AddBodyPart(inputStream,mediaType,null,"attachment");
+      return AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
     /**
@@ -1113,7 +1118,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      */
     public Message AddAttachment(InputStream inputStream, String filename) {
       return
-  AddBodyPart(inputStream,SuggestMediaType(filename),filename,"attachment");
+  AddBodyPart(inputStream, SuggestMediaType(filename), filename, "attachment");
     }
 
     /**
@@ -1136,7 +1141,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType,
       String filename) {
-      return AddBodyPart(inputStream,mediaType,filename,"attachment");
+      return AddBodyPart(inputStream, mediaType, filename, "attachment");
     }
 
     /**
@@ -1153,7 +1158,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, MediaType mediaType) {
-      return AddBodyPart(inputStream,mediaType,null,"inline");
+      return AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
     /**
@@ -1176,7 +1181,8 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, String filename) {
-  return AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
+      return AddBodyPart(inputStream, SuggestMediaType(filename), filename,
+        "inline");
     }
 
     /**
@@ -1195,7 +1201,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      */
     public Message AddInline(InputStream inputStream, MediaType mediaType, String
       filename) {
-      return AddBodyPart(inputStream,mediaType,filename,"inline");
+      return AddBodyPart(inputStream, mediaType, filename, "inline");
     }
 
     static boolean CanBeUnencoded(
@@ -1529,8 +1535,8 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
           null);
         // NOTE: Commented out for now (see below)
         //if (atomText != typeEnd) {
-// isUtf8 = false;
-//}
+        // isUtf8 = false;
+        //}
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
           int addressPart = HeaderParser.ParseCFWS(
            headerValue,
@@ -1574,14 +1580,15 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
             // CFWS at the end of the address, though a conflict exists between
             // that RFC and utf-8-type-addr, which technically allows
             // parentheses to appear in the address).
-          // NOTE: The syntax for Original-Recipient and Final-Recipient header
-          // field values (in RFC 3464, delivery status notifications) has a
-          // structured part and an
-          // unstructured part (generic-address defined as "*text") (see
-          // RFC 3464 secs.
-          // 2.3.1 and 2.3.2, which uses the conventions in RFC
-          // 822, where linear white space can appear between lexical
-          // tokens of a header field).
+            // NOTE: The syntax for Original-Recipient and Final-Recipient
+            // header
+            // field values (in RFC 3464, delivery status notifications) has a
+            // structured part and an
+            // unstructured part (generic-address defined as "*text") (see
+            // RFC 3464 secs.
+            // 2.3.1 and 2.3.2, which uses the conventions in RFC
+            // 822, where linear white space can appear between lexical
+            // tokens of a header field).
             EncodeCommentsInText(encoder,
                     HeaderEncoder.TrimLeadingFWS(typePart + builder));
           } else {
@@ -1742,13 +1749,14 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         int c = DataUtilities.CodePointAt(s, i, 2);
         // NOTE: Unpaired surrogates are replaced with -1
         if (c == -1) {
- return i;
-  } else if (c >= 0x10000) {
-  { i += 2;
-}
-  } else if (c == 0x0d) {
-        if (i + 2 >= endIndex || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 &&
-            s.charAt(i + 2) != 0x20)) {
+          return i;
+        } else if (c >= 0x10000) {
+          {
+            i += 2;
+          }
+        } else if (c == 0x0d) {
+          if (i + 2 >= endIndex || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 &&
+              s.charAt(i + 2) != 0x20)) {
             // bare CR, or CRLF not followed by SP/TAB
             return i;
           }
@@ -1910,8 +1918,9 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
       int lineCount = 0;
       int[] bytesRead = new int[1];
       StringBuilder sb = new StringBuilder();
-      TransformWithUnget ungetStream = new TransformWithUnget(stream);
       int ss = 0;
+      boolean ungetLast = false;
+      int lastByte = 0;
       while (true) {
         sb.delete(0, (0)+(sb.length()));
         boolean first = true;
@@ -1919,21 +1928,22 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         boolean wsp = false;
         lineCount = 0;
         while (true) {
-          int c = ungetStream.read();
+          int c = ungetLast ? lastByte : stream.read();
+          ungetLast = false;
           if (start && ss >= 0) {
             if (ss == 0 && c == 'F') {
- ++ss;
-  } else if (ss == 1 && c == 'r') {
- ++ss;
-  } else if (ss == 2 && c == 'o') {
- ++ss;
-  } else if (ss == 3 && c == 'm') {
- ++ss;
-  } else if (ss == 4 && c == ' ') {
- ++ss;
-} else {
- ss = -1;
-}
+              ++ss;
+            } else if (ss == 1 && c == 'r') {
+              ++ss;
+            } else if (ss == 2 && c == 'o') {
+              ++ss;
+            } else if (ss == 3 && c == 'm') {
+              ++ss;
+            } else if (ss == 4 && c == ' ') {
+              ++ss;
+            } else {
+              ss = -1;
+            }
           }
           if (c == -1) {
             throw new
@@ -1942,7 +1952,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
           }
           ++lineCount;
           if (first && c == '\r') {
-            if (ungetStream.read() == '\n') {
+            if (stream.read() == '\n') {
               endOfHeaders = true;
               break;
             }
@@ -1960,7 +1970,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
             sb.append((char)c);
           } else if (!first && c == ':') {
             if (lineCount > Message.MaxHardHeaderLineLength) {
-              // 998 characters includes the colon
+              // MaxHardHeaderLineLength characters includes the colon
               throw new MessageDataException("Header field name too long");
             }
             break;
@@ -1972,11 +1982,11 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
               boolean isFromField = false;
               sb.delete(0, (0)+(sb.length()));
               while (true) {
-                c = ungetStream.read();
+                c = stream.read();
                 if (c == -1) {
                   throw new MessageDataException(
   "Premature end before all headers were read (Mbox convention)");
-                } else if (c==':' && possibleMbox) {
+                } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
                   sb.append("from");
@@ -1986,18 +1996,18 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
                   break;
                 } else if (c == '\n') {
                   // End of line was reached
-                    possibleMbox = false;
-                    start = false;
-                    wsp = false;
-                    first = true;
-                    break;
+                  possibleMbox = false;
+                  start = false;
+                  wsp = false;
+                  first = true;
+                  break;
                 } else if (c != 0x20) {
                   possibleMbox = false;
                 }
               }
               if (isFromField) {
- break;
-}
+                break;
+              }
             } else {
               wsp = true;
               first = false;
@@ -2018,12 +2028,25 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         // Clear the String builder to read the
         // header field's value
         sb.delete(0, (0)+(sb.length()));
+        // Skip initial spaces in the header field value,
+        // to keep them from being added by the String builder
+        while (true) {
+          lastByte = stream.read();
+          if (lastByte != 0x20) {
+            ungetLast = true;
+            break;
+          }
+          ++lineCount;
+        }
         // Read the header field value using UTF-8 characters
         // rather than bytes (DEVIATION: RFC 6532 allows UTF-8
         // in header field values, but not everywhere in these values,
         // as is done here for convenience)
         while (true) {
-          int c = ReadUtf8Char(ungetStream, bytesRead);
+          // We're only looking for the single-byte CR, so
+          // there's no need to use ReadUtf8Char for now
+          int c = ungetLast ? lastByte : stream.read();
+          ungetLast = false;
           if (c == -1) {
             String exstring = "Premature end before all headers were read," +
               "while reading header field value";
@@ -2032,7 +2055,12 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
           if (c == '\r') {
             // We're only looking for the single-byte LF, so
             // there's no need to use ReadUtf8Char
-            c = ungetStream.read();
+            c = stream.read();
+            if (c < 0) {
+              String exstring = "Premature end before all headers were read," +
+                "while looking for LF";
+              throw new MessageDataException(exstring);
+            }
             if (c == '\n') {
               lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
@@ -2045,9 +2073,10 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
                 // Use ReadByte here since we're just looking for the single
                 // byte characters CR and LF
                 if (!fwsFirst) {
-                  c = ungetStream.read();
+                  c = ungetLast ? lastByte : stream.read();
+                  ungetLast = false;
                   if (c == '\r') {
-                    c = ungetStream.read();
+                    c = stream.read();
                     if (c == '\n') {
                     // CRLF was read
                     lineCount = 0;
@@ -2058,13 +2087,15 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
                     }
                   } else {
                     // anything else, unget
-                    ungetStream.Unget();
+                    ungetLast = true;
+                    lastByte = c;
                   }
                 }
                 fwsFirst = false;
                 // Use ReadByte here since we're just looking for the single
                 // byte characters space and tab
-                int c2 = ungetStream.read();
+                int c2 = ungetLast ? lastByte : stream.read();
+                ungetLast = false;
                 if (c2 == 0x20 || c2 == 0x09) {
                   ++lineCount;
                   // Don't write SPACE as the first character of the value
@@ -2073,10 +2104,11 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
                   }
                   haveFWS = true;
                 } else {
-                  ungetStream.Unget();
+                  ungetLast = true;
+                  lastByte = c2;
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-                  haveFWS &= lineCount != 0;
+            haveFWS &= lineCount != 0;
                   break;
                 }
               }
@@ -2088,16 +2120,11 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
               // This ends the header field
               break;
             }
-            if (c < 0) {
-              throw new
-
-  MessageDataException("Premature end before all headers were read, while looking for LF");
-            }
             sb.append('\r');
-            ungetStream.Unget();
-            ++lineCount;
+            ungetLast = true;
+            lastByte = c;
+            ++lineCount;  // Increment for the CR
           }
-          lineCount += bytesRead[0];
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
           // a conforming message if the name is too long
@@ -2107,7 +2134,17 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
           // we can just assume the UTF-8 encoding in these cases; in
           // case the bytes are not valid UTF-8, a replacement character
           // will be output
-          if (c != 0x20 || sb.length() != 0) {
+          if (c < 0x80) {
+            sb.append((char)c);
+            ++lineCount;
+          } else {
+            int[] state = { lineCount, c, 1 };
+            c = ReadUtf8Char(stream, state);
+            //DebugUtility.Log("c=" + c + "," + lineCount + "," +
+             //       state[0]+ ","+state[1]+","+state[2]);
+            lineCount = state[0];
+            ungetLast = (state[2] == 1);
+            lastByte = state[1];
             if (c <= 0xffff) {
               sb.append((char)c);
             } else if (c <= 0x10ffff) {
@@ -2123,32 +2160,46 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
     }
 
     private static int ReadUtf8Char(
-      TransformWithUnget stream,
-      int[] bytesRead) {
+      IByteReader stream,
+      int[] ungetState) {
+      // ungetState is:
+      // 0: line count in bytes
+      // 1: last byte read (or -1 for EOF)
+      // 2: whether to unget the last byte (1 if true)
       if (stream == null) {
         throw new NullPointerException("stream");
       }
+      // NOTE: Currently assumes the last byte read
+      // is 0x80 or greater (non-ASCII). This excludes
+      // CR, which complicates a bit how line count in ungetState
+      // is handled
+
       int cp = 0;
       int bytesSeen = 0;
       int bytesNeeded = 0;
       int lower = 0x80;
       int upper = 0xbf;
-      int read = 0;
+      var read = ungetState[0];
       while (true) {
-        int b = stream.read();
+        int b = ungetState[2] == 1 ?
+          ungetState[1] : stream.read();
+        ungetState[2] = 0;
         ++read;
         if (b < 0) {
           if (bytesNeeded != 0) {
-            stream.Unget();
+            // Invalid multibyte character at end
+            ungetState[2] = 1;  // unget last
+            ungetState[1] = b;  // last byte
             --read;
-            bytesRead[0] = read;
+            ungetState[0] = read;
             return 0xfffd;
           }
           return -1;
         }
         if (bytesNeeded == 0) {
           if ((b & 0x7f) == b) {
-            bytesRead[0] = read;
+            // Valid single byte character
+            ungetState[0] = read;
             return b;
           }
           if (b >= 0xc2 && b <= 0xdf) {
@@ -2165,13 +2216,18 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
             bytesNeeded = 3;
             cp = (b - 0xf0) << 18;
           } else {
-            bytesRead[0] = read;
+            // Invalid starting byte
+            ungetState[0] = read;
             return 0xfffd;
           }
           continue;
         }
         if (b < lower || b > upper) {
-          stream.Unget();
+          // Invalid multibyte character
+          ungetState[2] = 1;  // unget last
+          ungetState[1] = b;  // last byte
+          --read;
+          ungetState[0] = read;
           return 0xfffd;
         }
         lower = 0x80;
@@ -2181,7 +2237,8 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         if (bytesSeen != bytesNeeded) {
           continue;
         }
-        bytesRead[0] = read;
+        // Valid multibyte character
+        ungetState[0] = read;
         return cp;
       }
     }
@@ -2250,7 +2307,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
           '.';
         allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
-                'm' || (body[i + 4] != ' ' && body[i+4]!='\t');
+                'm' || (body[i + 4] != ' ' && body[i + 4] != '\t');
         allTextBytes &= lineLength != 0 || i + 1 >= body.length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
@@ -2268,7 +2325,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
       if (value == null) {
         throw new NullPointerException("value");
       }
-      if (name.length() > 997) {
+      if (name.length() > MaxHardHeaderLineLength - 1) {
         throw new IllegalArgumentException("Header field name too long");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
@@ -2721,15 +2778,15 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
             // For conformance with RFC 2049
             if (ctype.isText()) {
               if (((ctype.GetCharset()) == null || (ctype.GetCharset()).length() == 0)) {
-               if (!ctype.StoresCharsetInPayload()) {
-                // Used unless the media type defines how charset
-                // is determined from the payload
-                ctype = MediaType.ApplicationOctetStream;
-               }
+                if (!ctype.StoresCharsetInPayload()) {
+                  // Used unless the media type defines how charset
+                  // is determined from the payload
+                  ctype = MediaType.ApplicationOctetStream;
+                }
               } else {
-               MediaTypeBuilder builder = new MediaTypeBuilder(ctype)
-                   .SetParameter("charset",ctype.GetCharset());
-               ctype = builder.ToMediaType();
+                MediaTypeBuilder builder = new MediaTypeBuilder(ctype)
+                    .SetParameter("charset", ctype.GetCharset());
+                ctype = builder.ToMediaType();
               }
             }
             haveContentType = true;
@@ -2748,9 +2805,9 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         ctype = MediaType.ApplicationOctetStream;
       }
       // Update content type as appropriate
-       // NOTE: Setting the field, not the setter,
+      // NOTE: Setting the field, not the setter,
       // because it's undesirable here to add a Content-Type
-       // header field, as the setter does
+      // header field, as the setter does
       this.contentType = ctype;
       if (!haveContentEncoding && this.contentType.getTypeAndSubType().equals(
         "message/rfc822")) {

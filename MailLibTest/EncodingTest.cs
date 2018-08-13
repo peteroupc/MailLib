@@ -1338,6 +1338,7 @@ string stringTemp =
     [Test]
     public void TestLanguageTags() {
       TestValidLanguageTag(true, "en-a-bb-x-y-z");
+      TestValidLanguageTag(true, "zh-min-nan");
       {
         var objectTemp = false;
         string objectTemp2 = "0-xx-xx";

@@ -440,69 +440,27 @@ namespace PeterO.Mail {
         return index;
       }
       int state = (tokener != null) ? tokener.GetState() : 0;
-      do {
-        while (true) {
-          int indexTemp2;
-          int state2 = (tokener != null) ? tokener.GetState() : 0;
-          indexTemp2 = index;
-          do {
-            int indexStart2 = index;
-            index = HeaderParser.ParseFWS(str, index, endIndex, null);
-            do {
-              int indexTemp3 = index;
-              do {
-                if (index < endIndex && ((str[index] >= 128 && str[index] <=
-                  55295) || (str[index] >= 57344 && str[index] <= 65535))) {
-                  ++indexTemp3; break;
-                }
-                if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                  str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                  str[index + 1] <= 57343))) {
-                  indexTemp3 += 2; break;
-                }
-                int indexTemp4;
-      indexTemp4 = HeaderParser.ParseQuotedPair(
-  str,
-  index,
-  endIndex,
-  null);
-                if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
-                }
-                if (index < endIndex && ((str[index] >= 1 && str[index] <=
-                  8) || (str[index] >= 11 && str[index] <= 12) ||
-                  (str[index] >= 14 && str[index] <= 31) || (str[index] ==
-                  127))) {
-                  ++indexTemp3; break;
-                }
-                if (index < endIndex && ((str[index] >= 93 && str[index] <=
-                  126) || (str[index] >= 42 && str[index] <= 91) ||
-                  (str[index] >= 33 && str[index] <= 39))) {
-                  ++indexTemp3; break;
-                }
-              } while (false);
-              if (indexTemp3 != index) {
-                index = indexTemp3;
-              } else {
-                index = indexStart2; break;
-              }
-            } while (false);
-            if (index == indexStart2) {
-              break;
-            }
-            indexTemp2 = index;
-            index = indexStart2;
-          } while (false);
-          if (indexTemp2 != index) {
-            index = indexTemp2;
-          } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
-          } else {
-            break;
-          }
-        }
+      while (index<endIndex) {
         index = HeaderParser.ParseFWS(str, index, endIndex, null);
-        if (index < endIndex && str[index] == 41) {
+  bool backslash=(index<endIndex && str[index]=='\\');
+  if (backslash) {
+ ++index;
+}
+if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
+  (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+ index += 2;
+} else if (!backslash && index < endIndex && ((str[index] >= 1 && str[index]
+  <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 &&
+  str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) || (str[index]
+  >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 55295) ||
+  (str[index] >= 57344 && str[index] <= 65535))) {
+ ++index;
+} else if (backslash && index < endIndex && ((str[index] >= 0 && str[index]
+  <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+          // NOTE: Includes parentheses, which are also handled
+          // in later conditions
+ ++index;
+} else if (index < endIndex && str[index] == 41) {
           // End of current comment
           ++index;
           if (depth == 0) {
@@ -522,7 +480,11 @@ namespace PeterO.Mail {
           }
           return indexStart;
         }
-      } while (true);
+      }
+      if (tokener != null) {
+        tokener.RestoreState(state);
+      }
+      return indexStart;
     }
 
     // Parses a comment without using the obsolete syntax.
