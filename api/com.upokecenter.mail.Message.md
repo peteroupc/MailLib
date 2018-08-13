@@ -129,6 +129,7 @@
  Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given file name.
 * `Message ClearHeaders()`<br>
+ Not documented yet.
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
@@ -651,6 +652,12 @@ Gets an array with the values of all header fields with the specified name,
 
 ### ClearHeaders
     public Message ClearHeaders()
+Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
 ### RemoveHeader
     public Message RemoveHeader​(int index)
 Removes a header field by index. <p>Updates the ContentType and

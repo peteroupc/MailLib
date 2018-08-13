@@ -1336,6 +1336,7 @@ String stringTemp =
     @Test
     public void TestLanguageTags() {
       TestValidLanguageTag(true, "en-a-bb-x-y-z");
+      TestValidLanguageTag(true, "zh-min-nan");
       {
         boolean objectTemp = false;
         String objectTemp2 = "0-xx-xx";

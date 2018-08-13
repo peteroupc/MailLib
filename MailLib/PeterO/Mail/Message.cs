@@ -14,8 +14,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     internal const int MaxRecHeaderLineLength = 78;
     internal const int MaxShortHeaderLineLength = 76;
@@ -133,7 +133,7 @@ namespace PeterO.Mail {
         if (this.ContentType.IsMultipart) {
           throw new
 
-           NotSupportedException("This is a multipart message, so it doesn't have its own body text.");
+  NotSupportedException("This is a multipart message, so it doesn't have its own body text.");
         }
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.ContentType.GetCharset(),
@@ -413,7 +413,8 @@ namespace PeterO.Mail {
       return (string[])list.ToArray();
     }
 
-    /// <summary></summary>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A Message object.</returns>
     public Message ClearHeaders() {
       this.headers.Clear();
       this.contentType = MediaType.TextPlainAscii;
@@ -570,7 +571,7 @@ namespace PeterO.Mail {
       // this case, the HTML version)
       var textMessage = NewBodyPart().SetTextBody(text);
       var htmlMessage = NewBodyPart().SetHtmlBody(html);
-      string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+    string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
       this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
@@ -691,7 +692,7 @@ namespace PeterO.Mail {
         if (ext.Equals(".docx")) {
           return
 
-           MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+  MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
         if (ext.Equals(".zip")) {
           return MediaType.Parse("application/zip");
@@ -755,7 +756,8 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, string filename) {
-      return AddBodyPart(inputStream, SuggestMediaType(filename), filename, "inline");
+      return AddBodyPart(inputStream, SuggestMediaType(filename), filename,
+        "inline");
     }
 
     /// <include file='../../docs.xml'
@@ -936,12 +938,12 @@ namespace PeterO.Mail {
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                      // CRLF was read
-                      lineStart = true;
+                    // CRLF was read
+                    lineStart = true;
                     } else {
-                      // It's the first part of the line, where the header name
-                      // should be, so the CR here is illegal
-                      throw new MessageDataException("CR not followed by LF");
+                    // It's the first part of the line, where the header name
+                    // should be, so the CR here is illegal
+                    throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -1142,7 +1144,8 @@ namespace PeterO.Mail {
             // CFWS at the end of the address, though a conflict exists between
             // that RFC and utf-8-type-addr, which technically allows
             // parentheses to appear in the address).
-            // NOTE: The syntax for Original-Recipient and Final-Recipient header
+            // NOTE: The syntax for Original-Recipient and Final-Recipient
+            // header
             // field values (in RFC 3464, delivery status notifications) has a
             // structured part and an
             // unstructured part (generic-address defined as "*text") (see
@@ -1480,8 +1483,8 @@ namespace PeterO.Mail {
       var bytesRead = new int[1];
       var sb = new StringBuilder();
       var ss = 0;
-      bool ungetLast = false;
-      int lastByte = 0;
+      var ungetLast = false;
+      var lastByte = 0;
       while (true) {
         sb.Remove(0, sb.Length);
         var first = true;
@@ -1589,7 +1592,6 @@ namespace PeterO.Mail {
         // Clear the string builder to read the
         // header field's value
         sb.Remove(0, sb.Length);
-        ungetLast = false;
         // Skip initial spaces in the header field value,
         // to keep them from being added by the string builder
         while (true) {
@@ -1598,7 +1600,7 @@ namespace PeterO.Mail {
             ungetLast = true;
             break;
           }
-          lineCount += 1;
+          ++lineCount;
         }
         // Read the header field value using UTF-8 characters
         // rather than bytes (DEVIATION: RFC 6532 allows UTF-8
@@ -1618,6 +1620,11 @@ namespace PeterO.Mail {
             // We're only looking for the single-byte LF, so
             // there's no need to use ReadUtf8Char
             c = stream.ReadByte();
+            if (c < 0) {
+              string exstring = "Premature end before all headers were read," +
+                "while looking for LF";
+              throw new MessageDataException(exstring);
+            }
             if (c == '\n') {
               lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
@@ -1635,16 +1642,17 @@ namespace PeterO.Mail {
                   if (c == '\r') {
                     c = stream.ReadByte();
                     if (c == '\n') {
-                      // CRLF was read
-                      lineCount = 0;
+                    // CRLF was read
+                    lineCount = 0;
                     } else {
-                      // It's the first part of the line, where the header name
-                      // should be, so the CR here is illegal
-                      throw new MessageDataException("CR not followed by LF");
+                    // It's the first part of the line, where the header name
+                    // should be, so the CR here is illegal
+                    throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
                     ungetLast = true;
+                    lastByte = c;
                   }
                 }
                 fwsFirst = false;
@@ -1664,7 +1672,7 @@ namespace PeterO.Mail {
                   lastByte = c2;
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-                  haveFWS &= lineCount != 0;
+            haveFWS &= lineCount != 0;
                   break;
                 }
               }
@@ -1676,14 +1684,10 @@ namespace PeterO.Mail {
               // This ends the header field
               break;
             }
-            if (c < 0) {
-              throw new MessageDataException(
-                "Premature end before all headers were read, while looking for LF");
-            }
             sb.Append('\r');
             ungetLast = true;
             lastByte = c;
-            ++lineCount; // Increment for the CR
+            ++lineCount;  // Increment for the CR
           }
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
@@ -1696,11 +1700,15 @@ namespace PeterO.Mail {
           // will be output
           if (c < 0x80) {
             sb.Append((char)c);
-            lineCount++;
+            ++lineCount;
           } else {
             int[] state = { lineCount, c, 1 };
             c = ReadUtf8Char(stream, state);
+            //DebugUtility.Log("c=" + c + "," + lineCount + "," +
+             //       state[0]+ ","+state[1]+","+state[2]);
             lineCount = state[0];
+            ungetLast = (state[2] == 1);
+            lastByte = state[1];
             if (c <= 0xffff) {
               sb.Append((char)c);
             } else if (c <= 0x10ffff) {
@@ -1726,10 +1734,16 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(stream));
       }
       // NOTE: Currently assumes the last byte read
-      // is 0x80 or greater (non-ASCII).  This excludes
+      // is 0x80 or greater (non-ASCII). This excludes
       // CR, which complicates a bit how line count in ungetState
       // is handled
-      // DebugAssert.GreaterOrEqual(ungetState[1],0x80);
+      #if DEBUG
+if ((ungetState[1]) < 0x80) {
+  throw new ArgumentException("ungetState[1] (" + ungetState[1] +
+    ") is less than " + 0x80);
+}
+#endif
+
       var cp = 0;
       var bytesSeen = 0;
       var bytesNeeded = 0;
@@ -1744,8 +1758,8 @@ namespace PeterO.Mail {
         if (b < 0) {
           if (bytesNeeded != 0) {
             // Invalid multibyte character at end
-            ungetState[2] = 1; // unget last
-            ungetState[1] = b; // last byte
+            ungetState[2] = 1;  // unget last
+            ungetState[1] = b;  // last byte
             --read;
             ungetState[0] = read;
             return 0xfffd;
@@ -1780,8 +1794,8 @@ namespace PeterO.Mail {
         }
         if (b < lower || b > upper) {
           // Invalid multibyte character
-          ungetState[2] = 1; // unget last
-          ungetState[1] = b; // last byte
+          ungetState[2] = 1;  // unget last
+          ungetState[1] = b;  // last byte
           --read;
           ungetState[0] = read;
           return 0xfffd;
@@ -1895,7 +1909,7 @@ namespace PeterO.Mail {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-          throw new ArgumentException("Header field value contains invalid text");
+       throw new ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -2632,12 +2646,12 @@ namespace PeterO.Mail {
     }
 
     private class MessageStackEntry {
-      /// <include file='../../docs.xml'
-      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message { get; private set; }
 
-      /// <include file='../../docs.xml'
-      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

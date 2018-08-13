@@ -6,6 +6,42 @@ import org.junit.Test;
 import com.upokecenter.mail.*;
 
   public class DataUrlTest {
+    private void TestMatchBasicNone(String[] langranges, String str) {
+      List<String> r = LanguageTags.LanguageTagFilter(
+        langranges,
+        new String[] { str },
+        false,
+ false);
+      Assert.assertEquals(0, r.size());
+    }
+
+    private void TestMatchBasicContained(String[] langranges, String str) {
+      List<String> r = LanguageTags.LanguageTagFilter(
+        langranges,
+        new String[] { str },
+        false,
+ false);
+      if (!(r.size() > 0)) {
+ Assert.fail();
+ }
+    }
+    @Test
+    public void TestMatchLangTagsBasic() {
+      String[] langranges = { "fr-ca", "es" };
+      this.TestMatchBasicContained(langranges,"fr-ca");
+      this.TestMatchBasicContained(langranges, "es");
+      this.TestMatchBasicNone(langranges,"fr-cam");
+      this.TestMatchBasicContained(langranges, "fr-ca-9999");
+      this.TestMatchBasicNone(langranges,"fr-zxxx-ca");
+      this.TestMatchBasicContained(langranges,"es-cam");
+      this.TestMatchBasicContained(langranges, "es-ca-9999");
+      this.TestMatchBasicContained(langranges,"es-zxxx-ca");
+      langranges = new String[] { "fr-ca","*","es"};
+      this.TestMatchBasicContained(langranges,"es");
+      this.TestMatchBasicContained(langranges, "nl");
+      langranges = new String[] { null, "*" };
+    }
+
     private Message TestMailToOne(String s) {
       System.out.println(s);
       Message msg = DataUrl.MailToUrlMessage(s);
@@ -14,6 +50,22 @@ import com.upokecenter.mail.*;
  Assert.fail();
  }
       return msg;
+    }
+
+    static void TestDataUrlRoundTrip(String data) {
+      MediaType mt = DataUrl.DataUrlMediaType(data);
+      byte[] bytes = DataUrl.DataUrlBytes(data);
+      if ((mt) == null) {
+ Assert.fail(data);
+ }
+      if ((bytes) == null) {
+ Assert.fail(data);
+ }
+      String data2 = DataUrl.MakeDataUrl(bytes, mt);
+      MediaType mt2 = DataUrl.DataUrlMediaType(data2);
+      byte[] bytes2 = DataUrl.DataUrlBytes(data2);
+      Test.TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      Assert.assertEquals(data, mt, mt2);
     }
 
     private static void TestEmptyPathOne(String uri) {

@@ -145,7 +145,17 @@ private ParserUtility() {
       return strings.toArray(new String[] { });
     }
 
-    public static boolean IsValidLanguageTag(String str) {
+    /**
+     * Returns true if (1) the given string is a well-formed language tag under RFC
+     * 5646 (that is, the string follows the syntax given in section 2.1 of
+     * that RFC), and (2) the language tag contains at most one extended
+     * language subtag, no variant subtags with the same value, and no
+     * extension singleton subtags with the same value.
+     * @param str string.
+     * @return {@code true}, if the string meets the conditions given in the
+     * summary, {@code false} otherwise.
+     */
+    public static boolean IsPotentiallyValidLanguageTag(String str) {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }
@@ -187,9 +197,12 @@ private ParserUtility() {
               }
             }
           }
-          // match grandfathered language tags
+          // match grandfathered language tags (the last
+          // is necessary because it would otherwise be rejected
+          // by the code that checks extended language subtags)
           if (str.equals("sgn-be-fr") || str.equals("sgn-be-nl") ||
-            str.equals("sgn-ch-de") || str.equals("en-gb-oed")) {
+            str.equals("sgn-ch-de") || str.equals("en-gb-oed") ||
+              str.equals("zh-min-nan")) {
             return true;
           }
           // More complex cases
@@ -278,7 +291,9 @@ private ParserUtility() {
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
-                return false;  // extension already exists
+                // extension already exists (see point
+                // 3 of sec. 2.2.6)
+                return false;
               }
               ++splitIndex;
               boolean havetoken = false;

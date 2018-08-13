@@ -9,234 +9,169 @@ using Test;
 
 namespace MailLibTest {
   public class DataUrl {
-    private static bool MatchLangTagExtended(string rangeLowerCased,
-  string tagLowerCased) {
-      string[] rangeSub = rangeLowerCased.Split('-');
-      string[] tagSub = tagLowerCased.Split('-');
-      if (rangeSub.Length == 0 || tagSub.Length == 0) return false;
-      if (!rangeSub[0].Equals("*") && !rangeSub[0].Equals(tagSub[0]))
-        return false;
-      int rangeIndex = 1;
-      int tagIndex = 1;
-      while (rangeIndex < rangeSub.Length) {
-        if (rangeSub[rangeIndex].Length == 0) return false;
-        if (rangeSub[rangeIndex].Equals("*")) {
-          continue;
+      // TODO: Convert Messages to mailto URIs
+      public static MediaType DataUrlMediaType(string url) {
+        string[] parts = URIUtility.splitIRIToStrings(
+          url);
+        if (parts == null || parts[0] == null || parts[2] == null) {
+          return null;
         }
-        if (tagIndex >= tagSub.Length) return false;
-        if (rangeSub[rangeIndex].Equals(tagSub[tagIndex])) {
-          rangeIndex++;
-          tagIndex++;
-        }
-        if (tagSub[tagIndex].Length == 1) return false;
-        tagIndex++;
-      }
-      return true;
-    }
-
-    public static int MatchLangTagsExtended(IList<string> ranges, string langToMatch) {
-      // ArgumentAssert.NotNull(ranges);
-      if (String.IsNullOrEmpty(langToMatch)) return -1;
-      string lclang = DataUtilities.ToLowerCaseAscii(langToMatch);
-      for (var i = 0; i < ranges.Count; i++) {
-        var r = ranges[i];
-        r = DataUtilities.ToLowerCaseAscii(r);
-        if (MatchLangTagExtended(r, lclang)) return i;
-      }
-      return -1;
-    }
-
-
-    public static int MatchLangTagsBasic(IList<string> ranges, string langToMatch, bool matchStarLast) {
-      int starMatch = -1;
-      // ArgumentAssert.NotNull(ranges);
-      if (String.IsNullOrEmpty(langToMatch)) return -1;
-      string lclang = DataUtilities.ToLowerCaseAscii(langToMatch);
-      for (var i = 0; i < ranges.Count; i++) {
-        var r = ranges[i];
-        if (String.IsNullOrEmpty(r)) throw new ArgumentException("ranges");
-        if (r.Equals("*")) {
-          if (!matchStarLast) return i;
-          else if (starMatch < 0) starMatch = i;
-        } else if (langToMatch.Length >= r.Length) {
-          r = DataUtilities.ToLowerCaseAscii(r);
-          if (r.Equals(lclang)) return i;
-          if (lclang.Length > r.Length && langToMatch[r.Length] == '-') {
-            string prefix = lclang.Substring(0, r.Length);
-            if (r.Equals(prefix)) return i;
+        string path = parts[2];
+        if (parts[0].Equals("data")) {
+          int mediaTypePart = path.IndexOf(',');
+          if (mediaTypePart == -1) {
+            return null;
           }
+          string mediaType = path.Substring(0, mediaTypePart);
+          // Strip out ";base64" at end
+          if (mediaType.Length >= 7 &&
+             mediaType.Substring(mediaType.Length - 7).ToLowerInvariant()
+              .Equals(";base64")) {
+            mediaType = mediaType.Substring(0, mediaType.Length - 7);
+          }
+          if (mediaType.Length == 0 || mediaType[0] == ';') {
+            // Under RFC 2397, the type and subtype can be left
+            // out. If left out, the media
+            // type "text/plain" is assumed.
+            mediaType = "text/plain" + mediaType;
+          }
+          if (mediaType.IndexOf('/') < 0) {
+          }
+          if (mediaType.IndexOf('(') >= 0) {
+            // The media type string has parentheses
+            // (comment delimiters), which are not valid in Data-URL
+            // media types since ABNFs (at the time of RFC 2397) did not allow
+            // white space to be specified implicitly (RFC 2234).
+            // However, since comments are still allowed in URI paths and
+            // MediaType.Parse will skip comments when appropriate,
+            // there is a need to check for comment delimiters here.
+            // On the other hand, URIs already don't allow white space
+            // or line breaks, so there is no need to check for those
+            // here since ParseIRI already did that.
+            // NOTE: This code returns null, but another alternative
+            // is to use MediaType.TextPlainAscii, the recommended default
+            // media type for
+            // syntactically invalid Content-Type values (RFC 2045 sec. 5.2).
+            // However, returning null here is the saner thing to do,
+            // since the purported data URL might be problematic in other ways.
+            return null;
+          }
+          return MediaType.Parse(mediaType, null);
         }
-      }
-      return starMatch;
-    }
-
-    public static int MatchLangTagsBasic(IList<string> ranges, string langToMatch) {
-      return MatchLangTagsBasic(ranges, langToMatch, false);
-    }
-    // TODO: Convert Messages to mailto URIs
-    public static MediaType DataUrlMediaType(string url) {
-      string[] parts = URIUtility.splitIRIToStrings(
-        url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
-        return null;
-      }
-      string path = parts[2];
-      if (parts[0].Equals("data")) {
-        int mediaTypePart = path.IndexOf(',');
-        if (mediaTypePart == -1) {
-          return null;
-        }
-        string mediaType = path.Substring(0, mediaTypePart);
-        // Strip out ";base64" at end
-        if (mediaType.Length >= 7 &&
-           mediaType.Substring(mediaType.Length - 7).ToLowerInvariant()
-            .Equals(";base64")) {
-          mediaType = mediaType.Substring(0, mediaType.Length - 7);
-        }
-        if (mediaType.Length == 0 || mediaType[0] == ';') {
-          // Under RFC 2397, the type and subtype can be left
-          // out. If left out, the media
-          // type "text/plain" is assumed.
-          mediaType = "text/plain" + mediaType;
-        }
-        if (mediaType.IndexOf('/') < 0) {
-        }
-        if (mediaType.IndexOf('(') >= 0) {
-          // The media type string has parentheses
-          // (comment delimiters), which are not valid in Data-URL
-          // media types since ABNFs (at the time of RFC 2397) did not allow
-          // white space to be specified implicitly (RFC 2234).
-          // However, since comments are still allowed in URI paths and
-          // MediaType.Parse will skip comments when appropriate,
-          // there is a need to check for comment delimiters here.
-          // On the other hand, URIs already don't allow white space
-          // or line breaks, so there is no need to check for those
-          // here since ParseIRI already did that.
-          // NOTE: This code returns null, but another alternative
-          // is to use MediaType.TextPlainAscii, the recommended default
-          // media type for
-          // syntactically invalid Content-Type values (RFC 2045 sec. 5.2).
-          // However, returning null here is the saner thing to do,
-          // since the purported data URL might be problematic in other ways.
-          return null;
-        }
-        return MediaType.Parse(mediaType, null);
-      }
-      return null;
-    }
-
-
-    private static int ToHex(char b1) {
-      if (b1 >= '0' && b1 <= '9') {
-        return b1 - '0';
-      } else if (b1 >= 'A' && b1 <= 'F') {
-        return b1 + 10 - 'A';
-      } else {
-        return (b1 >= 'a' && b1 <= 'f') ? (b1 + 10 - 'a') : 1;
-      }
-    }
-
-    public static Message MailToUrlMessage(string url) {
-      string[] parts = URIUtility.splitIRIToStrings(
-        url);
-      if (parts == null || parts[0] == null) {
         return null;
       }
 
-      if (parts[0].Equals("mailto")) {
-        var msg = new Message();
-        string emails = String.Empty;
-        if (!String.IsNullOrEmpty(parts[2])) {
-          // Extract the email address
-          emails = URIUtility.PercentDecode(parts[2]);
-          if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
-                      emails.Length) {
-            Console.WriteLine(emails);
-            return null;
-          }
+      private static int ToHex(char b1) {
+        if (b1 >= '0' && b1 <= '9') {
+          return b1 - '0';
+        } else if (b1 >= 'A' && b1 <= 'F') {
+          return b1 + 10 - 'A';
+        } else {
+          return (b1 >= 'a' && b1 <= 'f') ? (b1 + 10 - 'a') : 1;
         }
-        if (parts[3] != null) {
-          // If query string is present it must not be empty
-          string query = parts[3];
-          if (query.Length == 0) {
-            return null;
-          }
-          var index = 0;
-          while (index < query.Length) {
-            int startName = index;
-            var endName = -1;
-            var startValue = -1;
-            var endValue = -1;
-            while (index < query.Length) {
-              if (query[index] == '&') {
-                if (endName < 0) {
-                  return null;
-                }
-                endValue = index;
-                ++index;
-                break;
-              } else if (query[index] == '=') {
-                if (endName >= 0) {
-                  return null;
-                }
-                endName = index;
-                startValue = index + 1;
-                ++index;
-              } else {
-                ++index;
-              }
-            }
-            if (endName < 0) {
+      }
+
+      public static Message MailToUrlMessage(string url) {
+        string[] parts = URIUtility.splitIRIToStrings(
+          url);
+        if (parts == null || parts[0] == null) {
+          return null;
+        }
+
+        if (parts[0].Equals("mailto")) {
+          var msg = new Message();
+          string emails = String.Empty;
+          if (!String.IsNullOrEmpty(parts[2])) {
+            // Extract the email address
+            emails = URIUtility.PercentDecode(parts[2]);
+            if (HeaderParser.ParseHeaderEmail(emails, 0, emails.Length) !=
+                    emails.Length) {
+              Console.WriteLine(emails);
               return null;
-            } else if (endValue < 0) {
-              endValue = query.Length;
             }
-            string name = query.Substring(startName, endName - startName);
-            string value = query.Substring(startValue, endValue - startValue);
-            name =
-     DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
-            value = URIUtility.PercentDecode(value);
-            // Support only To, Cc, Bcc, Subject, In-Reply-To,
-            // Keywords, Comments, and Body.
-            // Of these, the first four can appear only once in a message
-            if (name.Equals("body")) {
-              msg.SetTextBody(value);
-            } else if (name.Equals("keywords") || name.Equals("comments")) {
-              msg.AddHeader(name, value);
-            } else if (name.Equals("subject") ||
-              name.Equals("to") || name.Equals("cc") || name.Equals("bcc") ||
-              name.Equals("in-reply-to")) {
-              // TODO: Decode encoded words
-              msg.SetHeader(name, value);
-            } else if (name.Equals("to")) {
-              if (String.IsNullOrEmpty(emails)) {
-                emails = value;
-              } else {
-                emails += "," + value;
+          }
+          if (parts[3] != null) {
+            // If query string is present it must not be empty
+            string query = parts[3];
+            if (query.Length == 0) {
+              return null;
+            }
+            var index = 0;
+            while (index < query.Length) {
+              int startName = index;
+              var endName = -1;
+              var startValue = -1;
+              var endValue = -1;
+              while (index < query.Length) {
+                if (query[index] == '&') {
+                  if (endName < 0) {
+                    return null;
+                  }
+                  endValue = index;
+                  ++index;
+                  break;
+                } else if (query[index] == '=') {
+                  if (endName >= 0) {
+                    return null;
+                  }
+                  endName = index;
+                  startValue = index + 1;
+                  ++index;
+                } else {
+                  ++index;
+                }
               }
-            } else {
-              Console.WriteLine(name);
-              Console.WriteLine(value);
+              if (endName < 0) {
+                return null;
+              } else if (endValue < 0) {
+                endValue = query.Length;
+              }
+              string name = query.Substring(startName, endName - startName);
+              string value = query.Substring(startValue, endValue - startValue);
+              name =
+       DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
+              value = URIUtility.PercentDecode(value);
+              // Support only To, Cc, Bcc, Subject, In-Reply-To,
+              // Keywords, Comments, and Body.
+              // Of these, the first four can appear only once in a message
+              if (name.Equals("body")) {
+                msg.SetTextBody(value);
+              } else if (name.Equals("keywords") || name.Equals("comments")) {
+                msg.AddHeader(name, value);
+              } else if (name.Equals("subject") ||
+                name.Equals("to") || name.Equals("cc") || name.Equals("bcc") ||
+                name.Equals("in-reply-to")) {
+                // TODO: Decode encoded words
+                msg.SetHeader(name, value);
+              } else if (name.Equals("to")) {
+                if (String.IsNullOrEmpty(emails)) {
+                  emails = value;
+                } else {
+                  emails += "," + value;
+                }
+              } else {
+                Console.WriteLine(name);
+                Console.WriteLine(value);
+              }
             }
           }
-        }
-        if (!String.IsNullOrEmpty(emails)) {
-          if (emails.IndexOf('(') >= 0) {
-            // Contains opening parenthesis, a comment delimiter
-            return null;
+          if (!String.IsNullOrEmpty(emails)) {
+            if (emails.IndexOf('(') >= 0) {
+              // Contains opening parenthesis, a comment delimiter
+              return null;
+            }
+            try {
+              msg.SetHeader("to", emails);
+            } catch (Exception) {
+              Console.WriteLine(emails);
+              return null;
+            }
           }
-          try {
-            msg.SetHeader("to", emails);
-          } catch (Exception) {
-            Console.WriteLine(emails);
-            return null;
-          }
+          Console.WriteLine(msg.Generate());
+          return msg;
         }
-        Console.WriteLine(msg.Generate());
-        return msg;
+        return null;
       }
-      return null;
-    }
 
     internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -365,13 +300,18 @@ namespace MailLibTest {
     }
 
     public static string MakeDataUrl(string textString) {
-      return MakeDataUrl(DataUtilities.GetUtf8Bytes(textString, true),
-                         MediaType.Parse("text/plain;charset=utf-8"));
+      return MakeDataUrl(
+  DataUtilities.GetUtf8Bytes(textString, true),
+  MediaType.Parse("text/plain;charset=utf-8"));
     }
 
     public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
-      // ArgumentAssert.NotNull(bytes);
-      // ArgumentAssert.NotNull(mediaType);
+      if (bytes == null) {
+        throw new ArgumentNullException(nameof(bytes));
+      }
+      if (mediaType == null) {
+        throw new ArgumentNullException(nameof(mediaType));
+      }
       var builder = new StringBuilder();
       builder.Append("data:");
       string mediaTypeString = mediaType.ToUriSafeString();

@@ -7,30 +7,38 @@ using Test;
 namespace MailLibTest {
   [TestFixture]
   public class DataUrlTest {
+    private void TestMatchBasicNone(string[] langranges, string str) {
+      IList<string> r = LanguageTags.LanguageTagFilter(
+        langranges,
+        new string[] { str },
+        false,
+ false);
+      Assert.AreEqual(0, r.Count);
+    }
+
+    private void TestMatchBasicContained(string[] langranges, string str) {
+      IList<string> r = LanguageTags.LanguageTagFilter(
+        langranges,
+        new string[] { str },
+        false,
+ false);
+      Assert.IsTrue(r.Count > 0);
+    }
     [Test]
     public void TestMatchLangTagsBasic() {
       string[] langranges = { "fr-ca", "es" };
-      Assert.AreEqual(0, DataUrl.MatchLangTagsBasic(langranges, "fr-ca"));
-      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "es"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "fr-cam"));
-      Assert.AreEqual(0, DataUrl.MatchLangTagsBasic(langranges, "fr-ca-9999"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "fr-zxxx-ca"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "es-cam"));
-      Assert.AreEqual(0, DataUrl.MatchLangTagsBasic(langranges, "es-ca-9999"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "es-zxxx-ca"));
-      langranges =new string[]{ "fr-ca","*","es"};
-      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "es", false));
-      Assert.AreEqual(2, DataUrl.MatchLangTagsBasic(langranges, "es", true));
-      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "nl", false));
-      Assert.AreEqual(1, DataUrl.MatchLangTagsBasic(langranges, "nl", true));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "", false));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsBasic(langranges, "", true));
+      this.TestMatchBasicContained(langranges,"fr-ca");
+      this.TestMatchBasicContained(langranges, "es");
+      this.TestMatchBasicNone(langranges,"fr-cam");
+      this.TestMatchBasicContained(langranges, "fr-ca-9999");
+      this.TestMatchBasicNone(langranges,"fr-zxxx-ca");
+      this.TestMatchBasicContained(langranges,"es-cam");
+      this.TestMatchBasicContained(langranges, "es-ca-9999");
+      this.TestMatchBasicContained(langranges,"es-zxxx-ca");
+      langranges = new string[] { "fr-ca","*","es"};
+      this.TestMatchBasicContained(langranges,"es");
+      this.TestMatchBasicContained(langranges, "nl");
       langranges = new string[] { null, "*" };
-      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", false));
-      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", true));
-      langranges = new string[] { String.Empty, "*" };
-      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", false));
-      Assert.Throws<ArgumentException>(() => DataUrl.MatchLangTagsBasic(langranges, "es", true));
     }
 
     private Message TestMailToOne(string s) {
@@ -78,21 +86,6 @@ namespace MailLibTest {
       TestEmptyPathOne("s:");
       TestEmptyPathOne("s:?x");
       TestEmptyPathOne("s:#x");
-    }
-
-    [Test]
-    public void TestExtended() {
-      string[] ranges = { "fr-ca" };
-      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-ca"));
-      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "FR-ca"));
-      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-CA"));
-      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-zxxx-ca"));
-      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-zxxx-ca-xxxxxx"));
-      Assert.AreEqual(0, DataUrl.MatchLangTagsExtended(ranges, "fr-zxxx-ca-u-xxxxxx"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr-xxxx"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr-FR"));
-      Assert.AreEqual(-1, DataUrl.MatchLangTagsExtended(ranges, "fr-u-ca"));
     }
     [Test]
     public void TestMailTo() {
