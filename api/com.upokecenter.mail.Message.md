@@ -98,7 +98,8 @@
  Initializes a new instance of the Message
  class.
 * `Message AddAttachment​(MediaType mediaType)`<br>
- Not documented yet.
+ Adds an attachment with an empty body and with the given media type to this
+ message.
 * `Message AddAttachment​(InputStream inputStream,
              MediaType mediaType)`<br>
  Adds an attachment to this message in the form of data from the given
@@ -118,7 +119,8 @@
 * `Message AddHeader​(Map.Entry<String,String> header)`<br>
  Adds a header field to the end of the message's header.
 * `Message AddInline​(MediaType mediaType)`<br>
- Not documented yet.
+ Adds an inline body part with an empty body and with the given media type to
+ this message.
 * `Message AddInline​(InputStream inputStream,
          MediaType mediaType)`<br>
  Adds an inline body part to this message in the form of data from the given
@@ -133,14 +135,15 @@
  Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given file name.
 * `Message ClearHeaders()`<br>
- Not documented yet.
+ Deletes all header fields in this message.
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
  Generates this message's data as a byte array, using the same algorithm as
  the Generate method.
 * `List<NamedAddress> GetAddresses​(String headerName)`<br>
- Not documented yet.
+ Gets a list of addresses contained in the header fields with the given name
+ in this message.
 * `List<NamedAddress> getBccAddresses()`<br>
  Deprecated.
 Use GetAddresses(\Bcc\) instead.
@@ -188,8 +191,10 @@ Use GetAddresses(\From\) instead.
  Deprecated.
 Use GetAddresses(\To\) instead.
  Use GetAddresses(\To\) instead.
+* `static Message MakeMultilingualMessage​(List<Message> messages,
+                       List<String> languages)`<br>
 * `static Message NewBodyPart()`<br>
- Not documented yet.
+ Creates a message object with no header fields.
 * `Message RemoveHeader​(int index)`<br>
  Removes a header field by index.
 * `Message RemoveHeader​(String name)`<br>
@@ -272,11 +277,11 @@ Initializes a new instance of the <code>Message</code>
  address.
 ### NewBodyPart
     public static Message NewBodyPart()
-Not documented yet.
+Creates a message object with no header fields.
 
 **Returns:**
 
-* This object.
+* A message object with no header fields.
 
 ### SetCurrentDate
     public Message SetCurrentDate()
@@ -372,16 +377,27 @@ Gets this message's media type. When getting, the media type may differ in
 
 ### GetAddresses
     public List<NamedAddress> GetAddresses​(String headerName)
-Not documented yet.
+Gets a list of addresses contained in the header fields with the given name
+ in this message.
 
 **Parameters:**
 
-* <code>headerName</code> - The parameter <code>headerName</code> is not documented yet.
+* <code>headerName</code> - The name of the header fields to retrieve.
 
 **Returns:**
 
 * A list of addresses, in the order in which they appear in this
  message's header fields of the given name.
+
+**Throws:**
+
+* <code>UnsupportedOperationException</code> - "headerName" is not supported for this method.
+ Currently, the only header fields supported are To, Cc, Bcc,
+ Reply-To, Sender, and From.
+
+* <code>NullPointerException</code> - "headerName" is null.
+
+* <code>IllegalArgumentException</code> - "headerName" is empty.
 
 ### getFromAddresses
     @Deprecated public final List<NamedAddress> getFromAddresses()
@@ -656,11 +672,13 @@ Gets an array with the values of all header fields with the specified name,
 
 ### ClearHeaders
     public Message ClearHeaders()
-Not documented yet.
+Deletes all header fields in this message. Also clears this message's
+ content disposition and resets its content type to
+ MediaType.TextPlainAscii.
 
 **Returns:**
 
-* A Message object.
+* This object.
 
 ### RemoveHeader
     public Message RemoveHeader​(int index)
@@ -896,27 +914,33 @@ Sets the body of this message to the specified plain text string. The
 
 ### AddInline
     public Message AddInline​(MediaType mediaType)
-Not documented yet.
+Adds an inline body part with an empty body and with the given media type to
+ this message. Before the new body part is added, if this message
+ isn't already a multipart message, it becomes a "multipart/mixed"
+ message with the current body converted to an inline body part.
 
 **Parameters:**
 
-* <code>mediaType</code> - The parameter <code>mediaType</code> is not documented yet.
+* <code>mediaType</code> - A media type to assign to the body part.
 
 **Returns:**
 
-* A Message object.
+* A Message object for the generated body part.
 
 ### AddAttachment
     public Message AddAttachment​(MediaType mediaType)
-Not documented yet.
+Adds an attachment with an empty body and with the given media type to this
+ message. Before the new attachment is added, if this message isn't
+ already a multipart message, it becomes a "multipart/mixed" message
+ with the current body converted to an inline body part.
 
 **Parameters:**
 
-* <code>mediaType</code> - The parameter <code>mediaType</code> is not documented yet.
+* <code>mediaType</code> - A media type to assign to the attachment.
 
 **Returns:**
 
-* A Message object.
+* A Message object for the generated attachment.
 
 ### AddAttachment
     public Message AddAttachment​(InputStream inputStream, MediaType mediaType)
@@ -1087,3 +1111,6 @@ Adds an inline body part to this message in the form of data from the given
  "mediaType" is null.
 
 * <code>MessageDataException</code> - An I/O error occurred.
+
+### MakeMultilingualMessage
+    public static Message MakeMultilingualMessage​(List<Message> messages, List<String> languages)
