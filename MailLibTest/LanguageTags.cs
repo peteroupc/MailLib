@@ -187,8 +187,10 @@ namespace MailLibTest {
             sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 2, 2)));
           } else {
     sb.Append(
-  DataUtilities.ToLowerCaseAscii(str.Substring(i - count,
-              count)));
+  DataUtilities.ToLowerCaseAscii(
+  str.Substring(
+  i - count,
+  count)));
           }
           lastSubtagLength = count;
           count = 0;
@@ -306,8 +308,8 @@ namespace MailLibTest {
         first = false;
         index = SkipCFWS(str, index, str.Length);
         int newindex;
-        newindex = (index < str.Length && str[index] == '*') ? (index + 1):
-          (SkipLDHSequence(str, index, str.Length));
+        newindex = (index < str.Length && str[index] == '*') ? (index + 1) :
+          SkipLDHSequence(str, index, str.Length);
         if (newindex == index) {
  return null;
 }
@@ -380,7 +382,8 @@ namespace MailLibTest {
       return false;
     }
 
-    private static bool MatchLangTagExtended(string rangeLowerCased,
+    private static bool MatchLangTagExtended(
+  string rangeLowerCased,
   string tagLowerCased) {
       string[] rangeSub = SplitAt(rangeLowerCased, "-");
       string[] tagSub = SplitAt(tagLowerCased, "-");
@@ -486,6 +489,27 @@ namespace MailLibTest {
 }
       }
       return String.Empty;
+    }
+
+    public static bool MatchesLanguageTag(string range, string tag) {
+      IList<string> tags = LanguageTagFilter(
+        new string[] { range },
+        new string[] { tag },
+        false,
+ false);
+      return tags.Count > 0;
+    }
+
+    public static string LanguageTagLookup(
+  string range,
+  IList<string> languages,
+  string defaultValue,
+  bool extended) {
+      return LanguageTagLookup(
+        new string[] { range },
+        languages,
+        defaultValue,
+        extended);
     }
 
     public static string LanguageTagLookup(

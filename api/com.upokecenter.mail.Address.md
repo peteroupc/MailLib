@@ -9,10 +9,14 @@ Represents an email address.
 * `Address​(String addressValue) Address`<br>
  Initializes a new instance of the Address
  class.
+* `boolean equals​(Object obj)`<br>
+ Not documented yet.
 * `String getDomain()`<br>
  Gets the domain of this email address (the part after the "@" sign).
 * `String getLocalPart()`<br>
  Gets the local part of this email address (the part before the "@" sign).
+* `int hashCode()`<br>
+ Not documented yet.
 * `String toString()`<br>
  Converts this address object to a text string.
 
@@ -62,6 +66,22 @@ Initializes a new instance of the <code>Address</code>
  contains invalid characters, the address is too long, or the address
  contains comments (text within parentheses).
 
+### equals
+    public boolean equals​(Object obj)
+Not documented yet.
+
+**Overrides:**
+
+* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+
+**Parameters:**
+
+* <code>obj</code> - Not documented yet.
+
+**Returns:**
+
+* A Boolean object.
+
 ### getLocalPart
     public final String getLocalPart()
 Gets the local part of this email address (the part before the "@" sign).
@@ -81,6 +101,18 @@ Converts this address object to a text string.
 **Returns:**
 
 * A string representation of this object.
+
+### hashCode
+    public int hashCode()
+Not documented yet.
+
+**Overrides:**
+
+* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+
+**Returns:**
+
+* A 32-bit signed integer.
 
 ### getDomain
     public final String getDomain()

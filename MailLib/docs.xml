@@ -706,7 +706,7 @@ Contains methods for parsing and generating date-time strings following the
            for information on the format of this parameter.</param>
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)">
-            <summary>Generates a date-time string following the
+<summary>Generates a date-time string following the
            Internet Message Format (RFC 5322) from an 8-element array, optionally using a "GMT" time zone indicator.
             </summary>
             <returns>A date-time string.</returns>
@@ -1143,6 +1143,11 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='stream'/> is null.</exception>
 </doc>
+<doc name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)">
+<summary>Not documented yet.</summary>
+            <param name='mediaType'>The parameter <paramref name='mediaType'/> is not documented yet.</param>
+            <returns>A Message object.</returns>
+</doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)">
 <summary>Adds an attachment to this message in the form of data from the given readable stream, and with the given media type.  Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
 <example>The following example (written in C# for the .NET version) is an extension method that adds an attachment from a byte array to a message.<code>
@@ -1219,6 +1224,11 @@ public static Message AddAttachmentFromFile(this Message msg, string filename){
             is too long or contains an invalid character, or the header field's
             value is syntactically invalid.</exception>
 </doc>
+<doc name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)">
+<summary>Not documented yet.</summary>
+            <param name='mediaType'>The parameter <paramref name='mediaType'/> is not documented yet.</param>
+            <returns>A Message object.</returns>
+</doc>
 <doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)">
 <summary>Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
 <example>The following example (written in C# for the .NET version) is an extension method that adds an inline body part from a byte array to a message.<code>
@@ -1283,6 +1293,10 @@ public static Message AddAttachmentFromInline(this Message msg, string filename)
             fields.</summary>
             <value>A list of addresses found in the CC header field or
             fields.</value>
+</doc>
+<doc name="M:PeterO.Mail.Message.ClearHeaders">
+<summary>Not documented yet.</summary>
+            <returns>A Message object.</returns>
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentDisposition">
 <summary>Gets or sets this message's content disposition. The
@@ -1755,6 +1769,11 @@ this method.</summary>
             null if this object represents a group of addresses
             instead.</value>
 </doc>
+<doc name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)">
+<param name='na'>A named address object to compare with this one.
+            Can be null.</param>
+            <returns>Either <c>true</c> or <c>false</c>.</returns>
+</doc>
 <doc name="P:PeterO.Mail.NamedAddress.DisplayName">
 <summary>Gets the display name for this email address. Returns null if the display name is absent.</summary>
             <value>The display name for this email address.</value>
@@ -1779,6 +1798,17 @@ this method.</summary>
 <doc name="M:PeterO.Mail.NamedAddress.ToString">
 <summary>Converts this object to a text string.</summary>
             <returns>A string representation of this object.</returns>
+</doc>
+<doc name="M:PeterO.Mail.ParserUtility.IsPotentiallyValidLanguageTag(System.String)">
+<summary>Returns true if (1) the given string is a well-formed
+            language tag under RFC 5646 (that is, the string follows the syntax
+            given in section 2.1 of that RFC), and (2) the language tag
+            contains at most one extended language subtag, no variant subtags
+            with the same value, and no extension singleton subtags with the
+            same value.</summary>
+            <param name='str'>String.</param>
+            <returns><c>true</c>, if the string meets the conditions given in
+            the summary, <c>false</c> otherwise.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ParserUtility.SplitAt(System.String,System.String)">
 <summary>Splits a string by a delimiter. If the string ends with
@@ -1813,6 +1843,9 @@ this method.</summary>
 <summary>Gets a value indicating whether a new body part was
             detected.</summary>
             <value><c>true</c> If a new body part was detected; otherwise, <c>false</c>.</value>
+</doc>
+<doc name="P:PeterO.ReadOnlyMap`2.IsReadOnly">
+<value/>
 </doc>
 <doc name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])">
 <summary>Decompresses a byte array compressed using the LZ4 format

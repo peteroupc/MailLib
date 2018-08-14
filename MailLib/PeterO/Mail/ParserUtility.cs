@@ -132,15 +132,8 @@ namespace PeterO.Mail {
       return (string[])strings.ToArray();
     }
 
-    /// <summary>Returns true if (1) the given string is a well-formed
-    /// language tag under RFC 5646 (that is, the string follows the syntax
-    /// given in section 2.1 of that RFC), and (2) the language tag
-    /// contains at most one extended language subtag, no variant subtags
-    /// with the same value, and no extension singleton subtags with the
-    /// same value.</summary>
-    /// <param name='str'>String.</param>
-    /// <returns><c>true</c>, if the string meets the conditions given in
-    /// the summary, <c>false</c> otherwise.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ParserUtility.IsPotentiallyValidLanguageTag(System.String)"]/*'/>
     public static bool IsPotentiallyValidLanguageTag(string str) {
       if (String.IsNullOrEmpty(str)) {
         return false;

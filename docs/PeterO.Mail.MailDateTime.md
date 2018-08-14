@@ -30,17 +30,25 @@ The parameter "dateTime" is null or invalid.
         int[] dateTime,
         bool gmt);
 
-Not documented yet.
+Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array, optionally using a "GMT" time zone indicator.
 
 <b>Parameters:</b>
 
- * <i>dateTime</i>: Not documented yet.
+ * <i>dateTime</i>: The date and time in the form of an 8-element array. See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this parameter.
 
- * <i>gmt</i>: Not documented yet.
+ * <i>gmt</i>: If true, uses the string "GMT" as the time zone offset.
 
 <b>Return Value:</b>
 
-A string object.
+A date-time string.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter "dateTime" is null or invalid.
+
+ * System.NotSupportedException:
+The time zone offset is other than 0 and "gmt" is true.
 
 ### ParseDateString
 

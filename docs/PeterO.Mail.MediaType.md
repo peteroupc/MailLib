@@ -225,8 +225,8 @@ A text string form of this media type.
 
     public string ToUriSafeString();
 
-Not documented yet.
+Converts this media type to a text string form suitable for data URIs. Notably, the string contains the value of a Content-Type header field (without the text necessarily starting with "Content-Type" followed by a space), consists of a single line, and uses percent-encoding as necessary or convenient so that the resulting string can validly appear in a URI path.
 
 <b>Return Value:</b>
 
-A string object.
+A text string form of this media type.
