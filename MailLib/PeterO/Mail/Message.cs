@@ -413,8 +413,8 @@ namespace PeterO.Mail {
       return (string[])list.ToArray();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A Message object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.ClearHeaders"]/*'/>
     public Message ClearHeaders() {
       this.headers.Clear();
       this.contentType = MediaType.TextPlainAscii;
@@ -597,7 +597,28 @@ namespace PeterO.Mail {
          MediaType mediaType,
          string filename,
          string disposition) {
-      if ((inputStream) == null) {
+      return AddBodyPart(inputStream, mediaType, filename, disposition, false);
+    }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)"]/*'/>
+    public Message AddInline(MediaType mediaType) {
+      return AddBodyPart(null, mediaType, null, "inline", true);
+    }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)"]/*'/>
+    public Message AddAttachment(MediaType mediaType) {
+      return AddBodyPart(null, mediaType, null, "attachment", true);
+    }
+
+    private Message AddBodyPart(
+             Stream inputStream,
+             MediaType mediaType,
+             string filename,
+             string disposition,
+             bool allowNullStream) {
+      if (!allowNullStream && (inputStream) == null) {
         throw new ArgumentNullException(nameof(inputStream));
       }
       if ((mediaType) == null) {
@@ -608,20 +629,22 @@ namespace PeterO.Mail {
       // NOTE: Using the setter because it also adds a Content-Type
       // header field
       bodyPart.ContentType = mediaType;
-      try {
-        using (var ms = new MemoryStream()) {
-          var buffer = new byte[4096];
-          while (true) {
-            int cp = inputStream.Read(buffer, 0, buffer.Length);
-            if (cp <= 0) {
-              break;
+      if (inputStream != null) {
+        try {
+          using (var ms = new MemoryStream()) {
+            var buffer = new byte[4096];
+            while (true) {
+              int cp = inputStream.Read(buffer, 0, buffer.Length);
+              if (cp <= 0) {
+                break;
+              }
+              ms.Write(buffer, 0, cp);
             }
-            ms.Write(buffer, 0, cp);
+            bodyPart.SetBody(ms.ToArray());
           }
-          bodyPart.SetBody(ms.ToArray());
+        } catch (IOException ex) {
+          throw new MessageDataException("An I/O error occurred.", ex);
         }
-      } catch (IOException ex) {
-        throw new MessageDataException("An I/O error occurred.", ex);
       }
       var dispBuilder = new DispositionBuilder(disposition);
       if (!String.IsNullOrEmpty(filename)) {
@@ -2030,7 +2053,7 @@ if ((ungetState[1]) < 0x80) {
           }
           haveFrom = true;
         }
-        if (
+        /* if (
           depth > 0 && (
             name.Length < 8 || !name.Substring(
               0,
@@ -2038,10 +2061,18 @@ if ((ungetState[1]) < 0x80) {
           // don't generate header fields not starting with "Content-"
           // in body parts
           continue;
-        }
+        }*/
         if (name.Equals("mime-version")) {
+          if (depth > 0) {
+            // Don't output if this is a body part
+            continue;
+          }
           haveMimeVersion = true;
         } else if (name.Equals("message-id")) {
+          if (depth > 0) {
+            // Don't output if this is a body part
+            continue;
+          }
           if (haveMsgId) {
             // Already outputted, continue
             continue;
@@ -2049,6 +2080,10 @@ if ((ungetState[1]) < 0x80) {
           haveMsgId = true;
         } else {
           if (ValueHeaderIndices.ContainsKey(name)) {
+            if (depth > 0) {
+              // Don't output if this is a body part
+              continue;
+            }
             int headerIndex = ValueHeaderIndices[name];
             if (headerIndex <= 5) {
               if (haveHeaders[headerIndex]) {

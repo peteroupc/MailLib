@@ -196,7 +196,7 @@ A MediaType object.
 
     public override string ToString();
 
-Converts this object to a text string.
+Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString` .
 
 <b>Return Value:</b>
 

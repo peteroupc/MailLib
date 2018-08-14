@@ -151,7 +151,7 @@ private ParserUtility() {
      * that RFC), and (2) the language tag contains at most one extended
      * language subtag, no variant subtags with the same value, and no
      * extension singleton subtags with the same value.
-     * @param str string.
+     * @param str String.
      * @return {@code true}, if the string meets the conditions given in the
      * summary, {@code false} otherwise.
      */

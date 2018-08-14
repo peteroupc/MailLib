@@ -942,7 +942,34 @@ public final void setSubject(String value) {
          MediaType mediaType,
          String filename,
          String disposition) {
-      if ((inputStream) == null) {
+      return AddBodyPart(inputStream, mediaType, filename, disposition, false);
+    }
+
+    /**
+     * Not documented yet.
+     * @param mediaType The parameter {@code mediaType} is not documented yet.
+     * @return A Message object.
+     */
+    public Message AddInline(MediaType mediaType) {
+      return AddBodyPart(null, mediaType, null, "inline", true);
+    }
+
+    /**
+     * Not documented yet.
+     * @param mediaType The parameter {@code mediaType} is not documented yet.
+     * @return A Message object.
+     */
+    public Message AddAttachment(MediaType mediaType) {
+      return AddBodyPart(null, mediaType, null, "attachment", true);
+    }
+
+    private Message AddBodyPart(
+             InputStream inputStream,
+             MediaType mediaType,
+             String filename,
+             String disposition,
+             boolean allowNullStream) {
+      if (!allowNullStream && (inputStream) == null) {
         throw new NullPointerException("inputStream");
       }
       if ((mediaType) == null) {
@@ -953,28 +980,30 @@ public final void setSubject(String value) {
       // NOTE: Using the setter because it also adds a Content-Type
       // header field
       bodyPart.setContentType(mediaType);
-      try {
-        java.io.ByteArrayOutputStream ms = null;
+      if (inputStream != null) {
+        try {
+          java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-          byte[] buffer = new byte[4096];
-          while (true) {
-            int cp = inputStream.read(buffer, 0, buffer.length);
-            if (cp <= 0) {
-              break;
+            byte[] buffer = new byte[4096];
+            while (true) {
+              int cp = inputStream.read(buffer, 0, buffer.length);
+              if (cp <= 0) {
+                break;
+              }
+              ms.write(buffer, 0, cp);
             }
-            ms.write(buffer, 0, cp);
-          }
-          bodyPart.SetBody(ms.toByteArray());
+            bodyPart.SetBody(ms.toByteArray());
 }
 finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-      } catch (IOException ex) {
-        throw new MessageDataException("An I/O error occurred.", ex);
+        } catch (IOException ex) {
+          throw new MessageDataException("An I/O error occurred.", ex);
+        }
       }
       DispositionBuilder dispBuilder = new DispositionBuilder(disposition);
       if (!((filename) == null || (filename).length() == 0)) {
@@ -2452,7 +2481,7 @@ try { if (ms != null) {
           }
           haveFrom = true;
         }
-        if (
+        /* if (
           depth > 0 && (
             name.length() < 8 || !name.substring(
               0, (
@@ -2460,10 +2489,18 @@ try { if (ms != null) {
           // don't generate header fields not starting with "Content-"
           // in body parts
           continue;
-        }
+        }*/
         if (name.equals("mime-version")) {
+          if (depth > 0) {
+            // Don't output if this is a body part
+            continue;
+          }
           haveMimeVersion = true;
         } else if (name.equals("message-id")) {
+          if (depth > 0) {
+            // Don't output if this is a body part
+            continue;
+          }
           if (haveMsgId) {
             // Already outputted, continue
             continue;
@@ -2471,6 +2508,10 @@ try { if (ms != null) {
           haveMsgId = true;
         } else {
           if (ValueHeaderIndices.containsKey(name)) {
+            if (depth > 0) {
+              // Don't output if this is a body part
+              continue;
+            }
             int headerIndex = ValueHeaderIndices.get(name);
             if (headerIndex <= 5) {
               if (haveHeaders[headerIndex]) {

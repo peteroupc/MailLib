@@ -7,6 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
+import java.util.*;
+
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
@@ -15,6 +17,16 @@ import com.upokecenter.text.*;
      */
   public class Address {
     private final String localPart;
+
+    /**
+     * Not documented yet.
+     * @param obj Not documented yet.
+     * @return A Boolean object.
+     */
+    @Override public boolean equals(Object obj) {
+      Address other = ((obj instanceof Address) ? (Address)obj : null);
+      return other != null && this.localPart.equals(other.localPart) &&
+        this.domain.equals(other.domain); }
 
     /**
      * Gets the local part of this email address (the part before the "@" sign).
@@ -89,6 +101,25 @@ import com.upokecenter.text.*;
         }
         return length;
       }
+    }
+
+    /**
+     * Not documented yet.
+     * @return A 32-bit signed integer.
+     */
+    @Override public int hashCode() {
+      int valueHashCode = -1524613162;
+      if (domain != null) {
+        for (int i = 0; i < domain.length(); ++i) {
+          valueHashCode *= -1521134295 + domain.charAt(i);
+        }
+      }
+      if (localPart != null) {
+        for (int i = 0; i < localPart.length(); ++i) {
+          valueHashCode *= -1521134295 + localPart.charAt(i);
+        }
+      }
+      return valueHashCode;
     }
 
     private final String domain;

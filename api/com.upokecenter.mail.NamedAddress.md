@@ -26,6 +26,9 @@ Represents an email address and a name for that address. Can represent a
  part and domain.
 * `NamedAddress​(String groupName,
             List<NamedAddress> mailboxes)`<br>
+* `boolean AddressesEqual​(NamedAddress na)`<br>
+* `boolean equals​(Object obj)`<br>
+ Not documented yet.
 * `Address getAddress()`<br>
  Gets the email address associated with this object.
 * `String getDisplayName()`<br>
@@ -36,6 +39,8 @@ Represents an email address and a name for that address. Can represent a
 * `String getName()`<br>
  Gets the display name for this email address, or the email address's value
  if the display name is null.
+* `int hashCode()`<br>
+ Not documented yet.
 * `boolean isGroup()`<br>
  Gets a value indicating whether this represents a group of addresses rather
  than a single address.
@@ -156,6 +161,45 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
+### hashCode
+    public int hashCode()
+Not documented yet.
+
+**Overrides:**
+
+* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+
+**Returns:**
+
+* A 32-bit signed integer.
+
+### equals
+    public boolean equals​(Object obj)
+Not documented yet.
+
+**Overrides:**
+
+* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+
+**Parameters:**
+
+* <code>obj</code> - Not documented yet.
+
+**Returns:**
+
+* A Boolean object.
+
+### AddressesEqual
+    public boolean AddressesEqual​(NamedAddress na)
+
+**Parameters:**
+
+* <code>na</code> - A named address object to compare with this one. Can be null.
+
+**Returns:**
+
+* Either <code>true</code> or <code>false</code>.
+
 ### getName
     public final String getName()
 Gets the display name for this email address, or the email address's value

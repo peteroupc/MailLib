@@ -90,6 +90,8 @@ The parameter <i>stream</i>
 
     public System.Collections.Generic.IList BccAddresses { get; }
 
+<b>Deprecated.</b> Use GetAddresses("Bcc") instead.
+
 Gets a list of addresses found in the BCC header field or fields.
 
 <b>Returns:</b>
@@ -115,6 +117,8 @@ Either this message is a multipart message, so it doesn't have its own body text
 
     public System.Collections.Generic.IList CCAddresses { get; }
 
+<b>Deprecated.</b> Use GetAddresses("Cc") instead.
+
 Gets a list of addresses found in the CC header field or fields.
 
 <b>Returns:</b>
@@ -135,7 +139,7 @@ This message's content disposition, or null if none is specified.
 
     public PeterO.Mail.MediaType ContentType { get; set;}
 
-Gets or sets this message's media type. Cannot be set to null. If set to a media type, updates the Content-Type header field as appropriate.
+Gets or sets this message's media type. When getting, the media type may differ in certain cases from the value of the Content-Type header field, if any, and may have a value even if the Content-Type header field is absent from this message. If set to a media type, updates the Content-Type header field as appropriate. Cannot be set to null.
 
 <b>Returns:</b>
 
@@ -161,6 +165,8 @@ A suggested name for the file. Returns the empty string if there is no filename 
 ### FromAddresses
 
     public System.Collections.Generic.IList FromAddresses { get; }
+
+<b>Deprecated.</b> Use GetAddresses("From") instead.
 
 Gets a list of addresses found in the From header field or fields.
 
@@ -202,11 +208,18 @@ This message's subject.
 
     public System.Collections.Generic.IList ToAddresses { get; }
 
+<b>Deprecated.</b> Use GetAddresses("To") instead.
+
 Gets a list of addresses found in the To header field or fields.
 
 <b>Returns:</b>
 
 A list of addresses found in the To header field or fields.
+
+### AddAttachment
+
+    public PeterO.Mail.Message AddAttachment(
+        PeterO.Mail.MediaType mediaType);
 
 ### AddAttachment
 
@@ -233,7 +246,7 @@ The following example (written in C# for the .NET version) is an extension metho
 
 <b>Return Value:</b>
 
-This object.
+A Message object for the generated attachment.
 
 <b>Exceptions:</b>
 
@@ -258,11 +271,11 @@ Adds an attachment to this message in the form of data from the given readable s
 
  * <i>mediaType</i>: A media type to assign to the attachment.
 
- * <i>filename</i>: A file name to assign to the attachment. Can be null or empty, in which case no file name is assigned.
+ * <i>filename</i>: A file name to assign to the attachment. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.
 
 <b>Return Value:</b>
 
-This object.
+A Message object for the generated attachment.
 
 <b>Exceptions:</b>
 
@@ -292,11 +305,11 @@ The following example (written in C# for the .NET version) is an extension metho
 
  * <i>inputStream</i>: A readable data stream.
 
- * <i>filename</i>: A file name to assign to the attachment. If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the attachment based on that extension; otherwise, the media type "application/octet-stream" is assigned. Can be null or empty, in which case no file name is assigned.
+ * <i>filename</i>: A file name to assign to the attachment. If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the attachment based on that extension; otherwise, the media type "application/octet-stream" is assigned. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.
 
 <b>Return Value:</b>
 
-This object.
+A Message object for the generated attachment.
 
 <b>Exceptions:</b>
 
@@ -361,6 +374,11 @@ The header field name is too long or contains an invalid character, or the heade
 ### AddInline
 
     public PeterO.Mail.Message AddInline(
+        PeterO.Mail.MediaType mediaType);
+
+### AddInline
+
+    public PeterO.Mail.Message AddInline(
         System.IO.Stream inputStream,
         PeterO.Mail.MediaType mediaType);
 
@@ -383,7 +401,7 @@ The following example (written in C# for the .NET version) is an extension metho
 
 <b>Return Value:</b>
 
-This object.
+A Message object for the generated body part.
 
 <b>Exceptions:</b>
 
@@ -412,7 +430,7 @@ Adds an inline body part to this message in the form of data from the given read
 
 <b>Return Value:</b>
 
-This object.
+A Message object for the generated body part.
 
 <b>Exceptions:</b>
 
@@ -442,11 +460,11 @@ The following example (written in C# for the .NET version) is an extension metho
 
  * <i>inputStream</i>: A readable data stream.
 
- * <i>filename</i>: A file name to assign to the body part. If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the body part based on that extension; otherwise, the media type "application/octet-stream" is assigned. Can be null or empty, in which case no file name is assigned.
+ * <i>filename</i>: A file name to assign to the body part. If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the body part based on that extension; otherwise, the media type "application/octet-stream" is assigned. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.
 
 <b>Return Value:</b>
 
-This object.
+A Message object for the generated body part.
 
 <b>Exceptions:</b>
 
@@ -456,13 +474,23 @@ The parameter "inputStream" is null.
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
 
+### ClearHeaders
+
+    public PeterO.Mail.Message ClearHeaders();
+
+Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
+
 ### Generate
 
     public string Generate();
 
 Generates this message's data in text form.The generated message will have only Basic Latin code points (U+0000 to U+007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
-The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). (An exception is that the Resent-From and Resent-Sender header fields may appear more than once.) The generated message should always have a From header field.
+The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). (An exception is that the Resent-* header fields may appear more than once.) The generated message should always have a From header field.
 
 If a Date and/or Message-ID header field doesn't exist, a field with that name will be generated (using the current local time for the Date field).
 
@@ -486,6 +514,22 @@ Generates this message's data as a byte array, using the same algorithm as the G
 <b>Return Value:</b>
 
 The generated message as a byte array.
+
+### GetAddresses
+
+    public System.Collections.Generic.IList GetAddresses(
+        string headerName);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>headerName</i>: The parameter  <i>headerName</i>
+ is not documented yet.
+
+<b>Return Value:</b>
+
+A list of addresses, in the order in which they appear in this message's header fields of the given name.
 
 ### GetBody
 

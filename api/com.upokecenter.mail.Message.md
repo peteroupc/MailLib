@@ -97,6 +97,8 @@
 * `Message​(InputStream stream) Message`<br>
  Initializes a new instance of the Message
  class.
+* `Message AddAttachment​(MediaType mediaType)`<br>
+ Not documented yet.
 * `Message AddAttachment​(InputStream inputStream,
              MediaType mediaType)`<br>
  Adds an attachment to this message in the form of data from the given
@@ -115,6 +117,8 @@
  Adds a header field to the end of the message's header.
 * `Message AddHeader​(Map.Entry<String,String> header)`<br>
  Adds a header field to the end of the message's header.
+* `Message AddInline​(MediaType mediaType)`<br>
+ Not documented yet.
 * `Message AddInline​(InputStream inputStream,
          MediaType mediaType)`<br>
  Adds an inline body part to this message in the form of data from the given
@@ -889,6 +893,30 @@ Sets the body of this message to the specified plain text string. The
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
+### AddInline
+    public Message AddInline​(MediaType mediaType)
+Not documented yet.
+
+**Parameters:**
+
+* <code>mediaType</code> - The parameter <code>mediaType</code> is not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+### AddAttachment
+    public Message AddAttachment​(MediaType mediaType)
+Not documented yet.
+
+**Parameters:**
+
+* <code>mediaType</code> - The parameter <code>mediaType</code> is not documented yet.
+
+**Returns:**
+
+* A Message object.
 
 ### AddAttachment
     public Message AddAttachment​(InputStream inputStream, MediaType mediaType)

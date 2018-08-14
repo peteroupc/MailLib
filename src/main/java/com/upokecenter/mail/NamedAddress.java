@@ -17,14 +17,76 @@ import java.util.*;
     private final String displayName;
 
     /**
+     * Not documented yet.
+     * @return A 32-bit signed integer.
+     */
+    @Override public int hashCode() {
+      int valueHashCode = -1524613162;
+      if (displayName != null) {
+        for (int i = 0; i < displayName.length(); ++i) {
+          valueHashCode *= -1521134295 + displayName.charAt(i);
+        }
+      }
+      valueHashCode *= -1521134295 + (address == null ? 0 :
+        address.hashCode());
+      valueHashCode *= -1521134295 + (isGroup ? 0 : 1);
+      if (groupAddresses != null) {
+        valueHashCode *= -1521134295 + (groupAddresses.size());
+      }
+      return valueHashCode;
+    }
+
+    /**
+     * Not documented yet.
+     * @param obj Not documented yet.
+     * @return A Boolean object.
+     */
+    @Override public boolean equals(Object obj) {
+      NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
+      return other != null &&
+      (displayName == null ? other.displayName == null :
+        displayName.equals(other.displayName)) &&
+   (address == null ? other.address == null : address.equals(other.address))&&
+        isGroup == other.isGroup &&
+          (!isGroup || CollectionUtilities.ListEquals(groupAddresses,
+            other.groupAddresses));
+    }
+
+    /**
+     *
+     * @param na A named address object to compare with this one. Can be null.
+     * @return Either {@code true} or {@code false}.
+     */
+    public boolean AddressesEqual(NamedAddress na) {
+      if (na == null || isGroup != na.isGroup) {
+ return false;
+}
+      if (isGroup) {
+        if (this.groupAddresses.size() != na.getGroupAddresses().size()) {
+ return false;
+}
+        for (int i = 0; i < this.groupAddresses.size(); ++i) {
+          NamedAddress a1 = this.groupAddresses.get(i);
+          NamedAddress a2 = na.groupAddresses.get(i);
+          if (!a1.AddressesEqual(a2)) {
+ return false;
+}
+        }
+        return true;
+      } else {
+        return this.address.equals(na.address);
+      }
+    }
+
+    /**
      * Gets the display name for this email address, or the email address's value
      * if the display name is null. Returns an empty string if the address
      * and display name are null.
      * @return The name for this email address.
      */
     public final String getName() {
- return (this.displayName == null) ? ((this.address == null) ?
-          "" : this.address.toString()) : this.displayName;
+        return (this.displayName == null) ? ((this.address == null) ?
+                 "" : this.address.toString()) : this.displayName;
       }
 
     /**
@@ -33,8 +95,8 @@ import java.util.*;
      * @return The display name for this email address.
      */
     public final String getDisplayName() {
-      return this.displayName;
-    }
+        return this.displayName;
+      }
 
     private final Address address;
 

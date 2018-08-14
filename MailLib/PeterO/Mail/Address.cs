@@ -6,6 +6,7 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 using System;
+using System.Collections.Generic;
 using System.Text;
 using PeterO;
 using PeterO.Text;
@@ -15,6 +16,14 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
   public class Address {
     private readonly string localPart;
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='obj'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
+    public override bool Equals(object obj) {
+      var other = obj as Address;
+      return other != null && this.localPart.Equals(other.localPart) &&
+        this.domain.Equals(other.domain); }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Address.LocalPart"]/*'/>
@@ -87,6 +96,23 @@ namespace PeterO.Mail {
         }
         return length;
       }
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
+    public override int GetHashCode() {
+      var hashCode = -1524613162;
+      if (domain != null) {
+        for (var i = 0; i < domain.Length; ++i) {
+          hashCode *= -1521134295 + domain[i];
+        }
+      }
+      if (localPart != null) {
+        for (var i = 0; i < localPart.Length; ++i) {
+          hashCode *= -1521134295 + localPart[i];
+        }
+      }
+      return hashCode;
     }
 
     private readonly string domain;

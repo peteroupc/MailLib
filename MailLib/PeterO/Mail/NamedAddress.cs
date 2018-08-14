@@ -15,22 +15,77 @@ namespace PeterO.Mail {
   public class NamedAddress {
     private readonly string displayName;
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
+    public override int GetHashCode() {
+      var hashCode = -1524613162;
+      if (displayName != null) {
+        for (var i = 0; i < displayName.Length; ++i) {
+          hashCode *= -1521134295 + displayName[i];
+        }
+      }
+      hashCode *= -1521134295 + (address == null ? 0 :
+        address.GetHashCode());
+      hashCode *= -1521134295 + (isGroup ? 0 : 1);
+      if (groupAddresses != null) {
+        hashCode *= -1521134295 + (groupAddresses.Count);
+      }
+      return hashCode;
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='obj'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
+    public override bool Equals(object obj) {
+      var other = obj as NamedAddress;
+      return other != null &&
+      (displayName == null ? other.displayName == null :
+        displayName.Equals(other.displayName)) &&
+   (address == null ? other.address == null : address.Equals(other.address))&&
+        isGroup == other.isGroup &&
+          (!isGroup || CollectionUtilities.ListEquals(groupAddresses,
+            other.groupAddresses));
+    }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)"]/*'/>
+    public bool AddressesEqual(NamedAddress na) {
+      if (na == null || isGroup != na.isGroup) {
+ return false;
+}
+      if (isGroup) {
+        if (this.groupAddresses.Count != na.GroupAddresses.Count) {
+ return false;
+}
+        for (var i = 0; i < this.groupAddresses.Count; ++i) {
+          NamedAddress a1 = this.groupAddresses[i];
+          NamedAddress a2 = na.groupAddresses[i];
+          if (!a1.AddressesEqual(a2)) {
+ return false;
+}
+        }
+        return true;
+      } else {
+        return this.address.Equals(na.address);
+      }
+    }
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Name"]/*'/>
     public string Name {
       get {
- return (this.displayName == null) ? ((this.address == null) ?
-          String.Empty : this.address.ToString()) : this.displayName;
+        return (this.displayName == null) ? ((this.address == null) ?
+                 String.Empty : this.address.ToString()) : this.displayName;
       }
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.DisplayName"]/*'/>
     public string DisplayName {
-    get {
-      return this.displayName;
+      get {
+        return this.displayName;
+      }
     }
-  }
 
     private readonly Address address;
 
@@ -56,7 +111,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
     public override string ToString() {
       if (this.isGroup) {
-        #if DEBUG
+#if DEBUG
 if (this.displayName == null) {
   throw new InvalidOperationException("this");
 }
