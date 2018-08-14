@@ -20,7 +20,7 @@ namespace PeterO.Mail {
     Phrase,
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Comment"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
     Comment
   }
 }

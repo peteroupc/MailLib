@@ -9,6 +9,22 @@ namespace MailLibTest {
   [TestFixture]
   public class MessageTest {
     [Test]
+    public void TestMultilingual() {
+      IList<string> languages =
+        new List<string>(new string[] { "en", "fr" });
+      var messages = new List<Message>();
+      messages.Add(new Message()
+              .SetHeader("from", "From-Lang1 <lang@example.com>")
+              .SetHeader("subject", "Subject-Lang1").SetTextBody("Body-Lang1"));
+      messages.Add(new Message()
+              .SetHeader("from", "From-Lang2 <lang@example.com>")
+              .SetHeader("subject", "Subject-Lang2").SetTextBody("Body-Lang2"));
+      if (Message.MakeMultilingualMessage(messages, languages) == null) {
+ Assert.Fail();
+ }
+    }
+
+    [Test]
     public void TestMediaTypeEncodingSingle() {
       SingleTestMediaTypeEncoding("xyz");
       SingleTestMediaTypeEncoding("xy z");

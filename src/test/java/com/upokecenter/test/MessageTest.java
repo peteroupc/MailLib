@@ -9,6 +9,22 @@ import com.upokecenter.mail.*;
 
   public class MessageTest {
     @Test
+    public void TestMultilingual() {
+      List<String> languages =
+        new ArrayList<String>(new String[] { "en", "fr" });
+      ArrayList<Message> messages = new ArrayList<Message>();
+      messages.add(new Message()
+              .SetHeader("from", "From-Lang1 <lang@example.com>")
+              .SetHeader("subject", "Subject-Lang1").SetTextBody("Body-Lang1"));
+      messages.add(new Message()
+              .SetHeader("from", "From-Lang2 <lang@example.com>")
+              .SetHeader("subject", "Subject-Lang2").SetTextBody("Body-Lang2"));
+      if (Message.MakeMultilingualMessage(messages, languages) == null) {
+ Assert.fail();
+ }
+    }
+
+    @Test
     public void TestMediaTypeEncodingSingle() {
       SingleTestMediaTypeEncoding("xyz");
       SingleTestMediaTypeEncoding("xy z");

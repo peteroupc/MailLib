@@ -215,10 +215,10 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
     public IList<NamedAddress> GetAddresses(string headerName) {
-      if ((headerName) == null) {
+      if (headerName == null) {
         throw new ArgumentNullException(nameof(headerName));
       }
-      if ((headerName).Length == 0) {
+      if (headerName.Length == 0) {
         throw new ArgumentException("headerName" + " is empty.");
       }
       headerName = DataUtilities.ToLowerCaseAscii(headerName);
@@ -569,8 +569,8 @@ namespace PeterO.Mail {
       // The spec for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
       // this case, the HTML version)
-      var textMessage = NewBodyPart().SetTextBody(text);
-      var htmlMessage = NewBodyPart().SetHtmlBody(html);
+      Message textMessage = NewBodyPart().SetTextBody(text);
+      Message htmlMessage = NewBodyPart().SetHtmlBody(html);
     string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
       this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
@@ -670,7 +670,8 @@ namespace PeterO.Mail {
       return bodyPart;
     }
     private static string BaseName(string filename) {
-      for (var i = filename.Length - 1; i >= 0; --i) {
+      var i = filename.Length-1;
+      for (; i >= 0; --i) {
         if (filename[i] == '\\' || filename[i] == '/') {
           return filename.Substring(i + 1);
         }
@@ -679,7 +680,8 @@ namespace PeterO.Mail {
     }
 
     private static string ExtensionName(string filename) {
-      for (var i = filename.Length - 1; i >= 0; --i) {
+      var i = filename.Length-1;
+      for (; i >= 0; --i) {
         if (filename[i] == '\\' || filename[i] == '/') {
           return String.Empty;
         } else if (filename[i] == '.') {
@@ -788,6 +790,116 @@ namespace PeterO.Mail {
     public Message AddInline(Stream inputStream, MediaType mediaType, string
       filename) {
       return AddBodyPart(inputStream, mediaType, filename, "inline");
+    }
+
+    private static bool HasSameAddresses(Message m1, Message m2) {
+      IList<NamedAddress> n1 = m1.GetAddresses("from");
+      IList<NamedAddress> n2 = m2.GetAddresses("from");
+      if (n1.Count != n2.Count) {
+        return false;
+      }
+      for (var i = 0; i < n1.Count; ++i) {
+        if (!n1[i].AddressesEqual(n2[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
+    public static Message MakeMultilingualMessage(IList<Message> messages,
+      IList<string> languages) {
+      if ((messages) == null) {
+        throw new ArgumentNullException(nameof(messages));
+      }
+      if ((languages) == null) {
+        throw new ArgumentNullException(nameof(languages));
+      }
+      if (messages.Count < 0) {
+        throw new ArgumentException("messages.Count (" + messages.Count +
+          ") is less than 0");
+      }
+      if (!(messages.Count).Equals(languages.Count)) {
+        throw new ArgumentException("messages.Count (" + messages.Count +
+          ") is not equal to " + (languages.Count));
+      }
+      for (var i = 0; i < messages.Count; ++i) {
+        if (messages[i] == null) {
+ throw new ArgumentException("messages");
+}
+        if (i > 0 && !HasSameAddresses(messages[0], messages[i])) {
+          throw new ArgumentException(
+            "Each message doesn't contain the same email addresses");
+        }
+      }
+        foreach (string lang in languages) {
+        IList<string> langtags = LanguageTags.GetLanguageList(lang);
+          if (langtags != null) {
+            throw new ArgumentException(
+            lang + " is an invalid list of language tags");
+          }
+        }
+      var prefaceBody = new StringBuilder().Append("This is a multilingual " +
+        "message, a message that\r\ncan be read in one or more different " +
+        "languages. Each\r\npart of the message may appear inline, as an " +
+        "attachment, or both.\r\n\r\n");
+      prefaceBody.Append("Languages available:\r\n\r\n");
+      foreach (string lang in languages) {
+        prefaceBody.Append("- ").Append(lang).Append("\r\n");
+      }
+      var prefaceSubject = new StringBuilder();
+      var zxx = new List<string>();
+      zxx.Add("zxx");
+      for (var i = 0; i < languages.Count; ++i) {
+        IList<string> langs = LanguageTags.GetLanguageList(languages[i]);
+        bool langInd=(i == languages.Count-1 && langs.Count == 1 &&
+          langs[0].Equals("zxx"));
+        if (!langInd && LanguageTags.LanguageTagFilter(
+        zxx,
+        langs).Count>0) {
+          throw new ArgumentException("zxx tag can only appear at end");
+        }
+        string subject = messages[i].GetHeader("subject");
+        if (!String.IsNullOrEmpty(subject)) {
+          if (prefaceSubject.Length > 0) {
+            prefaceSubject.Append(" / ");
+          }
+          prefaceSubject.Append(subject);
+        }
+      }
+      if (prefaceSubject.Length == 0) {
+        prefaceSubject.Append("Multilingual Message");
+      prefaceSubject.Append(" (");
+      for (var i = 0; i < languages.Count; ++i) {
+        if (i > 0) {
+          prefaceSubject.Append(", ");
+        }
+        prefaceSubject.Append(languages[i]);
+      }
+      prefaceSubject.Append(")");
+      }
+      string fromHeader = messages[0].GetHeader("from");
+      if (fromHeader == null) {
+        throw new ArgumentException("First message has no From header");
+      }
+      var msg = new Message();
+      msg.ContentType = MediaType.Parse("multipart/multilingual");
+      msg.SetHeader("from", fromHeader);
+      msg.ContentDisposition = PeterO.Mail.ContentDisposition.Inline;
+      string toHeader = messages[0].GetHeader("to");
+      if (toHeader != null) {
+        msg.SetHeader("to", toHeader);
+      }
+      msg.SetHeader("subject", prefaceSubject.ToString());
+      var preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
+      preface.SetTextBody(prefaceBody.ToString());
+      for (var i = 0; i < messages.Count; ++i) {
+        Message part = msg.AddInline(MediaType.Parse("message/rfc822"));
+        part.SetHeader("content-language", languages[i]);
+        part.SetBody(messages[i].GenerateBytes());
+      }
+      return msg;
     }
 
     internal static bool CanBeUnencoded(
@@ -1772,7 +1884,7 @@ if ((ungetState[1]) < 0x80) {
       var bytesNeeded = 0;
       var lower = 0x80;
       var upper = 0xbf;
-      var read = ungetState[0];
+      int read = ungetState[0];
       while (true) {
         int b = ungetState[2] == 1 ?
           ungetState[1] : stream.ReadByte();
@@ -2549,7 +2661,7 @@ if ((ungetState[1]) < 0x80) {
           }
           if (ch < 0) {
             if (boundaryChecker.HasNewBodyPart) {
-              var msg = NewBodyPart();
+              Message msg = NewBodyPart();
               int stackCount = boundaryChecker.BoundaryCount();
               // Pop entries if needed to match the stack
 #if DEBUG

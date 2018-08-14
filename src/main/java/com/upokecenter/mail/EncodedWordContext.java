@@ -22,7 +22,7 @@ at: http://peteroupc.github.io/
     Phrase,
 
     /**
-     * In a comment within a structured header field.
+     * Contains methods for parsing and matching language tags.
      */
     Comment
   }

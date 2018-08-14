@@ -11,7 +11,7 @@ Specifies how a message body should be displayed or handled by a mail user
 Description of DispositionBuilder.
 
 * [com.upokecenter.mail.LanguageTags](com.upokecenter.mail.LanguageTags.md) -
-Not documented yet.
+Contains methods for parsing and matching language tags.
 
 * [com.upokecenter.mail.MailDateTime](com.upokecenter.mail.MailDateTime.md) -
 Contains methods for parsing and generating date-time strings following the
@@ -29,6 +29,9 @@ Represents an email message, and contains methods and properties for
 
 * [com.upokecenter.mail.NamedAddress](com.upokecenter.mail.NamedAddress.md) -
 Represents an email address and a name for that address.
+
+* [com.upokecenter.mail.StringAndQuality](com.upokecenter.mail.StringAndQuality.md) -
+Not documented yet.
 
 * [com.upokecenter.mail.MessageDataException](com.upokecenter.mail.MessageDataException.md) -
 Exception thrown when a message has invalid syntax.

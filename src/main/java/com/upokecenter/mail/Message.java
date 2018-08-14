@@ -186,8 +186,8 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @return This object.
+     * Creates a message object with no header fields.
+     * @return A message object with no header fields.
      */
     public static Message NewBodyPart() {
       Message msg = new Message();
@@ -335,16 +335,22 @@ public final void setContentType(MediaType value) {
       }
 
     /**
-     * Not documented yet.
-     * @param headerName The parameter {@code headerName} is not documented yet.
+     * Gets a list of addresses contained in the header fields with the given name
+     * in this message.
+     * @param headerName The name of the header fields to retrieve.
      * @return A list of addresses, in the order in which they appear in this
      * message's header fields of the given name.
+     * @throws UnsupportedOperationException "headerName" is not supported for this method.
+     * Currently, the only header fields supported are To, Cc, Bcc,
+     * Reply-To, Sender, and From.
+     * @throws NullPointerException "headerName" is null.
+     * @throws IllegalArgumentException "headerName" is empty.
      */
     public List<NamedAddress> GetAddresses(String headerName) {
-      if ((headerName) == null) {
+      if (headerName == null) {
         throw new NullPointerException("headerName");
       }
-      if ((headerName).length == 0) {
+      if (headerName.length() == 0) {
         throw new IllegalArgumentException("headerName" + " is empty.");
       }
       headerName = DataUtilities.ToLowerCaseAscii(headerName);
@@ -655,8 +661,10 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Not documented yet.
-     * @return A Message object.
+     * Deletes all header fields in this message. Also clears this message's
+     * content disposition and resets its content type to
+     * MediaType.TextPlainAscii.
+     * @return This object.
      */
     public Message ClearHeaders() {
       this.headers.clear();
@@ -905,8 +913,8 @@ public final void setSubject(String value) {
       // The spec for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
       // this case, the HTML version)
-      var textMessage = NewBodyPart().SetTextBody(text);
-      var htmlMessage = NewBodyPart().SetHtmlBody(html);
+      Message textMessage = NewBodyPart().SetTextBody(text);
+      Message htmlMessage = NewBodyPart().SetHtmlBody(html);
     String mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
       this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
@@ -946,18 +954,24 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Not documented yet.
-     * @param mediaType The parameter {@code mediaType} is not documented yet.
-     * @return A Message object.
+     * Adds an inline body part with an empty body and with the given media type to
+     * this message. Before the new body part is added, if this message
+     * isn't already a multipart message, it becomes a "multipart/mixed"
+     * message with the current body converted to an inline body part.
+     * @param mediaType A media type to assign to the body part.
+     * @return A Message object for the generated body part.
      */
     public Message AddInline(MediaType mediaType) {
       return AddBodyPart(null, mediaType, null, "inline", true);
     }
 
     /**
-     * Not documented yet.
-     * @param mediaType The parameter {@code mediaType} is not documented yet.
-     * @return A Message object.
+     * Adds an attachment with an empty body and with the given media type to this
+     * message. Before the new attachment is added, if this message isn't
+     * already a multipart message, it becomes a "multipart/mixed" message
+     * with the current body converted to an inline body part.
+     * @param mediaType A media type to assign to the attachment.
+     * @return A Message object for the generated attachment.
      */
     public Message AddAttachment(MediaType mediaType) {
       return AddBodyPart(null, mediaType, null, "attachment", true);
@@ -1029,7 +1043,8 @@ try { if (ms != null) {
       return bodyPart;
     }
     private static String BaseName(String filename) {
-      for (var i = filename.length() - 1; i >= 0; --i) {
+      var i = filename.length()-1;
+      for (; i >= 0; --i) {
         if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
           return filename.substring(i + 1);
         }
@@ -1038,7 +1053,8 @@ try { if (ms != null) {
     }
 
     private static String ExtensionName(String filename) {
-      for (var i = filename.length() - 1; i >= 0; --i) {
+      var i = filename.length()-1;
+      for (; i >= 0; --i) {
         if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
           return "";
         } else if (filename.charAt(i) == '.') {
@@ -1231,6 +1247,117 @@ try { if (ms != null) {
     public Message AddInline(InputStream inputStream, MediaType mediaType, String
       filename) {
       return AddBodyPart(inputStream, mediaType, filename, "inline");
+    }
+
+    private static boolean HasSameAddresses(Message m1, Message m2) {
+      List<NamedAddress> n1 = m1.GetAddresses("from");
+      List<NamedAddress> n2 = m2.GetAddresses("from");
+      if (n1.size() != n2.size()) {
+        return false;
+      }
+      for (int i = 0; i < n1.size(); ++i) {
+        if (!n1.get(i).AddressesEqual(n2.get(i))) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    /**
+     *
+     */
+    public static Message MakeMultilingualMessage(List<Message> messages,
+      List<String> languages) {
+      if ((messages) == null) {
+        throw new NullPointerException("messages");
+      }
+      if ((languages) == null) {
+        throw new NullPointerException("languages");
+      }
+      if (messages.size() < 0) {
+        throw new IllegalArgumentException("messages.size() (" + messages.size() +
+          ") is less than 0");
+      }
+      if (!(messages.size()).equals(languages.size())) {
+        throw new IllegalArgumentException("messages.size() (" + messages.size() +
+          ") is not equal to " + (languages.size()));
+      }
+      for (int i = 0; i < messages.size(); ++i) {
+        if (messages.get(i) == null) {
+ throw new IllegalArgumentException("messages");
+}
+        if (i > 0 && !HasSameAddresses(messages.get(0), messages.get(i))) {
+          throw new IllegalArgumentException(
+            "Each message doesn't contain the same email addresses");
+        }
+      }
+        for (String lang : languages) {
+        List<String> langtags = LanguageTags.GetLanguageList(lang);
+          if (langtags != null) {
+            throw new IllegalArgumentException(
+            lang + " is an invalid list of language tags");
+          }
+        }
+      StringBuilder prefaceBody = new StringBuilder().append("This is a multilingual " +
+        "message, a message that\r\ncan be read in one or more different " +
+        "languages. Each\r\npart of the message may appear inline, as an " +
+        "attachment, or both.\r\n\r\n");
+      prefaceBody.append("Languages available:\r\n\r\n");
+      for (String lang : languages) {
+        prefaceBody.append("- ").append(lang).append("\r\n");
+      }
+      StringBuilder prefaceSubject = new StringBuilder();
+      ArrayList<String> zxx = new ArrayList<String>();
+      zxx.add("zxx");
+      for (int i = 0; i < languages.size(); ++i) {
+        List<String> langs = LanguageTags.GetLanguageList(languages.get(i));
+        boolean langInd=(i == languages.size()-1 && langs.size() == 1 &&
+          langs.get(0).equals("zxx"));
+        if (!langInd && LanguageTags.LanguageTagFilter(
+        zxx,
+        langs).size()>0) {
+          throw new IllegalArgumentException("zxx tag can only appear at end");
+        }
+        String subject = messages.get(i).GetHeader("subject");
+        if (!((subject) == null || (subject).length() == 0)) {
+          if (prefaceSubject.length() > 0) {
+            prefaceSubject.append(" / ");
+          }
+          prefaceSubject.append(subject);
+        }
+      }
+      if (prefaceSubject.length() == 0) {
+        prefaceSubject.append("Multilingual Message");
+      prefaceSubject.append(" (");
+      for (int i = 0; i < languages.size(); ++i) {
+        if (i > 0) {
+          prefaceSubject.append(", ");
+        }
+        prefaceSubject.append(languages.get(i));
+      }
+      prefaceSubject.append(")");
+      }
+      String fromHeader = messages.get(0).GetHeader("from");
+      if (fromHeader == null) {
+        throw new IllegalArgumentException("First message has no From header");
+      }
+      Message msg = new Message();
+      msg.setContentType(MediaType.Parse("multipart/multilingual"));
+      msg.SetHeader("from", fromHeader);
+      msg.setContentDisposition(PeterO.Mail.ContentDisposition.Inline);
+      String toHeader = messages.get(0).GetHeader("to");
+      if (toHeader != null) {
+        msg.SetHeader("to", toHeader);
+      }
+      msg.SetHeader("subject", prefaceSubject.toString());
+      var preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
+      preface.SetTextBody(prefaceBody.toString());
+      for (int i = 0; i < messages.size(); ++i) {
+        Message part = msg.AddInline(MediaType.Parse("message/rfc822"));
+        part.SetHeader("content-language", languages.get(i));
+        part.SetBody(messages.get(i).GenerateBytes());
+      }
+      return msg;
     }
 
     static boolean CanBeUnencoded(
@@ -2208,7 +2335,7 @@ try { if (ms != null) {
       int bytesNeeded = 0;
       int lower = 0x80;
       int upper = 0xbf;
-      var read = ungetState[0];
+      int read = ungetState[0];
       while (true) {
         int b = ungetState[2] == 1 ?
           ungetState[1] : stream.read();
@@ -2947,7 +3074,7 @@ try { if (ms != null) {
           }
           if (ch < 0) {
             if (boundaryChecker.getHasNewBodyPart()) {
-              var msg = NewBodyPart();
+              Message msg = NewBodyPart();
               int stackCount = boundaryChecker.BoundaryCount();
               // Pop entries if needed to match the stack
 
