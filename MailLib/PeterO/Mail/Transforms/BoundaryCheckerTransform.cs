@@ -110,7 +110,7 @@ namespace PeterO.Mail.Transforms {
         c = InnerBufferReadAndStore();
         if (c == '-') {
           // Possible boundary candidate
-          return this.CheckBoundaries(false);
+          return this.CheckBoundaries(PartStart);
         }
         ResetInnerBuffer();
         return '-';
@@ -128,10 +128,14 @@ namespace PeterO.Mail.Transforms {
         return 0x0d;
       }
       // Possible boundary candidate
-      return this.CheckBoundaries(true);
+      return this.CheckBoundaries(PartBody);
     }
 
-    private int CheckBoundaries(bool includeCrLf) {
+    private const int PartStart = 0;
+    private const int PartBody = 1;
+    private const int PartEpilogue = 2;
+
+    private int CheckBoundaries(int state) {
       // Reached here when the "--" of a possible
       // boundary delimiter is read. We need to
       // check boundaries here in order to find out
@@ -176,7 +180,7 @@ namespace PeterO.Mail.Transforms {
       if (matchingBoundary == null) {
         // No matching boundary
         ResetInnerBuffer();
-        return includeCrLf ? 0x0d : '-';
+        return (state==PartBody ||state==PartEpilogue) ? 0x0d : '-';
       }
       var closingDelim = false;
       // Pop the stack until the matching body part
@@ -186,7 +190,7 @@ namespace PeterO.Mail.Transforms {
       }
       // Boundary line found
       if (matchingBoundary.Length + 1 < bytesRead) {
-        closingDelim |= includeCrLf &&
+        closingDelim |= (state == PartBody || state == PartEpilogue) &&
           boundaryBuffer[matchingBoundary.Length] == '-' &&
           boundaryBuffer[matchingBoundary.Length + 1] == '-';
       }
@@ -205,6 +209,11 @@ namespace PeterO.Mail.Transforms {
         // Since this is the last body
         // part, the rest of the data before the next boundary
         // is insignificant
+        if (state == PartEpilogue) {
+          // We're already in an epilogue, so
+          // return now to avoid nesting in recursion
+          return -1;
+        }
         var unget = true;
         while (true) {
           c = unget ? lastC : InnerBufferRead();
@@ -227,8 +236,7 @@ namespace PeterO.Mail.Transforms {
                 // No boundary delimiter
                 ResetInnerBuffer();
               } else {
-                // TODO: Don't use recursion here
-                if (this.CheckBoundaries(true) == -1) {
+                if (this.CheckBoundaries(PartEpilogue) == -1) {
                   return -1;
                 }
               }

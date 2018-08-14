@@ -2643,7 +2643,10 @@ try { if (ms != null) {
         }
       } else {
         for (Message part : this.getParts()) {
-          AppendAscii(output, "\r\n--" + boundary + "\r\n");
+          if (depth > 0) {
+ AppendAscii(output, "\r\n");
+}
+          AppendAscii(output, "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
         }
         AppendAscii(output, "\r\n--" + boundary + "--");

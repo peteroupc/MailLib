@@ -20,8 +20,8 @@ import com.upokecenter.text.*;
 
     /**
      * Not documented yet.
-     * @param obj Not documented yet.
-     * @return A Boolean object.
+     * @param obj The parameter {@code obj} is not documented yet.
+     * @return Either {@code true} or {@code false}.
      */
     @Override public boolean equals(Object obj) {
       Address other = ((obj instanceof Address) ? (Address)obj : null);

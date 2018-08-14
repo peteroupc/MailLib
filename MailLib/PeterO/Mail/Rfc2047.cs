@@ -419,8 +419,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
             asterisk + 1,
             charset.Length - (asterisk + 1));
                 charset = charset.Substring(0, asterisk);
-  acceptedEncodedWord &=
-               ParserUtility.IsPotentiallyValidLanguageTag(language);
+  acceptedEncodedWord &= LanguageTags.IsPotentiallyValidLanguageTag(language);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }

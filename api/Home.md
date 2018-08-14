@@ -10,6 +10,9 @@ Specifies how a message body should be displayed or handled by a mail user
 * [com.upokecenter.mail.DispositionBuilder](com.upokecenter.mail.DispositionBuilder.md) -
 Description of DispositionBuilder.
 
+* [com.upokecenter.mail.LanguageTags](com.upokecenter.mail.LanguageTags.md) -
+Not documented yet.
+
 * [com.upokecenter.mail.MailDateTime](com.upokecenter.mail.MailDateTime.md) -
 Contains methods for parsing and generating date-time strings following the
  Internet Message Format (RFC 5322).

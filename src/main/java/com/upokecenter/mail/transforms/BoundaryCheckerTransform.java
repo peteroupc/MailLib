@@ -110,7 +110,7 @@ import com.upokecenter.mail.*;
         c = InnerBufferReadAndStore();
         if (c == '-') {
           // Possible boundary candidate
-          return this.CheckBoundaries(false);
+          return this.CheckBoundaries(PartStart);
         }
         ResetInnerBuffer();
         return '-';
@@ -128,10 +128,14 @@ import com.upokecenter.mail.*;
         return 0x0d;
       }
       // Possible boundary candidate
-      return this.CheckBoundaries(true);
+      return this.CheckBoundaries(PartBody);
     }
 
-    private int CheckBoundaries(boolean includeCrLf) {
+    private static final int PartStart = 0;
+    private static final int PartBody = 1;
+    private static final int PartEpilogue = 2;
+
+    private int CheckBoundaries(int state) {
       // Reached here when the "--" of a possible
       // boundary delimiter is read. We need to
       // check boundaries here in order to find out
@@ -176,7 +180,7 @@ import com.upokecenter.mail.*;
       if (matchingBoundary == null) {
         // No matching boundary
         ResetInnerBuffer();
-        return includeCrLf ? 0x0d : '-';
+        return (state==PartBody ||state==PartEpilogue) ? 0x0d : '-';
       }
       boolean closingDelim = false;
       // Pop the stack until the matching body part
@@ -186,7 +190,7 @@ import com.upokecenter.mail.*;
       }
       // Boundary line found
       if (matchingBoundary.length() + 1 < bytesRead) {
-        closingDelim |= includeCrLf &&
+        closingDelim |= (state == PartBody || state == PartEpilogue) &&
           boundaryBuffer[matchingBoundary.length()] == '-' &&
           boundaryBuffer[matchingBoundary.length() + 1] == '-';
       }
@@ -205,6 +209,11 @@ import com.upokecenter.mail.*;
         // Since this is the last body
         // part, the rest of the data before the next boundary
         // is insignificant
+        if (state == PartEpilogue) {
+          // We're already in an epilogue, so
+          // return now to avoid nesting in recursion
+          return -1;
+        }
         boolean unget = true;
         while (true) {
           c = unget ? lastC : InnerBufferRead();
@@ -227,8 +236,7 @@ import com.upokecenter.mail.*;
                 // No boundary delimiter
                 ResetInnerBuffer();
               } else {
-                // TODO: Don't use recursion here
-                if (this.CheckBoundaries(true) == -1) {
+                if (this.CheckBoundaries(PartEpilogue) == -1) {
                   return -1;
                 }
               }

@@ -954,7 +954,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
   firstQuote + 1, (
   firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       if (language.length() > 0 &&
-        !ParserUtility.IsPotentiallyValidLanguageTag(language)) {
+        !LanguageTags.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
         return null;
       }
@@ -988,7 +988,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
   firstQuote + 1, (
   firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       if (language.length() > 0 &&
-        !ParserUtility.IsPotentiallyValidLanguageTag(language)) {
+        !LanguageTags.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
         return USAsciiEncoding;
       }

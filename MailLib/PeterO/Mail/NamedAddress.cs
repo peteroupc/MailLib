@@ -15,8 +15,8 @@ namespace PeterO.Mail {
   public class NamedAddress {
     private readonly string displayName;
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
       if (displayName != null) {
@@ -33,9 +33,8 @@ namespace PeterO.Mail {
       return hashCode;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as NamedAddress;
       return other != null &&

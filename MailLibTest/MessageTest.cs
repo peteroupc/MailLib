@@ -2130,28 +2130,28 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestContentHeadersOnlyInBodyParts() {
       var msg = new Message().SetTextAndHtml("Hello", "Hello");
-      msg.SetHeader("x-test", "test");
-      msg.Parts[0].SetHeader("x-test", "test");
+      msg.SetHeader("mime-version", "1.0");
+      msg.Parts[0].SetHeader("mime-version", "1.0");
       {
-        string stringTemp = msg.GetHeader("x-test");
+        string stringTemp = msg.GetHeader("mime-version");
         Assert.AreEqual(
           "test",
           stringTemp);
       }
       {
-        string stringTemp = msg.Parts[0].GetHeader("x-test");
+        string stringTemp = msg.Parts[0].GetHeader("mime-version");
         Assert.AreEqual(
           "test",
           stringTemp);
       }
       msg = MessageFromString(msg.Generate());
       {
-        string stringTemp = msg.GetHeader("x-test");
+        string stringTemp = msg.GetHeader("mime-version");
         Assert.AreEqual(
-          "test",
+          "1.0",
           stringTemp);
       }
-      Assert.AreEqual(null, msg.Parts[0].GetHeader("x-test"));
+      Assert.AreEqual(null, msg.Parts[0].GetHeader("mime-version"));
     }
 
     [Test]

@@ -17,9 +17,8 @@ namespace PeterO.Mail {
   public class Address {
     private readonly string localPart;
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as Address;
       return other != null && this.localPart.Equals(other.localPart) &&
@@ -98,8 +97,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
       if (domain != null) {

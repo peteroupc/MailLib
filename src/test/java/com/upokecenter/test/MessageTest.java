@@ -2161,28 +2161,28 @@ MessageFromString(MessageFromString(msg).Generate())
     @Test
     public void TestContentHeadersOnlyInBodyParts() {
       Message msg = new Message().SetTextAndHtml("Hello", "Hello");
-      msg.SetHeader("x-test", "test");
-      msg.getParts().get(0).SetHeader("x-test", "test");
+      msg.SetHeader("mime-version", "1.0");
+      msg.getParts().get(0).SetHeader("mime-version", "1.0");
       {
-        String stringTemp = msg.GetHeader("x-test");
+        String stringTemp = msg.GetHeader("mime-version");
         Assert.assertEquals(
           "test",
           stringTemp);
       }
       {
-        String stringTemp = msg.getParts().get(0).GetHeader("x-test");
+        String stringTemp = msg.getParts().get(0).GetHeader("mime-version");
         Assert.assertEquals(
           "test",
           stringTemp);
       }
       msg = MessageFromString(msg.Generate());
       {
-        String stringTemp = msg.GetHeader("x-test");
+        String stringTemp = msg.GetHeader("mime-version");
         Assert.assertEquals(
-          "test",
+          "1.0",
           stringTemp);
       }
-      Assert.assertEquals(null, msg.getParts().get(0).GetHeader("x-test"));
+      Assert.assertEquals(null, msg.getParts().get(0).GetHeader("mime-version"));
     }
 
     @Test

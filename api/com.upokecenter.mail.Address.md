@@ -76,11 +76,11 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>obj</code> - Not documented yet.
+* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
 
 **Returns:**
 
-* A Boolean object.
+* Either <code>true</code> or <code>false</code>.
 
 ### getLocalPart
     public final String getLocalPart()
