@@ -907,7 +907,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
   firstQuote + 1,
   secondQuote - (firstQuote + 1));
       if (language.Length > 0 &&
-        !ParserUtility.IsPotentiallyValidLanguageTag(language)) {
+        !LanguageTags.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
         return null;
       }
@@ -941,7 +941,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
   firstQuote + 1,
   secondQuote - (firstQuote + 1));
       if (language.Length > 0 &&
-        !ParserUtility.IsPotentiallyValidLanguageTag(language)) {
+        !LanguageTags.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
         return USAsciiEncoding;
       }

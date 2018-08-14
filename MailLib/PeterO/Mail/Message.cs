@@ -2223,7 +2223,10 @@ if ((ungetState[1]) < 0x80) {
         }
       } else {
         foreach (Message part in this.Parts) {
-          AppendAscii(output, "\r\n--" + boundary + "\r\n");
+          if (depth > 0) {
+ AppendAscii(output, "\r\n");
+}
+          AppendAscii(output, "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
         }
         AppendAscii(output, "\r\n--" + boundary + "--");

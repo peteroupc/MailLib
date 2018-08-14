@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using PeterO;
 
-namespace MailLibTest {
+namespace PeterO.Mail {
+    /// <summary>Not documented yet.</summary>
   public static class LanguageTags {
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
@@ -41,10 +42,17 @@ namespace MailLibTest {
       return (string[])strings.ToArray();
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
     public static bool IsLanguageRange(string str) {
       return IsLanguageRange(str, false);
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <param name='extended'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
     public static bool IsLanguageRange(string str, bool extended) {
       if (String.IsNullOrEmpty(str)) {
  return false;
@@ -167,6 +175,9 @@ namespace MailLibTest {
       return indexStart;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <returns>A string object.</returns>
     public static string LanguageTagCase(string str) {
       if (String.IsNullOrEmpty(str)) {
  return str;
@@ -219,10 +230,8 @@ namespace MailLibTest {
       return index;
     }
 
-    /// <summary>Parses a language list from a Content-Language header
-    /// field.</summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <returns>An IList(string) object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)"]/*'/>
     public static IList<string> GetLanguageList(
       string str) {
       string tag = null;
@@ -252,14 +261,23 @@ namespace MailLibTest {
       return ret;
     }
 
+    /// <summary>Not documented yet.</summary>
     public sealed class StringAndQuality {
+    /// <summary>Initializes a new instance of the StringAndQuality
+    /// class.</summary>
+    /// <param name='value'>A string object.</param>
+    /// <param name='quality'>A 32-bit signed integer.</param>
       public StringAndQuality(string value, int quality) {
         this.Value = value;
         this.Quality = quality;
       }
 
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public String Value { get; private set; }
 
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public int Quality { get; private set; }
     }
 
@@ -285,13 +303,8 @@ namespace MailLibTest {
       }
     }
 
-    /// <summary>Parses a language range list from an Accept-Language
-    /// header field.</summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <returns>A list of language ranges with their associated qualities.
-    /// The list will be sorted in descending order by quality; if two or
-    /// more language ranges have the same quality, they will be sorted in
-    /// the order in which they appeared in the given string.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)"]/*'/>
     public static IList<StringAndQuality> GetRangeListWithQuality(
       string str) {
       string tag = null;
@@ -417,6 +430,12 @@ namespace MailLibTest {
       return true;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='ranges'>Not documented yet.</param>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <param name='extended'>Not documented yet. (3).</param>
+    /// <param name='matchStarAtEnd'>Not documented yet. (4).</param>
+    /// <returns>An IList(string) object.</returns>
     public static IList<string> LanguageTagFilter(
            IList<string> ranges,
            IList<string> languages,
@@ -491,6 +510,10 @@ namespace MailLibTest {
       return String.Empty;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='range'>Not documented yet.</param>
+    /// <param name='tag'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
     public static bool MatchesLanguageTag(string range, string tag) {
       IList<string> tags = LanguageTagFilter(
         new string[] { range },
@@ -500,6 +523,46 @@ namespace MailLibTest {
       return tags.Count > 0;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='range'>Not documented yet.</param>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <param name='defaultValue'>Not documented yet. (3).</param>
+    /// <returns>A string object.</returns>
+    public static string LanguageTagLookup(
+  string range,
+  IList<string> languages,
+  string defaultValue) {
+      return LanguageTagLookup(range, languages, defaultValue, false);
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='ranges'>Not documented yet.</param>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <param name='defaultValue'>Not documented yet. (3).</param>
+    /// <returns>A string object.</returns>
+    public static string LanguageTagLookup(
+  IList<string> ranges,
+  IList<string> languages,
+  string defaultValue) {
+      return LanguageTagLookup(ranges, languages, defaultValue, false);
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='ranges'>Not documented yet.</param>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <returns>An IList(string) object.</returns>
+    public static IList<string> LanguageTagFilter(
+  IList<string> ranges,
+  IList<string> languages) {
+      return LanguageTagFilter(ranges, languages, false, false);
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='range'>Not documented yet.</param>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <param name='defaultValue'>Not documented yet. (3).</param>
+    /// <param name='extended'>Not documented yet. (4).</param>
+    /// <returns>A string object.</returns>
     public static string LanguageTagLookup(
   string range,
   IList<string> languages,
@@ -512,6 +575,12 @@ namespace MailLibTest {
         extended);
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='ranges'>Not documented yet.</param>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <param name='defaultValue'>Not documented yet. (3).</param>
+    /// <param name='extended'>Not documented yet. (4).</param>
+    /// <returns>A string object.</returns>
     public static string LanguageTagLookup(
          IList<string> ranges,
          IList<string> languages,
@@ -559,15 +628,8 @@ namespace MailLibTest {
       return defaultValue;
     }
 
-    /// <summary>Returns true if (1) the given string is a well-formed
-    /// language tag under RFC 5646 (that is, the string follows the syntax
-    /// given in section 2.1 of that RFC), and (2) the language tag
-    /// contains at most one extended language subtag, no variant subtags
-    /// with the same value, and no extension singleton subtags with the
-    /// same value.</summary>
-    /// <param name='str'>The string to check.</param>
-    /// <returns><c>true</c>, if the string meets the conditions given in
-    /// the summary, <c>false</c> otherwise.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)"]/*'/>
     public static bool IsPotentiallyValidLanguageTag(string str) {
       if (String.IsNullOrEmpty(str)) {
         return false;

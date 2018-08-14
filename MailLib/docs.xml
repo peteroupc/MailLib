@@ -340,6 +340,15 @@
             <value>The domain of this email address (the part after the
             &quot;@&quot; sign).</value>
 </doc>
+<doc name="M:PeterO.Mail.Address.Equals(System.Object)">
+<summary>Not documented yet.</summary>
+            <param name='obj'>The parameter <paramref name='obj'/> is not documented yet.</param>
+            <returns>Either <c>true</c> or <c>false</c>.</returns>
+</doc>
+<doc name="M:PeterO.Mail.Address.GetHashCode">
+<summary>Not documented yet.</summary>
+            <returns>A 32-bit signed integer.</returns>
+</doc>
 <doc name="P:PeterO.Mail.Address.LocalPart">
 <summary>Gets the local part of this email address (the part before
             the "@" sign).</summary>
@@ -686,6 +695,32 @@ deprecated that parameter.) </para>
 </doc>
 <doc name="T:PeterO.Mail.IdentityEncoder">
 <summary>An IdentityEncoder.</summary>
+</doc>
+<doc name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)">
+<summary>Parses a language list from a Content-Language header
+            field.</summary>
+            <param name='str'>The parameter <paramref name='str'/> is not documented yet.</param>
+            <returns>An IList(string) object.</returns>
+</doc>
+<doc name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)">
+<summary>Parses a language range list from an Accept-Language
+            header field.</summary>
+            <param name='str'>The parameter <paramref name='str'/> is not documented yet.</param>
+            <returns>A list of language ranges with their associated qualities.
+            The list will be sorted in descending order by quality; if two or
+            more language ranges have the same quality, they will be sorted in
+            the order in which they appeared in the given string.</returns>
+</doc>
+<doc name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)">
+<summary>Returns true if (1) the given string is a well-formed
+            language tag under RFC 5646 (that is, the string follows the syntax
+            given in section 2.1 of that RFC), and (2) the language tag
+            contains at most one extended language subtag, no variant subtags
+            with the same value, and no extension singleton subtags with the
+            same value.</summary>
+            <param name='str'>The string to check.</param>
+            <returns><c>true</c>, if the string meets the conditions given in
+            the summary, <c>false</c> otherwise.</returns>
 </doc>
 <doc name="T:PeterO.Mail.MailDateTime">
 <summary>
@@ -1777,6 +1812,15 @@ this method.</summary>
 <doc name="P:PeterO.Mail.NamedAddress.DisplayName">
 <summary>Gets the display name for this email address. Returns null if the display name is absent.</summary>
             <value>The display name for this email address.</value>
+</doc>
+<doc name="M:PeterO.Mail.NamedAddress.Equals(System.Object)">
+<summary>Not documented yet.</summary>
+            <param name='obj'>The parameter <paramref name='obj'/> is not documented yet.</param>
+            <returns>Either <c>true</c> or <c>false</c>.</returns>
+</doc>
+<doc name="M:PeterO.Mail.NamedAddress.GetHashCode">
+<summary>Not documented yet.</summary>
+            <returns>A 32-bit signed integer.</returns>
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.GroupAddresses">
 <summary>Gets a read-only list of addresses that make up the group,

@@ -38,8 +38,8 @@ import java.util.*;
 
     /**
      * Not documented yet.
-     * @param obj Not documented yet.
-     * @return A Boolean object.
+     * @param obj The parameter {@code obj} is not documented yet.
+     * @return Either {@code true} or {@code false}.
      */
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
