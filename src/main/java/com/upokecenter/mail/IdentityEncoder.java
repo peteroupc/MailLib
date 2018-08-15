@@ -13,7 +13,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
     /**
-     * An IdentityEncoder.
+     *
      */
   final class IdentityEncoder implements ICharacterEncoder
   {
