@@ -252,7 +252,7 @@ try { if (ms != null) {
      * {@code index} is 0 or less, or is greater than the string's length.
      * Returns the replacement character (U + FFFD) if the previous character
      * is an unpaired surrogate code point. NOTE: If the return value is
-     * 65536 (0x10000) or greater, this indicates a supplemental code point
+     * 65536 (0x10000) or greater, this indicates a supplementary code point
      * that takes up two {@code char}s rather than one.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
@@ -273,7 +273,7 @@ try { if (ms != null) {
      * Returns a value as specified under {@code surrogateBehavior} if the
      * previous character is an unpaired surrogate code point. NOTE: If the
      * return value is 65536 (0x10000) or greater, this indicates a
-     * supplemental code point that takes up two {@code char}s rather than
+     * supplementary code point that takes up two {@code char}s rather than
      * one.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
@@ -312,7 +312,7 @@ try { if (ms != null) {
      * index} is less than 0, or is the string's length or greater. Returns
      * the replacement character (U + FFFD) if the current character is an
      * unpaired surrogate code point. NOTE: If the return value is 65536
-     * (0x10000) or greater, this indicates a supplemental code point that
+     * (0x10000) or greater, this indicates a supplementary code point that
      * takes up two {@code char}s rather than one.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
@@ -332,7 +332,7 @@ try { if (ms != null) {
      * index} is less than 0, or is the string's length or greater. Returns
      * a value as specified under {@code surrogateBehavior} if the previous
      * character is an unpaired surrogate code point. NOTE: If the return
-     * value is 65536 (0x10000) or greater, this indicates a supplemental
+     * value is 65536 (0x10000) or greater, this indicates a supplementary
      * code point that takes up two {@code char}s rather than one.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */

@@ -13,7 +13,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
     /**
-     * Encodes binary data in Base64.
+     * This is an class.
      */
   final class Base64Encoder implements ICharacterEncoder {
     static final int MaxLineLength = 76;

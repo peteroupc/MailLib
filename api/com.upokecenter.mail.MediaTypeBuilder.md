@@ -36,8 +36,9 @@ A mutable media type object.
  Sets this media type's top-level type.
 * `MediaType ToMediaType()`<br>
  Converts this builder to an immutable media type object.
-* `String toString()`<br>
- Converts this object to a text string.
+* `String toString() MediaType.toString`<br>
+ Converts this object to a text string of the media type it represents, in
+ the same form as MediaType.toString.
 
 ## Constructors
 
@@ -211,7 +212,8 @@ Sets this media type's subtype, such as "plain" or "xml" .
 
 ### toString
     public String toString()
-Converts this object to a text string.
+Converts this object to a text string of the media type it represents, in
+ the same form as <code>MediaType.toString</code>.
 
 **Overrides:**
 

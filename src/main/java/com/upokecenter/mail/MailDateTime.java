@@ -34,10 +34,19 @@ private MailDateTime() {
     }
 
     /**
-     * Not documented yet.
-     * @param dateTime The parameter {@code dateTime} is not documented yet.
-     * @param gmt The parameter {@code gmt} is not documented yet.
-     * @return A text string.
+     * Generates a date-time string following the Internet Message Format (RFC
+     * 5322) from an 8-element array, optionally using a "GMT" time zone
+     * indicator.
+     * @param dateTime The date and time in the form of an 8-element array. See
+     * <see
+  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     * for information on the format of this parameter.
+     * @param gmt If true, uses the string "GMT" as the time zone offset.
+     * @return A date-time string.
+     * @throws IllegalArgumentException The parameter "dateTime" is null or
+     * invalid.
+     * @throws UnsupportedOperationException The time zone offset is other than 0
+     * and "gmt" is true.
      */
     public static String GenerateDateString(int[] dateTime, boolean gmt) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||

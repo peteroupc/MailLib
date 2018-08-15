@@ -245,7 +245,7 @@ Gets the Unicode code point just before the given index of the string.
  <code>index</code> is 0 or less, or is greater than the string's length.
  Returns the replacement character (U + FFFD) if the previous character
  is an unpaired surrogate code point. NOTE: If the return value is
- 65536 (0x10000) or greater, this indicates a supplemental code point
+ 65536 (0x10000) or greater, this indicates a supplementary code point
  that takes up two <code>char</code>s rather than one.
 
 **Throws:**
@@ -274,7 +274,7 @@ Gets the Unicode code point just before the given index of the string.
  Returns a value as specified under <code>surrogateBehavior</code> if the
  previous character is an unpaired surrogate code point. NOTE: If the
  return value is 65536 (0x10000) or greater, this indicates a
- supplemental code point that takes up two <code>char</code>s rather than
+ supplementary code point that takes up two <code>char</code>s rather than
  one.
 
 **Throws:**
@@ -297,7 +297,7 @@ Gets the Unicode code point at the given index of the string.
  index</code> is less than 0, or is the string's length or greater. Returns
  the replacement character (U + FFFD) if the current character is an
  unpaired surrogate code point. NOTE: If the return value is 65536
- (0x10000) or greater, this indicates a supplemental code point that
+ (0x10000) or greater, this indicates a supplementary code point that
  takes up two <code>char</code>s rather than one.
 
 **Throws:**
@@ -325,7 +325,7 @@ Gets the Unicode code point at the given index of the string.
  index</code> is less than 0, or is the string's length or greater. Returns
  a value as specified under <code>surrogateBehavior</code> if the previous
  character is an unpaired surrogate code point. NOTE: If the return
- value is 65536 (0x10000) or greater, this indicates a supplemental
+ value is 65536 (0x10000) or greater, this indicates a supplementary
  code point that takes up two <code>char</code>s rather than one.
 
 **Throws:**

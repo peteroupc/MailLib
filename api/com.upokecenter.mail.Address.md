@@ -10,13 +10,13 @@ Represents an email address.
  Initializes a new instance of the Address
  class.
 * `boolean equals​(Object obj)`<br>
- Not documented yet.
+ Determines whether this object and another object are equal.
 * `String getDomain()`<br>
  Gets the domain of this email address (the part after the "@" sign).
 * `String getLocalPart()`<br>
  Gets the local part of this email address (the part before the "@" sign).
 * `int hashCode()`<br>
- Not documented yet.
+ Calculates the hash code of this object.
 * `String toString()`<br>
  Converts this address object to a text string.
 
@@ -68,7 +68,7 @@ Initializes a new instance of the <code>Address</code>
 
 ### equals
     public boolean equals​(Object obj)
-Not documented yet.
+Determines whether this object and another object are equal.
 
 **Overrides:**
 
@@ -76,11 +76,12 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code>.
+* <code>true</code> if this object and another object are equal; otherwise,
+ <code>false</code>.
 
 ### getLocalPart
     public final String getLocalPart()
@@ -104,7 +105,8 @@ Converts this address object to a text string.
 
 ### hashCode
     public int hashCode()
-Not documented yet.
+Calculates the hash code of this object. No application or process IDs are
+ used in the hash code calculation.
 
 **Overrides:**
 
@@ -112,7 +114,7 @@ Not documented yet.
 
 **Returns:**
 
-* A 32-bit signed integer.
+* A 32-bit hash code.
 
 ### getDomain
     public final String getDomain()

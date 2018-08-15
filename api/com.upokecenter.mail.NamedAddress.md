@@ -28,7 +28,7 @@ Represents an email address and a name for that address. Can represent a
             List<NamedAddress> mailboxes)`<br>
 * `boolean AddressesEqual​(NamedAddress na)`<br>
 * `boolean equals​(Object obj)`<br>
- Not documented yet.
+ Determines whether this object and another object are equal.
 * `Address getAddress()`<br>
  Gets the email address associated with this object.
 * `String getDisplayName()`<br>
@@ -40,7 +40,7 @@ Represents an email address and a name for that address. Can represent a
  Gets the display name for this email address, or the email address's value
  if the display name is null.
 * `int hashCode()`<br>
- Not documented yet.
+ Calculates the hash code of this object.
 * `boolean isGroup()`<br>
  Gets a value indicating whether this represents a group of addresses rather
  than a single address.
@@ -163,7 +163,8 @@ Initializes a new instance of the <code>NamedAddress</code>
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
 ### hashCode
     public int hashCode()
-Not documented yet.
+Calculates the hash code of this object. No application or process IDs are
+ used in the hash code calculation.
 
 **Overrides:**
 
@@ -171,11 +172,11 @@ Not documented yet.
 
 **Returns:**
 
-* A 32-bit signed integer.
+* A 32-bit hash code.
 
 ### equals
     public boolean equals​(Object obj)
-Not documented yet.
+Determines whether this object and another object are equal.
 
 **Overrides:**
 
@@ -183,11 +184,12 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code>.
+* <code>true</code> if this object and another object are equal; otherwise,
+ <code>false</code>.
 
 ### AddressesEqual
     public boolean AddressesEqual​(NamedAddress na)

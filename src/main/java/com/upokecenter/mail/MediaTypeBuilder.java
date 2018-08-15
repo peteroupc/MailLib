@@ -202,7 +202,8 @@ if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
     }
 
     /**
-     * Converts this object to a text string.
+     * Converts this object to a text string of the media type it represents, in
+     * the same form as <code>MediaType.toString</code>.
      * @return A string representation of this object.
      */
     @Override public String toString() {

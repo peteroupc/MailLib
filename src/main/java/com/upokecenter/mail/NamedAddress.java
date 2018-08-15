@@ -17,8 +17,9 @@ import java.util.*;
     private final String displayName;
 
     /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
+     * Calculates the hash code of this object. No application or process IDs are
+     * used in the hash code calculation.
+     * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
       int valueHashCode = -1524613162;
@@ -37,9 +38,10 @@ import java.util.*;
     }
 
     /**
-     * Not documented yet.
-     * @param obj The parameter {@code obj} is not documented yet.
-     * @return Either {@code true} or {@code false}.
+     * Determines whether this object and another object are equal.
+     * @param obj The parameter {@code obj} is an arbitrary object.
+     * @return {@code true} if this object and another object are equal; otherwise,
+     * {@code false}.
      */
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
