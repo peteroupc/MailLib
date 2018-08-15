@@ -805,6 +805,7 @@ namespace PeterO.Mail {
       }
       return true;
     }
+// TODO: Multilingual part selection
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
