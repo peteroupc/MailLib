@@ -253,6 +253,8 @@
             <returns>The converted string, or null if <paramref name='str'/> is
             null.</returns>
 </doc>
+<doc name="M:PeterO.DataUtilities.ToUpperCaseAscii(System.String)">
+</doc>
 <doc name="M:PeterO.DataUtilities.WriteUtf8(System.String,System.IO.Stream,System.Boolean)">
 <summary>Writes a string in UTF-8 encoding to a data
             stream.</summary>
@@ -694,6 +696,8 @@ deprecated that parameter.) </para>
 <summary>Converts this object to a text string.</summary>
             <returns>A string representation of this object.</returns>
 </doc>
+<doc name="T:PeterO.Mail.IdentityEncoder">
+</doc>
 <doc name="T:PeterO.Mail.LanguageTags">
 <summary>Contains methods for parsing and matching language tags.</summary>
 </doc>
@@ -709,14 +713,10 @@ deprecated that parameter.) </para>
             the order in which they appeared in the given string.  Returns null if "str" is null or syntactically invalid.</returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)">
-
-            <summary>Not documented yet.</summary><param name='str'>The parameter <paramref name='str'/> is not documented yet.</param><returns>Either <c>true</c> or <c>false</c>.</returns>
-
+<summary>Returns whether the given string is a basic language range under RFC 4647.  Examples include "*", "en-us", and "fr".</summary><param name='str'>The string to check.  Can be null.</param><returns><c>true</c> if the given string is a basic language range; otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)">
-
-            <summary>Not documented yet.</summary><param name='str'>The parameter <paramref name='str'/> is not documented yet.</param><param name='extended'>The parameter <paramref name='extended'/> is not documented yet.</param><returns>Either <c>true</c> or <c>false</c>.</returns>
-
+<summary>Returns whether the given string is a basic or extended language range under RFC 4647.  Examples of basic (and extended) language ranges include "*", "en-us", and "fr".  Examples of extended language ranges include "*-de" and "it-*".</summary><param name='str'>The string to check.  Can be null.</param><param name='extended'>Check whether the string is a basic language range if "false", or an extended language range if "true".</param><returns><c>true</c> if the given string is a basic language range (depending on the "extended" parameter); otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)">
 <summary>Returns true if (1) the given string is a well-formed
@@ -730,60 +730,81 @@ deprecated that parameter.) </para>
             the summary, <c>false</c> otherwise.</returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)">
-
-            <summary>Not documented yet.</summary><param name='str'>The parameter <paramref name='str'/> is not documented yet.</param><returns>A text string.</returns>
-
+<summary>Sets the given language tag to the case combination recommended by RFC 5646.  For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".</summary><param name='str'>A string of a language tag.  Can be null.</param><returns>A text string in the recommended case combination, or null if "str" is null.</returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})">
-
-            <summary>Not documented yet.</summary><param name='ranges'>The parameter <paramref name='ranges'/> is not documented yet.</param><param name='languages'>The parameter <paramref name='languages'/> is not documented yet.</param><returns>An IList(string) object.</returns>
-
+<summary>Finds the language tags that match a priority list of basic language ranges.</summary><param name='ranges'>A list of basic language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.</param><param name='languages'>A list of language tags, which should be given in order of descending preference.</param>
+<returns>A list of language tags that match the given range, in descending order of preference.</returns>
+<exception cref='ArgumentNullException'>"languages" or "ranges" is null.</exception>
+<exception cref='ArgumentException'>"ranges" contains a value that is
+not a basic language range, or "languages" contains a value
+that is not a potentially valid language tag.</exception>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)">
+<summary>Finds the language tags that match a priority list of language ranges.</summary>
+<param name='ranges'>A list of language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.</param><param name='languages'>A list of language tags, which should be given in order of descending preference.</param>
+<returns>A list of language tags that match the given range, in descending order of preference.</returns>
+<param name='extended'>If true, the ranges in "ranges" are extended language ranges; otherwise, they are basic language ranges.</param>
 
-            <summary>Not documented yet.</summary><param name='ranges'>The parameter <paramref name='ranges'/> is not documented yet.</param><param name='languages'>The parameter <paramref name='languages'/> is not documented yet.</param><param name='extended'>The parameter <paramref name='extended'/> is not documented yet.</param><param name='matchStarAtEnd'>The parameter <paramref name='matchStarAtEnd'/> is not documented yet.</param><returns>An IList(string) object.</returns>
-
+<exception cref='ArgumentNullException'>"languages" or "ranges" is null.</exception>
+<exception cref='ArgumentException'>"ranges" contains a value that is
+not a basic or extended language range, or "languages" contains a value
+that is not a potentially valid language tag.</exception>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)">
-
-            <summary>Not documented yet.</summary><param name='ranges'>The parameter <paramref name='ranges'/> is not documented yet.</param><param name='languages'>The parameter <paramref name='languages'/> is not documented yet.</param><param name='defaultValue'>The parameter <paramref name='defaultValue'/> is not documented yet.</param><returns>A text string.</returns>
-
+<summary>Does a language tag lookup (under RFC 4647) for
+a matching language tag.</summary><param name='ranges'>A list of basic language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.</param><param name='languages'>A list of language tags, which should be given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching language tag was found.</param><returns>The matching language tag, or the parameter
+"defaultValue" if there is no matching language tag.</returns>
+<exception cref='ArgumentNullException'>"languages" or "ranges" is null.</exception>
+<exception cref='ArgumentException'>"ranges" contains a value that is
+not a basic language range, or "languages" contains a value
+that is not a potentially valid language tag.</exception>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String,System.Boolean)">
-
-            <summary>Not documented yet.</summary><param name='ranges'>The parameter <paramref name='ranges'/> is not documented yet.</param><param name='languages'>The parameter <paramref name='languages'/> is not documented yet.</param><param name='defaultValue'>The parameter <paramref name='defaultValue'/> is not documented yet.</param><param name='extended'>The parameter <paramref name='extended'/> is not documented yet.</param><returns>A text string.</returns>
-
+<summary>Does a language tag lookup (under RFC 4647) for
+a matching language tag.</summary><param name='ranges'>A list of language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.</param><param name='languages'>A list of language tags, which should be given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching language tag was found.</param><param name='extended'>If true, the ranges in "ranges" are extended language ranges; otherwise, they are basic language ranges.</param><returns>The matching language tag, or the parameter
+"defaultValue" if there is no matching language tag.</returns>
+<exception cref='ArgumentNullException'>"languages" or "ranges" is null.</exception>
+<exception cref='ArgumentException'>"ranges" contains a value that is
+not a basic or extended language range, or "languages" contains a value
+that is not a potentially valid language tag.</exception>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String)">
-
-            <summary>Not documented yet.</summary><param name='range'>The parameter <paramref name='range'/> is not documented yet.</param><param name='languages'>The parameter <paramref name='languages'/> is not documented yet.</param><param name='defaultValue'>The parameter <paramref name='defaultValue'/> is not documented yet.</param><returns>A text string.</returns>
-
+<summary>Does a language tag lookup (under RFC 4647) for
+a matching language tag.</summary><param name='range'>A basic language range (see the documentation for "IsLanguageRange").</param><param name='languages'>A list of language tags, which should be given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching language tag was found.</param><returns>The matching language tag, or the parameter
+"defaultValue" if there is no matching language tag.</returns>
+<exception cref='ArgumentNullException'>"languages" is null.</exception>
+<exception cref='ArgumentException'>"range" is not a basic language range, or "languages" contains a value
+that is not a potentially valid language tag.</exception>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String,System.Boolean)">
-
-            <summary>Not documented yet.</summary><param name='range'>The parameter <paramref name='range'/> is not documented yet.</param><param name='languages'>The parameter <paramref name='languages'/> is not documented yet.</param><param name='defaultValue'>The parameter <paramref name='defaultValue'/> is not documented yet.</param><param name='extended'>The parameter <paramref name='extended'/> is not documented yet.</param><returns>A text string.</returns>
-
+<summary>Does a language tag lookup (under RFC 4647) for
+a matching language tag.</summary><param name='range'>A language range (see the documentation for "IsLanguageRange").</param><param name='languages'>A list of language tags, which should be given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching language tag was found.</param><param name='extended'>If true, "range" is an extended language range; otherwise, it's a are basic language range.</param><returns>The matching language tag, or the parameter
+"defaultValue" if there is no matching language tag.</returns>
+<exception cref='ArgumentNullException'>"languages" is null.</exception>
+<exception cref='ArgumentException'>"range" is not a basic or extended language range, or "languages" contains a value
+that is not a potentially valid language tag.</exception>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.MatchesLanguageTag(System.String,System.String)">
-
-            <summary>Not documented yet.</summary><param name='range'>The parameter <paramref name='range'/> is not documented yet.</param><param name='tag'>The parameter <paramref name='tag'/> is not documented yet.</param><returns>Either <c>true</c> or <c>false</c>.</returns>
-
+<summary>Determines whether the given language tag matches the given language range.</summary><param name='range'>A basic language range (see the documentation for "IsLanguageRange").</param><param name='tag'>A language tag.</param><returns><c>true</c> if the language tag matches the language range by the filtering method under RFC 4647; otherwise, <c>false</c>.</returns>
+<exception cref='ArgumentException'>"range" is not a basic language range, or "tag" is not a potentially valid language tag.</exception>
 </doc>
 <doc name="T:PeterO.Mail.LanguageTags.StringAndQuality">
-<summary>Not documented yet.</summary>
+<summary>Stores an arbitrary string and a "quality value" for that string.
+For instance, the string can be a language tag, and the "quality value" can be the degree of preference for that language.</summary>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.StringAndQuality.#ctor(System.String,System.Int32)">
 <summary>Initializes a new instance of the <see cref='StringAndQuality'/> class.</summary>
-            <param name='value'>The parameter <paramref name='value'/> is a text string.</param>
-            <param name='quality'>The parameter <paramref name='quality'/> is a 32-bit signed integer.</param>
+            <param name='value'>An arbitrary text string.</param>
+            <param name='quality'>A 32-bit signed integer serving as the "quality" value.</param>
 </doc>
 <doc name="P:PeterO.Mail.LanguageTags.StringAndQuality.Quality">
-<summary>Gets a value not documented yet.</summary>
-            <value>A value not documented yet.</value>
+<summary>Gets the quality value stored by this object.</summary>
+            <value>The quality value stored by this object.</value>
 </doc>
 <doc name="P:PeterO.Mail.LanguageTags.StringAndQuality.Value">
-<summary>Gets a value not documented yet.</summary>
-            <value>A value not documented yet.</value>
+<summary>Gets the arbitrary string stored by this object.</summary>
+            <value>The arbitrary string stored by this object.</value>
 </doc>
 <doc name="T:PeterO.Mail.MailDateTime">
 <summary>
