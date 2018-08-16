@@ -136,6 +136,9 @@
  readable stream, and with the given file name.
 * `Message ClearHeaders()`<br>
  Deletes all header fields in this message.
+* `static String DecodeHeaderValue​(String name,
+                 String value)`<br>
+ Not documented yet.
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
@@ -199,6 +202,11 @@ Use GetAddresses(\To\) instead.
  Removes a header field by index.
 * `Message RemoveHeader​(String name)`<br>
  Removes all instances of the given header field from this message.
+* `Message SelectLanguageMessage​(List<String> languages)`<br>
+ Not documented yet.
+* `Message SelectLanguageMessage​(List<String> languages,
+                     boolean preferOriginals)`<br>
+ Not documented yet.
 * `Message SetBody​(byte[] bytes)`<br>
  Sets the body of this message to the given byte array.
 * `void setContentDisposition​(ContentDisposition value)`<br>
@@ -820,6 +828,20 @@ Sets the value of a header field by index without changing its name.
 
 * <code>NullPointerException</code> - The parameter <code>value</code> is null.
 
+### DecodeHeaderValue
+    public static String DecodeHeaderValue​(String name, String value)
+Not documented yet.
+
+**Parameters:**
+
+* <code>name</code> - Not documented yet.
+
+* <code>value</code> - Not documented yet.
+
+**Returns:**
+
+* A string object.
+
 ### SetHeader
     public Message SetHeader​(String name, String value)
 Sets the value of this message's header field. If a header field with the
@@ -1111,6 +1133,32 @@ Adds an inline body part to this message in the form of data from the given
  "mediaType" is null.
 
 * <code>MessageDataException</code> - An I/O error occurred.
+
+### SelectLanguageMessage
+    public Message SelectLanguageMessage​(List<String> languages)
+Not documented yet.
+
+**Parameters:**
+
+* <code>languages</code> - Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+### SelectLanguageMessage
+    public Message SelectLanguageMessage​(List<String> languages, boolean preferOriginals)
+Not documented yet.
+
+**Parameters:**
+
+* <code>languages</code> - Not documented yet.
+
+* <code>preferOriginals</code> - Not documented yet.
+
+**Returns:**
+
+* A Message object.
 
 ### MakeMultilingualMessage
     public static Message MakeMultilingualMessage​(List<Message> messages, List<String> languages)

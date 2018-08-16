@@ -32,17 +32,22 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]/*'/>
-    public override string ToString() {
-      if (this.localPart.Length > 0 &&
-          HeaderParser.ParseDotAtomText(
+private string DomainToString(bool useALabelDomain) {
+ var dom = this.domain;
+ if (useALabelDomain && dom.Length > 0 && dom[0] != '[') {
+  dom = Idna.EncodeDomainName(this.domain);
+ }
+ return dom;
+}
+
+private string LocalPartToString() {
+     if (this.localPart.Length > 0 && HeaderParser.ParseDotAtomText(
   this.localPart,
   0,
   this.localPart.Length,
   null) == this.localPart.Length) {
-        return this.localPart + "@" + this.domain;
-      } else {
+  return this.localPart;
+ } else {
         var sb = new StringBuilder();
         sb.Append('"');
         for (int i = 0; i < this.localPart.Length; ++i) {
@@ -57,44 +62,51 @@ namespace PeterO.Mail {
           }
         }
         sb.Append('"');
-        sb.Append('@');
-        sb.Append(this.domain);
         return sb.ToString();
       }
+}
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]/*'/>
+    public override string ToString() {
+// TODO: Check whether this method is used by
+// any message encoders and use or make a more
+// robust alternative to this method.
+     string localPart = LocalPartToString();
+     string domain = DomainToString(true);
+long localPartLength = DataUtilities.GetUtf8Length(localPart, true);
+long domainLength = DataUtilities.GetUtf8Length(domain, true);
+if (localPartLength + domainLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
+return localPart+"@"+domain;
+} else if (localPartLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
+return localPart+"@\r\n "+domain;
+} else if (domainLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
+return localPart+"\r\n @"+domain;
+} else {
+return localPart+"\r\n @\r\n "+domain;
+}
     }
 
-    private int StringLength() {
-      int domainLength = this.domain.Length;
-      if (domainLength > 0 && this.domain[0] != '[') {
-        // "domain" is a domain name, and not an address literal,
-        // so get its A-label length
-        domainLength =
-  checked((int)
-  DataUtilities.GetUtf8Length(
-  Idna.EncodeDomainName(this.domain),
-  true));
-      }
-      if (this.localPart.Length > 0 && HeaderParser.ParseDotAtomText(
-  this.localPart,
-  0,
-  this.localPart.Length,
-  null) == this.localPart.Length) {
-        return this.localPart.Length + domainLength + 1;
-      } else {
-        // two quotes, at sign, and domain length
-        int length = 3 + domainLength;
-        for (int i = 0; i < this.localPart.Length; ++i) {
-          char c = this.localPart[i];
-          if (c == 0x20 || c == 0x09) {
-            ++length;
-          } else if (c == '"' || c == 0x7f || c == '\\' || c < 0x20) {
-            length += 2;
-          } else {
-            ++length;
-          }
-        }
-        return length;
-      }
+    private bool IsTooLong() {
+      string localPart = LocalPartToString();
+     string domain = DomainToString(true);
+     string domain2 = DomainToString(false);
+        // Maximum character length per line for an Internet message minus 1;
+        // we check if the length exceeds that number (thus excluding the space
+        // character of a folded line).
+     if
+  (DataUtilities.GetUtf8Length(localPart, true)>Message.MaxHardHeaderLineLength
+       - 1) {
+ return true;
+}
+     if
+  (DataUtilities.GetUtf8Length(domain, true)>Message.MaxHardHeaderLineLength
+       - 1) {
+ return true;
+}
+     return
+  (DataUtilities.GetUtf8Length(domain2, true)>Message.MaxHardHeaderLineLength
+       - 1) ? (true) : (false);
     }
 
     /// <include file='../../docs.xml'
@@ -168,11 +180,7 @@ namespace PeterO.Mail {
   localPartEnd + 1,
   addressValue.Length);
       // Check length restrictions.
-      if (this.StringLength() > Message.MaxHardHeaderLineLength - 1) {
-        // Maximum character length per line for an Internet message minus 1;
-        // we check if the length exceeds that number (thus excluding the space
-        // character
-        // of a folded line).
+      if (this.IsTooLong()) {
         throw new ArgumentException("Address too long");
       }
     }
@@ -186,8 +194,8 @@ namespace PeterO.Mail {
       }
       this.localPart = localPart;
       this.domain = domain;
-      // Check length restrictions. See above.
-      if (this.StringLength() > 997) {
+      // Check length restrictions.
+      if (this.IsTooLong()) {
         throw new ArgumentException("Address too long");
       }
     }

@@ -406,6 +406,38 @@ retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
       return retString.toString();
       }
 
+// <summary></summary>
+    public static String EncodeStringForURI(String s) {
+      if (s == null) {
+  throw new NullPointerException("s");
+}
+int index = 0;
+StringBuilder builder = new StringBuilder();
+      while (index < s.length()) {
+        int c = s.charAt(index);
+        if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
+            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          c = 0xfffd;
+        }
+        if (c >= 0x10000) {
+ ++index;
+}
+    if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'
+) ||
+            (c >= '0' && c <= '9') || "-_.~".indexOf((char)c) >= 0)) {
+          builder.append((char)c);
+          ++index;
+        } else {
+          percentEncodeUtf8(builder, c);
+          ++index;
+        }
+      }
+return builder.toString();
+    }
+
     private static boolean isIfragmentChar(int c) {
       // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
@@ -604,9 +636,10 @@ public static String BuildIRI(
             builder.append("%25");
             ++index;
           }
-        } else if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+        } else if ((c & 0x7f) == c &&
+   ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
             (c >= '0' && c <= '9') ||
-            "-_.~/(=):!$&'*+,;@".indexOf((char)c) >= 0) {
+            "-_.~/(=):!$&'*+,;@".indexOf((char)c) >= 0)) {
           // NOTE: Question mark will be percent encoded even though
           // it can appear in query and fragment strings
           builder.append((char)c);

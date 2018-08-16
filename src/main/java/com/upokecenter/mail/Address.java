@@ -37,19 +37,22 @@ import com.upokecenter.text.*;
         return this.localPart;
       }
 
-    /**
-     * Converts this address object to a text string.
-     * @return A string representation of this object.
-     */
-    @Override public String toString() {
-      if (this.localPart.length() > 0 &&
-          HeaderParser.ParseDotAtomText(
+private String DomainToString(boolean useALabelDomain) {
+ var dom = this.domain;
+ if (useALabelDomain && dom.length > 0 && dom.get(0) != '[') {
+  dom = Idna.EncodeDomainName(this.domain);
+ }
+ return dom;
+}
+
+private String LocalPartToString() {
+     if (this.localPart.length() > 0 && HeaderParser.ParseDotAtomText(
   this.localPart,
   0,
   this.localPart.length(),
   null) == this.localPart.length()) {
-        return this.localPart + "@" + this.domain;
-      } else {
+  return this.localPart;
+ } else {
         StringBuilder sb = new StringBuilder();
         sb.append('"');
         for (int i = 0; i < this.localPart.length(); ++i) {
@@ -64,44 +67,53 @@ import com.upokecenter.text.*;
           }
         }
         sb.append('"');
-        sb.append('@');
-        sb.append(this.domain);
         return sb.toString();
       }
+}
+
+    /**
+     * Converts this address object to a text string.
+     * @return A string representation of this object.
+     */
+    @Override public String toString() {
+// TODO: Check whether this method is used by
+// any message encoders and use or make a more
+// robust alternative to this method.
+     String localPart = LocalPartToString();
+     String domain = DomainToString(true);
+long localPartLength = DataUtilities.GetUtf8Length(localPart, true);
+long domainLength = DataUtilities.GetUtf8Length(domain, true);
+if (localPartLength + domainLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
+return localPart+"@"+domain;
+} else if (localPartLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
+return localPart+"@\r\n "+domain;
+} else if (domainLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
+return localPart+"\r\n @"+domain;
+} else {
+return localPart+"\r\n @\r\n "+domain;
+}
     }
 
-    private int StringLength() {
-      int domainLength = this.domain.length();
-      if (domainLength > 0 && this.domain.charAt(0) != '[') {
-        // "domain" is a domain name, and not an address literal,
-        // so get its A-label length
-        domainLength =
-  ((int)
-  DataUtilities.GetUtf8Length(
-  Idna.EncodeDomainName(this.domain),
-  true));
-      }
-      if (this.localPart.length() > 0 && HeaderParser.ParseDotAtomText(
-  this.localPart,
-  0,
-  this.localPart.length(),
-  null) == this.localPart.length()) {
-        return this.localPart.length() + domainLength + 1;
-      } else {
-        // two quotes, at sign, and domain length
-        int length = 3 + domainLength;
-        for (int i = 0; i < this.localPart.length(); ++i) {
-          char c = this.localPart.charAt(i);
-          if (c == 0x20 || c == 0x09) {
-            ++length;
-          } else if (c == '"' || c == 0x7f || c == '\\' || c < 0x20) {
-            length += 2;
-          } else {
-            ++length;
-          }
-        }
-        return length;
-      }
+    private boolean IsTooLong() {
+      String localPart = LocalPartToString();
+     String domain = DomainToString(true);
+     String domain2 = DomainToString(false);
+        // Maximum character length per line for an Internet message minus 1;
+        // we check if the length exceeds that number (thus excluding the space
+        // character of a folded line).
+     if
+  (DataUtilities.GetUtf8Length(localPart, true)>Message.MaxHardHeaderLineLength
+       - 1) {
+ return true;
+}
+     if
+  (DataUtilities.GetUtf8Length(domain, true)>Message.MaxHardHeaderLineLength
+       - 1) {
+ return true;
+}
+     return
+  (DataUtilities.GetUtf8Length(domain2, true)>Message.MaxHardHeaderLineLength
+       - 1) ? (true) : (false);
     }
 
     /**
@@ -187,11 +199,7 @@ import com.upokecenter.text.*;
   localPartEnd + 1,
   addressValue.length());
       // Check length restrictions.
-      if (this.StringLength() > Message.MaxHardHeaderLineLength - 1) {
-        // Maximum character length per line for an Internet message minus 1;
-        // we check if the length exceeds that number (thus excluding the space
-        // character
-        // of a folded line).
+      if (this.IsTooLong()) {
         throw new IllegalArgumentException("Address too long");
       }
     }
@@ -205,8 +213,8 @@ import com.upokecenter.text.*;
       }
       this.localPart = localPart;
       this.domain = domain;
-      // Check length restrictions. See above.
-      if (this.StringLength() > 997) {
+      // Check length restrictions.
+      if (this.IsTooLong()) {
         throw new IllegalArgumentException("Address too long");
       }
     }

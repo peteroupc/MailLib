@@ -109,6 +109,10 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
     public override string ToString() {
+// TODO: Check whether this method is used by
+// any message encoders and use or make a more
+// robust alternative to this method, using
+// encoded words if necessary.
       if (this.isGroup) {
 #if DEBUG
 if (this.displayName == null) {

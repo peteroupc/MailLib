@@ -24,8 +24,18 @@ namespace PeterO.Mail.Transforms {
 
     private void StartInnerBuffer() {
       if (this.innerBufferCount > 0) {
+        #if DEBUG
+if (this.innerBufferCount < this.innerBufferIndex) {
+  throw new ArgumentException("this.innerBufferCount (" +
+    this.innerBufferCount + ") is less than " +
+    this.innerBufferIndex);
+}
+#endif
+
         Array.Copy(this.innerBuffer, this.innerBufferIndex,
-          this.innerBuffer, 0, this.innerBufferCount);
+          this.innerBuffer, 0,
+          this.innerBufferCount - this.innerBufferIndex);
+       this.innerBufferCount -= this.innerBufferIndex;
       }
       this.innerBufferIndex = 0;
     }

@@ -764,18 +764,6 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
       }
     }
 
-/**
- * @deprecated
- */
-@Deprecated
-    public static String EncodeString(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      return new HeaderEncoder().AppendAsEncodedWords(
-        str).toString();
-    }
-
     public static void EncodePhraseText(
   HeaderEncoder enc,
   String str,

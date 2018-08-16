@@ -784,15 +784,6 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
       }
     }
 
-    [Obsolete]
-    public static string EncodeString(string str) {
-      if (str == null) {
-        throw new ArgumentNullException(nameof(str));
-      }
-      return new HeaderEncoder().AppendAsEncodedWords(
-        str).ToString();
-    }
-
     public static void EncodePhraseText(
   HeaderEncoder enc,
   string str,

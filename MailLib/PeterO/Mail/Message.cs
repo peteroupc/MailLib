@@ -122,7 +122,7 @@ namespace PeterO.Mail {
     [Obsolete("Use GetAddresses(\"Bcc\") instead.")]
     public IList<NamedAddress> BccAddresses {
       get {
-        return ParseAddresses(this.GetMultipleHeaders("bcc"));
+return GetAddresses("bcc");
       }
     }
 
@@ -153,7 +153,7 @@ namespace PeterO.Mail {
     [Obsolete("Use GetAddresses(\"Cc\") instead.")]
     public IList<NamedAddress> CCAddresses {
       get {
-        return ParseAddresses(this.GetMultipleHeaders("cc"));
+return GetAddresses("cc");
       }
     }
 
@@ -236,7 +236,7 @@ namespace PeterO.Mail {
     [Obsolete("Use GetAddresses(\"From\") instead.")]
     public IList<NamedAddress> FromAddresses {
       get {
-        return ParseAddresses(this.GetMultipleHeaders("from"));
+return GetAddresses("from");
       }
     }
 
@@ -280,7 +280,7 @@ namespace PeterO.Mail {
     [Obsolete("Use GetAddresses(\"To\") instead.")]
     public IList<NamedAddress> ToAddresses {
       get {
-        return ParseAddresses(this.GetMultipleHeaders("to"));
+return GetAddresses("to");
       }
     }
 
@@ -520,6 +520,14 @@ namespace PeterO.Mail {
                     / 2));
       }
       return this.SetHeader(index, this.headers[index * 2], value);
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='name'>Not documented yet.</param>
+    /// <param name='value'>Not documented yet.</param>
+    /// <returns>A string object.</returns>
+    public static string DecodeHeaderValue(string name, string value) {
+      return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
     }
 
     /// <include file='../../docs.xml'
@@ -818,11 +826,18 @@ private static string GetContentTranslationType(string ctt) {
          ctt.Substring(index, cttEnd - index));
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <returns>A Message object.</returns>
     public Message SelectLanguageMessage(
        IList<string> languages) {
       return SelectLanguageMessage(languages, false);
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='languages'>Not documented yet.</param>
+    /// <param name='preferOriginals'>Not documented yet.</param>
+    /// <returns>A Message object.</returns>
     public Message SelectLanguageMessage(
        IList<string> languages,
        bool preferOriginals) {
@@ -834,13 +849,12 @@ private static string GetContentTranslationType(string ctt) {
         IList<string> filt;
         for (var i = 0; i < passes; ++i) {
  foreach (Message part in this.Parts) {
-      clang = LanguageTags.GetLanguageList(part.GetHeader("content-language"
-));
+      clang = LanguageTags.GetLanguageList(part.GetHeader(
+  "content-language"));
             if (clang == null) {
  continue;
 }
          if (preferOriginals && i == 0) {  // Allow originals only, on first
-              pass
               string ctt =
   GetContentTranslationType(part.GetHeader("content-translation-type"));
               if (!ctt.Equals("original")) {
@@ -980,7 +994,7 @@ private static string GetContentTranslationType(string ctt) {
         }
         Message part = msg.AddInline(mt);
         part.SetHeader("content-language", languages[i]);
-        part.SetBody(messages[i].GenerateBytes());
+        part.SetBody(DataUtilities.GetUtf8Bytes(msgstring, true));
       }
       return msg;
     }
@@ -1483,18 +1497,7 @@ private static string GetContentTranslationType(string ctt) {
     }
 
     internal static IList<NamedAddress> ParseAddresses(string value) {
-      var tokener = new Tokener();
-      if (value == null) {
-        return new List<NamedAddress>();
-      }
-      // Check for valid syntax
-      return (HeaderParser.ParseHeaderTo(value, 0, value.Length, tokener) !=
-              value.Length) ? (new List<NamedAddress>()) :
-        HeaderParserUtility.ParseAddressList(
-          value,
-          0,
-          value.Length,
-          tokener.GetTokens());
+return ParseAddresses(new string[] { value});
     }
 
     internal static IList<NamedAddress> ParseAddresses(string[] values) {
@@ -1923,7 +1926,7 @@ private static string GetContentTranslationType(string ctt) {
             int[] state = { lineCount, c, 1 };
             c = ReadUtf8Char(stream, state);
             //DebugUtility.Log("c=" + c + "," + lineCount + "," +
-             //       state[0]+ ","+state[1]+","+state[2]);
+             // state[0]+ ","+state[1]+","+state[2]);
             lineCount = state[0];
             ungetLast = (state[2] == 1);
             lastByte = state[1];
@@ -2248,15 +2251,12 @@ if ((ungetState[1]) < 0x80) {
           }
           haveFrom = true;
         }
-        /* if (
-          depth > 0 && (
-            name.Length < 8 || !name.Substring(
-              0,
-              8).Equals("content-"))) {
-          // don't generate header fields not starting with "Content-"
+        if (
+          depth > 0 && name.IndexOf("--")==0) {
+          // don't generate header fields starting with "--"
           // in body parts
           continue;
-        }*/
+        }
         if (name.Equals("mime-version")) {
           if (depth > 0) {
             // Don't output if this is a body part

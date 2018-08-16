@@ -111,8 +111,8 @@ Parses a language list from a Content-Language header field.
 
 **Returns:**
 
-* A list of language tags. Returns null if "str" is null or
- syntactically invalid.
+* A list of language tags. Returns an empty list if "str" is null or
+ the empty string, or null if "str" syntactically invalid.
 
 ### GetRangeListWithQuality
     public static List<StringAndQuality> GetRangeListWithQuality​(String str)

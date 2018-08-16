@@ -163,9 +163,9 @@ import com.upokecenter.text.*;
               } else if (c == 0x20) {
                 this.machineState = 7;
                 return count;
-              } else if ((c >= 'A' && c <= 'Z') ||
+              } else if (c<0x80 && ((c >= 'A' && c <= 'Z') ||
                 (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') ||
-                "()'+-.,/?:".indexOf((char)c) >= 0) {
+                "()'+-.,/?:".indexOf((char)c) >= 0)) {
                 return count + this.IncrementAndAppendChar(output, (char)c);
               } else {
                 // NOTE: Cannot be encoded using lower-case hexadecimal
