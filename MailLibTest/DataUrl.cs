@@ -180,7 +180,8 @@ namespace MailLibTest {
           sb.Append(URIUtility.EncodeStringForURI(field));
         }
       }
-      if (msg.ContentType.IsText) {
+      if (msg.ContentType.IsText &&
+          !String.IsNullOrEmpty(msg.ContentType.GetCharset())) {
         field = msg.BodyString;
         if (!String.IsNullOrEmpty(field)) {
           sb.Append(firstField ? "?body=" : "&body=");

@@ -73,7 +73,7 @@ Release Notes
 Version 0.12.0:
 
 - The internal code for parsing and generating message headers was extensively refactored.  Much of the refactoring improves conformance with RFCs that define the message format and MIME.
-- As a result of the refactoring, the message generation can better ensure, when possible, that each line of a generated message is no more than 76 characters long, as recommended by those RFCs.
+- As a result of the refactoring, the message generation can better ensure, when possible, that each line of a generated message is no more than 78 characters long, as recommended by those RFCs.
 - Many bugs were fixed, including those relating to downgrading header fields containing non-ASCII characters to ASCII in the Generate method.  Another bug involves an infinite decoding loop involving certain Content-Type and Content-Disposition strings.
 - One additional deviation to RFC 2047 (encoded words) is noted in the documentation for the Message class.  I think the deviation shows a weakness in that RFC.
 - At least three methods added to ContentDisposition class, including ToSingleLineString.

@@ -341,7 +341,9 @@ Deprecated.
 Gets this message's content disposition. The content disposition specifies
  how a user agent should display or otherwise handle this message. Can
  be set to null. If set to a disposition or to null, updates the
- Content-Disposition header field as appropriate.
+ Content-Disposition header field as appropriate. If this message was
+ generated from message data, the value will initially be unset unless
+ a MIME-Version header field appeared in the message data.
 
 **Returns:**
 
@@ -355,7 +357,10 @@ Gets this message's media type. When getting, the media type may differ in
  certain cases from the value of the Content-Type header field, if
  any, and may have a value even if the Content-Type header field is
  absent from this message. If set to a media type, updates the
- Content-Type header field as appropriate. Cannot be set to null.
+ Content-Type header field as appropriate. Cannot be set to null. If
+ this message was generated from message data, the value will
+ initially be "text/plain;charset=us-ascii" unless a MIME-Version
+ header field appeared in the message data.
 
 **Returns:**
 

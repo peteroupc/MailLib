@@ -182,7 +182,8 @@ private DataUrl() {
           sb.append(URIUtility.EncodeStringForURI(field));
         }
       }
-      if (msg.getContentType().isText()) {
+      if (msg.getContentType().isText() &&
+          !((msg.getContentType().GetCharset()) == null || (msg.getContentType().GetCharset()).length() == 0)) {
         field = msg.getBodyString();
         if (!((field) == null || (field).length() == 0)) {
           sb.append(firstField ? "?body=" : "&body=");
