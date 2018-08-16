@@ -1262,7 +1262,82 @@ try { if (ms != null) {
       }
       return true;
     }
-// TODO: Multilingual part selection
+private static String GetContentTranslationType(String ctt) {
+      if (((ctt) == null || (ctt).length() == 0)) {
+ return "";
+}
+      int index = HeaderParser.ParseFWS(ctt, 0, ctt.length(), null);
+      int cttEnd = HeaderParser.ParsePhraseAtom(ctt, index, ctt.length(), null);
+      if (cttEnd != ctt.length()) {
+ return "";
+}
+      return DataUtilities.ToLowerCaseAscii(
+         ctt.substring(index, (index)+(cttEnd - index)));
+    }
+
+    public Message SelectLanguageMessage(
+       List<String> languages) {
+      return SelectLanguageMessage(languages, false);
+    }
+
+    public Message SelectLanguageMessage(
+       List<String> languages,
+       boolean preferOriginals) {
+      if (this.getContentType().getTypeAndSubType().equals("multipart/multilingual") &&
+         this.getParts().size() >= 2) {
+        String subject = this.GetHeader("subject");
+        int passes = (preferOriginals) ? 2 : 1;
+        List<String> clang;
+        List<String> filt;
+        for (int i = 0; i < passes; ++i) {
+ for (Message part : this.getParts()) {
+      clang = LanguageTags.GetLanguageList(part.GetHeader("content-language"
+));
+            if (clang == null) {
+ continue;
+}
+         if (preferOriginals && i == 0) {  // Allow originals only, on first
+              pass
+              String ctt =
+  GetContentTranslationType(part.GetHeader("content-translation-type"));
+              if (!ctt.equals("original")) {
+                continue;
+              }
+            }
+            filt = LanguageTags.LanguageTagFilter(languages, clang);
+            if (filt.size() > 0) {
+              Message ret = part.GetBodyMessage();
+              if (ret != null) {
+                if (subject!=null && ret.GetHeader("subject") == null) {
+ ret.SetHeader("subject", subject);
+}
+                return ret;
+              }
+            }
+          }
+        }
+        // Fall back
+        Message firstmsg = this.getParts().get(1);
+        Message lastPart = this.getParts().get(this.getParts().size() - 1);
+        List<String> zxx = new ArrayList<String>(new String[] { "zxx" });
+        clang = LanguageTags.GetLanguageList(
+          lastPart.GetHeader("content-language"));
+        if (clang != null) {
+          filt = LanguageTags.LanguageTagFilter(zxx, clang);
+          if (filt.size() > 0) {
+            firstmsg = lastPart;
+          }
+        }
+        firstmsg = firstmsg.GetBodyMessage();
+        if (firstmsg != null) {
+          if (subject!=null && firstmsg.GetHeader("subject") == null) {
+ firstmsg.SetHeader("subject", subject);
+}
+          return firstmsg;
+        }
+      }
+      return this;
+    }
 
     /**
      *
@@ -1294,7 +1369,7 @@ try { if (ms != null) {
       }
         for (String lang : languages) {
         List<String> langtags = LanguageTags.GetLanguageList(lang);
-          if (langtags != null) {
+          if (langtags == null) {
             throw new IllegalArgumentException(
             lang + " is an invalid list of language tags");
           }
@@ -1354,7 +1429,14 @@ try { if (ms != null) {
       var preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
       preface.SetTextBody(prefaceBody.toString());
       for (int i = 0; i < messages.size(); ++i) {
-        Message part = msg.AddInline(MediaType.Parse("message/rfc822"));
+        MediaType mt=MediaType.Parse("message/rfc822");
+        String msgstring = messages.get(i).Generate();
+        if (msgstring.indexOf("\r\n--") >= 0 || msgstring.indexOf("--")==0) {
+          // Message/global allows quoted-printable and
+          // base64, so we can avoid raw boundary delimiters
+          mt = MediaType.Parse("message/global");
+        }
+        Message part = msg.AddInline(mt);
         part.SetHeader("content-language", languages.get(i));
         part.SetBody(messages.get(i).GenerateBytes());
       }
@@ -2770,10 +2852,12 @@ try { if (ms != null) {
           }
         }
       } else {
+        boolean writeNewLine = (depth > 0);
         for (Message part : this.getParts()) {
-          if (depth > 0) {
+          if (writeNewLine) {
  AppendAscii(output, "\r\n");
 }
+          writeNewLine = true;
           AppendAscii(output, "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
         }

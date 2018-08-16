@@ -805,7 +805,82 @@ namespace PeterO.Mail {
       }
       return true;
     }
-// TODO: Multilingual part selection
+private static string GetContentTranslationType(string ctt) {
+      if (String.IsNullOrEmpty(ctt)) {
+ return String.Empty;
+}
+      int index = HeaderParser.ParseFWS(ctt, 0, ctt.Length, null);
+      int cttEnd = HeaderParser.ParsePhraseAtom(ctt, index, ctt.Length, null);
+      if (cttEnd != ctt.Length) {
+ return String.Empty;
+}
+      return DataUtilities.ToLowerCaseAscii(
+         ctt.Substring(index, cttEnd - index));
+    }
+
+    public Message SelectLanguageMessage(
+       IList<string> languages) {
+      return SelectLanguageMessage(languages, false);
+    }
+
+    public Message SelectLanguageMessage(
+       IList<string> languages,
+       bool preferOriginals) {
+      if (this.ContentType.TypeAndSubType.Equals("multipart/multilingual") &&
+         this.Parts.Count >= 2) {
+        string subject = this.GetHeader("subject");
+        int passes = (preferOriginals) ? 2 : 1;
+        IList<string> clang;
+        IList<string> filt;
+        for (var i = 0; i < passes; ++i) {
+ foreach (Message part in this.Parts) {
+      clang = LanguageTags.GetLanguageList(part.GetHeader("content-language"
+));
+            if (clang == null) {
+ continue;
+}
+         if (preferOriginals && i == 0) {  // Allow originals only, on first
+              pass
+              string ctt =
+  GetContentTranslationType(part.GetHeader("content-translation-type"));
+              if (!ctt.Equals("original")) {
+                continue;
+              }
+            }
+            filt = LanguageTags.LanguageTagFilter(languages, clang);
+            if (filt.Count > 0) {
+              Message ret = part.GetBodyMessage();
+              if (ret != null) {
+                if (subject!=null && ret.GetHeader("subject") == null) {
+ ret.SetHeader("subject", subject);
+}
+                return ret;
+              }
+            }
+          }
+        }
+        // Fall back
+        Message firstmsg = this.Parts[1];
+        Message lastPart = this.Parts[this.Parts.Count - 1];
+        IList<string> zxx = new List<string>(new string[] { "zxx" });
+        clang = LanguageTags.GetLanguageList(
+          lastPart.GetHeader("content-language"));
+        if (clang != null) {
+          filt = LanguageTags.LanguageTagFilter(zxx, clang);
+          if (filt.Count > 0) {
+            firstmsg = lastPart;
+          }
+        }
+        firstmsg = firstmsg.GetBodyMessage();
+        if (firstmsg != null) {
+          if (subject!=null && firstmsg.GetHeader("subject") == null) {
+ firstmsg.SetHeader("subject", subject);
+}
+          return firstmsg;
+        }
+      }
+      return this;
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
@@ -836,7 +911,7 @@ namespace PeterO.Mail {
       }
         foreach (string lang in languages) {
         IList<string> langtags = LanguageTags.GetLanguageList(lang);
-          if (langtags != null) {
+          if (langtags == null) {
             throw new ArgumentException(
             lang + " is an invalid list of language tags");
           }
@@ -896,7 +971,14 @@ namespace PeterO.Mail {
       var preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
       preface.SetTextBody(prefaceBody.ToString());
       for (var i = 0; i < messages.Count; ++i) {
-        Message part = msg.AddInline(MediaType.Parse("message/rfc822"));
+        MediaType mt=MediaType.Parse("message/rfc822");
+        string msgstring = messages[i].Generate();
+        if (msgstring.IndexOf("\r\n--") >= 0 || msgstring.IndexOf("--")==0) {
+          // Message/global allows quoted-printable and
+          // base64, so we can avoid raw boundary delimiters
+          mt = MediaType.Parse("message/global");
+        }
+        Message part = msg.AddInline(mt);
         part.SetHeader("content-language", languages[i]);
         part.SetBody(messages[i].GenerateBytes());
       }
@@ -2335,10 +2417,12 @@ if ((ungetState[1]) < 0x80) {
           }
         }
       } else {
+        bool writeNewLine = (depth > 0);
         foreach (Message part in this.Parts) {
-          if (depth > 0) {
+          if (writeNewLine) {
  AppendAscii(output, "\r\n");
 }
+          writeNewLine = true;
           AppendAscii(output, "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
         }

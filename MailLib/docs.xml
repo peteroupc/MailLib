@@ -703,7 +703,7 @@ deprecated that parameter.) </para>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)">
 <summary>Parses a language list from a Content-Language header
-            field.</summary><param name='str'>A string following the syntax of a Content-Language header field (see RFC 3282).  This is a comma-separated list of language tags.  RFC 5322 comments (in parentheses) can appear.  This parameter can be null.</param><returns>A list of language tags.  Returns null if "str" is null or syntactically invalid.</returns>
+            field.</summary><param name='str'>A string following the syntax of a Content-Language header field (see RFC 3282).  This is a comma-separated list of language tags.  RFC 5322 comments (in parentheses) can appear.  This parameter can be null.</param><returns>A list of language tags.  Returns an empty list if "str" is null or the empty string, or null if "str" syntactically invalid.</returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)">
 <summary>Parses a language range list from an Accept-Language

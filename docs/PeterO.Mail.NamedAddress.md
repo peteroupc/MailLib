@@ -180,6 +180,45 @@ Gets the display name for this email address, or the email address's value if th
 
 The name for this email address.
 
+### AddressesEqual
+
+    public bool AddressesEqual(
+        PeterO.Mail.NamedAddress na);
+
+<b>Parameters:</b>
+
+ * <i>na</i>: A named address object to compare with this one. Can be null.
+
+<b>Return Value:</b>
+
+Either  `true`  or  `false` .
+
+### Equals
+
+    public override bool Equals(
+        object obj);
+
+Determines whether this object and another object are equal.
+
+<b>Parameters:</b>
+
+ * <i>obj</i>: The parameter  <i>obj</i>
+ is an arbitrary object.
+
+<b>Return Value:</b>
+
+ `true`  if this object and another object are equal; otherwise,  `false` .
+
+### GetHashCode
+
+    public override int GetHashCode();
+
+Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
+
+<b>Return Value:</b>
+
+A 32-bit hash code.
+
 ### ToString
 
     public override string ToString();

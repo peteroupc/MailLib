@@ -235,8 +235,8 @@ namespace PeterO.Mail {
       var first = true;
       var index = 0;
       var ret = new List<string>();
-      if (str == null) {
- return null;
+      if (String.IsNullOrEmpty(str)) {
+ return ret;
 }
       while (index < str.Length) {
         if (!first) {

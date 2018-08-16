@@ -4,6 +4,7 @@
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) - Specifies how a message body should be displayed or             handled by a mail user agent.
  * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - Description of DispositionBuilder.
+ * [PeterO.Mail.LanguageTags](PeterO.Mail.LanguageTags.md) - Contains methods for parsing and matching language tags.
  * [PeterO.Mail.MailDateTime](PeterO.Mail.MailDateTime.md) - Contains methods for parsing and generating date-time strings following the            Internet Message Format (RFC 5322).
  * [PeterO.Mail.MediaType](PeterO.Mail.MediaType.md) -
 Specifies what kind of data a message body is.
@@ -12,6 +13,7 @@ Specifies what kind of data a message body is.
 Represents an email message, and contains methods and             properties for accessing and modifying email message data.
  * [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) - Exception thrown when a message has invalid             syntax.
  * [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) - Represents an email address and a name for that address.
+ * [PeterO.Mail.StringAndQuality](PeterO.Mail.StringAndQuality.md) - Stores an arbitrary string and a "quality value" for that string.
  * [PeterO.Text.Idna](PeterO.Text.Idna.md) -
 Contains methods that implement Internationalized Domain             Names in Applications (IDNA).
  * [PeterO.Text.Normalization](PeterO.Text.Normalization.md) - Represents a Unicode normalization form.
