@@ -44,6 +44,32 @@ Gets the local part of this email address (the part before the "@" sign).
 
 The local part of this email address (the part before the "@" sign).
 
+### Equals
+
+    public override bool Equals(
+        object obj);
+
+Determines whether this object and another object are equal.
+
+<b>Parameters:</b>
+
+ * <i>obj</i>: The parameter  <i>obj</i>
+ is an arbitrary object.
+
+<b>Return Value:</b>
+
+ `true`  if this object and another object are equal; otherwise,  `false` .
+
+### GetHashCode
+
+    public override int GetHashCode();
+
+Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
+
+<b>Return Value:</b>
+
+A 32-bit hash code.
+
 ### ToString
 
     public override string ToString();

@@ -19,9 +19,26 @@ import com.upokecenter.mail.*;
       messages.add(new Message()
               .SetHeader("from", "From-Lang2 <lang@example.com>")
               .SetHeader("subject", "Subject-Lang2").SetTextBody("Body-Lang2"));
-      if (Message.MakeMultilingualMessage(messages, languages) == null) {
+      Message msg = Message.MakeMultilingualMessage(messages, languages);
+      if (msg == null) {
  Assert.fail();
  }
+      languages = new ArrayList<String>(new String[] { "fr" });
+      Message msg2 = msg.SelectLanguageMessage(languages);
+      {
+String stringTemp = msg2.GetHeader("subject");
+Assert.assertEquals(
+  "Subject-Lang2",
+  stringTemp);
+}
+      languages = new ArrayList<String>(new String[] { "en" });
+       msg2 = msg.SelectLanguageMessage(languages);
+      {
+String stringTemp = msg2.GetHeader("subject");
+Assert.assertEquals(
+  "Subject-Lang1",
+  stringTemp);
+}
     }
 
     @Test

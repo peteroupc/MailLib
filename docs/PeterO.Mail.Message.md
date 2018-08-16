@@ -221,6 +221,16 @@ A list of addresses found in the To header field or fields.
     public PeterO.Mail.Message AddAttachment(
         PeterO.Mail.MediaType mediaType);
 
+Adds an attachment with an empty body and with the given media type to this message. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+<b>Parameters:</b>
+
+ * <i>mediaType</i>: A media type to assign to the attachment.
+
+<b>Return Value:</b>
+
+A Message object for the generated attachment.
+
 ### AddAttachment
 
     public PeterO.Mail.Message AddAttachment(
@@ -376,6 +386,16 @@ The header field name is too long or contains an invalid character, or the heade
     public PeterO.Mail.Message AddInline(
         PeterO.Mail.MediaType mediaType);
 
+Adds an inline body part with an empty body and with the given media type to this message. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+<b>Parameters:</b>
+
+ * <i>mediaType</i>: A media type to assign to the body part.
+
+<b>Return Value:</b>
+
+A Message object for the generated body part.
+
 ### AddInline
 
     public PeterO.Mail.Message AddInline(
@@ -478,11 +498,11 @@ An I/O error occurred.
 
     public PeterO.Mail.Message ClearHeaders();
 
-Not documented yet.
+Deletes all header fields in this message. Also clears this message's content disposition and resets its content type to MediaType.TextPlainAscii.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
 
 ### Generate
 
@@ -520,16 +540,26 @@ The generated message as a byte array.
     public System.Collections.Generic.IList GetAddresses(
         string headerName);
 
-Not documented yet.
+Gets a list of addresses contained in the header fields with the given name in this message.
 
 <b>Parameters:</b>
 
- * <i>headerName</i>: The parameter  <i>headerName</i>
- is not documented yet.
+ * <i>headerName</i>: The name of the header fields to retrieve.
 
 <b>Return Value:</b>
 
 A list of addresses, in the order in which they appear in this message's header fields of the given name.
+
+<b>Exceptions:</b>
+
+ * System.NotSupportedException:
+"headerName" is not supported for this method. Currently, the only header fields supported are To, Cc, Bcc, Reply-To, Sender, and From.
+
+ * System.ArgumentNullException:
+"headerName" is null.
+
+ * System.ArgumentException:
+"headerName" is empty.
 
 ### GetBody
 
@@ -622,15 +652,41 @@ An array containing the values of all header fields with the given name, in the 
  * System.ArgumentNullException:
 Name is null.
 
+### MakeMultilingualMessage
+
+    public static PeterO.Mail.Message MakeMultilingualMessage(
+        System.Collections.Generic.IList messages,
+        System.Collections.Generic.IList languages);
+
+Generates a multilingual message (see RFC 8255) from a list of messages and a list of language strings.
+
+<b>Parameters:</b>
+
+ * <i>messages</i>: A list of messages forming the parts of the multilingual message object. Each message should have the same content, but be in a different language. Each message must have a From header field and use the same email address in that field as the other messages. The messages should be ordered in descending preference of language.
+
+ * <i>languages</i>: A list of language strings corresponding to the messages given in the "messages" parameter. A language string at a given index corresponds to the message at the same index. Each language string must follow the syntax of the Content-Language header field (see LanguageTags.GetLanguageList).
+
+<b>Return Value:</b>
+
+A Message object with the content type "multipart/multilingual". It will begin with an explanatory body part and be followed by the messages given in the "messages" parameter in the order given.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+"messages" or "languages" is null.
+
+ * System.ArgumentException:
+"messages" or "languages" is empty, their lengths don't match, at least one message is "null", each message doesn't contain the same email addresses in their From header fields, "languages" contains a syntactically invalid language tag list, "languages" contains the language tag "zzx" not appearing alone or at the end of the language tag list, or the first message contains no From header field.
+
 ### NewBodyPart
 
     public static PeterO.Mail.Message NewBodyPart();
 
-Not documented yet.
+Creates a message object with no header fields.
 
 <b>Return Value:</b>
 
-This object.
+A message object with no header fields.
 
 ### RemoveHeader
 

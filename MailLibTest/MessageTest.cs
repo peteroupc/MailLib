@@ -19,9 +19,26 @@ namespace MailLibTest {
       messages.Add(new Message()
               .SetHeader("from", "From-Lang2 <lang@example.com>")
               .SetHeader("subject", "Subject-Lang2").SetTextBody("Body-Lang2"));
-      if (Message.MakeMultilingualMessage(messages, languages) == null) {
+      Message msg = Message.MakeMultilingualMessage(messages, languages);
+      if (msg == null) {
  Assert.Fail();
  }
+      languages = new List<string>(new string[] { "fr" });
+      Message msg2 = msg.SelectLanguageMessage(languages);
+      {
+string stringTemp = msg2.GetHeader("subject");
+Assert.AreEqual(
+  "Subject-Lang2",
+  stringTemp);
+}
+      languages = new List<string>(new string[] { "en" });
+       msg2 = msg.SelectLanguageMessage(languages);
+      {
+string stringTemp = msg2.GetHeader("subject");
+Assert.AreEqual(
+  "Subject-Lang1",
+  stringTemp);
+}
     }
 
     [Test]
