@@ -9,6 +9,17 @@ import com.upokecenter.mail.*;
 
   public class MessageTest {
     @Test
+    public static void TestPseudoboundary() {
+      String msgstr =
+  "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed;boundary=BOUNDARY\r\nContent-Encoding: 7bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n"
+        +
+        "-- NOT A BOUNDARY --\r\n--NOT A BOUNDARY EITHER\r\n--BOUNDARY--";
+      Message msg = MessageFromString(msgstr);
+      System.out.println(msg.getContentType());
+      Assert.assertEquals(1, msg.getParts().size());
+    }
+
+    @Test
     public void TestMultilingual() {
       List<String> languages =
         new ArrayList<String>(new String[] { "en", "fr" });

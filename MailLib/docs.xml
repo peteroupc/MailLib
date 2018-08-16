@@ -703,7 +703,7 @@ deprecated that parameter.) </para>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)">
 <summary>Parses a language list from a Content-Language header
-            field.</summary><param name='str'>A string following the syntax of a Content-Language header field (see RFC 3282).  This is a comma-separated list of language tags.  RFC 5322 comments (in parentheses) can appear.  This parameter can be null.</param><returns>A list of language tags.  Returns an empty list if "str" is null or the empty string, or null if "str" syntactically invalid.</returns>
+            field.</summary><param name='str'>A string following the syntax of a Content-Language header field (see RFC 3282).  This is a comma-separated list of language tags.  RFC 5322 comments (in parentheses) can appear.  This parameter can be null.</param><returns>A list of language tags.  Returns an empty list if "str" is null or the empty string, or null if "str" is syntactically invalid.</returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)">
 <summary>Parses a language range list from an Accept-Language
@@ -1417,14 +1417,14 @@ public static Message AddAttachmentFromInline(this Message msg, string filename)
 <summary>Gets or sets this message's content disposition. The
             content disposition specifies how a user agent should display or
             otherwise handle this message. Can be set to null.  If set to a disposition or to null,
-  updates the Content-Disposition header field as appropriate.</summary>
+  updates the Content-Disposition header field as appropriate.  If this message was generated from message data, the value will initially be unset unless a MIME-Version header field appeared in the message data.</summary>
             <value>This message&apos;s content disposition, or null if none is
             specified.</value>
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentType">
 <summary>Gets or sets this message's media type.
 When getting, the media type may differ in certain cases from the value of the Content-Type header field, if any, and may have a value even if the Content-Type header field is absent from this message.
-If set to a media type, updates the Content-Type header field as appropriate.  Cannot be set to null.</summary>
+If set to a media type, updates the Content-Type header field as appropriate.  Cannot be set to null.  If this message was generated from message data, the value will initially be "text/plain;charset=us-ascii" unless a MIME-Version header field appeared in the message data.</summary>
             <value>This message&apos;s media type.</value>
             <exception cref='T:System.ArgumentNullException'>This value is
             being set and "value" is null.</exception>

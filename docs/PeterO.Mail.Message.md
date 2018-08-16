@@ -504,6 +504,24 @@ Deletes all header fields in this message. Also clears this message's content di
 
 This object.
 
+### DecodeHeaderValue
+
+    public static string DecodeHeaderValue(
+        string name,
+        string value);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>name</i>: Not documented yet.
+
+ * <i>value</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A string object.
+
 ### Generate
 
     public string Generate();
@@ -729,6 +747,39 @@ This instance.
  * System.ArgumentNullException:
 The parameter <i>name</i>
  is null.
+
+### SelectLanguageMessage
+
+    public PeterO.Mail.Message SelectLanguageMessage(
+        System.Collections.Generic.IList languages);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>languages</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
+
+### SelectLanguageMessage
+
+    public PeterO.Mail.Message SelectLanguageMessage(
+        System.Collections.Generic.IList languages,
+        bool preferOriginals);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>languages</i>: Not documented yet.
+
+ * <i>preferOriginals</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
 
 ### SetBody
 

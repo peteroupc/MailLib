@@ -128,6 +128,10 @@ import java.util.*;
      * @return A string representation of this object.
      */
     @Override public String toString() {
+// TODO: Check whether this method is used by
+// any message encoders and use or make a more
+// robust alternative to this method, using
+// encoded words if necessary.
       if (this.isGroup) {
         StringBuilder builder = new StringBuilder();
   builder.append(HeaderParserUtility.QuoteValueIfNeeded(this.displayName));

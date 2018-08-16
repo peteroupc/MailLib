@@ -225,7 +225,7 @@ import com.upokecenter.text.*;
  */
 @Deprecated
     public final List<NamedAddress> getBccAddresses() {
-        return ParseAddresses(this.GetMultipleHeaders("bcc"));
+return GetAddresses("bcc");
       }
 
     /**
@@ -262,7 +262,7 @@ import com.upokecenter.text.*;
  */
 @Deprecated
     public final List<NamedAddress> getCCAddresses() {
-        return ParseAddresses(this.GetMultipleHeaders("cc"));
+return GetAddresses("cc");
       }
 
     /**
@@ -370,7 +370,7 @@ public final void setContentType(MediaType value) {
  */
 @Deprecated
     public final List<NamedAddress> getFromAddresses() {
-        return ParseAddresses(this.GetMultipleHeaders("from"));
+return GetAddresses("from");
       }
 
     /**
@@ -420,7 +420,7 @@ public final void setSubject(String value) {
  */
 @Deprecated
     public final List<NamedAddress> getToAddresses() {
-        return ParseAddresses(this.GetMultipleHeaders("to"));
+return GetAddresses("to");
       }
 
     /**
@@ -832,6 +832,16 @@ public final void setSubject(String value) {
                     / 2));
       }
       return this.SetHeader(index, this.headers.get(index * 2), value);
+    }
+
+    /**
+     * Not documented yet.
+     * @param name Not documented yet.
+     * @param value Not documented yet.
+     * @return A string object.
+     */
+    public static String DecodeHeaderValue(String name, String value) {
+      return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
     }
 
     /**
@@ -1275,11 +1285,22 @@ private static String GetContentTranslationType(String ctt) {
          ctt.substring(index, (index)+(cttEnd - index)));
     }
 
+    /**
+     * Not documented yet.
+     * @param languages Not documented yet.
+     * @return A Message object.
+     */
     public Message SelectLanguageMessage(
        List<String> languages) {
       return SelectLanguageMessage(languages, false);
     }
 
+    /**
+     * Not documented yet.
+     * @param languages Not documented yet.
+     * @param preferOriginals Not documented yet.
+     * @return A Message object.
+     */
     public Message SelectLanguageMessage(
        List<String> languages,
        boolean preferOriginals) {
@@ -1291,13 +1312,12 @@ private static String GetContentTranslationType(String ctt) {
         List<String> filt;
         for (int i = 0; i < passes; ++i) {
  for (Message part : this.getParts()) {
-      clang = LanguageTags.GetLanguageList(part.GetHeader("content-language"
-));
+      clang = LanguageTags.GetLanguageList(part.GetHeader(
+  "content-language"));
             if (clang == null) {
  continue;
 }
          if (preferOriginals && i == 0) {  // Allow originals only, on first
-              pass
               String ctt =
   GetContentTranslationType(part.GetHeader("content-translation-type"));
               if (!ctt.equals("original")) {
@@ -1438,7 +1458,7 @@ private static String GetContentTranslationType(String ctt) {
         }
         Message part = msg.AddInline(mt);
         part.SetHeader("content-language", languages.get(i));
-        part.SetBody(messages.get(i).GenerateBytes());
+        part.SetBody(DataUtilities.GetUtf8Bytes(msgstring, true));
       }
       return msg;
     }
@@ -1940,18 +1960,7 @@ private static String GetContentTranslationType(String ctt) {
     }
 
     static List<NamedAddress> ParseAddresses(String value) {
-      Tokener tokener = new Tokener();
-      if (value == null) {
-        return new ArrayList<NamedAddress>();
-      }
-      // Check for valid syntax
-      return (HeaderParser.ParseHeaderTo(value, 0, value.length(), tokener) !=
-              value.length()) ? (new ArrayList<NamedAddress>()) :
-        HeaderParserUtility.ParseAddressList(
-          value,
-          0,
-          value.length(),
-          tokener.GetTokens());
+return ParseAddresses(new String[] { value});
     }
 
     static List<NamedAddress> ParseAddresses(String[] values) {
@@ -2380,7 +2389,7 @@ private static String GetContentTranslationType(String ctt) {
             int[] state = { lineCount, c, 1 };
             c = ReadUtf8Char(stream, state);
             //DebugUtility.Log("c=" + c + "," + lineCount + "," +
-             //       state[0]+ ","+state[1]+","+state[2]);
+             // state[0]+ ","+state[1]+","+state[2]);
             lineCount = state[0];
             ungetLast = (state[2] == 1);
             lastByte = state[1];
@@ -2691,15 +2700,12 @@ private static String GetContentTranslationType(String ctt) {
           }
           haveFrom = true;
         }
-        /* if (
-          depth > 0 && (
-            name.length() < 8 || !name.substring(
-              0, (
-              0)+(8)).equals("content-"))) {
-          // don't generate header fields not starting with "Content-"
+        if (
+          depth > 0 && name.indexOf("--")==0) {
+          // don't generate header fields starting with "--"
           // in body parts
           continue;
-        }*/
+        }
         if (name.equals("mime-version")) {
           if (depth > 0) {
             // Don't output if this is a body part
