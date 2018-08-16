@@ -89,6 +89,10 @@ private HeaderParserUtility() {
        }
     }
 
+/**
+ * @deprecated
+ */
+@Deprecated
     private static boolean ShouldQuote(String str) {
       if (str.length() == 0) {
         // Empty String
@@ -144,6 +148,10 @@ private HeaderParserUtility() {
       return false;
     }
 
+/**
+ * @deprecated
+ */
+@Deprecated
     public static String QuoteValueIfNeeded(String str) {
       return (!ShouldQuote(str)) ? str : QuoteValue(str);
     }

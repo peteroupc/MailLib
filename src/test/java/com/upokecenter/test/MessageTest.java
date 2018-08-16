@@ -11,8 +11,9 @@ import com.upokecenter.mail.*;
     @Test
     public static void TestPseudoboundary() {
       String msgstr =
+
   "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed;boundary=BOUNDARY\r\nContent-Encoding: 7bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n"
-        +
+    +
         "-- NOT A BOUNDARY --\r\n--NOT A BOUNDARY EITHER\r\n--BOUNDARY--";
       Message msg = MessageFromString(msgstr);
       System.out.println(msg.getContentType());
@@ -2381,7 +2382,7 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestContentDisposition() {
       // not implemented yet
     }
-    @Test
+    @Test(timeout = 10000)
     public void TestContentType() {
       Message msg = new Message().SetTextBody("text");
       msg.setContentType(MediaType.Parse("text/html"));

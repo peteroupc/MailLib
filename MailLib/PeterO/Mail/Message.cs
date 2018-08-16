@@ -910,7 +910,7 @@ private static string GetContentTranslationType(string ctt) {
         throw new ArgumentException("messages.Count (" + messages.Count +
           ") is less than 0");
       }
-      if (!(messages.Count).Equals(languages.Count)) {
+      if ((messages.Count)!=(languages.Count)) {
         throw new ArgumentException("messages.Count (" + messages.Count +
           ") is not equal to " + (languages.Count));
       }

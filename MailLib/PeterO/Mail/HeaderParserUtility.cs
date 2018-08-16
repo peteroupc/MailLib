@@ -88,6 +88,7 @@ namespace PeterO.Mail {
        }
     }
 
+    [Obsolete]
     private static bool ShouldQuote(string str) {
       if (str.Length == 0) {
         // Empty string
@@ -143,6 +144,7 @@ namespace PeterO.Mail {
       return false;
     }
 
+    [Obsolete]
     public static string QuoteValueIfNeeded(String str) {
       return (!ShouldQuote(str)) ? str : QuoteValue(str);
     }
