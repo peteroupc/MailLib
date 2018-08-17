@@ -87,68 +87,6 @@ namespace PeterO.Mail {
        }
        }
     }
-
-    [Obsolete]
-    private static bool ShouldQuote(string str) {
-      if (str.Length == 0) {
-        // Empty string
-        return true;
-      }
-      if (str[str.Length - 1] == ' ' || str[str.Length - 1] == '\t') {
-        // Space or tab at end
-        return true;
-      }
-      if (str.Length>= 2 && str[0]=='=' && str[1]=='?') {
-        // "=?" at beginning (see RFC 2047 sec. 7)
-        return true;
-      }
-      if (str[0] == ' ' || str[0] == '\t') {
-        // Space or tab at beginning
-        return true;
-      }
-      for (int i = 0; i < str.Length; ++i) {
-        if (str[i] == '\\' || str[i] == '"') {
-          // Backslash or double quote
-          return true;
-        }
-        if ((str[i] == ' ' || str[i] == '\t') && i + 2 < str.Length &&
-            (str[i + 1] == '=' && str[i + 2] == '?')) {
-          // space and/or tab followed by "=?"
-          // (see RFC 2047 sec. 7)
-          return true;
-        }
-        if ((str[i] == ' ' || str[i] == '\t') && i + 1 < str.Length &&
-            (str[i + 1] == ' ' || str[i + 1] == '\t')) {
-          // run of two or more space and/or tab
-          return true;
-        }
-        if ((str[i] == '\r') && i + 1 < str.Length &&
-            (str[i + 1] == '\n')) {
-          // CRLF
-          if (i == 0 && i + 2 < str.Length && (str[i + 1] == ' ' || str[i +
-            1] == '\t')) {
-            // CRLF followed by space or tab at beginning
-            return true;
-          }
-          continue;
-        }
-        char c = str[i];
-        // Has specials, or CTLs other than tab
-        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
-          c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
-            == 0x3b || c == 0x40 ||
-              c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    [Obsolete]
-    public static string QuoteValueIfNeeded(String str) {
-      return (!ShouldQuote(str)) ? str : QuoteValue(str);
-    }
-
     public static string ParseGroupList(string str, int index, int endIndex) {
       // NOTE: Assumes the string matches the production "group"
       int tmp = HeaderParser.ParsePhrase(str, index, endIndex, null);
@@ -165,6 +103,7 @@ namespace PeterO.Mail {
       return str.Substring(index, tmp - index);
     }
 
+    [Obsolete]
     public static string QuoteValue(String str) {
       // Quotes a string according to RFC 5322 rules.
       var builder = new StringBuilder();

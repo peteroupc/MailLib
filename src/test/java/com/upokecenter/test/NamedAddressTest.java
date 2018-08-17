@@ -326,6 +326,9 @@ Assert.assertEquals(
       na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
       Assert.assertEquals("=?utf-8?q?Me?=", na.getName());
       Assert.assertEquals("\"=?utf-8?q?Me?=\" <me@example.com>", na.toString());
+      na = new NamedAddress("=?xyz", "me@example.com");
+      Assert.assertEquals("=?xyz", na.getName());
+      Assert.assertEquals("\"=?xyz\" <me@example.com>", na.toString());
       na = new NamedAddress("=?utf-8?q?Me", "me@example.com");
       Assert.assertEquals("=?utf-8?q?Me", na.getName());
       Assert.assertEquals("\"=?utf-8?q?Me\" <me@example.com>", na.toString());

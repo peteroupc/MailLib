@@ -296,6 +296,9 @@ Assert.AreEqual(
       na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
       Assert.AreEqual("=?utf-8?q?Me?=", na.Name);
       Assert.AreEqual("\"=?utf-8?q?Me?=\" <me@example.com>", na.ToString());
+      na = new NamedAddress("=?xyz", "me@example.com");
+      Assert.AreEqual("=?xyz", na.Name);
+      Assert.AreEqual("\"=?xyz\" <me@example.com>", na.ToString());
       na = new NamedAddress("=?utf-8?q?Me", "me@example.com");
       Assert.AreEqual("=?utf-8?q?Me", na.Name);
       Assert.AreEqual("\"=?utf-8?q?Me\" <me@example.com>", na.ToString());

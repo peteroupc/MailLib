@@ -40,7 +40,7 @@ namespace PeterO.Mail {
       return other != null &&
       (displayName == null ? other.displayName == null :
         displayName.Equals(other.displayName)) &&
-   (address == null ? other.address == null : address.Equals(other.address))&&
+   (address == null ? other.address == null : address.Equals(other.address)) &&
         isGroup == other.isGroup &&
           (!isGroup || CollectionUtilities.ListEquals(groupAddresses,
             other.groupAddresses));
@@ -50,18 +50,18 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)"]/*'/>
     public bool AddressesEqual(NamedAddress na) {
       if (na == null || isGroup != na.isGroup) {
- return false;
-}
+        return false;
+      }
       if (isGroup) {
         if (this.groupAddresses.Count != na.GroupAddresses.Count) {
- return false;
-}
+          return false;
+        }
         for (var i = 0; i < this.groupAddresses.Count; ++i) {
           NamedAddress a1 = this.groupAddresses[i];
           NamedAddress a2 = na.groupAddresses[i];
           if (!a1.AddressesEqual(a2)) {
- return false;
-}
+            return false;
+          }
         }
         return true;
       } else {
@@ -106,46 +106,36 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
-    public override string ToString() {
-// TODO: Check whether this method is used by
-// any message encoders and use or make a more
-// robust alternative to this method, using
-// encoded words if necessary.
-      if (this.isGroup) {
-#if DEBUG
-if (this.displayName == null) {
-  throw new InvalidOperationException("this");
-}
-#endif
-
-        var builder = new StringBuilder();
-  builder.Append(HeaderParserUtility.QuoteValueIfNeeded(this.displayName));
-        builder.Append(": ");
+    private void AppendThisAddress(HeaderEncoder enc) {
+      if (this.IsGroup) {
+        enc.AppendPhrase(this.displayName);
+        enc.AppendSymbol(":");
         var first = true;
         foreach (NamedAddress groupAddress in this.groupAddresses) {
           if (!first) {
-            builder.Append(", ");
+            enc.AppendSymbol(",");
           }
           first = false;
-          builder.Append(groupAddress.ToString());
+          groupAddress.AppendThisAddress(enc);
         }
-        builder.Append(";");
-        return builder.ToString();
-      }
-      if (this.displayName == null) {
-        return this.address.ToString();
+        enc.AppendSymbol(";");
+      } else if (displayName == null) {
+        this.address.AppendThisAddress(enc);
       } else {
-        string addressString = this.address.ToString();
-        if (addressString.Length > 990) {
-          // Give some space to ease line wrapping
-          return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
-          " < " + addressString + " >";
-        }
-        return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
-        " <" + addressString + ">";
+        enc.AppendPhrase(this.displayName);
+        enc.AppendSpace();
+        enc.AppendSymbol("<");
+        this.address.AppendThisAddress(enc);
+        enc.AppendSymbol(">");
       }
+    }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
+    public override string ToString() {
+      var enc = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
+      AppendThisAddress(enc);
+      return enc.ToString();
     }
 
     /// <include file='../../docs.xml'

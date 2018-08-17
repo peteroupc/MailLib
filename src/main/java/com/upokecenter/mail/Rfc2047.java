@@ -232,10 +232,10 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
       return i;
     }
 
-    // See point 3 of RFC 2047 sec. 5
+    // See point 3 of RFC 2047 sec. 5 (but excludes '=')
     private static final int[] smallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -268,7 +268,13 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
         }
         if (context == EncodedWordContext.Phrase &&
             (encodingChar=='Q' || encodingChar=='q') &&
-            smallchars[c-0x20]==0) {
+            (smallchars[c-0x20]==0 && c!='=')) {
+          // NOTE: Smallchars excludes '=' to be consistent
+          // with the same array used in HeaderEncoder.
+          // We check for '=' here separately. This is
+          // not a problem since we're finding out
+          // what the encoded text is rather than decoding
+          // that text directly.
           break;
         }
         if (context == EncodedWordContext.Phrase &&

@@ -102,8 +102,8 @@ import com.upokecenter.util.*;
       return AppendString(symbol, startIndex, endIndex, true);
     }
 
-      public HeaderEncoder AppendString(String symbol, int startIndex, int
-                    endIndex, boolean structured) {
+    public HeaderEncoder AppendString(String symbol, int startIndex, int
+                  endIndex, boolean structured) {
       if (symbol.length() > 0) {
         int i = startIndex;
         int symbolBegin = startIndex;
@@ -169,8 +169,9 @@ import com.upokecenter.util.*;
             } else {
               ++i;
             }
-          } else if (symbol.charAt(i) == ' ' && i+1 < endIndex && symbol.charAt(i+1)!='\t' &&
-                    symbol.charAt(i+1)!='\r' && symbol.charAt(i+1)!=' ') {
+    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'
+            &&
+                    symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -212,33 +213,35 @@ import com.upokecenter.util.*;
             int j = i + 1;
             while (j < endIndex) {
               if (symbol.charAt(j) == ' ' || symbol.charAt(j) == '\t' || symbol.charAt(j) == '\r') {
- return false;
-  } else if (symbol.charAt(j) == ']') {
- break;
-} else {
- ++j;
-}
+                return false;
+              } else if (symbol.charAt(j) == ']') {
+                break;
+              } else {
+                ++j;
+              }
             }
             return false;
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'&&
-            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'
+            &&
+                  symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
             AppendSpace();
             symbolBegin = i + 1;
             ++i;
           } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
- /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex -
-              i)));
-            */ AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+      /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex -
+                    i)));
+                    */
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
             AppendBreak();
             symbolBegin = i;
             ++i;
             while (i < endIndex) {
               if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
- ++i;
-} else {
- break;
-}
+                ++i;
+              } else {
+                break;
+              }
             }
           } else {
             ++i;
@@ -345,9 +348,10 @@ import com.upokecenter.util.*;
       this.column += 3;
     }
 
+    // See point 3 of RFC 2047 sec. 5 (but excludes '=')
     private static final int[] smallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -366,8 +370,8 @@ import com.upokecenter.util.*;
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else {
-     unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <=
-            0xffff) ? (9) : (12)));
+          unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <=
+                 0xffff) ? (9) : (12)));
         }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
@@ -414,8 +418,9 @@ import com.upokecenter.util.*;
       return this;
     }
 
-private static final String Base64Classic =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" + "jklmnopqrstuvwxyz0123456789+/";
+    private static final String Base64Classic =
+       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
+            "jklmnopqrstuvwxyz0123456789+/" ;
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];
       int b2 = b64[1];
@@ -472,8 +477,8 @@ private static final String Base64Classic =
         if (ch >= 0x10000) {
           ++i;
         }
- var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
-          0xffff) ? (3) : (4)));
+        var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
+                 0xffff) ? (3) : (4)));
         var bytesNeeded = 4 + (base64state[2] + unitLength > 3 ? 4 : 0);
         if (!CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
           if (currentWordLength > 0) {
@@ -551,6 +556,108 @@ private static final String Base64Classic =
       AppendSpaceAndSymbol(symbol, symbolBegin, symbol.length(), writeSpace);
     }
 
+    // ASCII characters allowed in atoms
+    private static final int[] asciiAtext = {
+      0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+
+    private static boolean IsSimplePhrase(String str) {
+      if (str.length() == 0) {
+ return false;
+}
+      int count = 0;
+      if (str.charAt(0) == ' ' || str.charAt(str.length() - 1) == ' ') {
+ return false;
+}
+      for (int i = 0; i < str.length(); ++i) {
+   if (str.charAt(i) < 0x80 && str.charAt(i) > 0x20 && asciiAtext[(int)str.charAt(i) - 0x20] ==
+          1) {
+          // not simple if a word begins with "=?", an RFC
+          // 2047 encoded word start
+  if (count == 0 && str.charAt(i) == '=' && i + 1 < str.length() && str.charAt(i + 1) == '?'
+) {
+            return false;
+          }
+          ++count;
+          if (count > Message.MaxRecHeaderLineLength - 1) {
+ return false;
+}
+        } else if (str.charAt(i) == ' ' && i + 1 < str.length() && str.charAt(i + 1) != ' ') {
+          count = 0;
+        } else {
+ return false;
+}
+      }
+      return true;
+    }
+    private static boolean IsQuotablePhrase(String str) {
+      if (str.length() == 0) {
+ return true;
+}
+      int count = 1;
+      for (int i = 0; i < str.length(); ++i) {
+        /*
+         // not quotable if a word begins with "=?", an RFC
+        // 2047 encoded word start
+        if (str.charAt(i) == '=' &&
+          (i == 0 || str.charAt(i - 1) == 0x09 || str.charAt(i - 1) == 0x20) &&
+          i + 1 < str.length() && str.charAt(i + 1) == '?') {
+          return false;
+        }*/
+        if (!(str.charAt(i) == 0x09 || (str.charAt(i) >= 0x20 && str.charAt(i) <= 0x7e))) {
+          return false;
+        }
+        // Add to character count
+        if (str.charAt(i) == ' ' || str.charAt(i) == '\t') {
+          //End of word, reset count to 0
+          count = 0;
+        } else if (str.charAt(i) == '\\' || str.charAt(i) == '"') {
+          count += 2;
+        } else {
+          ++count;
+        }
+        // For ending DQUOTE
+        if (i == str.length() - 1) {
+ ++count;
+}
+        if (count > Message.MaxRecHeaderLineLength - 1) {
+ return false;
+}
+      }
+      return true;
+    }
+
+    public HeaderEncoder AppendPhrase(String phrase) {
+      if (IsSimplePhrase(phrase)) {
+        AppendString(phrase);
+      } else if (IsQuotablePhrase(phrase)) {
+        if (phrase.indexOf('"') < 0 && phrase.indexOf('\\') < 0) {
+          AppendQuotedStringOrDomain("\"" + phrase + "\"", false);
+        } else {
+          StringBuilder builder = new StringBuilder();
+          builder.append('"');
+          for (int i = 0; i < phrase.length(); ++i) {
+            if (phrase.charAt(i) == '\\' || phrase.charAt(i) == '"') {
+              builder.append('\\');
+              builder.append(phrase.charAt(i));
+            } else {
+              builder.append(phrase.charAt(i));
+            }
+          }
+          builder.append('"');
+          AppendQuotedStringOrDomain(builder.toString(),
+           false);
+        }
+      } else {
+        AppendAsEncodedWords(phrase);
+      }
+      return this;
+    }
+
     private HeaderEncoder AppendSpaceOrTab(char ch) {
       if (maxLineLength < 0 || this.column + 1 <= this.maxLineLength) {
         this.builder.append(ch);
@@ -582,23 +689,28 @@ private static final String Base64Classic =
     public HeaderEncoder AppendSpace() {
       return AppendSpaceOrTab(' ');
     }
-    // NOTE: Assumes that all symbols being appended
-    // contain no unpaired surrogates and no line breaks
-    public HeaderEncoder AppendSymbol(String symbol) {
-      if (symbol.length() > 0) {
-        if (maxLineLength < 0 || this.column + symbol.length() <=
+
+    public HeaderEncoder AppendSymbolWithLength(String symbol, int length) {
+      if (length > 0) {
+        if (maxLineLength < 0 || this.column + length <=
                 this.maxLineLength) {
           this.builder.append(symbol);
-          this.column += symbol.length();
+          this.column += length;
         } else {
-          if (this.column>1) {
- this.builder.append("\r\n ");
-}
+          if (this.column > 1) {
+            this.builder.append("\r\n ");
+          }
           this.builder.append(symbol);
-          this.column = 1 + symbol.length();
+          this.column = 1 + length;
         }
       }
       return this;
+    }
+
+    // NOTE: Assumes that all symbols being appended
+    // contain no unpaired surrogates and no line breaks
+    public HeaderEncoder AppendSymbol(String symbol) {
+      return AppendSymbolWithLength(symbol, symbol.length());
     }
 
     // Returns true only if:
@@ -684,12 +796,12 @@ private static final String Base64Classic =
             // 2 = Nonwhitespace after initial whitespace
             // 3 = After nonwhitespace
             if (whitespaceState == 2) {
- whitespaceState = 3;
-}
+              whitespaceState = 3;
+            }
           } else {
             if (whitespaceState == 1) {
- whitespaceState = 2;
-}
+              whitespaceState = 2;
+            }
           }
           if (whitespaceState < 3) {
             if (chunkLength > Message.MaxHardHeaderLineLength) {
@@ -707,22 +819,22 @@ private static final String Base64Classic =
 
     public static boolean CanOutputRawForNews(String s) {
       if (!CanOutputRaw(s)) {
- return false;
-}
+        return false;
+      }
       int colon = s.indexOf(':');
       if (colon < 0 || colon + 1 < s.length() || s.charAt(colon + 1) != ' ') {
- return false;
-}
+        return false;
+      }
       for (var i = colon + 1; i < s.length(); ++i) {
         char c = s.charAt(i);
         if (c != 0x0d && c != 0x0a && c != 0x20 && c != 0x09) {
- return true;
-}
+          return true;
+        }
       }
       return false;
     }
 
-      private static String CapitalizeHeaderField(String s) {
+    private static String CapitalizeHeaderField(String s) {
       StringBuilder builder = new StringBuilder();
       boolean afterHyphen = true;
       for (int i = 0; i < s.length(); ++i) {
@@ -735,8 +847,8 @@ private static final String Base64Classic =
       }
       String ret = builder.toString();
       if (ret.equals("Content-Id")) {
- return "Content-ID";
-}
+        return "Content-ID";
+      }
       return ret.equals("Mime-Version") ? "MIME-Version" :
         (ret.equals("Message-Id") ? "Message-ID" : ret);
     }
@@ -766,8 +878,8 @@ private static final String Base64Classic =
       boolean structured = HeaderFieldParsers.GetParser(fieldName).IsStructured();
       var trialField = CapitalizeHeaderField(fieldName) + ": " + fieldValue;
       if (CanOutputRaw(trialField)) {
- return trialField;
-}
+        return trialField;
+      }
       HeaderEncoder sa = new HeaderEncoder().AppendFieldName(fieldName);
       if (sa.SimpleAppendString(fieldValue, 0, fieldValue.length())) {
         trialField = sa.toString();
