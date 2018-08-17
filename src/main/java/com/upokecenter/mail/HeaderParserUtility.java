@@ -104,26 +104,6 @@ private HeaderParserUtility() {
       return str.substring(index, (index)+(tmp - index));
     }
 
-/**
- * @deprecated
- */
-@Deprecated
-    public static String QuoteValue(String str) {
-      // Quotes a String according to RFC 5322 rules.
-      StringBuilder builder = new StringBuilder();
-      builder.append('"');
-      for (int i = 0; i < str.length(); ++i) {
-        if (str.charAt(i) == '\\' || str.charAt(i) == '"') {
-          builder.append('\\');
-          builder.append(str.charAt(i));
-        } else {
-          builder.append(str.charAt(i));
-        }
-      }
-      builder.append('"');
-      return builder.toString();
-    }
-
     private static String ParseDotAtomAfterCFWS(
   String str,
   int index,

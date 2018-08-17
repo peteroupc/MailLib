@@ -2963,6 +2963,23 @@ return ParseAddresses(new String[] { value});
       return true;
     }
 
+    /**
+     * Not documented yet.
+     * @param url Not documented yet.
+     * @return A Message object.
+     */
+    public static Message FromMailtoUrl(String url) {
+      return MailtoUrls.MailtoUrlMessage(url);
+    }
+
+    /**
+     * Not documented yet.
+     * @return A string object.
+     */
+    public String ToMailtoUrl() {
+      return MailtoUrls.MessageToMailtoUrl(this);
+    }
+
     private void ProcessHeaders(boolean assumeMime, boolean digest) {
       boolean haveContentType = false;
       boolean mime = assumeMime;

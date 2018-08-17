@@ -103,23 +103,6 @@ namespace PeterO.Mail {
       return str.Substring(index, tmp - index);
     }
 
-    [Obsolete]
-    public static string QuoteValue(String str) {
-      // Quotes a string according to RFC 5322 rules.
-      var builder = new StringBuilder();
-      builder.Append('"');
-      for (int i = 0; i < str.Length; ++i) {
-        if (str[i] == '\\' || str[i] == '"') {
-          builder.Append('\\');
-          builder.Append(str[i]);
-        } else {
-          builder.Append(str[i]);
-        }
-      }
-      builder.Append('"');
-      return builder.ToString();
-    }
-
     private static string ParseDotAtomAfterCFWS(
   string str,
   int index,

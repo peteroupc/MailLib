@@ -4,7 +4,7 @@
 //------
 using System;
 namespace PeterO.Mail {
-  internal static class HeaderParser {
+  internal static class HeaderParser2 {
     public static int ParseAddrSpec(string str, int index, int endIndex) {
       int indexStart, indexStart3, indexTemp2, indexTemp3, tx2;
       indexStart = index;
@@ -49,8 +49,9 @@ namespace PeterO.Mail {
       if (indexTemp2 != index) {
         index = indexTemp2;
       } else {
- return indexStart;
-} return index;
+        return indexStart;
+      }
+      return index;
     }
     public static int ParseDotAtomText(string str, int index, int endIndex) {
       int indexStart, indexStart2, indexTemp2;
@@ -62,12 +63,12 @@ namespace PeterO.Mail {
         (str[index] == 63) || (str[index] >= 94 && str[index] <= 126) ||
         (str[index] >= 128 && str[index] <= 65535))) {
         ++index;
-        while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+        while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
           (str[index] == 33) || (str[index] >= 35 && str[index] <= 39) ||
           (str[index] >= 42 && str[index] <= 43) || (str[index] == 45) ||
           (str[index] >= 47 && str[index] <= 57) || (str[index] == 61) ||
           (str[index] == 63) || (str[index] >= 94 && str[index] <= 126) ||
-          (str[index] >= 128 && str[index] <= 65535)))) {
+          (str[index] >= 128 && str[index] <= 65535))) {
           ++index;
         }
       } else {
@@ -89,13 +90,13 @@ namespace PeterO.Mail {
             (str[index] == 63) || (str[index] >= 94 && str[index] <= 126) ||
             (str[index] >= 128 && str[index] <= 65535))) {
             ++index;
-            while ((index < endIndex && ((str[index] >= 65 && str[index] <=
+            while (index < endIndex && ((str[index] >= 65 && str[index] <=
               90) || (str[index] == 33) || (str[index] >= 35 && str[index]
               <= 39) || (str[index] >= 42 && str[index] <= 43) ||
               (str[index] == 45) || (str[index] >= 47 && str[index] <= 57) ||
               (str[index] == 61) || (str[index] == 63) || (str[index] >=
               94 && str[index] <= 126) || (str[index] >= 128 && str[index]
-              <= 65535)))) {
+              <= 65535))) {
               ++index;
             }
           } else {
@@ -107,8 +108,8 @@ namespace PeterO.Mail {
         if (indexTemp2 != index) {
           index = indexTemp2;
         } else {
- break;
-}
+          break;
+        }
       }
       return index;
     }
@@ -140,8 +141,8 @@ namespace PeterO.Mail {
         if (indexTemp2 != index) {
           index = indexTemp2;
         } else {
- break;
-}
+          break;
+        }
       }
       return index;
     }
@@ -158,15 +159,15 @@ namespace PeterO.Mail {
         str[index] <= 91) || (str[index] >= 93 && str[index] <= 126) ||
         (str[index] >= 128 && str[index] <= 65535))) {
         ++index;
-      } else if (index + 1 < endIndex && (((str[index] == 92) && ((str[index+
+      } else if (index + 1 < endIndex && ((str[index] == 92) && ((str[index +
         1] >= 33 && str[index + 1] <= 126) || (str[index + 1] >= 128 &&
-        str[index + 1] <= 65535))))) {
+        str[index + 1] <= 65535)))) {
         index += 2;
       }
       return index;
     }
- public static int ParseQuotedStringCore(string str, int index, int
-      endIndex) {
+    public static int ParseQuotedStringCore(string str, int index, int
+         endIndex) {
       int indexStart, indexTemp2;
       indexStart = index;
       if (index < endIndex && (str[index] == 34)) {
@@ -179,8 +180,8 @@ namespace PeterO.Mail {
         if (indexTemp2 != index) {
           index = indexTemp2;
         } else {
- break;
-}
+          break;
+        }
       }
       if (index < endIndex && (str[index] == 34)) {
         ++index;

@@ -2517,6 +2517,19 @@ if ((ungetState[1]) < 0x80) {
       return true;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='url'>Not documented yet.</param>
+    /// <returns>A Message object.</returns>
+    public static Message FromMailtoUrl(string url) {
+      return MailtoUrls.MailtoUrlMessage(url);
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A string object.</returns>
+    public string ToMailtoUrl() {
+      return MailtoUrls.MessageToMailtoUrl(this);
+    }
+
     private void ProcessHeaders(bool assumeMime, bool digest) {
       var haveContentType = false;
       bool mime = assumeMime;

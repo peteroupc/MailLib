@@ -106,7 +106,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private void AppendThisAddress(HeaderEncoder enc) {
+    internal void AppendThisAddress(HeaderEncoder enc) {
       if (this.IsGroup) {
         enc.AppendPhrase(this.displayName);
         enc.AppendSymbol(":");
