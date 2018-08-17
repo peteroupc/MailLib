@@ -528,7 +528,19 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
           if (HasAsciiCtl(retval)) {
             return str.substring(start, (start)+(endIndex - start));
           }
-          retval = HeaderParserUtility.QuoteValue(retval);
+          // Quote the retval according to RFC 5322 rules
+          StringBuilder builder2 = new StringBuilder();
+          builder2.append('"');
+          for (int i = 0; i < retval.length(); ++i) {
+            if (retval.charAt(i) == '\\' || retval.charAt(i) == '"') {
+              builder2.append('\\');
+              builder2.append(retval.charAt(i));
+            } else {
+              builder2.append(retval.charAt(i));
+            }
+          }
+          builder2.append('"');
+          retval = builder2.toString();
         }
       }
 

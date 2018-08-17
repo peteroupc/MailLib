@@ -8557,7 +8557,7 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     private Message TestMailToOne(string s) {
       Console.WriteLine(s);
-      Message msg = DataUrl.MailtoUrlMessage(s);
+      Message msg = Message.FromMailtoUrl(s);
       Console.WriteLine(msg);
       if (msg == null) {
  Assert.Fail();

@@ -139,6 +139,8 @@
 * `static String DecodeHeaderValue​(String name,
                  String value)`<br>
  Not documented yet.
+* `static Message FromMailtoUrl​(String url)`<br>
+ Not documented yet.
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
@@ -237,6 +239,8 @@ Use GetAddresses(\To\) instead.
  versions of the same message.
 * `Message SetTextBody​(String str)`<br>
  Sets the body of this message to the specified plain text string.
+* `String ToMailtoUrl()`<br>
+ Not documented yet.
 
 ## Constructors
 
@@ -1167,3 +1171,22 @@ Not documented yet.
 
 ### MakeMultilingualMessage
     public static Message MakeMultilingualMessage​(List<Message> messages, List<String> languages)
+### FromMailtoUrl
+    public static Message FromMailtoUrl​(String url)
+Not documented yet.
+
+**Parameters:**
+
+* <code>url</code> - Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+### ToMailtoUrl
+    public String ToMailtoUrl()
+Not documented yet.
+
+**Returns:**
+
+* A string object.

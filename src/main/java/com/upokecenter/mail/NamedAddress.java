@@ -123,7 +123,7 @@ import java.util.*;
         return this.isGroup;
       }
 
-    private void AppendThisAddress(HeaderEncoder enc) {
+    void AppendThisAddress(HeaderEncoder enc) {
       if (this.isGroup()) {
         enc.AppendPhrase(this.displayName);
         enc.AppendSymbol(":");

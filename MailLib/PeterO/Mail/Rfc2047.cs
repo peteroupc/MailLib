@@ -548,7 +548,19 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
           if (HasAsciiCtl(retval)) {
             return str.Substring(start, endIndex - start);
           }
-          retval = HeaderParserUtility.QuoteValue(retval);
+          // Quote the retval according to RFC 5322 rules
+          var builder2 = new StringBuilder();
+          builder2.Append('"');
+          for (int i = 0; i < retval.Length; ++i) {
+            if (retval[i] == '\\' || retval[i] == '"') {
+              builder2.Append('\\');
+              builder2.Append(retval[i]);
+            } else {
+              builder2.Append(retval[i]);
+            }
+          }
+          builder2.Append('"');
+          retval = builder2.ToString();
         }
       }
 

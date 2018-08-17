@@ -8558,7 +8558,7 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     private Message TestMailToOne(String s) {
       System.out.println(s);
-      Message msg = DataUrl.MailtoUrlMessage(s);
+      Message msg = Message.FromMailtoUrl(s);
       System.out.println(msg);
       if (msg == null) {
  Assert.fail();
