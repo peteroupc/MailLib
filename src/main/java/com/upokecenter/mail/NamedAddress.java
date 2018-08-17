@@ -48,7 +48,7 @@ import java.util.*;
       return other != null &&
       (displayName == null ? other.displayName == null :
         displayName.equals(other.displayName)) &&
-   (address == null ? other.address == null : address.equals(other.address))&&
+   (address == null ? other.address == null : address.equals(other.address)) &&
         isGroup == other.isGroup &&
           (!isGroup || CollectionUtilities.ListEquals(groupAddresses,
             other.groupAddresses));
@@ -61,18 +61,18 @@ import java.util.*;
      */
     public boolean AddressesEqual(NamedAddress na) {
       if (na == null || isGroup != na.isGroup) {
- return false;
-}
+        return false;
+      }
       if (isGroup) {
         if (this.groupAddresses.size() != na.getGroupAddresses().size()) {
- return false;
-}
+          return false;
+        }
         for (int i = 0; i < this.groupAddresses.size(); ++i) {
           NamedAddress a1 = this.groupAddresses.get(i);
           NamedAddress a2 = na.groupAddresses.get(i);
           if (!a1.AddressesEqual(a2)) {
- return false;
-}
+            return false;
+          }
         }
         return true;
       } else {
@@ -123,42 +123,38 @@ import java.util.*;
         return this.isGroup;
       }
 
+    private void AppendThisAddress(HeaderEncoder enc) {
+      if (this.isGroup()) {
+        enc.AppendPhrase(this.displayName);
+        enc.AppendSymbol(":");
+        boolean first = true;
+        for (NamedAddress groupAddress : this.groupAddresses) {
+          if (!first) {
+            enc.AppendSymbol(",");
+          }
+          first = false;
+          groupAddress.AppendThisAddress(enc);
+        }
+        enc.AppendSymbol(";");
+      } else if (displayName == null) {
+        this.address.AppendThisAddress(enc);
+      } else {
+        enc.AppendPhrase(this.displayName);
+        enc.AppendSpace();
+        enc.AppendSymbol("<");
+        this.address.AppendThisAddress(enc);
+        enc.AppendSymbol(">");
+      }
+    }
+
     /**
      * Converts this object to a text string.
      * @return A string representation of this object.
      */
     @Override public String toString() {
-// TODO: Check whether this method is used by
-// any message encoders and use or make a more
-// robust alternative to this method, using
-// encoded words if necessary.
-      if (this.isGroup) {
-        StringBuilder builder = new StringBuilder();
-  builder.append(HeaderParserUtility.QuoteValueIfNeeded(this.displayName));
-        builder.append(": ");
-        boolean first = true;
-        for (NamedAddress groupAddress : this.groupAddresses) {
-          if (!first) {
-            builder.append(", ");
-          }
-          first = false;
-          builder.append(groupAddress.toString());
-        }
-        builder.append(";");
-        return builder.toString();
-      }
-      if (this.displayName == null) {
-        return this.address.toString();
-      } else {
-        String addressString = this.address.toString();
-        if (addressString.length() > 990) {
-          // Give some space to ease line wrapping
-          return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
-          " < " + addressString + " >";
-        }
-        return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
-        " <" + addressString + ">";
-      }
+      HeaderEncoder enc = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
+      AppendThisAddress(enc);
+      return enc.toString();
     }
 
     /**

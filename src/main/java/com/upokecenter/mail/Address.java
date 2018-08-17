@@ -37,26 +37,26 @@ import com.upokecenter.text.*;
         return this.localPart;
       }
 
-private String DomainToString(boolean useALabelDomain) {
- var dom = this.domain;
+private static String DomainToString(String domain, boolean useALabelDomain) {
+ var dom = domain;
  if (useALabelDomain && dom.length > 0 && dom.get(0) != '[') {
-  dom = Idna.EncodeDomainName(this.domain);
+  dom = Idna.EncodeDomainName(domain);
  }
  return dom;
 }
 
-private String LocalPartToString() {
-     if (this.localPart.length() > 0 && HeaderParser.ParseDotAtomText(
-  this.localPart,
+static String LocalPartToString(String localPart) {
+     if (localPart.length() > 0 && HeaderParser.ParseDotAtomText(
+  localPart,
   0,
-  this.localPart.length(),
-  null) == this.localPart.length()) {
-  return this.localPart;
+  localPart.length(),
+  null) == localPart.length()) {
+  return localPart;
  } else {
         StringBuilder sb = new StringBuilder();
         sb.append('"');
-        for (int i = 0; i < this.localPart.length(); ++i) {
-          char c = this.localPart.charAt(i);
+        for (int i = 0; i < localPart.length(); ++i) {
+          char c = localPart.charAt(i);
           if (c == 0x20 || c == 0x09) {
             sb.append(c);
           } else if (c == '"' || c == 0x7f || c == '\\' || c < 0x20) {
@@ -71,43 +71,50 @@ private String LocalPartToString() {
       }
 }
 
+void AppendThisAddress(HeaderEncoder encoder) {
+ String lp = LocalPartToString(this.localPart);
+ String domainstr = DomainToString(this.domain, true);
+ long length = DataUtilities.GetUtf8Length(lp, true);
+ long length2 = DataUtilities.GetUtf8Length(domainstr, true);
+ if (length2 + length + 1 <= Message.MaxRecHeaderLineLength-1) {
+  // Avoid breaking email addresses if it can comfortably
+  // fit the recommended line length
+        int tlength=(int)(length2 + length + 1);
+  encoder.AppendSymbolWithLength(lp+"@"+domainstr,tlength);
+ } else {
+        // NOTE: Both lengths can't exceed MaxRecHeaderLineLength,
+        // which is well below the maximum value for 32-bit
+        // integers, so it's acceptable to cast to int here
+        encoder.AppendSymbolWithLength(lp, (int)length);
+  encoder.AppendSymbol("@");
+        encoder.AppendSymbolWithLength(domainstr, (int)length);
+ }
+}
+
     /**
      * Converts this address object to a text string.
      * @return A string representation of this object.
      */
     @Override public String toString() {
-// TODO: Check whether this method is used by
-// any message encoders and use or make a more
-// robust alternative to this method.
-     String localPart = LocalPartToString();
-     String domain = DomainToString(true);
-long localPartLength = DataUtilities.GetUtf8Length(localPart, true);
-long domainLength = DataUtilities.GetUtf8Length(domain, true);
-if (localPartLength + domainLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
-return localPart+"@"+domain;
-} else if (localPartLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
-return localPart+"@\r\n "+domain;
-} else if (domainLength + 1 <= Message.MaxHardHeaderLineLength - 1) {
-return localPart+"\r\n @"+domain;
-} else {
-return localPart+"\r\n @\r\n "+domain;
-}
+     HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
+     AppendThisAddress(sa);
+  return sa.toString();
     }
 
     private boolean IsTooLong() {
-      String localPart = LocalPartToString();
-     String domain = DomainToString(true);
-     String domain2 = DomainToString(false);
+      String lp = LocalPartToString(this.localPart);
+     String domainstr = DomainToString(this.domain, true);
+     String domain2 = DomainToString(this.domain, false);
         // Maximum character length per line for an Internet message minus 1;
         // we check if the length exceeds that number (thus excluding the space
         // character of a folded line).
      if
-  (DataUtilities.GetUtf8Length(localPart, true)>Message.MaxHardHeaderLineLength
+  (DataUtilities.GetUtf8Length(lp, true)>Message.MaxHardHeaderLineLength
        - 1) {
  return true;
 }
      if
-  (DataUtilities.GetUtf8Length(domain, true)>Message.MaxHardHeaderLineLength
+  (DataUtilities.GetUtf8Length(domainstr, true)>Message.MaxHardHeaderLineLength
        - 1) {
  return true;
 }

@@ -102,8 +102,8 @@ namespace PeterO.Mail {
       return AppendString(symbol, startIndex, endIndex, true);
     }
 
-      public HeaderEncoder AppendString(string symbol, int startIndex, int
-                    endIndex, bool structured) {
+    public HeaderEncoder AppendString(string symbol, int startIndex, int
+                  endIndex, bool structured) {
       if (symbol.Length > 0) {
         int i = startIndex;
         int symbolBegin = startIndex;
@@ -169,8 +169,9 @@ namespace PeterO.Mail {
             } else {
               ++i;
             }
-          } else if (symbol[i] == ' ' && i+1 < endIndex && symbol[i+1]!='\t' &&
-                    symbol[i+1]!='\r' && symbol[i+1]!=' ') {
+    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'
+            &&
+                    symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -213,33 +214,36 @@ namespace PeterO.Mail {
             int j = i + 1;
             while (j < endIndex) {
               if (symbol[j] == ' ' || symbol[j] == '\t' || symbol[j] == '\r') {
- return false;
-  } else if (symbol[j] == ']') {
- break;
-} else {
- ++j;
-}
+                return false;
+              } else if (symbol[j] == ']') {
+                break;
+              } else {
+                ++j;
+              }
             }
             return false;
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'&&
-            symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
+    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'
+            &&
+                  symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
             AppendSpace();
             symbolBegin = i + 1;
             ++i;
           } else if (symbol[i] == ' ' || symbol[i] == '\t') {
- /*DebugUtility.Log("Special whitespace|" + symbol.Substring(i, endIndex -
-              i));
-            */ AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+      /*DebugUtility.Log("Special whitespace|" + symbol.Substring(i,
+              endIndex -
+                    i));
+                    */
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
             AppendBreak();
             symbolBegin = i;
             ++i;
             while (i < endIndex) {
               if (symbol[i] == ' ' || symbol[i] == '\t') {
- ++i;
-} else {
- break;
-}
+                ++i;
+              } else {
+                break;
+              }
             }
           } else {
             ++i;
@@ -346,9 +350,10 @@ namespace PeterO.Mail {
       this.column += 3;
     }
 
+    // See point 3 of RFC 2047 sec. 5 (but excludes '=')
     private static readonly int[] smallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -367,8 +372,8 @@ namespace PeterO.Mail {
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else {
-     unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <=
-            0xffff) ? (9) : (12)));
+          unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <=
+                 0xffff) ? (9) : (12)));
         }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
@@ -415,8 +420,9 @@ namespace PeterO.Mail {
       return this;
     }
 
-private const string Base64Classic =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" + "jklmnopqrstuvwxyz0123456789+/";
+    private const string Base64Classic =
+       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
+            "jklmnopqrstuvwxyz0123456789+/" ;
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];
       int b2 = b64[1];
@@ -473,8 +479,8 @@ private const string Base64Classic =
         if (ch >= 0x10000) {
           ++i;
         }
- var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
-          0xffff) ? (3) : (4)));
+        var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
+                 0xffff) ? (3) : (4)));
         var bytesNeeded = 4 + (base64state[2] + unitLength > 3 ? 4 : 0);
         if (!CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
           if (currentWordLength > 0) {
@@ -552,6 +558,108 @@ private const string Base64Classic =
       AppendSpaceAndSymbol(symbol, symbolBegin, symbol.Length, writeSpace);
     }
 
+    // ASCII characters allowed in atoms
+    private static readonly int[] asciiAtext = {
+      0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+
+    private static bool IsSimplePhrase(string str) {
+      if (str.Length == 0) {
+ return false;
+}
+      var count = 0;
+      if (str[0] == ' ' || str[str.Length - 1] == ' ') {
+ return false;
+}
+      for (var i = 0; i < str.Length; ++i) {
+   if (str[i] < 0x80 && str[i] > 0x20 && asciiAtext[(int)str[i] - 0x20] ==
+          1) {
+          // not simple if a word begins with "=?", an RFC
+          // 2047 encoded word start
+  if (count == 0 && str[i] == '=' && i + 1 < str.Length && str[i + 1] == '?'
+) {
+            return false;
+          }
+          ++count;
+          if (count > Message.MaxRecHeaderLineLength - 1) {
+ return false;
+}
+        } else if (str[i] == ' ' && i + 1 < str.Length && str[i + 1] != ' ') {
+          count = 0;
+        } else {
+ return false;
+}
+      }
+      return true;
+    }
+    private static bool IsQuotablePhrase(string str) {
+      if (str.Length == 0) {
+ return true;
+}
+      var count = 1;
+      for (var i = 0; i < str.Length; ++i) {
+        /*
+         // not quotable if a word begins with "=?", an RFC
+        // 2047 encoded word start
+        if (str[i] == '=' &&
+          (i == 0 || str[i - 1] == 0x09 || str[i - 1] == 0x20) &&
+          i + 1 < str.Length && str[i + 1] == '?') {
+          return false;
+        }*/
+        if (!(str[i] == 0x09 || (str[i] >= 0x20 && str[i] <= 0x7e))) {
+          return false;
+        }
+        // Add to character count
+        if (str[i] == ' ' || str[i] == '\t') {
+          //End of word, reset count to 0
+          count = 0;
+        } else if (str[i] == '\\' || str[i] == '"') {
+          count += 2;
+        } else {
+          ++count;
+        }
+        // For ending DQUOTE
+        if (i == str.Length - 1) {
+ ++count;
+}
+        if (count > Message.MaxRecHeaderLineLength - 1) {
+ return false;
+}
+      }
+      return true;
+    }
+
+    public HeaderEncoder AppendPhrase(string phrase) {
+      if (IsSimplePhrase(phrase)) {
+        AppendString(phrase);
+      } else if (IsQuotablePhrase(phrase)) {
+        if (phrase.IndexOf('"') < 0 && phrase.IndexOf('\\') < 0) {
+          AppendQuotedStringOrDomain("\"" + phrase + "\"", false);
+        } else {
+          var builder = new StringBuilder();
+          builder.Append('"');
+          for (int i = 0; i < phrase.Length; ++i) {
+            if (phrase[i] == '\\' || phrase[i] == '"') {
+              builder.Append('\\');
+              builder.Append(phrase[i]);
+            } else {
+              builder.Append(phrase[i]);
+            }
+          }
+          builder.Append('"');
+          AppendQuotedStringOrDomain(builder.ToString(),
+           false);
+        }
+      } else {
+        AppendAsEncodedWords(phrase);
+      }
+      return this;
+    }
+
     private HeaderEncoder AppendSpaceOrTab(char ch) {
       if (maxLineLength < 0 || this.column + 1 <= this.maxLineLength) {
         this.builder.Append(ch);
@@ -583,23 +691,28 @@ private const string Base64Classic =
     public HeaderEncoder AppendSpace() {
       return AppendSpaceOrTab(' ');
     }
-    // NOTE: Assumes that all symbols being appended
-    // contain no unpaired surrogates and no line breaks
-    public HeaderEncoder AppendSymbol(string symbol) {
-      if (symbol.Length > 0) {
-        if (maxLineLength < 0 || this.column + symbol.Length <=
+
+    public HeaderEncoder AppendSymbolWithLength(string symbol, int length) {
+      if (length > 0) {
+        if (maxLineLength < 0 || this.column + length <=
                 this.maxLineLength) {
           this.builder.Append(symbol);
-          this.column += symbol.Length;
+          this.column += length;
         } else {
-          if (this.column>1) {
- this.builder.Append("\r\n ");
-}
+          if (this.column > 1) {
+            this.builder.Append("\r\n ");
+          }
           this.builder.Append(symbol);
-          this.column = 1 + symbol.Length;
+          this.column = 1 + length;
         }
       }
       return this;
+    }
+
+    // NOTE: Assumes that all symbols being appended
+    // contain no unpaired surrogates and no line breaks
+    public HeaderEncoder AppendSymbol(string symbol) {
+      return AppendSymbolWithLength(symbol, symbol.Length);
     }
 
     // Returns true only if:
@@ -662,7 +775,7 @@ private const string Base64Classic =
           for (int j = i; j < len; ++j) {
             if (s[j] != 0x09 && s[j] != 0x20 && s[j] != 0x0d) {
               found = true; break;
-            } else if (s[j]==0x0d) {
+            } else if (s[j] == 0x0d) {
               // Possible CRLF after all-whitespace line
               return false;
             }
@@ -685,12 +798,12 @@ private const string Base64Classic =
             // 2 = Nonwhitespace after initial whitespace
             // 3 = After nonwhitespace
             if (whitespaceState == 2) {
- whitespaceState = 3;
-}
+              whitespaceState = 3;
+            }
           } else {
             if (whitespaceState == 1) {
- whitespaceState = 2;
-}
+              whitespaceState = 2;
+            }
           }
           if (whitespaceState < 3) {
             if (chunkLength > Message.MaxHardHeaderLineLength) {
@@ -708,22 +821,22 @@ private const string Base64Classic =
 
     public static bool CanOutputRawForNews(string s) {
       if (!CanOutputRaw(s)) {
- return false;
-}
+        return false;
+      }
       int colon = s.IndexOf(':');
       if (colon < 0 || colon + 1 < s.Length || s[colon + 1] != ' ') {
- return false;
-}
+        return false;
+      }
       for (var i = colon + 1; i < s.Length; ++i) {
         char c = s[i];
         if (c != 0x0d && c != 0x0a && c != 0x20 && c != 0x09) {
- return true;
-}
+          return true;
+        }
       }
       return false;
     }
 
-      private static string CapitalizeHeaderField(string s) {
+    private static string CapitalizeHeaderField(string s) {
       var builder = new StringBuilder();
       var afterHyphen = true;
       for (int i = 0; i < s.Length; ++i) {
@@ -736,8 +849,8 @@ private const string Base64Classic =
       }
       string ret = builder.ToString();
       if (ret.Equals("Content-Id")) {
- return "Content-ID";
-}
+        return "Content-ID";
+      }
       return ret.Equals("Mime-Version") ? "MIME-Version" :
         (ret.Equals("Message-Id") ? "Message-ID" : ret);
     }
@@ -767,8 +880,8 @@ private const string Base64Classic =
       bool structured = HeaderFieldParsers.GetParser(fieldName).IsStructured();
       var trialField = CapitalizeHeaderField(fieldName) + ": " + fieldValue;
       if (CanOutputRaw(trialField)) {
- return trialField;
-}
+        return trialField;
+      }
       var sa = new HeaderEncoder().AppendFieldName(fieldName);
       if (sa.SimpleAppendString(fieldValue, 0, fieldValue.Length)) {
         trialField = sa.ToString();

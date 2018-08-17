@@ -88,74 +88,6 @@ private HeaderParserUtility() {
        }
        }
     }
-
-/**
- * @deprecated
- */
-@Deprecated
-    private static boolean ShouldQuote(String str) {
-      if (str.length() == 0) {
-        // Empty String
-        return true;
-      }
-      if (str.charAt(str.length() - 1) == ' ' || str.charAt(str.length() - 1) == '\t') {
-        // Space or tab at end
-        return true;
-      }
-      if (str.length()>= 2 && str.charAt(0)=='=' && str.charAt(1)=='?') {
-        // "=?" at beginning (see RFC 2047 sec. 7)
-        return true;
-      }
-      if (str.charAt(0) == ' ' || str.charAt(0) == '\t') {
-        // Space or tab at beginning
-        return true;
-      }
-      for (int i = 0; i < str.length(); ++i) {
-        if (str.charAt(i) == '\\' || str.charAt(i) == '"') {
-          // Backslash or double quote
-          return true;
-        }
-        if ((str.charAt(i) == ' ' || str.charAt(i) == '\t') && i + 2 < str.length() &&
-            (str.charAt(i + 1) == '=' && str.charAt(i + 2) == '?')) {
-          // space and/or tab followed by "=?"
-          // (see RFC 2047 sec. 7)
-          return true;
-        }
-        if ((str.charAt(i) == ' ' || str.charAt(i) == '\t') && i + 1 < str.length() &&
-            (str.charAt(i + 1) == ' ' || str.charAt(i + 1) == '\t')) {
-          // run of two or more space and/or tab
-          return true;
-        }
-        if ((str.charAt(i) == '\r') && i + 1 < str.length() &&
-            (str.charAt(i + 1) == '\n')) {
-          // CRLF
-          if (i == 0 && i + 2 < str.length() && (str.charAt(i + 1) == ' ' || str.charAt(i +
-            1) == '\t')) {
-            // CRLF followed by space or tab at beginning
-            return true;
-          }
-          continue;
-        }
-        char c = str.charAt(i);
-        // Has specials, or CTLs other than tab
-        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
-          c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
-            == 0x3b || c == 0x40 ||
-              c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
-          return true;
-        }
-      }
-      return false;
-    }
-
-/**
- * @deprecated
- */
-@Deprecated
-    public static String QuoteValueIfNeeded(String str) {
-      return (!ShouldQuote(str)) ? str : QuoteValue(str);
-    }
-
     public static String ParseGroupList(String str, int index, int endIndex) {
       // NOTE: Assumes the String matches the production "group"
       int tmp = HeaderParser.ParsePhrase(str, index, endIndex, null);
@@ -172,6 +104,10 @@ private HeaderParserUtility() {
       return str.substring(index, (index)+(tmp - index));
     }
 
+/**
+ * @deprecated
+ */
+@Deprecated
     public static String QuoteValue(String str) {
       // Quotes a String according to RFC 5322 rules.
       StringBuilder builder = new StringBuilder();
