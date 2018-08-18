@@ -8567,17 +8567,17 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
     }
 
     static void TestDataUrlRoundTrip(String data) {
-      MediaType mt = DataUrl.DataUrlMediaType(data);
-      byte[] bytes = DataUrl.DataUrlBytes(data);
+      MediaType mt = DataUrls.DataUrlMediaType(data);
+      byte[] bytes = DataUrls.DataUrlBytes(data);
       if ((mt) == null) {
  Assert.fail(data);
  }
       if ((bytes) == null) {
  Assert.fail(data);
  }
-      String data2 = DataUrl.MakeDataUrl(bytes, mt);
-      MediaType mt2 = DataUrl.DataUrlMediaType(data2);
-      byte[] bytes2 = DataUrl.DataUrlBytes(data2);
+      String data2 = DataUrls.MakeDataUrl(bytes, mt);
+      MediaType mt2 = DataUrls.DataUrlMediaType(data2);
+      byte[] bytes2 = DataUrls.DataUrlBytes(data2);
       Test.TestCommon.AssertByteArraysEqual(bytes, bytes2);
       Assert.assertEquals(data, mt, mt2);
     }

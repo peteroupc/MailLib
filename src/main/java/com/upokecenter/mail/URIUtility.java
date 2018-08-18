@@ -1,3 +1,4 @@
+package com.upokecenter.mail;
 /*
 Written in 2013 by Peter Occil.
 Any copyright is dedicated to the Public Domain.
@@ -5,115 +6,122 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
-namespace PeterO.Mail {
-  using System;
-using System.Text;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Cbor.URIUtility"]/*'/>
-  internal static class URIUtility {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Cbor.URIUtility.ParseMode"]/*'/>
-    internal enum ParseMode {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.IRIStrict"]/*'/>
+    /**
+     *
+     */
+  final class URIUtility {
+private URIUtility() {
+}
+    /**
+     *
+     */
+    enum ParseMode {
+    /**
+     *
+     */
       IRIStrict,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.URIStrict"]/*'/>
+    /**
+     *
+     */
       URIStrict,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.IRILenient"]/*'/>
+    /**
+     *
+     */
       IRILenient,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.URILenient"]/*'/>
+    /**
+     *
+     */
       URILenient,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.IRISurrogateLenient"]/*'/>
+    /**
+     *
+     */
       IRISurrogateLenient
     }
 
-    private const string HexChars = "0123456789ABCDEF";
+    private static final String HexChars = "0123456789ABCDEF";
 
     private static void appendAuthority(
   StringBuilder builder,
-  string refValue,
+  String refValue,
   int[] segments) {
       if (segments[2] >= 0) {
-        builder.Append("//");
-        builder.Append(
-  refValue.Substring(
-  segments[2],
-  segments[3] - segments[2]));
+        builder.append("//");
+        builder.append(
+  refValue.substring(
+  segments[2], (
+  segments[2])+(segments[3] - segments[2])));
       }
     }
 
     private static void appendFragment(
   StringBuilder builder,
-  string refValue,
+  String refValue,
   int[] segments) {
       if (segments[8] >= 0) {
-        builder.Append('#');
-        builder.Append(
-  refValue.Substring(
-  segments[8],
-  segments[9] - segments[8]));
+        builder.append('#');
+        builder.append(
+  refValue.substring(
+  segments[8], (
+  segments[8])+(segments[9] - segments[8])));
       }
     }
 
     private static void appendNormalizedPath(
       StringBuilder builder,
-      string refValue,
+      String refValue,
       int[] segments) {
-      builder.Append(
+      builder.append(
         normalizePath(
-  refValue.Substring(
-  segments[4],
-  segments[5] - segments[4])));
+  refValue.substring(
+  segments[4], (
+  segments[4])+(segments[5] - segments[4]))));
     }
 
     private static void AppendPath(
   StringBuilder builder,
-  string refValue,
+  String refValue,
   int[] segments) {
-      builder.Append(
-  refValue.Substring(
-  segments[4],
-  segments[5] - segments[4]));
+      builder.append(
+  refValue.substring(
+  segments[4], (
+  segments[4])+(segments[5] - segments[4])));
     }
 
     private static void appendQuery(
   StringBuilder builder,
-  string refValue,
+  String refValue,
   int[] segments) {
       if (segments[6] >= 0) {
-        builder.Append('?');
-        builder.Append(
-  refValue.Substring(
-  segments[6],
-  segments[7] - segments[6]));
+        builder.append('?');
+        builder.append(
+  refValue.substring(
+  segments[6], (
+  segments[6])+(segments[7] - segments[6])));
       }
     }
 
     private static void appendScheme(
   StringBuilder builder,
-  string refValue,
+  String refValue,
   int[] segments) {
       if (segments[0] >= 0) {
-        builder.Append(
-          refValue.Substring(
-  segments[0],
-  segments[1] - segments[0]));
-        builder.Append(':');
+        builder.append(
+          refValue.substring(
+  segments[0], (
+  segments[0])+(segments[1] - segments[0])));
+        builder.append(':');
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.escapeURI(System.String,System.Int32)"]/*'/>
-    public static string escapeURI(string s, int mode) {
+    /**
+     *
+     */
+    public static String escapeURI(String s, int mode) {
       if (s == null) {
         return null;
       }
@@ -123,7 +131,7 @@ using System.Text;
           s == null) ? null : splitIRI(
   s,
   0,
-  s.Length,
+  s.length(),
   ParseMode.IRIStrict);
         if (components == null) {
           return null;
@@ -132,18 +140,18 @@ using System.Text;
         components = (s == null) ? null : splitIRI(
   s,
   0,
-  s.Length,
+  s.length(),
   ParseMode.IRISurrogateLenient);
       }
-      var index = 0;
-      int valueSLength = s.Length;
-      var builder = new StringBuilder();
+      int index = 0;
+      int valueSLength = s.length();
+      StringBuilder builder = new StringBuilder();
       while (index < valueSLength) {
-        int c = s[index];
+        int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
@@ -151,34 +159,34 @@ using System.Text;
         if (mode == 0 || mode == 3) {
           if (c == '%' && mode == 3) {
             // Check for illegal percent encoding
-            if (index + 2 >= valueSLength || !isHexChar(s[index + 1]) ||
-                !isHexChar(s[index + 2])) {
+            if (index + 2 >= valueSLength || !isHexChar(s.charAt(index + 1)) ||
+                !isHexChar(s.charAt(index + 2))) {
               percentEncodeUtf8(builder, c);
             } else {
               if (c <= 0xffff) {
-                builder.Append((char)c);
+                builder.append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
                     0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             }
             ++index;
             continue;
           }
           if (c >= 0x7f || c <= 0x20 ||
-              ((c & 0x7f) == c && "{}|^\\`<>\"".IndexOf((char)c) >= 0)) {
+              ((c & 0x7f) == c && "{}|^\\`<>\"".indexOf((char)c) >= 0)) {
             percentEncodeUtf8(builder, c);
           } else if (c == '[' || c == ']') {
             if (components != null && index >= components[2] && index <
                 components[3]) {
               // within the authority component, so don't percent-encode
               if (c <= 0xffff) {
-                builder.Append((char)c);
+                builder.append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
                     0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             } else {
               // percent encode
@@ -186,10 +194,10 @@ using System.Text;
             }
           } else {
             if (c <= 0xffff) {
-              builder.Append((char)c);
+              builder.append((char)c);
             } else if (c <= 0x10ffff) {
-              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
             }
           }
         } else if (mode == 1 || mode == 2) {
@@ -200,11 +208,11 @@ using System.Text;
                 components[3]) {
               // within the authority component, so don't percent-encode
               if (c <= 0xffff) {
-                builder.Append((char)c);
+                builder.append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
                     0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             } else {
               // percent encode
@@ -212,41 +220,43 @@ using System.Text;
             }
           } else {
             if (c <= 0xffff) {
-              builder.Append((char)c);
+              builder.append((char)c);
             } else if (c <= 0x10ffff) {
-              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
             }
           }
         }
         ++index;
       }
-      return builder.ToString();
+      return builder.toString();
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.hasScheme(System.String)"]/*'/>
-    public static bool hasScheme(string refValue) {
+    /**
+     *
+     */
+    public static boolean hasScheme(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
         0,
-        refValue.Length,
+        refValue.length(),
         ParseMode.IRIStrict);
       return segments != null && segments[0] >= 0;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.hasSchemeForURI(System.String)"]/*'/>
-    public static bool hasSchemeForURI(string refValue) {
+    /**
+     *
+     */
+    public static boolean hasSchemeForURI(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
         0,
-        refValue.Length,
+        refValue.length(),
         ParseMode.URIStrict);
       return segments != null && segments[0] >= 0;
     }
 
-    private static bool isHexChar(char c) {
+    private static boolean isHexChar(char c) {
       return (c >= 'a' && c <= 'f') ||
         (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9');
     }
@@ -261,14 +271,15 @@ using System.Text;
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.PercentDecode(System.String)"]/*'/>
-    public static string PercentDecode(string str) {
+    /**
+     *
+     */
+    public static String PercentDecode(String str) {
       // Quick check
-      var quickCheck = true;
-      var lastIndex = 0;
-      for (var i = 0; i < str.Length; ++i) {
-        if (str[i] >= 0xd800 || str[i] == '%') {
+      boolean quickCheck = true;
+      int lastIndex = 0;
+      for (int i = 0; i < str.length(); ++i) {
+        if (str.charAt(i) >= 0xd800 || str.charAt(i) == '%') {
           quickCheck = false;
           lastIndex = i;
           break;
@@ -277,28 +288,28 @@ using System.Text;
       if (quickCheck) {
  return str;
 }
-      var retString = new StringBuilder();
-      retString.Append(str, 0, lastIndex);
-      var cp = 0;
-      var bytesSeen = 0;
-      var bytesNeeded = 0;
-      var lower = 0x80;
-      var upper = 0xbf;
-      var markedPos = -1;
-      for (var i = lastIndex; i < str.Length; ++i) {
-        int c = str[i];
-        if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
-            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
+      StringBuilder retString = new StringBuilder();
+      retString.append(str, 0, (0)+(lastIndex));
+      int cp = 0;
+      int bytesSeen = 0;
+      int bytesNeeded = 0;
+      int lower = 0x80;
+      int upper = 0xbf;
+      int markedPos = -1;
+      for (var i = lastIndex; i < str.length(); ++i) {
+        int c = str.charAt(i);
+        if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
+            str.charAt(i + 1) >= 0xdc00 && str.charAt(i + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
           ++i;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
         if (c == '%') {
-          if (i + 2 < str.Length) {
-            int a = ToHex(str[i + 1]);
-            int b = ToHex(str[i + 2]);
+          if (i + 2 < str.length()) {
+            int a = ToHex(str.charAt(i + 1));
+            int b = ToHex(str.charAt(i + 2));
             if (a >= 0 && b >= 0) {
               b = (byte)(a * 16 + b);
               i += 2;
@@ -306,7 +317,7 @@ using System.Text;
               if (bytesNeeded == 0) {
                 // this is the lead byte
                 if (b < 0x80) {
-                  retString.Append((char)b);
+                  retString.append((char)b);
                   continue;
                 } else if (b >= 0xc2 && b <= 0xdf) {
                   markedPos = i;
@@ -326,7 +337,7 @@ using System.Text;
                   cp = b - 0xf0;
                 } else {
                   // illegal byte in UTF-8
-                  retString.Append('\uFFFD');
+                  retString.append('\uFFFD');
                   continue;
                 }
                 cp <<= 6 * bytesNeeded;
@@ -339,7 +350,7 @@ using System.Text;
                   lower = 0x80;
                   upper = 0xbf;
                   i = markedPos;  // reset to the last marked position
-                  retString.Append('\uFFFD');
+                  retString.append('\uFFFD');
                   continue;
                 }
                 // reset lower and upper for the third
@@ -360,11 +371,11 @@ using System.Text;
                 bytesNeeded = 0;
                 // append the Unicode character
                 if (ret <= 0xffff) {
-  retString.Append((char)ret);
+  retString.append((char)ret);
  } else {
-              retString.Append((char)((((ret - 0x10000) >> 10) &
+              retString.append((char)((((ret - 0x10000) >> 10) &
                     0x3ff) + 0xd800));
-                  retString.Append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
+                  retString.append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
                 }
                 continue;
               }
@@ -375,39 +386,39 @@ using System.Text;
           // we expected further bytes here,
           // so emit a replacement character instead
           bytesNeeded = 0;
-          retString.Append('\uFFFD');
+          retString.append('\uFFFD');
         }
         // append the code point as is
         if (c <= 0xffff) {
-  { retString.Append((char)c);
+  { retString.append((char)c);
 }
   } else if (c <= 0x10ffff) {
-retString.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-retString.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+retString.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
 }
       }
       if (bytesNeeded > 0) {
         // we expected further bytes here,
         // so emit a replacement character instead
         bytesNeeded = 0;
-        retString.Append('\uFFFD');
+        retString.append('\uFFFD');
       }
-      return retString.ToString();
+      return retString.toString();
       }
 
 // <summary></summary>
-    public static string EncodeStringForURI(string s) {
+    public static String EncodeStringForURI(String s) {
       if ((s) == null) {
-  throw new ArgumentNullException(nameof(s));
+  throw new NullPointerException("s");
 }
 int index = 0;
-var builder = new StringBuilder();
-      while (index < s.Length) {
-        int c = s[index];
-        if ((c & 0xfc00) == 0xd800 && index + 1 < s.Length &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+StringBuilder builder = new StringBuilder();
+      while (index < s.length()) {
+        int c = s.charAt(index);
+        if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
+            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
@@ -416,97 +427,98 @@ var builder = new StringBuilder();
 }
     if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'
 ) ||
-            (c >= '0' && c <= '9') || ("-_.~").IndexOf((char)c) >= 0)) {
-          builder.Append((char)c);
+            (c >= '0' && c <= '9') || ("-_.~").indexOf((char)c) >= 0)) {
+          builder.append((char)c);
           ++index;
         } else {
           percentEncodeUtf8(builder, c);
           ++index;
         }
       }
-return builder.ToString();
+return builder.toString();
     }
 
-    private static bool isIfragmentChar(int c) {
+    private static boolean isIfragmentChar(int c) {
       // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
-        ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".IndexOf((char)c) >= 0) ||
+        ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
-    private static bool isIpchar(int c) {
+    private static boolean isIpchar(int c) {
       // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
-        ((c & 0x7F) == c && "/-._~:@!$&'()*+,;=".IndexOf((char)c) >= 0) ||
+        ((c & 0x7F) == c && "/-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
-    private static bool isIqueryChar(int c) {
+    private static boolean isIqueryChar(int c) {
       // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
-        ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".IndexOf((char)c) >= 0) ||
+        ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xe000 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0x10000 && c <= 0x10fffd && (c & 0xfffe) != 0xfffe &&
            !(c >= 0xe0000 && c <= 0xe0fff));
     }
 
-    private static bool isIRegNameChar(int c) {
+    private static boolean isIRegNameChar(int c) {
       // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
-        ((c & 0x7F) == c && "-._~!$&'()*+,;=".IndexOf((char)c) >= 0) ||
+        ((c & 0x7F) == c && "-._~!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
-    private static bool isIUserInfoChar(int c) {
+    private static boolean isIUserInfoChar(int c) {
       // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
-        ((c & 0x7F) == c && "-._~:!$&'()*+,;=".IndexOf((char)c) >= 0) ||
+        ((c & 0x7F) == c && "-._~:!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.isValidCurieReference(System.String,System.Int32,System.Int32)"]/*'/>
-    public static bool isValidCurieReference(string s, int offset, int length) {
+    /**
+     *
+     */
+    public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
         return false;
       }
       if (offset < 0) {
-   throw new ArgumentException("offset (" + offset + ") is less than " +
+   throw new IllegalArgumentException("offset (" + offset + ") is less than " +
           "0 ");
       }
-      if (offset > s.Length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
-          s.Length);
+      if (offset > s.length()) {
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
+          s.length());
       }
       if (length < 0) {
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "length (" + length + ") is less than " + "0 ");
       }
-      if (length > s.Length) {
-        throw new ArgumentException(
-          "length (" + length + ") is more than " + s.Length);
+      if (length > s.length()) {
+        throw new IllegalArgumentException(
+          "length (" + length + ") is more than " + s.length());
       }
-      if (s.Length - offset < length) {
-        throw new ArgumentException(
-          "s's length minus " + offset + " (" + (s.Length - offset) +
+      if (s.length() - offset < length) {
+        throw new IllegalArgumentException(
+          "s's length minus " + offset + " (" + (s.length() - offset) +
           ") is less than " + length);
       }
       if (length == 0) {
@@ -514,19 +526,19 @@ return builder.ToString();
       }
       int index = offset;
       int valueSLength = offset + length;
-      var state = 0;
-      if (index + 2 <= valueSLength && s[index] == '/' && s[index + 1] == '/') {
+      int state = 0;
+      if (index + 2 <= valueSLength && s.charAt(index) == '/' && s.charAt(index + 1) == '/') {
         // has an authority, which is not allowed
         return false;
       }
       state = 0;  // IRI Path
       while (index < valueSLength) {
         // Get the next Unicode character
-        int c = s[index];
+        int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
           // error
@@ -534,8 +546,8 @@ return builder.ToString();
         }
         if (c == '%') {
           // Percent encoded character
-          if (index + 2 < valueSLength && isHexChar(s[index + 1]) &&
-              isHexChar(s[index + 2])) {
+          if (index + 2 < valueSLength && isHexChar(s.charAt(index + 1)) &&
+              isHexChar(s.charAt(index + 2))) {
             index += 3;
             continue;
           }
@@ -567,46 +579,46 @@ return builder.ToString();
       return true;
     }
 
-public static string BuildIRI(
-  string schemeAndAuthority,
-  string path,
-  string query,
-  string fragment) {
-  var builder = new StringBuilder();
-  if (!String.IsNullOrEmpty(schemeAndAuthority)) {
+public static String BuildIRI(
+  String schemeAndAuthority,
+  String path,
+  String query,
+  String fragment) {
+  StringBuilder builder = new StringBuilder();
+  if (!((schemeAndAuthority) == null || (schemeAndAuthority).length() == 0)) {
     int[] irisplit = splitIRI(schemeAndAuthority);
      // NOTE: Path component is always present in URIs;
      // we check here whether path component is empty
     if (irisplit == null || (irisplit[0] < 0 && irisplit[2] < 0) ||
       irisplit[4] != irisplit[5] || irisplit[6] >= 0 || irisplit[8] >= 0) {
- throw new ArgumentException("invalid schemeAndAuthority");
+ throw new IllegalArgumentException("invalid schemeAndAuthority");
 }
   }
-  if (String.IsNullOrEmpty(path)) {
- path = String.Empty;
+  if (((path) == null || (path).length() == 0)) {
+ path = "";
 }
-  for (var phase = 0; phase < 3; ++phase) {
-    string s = path;
+  for (int phase = 0; phase < 3; ++phase) {
+    String s = path;
     if (phase == 1) {
       s = query;
       if (query == null) {
  continue;
 }
-      builder.Append('?');
+      builder.append('?');
     } else if (phase == 2) {
       s = fragment;
       if (fragment == null) {
  continue;
 }
-      builder.Append('#');
+      builder.append('#');
     }
-      var index = 0;
-      while (index < s.Length) {
-        int c = s[index];
-        if ((c & 0xfc00) == 0xd800 && index + 1 < s.Length &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+      int index = 0;
+      while (index < s.length()) {
+        int c = s.charAt(index);
+        if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
+            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
@@ -614,23 +626,23 @@ public static string BuildIRI(
  ++index;
 }
         if (c == '%') {
-          if (index + 2 < s.Length && isHexChar(s[index + 1]) &&
-            isHexChar(s[index + 2])) {
-            builder.Append('%');
-            builder.Append(s[index + 1]);
-            builder.Append(s[index + 2]);
+          if (index + 2 < s.length() && isHexChar(s.charAt(index + 1)) &&
+            isHexChar(s.charAt(index + 2))) {
+            builder.append('%');
+            builder.append(s.charAt(index + 1));
+            builder.append(s.charAt(index + 2));
             index += 3;
           } else {
-            builder.Append("%25");
+            builder.append("%25");
             ++index;
           }
         } else if ((c & 0x7f) == c &&
    ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
             (c >= '0' && c <= '9') ||
-            "-_.~/(=):!$&'*+,;@".IndexOf((char)c) >= 0)) {
+            "-_.~/(=):!$&'*+,;@".indexOf((char)c) >= 0)) {
           // NOTE: Question mark will be percent encoded even though
           // it can appear in query and fragment strings
-          builder.Append((char)c);
+          builder.append((char)c);
           ++index;
         } else {
           percentEncodeUtf8(builder, c);
@@ -638,76 +650,75 @@ public static string BuildIRI(
         }
       }
   }
-  string ret = builder.ToString();
+  String ret = builder.toString();
   if (splitIRI(ret) == null) {
- throw new ArgumentException();
+ throw new IllegalArgumentException();
 }
   return ret;
 }
 
-    public static bool isValidIRI(string s) {
+    public static boolean isValidIRI(String s) {
       return ((s == null) ?
   null : splitIRI(
   s,
   0,
-  s.Length,
+  s.length(),
   ParseMode.IRIStrict)) != null;
     }
 
-    private const string ValueDotSlash = "." + "/";
-    private const string ValueSlashDot = "/" + ".";
+    private static final String ValueDotSlash = "." + "/";
+    private static final String ValueSlashDot = "/" + ".";
 
-    private static string normalizePath(string path) {
-      int len = path.Length;
-      if (len == 0 || path.Equals("..") || path.Equals(".")) {
-        return String.Empty;
+    private static String normalizePath(String path) {
+      int len = path.length();
+      if (len == 0 || path.equals("..") || path.equals(".")) {
+        return "";
       }
-      if (path.IndexOf(ValueSlashDot, StringComparison.Ordinal) < 0 &&
-          path.IndexOf(
-  ValueDotSlash,
-  StringComparison.Ordinal) < 0) {
+      if (path.indexOf(ValueSlashDot) < 0 &&
+          path.indexOf(
+  ValueDotSlash) < 0) {
         return path;
       }
-      var builder = new StringBuilder();
-      var index = 0;
+      StringBuilder builder = new StringBuilder();
+      int index = 0;
       while (index < len) {
-        char c = path[index];
-        if ((index + 3 <= len && c == '/' && path[index + 1] == '.' &&
-             path[index + 2] == '/') || (index + 2 == len && c == '.' &&
-             path[index + 1] == '.')) {
+        char c = path.charAt(index);
+        if ((index + 3 <= len && c == '/' && path.charAt(index + 1) == '.' &&
+             path.charAt(index + 2) == '/') || (index + 2 == len && c == '.' &&
+             path.charAt(index + 1) == '.')) {
           // begins with "/./" or is "..";
           // move index by 2
           index += 2;
           continue;
         }
         if (index + 3 <= len && c == '.' &&
-            path[index + 1] == '.' && path[index + 2] == '/') {
+            path.charAt(index + 1) == '.' && path.charAt(index + 2) == '/') {
           // begins with "../";
           // move index by 3
           index += 3;
           continue;
         }
         if ((index + 2 <= len && c == '.' &&
-             path[index + 1] == '/') || (index + 1 == len && c == '.')) {
+             path.charAt(index + 1) == '/') || (index + 1 == len && c == '.')) {
           // begins with "./" or is ".";
           // move index by 1
           ++index;
           continue;
         }
         if (index + 2 == len && c == '/' &&
-            path[index + 1] == '.') {
+            path.charAt(index + 1) == '.') {
           // is "/."; append '/' and break
-          builder.Append('/');
+          builder.append('/');
           break;
         }
         if (index + 3 == len && c == '/' &&
-            path[index + 1] == '.' && path[index + 2] == '.') {
+            path.charAt(index + 1) == '.' && path.charAt(index + 2) == '.') {
           // is "/.."; remove last segment,
           // append "/" and return
-          int index2 = builder.Length - 1;
-          string builderString = builder.ToString();
+          int index2 = builder.length() - 1;
+          String builderString = builder.toString();
           while (index2 >= 0) {
-            if (builderString[index2] == '/') {
+            if (builderString.charAt(index2) == '/') {
               break;
             }
             --index2;
@@ -715,17 +726,17 @@ public static string BuildIRI(
           if (index2 < 0) {
             index2 = 0;
           }
-          builder.Length = index2;
-          builder.Append('/');
+          builder.setLength(index2);
+          builder.append('/');
           break;
         }
-        if (index + 4 <= len && c == '/' && path[index + 1] == '.' &&
-            path[index + 2] == '.' && path[index + 3] == '/') {
+        if (index + 4 <= len && c == '/' && path.charAt(index + 1) == '.' &&
+            path.charAt(index + 2) == '.' && path.charAt(index + 3) == '/') {
           // begins with "/../"; remove last segment
-          int index2 = builder.Length - 1;
-          string builderString = builder.ToString();
+          int index2 = builder.length() - 1;
+          String builderString = builder.toString();
           while (index2 >= 0) {
-            if (builderString[index2] == '/') {
+            if (builderString.charAt(index2) == '/') {
               break;
             }
             --index2;
@@ -733,39 +744,39 @@ public static string BuildIRI(
           if (index2 < 0) {
             index2 = 0;
           }
-          builder.Length = index2;
+          builder.setLength(index2);
           index += 3;
           continue;
         }
-        builder.Append(c);
+        builder.append(c);
         ++index;
         while (index < len) {
           // Move the rest of the
           // path segment until the next '/'
-          c = path[index];
+          c = path.charAt(index);
           if (c == '/') {
             break;
           }
-          builder.Append(c);
+          builder.append(c);
           ++index;
         }
       }
-      return builder.ToString();
+      return builder.toString();
     }
 
-    private static int parseIPLiteral(string s, int offset, int endOffset) {
+    private static int parseIPLiteral(String s, int offset, int endOffset) {
       int index = offset;
       if (offset == endOffset) {
         return -1;
       }
       // Assumes that the character before offset
       // is a '['
-      if (s[index] == 'v') {
+      if (s.charAt(index) == 'v') {
         // IPvFuture
         ++index;
-        var hex = false;
+        boolean hex = false;
         while (index < endOffset) {
-          char c = s[index];
+          char c = s.charAt(index);
           if (isHexChar(c)) {
             hex = true;
           } else {
@@ -776,16 +787,16 @@ public static string BuildIRI(
         if (!hex) {
           return -1;
         }
-        if (index >= endOffset || s[index] != '.') {
+        if (index >= endOffset || s.charAt(index) != '.') {
           return -1;
         }
         ++index;
         hex = false;
         while (index < endOffset) {
-          char c = s[index];
+          char c = s.charAt(index);
           if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
               (c >= '0' && c <= '9') ||
-              ((c & 0x7F) == c && ":-._~!$&'()*+,;=".IndexOf(c) >= 0)) {
+              ((c & 0x7F) == c && ":-._~!$&'()*+,;=".indexOf(c) >= 0)) {
             hex = true;
           } else {
             break;
@@ -795,35 +806,35 @@ public static string BuildIRI(
         if (!hex) {
           return -1;
         }
-        if (index >= endOffset || s[index] != ']') {
+        if (index >= endOffset || s.charAt(index) != ']') {
           return -1;
         }
         ++index;
         return index;
       }
-      if (s[index] == ':' ||
-          isHexChar(s[index])) {
+      if (s.charAt(index) == ':' ||
+          isHexChar(s.charAt(index))) {
      var startIndex = index;
-while (index < endOffset && ((s[index] >= 65 && s[index] <= 70) ||
-  (s[index] >= 97 && s[index] <= 102) || (s[index] >= 48 && s[index]
-  <= 58) || (s[index] == 46))) {
+while (index < endOffset && ((s.charAt(index) >= 65 && s.charAt(index) <= 70) ||
+  (s.charAt(index) >= 97 && s.charAt(index) <= 102) || (s.charAt(index) >= 48 && s.charAt(index)
+  <= 58) || (s.charAt(index) == 46))) {
  ++index;
 }
-if (index >= endOffset || (s[index] != ']' && s[index] != '%')) {
+if (index >= endOffset || (s.charAt(index) != ']' && s.charAt(index) != '%')) {
  return -1;
 }
 // NOTE: Array is initialized to zeros
 int[] addressParts = new int[8];
 var ipEndIndex = index;
-var doubleColon = false;
-var doubleColonPos = 0;
-var totalParts = 0;
-var ipv4part = false;
+boolean doubleColon = false;
+int doubleColonPos = 0;
+int totalParts = 0;
+boolean ipv4part = false;
 index = startIndex;
-// DebugUtility.Log(s.Substring(startIndex, ipEndIndex-startIndex));
-for (var part = 0; part < 8; ++part) {
- if (!doubleColon && ipEndIndex - index > 1 && s[index] == ':' && s[index +
-   1] == ':') {
+// DebugUtility.Log(s.substring(startIndex, (startIndex)+(ipEndIndex-startIndex)));
+for (int part = 0; part < 8; ++part) {
+ if (!doubleColon && ipEndIndex - index > 1 && s.charAt(index) == ':' && s.charAt(index +
+   1) == ':') {
   doubleColon = true;
   doubleColonPos = part;
   index += 2;
@@ -831,12 +842,12 @@ for (var part = 0; part < 8; ++part) {
  break;
 }
  }
- var hex = 0;
- var haveHex = false;
+ int hex = 0;
+ boolean haveHex = false;
  int curindex = index;
- for (var i = 0; i < 4; ++i) {
-if (isHexChar(s[index])) {
- hex = (hex << 4) | ToHex(s[index]);
+ for (int i = 0; i < 4; ++i) {
+if (isHexChar(s.charAt(index))) {
+ hex = (hex << 4) | ToHex(s.charAt(index));
  haveHex = true;
  ++index;
 } else {
@@ -846,14 +857,14 @@ if (isHexChar(s[index])) {
  if (!haveHex) {
  return -1;
 }
- if (index < ipEndIndex && s[index] == '.' && part < 7) {
+ if (index < ipEndIndex && s.charAt(index) == '.' && part < 7) {
   ipv4part = true;
   index = curindex;
   break;
  }
  addressParts[part] = hex;
  ++totalParts;
- if (index < ipEndIndex && s[index] != ':') {
+ if (index < ipEndIndex && s.charAt(index) != ':') {
  return -1;
 }
  if (index == ipEndIndex && doubleColon) {
@@ -861,7 +872,7 @@ if (isHexChar(s[index])) {
 }
   // Skip single colon, but not double colon
  if (index < ipEndIndex &&
-   (index + 1 >= ipEndIndex || s[index + 1] != ':')) {
+   (index + 1 >= ipEndIndex || s.charAt(index + 1) != ':')) {
  ++index;
 }
 }
@@ -870,25 +881,25 @@ if (index != ipEndIndex && !ipv4part) {
 }
 if (doubleColon || ipv4part) {
  if (ipv4part) {
-  var ipparts = new int[4];
-  for (var part = 0; part < 4; ++part) {
+  int[] ipparts = new int[4];
+  for (int part = 0; part < 4; ++part) {
     if (part > 0) {
-if (index < ipEndIndex && s[index] == '.') {
+if (index < ipEndIndex && s.charAt(index) == '.') {
  ++index;
 } else {
  return -1;
 }
     }
-if (index + 1 < ipEndIndex && s[index] == '0' &&
- (s[index + 1] >= '0' && s[index + 1] <= '9')) {
+if (index + 1 < ipEndIndex && s.charAt(index) == '0' &&
+ (s.charAt(index + 1) >= '0' && s.charAt(index + 1) <= '9')) {
  return -1;
 }
- var dec = 0;
- var haveDec = false;
+ int dec = 0;
+ boolean haveDec = false;
  int curindex = index;
- for (var i = 0; i < 4; ++i) {
-if (s[index] >= '0' && s[index] <= '9') {
- dec = (dec * 10) + ((int)s[index] - '0');
+ for (int i = 0; i < 4; ++i) {
+if (s.charAt(index) >= '0' && s.charAt(index) <= '9') {
+ dec = (dec * 10) + ((int)s.charAt(index) - '0');
  haveDec = true;
  ++index;
 } else {
@@ -912,15 +923,15 @@ totalParts += 2;
  }
  if (doubleColon) {
   int resid = 8 - totalParts;
-  var newAddressParts = new int[8];
-  Array.Copy(addressParts, newAddressParts, doubleColonPos);
-  Array.Copy(
+  int[] newAddressParts = new int[8];
+  System.arraycopy(addressParts, 0, newAddressParts, 0, doubleColonPos);
+  System.arraycopy(
   addressParts,
   doubleColonPos,
   newAddressParts,
   doubleColonPos + resid,
   totalParts - doubleColonPos);
-  Array.Copy(newAddressParts, addressParts, 8);
+  System.arraycopy(newAddressParts, 0, addressParts, 0, 8);
  }
 } else if (totalParts != 8) {
  return -1;
@@ -929,22 +940,22 @@ totalParts += 2;
   // addressParts[0], addressParts[1], addressParts[2],
   // addressParts[3], addressParts[4], addressParts[5],
   // addressParts[6], addressParts[7]);
-        if (s[index] == '%') {
-          if (index + 2 < endOffset && s[index + 1] == '2' &&
-              s[index + 2] == '5' && (addressParts[0] & 0xFFC0) == 0xFE80) {
+        if (s.charAt(index) == '%') {
+          if (index + 2 < endOffset && s.charAt(index + 1) == '2' &&
+              s.charAt(index + 2) == '5' && (addressParts[0] & 0xFFC0) == 0xFE80) {
             // Zone identifier in an IPv6 address
             // (see RFC6874)
             // NOTE: Allowed only if address has prefix fe80::/10
             index += 3;
-            var haveChar = false;
+            boolean haveChar = false;
             while (index < endOffset) {
-              char c = s[index];
+              char c = s.charAt(index);
               if (c == ']') {
                 return haveChar ? index + 1 : -1;
               }
               if (c == '%') {
-                if (index + 2 < endOffset && isHexChar(s[index + 1]) &&
-                    isHexChar(s[index + 2])) {
+                if (index + 2 < endOffset && isHexChar(s.charAt(index + 1)) &&
+                    isHexChar(s.charAt(index + 2))) {
                   index += 3;
                   haveChar = true;
                   continue;
@@ -971,34 +982,34 @@ totalParts += 2;
       return -1;
     }
 
-    private static string pathParent(
-  string refValue,
+    private static String pathParent(
+  String refValue,
   int startIndex,
   int endIndex) {
       if (startIndex > endIndex) {
-        return String.Empty;
+        return "";
       }
       --endIndex;
       while (endIndex >= startIndex) {
-        if (refValue[endIndex] == '/') {
-          return refValue.Substring(startIndex, (endIndex + 1) - startIndex);
+        if (refValue.charAt(endIndex) == '/') {
+          return refValue.substring(startIndex, (startIndex)+((endIndex + 1) - startIndex));
         }
         --endIndex;
       }
-      return String.Empty;
+      return "";
     }
 
     private static void percentEncode(StringBuilder buffer, int b) {
-      buffer.Append('%');
-      buffer.Append(HexChars[(b >> 4) & 0x0f]);
-      buffer.Append(HexChars[b & 0x0f]);
+      buffer.append('%');
+      buffer.append(HexChars.charAt((b >> 4) & 0x0f));
+      buffer.append(HexChars.charAt(b & 0x0f));
     }
 
     private static void percentEncodeUtf8(StringBuilder buffer, int cp) {
       if (cp <= 0x7f) {
-        buffer.Append('%');
-        buffer.Append(HexChars[(cp >> 4) & 0x0f]);
-        buffer.Append(HexChars[cp & 0x0f]);
+        buffer.append('%');
+        buffer.append(HexChars.charAt((cp >> 4) & 0x0f));
+        buffer.append(HexChars.charAt(cp & 0x0f));
       } else if (cp <= 0x7ff) {
         percentEncode(buffer, 0xc0 | ((cp >> 6) & 0x1f));
         percentEncode(buffer, 0x80 | (cp & 0x3f));
@@ -1014,22 +1025,24 @@ totalParts += 2;
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.relativeResolve(System.String,System.String)"]/*'/>
-    public static string relativeResolve(string refValue, string baseURI) {
+    /**
+     *
+     */
+    public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.relativeResolve(System.String,System.String,PeterO.Cbor.URIUtility.ParseMode)"]/*'/>
-    public static string relativeResolve(
-  string refValue,
-  string baseURI,
+    /**
+     *
+     */
+    public static String relativeResolve(
+  String refValue,
+  String baseURI,
   ParseMode parseMode) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
         0,
-        refValue.Length,
+        refValue.length(),
         parseMode);
       if (segments == null) {
         return null;
@@ -1038,12 +1051,12 @@ totalParts += 2;
         baseURI == null) ? null : splitIRI(
   baseURI,
   0,
-  baseURI.Length,
+  baseURI.length(),
   parseMode);
       if (segmentsBase == null) {
         return refValue;
       }
-      var builder = new StringBuilder();
+      StringBuilder builder = new StringBuilder();
       if (segments[0] >= 0) {  // scheme present
         appendScheme(builder, refValue, segments);
         appendAuthority(builder, refValue, segments);
@@ -1069,39 +1082,39 @@ totalParts += 2;
       } else {
         appendScheme(builder, baseURI, segmentsBase);
         appendAuthority(builder, baseURI, segmentsBase);
-        if (segments[4] < segments[5] && refValue[segments[4]] == '/') {
+        if (segments[4] < segments[5] && refValue.charAt(segments[4]) == '/') {
           appendNormalizedPath(builder, refValue, segments);
         } else {
-          var merged = new StringBuilder();
+          StringBuilder merged = new StringBuilder();
           if (segmentsBase[2] >= 0 && segmentsBase[4] == segmentsBase[5]) {
-            merged.Append('/');
+            merged.append('/');
             AppendPath(merged, refValue, segments);
-            builder.Append(normalizePath(merged.ToString()));
+            builder.append(normalizePath(merged.toString()));
           } else {
-            merged.Append(
+            merged.append(
               pathParent(
   baseURI,
   segmentsBase[4],
   segmentsBase[5]));
             AppendPath(merged, refValue, segments);
-            builder.Append(normalizePath(merged.ToString()));
+            builder.append(normalizePath(merged.toString()));
           }
         }
         appendQuery(builder, refValue, segments);
         appendFragment(builder, refValue, segments);
       }
-      return builder.ToString();
+      return builder.toString();
     }
 
-    private static string ToLowerCaseAscii(string str) {
+    private static String ToLowerCaseAscii(String str) {
       if (str == null) {
         return null;
       }
-      var len = str.Length;
-      var c = (char)0;
-      var hasUpperCase = false;
-      for (var i = 0; i < len; ++i) {
-        c = str[i];
+      int len = str.length();
+      char c = (char)0;
+      boolean hasUpperCase = false;
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
         if (c >= 'A' && c <= 'Z') {
           hasUpperCase = true;
           break;
@@ -1110,42 +1123,44 @@ totalParts += 2;
       if (!hasUpperCase) {
         return str;
       }
-      var builder = new StringBuilder();
-      for (var i = 0; i < len; ++i) {
-        c = str[i];
+      StringBuilder builder = new StringBuilder();
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
         if (c >= 'A' && c <= 'Z') {
-          builder.Append((char)(c + 0x20));
+          builder.append((char)(c + 0x20));
         } else {
-          builder.Append(c);
+          builder.append(c);
         }
       }
-      return builder.ToString();
+      return builder.toString();
     }
 
-    public static string[] splitIRIToStrings(string s) {
+    public static String[] splitIRIToStrings(String s) {
       int[] ret = splitIRI(s);
 if (ret == null) {
  return null;
 }
-return new string[] {
- ret[0] < 0 ? null : ToLowerCaseAscii(s.Substring(ret[0], ret[1] - ret[0])),
- ret[2] < 0 ? null : s.Substring(ret[2], ret[3] - ret[2]),
- ret[4] < 0 ? null : s.Substring(ret[4], ret[5] - ret[4]),
- ret[6] < 0 ? null : s.Substring(ret[6], ret[7] - ret[6]),
- ret[8] < 0 ? null : s.Substring(ret[8], ret[9] - ret[8])
+return new String[] {
+ ret.charAt(0) < 0 ? null : ToLowerCaseAscii(s.substring(ret.charAt(0), (ret.charAt(0))+(ret.charAt(1) - ret.charAt(0)))),
+ ret.charAt(2) < 0 ? null : s.substring(ret.charAt(2), (ret.charAt(2))+(ret.charAt(3) - ret.charAt(2))),
+ ret.charAt(4) < 0 ? null : s.substring(ret.charAt(4), (ret.charAt(4))+(ret.charAt(5) - ret.charAt(4))),
+ ret.charAt(6) < 0 ? null : s.substring(ret.charAt(6), (ret.charAt(6))+(ret.charAt(7) - ret.charAt(6))),
+ ret.charAt(8) < 0 ? null : s.substring(ret.charAt(8), (ret.charAt(8))+(ret.charAt(9) - ret.charAt(8)))
 };
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.splitIRI(System.String)"]/*'/>
-    public static int[] splitIRI(string s) {
-      return (s == null) ? null : splitIRI(s, 0, s.Length, ParseMode.IRIStrict);
+    /**
+     *
+     */
+    public static int[] splitIRI(String s) {
+      return (s == null) ? null : splitIRI(s, 0, s.length(), ParseMode.IRIStrict);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.splitIRI(System.String,System.Int32,System.Int32,PeterO.Cbor.URIUtility.ParseMode)"]/*'/>
+    /**
+     *
+     */
     public static int[] splitIRI(
-  string s,
+  String s,
   int offset,
   int length,
   ParseMode parseMode) {
@@ -1153,27 +1168,27 @@ return new string[] {
         return null;
       }
       if (s == null) {
-  throw new ArgumentNullException(nameof(s));
+  throw new NullPointerException("s");
 }
 if (offset < 0) {
-  throw new ArgumentException("offset (" + offset +
+  throw new IllegalArgumentException("offset (" + offset +
     ") is less than 0");
 }
-if (offset > s.Length) {
-  throw new ArgumentException("offset (" + offset +
-    ") is more than " + s.Length);
+if (offset > s.length()) {
+  throw new IllegalArgumentException("offset (" + offset +
+    ") is more than " + s.length());
 }
 if (length < 0) {
-  throw new ArgumentException("length (" + length +
+  throw new IllegalArgumentException("length (" + length +
     ") is less than 0");
 }
-if (length > s.Length) {
-  throw new ArgumentException("length (" + length +
-    ") is more than " + s.Length);
+if (length > s.length()) {
+  throw new IllegalArgumentException("length (" + length +
+    ") is more than " + s.length());
 }
-if (s.Length - offset < length) {
-  throw new ArgumentException("s's length minus " + offset + " (" +
-    (s.Length - offset) + ") is less than " + length);
+if (s.length() - offset < length) {
+  throw new IllegalArgumentException("s's length minus " + offset + " (" +
+    (s.length() - offset) + ") is less than " + length);
 }
       int[] retval = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
       if (length == 0) {
@@ -1181,16 +1196,16 @@ if (s.Length - offset < length) {
         retval[5] = 0;
         return retval;
       }
-      bool asciiOnly = parseMode == ParseMode.URILenient || parseMode ==
+      boolean asciiOnly = parseMode == ParseMode.URILenient || parseMode ==
         ParseMode.URIStrict;
-      bool strict = parseMode == ParseMode.URIStrict || parseMode ==
+      boolean strict = parseMode == ParseMode.URIStrict || parseMode ==
         ParseMode.IRIStrict;
       int index = offset;
       int valueSLength = offset + length;
-      var scheme = false;
+      boolean scheme = false;
       // scheme
       while (index < valueSLength) {
-        int c = s[index];
+        int c = s.charAt(index);
         if (index > offset && c == ':') {
           scheme = true;
           retval[0] = offset;
@@ -1215,8 +1230,8 @@ if (s.Length - offset < length) {
       if (!scheme) {
         index = offset;
       }
-      var state = 0;
-      if (index + 2 <= valueSLength && s[index] == '/' && s[index + 1] == '/') {
+      int state = 0;
+      if (index + 2 <= valueSLength && s.charAt(index) == '/' && s.charAt(index + 1) == '/') {
         // authority
         // (index + 2, valueSLength)
         index += 2;
@@ -1226,14 +1241,14 @@ if (s.Length - offset < length) {
         state = 0;  // userinfo
         // Check for userinfo
         while (index < valueSLength) {
-          int c = s[index];
+          int c = s.charAt(index);
           if (asciiOnly && c >= 0x80) {
             return null;
           }
           if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-              s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+              s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+            c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
             ++index;
           } else if ((c & 0xf800) == 0xd800) {
             if (parseMode == ParseMode.IRISurrogateLenient) {
@@ -1244,8 +1259,8 @@ if (s.Length - offset < length) {
           }
           if (c == '%' && (state == 0 || state == 1) && strict) {
             // Percent encoded character (except in port)
-            if (index + 2 < valueSLength && isHexChar(s[index + 1]) &&
-                isHexChar(s[index + 2])) {
+            if (index + 2 < valueSLength && isHexChar(s.charAt(index + 1)) &&
+                isHexChar(s.charAt(index + 2))) {
               index += 3;
               continue;
             }
@@ -1319,22 +1334,22 @@ if (s.Length - offset < length) {
           }
         }
       }
-      var colon = false;
-      var segment = false;
-      bool fullyRelative = index == offset;
+      boolean colon = false;
+      boolean segment = false;
+      boolean fullyRelative = index == offset;
       retval[4] = index;  // path offsets
       retval[5] = valueSLength;
       state = 0;  // IRI Path
       while (index < valueSLength) {
         // Get the next Unicode character
-        int c = s[index];
+        int c = s.charAt(index);
         if (asciiOnly && c >= 0x80) {
           return null;
         }
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
           // error
@@ -1342,8 +1357,8 @@ if (s.Length - offset < length) {
         }
         if (c == '%' && strict) {
           // Percent encoded character
-          if (index + 2 < valueSLength && isHexChar(s[index + 1]) &&
-              isHexChar(s[index + 2])) {
+          if (index + 2 < valueSLength && isHexChar(s.charAt(index + 1)) &&
+              isHexChar(s.charAt(index + 2))) {
             index += 3;
             continue;
           }
@@ -1396,10 +1411,10 @@ if (s.Length - offset < length) {
       return retval;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.splitIRI(System.String,PeterO.Cbor.URIUtility.ParseMode)"]/*'/>
-    public static int[] splitIRI(string s, ParseMode parseMode) {
-      return (s == null) ? null : splitIRI(s, 0, s.Length, parseMode);
+    /**
+     *
+     */
+    public static int[] splitIRI(String s, ParseMode parseMode) {
+      return (s == null) ? null : splitIRI(s, 0, s.length(), parseMode);
     }
   }
-}

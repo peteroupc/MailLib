@@ -17,6 +17,35 @@ import java.util.*;
     private final String displayName;
 
     /**
+     * Not documented yet.
+     * @param addressValue Not documented yet.
+     * @return An List(NamedAddress) object.
+     */
+    public static List<NamedAddress> ParseAddresses(String addressValue) {
+      ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
+      if (((addressValue) == null || (addressValue).length() == 0)) {
+        return list;
+      }
+        Tokener tokener = new Tokener();
+        if (
+          HeaderParser.ParseHeaderTo(
+            addressValue,
+            0,
+            addressValue.length(),
+            tokener) != addressValue.length()) {
+          // Invalid syntax
+          return list;
+        }
+        list.addAll(
+          HeaderParserUtility.ParseAddressList(
+            addressValue,
+            0,
+            addressValue.length(),
+            tokener.GetTokens()));
+      return list;
+    }
+
+    /**
      * Calculates the hash code of this object. No application or process IDs are
      * used in the hash code calculation.
      * @return A 32-bit hash code.

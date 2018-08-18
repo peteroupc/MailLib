@@ -1,12 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using PeterO;
-using PeterO.Mail;
-using Test;
 
-namespace MailLibTest {
-  public static class DataUrl {
+namespace PeterO.Mail {
+    /// <summary>Not documented yet.</summary>
+  public static class DataUrls {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='url'>Not documented yet.</param>
+    /// <returns>A MediaType object.</returns>
     public static MediaType DataUrlMediaType(string url) {
       string[] parts = URIUtility.splitIRIToStrings(
         url);
@@ -78,6 +79,9 @@ namespace MailLibTest {
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='url'>Not documented yet.</param>
+    /// <returns>A byte array.</returns>
     public static byte[] DataUrlBytes(string url) {
       string[] parts = URIUtility.splitIRIToStrings(
         url);
@@ -194,12 +198,19 @@ namespace MailLibTest {
       }
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='textString'>Not documented yet.</param>
+    /// <returns>A string object.</returns>
     public static string MakeDataUrl(string textString) {
       return MakeDataUrl(
   DataUtilities.GetUtf8Bytes(textString, true),
   MediaType.Parse("text/plain;charset=utf-8"));
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='bytes'>Not documented yet.</param>
+    /// <param name='mediaType'>Not documented yet.</param>
+    /// <returns>A string object.</returns>
     public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));

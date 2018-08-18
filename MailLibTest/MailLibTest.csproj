@@ -83,7 +83,6 @@
     <Compile Include="XorShift128Plus.cs" />
 
     <Compile Include="DictUtility.cs" />
-    <Compile Include="DataUrl.cs" />
     <Compile Include="URIUtility.cs" />
     <Compile Include="DataUrlTest.cs" />
     <Compile Include="EnrichedText.cs" />

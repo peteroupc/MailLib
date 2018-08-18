@@ -224,7 +224,6 @@ return GetAddresses("cc");
       headerName = DataUtilities.ToLowerCaseAscii(headerName);
       if (ValueHeaderIndices.ContainsKey(headerName) &&
          ValueHeaderIndices[headerName] <= 5) {
-        // TODO: Maybe support Resent-*
         return ParseAddresses(this.GetMultipleHeaders(headerName));
       } else {
         throw new NotSupportedException("Not supported for: " + headerName);
@@ -522,10 +521,8 @@ return GetAddresses("to");
       return this.SetHeader(index, this.headers[index * 2], value);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>Not documented yet.</param>
-    /// <param name='value'>Not documented yet.</param>
-    /// <returns>A string object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)"]/*'/>
     public static string DecodeHeaderValue(string name, string value) {
       return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
     }
@@ -826,18 +823,15 @@ private static string GetContentTranslationType(string ctt) {
          ctt.Substring(index, cttEnd - index));
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='languages'>Not documented yet.</param>
-    /// <returns>A Message object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})"]/*'/>
     public Message SelectLanguageMessage(
        IList<string> languages) {
       return SelectLanguageMessage(languages, false);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='languages'>Not documented yet.</param>
-    /// <param name='preferOriginals'>Not documented yet.</param>
-    /// <returns>A Message object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)"]/*'/>
     public Message SelectLanguageMessage(
        IList<string> languages,
        bool preferOriginals) {
@@ -1496,32 +1490,10 @@ private static string GetContentTranslationType(string ctt) {
       return false;
     }
 
-    internal static IList<NamedAddress> ParseAddresses(string value) {
-return ParseAddresses(new string[] { value});
-    }
-
     internal static IList<NamedAddress> ParseAddresses(string[] values) {
       var list = new List<NamedAddress>();
       foreach (string addressValue in values) {
-        if (addressValue == null) {
-          continue;
-        }
-        var tokener = new Tokener();
-        if (
-          HeaderParser.ParseHeaderTo(
-            addressValue,
-            0,
-            addressValue.Length,
-            tokener) != addressValue.Length) {
-          // Invalid syntax
-          continue;
-        }
-        list.AddRange(
-          HeaderParserUtility.ParseAddressList(
-            addressValue,
-            0,
-            addressValue.Length,
-            tokener.GetTokens()));
+        list.AddRange(NamedAddress.ParseAddresses(addressValue));
       }
       return list;
     }
@@ -2310,7 +2282,8 @@ if ((ungetState[1]) < 0x80) {
               }
             } else if (headerIndex <= 10) {
               // Resent-* fields can appear more than once
-              value = GenerateAddressList(ParseAddresses(value));
+              value = GenerateAddressList(
+                NamedAddress.ParseAddresses(value));
               if (value.Length == 0) {
                 // No addresses, synthesize a field
                 rawField = this.SynthesizeField(name);

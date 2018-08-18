@@ -92,8 +92,10 @@ using System.Collections.Generic;
         return NormalizerInput.IsNormalized(str, form);
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <param name='form'>Not documented yet.</param>
+    /// <returns>An IList(int) object.</returns>
   [Obsolete("Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.")]
       public static IList<int> GetChars(string str, Normalization form) {
         if (str == null) {
@@ -126,8 +128,10 @@ using System.Collections.Generic;
         return ret;
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='charArray'>Not documented yet.</param>
+    /// <param name='form'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
   [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
     public static bool IsNormalized(int[] charArray, Normalization form) {
      if (charArray == null) {
@@ -136,8 +140,10 @@ using System.Collections.Generic;
      return IsNormalized(new PartialArrayCharacterInput(charArray), form);
    }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='charList'>Not documented yet.</param>
+    /// <param name='form'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
   [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
       public static bool IsNormalized(IList<int> charList, Normalization form) {
           return IsNormalized(
