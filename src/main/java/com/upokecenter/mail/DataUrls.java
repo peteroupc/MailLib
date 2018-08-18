@@ -10,8 +10,6 @@ private DataUrls() {
 }
     /**
      * Not documented yet.
-     * @param url Not documented yet.
-     * @return A MediaType object.
      */
     public static MediaType DataUrlMediaType(String url) {
       String[] parts = URIUtility.splitIRIToStrings(
@@ -86,8 +84,6 @@ private DataUrls() {
 
     /**
      * Not documented yet.
-     * @param url Not documented yet.
-     * @return A byte array.
      */
     public static byte[] DataUrlBytes(String url) {
       String[] parts = URIUtility.splitIRIToStrings(
@@ -207,8 +203,6 @@ private DataUrls() {
 
     /**
      * Not documented yet.
-     * @param textString Not documented yet.
-     * @return A string object.
      */
     public static String MakeDataUrl(String textString) {
       return MakeDataUrl(
@@ -218,9 +212,6 @@ private DataUrls() {
 
     /**
      * Not documented yet.
-     * @param bytes Not documented yet.
-     * @param mediaType Not documented yet.
-     * @return A string object.
      */
     public static String MakeDataUrl(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {

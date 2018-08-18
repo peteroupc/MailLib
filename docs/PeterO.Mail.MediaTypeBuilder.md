@@ -9,18 +9,18 @@ A mutable media type object.
     public MediaTypeBuilder(
         PeterO.Mail.MediaType mt);
 
-Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class using the data from another media type.
+Initializes a new instance of the[PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md)class using the data from another media type.
 
 <b>Parameters:</b>
 
- * <i>mt</i>: The parameter  <i>mt</i>
- is a MediaType object.
+ * <i>mt</i>: The parameter <i>mt</i>
+is a MediaType object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>mt</i>
- is null.
+is null.
 
 ### MediaTypeBuilder Constructor
 
@@ -28,7 +28,7 @@ The parameter <i>mt</i>
         string type,
         string subtype);
 
-Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.
+Initializes a new instance of the[PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md)class.
 
 <b>Parameters:</b>
 
@@ -40,7 +40,7 @@ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.Med
 
     public MediaTypeBuilder();
 
-Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class, using the type "application/octet-stream".
+Initializes a new instance of the[PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md)class, using the type "application/octet-stream".
 
 ### IsMultipart
 
@@ -50,7 +50,11 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise,  `false` .
+ `
+        true
+      ` If this is a multipart media type; otherwise, `
+        false
+      ` .
 
 ### IsText
 
@@ -60,7 +64,11 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise,  `false` .
+ `
+        true
+      ` If this is a text media type; otherwise, `
+        false
+      ` .
 
 ### SubType
 
@@ -87,11 +95,11 @@ This value's top-level type.
     public PeterO.Mail.MediaTypeBuilder RemoveParameter(
         string name);
 
-Removes a parameter from this builder object. Does nothing if the parameter's name doesn't exist.
+Removes a parameter from this builder object. Does nothing if the arameter's name doesn't exist.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to remove. The name is compared using a basic ase-insensitive comparison. (Two strings are equal in such a comparison, f they match after converting the basic upper-case letters A to Z (U+0041 o U+005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 
@@ -101,7 +109,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
 ### SetParameter
 
@@ -113,7 +121,7 @@ Sets a parameter's name and value for this media type.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set, such as "charset". The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set, such as "charset". The name is compared sing a basic case-insensitive comparison. (Two strings are equal in such comparison, if they match after converting the basic upper-case letters to Z (U+0041 to U+005A) in both strings to lower case.).
 
  * <i>value</i>: A text string giving the parameter's value.
 
@@ -125,12 +133,12 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
- or  <i>name</i>
- is null.
+or <i>name</i>
+is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
- is empty or syntactically invalid.
+is empty or syntactically invalid.
 
 ### SetSubType
 
@@ -151,11 +159,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
- is empty or syntactically invalid.
+is empty or syntactically invalid.
 
 ### SetTopLevelType
 
@@ -176,11 +184,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
- is syntactically invalid for a top-level type.
+is syntactically invalid for a top-level type.
 
 ### ToMediaType
 
@@ -196,7 +204,9 @@ A MediaType object.
 
     public override string ToString();
 
-Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString` .
+Converts this object to a text string of the media type it represents, in he same form as `
+        MediaType.ToString
+      ` .
 
 <b>Return Value:</b>
 

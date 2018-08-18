@@ -2932,8 +2932,6 @@ private static String GetContentTranslationType(String ctt) {
 
     /**
      * Not documented yet.
-     * @param url Not documented yet.
-     * @return A Message object.
      */
     public static Message FromMailtoUrl(String url) {
       return MailtoUrls.MailtoUrlMessage(url);
@@ -2941,7 +2939,6 @@ private static String GetContentTranslationType(String ctt) {
 
     /**
      * Not documented yet.
-     * @return A string object.
      */
     public String ToMailtoUrl() {
       return MailtoUrls.MessageToMailtoUrl(this);

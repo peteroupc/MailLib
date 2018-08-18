@@ -415,8 +415,6 @@ if (str == null) {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)"]/*'/>
-    /// <param name='matchStarAtEnd'>The parameter <paramref
-    /// name='matchStarAtEnd'/> is not documented yet.</param>
     public static IList<string> LanguageTagFilter(
            IList<string> ranges,
            IList<string> languages,

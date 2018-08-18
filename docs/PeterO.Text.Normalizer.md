@@ -4,9 +4,9 @@
 
 <b>Deprecated.</b> Use NormalizerInput instead; that class is much more flexible than Normalizer.
 
-Implements the Unicode normalization algorithm and contains methods and functionality to test and convert Unicode strings for Unicode normalization.
+Implements the Unicode normalization algorithm and contains methods and unctionality to test and convert Unicode strings for Unicode ormalization.
 
-NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
+NOTICE: While this class's source code is in the public domain, the lass uses an internal class, called NormalizationData, that includes ata derived from the Unicode Character Database. See the documentation or the NormalizerInput class for the permission notice for the Unicode haracter Database.
 
 ### Normalizer Constructor
 
@@ -14,15 +14,15 @@ NOTICE: While this class's source code is in the public domain, the class uses a
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.
+Initializes a new instance of the[PeterO.Text.Normalizer](PeterO.Text.Normalizer.md)class.
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 ### IsNormalized
 
@@ -36,12 +36,18 @@ Returns whether this string is normalized.
 
  * <i>str</i>: The string to check.
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 <b>Return Value:</b>
 
- `true`  if this string is normalized; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
+ `
+        true
+      ` if this string is normalized; otherwise, `
+        false
+      ` . Returns `
+        false
+      ` if the string contains an unpaired surrogate code point.
 
 ### Normalize
 
@@ -59,14 +65,14 @@ Converts a string to the given Unicode normalization form.
 
 <b>Return Value:</b>
 
-The parameter  <i>str</i>
- converted to the given normalization form.
+The parameter <i>str</i>
+converted to the given normalization form.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 ### Read
 
@@ -87,22 +93,22 @@ Reads a sequence of Unicode code points from a data source.
 
 <b>Return Value:</b>
 
-The number of Unicode code points read, or 0 if the end of the source is reached.
+The number of Unicode code points read, or 0 if the end of the source is eached.
 
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-Either  <i>index</i>
- or  <i>length</i>
- is less than 0 or greater than  <i>chars</i>
- 's length, or  <i>chars</i>
- ' s length minus  <i>index</i>
- is less than  <i>length</i>
+Either <i>index</i>
+or <i>length</i>
+is less than 0 or greater than <i>chars</i>
+'s length, or <i>chars</i>
+' s length minus <i>index</i>
+is less than <i>length</i>
 .
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
- is null.
+is null.
 
 ### ReadChar
 
@@ -112,4 +118,4 @@ Reads a Unicode character from a data source.
 
 <b>Return Value:</b>
 
-Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.
+Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), r the value -1 indicating the end of the source.

@@ -226,13 +226,18 @@ ReadChar to get the normalized String's code points.</div>
 
 **Parameters:**
 
-* <code>str</code> - Not documented yet.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>form</code> - Not documented yet.
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
 
 **Returns:**
 
-* An List(int) object.
+* A list of the normalized Unicode characters.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetChars
     @Deprecated public static List<Integer> GetChars​(com.upokecenter.text.ICharacterInput chars, Normalization form)
@@ -263,29 +268,25 @@ Deprecated.
 
 **Parameters:**
 
-* <code>charArray</code> - Not documented yet.
+* <code>charArray</code> - An array of Unicode code points.
 
-* <code>form</code> - Not documented yet.
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
 
 **Returns:**
 
-* A Boolean object.
+* <code>true</code> if the given list of characters is in the given Unicode
+ normalization form; otherwise, <code>false</code> .
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter "charList" is null.
 
 ### IsNormalized
     @Deprecated public static boolean IsNormalized​(List<Integer> charList, Normalization form)
 Deprecated.
 <div class='deprecationComment'>Either convert the list to a String or wrap it in an ICharacterInput and
  call the corresponding overload instead.</div>
-
-**Parameters:**
-
-* <code>charList</code> - Not documented yet.
-
-* <code>form</code> - Not documented yet.
-
-**Returns:**
-
-* A Boolean object.
 
 ### ReadChar
     public int ReadChar()

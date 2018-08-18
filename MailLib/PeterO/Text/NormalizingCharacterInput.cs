@@ -73,7 +73,7 @@ using System.Collections.Generic;
       }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(
   ICharacterInput chars,
   Normalization form) {
@@ -81,21 +81,19 @@ using System.Collections.Generic;
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
       public static string Normalize(string str, Normalization form) {
        return NormalizerInput.Normalize(str, form);
       }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
       public static bool IsNormalized(string str, Normalization form) {
         return NormalizerInput.IsNormalized(str, form);
       }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <param name='form'>Not documented yet.</param>
-    /// <returns>An IList(int) object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
   [Obsolete("Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.")]
       public static IList<int> GetChars(string str, Normalization form) {
         if (str == null) {
@@ -128,10 +126,8 @@ using System.Collections.Generic;
         return ret;
       }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='charArray'>Not documented yet.</param>
-    /// <param name='form'>Not documented yet.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
   [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
     public static bool IsNormalized(int[] charArray, Normalization form) {
      if (charArray == null) {
@@ -140,10 +136,8 @@ using System.Collections.Generic;
      return IsNormalized(new PartialArrayCharacterInput(charArray), form);
    }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='charList'>Not documented yet.</param>
-    /// <param name='form'>Not documented yet.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
   [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
       public static bool IsNormalized(IList<int> charList, Normalization form) {
           return IsNormalized(
@@ -152,13 +146,13 @@ using System.Collections.Generic;
      }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.ReadChar"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.ReadChar"]/*'/>
       public int ReadChar() {
         return this.nci.ReadChar();
       }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
       public int Read(int[] chars, int index, int length) {
         return this.nci.Read(chars, index, length);
       }

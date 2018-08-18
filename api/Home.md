@@ -34,7 +34,7 @@ A mutable media type object.
 Represents an email address and a name for that address.
 
 * [com.upokecenter.mail.StringAndQuality](com.upokecenter.mail.StringAndQuality.md) -
-Not documented yet.
+Stores an arbitrary string and a "quality value" for that string.
 
 * [com.upokecenter.mail.MessageDataException](com.upokecenter.mail.MessageDataException.md) -
 Exception thrown when a message has invalid syntax.

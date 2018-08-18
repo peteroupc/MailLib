@@ -213,8 +213,8 @@ private MailtoUrls() {
                 emails += "," + decoded;
               }
             } else {
-              DebugUtility.Log(name);
-              DebugUtility.Log(value);
+              //DebugUtility.Log(name);
+              //DebugUtility.Log(value);
             }
           }
         }
