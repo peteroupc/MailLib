@@ -106,5 +106,12 @@ Assert.assertEquals(
   "local.local@example.com",
   stringTemp);
 }
+      addr = new Address("local-local@example.com");
+      {
+        String stringTemp = addr.toString();
+        Assert.assertEquals(
+          "local-local@example.com",
+          stringTemp);
+      }
     }
   }

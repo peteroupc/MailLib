@@ -110,10 +110,12 @@ namespace PeterO.Mail {
       if (this.IsGroup) {
         enc.AppendPhrase(this.displayName);
         enc.AppendSymbol(":");
+        enc.AppendSpaceIfNeeded();
         var first = true;
         foreach (NamedAddress groupAddress in this.groupAddresses) {
           if (!first) {
             enc.AppendSymbol(",");
+            enc.AppendSpaceIfNeeded();
           }
           first = false;
           groupAddress.AppendThisAddress(enc);
@@ -123,7 +125,7 @@ namespace PeterO.Mail {
         this.address.AppendThisAddress(enc);
       } else {
         enc.AppendPhrase(this.displayName);
-        enc.AppendSpace();
+        enc.AppendSpaceIfNeeded();
         enc.AppendSymbol("<");
         this.address.AppendThisAddress(enc);
         enc.AppendSymbol(">");

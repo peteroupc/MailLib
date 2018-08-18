@@ -2211,13 +2211,13 @@ MessageFromString(MessageFromString(msg).Generate())
       {
         String stringTemp = msg.GetHeader("mime-version");
         Assert.assertEquals(
-          "test",
+          "1.0",
           stringTemp);
       }
       {
         String stringTemp = msg.getParts().get(0).GetHeader("mime-version");
         Assert.assertEquals(
-          "test",
+          "1.0",
           stringTemp);
       }
       msg = MessageFromString(msg.Generate());

@@ -107,6 +107,13 @@ Assert.AreEqual(
   "local.local@example.com",
   stringTemp);
 }
+      addr = new Address("local-local@example.com");
+      {
+        string stringTemp = addr.ToString();
+        Assert.AreEqual(
+          "local-local@example.com",
+          stringTemp);
+      }
     }
   }
 }

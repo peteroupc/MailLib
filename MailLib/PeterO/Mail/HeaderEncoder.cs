@@ -169,9 +169,8 @@ namespace PeterO.Mail {
             } else {
               ++i;
             }
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'
-            &&
-                    symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
+    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'&&
+            symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -201,10 +200,11 @@ namespace PeterO.Mail {
       if (symbol.Length > 0) {
         int i = startIndex;
         int symbolBegin = startIndex;
+        var writeSpace = false;
         while (i < endIndex) {
           if (symbol[i] == '\r' && i + 1 < endIndex &&
                symbol[i + 1] == '\n') {
-            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             symbolBegin = i + 2;
             i += 2;
             continue;
@@ -222,19 +222,18 @@ namespace PeterO.Mail {
               }
             }
             return false;
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'
-            &&
-                  symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
-            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
-            AppendSpace();
+    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'&&
+            symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
+            // Single space followed by character other than CR/LF/Tab
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
+            //AppendSpace();
+            writeSpace = true;
             symbolBegin = i + 1;
             ++i;
           } else if (symbol[i] == ' ' || symbol[i] == '\t') {
       /*DebugUtility.Log("Special whitespace|" + symbol.Substring(i,
-              endIndex -
-                    i));
-                    */
-            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+              endIndex - i));
+                */ AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             AppendBreak();
             symbolBegin = i;
             ++i;
@@ -249,7 +248,7 @@ namespace PeterO.Mail {
             ++i;
           }
         }
-        AppendSpaceAndSymbol(symbol, symbolBegin, endIndex, false);
+        AppendSpaceAndSymbol(symbol, symbolBegin, endIndex, writeSpace);
       }
       return true;
     }
@@ -420,8 +419,7 @@ namespace PeterO.Mail {
       return this;
     }
 
-    private const string Base64Classic =
-       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
+    private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
             "jklmnopqrstuvwxyz0123456789+/" ;
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];

@@ -169,9 +169,8 @@ import com.upokecenter.util.*;
             } else {
               ++i;
             }
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'
-            &&
-                    symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'&&
+            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -200,10 +199,11 @@ import com.upokecenter.util.*;
       if (symbol.length() > 0) {
         int i = startIndex;
         int symbolBegin = startIndex;
+        boolean writeSpace = false;
         while (i < endIndex) {
           if (symbol.charAt(i) == '\r' && i + 1 < endIndex &&
                symbol.charAt(i + 1) == '\n') {
-            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             symbolBegin = i + 2;
             i += 2;
             continue;
@@ -221,18 +221,17 @@ import com.upokecenter.util.*;
               }
             }
             return false;
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'
-            &&
-                  symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
-            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
-            AppendSpace();
+    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'&&
+            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+            // Single space followed by character other than CR/LF/Tab
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
+            //AppendSpace();
+            writeSpace = true;
             symbolBegin = i + 1;
             ++i;
           } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
-      /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex -
-                    i)));
-                    */
-            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+      /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex - i)));
+                */ AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             AppendBreak();
             symbolBegin = i;
             ++i;
@@ -247,7 +246,7 @@ import com.upokecenter.util.*;
             ++i;
           }
         }
-        AppendSpaceAndSymbol(symbol, symbolBegin, endIndex, false);
+        AppendSpaceAndSymbol(symbol, symbolBegin, endIndex, writeSpace);
       }
       return true;
     }
@@ -418,8 +417,7 @@ import com.upokecenter.util.*;
       return this;
     }
 
-    private static final String Base64Classic =
-       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
+    private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
             "jklmnopqrstuvwxyz0123456789+/" ;
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];
