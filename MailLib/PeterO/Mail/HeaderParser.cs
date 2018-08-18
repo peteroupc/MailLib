@@ -176,7 +176,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
   str[index] <= 65535))) {
  ++index;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+  } else if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  index += 2;
 }
@@ -222,7 +222,7 @@ int indexStart2, indexTemp2;
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
+if (endIndex - index > 1 && (((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 97 && str[index] <= 122) || (str[index] == 43) ||
   (str[index] >= 47 && str[index] <= 57)) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
@@ -232,7 +232,7 @@ if (index + 1 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
 } else {
  break;
 }
-if (index + 1 < endIndex && str[index] == 61 && str[index + 1] == 61) {
+if (endIndex - index > 1 && str[index] == 61 && str[index + 1] == 61) {
  index += 2;
 } else {
  index = indexStart2; break;
@@ -246,7 +246,7 @@ if (index + 1 < endIndex && str[index] == 61 && str[index + 1] == 61) {
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 2 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
+if (endIndex - index > 2 && (((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 97 && str[index] <= 122) || (str[index] == 43) ||
   (str[index] >= 47 && str[index] <= 57)) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
@@ -530,7 +530,7 @@ indexStart = index;
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 3 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
+if (endIndex - index > 3 && (((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 97 && str[index] <= 122) || (str[index] == 43) ||
   (str[index] >= 47 && str[index] <= 57)) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
@@ -615,7 +615,7 @@ indexStart = index;
  break;
 }
  index = tx2;
-if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
+if (endIndex - index > 2 && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
   (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) ||
   ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index +
   2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) ==
@@ -724,7 +724,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 &&
+if (endIndex - index > 2 && (((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 &&
   (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 69) ||
   ((str[index] & ~32) == 87 && (str[index + 1] & ~32) == 69 && (str[index +
   2] & ~32) == 68) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) ==
@@ -766,7 +766,7 @@ do {
  indexTemp3 = index;
  do {
  indexStart3 = index;
-if (index + 1 < endIndex && str[index] == 50 && str[index + 1] == 53) {
+if (endIndex - index > 1 && str[index] == 50 && str[index + 1] == 53) {
  index += 2;
 } else {
  break;
@@ -785,7 +785,7 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 53)) {
  indexTemp3 = index;
  do {
  indexStart3 = index;
-if (index + 1 < endIndex && (str[index] == 50) && (str[index + 1] >= 48 &&
+if (endIndex - index > 1 && (str[index] == 50) && (str[index + 1] >= 48 &&
   str[index + 1] <= 52)) {
  index += 2;
 } else {
@@ -802,11 +802,11 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index + 2 < endIndex && ((str[index] == 49) && ((str[index + 1] >= 48 &&
+if (endIndex - index > 2 && ((str[index] == 49) && ((str[index + 1] >= 48 &&
   str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57)))) {
  indexTemp2 += 3; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 49 && str[index] <= 57) &&
+if (endIndex - index > 1 && ((str[index] >= 49 && str[index] <= 57) &&
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  indexTemp2 += 2; break;
 }
@@ -838,7 +838,7 @@ do {
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index + 1 < endIndex && str[index] == 50 && str[index + 1] == 53) {
+if (endIndex - index > 1 && str[index] == 50 && str[index + 1] == 53) {
  index += 2;
 } else {
  break;
@@ -857,7 +857,7 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 53)) {
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index + 1 < endIndex && (str[index] == 50) && (str[index + 1] >= 48 &&
+if (endIndex - index > 1 && (str[index] == 50) && (str[index + 1] >= 48 &&
   str[index + 1] <= 52)) {
  index += 2;
 } else {
@@ -874,11 +874,11 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp4 != index) {
  indexTemp3 = indexTemp4; break;
 }
-if (index + 2 < endIndex && ((str[index] == 49) && ((str[index + 1] >= 48 &&
+if (endIndex - index > 2 && ((str[index] == 49) && ((str[index + 1] >= 48 &&
   str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57)))) {
  indexTemp3 += 3; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 49 && str[index] <= 57) &&
+if (endIndex - index > 1 && ((str[index] >= 49 && str[index] <= 57) &&
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  indexTemp3 += 2; break;
 }
@@ -969,7 +969,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 }
  for (i4 = 0;; ++i4) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
+if (endIndex - index > 1 && (((str[index] == 45) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
   122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
  indexTemp5 += 2;
@@ -1015,7 +1015,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 }
  while (true) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
+if (endIndex - index > 1 && (((str[index] == 45) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
   122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
  indexTemp5 += 2;
@@ -1079,7 +1079,7 @@ int indexStart, indexStart2, indexTemp2, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
-if (index + 1 < endIndex && str[index] == 33 && str[index + 1] == 46) {
+if (endIndex - index > 1 && str[index] == 33 && str[index + 1] == 46) {
  index += 2;
 } else {
  break;
@@ -1146,7 +1146,7 @@ if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
 } else {
  index = indexStart; break;
 }
-if (index + 8 < endIndex && (str[index] == 61) && (((str[index + 1] & ~32)
+if (endIndex - index > 8 && (str[index] == 61) && (((str[index + 1] & ~32)
   == 82 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 81 &&
   (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73 && (str[index+
   6] & ~32) == 82 && (str[index + 7] & ~32) == 69 && (str[index + 8] & ~32) == 68) || ((str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) ==
@@ -1405,7 +1405,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (str[index] == 46) && ((str[index + 1] >= 65 &&
+if (endIndex - index > 1 && (str[index] == 46) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
@@ -1462,7 +1462,7 @@ if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) ||
 if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
   (str[index] >= 57344 && str[index] <= 65535))) {
  ++indexTemp4;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+  } else if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  indexTemp4 += 2;
 }
@@ -1590,7 +1590,7 @@ if (index < endIndex && ((str[index] >= 94 && str[index] <= 55295) ||
   (str[index] >= 57344 && str[index] <= 65535))) {
  ++index; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
+if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <= 56319) &&
   (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  index += 2; break;
 }
@@ -1668,7 +1668,7 @@ indexStart = index;
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+if (endIndex - index > 1 && str[index] == 13 && str[index + 1] == 10) {
  index += 2;
 }
 if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
@@ -1701,7 +1701,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79 && (str[index + 3] & ~32) ==
+if (endIndex - index > 3 && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79 && (str[index + 3] & ~32) ==
   77) {
  index += 4;
 } else {
@@ -1752,7 +1752,7 @@ int i3, indexStart2, indexStart3, indexStart4, indexTemp2, indexTemp3,
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 3 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 52 && str[index + 3] == 61) {
+if (endIndex - index > 3 && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 52 && str[index + 3] == 61) {
  index += 4;
 } else {
  break;
@@ -1837,7 +1837,7 @@ if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
  if (indexTemp2 != index) {
  index = indexTemp2; break;
 }
-if (index + 6 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 61 && (str[index + 3] & ~32) == 78 &&
+if (endIndex - index > 6 && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 61 && (str[index + 3] & ~32) == 78 &&
   (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32) == 78 && (str[index+
   6] & ~32) == 69) {
  index += 7; break;
@@ -1845,7 +1845,7 @@ if (index + 6 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) =
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 3 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 54 && str[index + 3] == 61) {
+if (endIndex - index > 3 && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 54 && str[index + 3] == 61) {
  index += 4;
 } else {
  break;
@@ -2383,7 +2383,7 @@ if (index < endIndex && (str[index] == 32)) {
 index = indexStart; break;
 }
  index = tx2;
-if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+if (endIndex - index > 1 && str[index] == 13 && str[index + 1] == 10) {
  index += 2;
 } else {
  index = indexStart; break;
@@ -2410,7 +2410,7 @@ if (index < endIndex && (str[index] == 32)) {
 index = indexStart; break;
 }
  index = tx2;
-if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+if (endIndex - index > 1 && str[index] == 13 && str[index + 1] == 10) {
  index += 2;
 } else {
  index = indexStart; break;
@@ -2573,18 +2573,18 @@ indexStart = index;
 do {
   indexTemp2 = index;
  do {
-if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 71 &&
+if (endIndex - index > 7 && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 71 &&
   (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 78 &&
   (str[index + 6] & ~32) == 65 && (str[index + 7] & ~32) == 76) {
  indexTemp2 += 8; break;
 }
-if (index + 8 < endIndex && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 79 &&
+if (endIndex - index > 8 && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 79 &&
   (str[index + 4] & ~32) == 77 && (str[index + 5] & ~32) == 65 &&
   (str[index + 6] & ~32) == 84 && (str[index + 7] & ~32) == 69 && (str[index+
   8] & ~32) == 68) {
  indexTemp2 += 9; break;
 }
-if (index + 4 < endIndex && (str[index] & ~32) == 72 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 65 &&
+if (endIndex - index > 4 && (str[index] & ~32) == 72 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 65 &&
   (str[index + 4] & ~32) == 78) {
  indexTemp2 += 5; break;
 }
@@ -2725,7 +2725,7 @@ index = indexStart2; break;
 }
  index = tx3;
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
+if (endIndex - index > 2 && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
   (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) ||
   ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index +
   2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) ==
@@ -2759,19 +2759,19 @@ if (index == indexStart2) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 2 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
  index += 3;
 } else {
  index = indexStart2; break;
 }
-if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 2 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
  index += 3;
 } else {
  index = indexStart2; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -2986,7 +2986,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && str[index] == 49 && str[index + 1] == 46 &&
+if (endIndex - index > 2 && str[index] == 49 && str[index + 1] == 46 &&
   str[index + 2] == 48) {
  index += 3;
 } else {
@@ -3116,7 +3116,7 @@ do {
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 &&
+if (endIndex - index > 2 && (((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 &&
   (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 69) ||
   ((str[index] & ~32) == 87 && (str[index + 1] & ~32) == 69 && (str[index +
   2] & ~32) == 68) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) ==
@@ -3157,7 +3157,7 @@ if (index == indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
+if (endIndex - index > 2 && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
   (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) ||
   ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index +
   2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) ==
@@ -3178,7 +3178,7 @@ if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32)
  index = indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -3188,7 +3188,7 @@ while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  ++index;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -3201,7 +3201,7 @@ if (index < endIndex && (str[index] == 58)) {
  index = indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -3218,7 +3218,7 @@ if (index < endIndex && (str[index] == 58)) {
  index = indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -3257,7 +3257,7 @@ if (index < endIndex && ((str[index] == 43) || (str[index] == 45))) {
 } else {
  index = indexStart3; break;
 }
-if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 3 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 &&
   str[index + 2] <= 57) || (str[index + 3] >= 48 && str[index + 3] <= 57))) {
  index += 4;
@@ -3280,25 +3280,25 @@ if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp4 = index;
-if (index + 1 < endIndex && (str[index] & ~32) == 85 && (str[index + 1] & ~32) == 84) {
+if (endIndex - index > 1 && (str[index] & ~32) == 85 && (str[index + 1] & ~32) == 84) {
  indexTemp4 += 2;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
   } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 73) ||
   (str[index] >= 75 && str[index] <= 90) || (str[index] >= 97 && str[index]
@@ -3356,7 +3356,7 @@ indexStart = index;
 while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
  ++index;
 }
-if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 &&
+if (endIndex - index > 5 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 &&
   (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82) {
  index += 6;
 } else {
@@ -3396,7 +3396,7 @@ indexStart = index;
  if (index == indexStart) {
  break;
 }
-if (index + 2 < endIndex && (str[index] & ~32) == 86 && str[index + 1] == 61 &&
+if (endIndex - index > 2 && (str[index] & ~32) == 86 && str[index + 1] == 61 &&
   str[index + 2] == 49) {
  index += 3;
 } else {
@@ -3615,7 +3615,7 @@ do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
+if (endIndex - index > 1 && (((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 97 && str[index] <= 122)) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
   122)))) {
@@ -3782,7 +3782,7 @@ indexStart = index;
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79) {
+if (endIndex - index > 1 && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79) {
  index += 2;
 } else {
  index = indexStart2; break;
@@ -3827,7 +3827,7 @@ int indexStart = index;
 if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
  ++index;
 }
-if (index + 25 < endIndex && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 &&
+if (endIndex - index > 25 && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 &&
   str[index + 4] == 45 && (str[index + 5] & ~32) == 85 && (str[index + 6] & ~32) == 78 && (str[index + 7] & ~32) == 83 && (str[index + 8] & ~32) ==
   85 && (str[index + 9] & ~32) == 66 && (str[index + 10] & ~32) == 83 &&
   (str[index + 11] & ~32) == 67 && (str[index + 12] & ~32) == 82 &&
@@ -4086,23 +4086,23 @@ while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 88 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
+if (endIndex - index > 7 && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 88 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
   (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32) == 73 &&
   (str[index + 6] & ~32) == 83 && (str[index + 7] & ~32) == 69) {
  indexTemp2 += 8; break;
 }
-if (index + 8 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
+if (endIndex - index > 8 && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
   (str[index + 4] & ~32) == 65 && (str[index + 5] & ~32) == 84 &&
   (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 79 && (str[index+
   8] & ~32) == 78) {
  indexTemp2 += 9; break;
 }
-if (index + 6 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79 && (str[index + 3] & ~32) == 74 &&
+if (endIndex - index > 6 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79 && (str[index + 3] & ~32) == 74 &&
   (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 67 &&
   (str[index + 6] & ~32) == 84) {
  indexTemp2 += 7; break;
 }
-if (index + 4 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 &&
+if (endIndex - index > 4 && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 &&
   (str[index + 4] & ~32) == 76) {
  indexTemp2 += 5; break;
 }
@@ -4691,29 +4691,29 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp2 = index;
-if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) ==
+if (endIndex - index > 3 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) ==
   83) {
  indexTemp2 += 4;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) ==
+  } else if (endIndex - index > 3 && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) ==
   76) {
  indexTemp2 += 4;
-  } else if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) ==
+  } else if (endIndex - index > 7 && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) ==
   84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 65 &&
   (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 76) {
  indexTemp2 += 8;
-  } else if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) ==
+  } else if (endIndex - index > 6 && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) ==
   84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 65 &&
   (str[index + 6] & ~32) == 76) {
  indexTemp2 += 7;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) ==
+  } else if (endIndex - index > 3 && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) ==
   69) {
  indexTemp2 += 4;
-  } else if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) ==
+  } else if (endIndex - index > 8 && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) ==
   80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 &&
   (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index+
   8] & ~32) == 82) {
  indexTemp2 += 9;
-  } else if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) ==
+  } else if (endIndex - index > 8 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) ==
   77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 &&
   (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index+
   8] & ~32) == 82) {
@@ -5437,7 +5437,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 }
  while (true) {
   indexTemp2 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
+if (endIndex - index > 1 && (((str[index] == 45) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
   122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
  indexTemp2 += 2;
@@ -5525,7 +5525,7 @@ if (index < endIndex && (str[index] == 59)) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] == 61) {
+if (endIndex - index > 1 && (str[index] & ~32) == 81 && str[index + 1] == 61) {
  index += 2;
 } else {
  index = indexStart2; break;
@@ -5892,7 +5892,7 @@ do {
 if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
   (str[index] >= 57344 && str[index] <= 65535))) {
  ++indexTemp5;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+  } else if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  indexTemp5 += 2;
 }
@@ -5911,7 +5911,7 @@ if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
  if (indexTemp4 != index) {
  indexTemp3 = indexTemp4; break;
 }
-if (index + 1 < endIndex && (((str[index] == 92) && ((str[index + 1] >= 32 &&
+if (endIndex - index > 1 && (((str[index] == 92) && ((str[index + 1] >= 32 &&
   str[index + 1] <= 126) || (str[index + 1] == 9))))) {
  indexTemp3 += 2; break;
 }
@@ -6047,7 +6047,7 @@ int indexStart, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
-if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 67 && str[index + 2] == 61) {
+if (endIndex - index > 2 && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 67 && str[index + 2] == 61) {
  index += 3;
 } else {
  break;
@@ -6070,7 +6070,7 @@ int indexStart, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
-if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && str[index + 2] == 61) {
+if (endIndex - index > 2 && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && str[index + 2] == 61) {
  index += 3;
 } else {
  break;
@@ -6093,7 +6093,7 @@ int indexStart, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
-if (index + 9 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 78 &&
+if (endIndex - index > 9 && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 78 &&
   (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32) == 73 &&
   (str[index + 6] & ~32) == 70 && (str[index + 7] & ~32) == 73 && (str[index+
   8] & ~32) == 69 && (str[index + 9] & ~32) == 82) {
@@ -6379,7 +6379,7 @@ int indexStart, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
-if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 86 && str[index + 2] == 61) {
+if (endIndex - index > 2 && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 86 && str[index + 2] == 61) {
  index += 3;
 } else {
  break;
@@ -6662,7 +6662,7 @@ if (index < endIndex && (str[index] == 59)) {
  index = indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) ==
+if (endIndex - index > 3 && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) ==
   69) {
  index += 4;
 } else {
@@ -6690,7 +6690,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) ||
   (str[index] == 126))) {
  ++indexTemp2;
-  } else if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1]
+  } else if (endIndex - index > 2 && (((str[index] == 37) && (((str[index + 1]
   >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1]
   <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index+
   2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index+
@@ -7029,7 +7029,7 @@ if (index < endIndex && ((str[index] >= 0 && str[index] <= 8) || (str[index]
   (str[index] >= 33 && str[index] <= 55295) || (str[index] >= 57344 &&
   str[index] <= 65535))) {
  ++indexTemp5;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+  } else if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  indexTemp5 += 2;
 }
@@ -7190,7 +7190,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 }
  for (i4 = 0;; ++i4) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
+if (endIndex - index > 1 && (((str[index] == 45) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
   122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
  indexTemp5 += 2;
@@ -7236,7 +7236,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 }
  while (true) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
+if (endIndex - index > 1 && (((str[index] == 45) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
   122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
  indexTemp5 += 2;
@@ -7360,7 +7360,7 @@ if (index < endIndex && (str[index] == 33)) {
  if (tokener != null) {
  tokener.RestoreState(state4);
 }
-if (index + 1 < endIndex && str[index] == 33 && str[index + 1] == 33) {
+if (endIndex - index > 1 && str[index] == 33 && str[index + 1] == 33) {
  indexTemp3 += 2; break;
 }
 if (index < endIndex && (str[index] == 33)) {
@@ -7523,7 +7523,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
   str[index] <= 65535))) {
  ++indexTemp2;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+  } else if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  indexTemp2 += 2;
 }
@@ -7614,32 +7614,32 @@ while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 69 &&
+if (endIndex - index > 7 && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 69 &&
   (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 82 &&
   (str[index + 6] & ~32) == 69 && (str[index + 7] & ~32) == 68) {
  indexTemp2 += 8; break;
 }
-if (index + 6 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 &&
+if (endIndex - index > 6 && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 &&
   (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 78 &&
   (str[index + 6] & ~32) == 69) {
  indexTemp2 += 7; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 79 &&
+if (endIndex - index > 7 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 79 &&
   (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 &&
   (str[index + 6] & ~32) == 84 && (str[index + 7] & ~32) == 89) {
  indexTemp2 += 8; break;
 }
-if (index + 8 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 69 &&
+if (endIndex - index > 8 && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 69 &&
   (str[index + 4] & ~32) == 68 && (str[index + 5] & ~32) == 73 &&
   (str[index + 6] & ~32) == 65 && (str[index + 7] & ~32) == 84 && (str[index+
   8] & ~32) == 69) {
  indexTemp2 += 9; break;
 }
-if (index + 4 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 &&
+if (endIndex - index > 4 && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 &&
   (str[index + 4] & ~32) == 72) {
  indexTemp2 += 5; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 86 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
+if (endIndex - index > 7 && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 86 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
   (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 &&
   (str[index + 6] & ~32) == 68 && (str[index + 7] & ~32) == 69) {
  indexTemp2 += 8; break;
@@ -7837,7 +7837,7 @@ if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
   (str[index] >= 57344 && str[index] <= 65535))) {
  ++index; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
+if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <= 56319) &&
   (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  index += 2; break;
 }
@@ -7912,7 +7912,7 @@ if (index < endIndex && (str[index] == 92)) {
   indexTemp2 = index;
 if (index < endIndex && (str[index] >= 57344 && str[index] <= 65535)) {
  ++indexTemp2;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+  } else if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  indexTemp2 += 2;
   } else if (index < endIndex && (str[index] >= 0 && str[index] <= 55295)) {
@@ -8087,7 +8087,7 @@ int indexStart, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
-if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 &&
+if (endIndex - index > 5 && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 &&
   (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32) == 78) {
  index += 6;
 } else {
@@ -8159,7 +8159,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) ||
   (str[index] == 126))) {
  ++indexTemp2;
-  } else if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1]
+  } else if (endIndex - index > 2 && (((str[index] == 37) && (((str[index + 1]
   >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1]
   <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index+
   2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index+
@@ -8198,7 +8198,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 38 && str[index] <= 44) || (str[index] >= 58 && str[index]
   <= 59) || (str[index] == 61))) {
  ++indexTemp2;
-  } else if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1]
+  } else if (endIndex - index > 2 && (((str[index] == 37) && (((str[index + 1]
   >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1]
   <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index+
   2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index+
@@ -8382,7 +8382,7 @@ while ((index < endIndex && ((str[index] >= 45 && str[index] <= 46) ||
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (str[index] == 44) && ((str[index + 1] >= 65 &&
+if (endIndex - index > 1 && (str[index] == 44) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122))) {
  index += 2;
 } else {
@@ -8422,7 +8422,7 @@ if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) || (str[index]
   (str[index] >= 41 && str[index] <= 55295) || (str[index] >= 57344 &&
   str[index] <= 65535))) {
  ++index;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+  } else if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  index += 2;
 }
@@ -8457,7 +8457,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -8470,7 +8470,7 @@ if (index < endIndex && (str[index] == 58)) {
  index = indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -8487,7 +8487,7 @@ if (index < endIndex && (str[index] == 58)) {
  index = indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -8515,12 +8515,12 @@ if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
 #endif
 public static int ParseTypeString(string str, int index, int endIndex,
   ITokener tokener) {
-if (index + 2 < endIndex && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 76) {
+if (endIndex - index > 2 && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 76) {
  index += 3;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) ==
+  } else if (endIndex - index > 3 && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) ==
   84) {
  index += 4;
-  } else if (index + 10 < endIndex && (str[index] & ~32) == 84 && (str[index +
+  } else if (endIndex - index > 10 && (str[index] & ~32) == 84 && (str[index +
   1] & ~32) == 82 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32)
   == 78 && (str[index + 4] & ~32) == 83 && (str[index + 5] & ~32) == 65 &&
   (str[index + 6] & ~32) == 67 && (str[index + 7] & ~32) == 84 && (str[index+
@@ -8631,7 +8631,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
 } else {
@@ -8675,7 +8675,7 @@ if (index < endIndex && ((str[index] == 43) || (str[index] == 45))) {
 } else {
  index = indexStart2; break;
 }
-if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+if (endIndex - index > 3 && ((str[index] >= 48 && str[index] <= 57) ||
   (str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 &&
   str[index + 2] <= 57) || (str[index + 3] >= 48 && str[index + 3] <= 57))) {
  index += 4;
@@ -8698,25 +8698,25 @@ if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp3 = index;
-if (index + 1 < endIndex && (str[index] & ~32) == 85 && (str[index + 1] & ~32) == 84) {
+if (endIndex - index > 1 && (str[index] & ~32) == 85 && (str[index + 1] & ~32) == 84) {
  indexTemp3 += 2;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+  } else if (endIndex - index > 2 && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
   } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 73) ||
   (str[index] >= 75 && str[index] <= 90) || (str[index] >= 97 && str[index]

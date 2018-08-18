@@ -170,7 +170,7 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> if the text is normalized; otherwise, <code>false</code>.
+* <code>true</code> if the text is normalized; otherwise, <code>false</code> .
 
 **Throws:**
 
@@ -211,7 +211,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if the given string is in the given Unicode
- normalization form; otherwise, <code>false</code>. Returns <code>false</code>
+ normalization form; otherwise, <code>false</code> . Returns <code>false</code>
  if the string contains an unpaired surrogate code point.
 
 **Throws:**
@@ -226,18 +226,13 @@ ReadChar to get the normalized String's code points.</div>
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - Not documented yet.
 
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
+* <code>form</code> - Not documented yet.
 
 **Returns:**
 
-* A list of the normalized Unicode characters.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* An List(int) object.
 
 ### GetChars
     @Deprecated public static List<Integer> GetChars​(com.upokecenter.text.ICharacterInput chars, Normalization form)
@@ -268,25 +263,29 @@ Deprecated.
 
 **Parameters:**
 
-* <code>charArray</code> - An array of Unicode code points.
+* <code>charArray</code> - Not documented yet.
 
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
+* <code>form</code> - Not documented yet.
 
 **Returns:**
 
-* <code>true</code> if the given list of characters is in the given Unicode
- normalization form; otherwise, <code>false</code>.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter "charList" is null.
+* A Boolean object.
 
 ### IsNormalized
     @Deprecated public static boolean IsNormalized​(List<Integer> charList, Normalization form)
 Deprecated.
 <div class='deprecationComment'>Either convert the list to a String or wrap it in an ICharacterInput and
  call the corresponding overload instead.</div>
+
+**Parameters:**
+
+* <code>charList</code> - Not documented yet.
+
+* <code>form</code> - Not documented yet.
+
+**Returns:**
+
+* A Boolean object.
 
 ### ReadChar
     public int ReadChar()
@@ -330,4 +329,4 @@ Deprecated.
 
 * <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
  less than 0 or greater than <code>chars</code> 's length, or <code>chars</code>
- ' s length minus <code>index</code> is less than <code>length</code>.
+ ' s length minus <code>index</code> is less than <code>length</code> .

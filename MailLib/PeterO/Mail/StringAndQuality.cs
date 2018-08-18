@@ -1,22 +1,23 @@
 using System;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags.StringAndQuality"]/*'/>
+    /// <summary>Not documented yet.</summary>
     public sealed class StringAndQuality {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.StringAndQuality.#ctor(System.String,System.Int32)"]/*'/>
+    /// <summary>Initializes a new instance of the StringAndQuality
+    /// class.</summary>
+    /// <param name='value'>A string object.</param>
+    /// <param name='quality'>A 32-bit signed integer.</param>
       public StringAndQuality(string value, int quality) {
         this.Value = value;
         this.Quality = quality;
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.LanguageTags.StringAndQuality.Value"]/*'/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public String Value { get; private set; }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.LanguageTags.StringAndQuality.Quality"]/*'/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public int Quality { get; private set; }
     }
 }

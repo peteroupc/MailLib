@@ -2,60 +2,58 @@
 
     public final class StringAndQuality extends Object
 
-Stores an arbitrary string and a "quality value" for that string. For
- instance, the string can be a language tag, and the "quality value"
- can be the degree of preference for that language.
+Not documented yet.
 
 ## Methods
 
 * `StringAndQuality​(String value,
-                int quality) StringAndQuality`<br>
+                int quality)`<br>
  Initializes a new instance of the StringAndQuality class.
 * `int getQuality()`<br>
- Gets the quality value stored by this object.
+ Gets a value not documented yet.
 * `String getValue()`<br>
- Gets the arbitrary string stored by this object.
+ Gets a value not documented yet.
 
 ## Constructors
 
 * `StringAndQuality​(String value,
-                int quality) StringAndQuality`<br>
+                int quality)`<br>
  Initializes a new instance of the StringAndQuality class.
 
 ## Method Details
 
 ### StringAndQuality
     public StringAndQuality​(String value, int quality)
-Initializes a new instance of the <code>StringAndQuality</code> class.
+Initializes a new instance of the StringAndQuality class.
 
 **Parameters:**
 
-* <code>value</code> - An arbitrary text string.
+* <code>value</code> - A string object.
 
-* <code>quality</code> - A 32-bit signed integer serving as the "quality" value.
+* <code>quality</code> - A 32-bit signed integer.
 
 ### StringAndQuality
     public StringAndQuality​(String value, int quality)
-Initializes a new instance of the <code>StringAndQuality</code> class.
+Initializes a new instance of the StringAndQuality class.
 
 **Parameters:**
 
-* <code>value</code> - An arbitrary text string.
+* <code>value</code> - A string object.
 
-* <code>quality</code> - A 32-bit signed integer serving as the "quality" value.
+* <code>quality</code> - A 32-bit signed integer.
 
 ### getValue
     public final String getValue()
-Gets the arbitrary string stored by this object.
+Gets a value not documented yet.
 
 **Returns:**
 
-* The arbitrary string stored by this object.
+* A value not documented yet.
 
 ### getQuality
     public final int getQuality()
-Gets the quality value stored by this object.
+Gets a value not documented yet.
 
 **Returns:**
 
-* The quality value stored by this object.
+* A value not documented yet.

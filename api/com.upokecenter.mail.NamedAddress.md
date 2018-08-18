@@ -44,6 +44,8 @@ Represents an email address and a name for that address. Can represent a
 * `boolean isGroup()`<br>
  Gets a value indicating whether this represents a group of addresses rather
  than a single address.
+* `static List<NamedAddress> ParseAddresses​(String addressValue)`<br>
+ Not documented yet.
 * `String toString()`<br>
  Converts this object to a text string.
 
@@ -161,6 +163,18 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
+### ParseAddresses
+    public static List<NamedAddress> ParseAddresses​(String addressValue)
+Not documented yet.
+
+**Parameters:**
+
+* <code>addressValue</code> - Not documented yet.
+
+**Returns:**
+
+* An List(NamedAddress) object.
+
 ### hashCode
     public int hashCode()
 Calculates the hash code of this object. No application or process IDs are

@@ -7,6 +7,9 @@ Represents an email address.
 Specifies how a message body should be displayed or handled by a mail user
  agent.
 
+* [com.upokecenter.mail.DataUrls](com.upokecenter.mail.DataUrls.md) -
+Not documented yet.
+
 * [com.upokecenter.mail.DispositionBuilder](com.upokecenter.mail.DispositionBuilder.md) -
 Description of DispositionBuilder.
 
@@ -24,14 +27,14 @@ Specifies what kind of data a message body is.
 A mutable media type object.
 
 * [com.upokecenter.mail.Message](com.upokecenter.mail.Message.md) -
-Represents an email message, and contains methods and properties for
+ Represents an email message, and contains methods and properties for
  accessing and modifying email message data.
 
 * [com.upokecenter.mail.NamedAddress](com.upokecenter.mail.NamedAddress.md) -
 Represents an email address and a name for that address.
 
 * [com.upokecenter.mail.StringAndQuality](com.upokecenter.mail.StringAndQuality.md) -
-Stores an arbitrary string and a "quality value" for that string.
+Not documented yet.
 
 * [com.upokecenter.mail.MessageDataException](com.upokecenter.mail.MessageDataException.md) -
 Exception thrown when a message has invalid syntax.

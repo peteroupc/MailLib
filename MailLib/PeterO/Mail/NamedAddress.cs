@@ -15,6 +15,33 @@ namespace PeterO.Mail {
   public class NamedAddress {
     private readonly string displayName;
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='addressValue'>Not documented yet.</param>
+    /// <returns>An IList(NamedAddress) object.</returns>
+    public static IList<NamedAddress> ParseAddresses(string addressValue) {
+      var list = new List<NamedAddress>();
+      if (String.IsNullOrEmpty(addressValue)) {
+        return list;
+      }
+        var tokener = new Tokener();
+        if (
+          HeaderParser.ParseHeaderTo(
+            addressValue,
+            0,
+            addressValue.Length,
+            tokener) != addressValue.Length) {
+          // Invalid syntax
+          return list;
+        }
+        list.AddRange(
+          HeaderParserUtility.ParseAddressList(
+            addressValue,
+            0,
+            addressValue.Length,
+            tokener.GetTokens()));
+      return list;
+    }
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.GetHashCode"]/*'/>
     public override int GetHashCode() {
