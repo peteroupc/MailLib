@@ -127,10 +127,12 @@ import java.util.*;
       if (this.isGroup()) {
         enc.AppendPhrase(this.displayName);
         enc.AppendSymbol(":");
+        enc.AppendSpaceIfNeeded();
         boolean first = true;
         for (NamedAddress groupAddress : this.groupAddresses) {
           if (!first) {
             enc.AppendSymbol(",");
+            enc.AppendSpaceIfNeeded();
           }
           first = false;
           groupAddress.AppendThisAddress(enc);
@@ -140,7 +142,7 @@ import java.util.*;
         this.address.AppendThisAddress(enc);
       } else {
         enc.AppendPhrase(this.displayName);
-        enc.AppendSpace();
+        enc.AppendSpaceIfNeeded();
         enc.AppendSymbol("<");
         this.address.AppendThisAddress(enc);
         enc.AppendSymbol(">");

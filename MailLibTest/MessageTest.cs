@@ -2180,13 +2180,13 @@ MessageFromString(MessageFromString(msg).Generate())
       {
         string stringTemp = msg.GetHeader("mime-version");
         Assert.AreEqual(
-          "test",
+          "1.0",
           stringTemp);
       }
       {
         string stringTemp = msg.Parts[0].GetHeader("mime-version");
         Assert.AreEqual(
-          "test",
+          "1.0",
           stringTemp);
       }
       msg = MessageFromString(msg.Generate());
