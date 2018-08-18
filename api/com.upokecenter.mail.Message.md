@@ -1144,19 +1144,6 @@ Adds an inline body part to this message in the form of data from the given
 ### FromMailtoUrl
     public static Message FromMailtoUrl​(String url)
 Not documented yet.
-
-**Parameters:**
-
-* <code>url</code> - Not documented yet.
-
-**Returns:**
-
-* A Message object.
-
 ### ToMailtoUrl
     public String ToMailtoUrl()
 Not documented yet.
-
-**Returns:**
-
-* A string object.

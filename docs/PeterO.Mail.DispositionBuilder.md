@@ -9,48 +9,48 @@ Description of DispositionBuilder.
     public DispositionBuilder(
         PeterO.Mail.ContentDisposition mt);
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the data from the given content disposition.
+Initializes a new instance of the[PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md)class using the data from the given content disposition.
 
 <b>Parameters:</b>
 
- * <i>mt</i>: The parameter  <i>mt</i>
- is a ContentDisposition object.
+ * <i>mt</i>: The parameter <i>mt</i>
+is a ContentDisposition object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>mt</i>
- is null.
+is null.
 
 ### DispositionBuilder Constructor
 
     public DispositionBuilder(
         string type);
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the given disposition type.
+Initializes a new instance of the[PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md)class using the given disposition type.
 
 <b>Parameters:</b>
 
- * <i>type</i>: The parameter  <i>type</i>
- is a text string.
+ * <i>type</i>: The parameter <i>type</i>
+is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>type</i>
- is null.
+is null.
 
 ### DispositionBuilder Constructor
 
     public DispositionBuilder();
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the disposition type "attachment".
+Initializes a new instance of the[PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md)class using the disposition type "attachment".
 
 ### DispositionType
 
     public string DispositionType { get; set;}
 
-Gets or sets this value's disposition type, such as "inline" or "attachment".
+Gets or sets this value's disposition type, such as "inline" or attachment".
 
 <b>Returns:</b>
 
@@ -66,7 +66,11 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise,  `false` .
+ `
+        true
+      ` If this is a multipart media type; otherwise, `
+        false
+      ` .
 
 ### IsText
 
@@ -78,18 +82,22 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise,  `false` .
+ `
+        true
+      ` If this is a text media type; otherwise, `
+        false
+      ` .
 
 ### RemoveParameter
 
     public PeterO.Mail.DispositionBuilder RemoveParameter(
         string name);
 
-Removes a parameter from this content disposition. Does nothing if the parameter's name doesn't exist.
+Removes a parameter from this content disposition. Does nothing if the arameter's name doesn't exist.
 
 <b>Parameters:</b>
 
- * <i>name</i>: The parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: The parameter to remove. The name is compared using a basic ase-insensitive comparison. (Two strings are equal in such a comparison, f they match after converting the basic upper-case letters A to Z (U+0041 o U+005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 
@@ -99,7 +107,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
 ### SetDispositionType
 
@@ -110,8 +118,8 @@ Sets the disposition type, such as "inline".
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
 <b>Return Value:</b>
 
@@ -121,7 +129,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 ### SetParameter
 
@@ -133,7 +141,7 @@ Sets a parameter of this content disposition.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set. If this name already exists (compared using basic case-insensitive comparison), it will be overwritten. (Two strings re equal in a basic case-insensitive comparison, if they match after onverting the basic upper-case letters A to Z (U+0041 to U+005A) in both trings to lower case.).
 
  * <i>value</i>: Value of the parameter to set.
 
@@ -144,13 +152,13 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-Either  <i>value</i>
- or  <i>name</i>
- is null.
+Either <i>value</i>
+or <i>name</i>
+is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
- is empty, or it isn't a well-formed parameter name.
+is empty, or it isn't a well-formed parameter name.
 
 ### ToDisposition
 

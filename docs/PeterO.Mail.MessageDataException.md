@@ -12,7 +12,7 @@ Exception thrown when a message has invalid syntax.
     public MessageDataException(
         string message);
 
-Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+Initializes a new instance of the[PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md)class.
 
 <b>Parameters:</b>
 
@@ -24,17 +24,17 @@ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail
         string message,
         System.Exception innerException);
 
-Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+Initializes a new instance of the[PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md)class.
 
 <b>Parameters:</b>
 
  * <i>message</i>: A string to use as the exception message.
 
- * <i>innerException</i>: The parameter  <i>innerException</i>
- is an Exception object.
+ * <i>innerException</i>: The parameter <i>innerException</i>
+is an Exception object.
 
 ### MessageDataException Constructor
 
     public MessageDataException();
 
-Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+Initializes a new instance of the[PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md)class.

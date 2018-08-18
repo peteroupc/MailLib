@@ -62,7 +62,7 @@ Returns whether the given string is a basic language range under RFC 4647.
 **Returns:**
 
 * <code>true</code> if the given string is a basic language range;
- otherwise, <code>false</code>.
+ otherwise, <code>false</code> .
 
 ### IsLanguageRange
     public static boolean IsLanguageRange​(String str, boolean extended)
@@ -81,7 +81,7 @@ Returns whether the given string is a basic or extended language range under
 **Returns:**
 
 * <code>true</code> if the given string is a basic language range
- (depending on the "extended" parameter); otherwise, <code>false</code>.
+ (depending on the "extended" parameter); otherwise, <code>false</code> .
 
 ### LanguageTagCase
     public static String LanguageTagCase​(String str)
@@ -136,12 +136,6 @@ Parses a language range list from an Accept-Language header field.
 
 ### LanguageTagFilter
     public static List<String> LanguageTagFilter​(List<String> ranges, List<String> languages, boolean extended, boolean matchStarAtEnd)
-
-**Parameters:**
-
-* <code>matchStarAtEnd</code> - The parameter <code>matchStarAtEnd</code> is not documented
- yet.
-
 ### MatchesLanguageTag
     public static boolean MatchesLanguageTag​(String range, String tag)
 Determines whether the given language tag matches the given language range.
@@ -156,12 +150,12 @@ Determines whether the given language tag matches the given language range.
 **Returns:**
 
 * <code>true</code> if the language tag matches the language range by the
- filtering method under RFC 4647; otherwise, <code>false</code>.
+ filtering method under RFC 4647; otherwise, <code>false</code> .
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - "range" is not a basic language range, or "tag" is
- not a potentially valid language tag.
+* <code>IllegalArgumentException</code> - "range" is not a basic language range, or
+ "tag" is not a potentially valid language tag.
 
 ### LanguageTagLookup
     public static String LanguageTagLookup​(String range, List<String> languages, String defaultValue)
@@ -187,5 +181,5 @@ Returns true if (1) the given string is a well-formed language tag under RFC
 
 **Returns:**
 
-* <code>true</code>, if the string meets the conditions given in the
+* <code>true</code> , if the string meets the conditions given in the
  summary, <code>false</code> otherwise.

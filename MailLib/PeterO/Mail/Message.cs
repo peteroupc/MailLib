@@ -2490,15 +2490,14 @@ if ((ungetState[1]) < 0x80) {
       return true;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='url'>Not documented yet.</param>
-    /// <returns>A Message object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
     public static Message FromMailtoUrl(string url) {
       return MailtoUrls.MailtoUrlMessage(url);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A string object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
     public string ToMailtoUrl() {
       return MailtoUrls.MessageToMailtoUrl(this);
     }

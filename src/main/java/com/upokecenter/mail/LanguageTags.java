@@ -51,7 +51,7 @@ private LanguageTags() {
      * Examples include "*", "en-us", and "fr".
      * @param str The string to check. Can be null.
      * @return {@code true} if the given string is a basic language range;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public static boolean IsLanguageRange(String str) {
       return IsLanguageRange(str, false);
@@ -66,7 +66,7 @@ private LanguageTags() {
      * @param extended Check whether the string is a basic language range if
      * "false", or an extended language range if "true".
      * @return {@code true} if the given string is a basic language range
-     * (depending on the "extended" parameter); otherwise, {@code false}.
+     * (depending on the "extended" parameter); otherwise, {@code false} .
      */
     public static boolean IsLanguageRange(String str, boolean extended) {
       if (((str) == null || (str).length() == 0)) {
@@ -456,8 +456,6 @@ if (str == null) {
 
     /**
      *
-     * @param matchStarAtEnd The parameter {@code matchStarAtEnd} is not documented
-     * yet.
      */
     public static List<String> LanguageTagFilter(
            List<String> ranges,
@@ -540,9 +538,9 @@ if (str == null) {
      * "IsLanguageRange").
      * @param tag A language tag.
      * @return {@code true} if the language tag matches the language range by the
-     * filtering method under RFC 4647; otherwise, {@code false}.
-     * @throws IllegalArgumentException "range" is not a basic language range, or "tag" is
-     * not a potentially valid language tag.
+     * filtering method under RFC 4647; otherwise, {@code false} .
+     * @throws IllegalArgumentException "range" is not a basic language range, or
+     * "tag" is not a potentially valid language tag.
      */
     public static boolean MatchesLanguageTag(String range, String tag) {
       List<String> tags = LanguageTagFilter(
@@ -654,7 +652,7 @@ if (str == null) {
      * language subtag, no variant subtags with the same value, and no
      * extension singleton subtags with the same value.
      * @param str The string to check.
-     * @return {@code true}, if the string meets the conditions given in the
+     * @return {@code true} , if the string meets the conditions given in the
      * summary, {@code false} otherwise.
      */
     public static boolean IsPotentiallyValidLanguageTag(String str) {

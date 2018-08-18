@@ -18,8 +18,6 @@ import java.util.*;
 
     /**
      * Not documented yet.
-     * @param addressValue Not documented yet.
-     * @return An List(NamedAddress) object.
      */
     public static List<NamedAddress> ParseAddresses(String addressValue) {
       ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
@@ -70,7 +68,7 @@ import java.util.*;
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
@@ -86,7 +84,7 @@ import java.util.*;
     /**
      *
      * @param na A named address object to compare with this one. Can be null.
-     * @return Either {@code true} or {@code false}.
+     * @return Either {@code true} or {@code false} .
      */
     public boolean AddressesEqual(NamedAddress na) {
       if (na == null || isGroup != na.isGroup) {
@@ -146,7 +144,7 @@ import java.util.*;
      * Gets a value indicating whether this represents a group of addresses rather
      * than a single address.
      * @return {@code true} If this represents a group of addresses; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
     public final boolean isGroup() {
         return this.isGroup;
@@ -190,26 +188,27 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
-     * Doe" &lt;john@example.com&gt;</code></li>
-     * <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
-     * &lt;john@example.com&gt;</code></li> <li><code>John
-     * &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
-     * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code></li></ul>
+     * class. Examples: <ul> <li> <code>john@example.com</code> </li> <li>
+     * <code>"John Doe" &lt;john@example.com&gt;</code> </li> <li>
+     * <code>=?utf-8?q?John</code> <code>=</code> <code>27s_Office?=
+     * &lt;john@example.com&gt;</code> </li> <li> <code>John
+     * &lt;john@example.com&gt;</code> </li> <li> <code>"Group" : Tom
+     * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code> </li>
+     * </ul>
      * @param address A text string identifying a single email address or a group
      * of email addresses. Comments, or text within parentheses, can appear.
      * Multiple email addresses are not allowed unless they appear in the
      * group syntax given above. Encoded words under RFC 2047 that appear
-     * within comments or display names will be decoded. <p>An RFC 2047
+     * within comments or display names will be decoded. <p> An RFC 2047
      * encoded word consists of "=?", a character encoding name, such as
-     * {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
+     * {@code utf-8} , either "?B?" or "?Q?" (in upper or lower case), a
      * series of bytes in the character encoding, further encoded using B or
      * Q encoding, and finally "?=". B encoding uses Base64, while in Q
      * encoding, spaces are changed to "_", equals are changed to "=3D", and
      * most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
      * basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
      * "=" followed by their 2-digit hexadecimal form. An encoded word's
-     * maximum length is 75 characters. See the third example.</p>.
+     * maximum length is 75 characters. See the third example. </p> .
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException The named address has an invalid syntax.
      */

@@ -15,9 +15,8 @@ namespace PeterO.Mail {
   public class NamedAddress {
     private readonly string displayName;
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='addressValue'>Not documented yet.</param>
-    /// <returns>An IList(NamedAddress) object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)"]/*'/>
     public static IList<NamedAddress> ParseAddresses(string addressValue) {
       var list = new List<NamedAddress>();
       if (String.IsNullOrEmpty(addressValue)) {

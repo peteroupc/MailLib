@@ -76,12 +76,13 @@ Represents an email address and a name for that address. Can represent a
 ### NamedAddress
     public NamedAddress​(String address)
 Initializes a new instance of the <code>NamedAddress</code>
- class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
- Doe" &lt;john@example.com&gt;</code></li>
- <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
- &lt;john@example.com&gt;</code></li> <li><code>John
- &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
- &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code></li></ul>
+ class. Examples: <ul> <li> <code>john@example.com</code> </li> <li>
+ <code>"John Doe" &lt;john@example.com&gt;</code> </li> <li>
+ <code>=?utf-8?q?John</code> <code>=</code> <code>27s_Office?=
+ &lt;john@example.com&gt;</code> </li> <li> <code>John
+ &lt;john@example.com&gt;</code> </li> <li> <code>"Group" : Tom
+ &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code> </li>
+ </ul>
 
 **Parameters:**
 
@@ -89,16 +90,16 @@ Initializes a new instance of the <code>NamedAddress</code>
  of email addresses. Comments, or text within parentheses, can appear.
  Multiple email addresses are not allowed unless they appear in the
  group syntax given above. Encoded words under RFC 2047 that appear
- within comments or display names will be decoded. <p>An RFC 2047
+ within comments or display names will be decoded. <p> An RFC 2047
  encoded word consists of "=?", a character encoding name, such as
- <code>utf-8</code>, either "?B?" or "?Q?" (in upper or lower case), a
+ <code>utf-8</code> , either "?B?" or "?Q?" (in upper or lower case), a
  series of bytes in the character encoding, further encoded using B or
  Q encoding, and finally "?=". B encoding uses Base64, while in Q
  encoding, spaces are changed to "_", equals are changed to "=3D", and
  most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
  basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
  "=" followed by their 2-digit hexadecimal form. An encoded word's
- maximum length is 75 characters. See the third example.</p>.
+ maximum length is 75 characters. See the third example. </p> .
 
 **Throws:**
 
@@ -166,15 +167,6 @@ Initializes a new instance of the <code>NamedAddress</code>
 ### ParseAddresses
     public static List<NamedAddress> ParseAddresses​(String addressValue)
 Not documented yet.
-
-**Parameters:**
-
-* <code>addressValue</code> - Not documented yet.
-
-**Returns:**
-
-* An List(NamedAddress) object.
-
 ### hashCode
     public int hashCode()
 Calculates the hash code of this object. No application or process IDs are
@@ -203,7 +195,7 @@ Determines whether this object and another object are equal.
 **Returns:**
 
 * <code>true</code> if this object and another object are equal; otherwise,
- <code>false</code>.
+ <code>false</code> .
 
 ### AddressesEqual
     public boolean AddressesEqual​(NamedAddress na)
@@ -214,7 +206,7 @@ Determines whether this object and another object are equal.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code>.
+* Either <code>true</code> or <code>false</code> .
 
 ### getName
     public final String getName()
@@ -252,7 +244,7 @@ Gets a value indicating whether this represents a group of addresses rather
 **Returns:**
 
 * <code>true</code> If this represents a group of addresses; otherwise,
- <code>false</code>.
+ <code>false</code> .
 
 ### toString
     public String toString()

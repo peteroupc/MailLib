@@ -203,10 +203,12 @@ import java.util.*;
       }
 
     /**
-     * Not documented yet.
-     * @param str Not documented yet.
-     * @param form Not documented yet.
-     * @return An List(int) object.
+     * Gets a list of normalized code points after reading from a string.
+     * @param str The parameter {@code str} is a text string.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
+     * @return A list of the normalized Unicode characters.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @deprecated Instead of this method, create a NormalizerInput on the String and call
  *ReadChar to get the normalized String's code points.
  */
@@ -251,10 +253,14 @@ import java.util.*;
       }
 
     /**
-     * Not documented yet.
-     * @param charArray Not documented yet.
-     * @param form Not documented yet.
-     * @return A Boolean object.
+     * Determines whether the given array of characters is in the given Unicode
+     * normalization form.
+     * @param charArray An array of Unicode code points.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
+     * @return {@code true} if the given list of characters is in the given Unicode
+     * normalization form; otherwise, {@code false} .
+     * @throws java.lang.NullPointerException The parameter "charList" is null.
      * @deprecated Either convert the array to a String or wrap it in an ICharacterInput and
 * call the corresponding overload instead.
  */
@@ -267,10 +273,7 @@ import java.util.*;
    }
 
     /**
-     * Not documented yet.
-     * @param charList Not documented yet.
-     * @param form Not documented yet.
-     * @return A Boolean object.
+     *
      * @deprecated Either convert the list to a String or wrap it in an ICharacterInput and
 * call the corresponding overload instead.
  */
