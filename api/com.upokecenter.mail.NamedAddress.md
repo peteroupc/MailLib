@@ -45,7 +45,8 @@ Represents an email address and a name for that address. Can represent a
  Gets a value indicating whether this represents a group of addresses rather
  than a single address.
 * `static List<NamedAddress> ParseAddresses​(String addressValue)`<br>
- Not documented yet.
+ Generates a list of NamedAddress objects from a comma-separated list of
+ addresses.
 * `String toString()`<br>
  Converts this object to a text string.
 
@@ -76,11 +77,10 @@ Represents an email address and a name for that address. Can represent a
 ### NamedAddress
     public NamedAddress​(String address)
 Initializes a new instance of the <code>NamedAddress</code>
- class. Examples: <ul> <li> <code>john@example.com</code> </li> <li>
- <code>"John Doe" &lt;john@example.com&gt;</code> </li> <li>
- <code>=?utf-8?q?John</code> <code>=</code> <code>27s_Office?=
- &lt;john@example.com&gt;</code> </li> <li> <code>John
- &lt;john@example.com&gt;</code> </li> <li> <code>"Group" : Tom
+ class. Examples: <ul> <li><code>john@example.com</code> </li> <li><code>"John
+ Doe" &lt;john@example.com&gt;</code> </li> <li><code>=?utf-8?q?John</code>
+ <code>=</code> <code>27s_Office?= &lt;john@example.com&gt;</code> </li>
+ <li><code>John &lt;john@example.com&gt;</code> </li> <li><code>"Group" : Tom
  &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code> </li>
  </ul>
 
@@ -90,7 +90,7 @@ Initializes a new instance of the <code>NamedAddress</code>
  of email addresses. Comments, or text within parentheses, can appear.
  Multiple email addresses are not allowed unless they appear in the
  group syntax given above. Encoded words under RFC 2047 that appear
- within comments or display names will be decoded. <p> An RFC 2047
+ within comments or display names will be decoded. <p>An RFC 2047
  encoded word consists of "=?", a character encoding name, such as
  <code>utf-8</code> , either "?B?" or "?Q?" (in upper or lower case), a
  series of bytes in the character encoding, further encoded using B or
@@ -166,7 +166,20 @@ Initializes a new instance of the <code>NamedAddress</code>
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
 ### ParseAddresses
     public static List<NamedAddress> ParseAddresses​(String addressValue)
-Not documented yet.
+Generates a list of NamedAddress objects from a comma-separated list of
+ addresses. Each address must follow the syntax accepted by the
+ one-argument constructor of NamedAddress.
+
+**Parameters:**
+
+* <code>addressValue</code> - A comma-separate list of addresses in the form of a text
+ string.
+
+**Returns:**
+
+* A list of addresses generated from the <code>addressValue</code>
+ parameter.
+
 ### hashCode
     public int hashCode()
 Calculates the hash code of this object. No application or process IDs are
@@ -243,12 +256,13 @@ Gets a value indicating whether this represents a group of addresses rather
 
 **Returns:**
 
-* <code>true</code> If this represents a group of addresses; otherwise,
- <code>false</code> .
+* <code>true</code> If this represents a group of addresses; otherwise, .
+ <code>false</code>.
 
 ### toString
     public String toString()
-Converts this object to a text string.
+Converts this object to a text string. This will generally be the form of
+ this NamedAddress object as it could appear in a "To" header field.
 
 **Overrides:**
 

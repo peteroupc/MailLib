@@ -153,6 +153,10 @@ Assert.assertEquals(
 }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
+na = new NamedAddress("<me@example.com>");
+      if (na.getDisplayName() != null) {
+ Assert.fail();
+ }
       na = new NamedAddress("Me <me@example.com>");
       Assert.assertEquals("Me", na.getName());
       if (na.isGroup()) {

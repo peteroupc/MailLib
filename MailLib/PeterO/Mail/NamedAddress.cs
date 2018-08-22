@@ -15,8 +15,14 @@ namespace PeterO.Mail {
   public class NamedAddress {
     private readonly string displayName;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)"]/*'/>
+    /// <summary>Generates a list of NamedAddress objects from a
+    /// comma-separated list of addresses. Each address must follow the
+    /// syntax accepted by the one-argument constructor of
+    /// NamedAddress.</summary>
+    /// <param name='addressValue'>A comma-separate list of addresses in
+    /// the form of a text string.</param>
+    /// <returns>A list of addresses generated from the <paramref
+    /// name='addressValue'/> parameter.</returns>
     public static IList<NamedAddress> ParseAddresses(string addressValue) {
       var list = new List<NamedAddress>();
       if (String.IsNullOrEmpty(addressValue)) {
@@ -124,8 +130,10 @@ namespace PeterO.Mail {
 
     private readonly bool isGroup;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.IsGroup"]/*'/>
+    /// <summary>Gets a value indicating whether this represents a group of
+    /// addresses rather than a single address.</summary>
+    /// <value><c>true</c> If this represents a group of addresses;
+    /// otherwise,. <c>false</c>.</value>
     public bool IsGroup {
       get {
         return this.isGroup;

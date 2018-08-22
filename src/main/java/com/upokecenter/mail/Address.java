@@ -22,7 +22,7 @@ import com.upokecenter.text.*;
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
     @Override public boolean equals(Object obj) {
       Address other = ((obj instanceof Address) ? (Address)obj : null);

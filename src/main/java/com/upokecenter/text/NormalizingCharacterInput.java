@@ -10,70 +10,69 @@ package com.upokecenter.text;
 import java.util.*;
 
     /**
-     * <p> A character input class that implements the Unicode normalization
+     * <p>A character input class that implements the Unicode normalization
      * algorithm and contains methods and functionality to test and convert
      * text strings for normalization. This is similar to the deprecated
      * Normalizer class, except it implements the ICharacterInput interface.
-     * </p> <p> The Unicode Standard includes characters, such as an acute
+     * </p> <p>The Unicode Standard includes characters, such as an acute
      * accent, that can be combined with other characters to make new
      * characters. For example, the letter E combines with an acute accent
      * to make E-acute (É). In some cases, the combined form (E-acute)
      * should be treated as equivalent to the uncombined form (E plus
      * acute). For this reason, the standard defines four <i> normalization
      * forms </i> that convert strings to a single equivalent form: </p>
-     * <ul> <li> <b>NFD</b> (Normalization Form D) decomposes combined forms
+     * <ul> <li><b>NFD</b> (Normalization Form D) decomposes combined forms
      * to their constituent characters (E plus acute, for example). This is
-     * called canonical decomposition. </li> <li> <b>NFC</b> does canonical
+     * called canonical decomposition. </li> <li><b>NFC</b> does canonical
      * decomposition, then combines certain constituent characters to their
      * composites (E-acute, for example). This is called canonical
-     * composition. </li> <li> Two normalization forms, <b>NFKC</b> and
+     * composition. </li> <li>Two normalization forms, <b>NFKC</b> and
      * <b>NFKD</b> , are similar to NFC and NFD, except they also
      * "decompose" certain characters, such as ligatures, font or positional
      * variants, and subscripts, whose visual distinction can matter in some
-     * contexts. This is called compatibility decomposition. </li> <li> The
+     * contexts. This is called compatibility decomposition. </li> <li>The
      * four normalization forms also enforce a standardized order for
      * combining marks, since they can otherwise appear in an arbitrary
-     * order. </li> </ul> <p> For more information, see Standard Annex 15 at
-     * <code>http://www.unicode.org/reports/tr15/</code> . </p> <p> <b>Thread
+     * order. </li> </ul> <p>For more information, see Standard Annex 15 at
+     * <code>http://www.unicode.org/reports/tr15/</code> . </p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
      * Therefore, access to objects from this class must be synchronized if
-     * multiple threads can access them at the same time. </p> <p> NOTICE:
+     * multiple threads can access them at the same time. </p> <p>NOTICE:
      * While this class's source code is in the public domain, the class
      * uses an class, called NormalizationData, that includes data
      * derived from the Unicode Character Database. In case doing so is
      * required, the permission notice for the Unicode Character Database is
-     * given here: </p> <p> COPYRIGHT AND PERMISSION NOTICE </p> <p>
-     * Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
-     * Distributed under the Terms of Use in
-     * http://www.unicode.org/copyright.html. </p> <p> Permission is hereby
-     * granted, free of charge, to any person obtaining a copy of the
-     * Unicode data files and any associated documentation (the "Data
-     * Files") or Unicode software and any associated documentation (the
-     * "Software") to deal in the Data Files or Software without
-     * restriction, including without limitation the rights to use, copy,
-     * modify, merge, publish, distribute, and/or sell copies of the Data
-     * Files or Software, and to permit persons to whom the Data Files or
-     * Software are furnished to do so, provided that (a) this copyright and
-     * permission notice appear with all copies of the Data Files or
-     * Software, (b) this copyright and permission notice appear in
-     * associated documentation, and (c) there is clear notice in each
-     * modified Data File or in the Software as well as in the documentation
-     * associated with the Data File(s) or Software that the data or
-     * software has been modified. </p> <p> THE DATA FILES AND SOFTWARE ARE
-     * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-     * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY
-     * RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN
-     * THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR
-     * CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
-     * OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
-     * OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
-     * USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE. </p> <p> Except as
-     * contained in this notice, the name of a copyright holder shall not be
-     * used in advertising or otherwise to promote the sale, use or other
-     * dealings in these Data Files or Software without prior written
-     * authorization of the copyright holder. </p>
+     * given here: </p> <p>COPYRIGHT AND PERMISSION NOTICE </p> <p>Copyright
+     * (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under
+     * the Terms of Use in http://www.unicode.org/copyright.html. </p>
+     * <p>Permission is hereby granted, free of charge, to any person
+     * obtaining a copy of the Unicode data files and any associated
+     * documentation (the "Data Files") or Unicode software and any
+     * associated documentation (the "Software") to deal in the Data Files
+     * or Software without restriction, including without limitation the
+     * rights to use, copy, modify, merge, publish, distribute, and/or sell
+     * copies of the Data Files or Software, and to permit persons to whom
+     * the Data Files or Software are furnished to do so, provided that (a)
+     * this copyright and permission notice appear with all copies of the
+     * Data Files or Software, (b) this copyright and permission notice
+     * appear in associated documentation, and (c) there is clear notice in
+     * each modified Data File or in the Software as well as in the
+     * documentation associated with the Data File(s) or Software that the
+     * data or software has been modified. </p> <p>THE DATA FILES AND
+     * SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+     * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+     * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+     * OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+     * HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY
+     * SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
+     * RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+     * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+     * CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+     * </p> <p>Except as contained in this notice, the name of a copyright
+     * holder shall not be used in advertising or otherwise to promote the
+     * sale, use or other dealings in these Data Files or Software without
+     * prior written authorization of the copyright holder. </p>
      * @deprecated Renamed to NormalizerInput.
  */
 @Deprecated

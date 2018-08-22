@@ -5,9 +5,9 @@
 
 <b>Deprecated.</b> Renamed to NormalizerInput.
 
-A character input class that implements the Unicode normalization lgorithm and contains methods and functionality to test and convert ext strings for normalization. This is similar to the deprecated ormalizer class, except it implements the ICharacterInput interface.
+A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
-The Unicode Standard includes characters, such as an acute accent, that an be combined with other characters to make new characters. For xample, the letter E combines with an acute accent to make E-acute (É). n some cases, the combined form (E-acute) should be treated as quivalent to the uncombined form (E plus acute). For this reason, the tandard defines four<i>normalization forms</i>that convert strings to a single equivalent form:
+The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines four<i>normalization forms</i>that convert strings to a single equivalent form:
 
  * <b>NFD</b>(Normalization Form D) decomposes combined forms to their constituent haracters (E plus acute, for example). This is called canonical ecomposition.
 
@@ -15,32 +15,30 @@ The Unicode Standard includes characters, such as an acute accent, that an be co
 
  * Two normalization forms,<b>NFKC</b>and<b>NFKD</b>, are similar to NFC and NFD, except they also "decompose" certain haracters, such as ligatures, font or positional variants, and ubscripts, whose visual distinction can matter in some contexts. This s called compatibility decomposition.
 
- * The four normalization forms also enforce a standardized order for ombining marks, since they can otherwise appear in an arbitrary rder.
+ * The four normalization forms also enforce a standardized order for combining marks, since they can otherwise appear in an arbitrary order.
 
-For more information, see Standard Annex 15 at `
-          http://www.unicode.org/reports/tr15/
-        ` .
+For more information, see Standard Annex 15 at `http://www.unicode.org/reports/tr15/` .
 
 <b>Thread safety:</b>This class is mutable; its properties can be changed. None of its nstance methods are designed to be thread safe. Therefore, access to bjects from this class must be synchronized if multiple threads can ccess them at the same time.
 
-NOTICE: While this class's source code is in the public domain, the lass uses an internal class, called NormalizationData, that includes ata derived from the Unicode Character Database. In case doing so is equired, the permission notice for the Unicode Character Database is iven here:
+NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. In case doing so is required, the permission notice for the Unicode Character Database is given here:
 
 COPYRIGHT AND PERMISSION NOTICE
 
-Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed nder the Terms of Use in http://www.unicode.org/copyright.html.
+Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
 
-Permission is hereby granted, free of charge, to any person obtaining a opy of the Unicode data files and any associated documentation (the Data Files") or Unicode software and any associated documentation (the Software") to deal in the Data Files or Software without restriction, ncluding without limitation the rights to use, copy, modify, merge, ublish, distribute, and/or sell copies of the Data Files or Software, nd to permit persons to whom the Data Files or Software are furnished o do so, provided that (a) this copyright and permission notice appear ith all copies of the Data Files or Software, (b) this copyright and ermission notice appear in associated documentation, and (c) there is lear notice in each modified Data File or in the Software as well as in he documentation associated with the Data File(s) or Software that the ata or software has been modified.
+Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files and any associated documentation (the "Data Files") or Unicode software and any associated documentation (the "Software") to deal in the Data Files or Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom the Data Files or Software are furnished to do so, provided that (a) this copyright and permission notice appear with all copies of the Data Files or Software, (b) this copyright and permission notice appear in associated documentation, and (c) there is clear notice in each modified Data File or in the Software as well as in the documentation associated with the Data File(s) or Software that the data or software has been modified.
 
-THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF NY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE ARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND ONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT OLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR NY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER ESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF ONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN ONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
 
-Except as contained in this notice, the name of a copyright holder hall not be used in advertising or otherwise to promote the sale, use r other dealings in these Data Files or Software without prior written uthorization of the copyright holder.
+Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
 
 ### NormalizingCharacterInput Constructor
 
     public NormalizingCharacterInput(
         PeterO.Text.ICharacterInput input);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -53,7 +51,7 @@ is a public object.
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -68,7 +66,7 @@ is a Normalization object.
     public NormalizingCharacterInput(
         string str);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -83,7 +81,7 @@ is a text string.
         int length,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -105,7 +103,7 @@ is a Normalization object.
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -126,7 +124,7 @@ or "input" or "charArray" is null.
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -139,7 +137,7 @@ is an IList object.
         System.Collections.Generic.IList characterList,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -157,7 +155,7 @@ is a Normalization object.
 
 <b>Deprecated.</b> Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.
 
-Gets a list of normalized code points after reading from a character tream.
+Gets a list of normalized code points after reading from a character stream.
 
 <b>Parameters:</b>
 
@@ -210,7 +208,7 @@ is null.
 
 <b>Deprecated.</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
-Determines whether the given array of characters is in the given Unicode ormalization form.
+Determines whether the given array of characters is in the given Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -220,11 +218,7 @@ Determines whether the given array of characters is in the given Unicode ormaliz
 
 <b>Return Value:</b>
 
- `
-        true
-      ` if the given list of characters is in the given Unicode normalization orm; otherwise, `
-        false
-      ` .
+ `true` if the given list of characters is in the given Unicode normalization orm; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -247,11 +241,7 @@ Determines whether the text provided by a character input is normalized.
 
 <b>Return Value:</b>
 
- `
-        true
-      ` if the text is normalized; otherwise, `
-        false
-      ` .
+ `true` if the text is normalized; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -265,7 +255,7 @@ is null.
         string str,
         PeterO.Text.Normalization form);
 
-Determines whether the given string is in the given Unicode normalization orm.
+Determines whether the given string is in the given Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -275,13 +265,7 @@ Determines whether the given string is in the given Unicode normalization orm.
 
 <b>Return Value:</b>
 
- `
-        true
-      ` if the given string is in the given Unicode normalization form; therwise, `
-        false
-      ` . Returns `
-        false
-      ` if the string contains an unpaired surrogate code point.
+ `true` if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns `false` if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
@@ -297,7 +281,7 @@ is null.
 
 <b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
-Determines whether the given list of characters is in the given Unicode ormalization form.
+Determines whether the given list of characters is in the given Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -307,11 +291,7 @@ Determines whether the given list of characters is in the given Unicode ormaliza
 
 <b>Return Value:</b>
 
- `
-        true
-      ` if the given list of characters is in the given Unicode normalization orm; otherwise, `
-        false
-      ` .
+ `true` if the given list of characters is in the given Unicode normalization orm; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -370,7 +350,7 @@ begins.
 
 <b>Return Value:</b>
 
-The number of Unicode code points read, or 0 if the end of the source is eached.
+The number of Unicode code points read, or 0 if the end of the source is reached.
 
 <b>Exceptions:</b>
 
@@ -395,4 +375,4 @@ Reads a Unicode character from a data source.
 
 <b>Return Value:</b>
 
-Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), r the value -1 indicating the end of the source.
+Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

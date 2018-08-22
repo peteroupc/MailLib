@@ -15,76 +15,76 @@ import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
     /**
-     * <p> Represents an email message, and contains methods and properties for
+     * <p>Represents an email message, and contains methods and properties for
      * accessing and modifying email message data. This class implements the
      * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
-     * Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p> <b>Thread
+     * Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
      * Therefore, access to objects from this class must be synchronized if
-     * multiple threads can access them at the same time. </p> <p> The
+     * multiple threads can access them at the same time. </p> <p>The
      * following lists known deviations from the mail specifications
-     * (Internet Message Format and MIME): </p> <ul> <li> The
+     * (Internet Message Format and MIME): </p> <ul> <li>The
      * content-transfer-encodings "quoted-printable" and "base64" are
      * treated as 7bit instead if they occur in a message or body part with
      * content type "multipart/*" or "message/*" (other than
      * "message/global", "message/global-headers",
      * "message/global-disposition-notification", or
-     * "message/global-delivery-status"). </li> <li> If a message has two or
+     * "message/global-delivery-status"). </li> <li>If a message has two or
      * more Content-Type header fields, it is treated as having a content
      * type of "application/octet-stream", unless one or more of the header
-     * fields is syntactically invalid. </li> <li> Illegal UTF-8 byte
+     * fields is syntactically invalid. </li> <li>Illegal UTF-8 byte
      * sequences appearing in header field values are replaced with
      * replacement characters. Moreover, UTF-8 is parsed everywhere in
      * header field values, even in those parts of some structured header
      * fields where this appears not to be allowed. (UTF-8 is a character
-     * encoding for the Unicode character set.) </li> <li> This
+     * encoding for the Unicode character set.) </li> <li>This
      * implementation can parse a message even if that message is without a
      * From header field, without a Date header field, or without both.
-     * </li> <li> The To and Cc header fields are allowed to contain only
+     * </li> <li>The To and Cc header fields are allowed to contain only
      * comments and whitespace, but these "empty" header fields will be
-     * omitted when generating. </li> <li> There is no line length limit
+     * omitted when generating. </li> <li>There is no line length limit
      * imposed when parsing header fields, except header field names. </li>
-     * <li> There is no line length limit imposed when parsing
-     * quoted-printable or base64 encoded bodies. </li> <li> If the transfer
+     * <li>There is no line length limit imposed when parsing
+     * quoted-printable or base64 encoded bodies. </li> <li>If the transfer
      * encoding is absent and the content type is "message/rfc822", bytes
      * with values greater than 127 (called "8-bit bytes" in the rest of
      * this summary) are still allowed, despite the default value of "7bit"
-     * for "Content-Transfer-Encoding". </li> <li> In the following cases,
-     * if the transfer encoding is absent, declared as 7bit, or treated as
-     * 7bit, 8-bit bytes are still allowed: </li> <li> (a) The preamble and
-     * epilogue of multipart messages, which will be ignored. </li> <li> (b)
-     * If the charset is declared to be <code>utf-8</code> . </li> <li> (c) If the
+     * for "Content-Transfer-Encoding". </li> <li>In the following cases, if
+     * the transfer encoding is absent, declared as 7bit, or treated as
+     * 7bit, 8-bit bytes are still allowed: </li> <li>(a) The preamble and
+     * epilogue of multipart messages, which will be ignored. </li> <li>(b)
+     * If the charset is declared to be <code>utf-8</code> . </li> <li>(c) If the
      * content type is "text/html" and the charset is declared to be
      * <code>us-ascii</code> , "windows-1252", "windows-1251", or "iso-8859-*"
-     * (all single byte encodings). </li> <li> (d) In non-MIME message
-     * bodies and in text/plain message bodies. Any 8-bit bytes are replaced
-     * with the substitute character byte (0x1a). </li> <li> If the message
-     * starts with the word "From" (and no other case variations of that
-     * word) followed by one or more space (U + 0020) not followed by colon,
-     * that text and the rest of the text is skipped up to and including a
-     * line feed (U + 000A). (See also RFC 4155, which describes the so-called
-     * "mbox" convention with "From" lines of this kind.) </li> <li> The
-     * name <code>ascii</code> is treated as a synonym for <code>us-ascii</code> ,
-     * despite being a reserved name under RFC 2046. The name <code>cp1252</code>
-     * is treated as a synonym for <code>windows-1252</code> , even though it's
-     * not an IANA registered alias. </li> <li> The following deviations
-     * involve encoded words under RFC 2047: </li> <li> (a) If a sequence of
-     * encoded words decodes to a string with a CTL character (U + 007F, or a
+     * (all single byte encodings). </li> <li>(d) In non-MIME message bodies
+     * and in text/plain message bodies. Any 8-bit bytes are replaced with
+     * the substitute character byte (0x1a). </li> <li>If the message starts
+     * with the word "From" (and no other case variations of that word)
+     * followed by one or more space (U + 0020) not followed by colon, that
+     * text and the rest of the text is skipped up to and including a line
+     * feed (U + 000A). (See also RFC 4155, which describes the so-called
+     * "mbox" convention with "From" lines of this kind.) </li> <li>The name
+     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code> , despite
+     * being a reserved name under RFC 2046. The name <code>cp1252</code> is
+     * treated as a synonym for <code>windows-1252</code> , even though it's not
+     * an IANA registered alias. </li> <li>The following deviations involve
+     * encoded words under RFC 2047: </li> <li>(a) If a sequence of encoded
+     * words decodes to a string with a CTL character (U + 007F, or a
      * character less than U + 0020 and not TAB) after being converted to
-     * Unicode, the encoded words are left un-decoded. </li> <li> (b) This
+     * Unicode, the encoded words are left un-decoded. </li> <li>(b) This
      * implementation can decode encoded words regardless of the character
      * length of the line in which they appear. This implementation can
      * generate a header field line with one or more encoded words even if
      * that line is more than 76 characters long. (This implementation
      * follows the recommendation in RFC 5322 to limit header field lines to
-     * no more than 78 characters, where possible.) </li> </ul> <p> It would
+     * no more than 78 characters, where possible.) </li> </ul> <p>It would
      * be appreciated if users of this library contact the author if they
      * find other ways in which this implementation deviates from the mail
-     * specifications or other applicable specifications. </p> <p> Note that
+     * specifications or other applicable specifications. </p> <p>Note that
      * this class currently doesn't support the "padding" parameter for
      * message bodies with the media type "application/octet-stream" or
-     * treated as that media type (see RFC 2046 sec. 4.5.1). </p> <p> Note
+     * treated as that media type (see RFC 2046 sec. 4.5.1). </p> <p>Note
      * that this implementation can decode an RFC 2047 encoded word that
      * uses ISO-2022-JP (the only supported encoding that uses code
      * switching) even if the encoded word's payload ends in a different
@@ -94,10 +94,10 @@ import com.upokecenter.text.*;
      * "ASCII mode" after the decoded text is displayed (see last paragraph
      * of sec. 6.2) -- since the decoded text is converted to Unicode rather
      * than kept as ISO-2022-JP, this is not applicable since there is no
-     * such thing as "ASCII mode" in the Unicode Standard. </p> <p> Note
-     * that this library (the MailLib library) has no facilities for sending
-     * and receiving email messages, since that's outside this library's
-     * scope. </p>
+     * such thing as "ASCII mode" in the Unicode Standard. </p> <p>Note that
+     * this library (the MailLib library) has no facilities for sending and
+     * receiving email messages, since that's outside this library's scope.
+     * </p>
      */
   public final class Message {
     static final int MaxRecHeaderLineLength = 78;
@@ -198,10 +198,10 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Sets this message's Date header field to the current time as its value. <p>
-     * This method can be used when the message is considered complete and
-     * ready to be generated, for example, using the "Generate()" method.
-     * </p>
+     * Sets this message's Date header field to the current time as its value.
+     * <p>This method can be used when the message is considered complete
+     * and ready to be generated, for example, using the "Generate()"
+     * method. </p>
      * @return This object.
      */
     public Message SetCurrentDate() {
@@ -316,10 +316,10 @@ public final void setContentType(MediaType value) {
       }
 
     /**
-     * <p> Gets a file name suggested by this message for saving the message's body
+     * <p>Gets a file name suggested by this message for saving the message's body
      * to a file. For more information on the algorithm, see
-     * ContentDisposition.MakeFilename. </p> <p> This method generates a
-     * file name based on the <code>filename</code> parameter of the
+     * ContentDisposition.MakeFilename. </p> <p>This method generates a file
+     * name based on the <code>filename</code> parameter of the
      * Content-Disposition header field, if it exists, or on the <code>name</code>
      * parameter of the Content-Type header field, otherwise. </p>
      * @return A suggested name for the file. Returns the empty string if there is
@@ -340,11 +340,12 @@ public final void setContentType(MediaType value) {
      * @param headerName The name of the header fields to retrieve.
      * @return A list of addresses, in the order in which they appear in this
      * message's header fields of the given name.
-     * @throws UnsupportedOperationException "headerName" is not supported for this
-     * method. Currently, the only header fields supported are To, Cc, Bcc,
-     * Reply-To, Sender, and From.
-     * @throws java.lang.NullPointerException "headerName" is null.
-     * @throws IllegalArgumentException "headerName" is empty.
+     * @throws UnsupportedOperationException The parameter {@code headerName} is not
+     * supported for this method. Currently, the only header fields
+     * supported are To, Cc, Bcc, Reply-To, Sender, and From.
+     * @throws java.lang.NullPointerException The parameter {@code headerName} is
+     * null.
+     * @throws IllegalArgumentException The parameter {@code headerName} is empty.
      */
     public List<NamedAddress> GetAddresses(String headerName) {
       if (headerName == null) {
@@ -423,7 +424,7 @@ return GetAddresses("to");
       }
 
     /**
-     * Adds a header field to the end of the message's header. <p> Updates the
+     * Adds a header field to the end of the message's header. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method. </p>
      * @param header A key/value pair. The key is the name of the header field,
@@ -441,7 +442,7 @@ return GetAddresses("to");
     }
 
     /**
-     * Adds a header field to the end of the message's header. <p> Updates the
+     * Adds a header field to the end of the message's header. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method. </p>
      * @param name Name of a header field, such as "From" or "Content-ID".
@@ -462,11 +463,11 @@ return GetAddresses("to");
     }
 
     /**
-     * Generates this message's data in text form. <p> The generated message will
+     * Generates this message's data in text form. <p>The generated message will
      * have only Basic Latin code points (U + 0000 to U + 007F), and the
      * transfer encoding will always be 7bit, quoted-printable, or base64
      * (the declared transfer encoding for this message will be ignored).
-     * </p> <p> The following applies to the following header fields: From,
+     * </p> <p>The following applies to the following header fields: From,
      * To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
      * Resent-Bcc, and Resent-Sender. If the header field exists, but has an
      * invalid syntax, has no addresses, or appears more than once, this
@@ -476,9 +477,9 @@ return GetAddresses("to");
      * address (a <code>.invalid</code> address is a reserved address that can
      * never belong to anyone). (An exception is that the Resent-* header
      * fields may appear more than once.) The generated message should
-     * always have a From header field. </p> <p> If a Date and/or Message-ID
+     * always have a From header field. </p> <p>If a Date and/or Message-ID
      * header field doesn't exist, a field with that name will be generated
-     * (using the current local time for the Date field). </p> <p> When
+     * (using the current local time for the Date field). </p> <p>When
      * encoding the message's body, if the message has a text content type
      * ("text/*"), the line breaks are a CR byte (carriage return, 0x0d)
      * followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If
@@ -535,18 +536,18 @@ return GetAddresses("to");
     /**
      * Sets this message's Date header field to the given date and time.
      * @param dateTime An array containing eight elements. Each element of the
-     * array (starting from 0) is as follows: <ul> <li> 0 - The year. For
-     * example, the value 2000 means 2000 C.E. </li> <li> 1 - Month of the
-     * year, from 1 (January) through 12 (December). </li> <li> 2 - Day of
-     * the month, from 1 through 31. </li> <li> 3 - Hour of the day, from 0
-     * through 23. </li> <li> 4 - Minute of the hour, from 0 through 59.
-     * </li> <li> 5 - Second of the minute, from 0 through 60 (this value
-     * can go up to 60 to accommodate leap seconds). (Leap seconds are
+     * array (starting from 0) is as follows: <ul> <li>0 - The year. For
+     * example, the value 2000 means 2000 C.E. </li> <li>1 - Month of the
+     * year, from 1 (January) through 12 (December). </li> <li>2 - Day of
+     * the month, from 1 through 31. </li> <li>3 - Hour of the day, from 0
+     * through 23. </li> <li>4 - Minute of the hour, from 0 through 59.
+     * </li> <li>5 - Second of the minute, from 0 through 60 (this value can
+     * go up to 60 to accommodate leap seconds). (Leap seconds are
      * additional seconds added to adjust international atomic time, or TAI,
      * to an approximation of astronomical time known as coordinated
-     * universal time, or UTC.) </li> <li> 6 - Milliseconds of the second,
+     * universal time, or UTC.) </li> <li>6 - Milliseconds of the second,
      * from 0 through 999. This value is not used to generate the date
-     * string, but must still be valid. </li> <li> 7 - Number of minutes to
+     * string, but must still be valid. </li> <li>7 - Number of minutes to
      * subtract from this date and time to get global time. This number can
      * be positive or negative. </li> </ul> .
      * @return This object.
@@ -672,7 +673,7 @@ return GetAddresses("to");
     }
 
     /**
-     * Removes a header field by index. <p> Updates the ContentType and
+     * Removes a header field by index. <p>Updates the ContentType and
      * ContentDisposition properties if those header fields have been
      * modified by this method. </p>
      * @param index Zero-based index of the header field to set.
@@ -707,7 +708,7 @@ return GetAddresses("to");
      * part headers. A basic case-insensitive comparison is used. (Two
      * strings are equal in such a comparison, if they match after
      * converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
-     * both strings to lower case.). <p> Updates the ContentType and
+     * both strings to lower case.). <p>Updates the ContentType and
      * ContentDisposition properties if those header fields have been
      * modified by this method. </p>
      * @param name The name of the header field to remove.
@@ -751,7 +752,7 @@ return GetAddresses("to");
     }
 
     /**
-     * Sets the name and value of a header field by index. <p> Updates the
+     * Sets the name and value of a header field by index. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method. </p>
      * @param index Zero-based index of the header field to set.
@@ -771,7 +772,7 @@ return GetAddresses("to");
     }
 
     /**
-     * Sets the name and value of a header field by index. <p> Updates the
+     * Sets the name and value of a header field by index. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method. </p>
      * @param index Zero-based index of the header field to set.
@@ -807,8 +808,8 @@ return GetAddresses("to");
     }
 
     /**
-     * Sets the value of a header field by index without changing its name. <p>
-     * Updates the ContentType and ContentDisposition properties if those
+     * Sets the value of a header field by index without changing its name.
+     * <p>Updates the ContentType and ContentDisposition properties if those
      * header fields have been modified by this method. </p>
      * @param index Zero-based index of the header field to set.
      * @param value Value of the header field.
@@ -833,10 +834,17 @@ return GetAddresses("to");
     }
 
     /**
-     * Not documented yet.
-     * @param name Not documented yet.
-     * @param value Not documented yet.
-     * @return A text string.
+     * Decodes RFC 2047 encoded words from the given header field value and returns
+     * a string with those words decoded. For an example of encoded words,
+     * see the constructor for PeterO.Mail.NamedAddress.
+     * @param name Name of the header field. This determines the syntax of the
+     * "value" parameter and is necessary to help this method interpret
+     * encoded words properly.
+     * @param value A header field value that could contain encoded words. For
+     * example, if the name parameter is "From", this parameter could be
+     * "=?utf-8?q?me?= &lt;me@example.com&gt;".
+     * @return The header field value with valid encoded words decoded.
+     * @throws java.lang.NullPointerException The parameter {@code name} is null.
      */
     public static String DecodeHeaderValue(String name, String value) {
       return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
@@ -846,7 +854,7 @@ return GetAddresses("to");
      * Sets the value of this message's header field. If a header field with the
      * same name exists, its value is replaced. If the header field's name
      * occurs more than once, only the first instance of the header field is
-     * replaced. <p> Updates the ContentType and ContentDisposition
+     * replaced. <p>Updates the ContentType and ContentDisposition
      * properties if those header fields have been modified by this method.
      * </p>
      * @param name The name of a header field, such as "from" or "subject".
@@ -1079,10 +1087,6 @@ try { if (ms != null) {
         if (ext.equals(".doc") || ext.equals(".dot")) {
           return MediaType.Parse("application/msword");
         }
-        if (ext.equals(".bin") || ext.equals(".deploy") || ext.equals(".msp") ||
-          ext.equals(".msu")) {
-          return MediaType.Parse("application/octet-stream");
-        }
         if (ext.equals(".pdf")) {
           return MediaType.Parse("application/pdf");
         }
@@ -1122,8 +1126,14 @@ try { if (ms != null) {
         if (ext.equals(".eml")) {
           return MediaType.Parse("message/rfc822");
         }
+        if (ext.equals(".rst")) {
+          return MediaType.Parse("text/prs.fallenstein.rst\u003bcharset=utf-8");
+        }
         if (ext.equals(".htm") || ext.equals(".html") || ext.equals(".shtml")) {
           return MediaType.Parse("text/html\u003bcharset=utf-8");
+        }
+        if (ext.equals(".md") || ext.equals(".markdown")) {
+          return MediaType.Parse("text/markdown\u003bcharset=utf-8");
         }
         if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
           ext.equals(".srt") || ext.equals(".text") || ext.equals(".txt")) {
@@ -1142,8 +1152,8 @@ try { if (ms != null) {
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
-     * @throws java.lang.NullPointerException The parameter "inputStream" or
-     * "mediaType" is null.
+     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType) {
@@ -1157,16 +1167,18 @@ try { if (ms != null) {
      * message, it becomes a "multipart/mixed" message with the current body
      * converted to an inline body part.
      * @param inputStream A readable data stream.
-     * @param filename A file name to assign to the attachment. If the file name
-     * has one of certain extensions (such as ".html"), an appropriate media
-     * type will be assigned to the attachment based on that extension;
-     * otherwise, the media type "application/octet-stream" is assigned. Can
-     * be null or empty, in which case no file name is assigned. Only the
-     * file name portion of this parameter is used, which in this case means
-     * the portion of the string after the last "/" or "&#x5c;", if either
-     * character exists, or the entire string otherwise.
+     * @param filename A file name to assign to the attachment. Can be null or
+     * empty, in which case no file name is assigned. Only the file name
+     * portion of this parameter is used, which in this case means the
+     * portion of the string after the last "/" or "&#x5c;", if either character
+     * exists, or the entire string otherwise An appropriate media type (or
+     * "application/octet-stream") will be assigned to the attachment based
+     * on this file name's extension. If the file name has an extension
+     * .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md,
+     * .markdown, or .srt, the media type will have a "charset" of "utf-8".
      * @return A Message object for the generated attachment.
-     * @throws java.lang.NullPointerException The parameter "inputStream" is null.
+     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * "mediaType" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, String filename) {
@@ -1188,8 +1200,8 @@ try { if (ms != null) {
      * portion of the string after the last "/" or "&#x5c;", if either character
      * exists, or the entire string otherwise.
      * @return A Message object for the generated attachment.
-     * @throws java.lang.NullPointerException The parameter "inputStream" or
-     * "mediaType" is null.
+     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType,
@@ -1206,8 +1218,8 @@ try { if (ms != null) {
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @return A Message object for the generated body part.
-     * @throws java.lang.NullPointerException The parameter "inputStream" or
-     * "mediaType" is null.
+     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, MediaType mediaType) {
@@ -1221,16 +1233,18 @@ try { if (ms != null) {
      * becomes a "multipart/mixed" message with the current body converted
      * to an inline body part.
      * @param inputStream A readable data stream.
-     * @param filename A file name to assign to the body part. If the file name has
-     * one of certain extensions (such as ".html"), an appropriate media
-     * type will be assigned to the body part based on that extension;
-     * otherwise, the media type "application/octet-stream" is assigned. Can
-     * be null or empty, in which case no file name is assigned. Only the
-     * file name portion of this parameter is used, which in this case means
-     * the portion of the string after the last "/" or "&#x5c;", if either
-     * character exists, or the entire string otherwise.
+     * @param filename A file name to assign to the inline body part. Can be null
+     * or empty, in which case no file name is assigned. Only the file name
+     * portion of this parameter is used, which in this case means the
+     * portion of the string after the last "/" or "&#x5c;", if either character
+     * exists, or the entire string otherwise An appropriate media type (or
+     * "application/octet-stream") will be assigned to the body part based
+     * on this file name's extension. If the file name has an extension
+     * .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md,
+     * .markdown, or .srt, the media type will have a "charset" of "utf-8".
      * @return A Message object for the generated body part.
-     * @throws java.lang.NullPointerException The parameter "inputStream" is null.
+     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * "mediaType" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, String filename) {
@@ -1248,8 +1262,8 @@ try { if (ms != null) {
      * @param mediaType A media type to assign to the body part.
      * @param filename A file name to assign to the body part.
      * @return A Message object for the generated body part.
-     * @throws java.lang.NullPointerException The parameter "inputStream" or
-     * "mediaType" is null.
+     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, MediaType mediaType, String
@@ -2931,14 +2945,33 @@ private static String GetContentTranslationType(String ctt) {
     }
 
     /**
-     * Not documented yet.
+     * Creates a message object from a MailTo URL. The URL can contain key-value
+     * pairs that follow a question-mark, as in the following example:
+     * "mailto:me@example.com?subject=A%20Subject". In this example,
+     * "subject" is the subject of the email address. Only certain keys are
+     * supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+     * "comments", "keywords", and "body". The first seven are header field
+     * names that will be used to set the returned message's corresponding
+     * header fields. The last, "body", sets the body of the message to the
+     * given text. Keys other than these eight will be ignored.
+     * @param url A string representing a MailTo URL.
+     * @return A Message object created from the given MailTo URL. Returs null if
+     * {@code url} is null, is syntactically invalid, or is not a MailTo
+     * URL.
      */
     public static Message FromMailtoUrl(String url) {
       return MailtoUrls.MailtoUrlMessage(url);
     }
 
     /**
-     * Not documented yet.
+     * Generates a "mailto:" URL corresponding to this message. The following
+     * header fields, and only these, are used to generate the URL: To, Cc,
+     * Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is
+     * included in the URL only if this message has a text media type and
+     * uses a supported character encoding ("charset" parameter). The To
+     * header field is included in the URL only if it has display names or
+     * group syntax.
+     * @return A "mailto:" URL corresponding to this message.
      */
     public String ToMailtoUrl() {
       return MailtoUrls.MessageToMailtoUrl(this);

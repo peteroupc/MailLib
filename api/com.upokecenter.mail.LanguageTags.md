@@ -81,7 +81,8 @@ Returns whether the given string is a basic or extended language range under
 **Returns:**
 
 * <code>true</code> if the given string is a basic language range
- (depending on the "extended" parameter); otherwise, <code>false</code> .
+ (depending on the <code>extended</code> parameter); otherwise, <code>
+ false</code>.
 
 ### LanguageTagCase
     public static String LanguageTagCase​(String str)
@@ -95,8 +96,8 @@ Sets the given language tag to the case combination recommended by RFC 5646.
 
 **Returns:**
 
-* A text string in the recommended case combination, or null if "str"
- is null.
+* A text string in the recommended case combination, or null if <code>
+ str</code> is null.
 
 ### GetLanguageList
     public static List<String> GetLanguageList​(String str)
@@ -111,8 +112,9 @@ Parses a language list from a Content-Language header field.
 
 **Returns:**
 
-* A list of language tags. Returns an empty list if "str" is null or
- the empty string, or null if "str" syntactically invalid.
+* A list of language tags. Returns an empty list if <code>str</code> is
+ null or the empty string, or null if <code>str</code> syntactically
+ invalid.
 
 ### GetRangeListWithQuality
     public static List<StringAndQuality> GetRangeListWithQuality​(String str)
@@ -132,7 +134,7 @@ Parses a language range list from an Accept-Language header field.
  will be sorted in descending order by quality; if two or more
  language ranges have the same quality, they will be sorted in the
  order in which they appeared in the given string. Returns null if
- "str" is null or syntactically invalid.
+ <code>str</code> is null or syntactically invalid.
 
 ### LanguageTagFilter
     public static List<String> LanguageTagFilter​(List<String> ranges, List<String> languages, boolean extended, boolean matchStarAtEnd)
@@ -154,8 +156,9 @@ Determines whether the given language tag matches the given language range.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - "range" is not a basic language range, or
- "tag" is not a potentially valid language tag.
+* <code>IllegalArgumentException</code> - The parameter <code>range</code> is not a basic
+ language range, or <code>tag</code> is not a potentially valid language
+ tag.
 
 ### LanguageTagLookup
     public static String LanguageTagLookup​(String range, List<String> languages, String defaultValue)

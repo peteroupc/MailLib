@@ -9,6 +9,8 @@ package com.upokecenter.text;
      * @param input Input byte array.
      * @return Decompressed output byte array.
      * @throws java.lang.NullPointerException The parameter "output" is null.
+     * @throws IllegalArgumentException Invalid LZ4; Invalid LZ4; Invalid LZ4;
+     * Invalid LZ4; Invalid LZ4; Invalid LZ4; Invalid LZ4.
      */
     public static byte[] DecompressLz4(byte[] input) {
       int index = 0;

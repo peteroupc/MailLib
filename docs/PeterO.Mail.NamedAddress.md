@@ -2,45 +2,29 @@
 
     public class NamedAddress
 
-Represents an email address and a name for that address. Can represent a roup of email addresses instead.
+Represents an email address and a name for that address. Can represent a group of email addresses instead.
 
 ### NamedAddress Constructor
 
     public NamedAddress(
         string address);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md)class. Examples:
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class. Examples:
 
- *  `
-            john@example.com
-          `
+ *  `john@example.com`
 
- *  `
-            "John Doe" <john@example.com>
-          `
+ *  `"John Doe" <john@example.com>`
 
- *  `
-            =?utf-8?q?John
-          `  `
-            =
-          `  `
-            27s_Office?= <john@example.com>
-          `
+ *  `=?utf-8?q?John`  `=`  `27s_Office?= <john@example.com>`
 
- *  `
-            John <john@example.com>
-          `
+ *  `John <john@example.com>`
 
- *  `
-            "Group" : Tom <tom@example.com>, Jane
-            <jane@example.com>;
-          `
+ *  `"Group" : Tom <tom@example.com>, Jane
+            <jane@example.com>;`
 
 <b>Parameters:</b>
 
- * <i>address</i>: A text string identifying a single email address or a group of email ddresses. Comments, or text within parentheses, can appear. Multiple mail addresses are not allowed unless they appear in the group syntax iven above. Encoded words under RFC 2047 that appear within comments or isplay names will be decoded.An RFC 2047 encoded word consists of "=?", a character encoding name, uch as `
-          utf-8
-        ` , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in he character encoding, further encoded using B or Q encoding, and inally "?=". B encoding uses Base64, while in Q encoding, spaces are hanged to "_", equals are changed to "=3D", and most bytes other than he basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z 0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their -digit hexadecimal form. An encoded word's maximum length is 75 haracters. See the third example.
+ * <i>address</i>: A text string identifying a single email address or a group of email addresses. Comments, or text within parentheses, can appear. Multiple email addresses are not allowed unless they appear in the group syntax given above. Encoded words under RFC 2047 that appear within comments or display names will be decoded.An RFC 2047 encoded word consists of "=?", a character encoding name, such as `utf-8` , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in he character encoding, further encoded using B or Q encoding, and inally "?=". B encoding uses Base64, while in Q encoding, spaces are hanged to "_", equals are changed to "=3D", and most bytes other than he basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z 0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their -digit hexadecimal form. An encoded word's maximum length is 75 haracters. See the third example.
 
 .
 
@@ -59,11 +43,11 @@ The named address has an invalid syntax.
         string displayName,
         PeterO.Mail.Address address);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md)class using the given display name and email address.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
 
 <b>Parameters:</b>
 
- * <i>displayName</i>: The display name of the email address. Can be null or empty. Encoded ords under RFC 2047 will not be decoded.
+ * <i>displayName</i>: The display name of the email address. Can be null or empty. Encoded words under RFC 2047 will not be decoded.
 
  * <i>address</i>: An email address.
 
@@ -79,11 +63,11 @@ is null.
         string displayName,
         string address);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md)class using the given display name and email address.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
 
 <b>Parameters:</b>
 
- * <i>displayName</i>: The display name of the email address. Can be null or empty. Encoded ords under RFC 2047 will not be decoded.
+ * <i>displayName</i>: The display name of the email address. Can be null or empty. Encoded words under RFC 2047 will not be decoded.
 
  * <i>address</i>: An email address.
 
@@ -103,7 +87,7 @@ The display name or address has an invalid syntax.
         string localPart,
         string domain);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md)class using the given name and an email address made up of its local part nd domain.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given name and an email address made up of its local part and domain.
 
 <b>Parameters:</b>
 
@@ -126,7 +110,7 @@ is null.
         string groupName,
         System.Collections.Generic.IList mailboxes);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md)class. Takes a group name and several named email addresses as arameters, and forms a group with them.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class. Takes a group name and several named email addresses as parameters, and forms a group with them.
 
 <b>Parameters:</b>
 
@@ -153,13 +137,13 @@ Gets the email address associated with this object.
 
 <b>Returns:</b>
 
-The email address associated with this object. This value is null if this bject represents a group of addresses instead.
+The email address associated with this object. This value is null if this object represents a group of addresses instead.
 
 ### DisplayName
 
     public string DisplayName { get; }
 
-Gets the display name for this email address. Returns null if the display ame is absent.
+Gets the display name for this email address. Returns null if the display name is absent.
 
 <b>Returns:</b>
 
@@ -169,31 +153,27 @@ The display name for this email address.
 
     public System.Collections.Generic.IList GroupAddresses { get; }
 
-Gets a read-only list of addresses that make up the group, if this object epresents a group, or an empty list otherwise.
+Gets a read-only list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
 <b>Returns:</b>
 
-A list of addresses that make up the group, if this object represents a roup, or an empty list otherwise.
+A list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
 ### IsGroup
 
     public bool IsGroup { get; }
 
-Gets a value indicating whether this represents a group of addresses ather than a single address.
+Gets a value indicating whether this represents a group of addresses rather than a single address.
 
 <b>Returns:</b>
 
- `
-        true
-      ` If this represents a group of addresses; otherwise, `
-        false
-      ` .
+ `true`  If this represents a group of addresses; otherwise,.  `false` .
 
 ### Name
 
     public string Name { get; }
 
-Gets the display name for this email address, or the email address's alue if the display name is null. Returns an empty string if the address nd display name are null.
+Gets the display name for this email address, or the email address's value if the display name is null. Returns an empty string if the address and display name are null.
 
 <b>Returns:</b>
 
@@ -210,11 +190,7 @@ The name for this email address.
 
 <b>Return Value:</b>
 
-Either `
-        true
-      ` or `
-        false
-      ` .
+Either `true` or `false` .
 
 ### Equals
 
@@ -230,17 +206,13 @@ is an arbitrary object.
 
 <b>Return Value:</b>
 
- `
-        true
-      ` if this object and another object are equal; otherwise, `
-        false
-      ` .
+ `true` if this object and another object are equal; otherwise,  `false` .
 
 ### GetHashCode
 
     public override int GetHashCode();
 
-Calculates the hash code of this object. No application or process IDs re used in the hash code calculation.
+Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
 <b>Return Value:</b>
 
@@ -251,13 +223,21 @@ A 32-bit hash code.
     public static System.Collections.Generic.IList ParseAddresses(
         string addressValue);
 
-Not documented yet.
+Generates a list of NamedAddress objects from a comma-separated list of addresses. Each address must follow the syntax accepted by the one-argument constructor of NamedAddress.
+
+<b>Parameters:</b>
+
+ * <i>addressValue</i>: A comma-separate list of addresses in the form of a text string.
+
+<b>Return Value:</b>
+
+A list of addresses generated from the "addressValue" parameter.
 
 ### ToString
 
     public override string ToString();
 
-Converts this object to a text string.
+Converts this object to a text string. This will generally be the form of this NamedAddress object as it could appear in a "To" header field.
 
 <b>Return Value:</b>
 

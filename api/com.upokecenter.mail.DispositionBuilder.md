@@ -99,7 +99,8 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
+* <code>true</code> If this is a text media type; otherwise, . <code>
+ false</code>.
 
 ### isMultipart
     @Deprecated public final boolean isMultipart()
@@ -108,7 +109,7 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> If this is a multipart media type; otherwise, <code>
+* <code>true</code> If this is a multipart media type; otherwise, . <code>
  false</code>.
 
 ### ToDisposition
@@ -134,6 +135,8 @@ Sets the disposition type, such as "inline".
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
+* <code>IllegalArgumentException</code> - Str is empty.
 
 ### RemoveParameter
     public DispositionBuilder RemoveParameter​(String name)

@@ -9,9 +9,25 @@ import com.upokecenter.mail.*;
       NamedAddress na = new NamedAddress("b <" + str + "@example.com>");
       Address addr = na.getAddress();
       Assert.assertEquals(expected, addr.getLocalPart());
+addr = new Address(str + "@example.com");
+      Assert.assertEquals(expected, addr.getLocalPart());
+    }
+
+    private static void TestParseLocalPartNAOnly(String str, String expected) {
+      NamedAddress na = new NamedAddress("b <" + str + "@example.com>");
+      Address addr = na.getAddress();
+      Assert.assertEquals(expected, addr.getLocalPart());
     }
 
     private static void TestParseDomain(String str, String expected) {
+      NamedAddress na = new NamedAddress("b <example@" + str + ">");
+      Address addr = na.getAddress();
+      Assert.assertEquals(expected, addr.getDomain());
+addr = new Address("example@" + str);
+      Assert.assertEquals(expected, addr.getDomain());
+    }
+
+    private static void TestParseDomainNAOnly(String str, String expected) {
       NamedAddress na = new NamedAddress("b <example@" + str + ">");
       Address addr = na.getAddress();
       Assert.assertEquals(expected, addr.getDomain());
@@ -71,20 +87,31 @@ Assert.assertEquals(objectTemp, objectTemp2);
   "x.example\ud800\udc00.example.com",
   "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
-      TestParseDomain("(comment1) x (comment2)", "x");
-      TestParseDomain(
+      TestParseDomainNAOnly("(comment1) x (comment2)", "x");
+      TestParseDomainNAOnly(
   "(comment1) example (comment2) . (comment3) com",
   "example.com");
-      TestParseDomain("(comment1) [x] (comment2)", "[x]");
-      TestParseDomain("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
+      TestParseDomainNAOnly(
+        "(co(mme)nt1) example (comment2) . (comment3) com",
+        "example.com");
+      TestParseDomainNAOnly("(comment1) [x] (comment2)", "[x]");
+      TestParseDomainNAOnly("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
       TestParseDomain("[]", "[]");
-      TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
+      TestParseDomainNAOnly("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
     @Test
     public void TestLocalPart() {
       Address addr = new Address("local.local@example.com");
       Assert.assertEquals("local.local", addr.getLocalPart());
+addr = new Address("x!y!z!example@example.com");
+      Assert.assertEquals("x!y!z!example", addr.getLocalPart());
+addr = new Address("x%y%z%example@example.com");
+      Assert.assertEquals("x%y%z%example", addr.getLocalPart());
+addr = new Address("x!y%z!example@example.com");
+      Assert.assertEquals("x!y%z!example", addr.getLocalPart());
+
       TestParseLocalPart("x", "x");
+      TestParseLocalPart("x!y!z", "x!y!z");
       TestParseLocalPart("\"" + "\"", "");
       TestParseLocalPart("x.example", "x.example");
       TestParseLocalPart(
@@ -92,10 +119,14 @@ Assert.assertEquals(objectTemp, objectTemp2);
   "x.example\ud800\udc00.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      TestParseLocalPart("(comment1) x (comment2)", "x");
-      TestParseLocalPart(
+      TestParseLocalPartNAOnly("(comment1) x (comment2)", "x");
+      TestParseLocalPartNAOnly("(comment1)x(comment2)", "x");
+      TestParseLocalPartNAOnly(
   "(comment1) example (comment2) . (comment3) com",
   "example.com");
+      TestParseLocalPartNAOnly(
+        "(com(plex)comment) example (comment2) . (comment3) com",
+        "example.com");
     }
     @Test
     public void TestToString() {

@@ -81,7 +81,8 @@ public final void setSubType(String value) {
 
     /**
      * Gets a value indicating whether this is a text media type.
-     * @return {@code true} If this is a text media type; otherwise, {@code false}.
+     * @return {@code true} If this is a text media type; otherwise, . {@code
+     * false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -89,7 +90,7 @@ public final void setSubType(String value) {
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return {@code true} If this is a multipart media type; otherwise, {@code
+     * @return {@code true} If this is a multipart media type; otherwise, . {@code
      * false}.
      */
     public final boolean isMultipart() {
@@ -203,7 +204,7 @@ if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
 
     /**
      * Converts this object to a text string of the media type it represents, in
-     * the same form as <code>MediaType.toString</code>.
+     * the same form as <code>MediaType.toString</code>
      * @return A string representation of this object.
      */
     @Override public String toString() {

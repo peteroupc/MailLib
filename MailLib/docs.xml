@@ -176,12 +176,13 @@
     </summary>
 </doc>
 <doc name="M:PeterO.Cbor.URIUtility.PercentDecode(System.String)">
-
-            <summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
+<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
       digit) in the given string. Successive percent-encoded bytes are assumed
       to form characters in UTF-8.
-    </summary><param name='str'>A string that may contain percent encoding. May be null.
-    </param><returns>The string in which percent-encoding was decoded.
+    </summary>
+    <param name='str'>A string that may contain percent encoding. May be null.
+    </param>
+    <returns>The string in which percent-encoding was decoded.
     </returns>
 </doc>
 <doc name="M:PeterO.Cbor.URIUtility.escapeURI(System.String,System.Int32)">
@@ -199,8 +200,8 @@
     </returns>
 </doc>
 <doc name="M:PeterO.Cbor.URIUtility.hasScheme(System.String)">
-<summary>Determines whether the string is a valid IRI with a scheme component.
-      This can be used to check for relative IRI references.
+<summary>Determines whether the string is a valid IRI with a scheme component. This
+      can be used to check for relative IRI references.
       <para>The following cases return true:
       </para>
       <code>xx-x:mm example:/ww
@@ -217,8 +218,8 @@
     </returns>
 </doc>
 <doc name="M:PeterO.Cbor.URIUtility.hasSchemeForURI(System.String)">
-<summary>Determines whether the string is a valid URI with a scheme component.
-      This can be used to check for relative URI references. The following cases
+<summary>Determines whether the string is a valid URI with a scheme component. This
+      can be used to check for relative URI references. The following cases
       return true:
       <code>http://example/z xx-x:mm example:/ww
       </code>
@@ -362,8 +363,8 @@
     <param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
     </param>
-    <returns>If the string is a valid IRI, returns an array of 10 integers. Each of
-      the five pairs corresponds to the start and end index of the IRI's scheme,
+    <returns>If the string is a valid IRI, returns an array of 10 integers. Each of the
+      five pairs corresponds to the start and end index of the IRI's scheme,
       authority, path, query, or fragment component, respectively. The scheme,
       authority, query, and fragment components, if present, will each be given
       without the ending colon, the starting "//", the starting "?", and the
@@ -835,11 +836,10 @@
 
 </doc>
 <doc name="P:PeterO.Mail.Address.Domain">
-
-            <summary>Gets the domain of this email address (the part after the "@" sign).
-    </summary><value>The domain of this email address (the part after the "@" sign).
+<summary>Gets the domain of this email address (the part after the "@" sign).
+    </summary>
+    <value>The domain of this email address (the part after the &quot;@&quot; sign).
     </value>
-
 </doc>
 <doc name="M:PeterO.Mail.Address.Equals(System.Object)">
 
@@ -862,12 +862,11 @@
 
 </doc>
 <doc name="P:PeterO.Mail.Address.LocalPart">
-
-            <summary>Gets the local part of this email address (the part before the "@" sign).
-
-    </summary><value>The local part of this email address (the part before the "@" sign).
+<summary>Gets the local part of this email address (the part before the "@" sign).
+    </summary>
+    <value>The local part of this email address (the part before the &quot;@&quot;
+      sign).
     </value>
-
 </doc>
 <doc name="M:PeterO.Mail.Address.ToString">
 
@@ -934,14 +933,13 @@
 
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.DispositionType">
-
-            <summary>Gets a string containing this object's disposition type, such as "inline"
+<summary>Gets a string containing this object's disposition type, such as "inline"
       or "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec. 2.8,
       unrecognized disposition types should be treated as "attachment".
-    </summary><value>A string containing this object's disposition type, such as "inline" or
-      "attachment".
+    </summary>
+    <value>A string containing this object&apos;s disposition type, such as
+      &quot;inline&quot; or &quot;attachment&quot;.
     </value>
-
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)">
 
@@ -1044,107 +1042,74 @@
 
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.IsAttachment">
-
-            <summary>Gets a value indicating whether the disposition type is attachment.
-    </summary><value><c>true</c>
-       If the disposition type is attachment; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether the disposition type is
+            attachment.</summary>
+            <value><c>true</c> If the disposition type is attachment; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.IsInline">
-
-            <summary>Gets a value indicating whether the disposition type is inline.
-    </summary><value><c>true</c>
-       If the disposition type is inline; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether the disposition type is
+            inline.</summary>
+            <value><c>true</c> If the disposition type is inline; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)">
 
-            <summary>Converts a file name from the Content-Disposition header to a suitable
-      name for saving data to a file. This method is idempotent; that is,
-      calling the method again on the result doesn't change that result.
-      <para>Examples:
-      </para>
-      <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c>
-         (RFC 2047 encoding)
-      </para>
-      <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"</c>
-         (RFC 2047 encoding)
-      </para>
-      <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</c>
-         (RFC 2231 encoding)
-      </para>
-      <para><c>"nul.txt" -&gt; "_nul.txt"</c>
-         (Reserved name)
-      </para>
-      <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"</c>
-         (Directory separators)
-      </para>
-    </summary><param name='str'>A string representing a file name. Can be null.
-    </param><returns>A string with the converted version of the file name. Among other things,
-      encoded words under RFC 2047 are decoded (since they occur so frequently
-      in Content-Disposition filenames); the value is decoded under RFC 2231 if
-      possible; characters unsuitable for use in a filename (including the
-      directory separators slash and backslash) are replaced with underscores;
-      spaces and tabs are collapsed to a single space; leading and trailing
-      spaces and tabs are removed; and the filename is truncated if it would
-      otherwise be too long. The returned string will be in normalization form
-      C. Returns the empty string if "str" is null or empty.
-    </returns><remarks>
-      <para><b>Remark:</b>
-         Email and HTTP headers may specify suggested filenames using the
-        Content-Disposition header field's
-        <c>filename</c>
-         parameter or, in practice, the Content-Type header field's
-        <c>name</c>
-         parameter.
-      </para>
-      <para>Although RFC 2047 encoded words appearing in both parameters are
-        written out by some implementations, this practice is discouraged by
-        some (especially since the RFC itself says that encoded words "MUST NOT
-        appear within a 'quoted-string'"). Nevertheless, the MakeFilename method
-        has a basis in the RFCs to decode RFC 2047 encoded words (and RFC 2231
-        encoding) in file names passed to this method.
-      </para>
-      <para>RFC 2046 sec. 4.5.1 (
-        <c>application/octet-stream</c>
-         subtype in Content-Type header field) cites an earlier RFC 1341, which
-        "defined the use of a 'NAME' parameter which gave a
-        <i>
-           suggested
-        </i>
-         file name to be used if the data were written to a file". Also, RFC
-        2183 sec. 2.3 (
-        <c>filename</c>
-         parameter in Content-Disposition) confirms that the "
-        <i>
-           suggested
-        </i>
-         filename" in the
-        <c>filename</c>
-         parameter "should be
-        <i>
-           used as a basis
-        </i>
-         for the actual filename, where possible", and that that file name
-        should "not [be] blindly use[d]". See also RFC 6266, section 4.3, which
-        discusses the use of that parameter in Hypertext Transfer Protocol
-        (HTTP).
-      </para>
-      <para>To the extent that the "name" parameter is not allowed in message
-        bodies other than those with the media type "application/octet-stream"
-        or treated as that media-type, this is a deviation of RFC 2045 and 2046
-        (see also RFC 2045 sec. 5, which says that "[t]here are NO globally
-        meaningful parameters that apply to all media types"). (Some email
-        implementations may still write out the "name" parameter, even in media
-        types other than
-        <c>application/octet-stream</c>
-         and even though RFC 2046 has deprecated that parameter.)
-      </para>
-    </remarks>
+            <summary>Converts a file name from the Content-Disposition header
+             to a suitable name for saving data to a file. This method is
+             idempotent; that is, calling the method again on the result doesn't
+             change that result.
+             <para>Examples:</para>
+             <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c> (RFC 2047
+             encoding)</para>
+             <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"</c> (RFC
+             2047 encoding)</para>
+             <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</c> (RFC 2231
+             encoding)</para>
+             <para><c>"nul.txt" -&gt; "_nul.txt"</c> (Reserved name)</para>
+             <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"</c> (Directory
+             separators)</para></summary><param name='str'>A string representing a file name. Can be
+             null.</param><returns>A string with the converted version of the file name.
+             Among other things, encoded words under RFC 2047 are decoded (since
+             they occur so frequently in Content-Disposition filenames); the
+             value is decoded under RFC 2231 if possible; characters unsuitable
+             for use in a filename (including the directory separators slash and
+             backslash) are replaced with underscores; spaces and tabs are
+             collapsed to a single space; leading and trailing spaces and tabs
+             are removed; and the filename is truncated if it would otherwise be
+             too long. The returned string will be in normalization form C.
+             Returns the empty string if <paramref name='str'/> is null or
+             empty.</returns><remarks>
+             <para><b>Remark:</b> Email and HTTP headers may specify suggested
+             filenames using the Content-Disposition header field's
+             <c>filename</c> parameter or, in practice, the Content-Type header
+             field's <c>name</c> parameter.</para>
+             <para>Although RFC 2047 encoded words appearing in both parameters
+             are written out by some implementations, this practice is
+             discouraged by some (especially since the RFC itself says that
+             encoded words "MUST NOT appear within a 'quoted-string'").
+             Nevertheless, the MakeFilename method has a basis in the RFCs to
+             decode RFC 2047 encoded words (and RFC 2231 encoding) in file names
+             passed to this method.</para>
+             <para>RFC 2046 sec. 4.5.1 ( <c>application/octet-stream</c> subtype
+             in Content-Type header field) cites an earlier RFC 1341, which
+             "defined the use of a 'NAME' parameter which gave a
+             <i>suggested</i> file name to be used if the data were written to a
+             file". Also, RFC 2183 sec. 2.3 ( <c>filename</c> parameter in
+             Content-Disposition) confirms that the "
+             <i>suggested</i> filename" in the <c>filename</c> parameter "should
+             be
+             <i>used as a basis</i> for the actual filename, where possible",
+             and that that file name should "not [be] blindly use[d]". See also
+             RFC 6266, section 4.3, which discusses the use of that parameter in
+             Hypertext Transfer Protocol (HTTP).</para>
+             <para>To the extent that the "name" parameter is not allowed in
+             message bodies other than those with the media type
+             "application/octet-stream" or treated as that media-type, this is a
+             deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which
+             says that "[t]here are NO globally meaningful parameters that apply
+             to all media types"). (Some email implementations may still write
+             out the "name" parameter, even in media types other than
+             <c>application/octet-stream</c> and even though RFC 2046 has
+             deprecated that parameter.)</para></remarks>
 
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.Parameters">
@@ -1245,38 +1210,45 @@
 
 </doc>
 <doc name="T:PeterO.Mail.DataUrls">
-
-            <summary>Not documented yet.
+ns me
+    <summary>Contains methods for parsing and generating data URLs. Data URLs are
+      described in RFC 2397. Examples for data URLs follow.
+      <code>data:,hello%20world
+      </code>
+      <code>data:text/markdown,hello%20world
+      </code>
+      <code>data:application/octet-stream;base64,AAAAAA==
+      </code>
     </summary>
-
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlBytes(System.String)">
-
-            <summary>Not documented yet.
-    </summary>
-
+<summary>Extracts the data from a data URL in the form of a byte
+            array.</summary>
+            <param name='url'>A data URL string.</param>
+            <returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data
+            URL.</returns>
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlMediaType(System.String)">
-
-            <summary>Not documented yet.
-    </summary>
-
+<summary>Extracts the media type from a data URL.</summary>
+            <param name='url'>A data URL string.</param>
+            <returns>The media type. Returns null if <paramref name='url'/> is
+            null, is syntactically invalid, or is not a data URL.</returns>
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.Byte[],PeterO.Mail.MediaType)">
 
-            <summary>Not documented yet.
-    </summary>
+            <summary>Encodes data with the given media type in a data URL.</summary><param name='bytes'>A byte array containing the data to encode in a data URL.</param><param name='mediaType'>A media type to assign to the data.</param><returns>A data URL that encodes the given data and media type.</returns><exception cref='T:System.ArgumentNullException'>The parameter <paramref name='bytes'/> or <paramref name='mediaType'/> is null.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.String)">
-
-            <summary>Not documented yet.
-    </summary>
-
+<summary>Encodes text as a data URL.</summary>
+            <param name='textString'>A text string to encode as a data
+            URL.</param>
+            <returns>A data URL that encodes the given text.</returns>
+            <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='textString'/> is null.</exception>
 </doc>
 <doc name="T:PeterO.Mail.DispositionBuilder">
 
-            <summary>Description of DispositionBuilder.
+            <summary>A mutable data type that allows a content disposition to be built.
     </summary>
 
 </doc>
@@ -1311,30 +1283,22 @@
 
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.DispositionType">
-
-            <summary>Gets or sets this value's disposition type, such as "inline" or
+<summary>Gets or sets this value's disposition type, such as "inline" or
       "attachment".
-    </summary><value>This value's disposition type, such as "inline" or "attachment".
+    </summary>
+    <value>This value&apos;s disposition type, such as &quot;inline&quot; or
+      &quot;attachment&quot;.
     </value>
-
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.IsMultipart">
-
-            <summary>Gets a value indicating whether this is a multipart media type.
-    </summary><value><c>true</c>
-       If this is a multipart media type; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether this is a multipart media
+            type.</summary>
+            <value><c>true</c> If this is a multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.IsText">
-
-            <summary>Gets a value indicating whether this is a text media type.
-    </summary><value><c>true</c>
-       If this is a text media type; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether this is a text media
+            type.</summary>
+            <value><c>true</c> If this is a text media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)">
 
@@ -1353,15 +1317,9 @@
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)">
 
-            <summary>Sets the disposition type, such as "inline".
-    </summary><param name='str'>The parameter
-      <paramref name='str'/>
-       is a text string.
-    </param><returns>This instance.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter
-      <paramref name='str'/>
-       is null.
-    </exception>
+            <summary>Sets the disposition type, such as "inline".</summary><param name='str'>The parameter <paramref name='str'/> is a text
+             string.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='str'/> is null.</exception><exception cref='T:System.ArgumentException'>Str is empty.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)">
@@ -1425,7 +1383,7 @@
 </doc>
 <doc name="T:PeterO.Mail.IdentityEncoder">
 
-            <summary>Not documented yet.
+            <summary>This is an internal API.
     </summary>
 
 </doc>
@@ -1437,29 +1395,29 @@
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)">
 
-            <summary>Parses a language list from a Content-Language header field.
-    </summary><param name='str'>A string following the syntax of a Content-Language header field (see RFC
-      3282). This is a comma-separated list of language tags. RFC 5322 comments
-      (in parentheses) can appear. This parameter can be null.
-    </param><returns>A list of language tags. Returns an empty list if "str" is null or the
-      empty string, or null if "str" syntactically invalid.
-    </returns>
+            <summary>Parses a language list from a Content-Language header
+             field.</summary><param name='str'>A string following the syntax of a
+             Content-Language header field (see RFC 3282). This is a
+             comma-separated list of language tags. RFC 5322 comments (in
+             parentheses) can appear. This parameter can be null.</param><returns>A list of language tags. Returns an empty list if
+             <paramref name='str'/> is null or the empty string, or null if
+             <paramref name='str'/> syntactically invalid.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)">
 
-            <summary>Parses a language range list from an Accept-Language header field.
-    </summary><param name='str'>A string following the syntax of an Accept-Language header field (see RFC
-      3282). This is a comma-separated list of language ranges, with an optional
-      "quality" after the language tag (examples include "en; q=0.5" or
-      "de-DE"). RFC 5322 comments (in parentheses) can appear. This parameter
-      can be null.
-    </param><returns>A list of language ranges with their associated qualities. The list will
-      be sorted in descending order by quality; if two or more language ranges
-      have the same quality, they will be sorted in the order in which they
-      appeared in the given string. Returns null if "str" is null or
-      syntactically invalid.
-    </returns>
+            <summary>Parses a language range list from an Accept-Language
+             header field.</summary><param name='str'>A string following the syntax of an
+             Accept-Language header field (see RFC 3282). This is a
+             comma-separated list of language ranges, with an optional "quality"
+             after the language tag (examples include "en; q=0.5" or "de-DE").
+             RFC 5322 comments (in parentheses) can appear. This parameter can
+             be null.</param><returns>A list of language ranges with their associated qualities.
+             The list will be sorted in descending order by quality; if two or
+             more language ranges have the same quality, they will be sorted in
+             the order in which they appeared in the given string. Returns null
+             if <paramref name='str'/> is null or syntactically
+             invalid.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)">
@@ -1475,18 +1433,12 @@
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)">
 
-            <summary>Returns whether the given string is a basic or extended language range
-      under RFC 4647. Examples of basic (and extended) language ranges include
-      "*", "en-us", and "fr". Examples of extended language ranges include
-      "*-de" and "it-*".
-    </summary><param name='str'>The string to check. Can be null.
-    </param><param name='extended'>Check whether the string is a basic language range if "false", or an
-      extended language range if "true".
-    </param><returns><c>true</c>
-       if the given string is a basic language range (depending on the
-      "extended" parameter); otherwise, <c>false</c>
-       .
-    </returns>
+            <summary>Returns whether the given string is a basic or extended
+             language range under RFC 4647. Examples of basic (and extended)
+             language ranges include "*", "en-us", and "fr". Examples of
+             extended language ranges include "*-de" and "it-*".</summary><param name='str'>The string to check. Can be null.</param><param name='extended'>Check whether the string is a basic language
+             range if "false", or an extended language range if "true".</param><returns><c>true</c> if the given string is a basic language range
+             (depending on the <paramref name='extended'/> parameter); otherwise, <c>false</c>.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)">
@@ -1506,136 +1458,115 @@
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)">
 
-            <summary>Sets the given language tag to the case combination recommended by RFC
-      5646. For example, "en-us" becomes "en-US", and "zh-hant" becomes
-      "zh-Hant".
-    </summary><param name='str'>A string of a language tag. Can be null.
-    </param><returns>A text string in the recommended case combination, or null if "str" is
-      null.
-    </returns>
+            <summary>Sets the given language tag to the case combination
+             recommended by RFC 5646. For example, "en-us" becomes "en-US", and
+             "zh-hant" becomes "zh-Hant".</summary><param name='str'>A string of a language tag. Can be null.</param><returns>A text string in the recommended case combination, or null
+             if <paramref name='str'/> is null.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})">
 
-            <summary>Finds the language tags that match a priority list of basic language
-      ranges.
-    </summary><param name='ranges'>A list of basic language ranges (see documentation for the
-      "IsLanguageRange" method), which should be given in order of descending
-      preference.
-    </param><param name='languages'>A list of language tags, which should be given in order of descending
-      preference.
-    </param><returns>A list of language tags that match the given range, in descending order
-      of preference.
-    </returns><exception cref='T:System.ArgumentNullException'>"languages" or "ranges" is null.
-    </exception><exception cref='T:System.ArgumentException'>"ranges" contains a value that is not a basic language range, or
-      "languages" contains a value that is not a potentially valid language tag.
-
-    </exception>
+            <summary>Finds the language tags that match a priority list of
+             basic language ranges.</summary><param name='ranges'>A list of basic language ranges (see
+             documentation for the "IsLanguageRange" method), which should be
+             given in order of descending preference.</param><param name='languages'>A list of language tags, which should be
+             given in order of descending preference.</param><returns>A list of language tags that match the given range, in
+             descending order of preference.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='languages'/> or <paramref name='ranges'/> is
+             null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='ranges'/> contains a value that is not a basic
+             language range, or <paramref name='languages'/> contains a value
+             that is not a potentially valid language tag.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)">
 
-            <summary>Finds the language tags that match a priority list of language ranges.
-    </summary><param name='ranges'>A list of language ranges (see documentation for the "IsLanguageRange"
-      method), which should be given in order of descending preference.
-    </param><param name='languages'>A list of language tags, which should be given in order of descending
-      preference.
-    </param><returns>A list of language tags that match the given range, in descending order
-      of preference.
-    </returns><param name='extended'>If true, the ranges in "ranges" are extended language ranges; otherwise,
-      they are basic language ranges.
-    </param><exception cref='T:System.ArgumentNullException'>"languages" or "ranges" is null.
-    </exception><exception cref='T:System.ArgumentException'>"ranges" contains a value that is not a basic or extended language range,
-      or "languages" contains a value that is not a potentially valid language
-      tag.
-    </exception><param name='matchStarAtEnd'>The parameter
-      <paramref name='matchStarAtEnd'/>
-       is not documented yet.
-    </param>
+            <summary>Finds the language tags that match a priority list of
+             language ranges.</summary><param name='ranges'>A list of language ranges (see documentation
+             for the "IsLanguageRange" method), which should be given in order
+             of descending preference.</param><param name='languages'>A list of language tags, which should be
+             given in order of descending preference.</param><param name='extended'>If true, the ranges in "ranges" are extended
+             language ranges; otherwise, they are basic language ranges.</param><param name='matchStarAtEnd'>If true, treats any range equaling "*" as appearing at the end of the language priority list, no matter where it appears on that list.</param><returns>A list of language tags that match the given range, in
+             descending order of preference.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='languages'/> or <paramref name='ranges'/> is
+             null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='ranges'/> contains a value that is not a basic or
+             extended language range, or <paramref name='languages'/> contains a
+             value that is not a potentially valid language tag.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)">
 
-            <summary>Does a language tag lookup (under RFC 4647) for a matching language tag.
-    </summary><param name='ranges'>A list of basic language ranges (see documentation for the
-      "IsLanguageRange" method), which should be given in order of descending
-      preference.
-    </param><param name='languages'>A list of language tags, which should be given in order of descending
-      preference.
-    </param><param name='defaultValue'>The value to return if no matching language tag was found.
-    </param><returns>The matching language tag, or the parameter "defaultValue" if there is no
-      matching language tag.
-    </returns><exception cref='T:System.ArgumentNullException'>"languages" or "ranges" is null.
-    </exception><exception cref='T:System.ArgumentException'>"ranges" contains a value that is not a basic language range, or
-      "languages" contains a value that is not a potentially valid language tag.
-
-    </exception>
+            <summary>Does a language tag lookup (under RFC 4647) for a matching
+             language tag.</summary><param name='ranges'>A list of basic language ranges (see
+             documentation for the "IsLanguageRange" method), which should be
+             given in order of descending preference.</param><param name='languages'>A list of language tags, which should be
+             given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching
+             language tag was found.</param><returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
+             tag.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='languages'/> or <paramref name='ranges'/> is
+             null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='ranges'/> contains a value that is not a basic
+             language range, or <paramref name='languages'/> contains a value
+             that is not a potentially valid language tag.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String,System.Boolean)">
 
-            <summary>Does a language tag lookup (under RFC 4647) for a matching language tag.
-    </summary><param name='ranges'>A list of language ranges (see documentation for the "IsLanguageRange"
-      method), which should be given in order of descending preference.
-    </param><param name='languages'>A list of language tags, which should be given in order of descending
-      preference.
-    </param><param name='defaultValue'>The value to return if no matching language tag was found.
-    </param><param name='extended'>If true, the ranges in "ranges" are extended language ranges; otherwise,
-      they are basic language ranges.
-    </param><returns>The matching language tag, or the parameter "defaultValue" if there is no
-      matching language tag.
-    </returns><exception cref='T:System.ArgumentNullException'>"languages" or "ranges" is null.
-    </exception><exception cref='T:System.ArgumentException'>"ranges" contains a value that is not a basic or extended language range,
-      or "languages" contains a value that is not a potentially valid language
-      tag.
-    </exception>
+            <summary>Does a language tag lookup (under RFC 4647) for a matching
+             language tag.</summary><param name='ranges'>A list of language ranges (see documentation
+             for the "IsLanguageRange" method), which should be given in order
+             of descending preference.</param><param name='languages'>A list of language tags, which should be
+             given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching
+             language tag was found.</param><param name='extended'>If true, the ranges in "ranges" are extended
+             language ranges; otherwise, they are basic language ranges.</param><returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
+             tag.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='languages'/> or <paramref name='ranges'/> is
+             null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='ranges'/> contains a value that is not a basic or
+             extended language range, or <paramref name='languages'/> contains a
+             value that is not a potentially valid language tag.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String)">
 
-            <summary>Does a language tag lookup (under RFC 4647) for a matching language tag.
-    </summary><param name='range'>A basic language range (see the documentation for "IsLanguageRange").
-    </param><param name='languages'>A list of language tags, which should be given in order of descending
-      preference.
-    </param><param name='defaultValue'>The value to return if no matching language tag was found.
-    </param><returns>The matching language tag, or the parameter "defaultValue" if there is no
-      matching language tag.
-    </returns><exception cref='T:System.ArgumentNullException'>"languages" is null.
-    </exception><exception cref='T:System.ArgumentException'>"range" is not a basic language range, or "languages" contains a value
-      that is not a potentially valid language tag.
-    </exception>
+            <summary>Does a language tag lookup (under RFC 4647) for a matching
+             language tag.</summary><param name='range'>A basic language range (see the documentation
+             for "IsLanguageRange").</param><param name='languages'>A list of language tags, which should be
+             given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching
+             language tag was found.</param><returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
+             tag.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='languages'/> is null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='range'/> is not a basic language range, or
+             <paramref name='languages'/> contains a value that is not a
+             potentially valid language tag.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String,System.Boolean)">
 
-            <summary>Does a language tag lookup (under RFC 4647) for a matching language tag.
-    </summary><param name='range'>A language range (see the documentation for "IsLanguageRange").
-    </param><param name='languages'>A list of language tags, which should be given in order of descending
-      preference.
-    </param><param name='defaultValue'>The value to return if no matching language tag was found.
-    </param><param name='extended'>If true, "range" is an extended language range; otherwise, it's a are
-      basic language range.
-    </param><returns>The matching language tag, or the parameter "defaultValue" if there is no
-      matching language tag.
-    </returns><exception cref='T:System.ArgumentNullException'>"languages" is null.
-    </exception><exception cref='T:System.ArgumentException'>"range" is not a basic or extended language range, or "languages"
-      contains a value that is not a potentially valid language tag.
-    </exception>
+            <summary>Does a language tag lookup (under RFC 4647) for a matching
+             language tag.</summary><param name='range'>A language range (see the documentation for
+             "IsLanguageRange").</param><param name='languages'>A list of language tags, which should be
+             given in order of descending preference.</param><param name='defaultValue'>The value to return if no matching
+             language tag was found.</param><param name='extended'>If true, "range" is an extended language
+             range; otherwise, it's a are basic language range.</param><returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
+             tag.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='languages'/> is null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='range'/> is not a basic or extended language range,
+             or <paramref name='languages'/> contains a value that is not a
+             potentially valid language tag.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.MatchesLanguageTag(System.String,System.String)">
 
-            <summary>Determines whether the given language tag matches the given language
-      range.
-    </summary><param name='range'>A basic language range (see the documentation for "IsLanguageRange").
-    </param><param name='tag'>A language tag.
-    </param><returns><c>true</c>
-       if the language tag matches the language range by the filtering method
-      under RFC 4647; otherwise, <c>false</c>
-       .
-    </returns><exception cref='T:System.ArgumentException'>"range" is not a basic language range, or "tag" is not a potentially
-      valid language tag.
-    </exception>
+            <summary>Determines whether the given language tag matches the
+             given language range.</summary><param name='range'>A basic language range (see the documentation
+             for "IsLanguageRange").</param><param name='tag'>A language tag.</param><returns><c>true</c> if the language tag matches the language range
+             by the filtering method under RFC 4647; otherwise, <c>false</c>
+             .</returns><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='range'/> is not a basic language range, or
+             <paramref name='tag'/> is not a potentially valid language
+             tag.</exception>
 
 </doc>
 <doc name="T:PeterO.Mail.MailDateTime">
@@ -1647,60 +1578,49 @@
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])">
 
-            <summary>Generates a date-time string following the Internet Message Format (RFC
-      5322) from an 8-element array.
-    </summary><returns>A date-time string.
-    </returns><exception cref='T:System.ArgumentException'>The parameter "dateTime" is null or invalid.
-    </exception><param name='dateTime'>The date and time in the form of an 8-element array. See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for information on the format of this parameter.
-    </param>
+            <summary>Generates a date-time string following the Internet
+             Message Format (RFC 5322) from an 8-element array.</summary><param name='dateTime'>The date and time in the form of an
+             8-element array. See
+             <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+             for information on the format of this parameter.</param><returns>A date-time string.</returns><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='dateTime'/> is null or invalid.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)">
 
-            <summary>Generates a date-time string following the Internet Message Format (RFC
-      5322) from an 8-element array, optionally using a "GMT" time zone
-      indicator.
-    </summary><returns>A date-time string.
-    </returns><exception cref='T:System.ArgumentException'>The parameter "dateTime" is null or invalid.
-    </exception><exception cref='T:System.NotSupportedException'>The time zone offset is other than 0 and "gmt" is true.
-    </exception><param name='dateTime'>The date and time in the form of an 8-element array. See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for information on the format of this parameter.
-    </param><param name='gmt'>If true, uses the string "GMT" as the time zone offset.
-    </param>
+            <summary>Generates a date-time string following the Internet
+             Message Format (RFC 5322) from an 8-element array, optionally using
+             a "GMT" time zone indicator.</summary><param name='dateTime'>The date and time in the form of an
+             8-element array. See
+             <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+             for information on the format of this parameter.</param><param name='gmt'>If true, uses the string "GMT" as the time zone
+             offset.</param><returns>A date-time string.</returns><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='dateTime'/> is null or invalid.</exception><exception cref='T:System.NotSupportedException'>The time zone
+             offset is other than 0 and <paramref name='gmt'/> is
+             true.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)">
 
-            <summary>Gets the date and time extracted from a date-time string following the
-      Internet Message Format (RFC 5322). However, this method does not allow
-      obsolete time zone strings to appear in the date-time string. See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for information on the format of this method's return value.
-    </summary><returns>An 8-element array containing the date and time, or
-      <c>null</c>
-       if
-      <paramref name='str'/>
-       is null, empty, or syntactically invalid, or if the string's year would
-      overflow the range of a 32-bit signed integer.
-    </returns><param name='str'>String.
-    </param>
+            <summary>Gets the date and time extracted from a date-time string
+             following the Internet Message Format (RFC 5322). However, this
+             method does not allow obsolete time zone strings to appear in the
+             date-time string. See
+             <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+             for information on the format of this method's return
+             value.</summary><param name='str'>String.</param><returns>An 8-element array containing the date and time, or
+             <c>null</c> if <paramref name='str'/> is null, empty, or
+             syntactically invalid, or if the string's year would overflow the
+             range of a 32-bit signed integer.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)">
 
-            <summary>Gets the date and time extracted from a date-time string following the
-      Internet Message Format (RFC 5322), with an option to allow obsolete time
-      zone strings to appear in the date-time string.
-    </summary><returns>An 8-element array containing the date and time, or
-      <c>null</c>
-       if
-      <paramref name='str'/>
-       is null, empty, or syntactically invalid, or if the string's year would
-      overflow the range of a 32-bit signed integer. If an array is returned,
-      element of that array (starting from 0) is as follows:
+            <summary>Gets the date and time extracted from a date-time string
+             following the Internet Message Format (RFC 5322), with an option to
+             allow obsolete time zone strings to appear in the date-time
+             string.  If an array is returned, the
+      elements of that array (starting from 0) are as follows:
       <list>
         <item>0 - The year. For example, the value 2000 means 2000 C.E.
         </item>
@@ -1714,23 +1634,21 @@
         </item>
         <item>5 - Second of the minute, from 0 through 60 (this value can go up to
           60 to accommodate leap seconds). (Leap seconds are additional seconds
-          added to adjust international atomic time, or TAI, to an approximation
+           added to adjust international atomic time, or TAI, to an approximation
           of astronomical time known as coordinated universal time, or UTC.)
-        </item>
+         </item>
         <item>6 - Milliseconds of the second, from 0 through 999. Will always be 0.
 
         </item>
         <item>7 - Number of minutes to subtract from this date and time to get
-          global time. This number can be positive or negative.
-        </item>
-      </list>
-    </returns><param name='str'>String.
-    </param><param name='parseObsoleteZones'>If set to
-      <c>true</c>
-       , this method allows obsolete time zones (single-letter time zones,
-      "GMT", "UT", and certain three-letter combinations) to appear in the
-      date-time string.
-    </param>
+          global time. This number can be positive or negative.       </item>
+      </list></summary><param name='str'>A date-time string.</param><param name='parseObsoleteZones'>If set to <c>true</c>, this
+             method allows obsolete time zones (single-letter time zones, "GMT",
+             "UT", and certain three-letter combinations) to appear in the
+             date-time string.</param><returns>An 8-element array containing the date and time, or
+             <c>null</c> if <paramref name='str'/> is null, empty, or
+             syntactically invalid, or if the string's year would overflow the
+             range of a 32-bit signed integer.</returns>
 
 </doc>
 <doc name="T:PeterO.Mail.MediaType">
@@ -1808,37 +1726,25 @@
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetParameter(System.String)">
 
-            <summary>Gets the value of a parameter in this media type, such as "charset" or
-      "format".
-    </summary><param name='name'>Name of the parameter to get. The name is compared using a basic
-      case-insensitive comparison. (Two strings are equal in such a comparison,
-      if they match after converting the basic upper-case letters A to Z (U+0041
-      to U+005A) in both strings to lower case.).
-    </param><returns>The value of the parameter as a string, or null if the parameter doesn't
-      exist.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter
-      <paramref name='name'/>
-       is null.
-    </exception>
+            <summary>Gets the value of a parameter in this media type, such as
+             "charset" or "format".</summary><param name='name'>Name of the parameter to get. The name is
+             compared using a basic case-insensitive comparison. (Two strings
+             are equal in such a comparison, if they match after converting the
+             basic upper-case letters A to Z (U+0041 to U+005A) in both strings
+             to lower case.).</param><returns>The value of the parameter as a string, or null if the
+             parameter doesn't exist.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='name'/> is null.</exception><exception cref='T:System.ArgumentException'>Name is empty.</exception>
 
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsMultipart">
-
-            <summary>Gets a value indicating whether this is a multipart media type.
-    </summary><value><c>true</c>
-       If this is a multipart media type; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether this is a multipart media
+            type.</summary>
+            <value><c>true</c> If this is a multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsText">
-
-            <summary>Gets a value indicating whether this is a text media type ("text/*").
-    </summary><value><c>true</c>
-       If this is a text media type; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether this is a text media type
+            ("text/*").</summary>
+            <value><c>true</c> If this is a text media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.MessageRfc822">
 
@@ -1925,11 +1831,10 @@
 
 </doc>
 <doc name="P:PeterO.Mail.MediaType.SubType">
-
-            <summary>Gets this media type's subtype.
-    </summary><value>This media type's subtype.
+<summary>Gets this media type's subtype.
+    </summary>
+    <value>This media type&apos;s subtype.
     </value>
-
 </doc>
 <doc name="F:PeterO.Mail.MediaType.TextPlainAscii">
 
@@ -1979,21 +1884,20 @@
 
 </doc>
 <doc name="P:PeterO.Mail.MediaType.TopLevelType">
-
-            <summary>Gets the name of this media type's top-level type (such as "text" or
+<summary>Gets the name of this media type's top-level type (such as "text" or
       "audio").
-    </summary><value>The name of this media type's top-level type (such as "text" or "audio".
+    </summary>
+    <value>The name of this media type&apos;s top-level type (such as
+      &quot;text&quot; or &quot;audio&quot;.
     </value>
-
 </doc>
 <doc name="P:PeterO.Mail.MediaType.TypeAndSubType">
-
-            <summary>Gets the top level type and subtype of this media type, separated by a
+<summary>Gets the top level type and subtype of this media type, separated by a
       slash; for example, "text/plain".
-    </summary><value>The top level type and subtype of this media type, separated by a slash;
-      for example, "text/plain".
+    </summary>
+    <value>The top level type and subtype of this media type, separated by a slash;
+      for example, &quot;text/plain&quot;.
     </value>
-
 </doc>
 <doc name="T:PeterO.Mail.MediaTypeBuilder">
 
@@ -2028,22 +1932,14 @@
 
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsMultipart">
-
-            <summary>Gets a value indicating whether this is a multipart media type.
-    </summary><value><c>true</c>
-       If this is a multipart media type; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether this is a multipart media
+            type.</summary>
+            <value><c>true</c> If this is a multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsText">
-
-            <summary>Gets a value indicating whether this is a text media type.
-    </summary><value><c>true</c>
-       If this is a text media type; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether this is a text media
+            type.</summary>
+            <value><c>true</c> If this is a text media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)">
 
@@ -2109,11 +2005,10 @@
 
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.SubType">
-
-            <summary>Gets or sets this value's subtype.
-    </summary><value>This value's subtype.
+<summary>Gets or sets this value's subtype.
+    </summary>
+    <value>This value&apos;s subtype.
     </value>
-
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.ToMediaType">
 
@@ -2124,20 +2019,15 @@
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.ToString">
 
-            <summary>Converts this object to a text string of the media type it represents, in
-      the same form as
-      <c>MediaType.ToString</c>
-       .
-    </summary><returns>A string representation of this object.
-    </returns>
+            <summary>Converts this object to a text string of the media type it
+             represents, in the same form as <c>MediaType.ToString</c></summary><returns>A string representation of this object.</returns>
 
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.TopLevelType">
-
-            <summary>Gets or sets this value's top-level type.
-    </summary><value>This value's top-level type.
+<summary>Gets or sets this value's top-level type.
+    </summary>
+    <value>This value&apos;s top-level type.
     </value>
-
 </doc>
 <doc name="T:PeterO.Mail.Message">
 
@@ -2308,71 +2198,61 @@
 </doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)">
 
-            <summary>Adds an attachment to this message in the form of data from the given
-      readable stream, and with the given media type. Before the new attachment
-      is added, if this message isn't already a multipart message, it becomes a
-      "multipart/mixed" message with the current body converted to an inline
-      body part.
-    </summary><example>The following example (written in C# for the .NET version) is an
-      extension method that adds an attachment from a byte array to a message.
-      <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
-        bytes, MediaType mediaType){ using(var fs=new MemoryStream(bytes)){
-        return msg.AddAttachment(fs,mediaType); } }
-      </code>
-    </example><param name='inputStream'>A readable data stream.
-    </param><param name='mediaType'>A media type to assign to the attachment.
-    </param><returns>A Message object for the generated attachment.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.
-    </exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
-    </exception>
+            <summary>Adds an attachment to this message in the form of data
+             from the given readable stream, and with the given media type.
+             Before the new attachment is added, if this message isn't already a
+             multipart message, it becomes a "multipart/mixed" message with the
+             current body converted to an inline body part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the
+             attachment.</param><returns>A Message object for the generated attachment.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+             occurred.</exception><example>The following example (written in C# for the .NET
+             version) is an extension method that adds an attachment
+             from a byte array to a message.
+             <code>public static Message AddAttachmentFromBytes(this Message msg,
+             byte[]
+             bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
+             return msg.AddAttachment(fs, mediaType); } }
+             </code>
+             </example>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)">
 
-            <summary>Adds an attachment to this message in the form of data from the given
-      readable stream, and with the given media type and file name. Before the
-      new attachment is added, if this message isn't already a multipart
-      message, it becomes a "multipart/mixed" message with the current body
-      converted to an inline body part.
-    </summary><param name='inputStream'>A readable data stream.
-    </param><param name='mediaType'>A media type to assign to the attachment.
-    </param><param name='filename'>A file name to assign to the attachment. Can be null or empty, in which
-      case no file name is assigned. Only the file name portion of this
-      parameter is used, which in this case means the portion of the string
-      after the last "/" or "\", if either character exists, or the entire
-      string otherwise.
-    </param><returns>A Message object for the generated attachment.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.
-    </exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
-    </exception>
+            <summary>Adds an attachment to this message in the form of data
+             from the given readable stream, and with the given media type and
+             file name. Before the new attachment is added, if this message
+             isn't already a multipart message, it becomes a "multipart/mixed"
+             message with the current body converted to an inline body
+             part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the
+             attachment.</param><param name='filename'>A file name to assign to the attachment. Can
+             be null or empty, in which case no file name is assigned. Only the
+             file name portion of this parameter is used, which in this case
+             means the portion of the string after the last "/" or "\", if
+             either character exists, or the entire string otherwise.</param><returns>A Message object for the generated attachment.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+             occurred.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)">
 
-            <summary>Adds an attachment to this message in the form of data from the given
-      readable stream, and with the given file name. Before the new attachment
-      is added, if this message isn't already a multipart message, it becomes a
-      "multipart/mixed" message with the current body converted to an inline
-      body part.
-    </summary><example>The following example (written in C# for the .NET version) is an
-      extension method that adds an attachment from a data file to a message.
-      <code>public static Message AddAttachmentFromFile(this Message msg, string
-        filename){ using(var fs=new FileStream(filename,FileMode.Open)){ return
-        msg.AddAttachment(fs,filename); } }
-      </code>
-    </example><param name='inputStream'>A readable data stream.
-    </param><param name='filename'>A file name to assign to the attachment. If the file name has one of
-      certain extensions (such as ".html"), an appropriate media type will be
-      assigned to the attachment based on that extension; otherwise, the media
-      type "application/octet-stream" is assigned. Can be null or empty, in
-      which case no file name is assigned. Only the file name portion of this
-      parameter is used, which in this case means the portion of the string
-      after the last "/" or "\", if either character exists, or the entire
-      string otherwise.
-    </param><returns>A Message object for the generated attachment.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter "inputStream" is null.
-    </exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
-    </exception>
+            <summary>Adds an attachment to this message in the form of data
+             from the given readable stream, and with the given
+             file name. Before the new attachment is added, if this message
+             isn't already a multipart message, it becomes a "multipart/mixed"
+             message with the current body converted to an inline body
+             part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the
+             attachment.</param><param name='filename'>A file name to assign to the attachment. Can
+             be null or empty, in which case no file name is assigned. Only the
+             file name portion of this parameter is used, which in this case
+             means the portion of the string after the last "/" or "\", if
+             either character exists, or the entire string otherwise
+An appropriate media type (or "application/octet-stream") will be assigned to the attachment based on this
+file name's extension.  If the file name has an extension .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type will have a "charset" of "utf-8".</param><returns>A Message object for the generated attachment.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+             occurred.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})">
@@ -2424,69 +2304,57 @@
 </doc>
 <doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)">
 
-            <summary>Adds an inline body part to this message in the form of data from the
-      given readable stream, and with the given media type. Before the new body
-      part is added, if this message isn't already a multipart message, it
-      becomes a "multipart/mixed" message with the current body converted to an
-      inline body part.
-    </summary><example>The following example (written in C# for the .NET version) is an
-      extension method that adds an inline body part from a byte array to a
-      message.
-      <code>public static Message AddInlineFromBytes(this Message msg, byte[]
-        bytes, MediaType mediaType){ using(var fs=new MemoryStream(bytes)){
-        return msg.AddInline(fs,mediaType); } }
-      </code>
-    </example><param name='inputStream'>A readable data stream.
-    </param><param name='mediaType'>A media type to assign to the body part.
-    </param><returns>A Message object for the generated body part.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.
-    </exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
-    </exception>
+            <summary>Adds an inline body part to this message in the form of
+             data from the given readable stream, and with the given media type.
+             Before the new body part is added, if this message isn't already a
+             multipart message, it becomes a "multipart/mixed" message with the
+             current body converted to an inline body part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the body
+             part.</param><returns>A Message object for the generated body part.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+             occurred.</exception><example>The following example (written in C# for the .NET
+             version) is an extension method that adds an inline
+             body part from a byte array to a message.
+             <code>public static Message AddInlineFromBytes(this Message msg, byte[]
+             bytes, MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes)) {
+             return msg.AddInline(fs, mediaType); } }
+             </code>
+             </example>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)">
 
-            <summary>Adds an inline body part to this message in the form of data from the
-      given readable stream, and with the given media type and file name. Before
-      the new body part is added, if this message isn't already a multipart
-      message, it becomes a "multipart/mixed" message with the current body
-      converted to an inline body part.
-    </summary><param name='inputStream'>A readable data stream.
-    </param><param name='mediaType'>A media type to assign to the body part.
-    </param><param name='filename'>A file name to assign to the body part.
-    </param><returns>A Message object for the generated body part.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.
-    </exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
-    </exception>
+            <summary>Adds an inline body part to this message in the form of
+             data from the given readable stream, and with the given media type
+             and file name. Before the new body part is added, if this message
+             isn't already a multipart message, it becomes a "multipart/mixed"
+             message with the current body converted to an inline body
+             part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the body
+             part.</param><param name='filename'>A file name to assign to the body
+             part.</param><returns>A Message object for the generated body part.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+             occurred.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)">
 
-            <summary>Adds an inline body part to this message in the form of data from the
-      given readable stream, and with the given file name. Before the new body
-      part is added, if this message isn't already a multipart message, it
-      becomes a "multipart/mixed" message with the current body converted to an
-      inline body part.
-    </summary><example>The following example (written in C# for the .NET version) is an
-      extension method that adds an inline body part from a data file to a
-      message.
-      <code>public static Message AddAttachmentFromInline(this Message msg, string
-        filename){ using(var fs=new FileStream(filename,FileMode.Open)){ return
-        msg.AddInline(fs,filename); } }
-      </code>
-    </example><param name='inputStream'>A readable data stream.
-    </param><param name='filename'>A file name to assign to the body part. If the file name has one of
-      certain extensions (such as ".html"), an appropriate media type will be
-      assigned to the body part based on that extension; otherwise, the media
-      type "application/octet-stream" is assigned. Can be null or empty, in
-      which case no file name is assigned. Only the file name portion of this
-      parameter is used, which in this case means the portion of the string
-      after the last "/" or "\", if either character exists, or the entire
-      string otherwise.
-    </param><returns>A Message object for the generated body part.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter "inputStream" is null.
-    </exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
-    </exception>
+            <summary>Adds an inline body part to this message in the form of data
+             from the given readable stream, and with the given
+             file name. Before the new body part is added, if this message
+             isn't already a multipart message, it becomes a "multipart/mixed"
+             message with the current body converted to an inline body
+             part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the
+             attachment.</param><param name='filename'>A file name to assign to the inline body part. Can
+             be null or empty, in which case no file name is assigned. Only the
+             file name portion of this parameter is used, which in this case
+             means the portion of the string after the last "/" or "\", if
+             either character exists, or the entire string otherwise
+An appropriate media type (or "application/octet-stream") will be assigned to the body part based on this
+file name's extension.  If the file name has an extension .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type will have a "charset" of "utf-8".</param><returns>A Message object for the generated body part.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+             occurred.</exception>
 
 </doc>
 <doc name="P:PeterO.Mail.Message.BccAddresses">
@@ -2524,34 +2392,42 @@
 
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentDisposition">
-
-            <summary>Gets or sets this message's content disposition. The content disposition
+<summary>Gets or sets this message's content disposition. The content disposition
       specifies how a user agent should display or otherwise handle this
       message. Can be set to null. If set to a disposition or to null, updates
       the Content-Disposition header field as appropriate.
-    </summary><value>This message's content disposition, or null if none is specified.
+    </summary>
+    <value>This message&apos;s content disposition, or null if none is specified.
     </value>
-
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentType">
-
-            <summary>Gets or sets this message's media type. When getting, the media type may
+<summary>Gets or sets this message's media type. When getting, the media type may
       differ in certain cases from the value of the Content-Type header field,
       if any, and may have a value even if the Content-Type header field is
       absent from this message. If set to a media type, updates the Content-Type
       header field as appropriate. Cannot be set to null.
-    </summary><value>This message's media type.
-    </value><exception cref='T:System.ArgumentNullException'>This value is being set and "value" is null.
+    </summary>
+    <value>This message&apos;s media type.
+    </value>
+    <exception cref='T:System.ArgumentNullException'>This value is being set and "value" is null.
     </exception>
-
 </doc>
 <doc name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)">
 
-            <summary>Not documented yet.
-    </summary><param name='name'>Not documented yet.
-    </param><param name='value'>Not documented yet.
-    </param><returns>A text string.
-    </returns>
+            <summary>Decodes RFC 2047 encoded words from the given header field value and
+      returns a string with those words decoded. For an example of encoded
+      words, see the constructor for PeterO.Mail.NamedAddress.
+    </summary><param name='name'>Name of the header field. This determines the syntax of the "value"
+      parameter and is necessary to help this method interpret encoded words
+      properly.
+    </param><param name='value'>A header field value that could contain encoded words. For example, if the
+      name parameter is "From", this parameter could be "=?utf-8?q?me?=
+      &lt;me@example.com&gt;".
+    </param><returns>The header field value with valid encoded words decoded.
+    </returns><exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='name'/>
+       is null.
+    </exception>
 
 </doc>
 <doc name="P:PeterO.Mail.Message.FileName">
@@ -2582,8 +2458,16 @@
 </doc>
 <doc name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)">
 
-            <summary>Not documented yet.
-    </summary>
+            <summary>Creates a message object from a MailTo URL. The URL can
+            contain key-value pairs that follow a question-mark, as in the
+            following example: "mailto:me@example.com?subject=A%20Subject". In
+            this example, "subject" is the subject of the email address. Only
+            certain keys are supported, namely, "to", "cc", "bcc", "subject",
+            "in-reply-to", "comments", "keywords", and "body". The first seven
+            are header field names that will be used to set the returned
+            message's corresponding header fields. The last, "body", sets the
+            body of the message to the given text. Keys other than these eight
+            will be ignored.</summary><param name='url'>A string representing a MailTo URL.</param><returns>A Message object created from the given MailTo URL.  Returs null if "url" is null, is syntactically invalid, or is not a MailTo URL.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.Generate">
@@ -2633,16 +2517,15 @@
 </doc>
 <doc name="M:PeterO.Mail.Message.GetAddresses(System.String)">
 
-            <summary>Gets a list of addresses contained in the header fields with the given
-      name in this message.
-    </summary><param name='headerName'>The name of the header fields to retrieve.
-    </param><returns>A list of addresses, in the order in which they appear in this message's
-      header fields of the given name.
-    </returns><exception cref='T:System.NotSupportedException'>"headerName" is not supported for this method. Currently, the only header
-      fields supported are To, Cc, Bcc, Reply-To, Sender, and From.
-    </exception><exception cref='T:System.ArgumentNullException'>"headerName" is null.
-    </exception><exception cref='T:System.ArgumentException'>"headerName" is empty.
-    </exception>
+            <summary>Gets a list of addresses contained in the header fields
+             with the given name in this message.</summary><param name='headerName'>The name of the header fields to
+             retrieve.</param><returns>A list of addresses, in the order in which they appear in
+             this message's header fields of the given name.</returns><exception cref='T:System.NotSupportedException'>The parameter
+             <paramref name='headerName'/> is not supported for this method.
+             Currently, the only header fields supported are To, Cc, Bcc,
+             Reply-To, Sender, and From.</exception><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='headerName'/> is null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='headerName'/> is empty.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.GetBody">
@@ -2727,28 +2610,28 @@
 </doc>
 <doc name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})">
 
-            <summary>Generates a multilingual message (see RFC 8255) from a list of messages
-      and a list of language strings.
-    </summary><param name='messages'>A list of messages forming the parts of the multilingual message object.
-      Each message should have the same content, but be in a different language.
-      Each message must have a From header field and use the same email address
-      in that field as the other messages. The messages should be ordered in
-      descending preference of language.
-    </param><param name='languages'>A list of language strings corresponding to the messages given in the
-      "messages" parameter. A language string at a given index corresponds to
-      the message at the same index. Each language string must follow the syntax
-      of the Content-Language header field (see LanguageTags.GetLanguageList).
-    </param><returns>A Message object with the content type "multipart/multilingual". It will
-      begin with an explanatory body part and be followed by the messages given
-      in the "messages" parameter in the order given.
-    </returns><exception cref='T:System.ArgumentNullException'>"messages" or "languages" is null.
-    </exception><exception cref='T:System.ArgumentException'>"messages" or "languages" is empty, their lengths don't match, at least
-      one message is "null", each message doesn't contain the same email
-      addresses in their From header fields, "languages" contains a
-      syntactically invalid language tag list, "languages" contains the language
-      tag "zzx" not appearing alone or at the end of the language tag list, or
-      the first message contains no From header field.
-    </exception>
+            <summary>Generates a multilingual message (see RFC 8255) from a
+             list of messages and a list of language strings.</summary><param name='messages'>A list of messages forming the parts of the
+             multilingual message object. Each message should have the same
+             content, but be in a different language. Each message must have a
+             From header field and use the same email address in that field as
+             the other messages. The messages should be ordered in descending
+             preference of language.</param><param name='languages'>A list of language strings corresponding to
+             the messages given in the "messages" parameter. A language string
+             at a given index corresponds to the message at the same index. Each
+             language string must follow the syntax of the Content-Language
+             header field (see LanguageTags.GetLanguageList).</param><returns>A Message object with the content type
+             "multipart/multilingual". It will begin with an explanatory body
+             part and be followed by the messages given in the <paramref name='messages'/> parameter in the order given.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             <paramref name='messages'/> or <paramref name='languages'/> is
+             null.</exception><exception cref='T:System.ArgumentException'>The parameter
+             <paramref name='messages'/> or <paramref name='languages'/> is
+             empty, their lengths don't match, at least one message is "null",
+             each message doesn't contain the same email addresses in their From
+             header fields, <paramref name='languages'/> contains a
+             syntactically invalid language tag list, <paramref name='languages'/> contains the language tag "zzx" not appearing
+             alone or at the end of the language tag list, or the first message
+             contains no From header field.</exception>
 
 </doc>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Boundary">
@@ -2816,19 +2699,42 @@
 </doc>
 <doc name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})">
 
-            <summary>Not documented yet.
-    </summary><param name='languages'>Not documented yet.
-    </param><returns>A Message object.
-    </returns>
+            <summary>Selects a body part for a multiple-language message (
+      <c>multipart/multilingual</c>
+       ) according to the given language priority list.
+    </summary><param name='languages'>A list of basic language ranges, sorted in descending order of priority
+      (see the LanguageTags.LanguageTagFilter method).
+    </param><returns>The best matching body part for the given languages. If the body part has
+      no subject, then the top-level subject is used. If this message is not a
+      multipart/multilingual message or has fewer than two body parts, returns
+      this object. If no body part matches the given languages, returns the last
+      body part if its language is "zxx", or the second body part otherwise.
+    </returns><exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='languages'/>
+       is null.
+    </exception>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)">
 
-            <summary>Not documented yet.
-    </summary><param name='languages'>Not documented yet.
-    </param><param name='preferOriginals'>Not documented yet.
-    </param><returns>A Message object.
-    </returns>
+            <summary>Selects a body part for a multiple-language message (
+      <c>multipart/multilingual</c>
+       ) according to the given language priority list and original-language
+      preference.
+    </summary><param name='languages'>A list of basic language ranges, sorted in descending order of priority
+      (see the LanguageTags.LanguageTagFilter method).
+    </param><param name='preferOriginals'>If true, a body part marked as the original language version is chosen if
+      it matches one of the given language ranges, even if the original language
+      has a lower priority than another language with a matching body part.
+    </param><returns>The best matching body part for the given languages. If the body part has
+      no subject, then the top-level subject is used. If this message is not a
+      multipart/multilingual message or has fewer than two body parts, returns
+      this object. If no body part matches the given languages, returns the last
+      body part if its language is "zxx", or the second body part otherwise.
+    </returns><exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='languages'/>
+       is null.
+    </exception>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.SetBody(System.Byte[])">
@@ -3026,11 +2932,10 @@
 
 </doc>
 <doc name="P:PeterO.Mail.Message.Subject">
-
-            <summary>Gets or sets this message's subject.
-    </summary><value>This message's subject.
+<summary>Gets or sets this message's subject.
+    </summary>
+    <value>This message&apos;s subject.
     </value>
-
 </doc>
 <doc name="P:PeterO.Mail.Message.ToAddresses">
 
@@ -3041,8 +2946,15 @@
 </doc>
 <doc name="M:PeterO.Mail.Message.ToMailtoUrl">
 
-            <summary>Not documented yet.
-    </summary>
+            <summary>Generates a "mailto:" URL corresponding to this message. The following
+      header fields, and only these, are used to generate the URL: To, Cc, Bcc,
+      In-Reply-To, Subject, Keywords, Comments. The message body is included in the
+      URL only if this message has a text media type and uses a supported
+      character encoding ("charset" parameter). The To header field is included in
+      the URL only if it
+      has display names or group syntax.
+    </summary><returns>A "mailto:" URL corresponding to this message.
+    </returns>
 
 </doc>
 <doc name="T:PeterO.Mail.MessageDataException">
@@ -3238,14 +3150,9 @@
 
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.IsGroup">
-
-            <summary>Gets a value indicating whether this represents a group of addresses
-      rather than a single address.
-    </summary><value><c>true</c>
-       If this represents a group of addresses; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether this represents a group of
+            addresses rather than a single address.</summary>
+            <value><c>true</c> If this represents a group of addresses; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.Name">
 
@@ -3258,13 +3165,16 @@
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)">
 
-            <summary>Not documented yet.
-    </summary>
+            <summary>Generates a list of NamedAddress objects from a
+            comma-separated list of addresses. Each address must follow the
+            syntax accepted by the one-argument constructor of
+            NamedAddress.</summary><param name='addressValue'>A comma-separate list of addresses in the form of a text string.</param><returns>A list of addresses generated from the "addressValue" parameter.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.ToString">
 
-            <summary>Converts this object to a text string.
+            <summary>Converts this object to a text string.  This will generally be the form
+of this NamedAddress object as it could appear in a "To" header field.
     </summary><returns>A string representation of this object.
     </returns>
 
@@ -3328,13 +3238,9 @@
 
 </doc>
 <doc name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart">
-
-            <summary>Gets a value indicating whether a new body part was detected.
-    </summary><value><c>true</c>
-       If a new body part was detected; otherwise, <c>false</c>
-       .
-    </value>
-
+<summary>Gets a value indicating whether a new body part was
+            detected.</summary>
+            <value><c>true</c> If a new body part was detected; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="T:PeterO.Mail.URIUtility">
 
@@ -3420,8 +3326,8 @@
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.hasScheme(System.String)">
 
-            <summary>Determines whether the string is a valid IRI with a scheme component.
-      This can be used to check for relative IRI references.
+            <summary>Determines whether the string is a valid IRI with a scheme component. This
+      can be used to check for relative IRI references.
       <para>The following cases return true:
       </para>
       <code>xx-x:mm example:/ww
@@ -3438,8 +3344,8 @@
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.hasSchemeForURI(System.String)">
 
-            <summary>Determines whether the string is a valid URI with a scheme component.
-      This can be used to check for relative URI references. The following cases
+            <summary>Determines whether the string is a valid URI with a scheme component. This
+      can be used to check for relative URI references. The following cases
       return true:
       <code>http://example/z xx-x:mm example:/ww
       </code>
@@ -3571,8 +3477,8 @@
       length).
     </param><param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
-    </param><returns>If the string is a valid IRI, returns an array of 10 integers. Each of
-      the five pairs corresponds to the start and end index of the IRI's scheme,
+    </param><returns>If the string is a valid IRI, returns an array of 10 integers. Each of the
+      five pairs corresponds to the start and end index of the IRI's scheme,
       authority, path, query, or fragment component, respectively. The scheme,
       authority, query, and fragment components, if present, will each be given
       without the ending colon, the starting "//", the starting "?", and the
@@ -3658,8 +3564,8 @@
     </param>
 </doc>
 <doc name="M:PeterO.Rdf.URIUtility.hasScheme(System.String)">
-<summary>Determines whether the string is a valid IRI with a scheme component.
-      This can be used to check for relative IRI references.
+<summary>Determines whether the string is a valid IRI with a scheme component. This
+      can be used to check for relative IRI references.
       <para>The following cases return true:
       </para>
       <code>xx-x:mm example:/ww
@@ -3676,8 +3582,8 @@
     </returns>
 </doc>
 <doc name="M:PeterO.Rdf.URIUtility.hasSchemeForURI(System.String)">
-<summary>Determines whether the string is a valid URI with a scheme component.
-      This can be used to check for relative URI references. The following cases
+<summary>Determines whether the string is a valid URI with a scheme component. This
+      can be used to check for relative URI references. The following cases
       return true:
       <code>http://example/z xx-x:mm example:/ww
       </code>
@@ -3766,9 +3672,9 @@
       RFC3987. If the IRI reference is syntactically valid, splits the string
       into its components and returns an array containing the indices into the
       components.
-      <returns>If the string is a valid IRI reference, returns an array of 10
-        integers. Each of the five pairs corresponds to the start and end index
-        of the IRI's scheme, authority, path, query, or fragment component,
+      <returns>If the string is a valid IRI reference, returns an array of 10 integers.
+        Each of the five pairs corresponds to the start and end index of the
+        IRI's scheme, authority, path, query, or fragment component,
         respectively. If a component is absent, both indices in that pair will
         be -1. If the string is null or is not a valid IRI, returns null.
       </returns>
@@ -3811,8 +3717,8 @@
     <param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
     </param>
-    <returns>If the string is a valid IRI, returns an array of 10 integers. Each of
-      the five pairs corresponds to the start and end index of the IRI's scheme,
+    <returns>If the string is a valid IRI, returns an array of 10 integers. Each of the
+      five pairs corresponds to the start and end index of the IRI's scheme,
       authority, path, query, or fragment component, respectively. If a
       component is absent, both indices in that pair will be -1 (an index won't
       be less than 0 in any other case). If the string is null or is not a valid
@@ -3839,12 +3745,12 @@
 </doc>
 <doc name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])">
 
-            <summary>Decompresses a byte array compressed using the LZ4 format (see "LZ4
-      Format Description" by Y Collet for more information).
-    </summary><param name='input'>Input byte array.
-    </param><returns>Decompressed output byte array.
-    </returns><exception cref='T:System.ArgumentNullException'>The parameter "output" is null.
-    </exception>
+            <summary>Decompresses a byte array compressed using the LZ4 format
+             (see "LZ4 Format Description" by Y Collet for more
+             information).</summary><param name='input'>Input byte array.</param><returns>Decompressed output byte array.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+             "output" is null.</exception><exception cref='T:System.ArgumentException'>Invalid LZ4; Invalid LZ4;
+             Invalid LZ4; Invalid LZ4; Invalid LZ4; Invalid LZ4; Invalid
+             LZ4.</exception>
 
 </doc>
 <doc name="T:PeterO.Text.DomainUtility">

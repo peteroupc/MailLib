@@ -55,16 +55,20 @@ namespace PeterO.Mail {
     }
     #endregion
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]/*'/>
+    /// <summary>Gets a value indicating whether the disposition type is
+    /// inline.</summary>
+    /// <value><c>true</c> If the disposition type is inline; otherwise,.
+    /// <c>false</c>.</value>
     public bool IsInline {
       get {
         return this.dispositionType.Equals("inline");
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]/*'/>
+    /// <summary>Gets a value indicating whether the disposition type is
+    /// attachment.</summary>
+    /// <value><c>true</c> If the disposition type is attachment;
+    /// otherwise,. <c>false</c>.</value>
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment");
