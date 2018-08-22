@@ -139,6 +139,10 @@ Assert.AreEqual(
 }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.AreEqual("John's Office", na.Name);
+na = new NamedAddress("<me@example.com>");
+      if (na.DisplayName != null) {
+ Assert.Fail();
+ }
       na = new NamedAddress("Me <me@example.com>");
       Assert.AreEqual("Me", na.Name);
       Assert.IsFalse(na.IsGroup);

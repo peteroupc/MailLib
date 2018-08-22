@@ -8,7 +8,7 @@ Contains methods useful for reading and writing strings. It is designed to
  form of the Unicode Standard which uses one byte to encode the most
  basic characters and two to four bytes to encode other characters.
  For example, the <code>GetUtf8</code> method converts a text string to an
- array of bytes in UTF-8.</p> <p>In C# and Java, text strings are
+ array of bytes in UTF-8. </p> <p>In C# and Java, text strings are
  represented as sequences of 16-bit values called <code>char</code> s. These
  sequences are well-formed under UTF-16, a 16-bit encoding form of
  Unicode, except if they contain unpaired surrogate code points. (A
@@ -19,8 +19,8 @@ Contains methods useful for reading and writing strings. It is designed to
  not appearing in a surrogate pair.) Many of the methods in this class
  allow setting the behavior to follow when unpaired surrogate code
  points are found in text strings, such as throwing an error or
- treating the unpaired surrogate as a replacement character
- (U + FFFD).</p>
+ treating the unpaired surrogate as a replacement character (U + FFFD).
+ </p>
 
 ## Methods
 
@@ -244,9 +244,7 @@ Gets the Unicode code point just before the given index of the string.
 * The Unicode code point at the previous position. Returns -1 if
  <code>index</code> is 0 or less, or is greater than the string's length.
  Returns the replacement character (U + FFFD) if the previous character
- is an unpaired surrogate code point. NOTE: If the return value is
- 65536 (0x10000) or greater, this indicates a supplementary code point
- that takes up two <code>char</code>s rather than one.
+ is an unpaired surrogate code point.
 
 **Throws:**
 
@@ -272,10 +270,7 @@ Gets the Unicode code point just before the given index of the string.
 * The Unicode code point at the previous position. Returns -1 if
  <code>index</code> is 0 or less, or is greater than the string's length.
  Returns a value as specified under <code>surrogateBehavior</code> if the
- previous character is an unpaired surrogate code point. NOTE: If the
- return value is 65536 (0x10000) or greater, this indicates a
- supplementary code point that takes up two <code>char</code>s rather than
- one.
+ previous character is an unpaired surrogate code point.
 
 **Throws:**
 
@@ -296,9 +291,7 @@ Gets the Unicode code point at the given index of the string.
 * The Unicode code point at the given position. Returns -1 if <code>
  index</code> is less than 0, or is the string's length or greater. Returns
  the replacement character (U + FFFD) if the current character is an
- unpaired surrogate code point. NOTE: If the return value is 65536
- (0x10000) or greater, this indicates a supplementary code point that
- takes up two <code>char</code>s rather than one.
+ unpaired surrogate code point.
 
 **Throws:**
 
@@ -324,9 +317,7 @@ Gets the Unicode code point at the given index of the string.
 * The Unicode code point at the current position. Returns -1 if <code>
  index</code> is less than 0, or is the string's length or greater. Returns
  a value as specified under <code>surrogateBehavior</code> if the previous
- character is an unpaired surrogate code point. NOTE: If the return
- value is 65536 (0x10000) or greater, this indicates a supplementary
- code point that takes up two <code>char</code>s rather than one.
+ character is an unpaired surrogate code point.
 
 **Throws:**
 
@@ -508,7 +499,7 @@ Reads a string in UTF-8 encoding from a byte array.
 
 * <code>IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>bytesCount</code> is less than 0, or offset plus bytesCount is
- greater than the length of <code>data</code>.
+ greater than the length of <code>data</code> .
 
 ### ReadUtf8ToString
     public static String ReadUtf8ToString​(InputStream stream) throws IOException

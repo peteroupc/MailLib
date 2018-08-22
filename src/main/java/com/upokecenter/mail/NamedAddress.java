@@ -17,7 +17,13 @@ import java.util.*;
     private final String displayName;
 
     /**
-     * Not documented yet.
+     * Generates a list of NamedAddress objects from a comma-separated list of
+     * addresses. Each address must follow the syntax accepted by the
+     * one-argument constructor of NamedAddress.
+     * @param addressValue A comma-separate list of addresses in the form of a text
+     * string.
+     * @return A list of addresses generated from the {@code addressValue}
+     * parameter.
      */
     public static List<NamedAddress> ParseAddresses(String addressValue) {
       ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
@@ -143,8 +149,8 @@ import java.util.*;
     /**
      * Gets a value indicating whether this represents a group of addresses rather
      * than a single address.
-     * @return {@code true} If this represents a group of addresses; otherwise,
-     * {@code false} .
+     * @return {@code true} If this represents a group of addresses; otherwise, .
+     * {@code false}.
      */
     public final boolean isGroup() {
         return this.isGroup;
@@ -177,7 +183,8 @@ import java.util.*;
     }
 
     /**
-     * Converts this object to a text string.
+     * Converts this object to a text string. This will generally be the form of
+     * this NamedAddress object as it could appear in a "To" header field.
      * @return A string representation of this object.
      */
     @Override public String toString() {
@@ -188,18 +195,17 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class. Examples: <ul> <li> <code>john@example.com</code> </li> <li>
-     * <code>"John Doe" &lt;john@example.com&gt;</code> </li> <li>
-     * <code>=?utf-8?q?John</code> <code>=</code> <code>27s_Office?=
-     * &lt;john@example.com&gt;</code> </li> <li> <code>John
-     * &lt;john@example.com&gt;</code> </li> <li> <code>"Group" : Tom
+     * class. Examples: <ul> <li><code>john@example.com</code> </li> <li><code>"John
+     * Doe" &lt;john@example.com&gt;</code> </li> <li><code>=?utf-8?q?John</code>
+     * <code>=</code> <code>27s_Office?= &lt;john@example.com&gt;</code> </li>
+     * <li><code>John &lt;john@example.com&gt;</code> </li> <li><code>"Group" : Tom
      * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code> </li>
      * </ul>
      * @param address A text string identifying a single email address or a group
      * of email addresses. Comments, or text within parentheses, can appear.
      * Multiple email addresses are not allowed unless they appear in the
      * group syntax given above. Encoded words under RFC 2047 that appear
-     * within comments or display names will be decoded. <p> An RFC 2047
+     * within comments or display names will be decoded. <p>An RFC 2047
      * encoded word consists of "=?", a character encoding name, such as
      * {@code utf-8} , either "?B?" or "?Q?" (in upper or lower case), a
      * series of bytes in the character encoding, further encoded using B or

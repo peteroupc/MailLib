@@ -44,7 +44,6 @@ namespace PeterO {
       }
     }
 
-    ///
     public bool IsReadOnly {
       get {
         return true;

@@ -3,13 +3,20 @@ package com.upokecenter.mail;
 import com.upokecenter.util.*;
 
     /**
-     * Not documented yet.
+     * Contains methods for parsing and generating data URLs. Data URLs are
+     * described in RFC 2397. Examples for data URLs follow.
+     * <pre>data:, hello%20world </pre>
+     * <pre>data:text/markdown, hello%20world </pre>
+     * <pre>data:application/octet-stream;base64, AAAAAA== </pre>
      */
   public final class DataUrls {
 private DataUrls() {
 }
     /**
-     * Not documented yet.
+     * Extracts the media type from a data URL.
+     * @param url A data URL string.
+     * @return The media type. Returns null if {@code url} is null, is
+     * syntactically invalid, or is not a data URL.
      */
     public static MediaType DataUrlMediaType(String url) {
       String[] parts = URIUtility.splitIRIToStrings(
@@ -26,8 +33,8 @@ private DataUrls() {
         String mediaType = path.substring(0, mediaTypePart);
         // Strip out ";base64" at end
         if (mediaType.length() >= 7 &&
-           mediaType.substring(mediaType.length() - 7).toLowerCase()
-            .equals(";base64")) {
+      DataUtilities.ToLowerCaseAscii(mediaType.substring(mediaType.length() -
+             7)) .equals(";base64")) {
           mediaType = mediaType.substring(0, mediaType.length() - 7);
         }
         if (mediaType.length() == 0 || mediaType.charAt(0) == ';') {
@@ -35,8 +42,6 @@ private DataUrls() {
           // out. If left out, the media
           // type "text/plain" is assumed.
           mediaType = "text/plain" + mediaType;
-        }
-        if (mediaType.indexOf('/') < 0) {
         }
         if (mediaType.indexOf('(') >= 0) {
           // The media type String has parentheses
@@ -83,7 +88,10 @@ private DataUrls() {
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
     /**
-     * Not documented yet.
+     * Extracts the data from a data URL in the form of a byte array.
+     * @param url A data URL string.
+     * @return The data as a byte array. Returns null if {@code url} is null, is
+     * syntactically invalid, or is not a data URL.
      */
     public static byte[] DataUrlBytes(String url) {
       String[] parts = URIUtility.splitIRIToStrings(
@@ -97,9 +105,10 @@ private DataUrls() {
         if (mediaTypePart == -1) {
           return null;
         }
-        boolean usesBase64 = mediaTypePart >= 7 && path.substring(
+        boolean usesBase64 = mediaTypePart >= 7 &&
+          DataUtilities.ToLowerCaseAscii(path.substring(
      mediaTypePart - 7, (
-     mediaTypePart - 7)+(7)).toLowerCase().equals(";base64");
+     mediaTypePart - 7)+(7))).equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -202,16 +211,28 @@ private DataUrls() {
     }
 
     /**
-     * Not documented yet.
+     * Encodes text as a data URL.
+     * @param textString A text string to encode as a data URL.
+     * @return A data URL that encodes the given text.
+     * @throws java.lang.NullPointerException The parameter {@code textString} is
+     * null.
      */
     public static String MakeDataUrl(String textString) {
+if ((textString) == null) {
+  throw new NullPointerException("textString");
+}
       return MakeDataUrl(
   DataUtilities.GetUtf8Bytes(textString, true),
   MediaType.Parse("text/plain;charset=utf-8"));
     }
 
     /**
-     * Not documented yet.
+     * Encodes data with the given media type in a data URL.
+     * @param bytes A byte array containing the data to encode in a data URL.
+     * @param mediaType A media type to assign to the data.
+     * @return A data URL that encodes the given data and media type.
+     * @throws java.lang.NullPointerException The parameter {@code bytes} or {@code
+     * mediaType} is null.
      */
     public static String MakeDataUrl(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {

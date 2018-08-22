@@ -12,7 +12,7 @@ Represents a Unicode normalization form.
 
     public static PeterO.Text.Normalization NFC = 0;
 
-Normalization form C: canonical decomposition followed by canonical omposition.
+Normalization form C: canonical decomposition followed by canonical composition.
 
 ### NFD
 
@@ -24,7 +24,7 @@ Normalization form D: canonical decomposition.
 
     public static PeterO.Text.Normalization NFKC = 2;
 
-Normalization form KC: compatibility decomposition followed by canonical omposition.
+Normalization form KC: compatibility decomposition followed by canonical composition.
 
 ### NFKD
 

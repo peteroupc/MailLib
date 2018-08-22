@@ -703,10 +703,6 @@ return GetAddresses("to");
         if (ext.Equals(".doc") || ext.Equals(".dot")) {
           return MediaType.Parse("application/msword");
         }
-        if (ext.Equals(".bin") || ext.Equals(".deploy") || ext.Equals(".msp") ||
-          ext.Equals(".msu")) {
-          return MediaType.Parse("application/octet-stream");
-        }
         if (ext.Equals(".pdf")) {
           return MediaType.Parse("application/pdf");
         }
@@ -746,8 +742,14 @@ return GetAddresses("to");
         if (ext.Equals(".eml")) {
           return MediaType.Parse("message/rfc822");
         }
+        if (ext.Equals(".rst")) {
+          return MediaType.Parse("text/prs.fallenstein.rst\u003bcharset=utf-8");
+        }
         if (ext.Equals(".htm") || ext.Equals(".html") || ext.Equals(".shtml")) {
           return MediaType.Parse("text/html\u003bcharset=utf-8");
+        }
+        if (ext.Equals(".md") || ext.Equals(".markdown")) {
+          return MediaType.Parse("text/markdown\u003bcharset=utf-8");
         }
         if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           ext.Equals(".srt") || ext.Equals(".text") || ext.Equals(".txt")) {
@@ -763,8 +765,27 @@ return GetAddresses("to");
       return AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
+    /// <summary>Adds an attachment to this message in the form of data
+    /// from the given readable stream, and with the given file name.
+    /// Before the new attachment is added, if this message isn't already a
+    /// multipart message, it becomes a "multipart/mixed" message with the
+    /// current body converted to an inline body part.</summary>
+    /// <param name='inputStream'>A readable data stream.</param>
+    /// <param name='filename'>A file name to assign to the attachment. Can
+    /// be null or empty, in which case no file name is assigned. Only the
+    /// file name portion of this parameter is used, which in this case
+    /// means the portion of the string after the last "/" or "\", if
+    /// either character exists, or the entire string otherwise An
+    /// appropriate media type (or "application/octet-stream") will be
+    /// assigned to the attachment based on this file name's extension. If
+    /// the file name has an extension .txt, .text, .htm, .html, .shtml,
+    /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
+    /// will have a "charset" of "utf-8".</param>
+    /// <returns>A Message object for the generated attachment.</returns>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='inputStream'/> or "mediaType" is null.</exception>
+    /// <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+    /// occurred.</exception>
     public Message AddAttachment(Stream inputStream, string filename) {
       return
   AddBodyPart(inputStream, SuggestMediaType(filename), filename, "attachment");
@@ -783,8 +804,27 @@ return GetAddresses("to");
       return AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
+    /// <summary>Adds an inline body part to this message in the form of
+    /// data from the given readable stream, and with the given file name.
+    /// Before the new body part is added, if this message isn't already a
+    /// multipart message, it becomes a "multipart/mixed" message with the
+    /// current body converted to an inline body part.</summary>
+    /// <param name='inputStream'>A readable data stream.</param>
+    /// <param name='filename'>A file name to assign to the inline body
+    /// part. Can be null or empty, in which case no file name is assigned.
+    /// Only the file name portion of this parameter is used, which in this
+    /// case means the portion of the string after the last "/" or "\", if
+    /// either character exists, or the entire string otherwise An
+    /// appropriate media type (or "application/octet-stream") will be
+    /// assigned to the body part based on this file name's extension. If
+    /// the file name has an extension .txt, .text, .htm, .html, .shtml,
+    /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
+    /// will have a "charset" of "utf-8".</param>
+    /// <returns>A Message object for the generated body part.</returns>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='inputStream'/> or "mediaType" is null.</exception>
+    /// <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+    /// occurred.</exception>
     public Message AddInline(Stream inputStream, string filename) {
       return AddBodyPart(inputStream, SuggestMediaType(filename), filename,
         "inline");
@@ -2490,8 +2530,20 @@ if ((ungetState[1]) < 0x80) {
       return true;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
+    /// <summary>Creates a message object from a MailTo URL. The URL can
+    /// contain key-value pairs that follow a question-mark, as in the
+    /// following example: "mailto:me@example.com?subject=A%20Subject". In
+    /// this example, "subject" is the subject of the email address. Only
+    /// certain keys are supported, namely, "to", "cc", "bcc", "subject",
+    /// "in-reply-to", "comments", "keywords", and "body". The first seven
+    /// are header field names that will be used to set the returned
+    /// message's corresponding header fields. The last, "body", sets the
+    /// body of the message to the given text. Keys other than these eight
+    /// will be ignored.</summary>
+    /// <param name='url'>A string representing a MailTo URL.</param>
+    /// <returns>A Message object created from the given MailTo URL. Returs
+    /// null if <paramref name='url'/> is null, is syntactically invalid,
+    /// or is not a MailTo URL.</returns>
     public static Message FromMailtoUrl(string url) {
       return MailtoUrls.MailtoUrlMessage(url);
     }

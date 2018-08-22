@@ -9,7 +9,7 @@ Represents an email address.
     public Address(
         string addressValue);
 
-Initializes a new instance of the[PeterO.Mail.Address](PeterO.Mail.Address.md)class.
+Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.
 
 <b>Parameters:</b>
 
@@ -22,7 +22,7 @@ The parameter <i>addressValue</i>
 is null.
 
  * System.ArgumentException:
-The email address contains invalid syntax. For example, it doesn't ontain an '@' sign or either side of the '@' contains invalid characters, he address is too long, or the address contains comments (text within arentheses).
+The email address contains invalid syntax. For example, it doesn't contain an '@' sign or either side of the '@' contains invalid characters, the address is too long, or the address contains comments (text within parentheses).
 
 ### Domain
 
@@ -58,17 +58,13 @@ is an arbitrary object.
 
 <b>Return Value:</b>
 
- `
-        true
-      ` if this object and another object are equal; otherwise, `
-        false
-      ` .
+ `true` if this object and another object are equal; otherwise,  `false` .
 
 ### GetHashCode
 
     public override int GetHashCode();
 
-Calculates the hash code of this object. No application or process IDs re used in the hash code calculation.
+Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
 <b>Return Value:</b>
 

@@ -23,8 +23,8 @@ namespace PeterO.Mail {
         string mediaType = path.Substring(0, mediaTypePart);
         // Strip out ";base64" at end
         if (mediaType.Length >= 7 &&
-           mediaType.Substring(mediaType.Length - 7).ToLowerInvariant()
-            .Equals(";base64")) {
+      DataUtilities.ToLowerCaseAscii(mediaType.Substring(mediaType.Length -
+             7)) .Equals(";base64")) {
           mediaType = mediaType.Substring(0, mediaType.Length - 7);
         }
         if (mediaType.Length == 0 || mediaType[0] == ';') {
@@ -32,8 +32,6 @@ namespace PeterO.Mail {
           // out. If left out, the media
           // type "text/plain" is assumed.
           mediaType = "text/plain" + mediaType;
-        }
-        if (mediaType.IndexOf('/') < 0) {
         }
         if (mediaType.IndexOf('(') >= 0) {
           // The media type string has parentheses
@@ -93,9 +91,10 @@ namespace PeterO.Mail {
         if (mediaTypePart == -1) {
           return null;
         }
-        bool usesBase64 = mediaTypePart >= 7 && path.Substring(
+        bool usesBase64 = mediaTypePart >= 7 &&
+          DataUtilities.ToLowerCaseAscii(path.Substring(
      mediaTypePart - 7,
-     7).ToLowerInvariant().Equals(";base64");
+     7)).Equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -200,6 +199,9 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.String)"]/*'/>
     public static string MakeDataUrl(string textString) {
+if ((textString) == null) {
+  throw new ArgumentNullException(nameof(textString));
+}
       return MakeDataUrl(
   DataUtilities.GetUtf8Bytes(textString, true),
   MediaType.Parse("text/plain;charset=utf-8"));

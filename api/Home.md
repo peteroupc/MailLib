@@ -8,7 +8,7 @@ Specifies how a message body should be displayed or handled by a mail user
  agent.
 
 * [com.upokecenter.mail.DataUrls](com.upokecenter.mail.DataUrls.md) -
-Not documented yet.
+Contains methods for parsing and generating data URLs.
 
 * [com.upokecenter.mail.DispositionBuilder](com.upokecenter.mail.DispositionBuilder.md) -
 Description of DispositionBuilder.
@@ -27,7 +27,7 @@ Specifies what kind of data a message body is.
 A mutable media type object.
 
 * [com.upokecenter.mail.Message](com.upokecenter.mail.Message.md) -
- Represents an email message, and contains methods and properties for
+Represents an email message, and contains methods and properties for
  accessing and modifying email message data.
 
 * [com.upokecenter.mail.NamedAddress](com.upokecenter.mail.NamedAddress.md) -

@@ -257,10 +257,9 @@ private URIUtility() {
 
     /**
      * Determines whether the string is a valid IRI with a scheme component. This
-     * can be used to check for relative IRI references. <p> The following
-     * cases return true: </p> <pre> xx-x:mm example:/ww </pre> The
-     * following cases return false: <pre> x@y:/z /x/y/z example.xyz
-     * </pre>
+     * can be used to check for relative IRI references. <p>The following
+     * cases return true: </p> <pre>xx-x:mm example:/ww </pre> The
+     * following cases return false: <pre>x@y:/z /x/y/z example.xyz </pre>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid IRI with a scheme component;
      * otherwise, {@code false} .
@@ -277,9 +276,8 @@ private URIUtility() {
     /**
      * Determines whether the string is a valid URI with a scheme component. This
      * can be used to check for relative URI references. The following cases
-     * return true: <pre> http://example/z xx-x:mm example:/ww </pre> The
-     * following cases return false: <pre> x@y:/z /x/y/z example.xyz
-     * </pre>
+     * return true: <pre>http://example/z xx-x:mm example:/ww </pre> The
+     * following cases return false: <pre>x@y:/z /x/y/z example.xyz </pre>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid URI with a scheme component;
      * otherwise, {@code false} .
@@ -309,9 +307,11 @@ private URIUtility() {
     }
 
     /**
-     * Not documented yet.
-     * @param str The parameter {@code str} is not documented yet.
-     * @return A text string.
+     * Decodes percent-encoding (of the form "%XX" where X is a hexadecimal digit)
+     * in the given string. Successive percent-encoded bytes are assumed to
+     * form characters in UTF-8.
+     * @param str A string that may contain percent encoding. May be null.
+     * @return The string in which percent-encoding was decoded.
      */
     public static String PercentDecode(String str) {
       // Quick check

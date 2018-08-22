@@ -5,32 +5,32 @@
 Specifies how a message body should be displayed or handled by a mail user
  agent. This type is immutable; its contents can't be changed after
  it's created. To create a changeable disposition object, use the
- DispositionBuilder class. <p><b>About the "filename"
- parameter</b></p> <p>The "filename" parameter of a content
- disposition suggests a name to use when saving data to a file. For
- the "filename" parameter, the GetParameter method and Parameters
- property (<code>getParameters</code>) method in Java) do not adapt that
- parameter's value using the ContentDisposition.MakeFilename method.
- Thus, for example, the "filename" parameter, if any, returned by this
- method could have an arbitrary length, be encoded using RFC 2047
- encoded words (which some email and HTTP implementations still like
- to write out in headers, even though that RFC says encoded words
- "MUST NOT appear within a 'quoted-string'"; see
+ DispositionBuilder class. <p><b>About the "filename" parameter</b>
+ </p> <p>The "filename" parameter of a content disposition suggests a
+ name to use when saving data to a file. For the "filename" parameter,
+ the GetParameter method and Parameters property (
+ <code>getParameters</code>) method in Java) do not adapt that parameter's
+ value using the ContentDisposition.MakeFilename method. Thus, for
+ example, the "filename" parameter, if any, returned by this method
+ could have an arbitrary length, be encoded using RFC 2047 encoded
+ words (which some email and HTTP implementations still like to write
+ out in headers, even though that RFC says encoded words "MUST NOT
+ appear within a 'quoted-string'"; see
  ContentDisposition.MakeFilename), or not be usable as is as a file
- name.</p> <p><b>Example:</b> An example of RFC 2047 encoded words
- is:</p> <p><b>=?UTF-8?Q?test?=</b></p> <p>Content-Disposition header
- fields like the following have appeared in practice:</p>
+ name. </p> <p><b>Example:</b> An example of RFC 2047 encoded words
+ is: </p> <p><b>=?UTF-8?Q?test?=</b> </p> <p>Content-Disposition
+ header fields like the following have appeared in practice: </p>
  <p><b>Content-Disposition: attachment;
- filename==?UTF-8?Q?example?=</b></p> <p><b>Content-Disposition:
- attachment; filename==?UTF-8?Q?test.png?=</b></p>
+ filename==?UTF-8?Q?example?=</b> </p> <p><b>Content-Disposition:
+ attachment; filename==?UTF-8?Q?test.png?=</b> </p>
  <p><b>Content-Disposition: attachment;
- filename="=?UTF-8?Q?test.png?="</b></p> <p>In this implementation,
+ filename="=?UTF-8?Q?test.png?="</b> </p> <p>In this implementation,
  the first and second of these are syntactically invalid, so they
  trigger parse errors, while the third of these is syntactically
  valid, but the "filename" parameter is treated as
  "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047
  encoded words are not decoded at the moment a content disposition is
- parsed (using the Parse method).</p>
+ parsed (using the Parse method). </p>
 
 ## Fields
 
@@ -60,8 +60,7 @@ Specifies how a message body should be displayed or handled by a mail user
 * `String GetParameter​(String name)`<br>
  Gets a parameter from this disposition object.
 * `Map<String,String> getParameters()`<br>
- Gets a list of parameter names associated with this object and their
- values.
+ Gets a list of parameter names associated with this object and their values.
 * `int[] GetReadDate()`<br>
  Gets the date and time extracted from this content disposition's "read-date"
  parameter, which specifies the date at which a file was last read
@@ -125,7 +124,7 @@ Determines whether this object and another object are equal.
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
+* <code>true</code> if the objects are equal; otherwise, <code>false</code> .
 
 ### hashCode
     public int hashCode()
@@ -146,7 +145,7 @@ Gets a value indicating whether the disposition type is inline.
 
 **Returns:**
 
-* <code>true</code> If the disposition type is inline; otherwise, <code>
+* <code>true</code> If the disposition type is inline; otherwise, . <code>
  false</code>.
 
 ### isAttachment
@@ -155,23 +154,23 @@ Gets a value indicating whether the disposition type is attachment.
 
 **Returns:**
 
-* <code>true</code> If the disposition type is attachment; otherwise,
+* <code>true</code> If the disposition type is attachment; otherwise, .
  <code>false</code>.
 
 ### getParameters
     public final Map<String,String> getParameters()
-Gets a list of parameter names associated with this object and their
- values.<p>For the "filename" parameter, the value of that parameter
- is not adapted with the ContentDisposition.MakeFilename method; see
- the documentation for the ContentDisposition class.</p>
+Gets a list of parameter names associated with this object and their values.
+ <p>For the "filename" parameter, the value of that parameter is not
+ adapted with the ContentDisposition.MakeFilename method; see the
+ documentation for the ContentDisposition class. </p>
 
 **Returns:**
 
 * A read-only list of parameter names associated with this object and
- their values.getNOTE(): Previous versions erroneously stated that the list
- will be sorted by name. In fact, the names will not be guaranteed to
- appear in any particular order; this is at least the case in version
- 0.10.0.
+ their values. NOTE: Previous versions erroneously stated that the
+ list will be sorted by name. In fact, the names will not be
+ guaranteed to appear in any particular order; this is at least the
+ case in version 0.10.0.
 
 ### toString
     public String toString()
@@ -227,7 +226,7 @@ Converts a file name from the Content-Disposition header to a suitable name
  the use of a 'NAME' parameter which gave a <i>suggested</i> file name
  to be used if the data were written to a file". Also, RFC 2183 sec.
  2.3 (<code>filename</code> parameter in Content-Disposition) confirms that
- the "<i>suggested</i> filename" in the <code>filename</code> parameter
+ the " <i>suggested</i> filename" in the <code>filename</code> parameter
  "should be <i>used as a basis</i> for the actual filename, where
  possible", and that that file name should "not [be] blindly use[d]".
  See also RFC 6266, section 4.3, which discusses the use of that
@@ -239,7 +238,7 @@ Converts a file name from the Content-Disposition header to a suitable name
  parameters that apply to all media types"). (Some email
  implementations may still write out the "name" parameter, even in
  media types other than <code>application/octet-stream</code> and even
- though RFC 2046 has deprecated that parameter.) </p> </p>
+ though RFC 2046 has deprecated that parameter.)</p></p>
 
 **Parameters:**
 
@@ -256,7 +255,7 @@ Converts a file name from the Content-Disposition header to a suitable name
  space; leading and trailing spaces and tabs are removed; and the
  filename is truncated if it would otherwise be too long. The returned
  string will be in normalization form C. Returns the empty string if
- "str" is null or empty.
+ <code>str</code> is null or empty.
 
 ### GetFilename
     public String GetFilename()
@@ -366,21 +365,21 @@ Parses a content disposition string and returns a content disposition
  from the Content-Disposition header field (as defined for email
  messages) and follows the syntax given in RFC 2183. Accordingly,
  among other things, the content disposition string can contain
- comments (delimited by parentheses).</p> <p>RFC 2231 extensions allow
- each content disposition parameter to be associated with a character
- encoding and/or language, and support parameter values that span two
- or more key-value pairs. Parameters making use of RFC 2231 extensions
- have names with an asterisk ("*"). Such a parameter will be ignored
- if it is ill-formed because of RFC 2231's rules (except for illegal
- percent-decoding or undecodable sequences for the given character
- enoding). Examples of RFC 2231 extensions follow (both examples
- encode the same "filename" parameter):</p> <p><b>inline;
- filename*=utf-8'en'filename.txt</b></p> <p><b>inline;
- filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
+ comments (delimited by parentheses). </p> <p>RFC 2231 extensions
+ allow each content disposition parameter to be associated with a
+ character encoding and/or language, and support parameter values that
+ span two or more key-value pairs. Parameters making use of RFC 2231
+ extensions have names with an asterisk ("*"). Such a parameter will
+ be ignored if it is ill-formed because of RFC 2231's rules (except
+ for illegal percent-decoding or undecodable sequences for the given
+ character enoding). Examples of RFC 2231 extensions follow (both
+ examples encode the same "filename" parameter): </p> <p><b>inline;
+ filename*=utf-8'en'filename.txt</b> </p> <p><b>inline;
+ filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b> </p> <p>This
  implementation ignores keys (in parameter key-value pairs) that
  appear more than once in the content disposition. Nothing in RFCs
  2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or
- otherwise specifies error-handling behavior for such keys.</p>
+ otherwise specifies error-handling behavior for such keys. </p>
 
 **Parameters:**
 

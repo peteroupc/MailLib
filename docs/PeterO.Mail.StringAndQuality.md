@@ -2,7 +2,7 @@
 
     public sealed class StringAndQuality
 
-Stores an arbitrary string and a "quality value" for that string. For nstance, the string can be a language tag, and the "quality value" can be he degree of preference for that language.
+Stores an arbitrary string and a "quality value" for that string. For instance, the string can be a language tag, and the "quality value" can be the degree of preference for that language.
 
 ### StringAndQuality Constructor
 
@@ -10,7 +10,7 @@ Stores an arbitrary string and a "quality value" for that string. For nstance, t
         string value,
         int quality);
 
-Initializes a new instance of the[PeterO.Mail.StringAndQuality](PeterO.Mail.StringAndQuality.md)class.
+Initializes a new instance of the [PeterO.Mail.StringAndQuality](PeterO.Mail.StringAndQuality.md) class.
 
 <b>Parameters:</b>
 

@@ -26,7 +26,7 @@ private MailDateTime() {
   * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
      * for information on the format of this parameter.
      * @return A date-time string.
-     * @throws IllegalArgumentException The parameter "dateTime" is null or
+     * @throws IllegalArgumentException The parameter {@code dateTime} is null or
      * invalid.
      */
     public static String GenerateDateString(int[] dateTime) {
@@ -43,10 +43,10 @@ private MailDateTime() {
      * for information on the format of this parameter.
      * @param gmt If true, uses the string "GMT" as the time zone offset.
      * @return A date-time string.
-     * @throws IllegalArgumentException The parameter "dateTime" is null or
+     * @throws IllegalArgumentException The parameter {@code dateTime} is null or
      * invalid.
      * @throws UnsupportedOperationException The time zone offset is other than 0
-     * and "gmt" is true.
+     * and {@code gmt} is true.
      */
     public static String GenerateDateString(int[] dateTime, boolean gmt) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
@@ -116,7 +116,7 @@ private MailDateTime() {
      * {@code str} is null, empty, or syntactically invalid, or if the
      * string's year would overflow the range of a 32-bit signed integer. If
      * an array is returned, element of that array (starting from 0) is as
-     * follows:
+     * follows:.
      */
     public static int[] ParseDateString(String str, boolean parseObsoleteZones) {
       if (((str) == null || (str).length() == 0)) {

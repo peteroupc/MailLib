@@ -43,7 +43,7 @@ Generates a date-time string following the Internet Message Format (RFC
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter "dateTime" is null or
+* <code>IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or
  invalid.
 
 ### GenerateDateString
@@ -66,11 +66,11 @@ Generates a date-time string following the Internet Message Format (RFC
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter "dateTime" is null or
+* <code>IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or
  invalid.
 
 * <code>UnsupportedOperationException</code> - The time zone offset is other than 0
- and "gmt" is true.
+ and <code>gmt</code> is true.
 
 ### ParseDateString
     public static int[] ParseDateString​(String str, boolean parseObsoleteZones)
@@ -92,7 +92,7 @@ Gets the date and time extracted from a date-time string following the
  <code>str</code> is null, empty, or syntactically invalid, or if the
  string's year would overflow the range of a 32-bit signed integer. If
  an array is returned, element of that array (starting from 0) is as
- follows:
+ follows:.
 
 ### ParseDateString
     public static int[] ParseDateString​(String str)

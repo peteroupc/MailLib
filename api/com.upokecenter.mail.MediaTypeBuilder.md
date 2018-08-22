@@ -38,7 +38,7 @@ A mutable media type object.
  Converts this builder to an immutable media type object.
 * `String toString() MediaType.toString`<br>
  Converts this object to a text string of the media type it represents, in
- the same form as MediaType.toString.
+ the same form as MediaType.toString
 
 ## Constructors
 
@@ -107,7 +107,8 @@ Gets a value indicating whether this is a text media type.
 
 **Returns:**
 
-* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
+* <code>true</code> If this is a text media type; otherwise, . <code>
+ false</code>.
 
 ### isMultipart
     public final boolean isMultipart()
@@ -115,7 +116,7 @@ Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
-* <code>true</code> If this is a multipart media type; otherwise, <code>
+* <code>true</code> If this is a multipart media type; otherwise, . <code>
  false</code>.
 
 ### ToMediaType
@@ -213,7 +214,7 @@ Sets this media type's subtype, such as "plain" or "xml" .
 ### toString
     public String toString()
 Converts this object to a text string of the media type it represents, in
- the same form as <code>MediaType.toString</code>.
+ the same form as <code>MediaType.toString</code>
 
 **Overrides:**
 

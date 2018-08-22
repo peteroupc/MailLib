@@ -66,7 +66,8 @@ private LanguageTags() {
      * @param extended Check whether the string is a basic language range if
      * "false", or an extended language range if "true".
      * @return {@code true} if the given string is a basic language range
-     * (depending on the "extended" parameter); otherwise, {@code false} .
+     * (depending on the {@code extended} parameter); otherwise, {@code
+     * false}.
      */
     public static boolean IsLanguageRange(String str, boolean extended) {
       if (((str) == null || (str).length() == 0)) {
@@ -195,8 +196,8 @@ private LanguageTags() {
      * For example, "en-us" becomes "en-US", and "zh-hant" becomes
      * "zh-Hant".
      * @param str A string of a language tag. Can be null.
-     * @return A text string in the recommended case combination, or null if "str"
-     * is null.
+     * @return A text string in the recommended case combination, or null if {@code
+     * str} is null.
      */
     public static String LanguageTagCase(String str) {
       if (((str) == null || (str).length() == 0)) {
@@ -256,8 +257,9 @@ private LanguageTags() {
      * (see RFC 3282). This is a comma-separated list of language tags. RFC
      * 5322 comments (in parentheses) can appear. This parameter can be
      * null.
-     * @return A list of language tags. Returns an empty list if "str" is null or
-     * the empty string, or null if "str" syntactically invalid.
+     * @return A list of language tags. Returns an empty list if {@code str} is
+     * null or the empty string, or null if {@code str} syntactically
+     * invalid.
      */
     public static List<String> GetLanguageList(
       String str) {
@@ -324,7 +326,7 @@ private LanguageTags() {
      * will be sorted in descending order by quality; if two or more
      * language ranges have the same quality, they will be sorted in the
      * order in which they appeared in the given string. Returns null if
-     * "str" is null or syntactically invalid.
+     * {@code str} is null or syntactically invalid.
      */
     public static List<StringAndQuality> GetRangeListWithQuality(
       String str) {
@@ -539,8 +541,9 @@ if (str == null) {
      * @param tag A language tag.
      * @return {@code true} if the language tag matches the language range by the
      * filtering method under RFC 4647; otherwise, {@code false} .
-     * @throws IllegalArgumentException "range" is not a basic language range, or
-     * "tag" is not a potentially valid language tag.
+     * @throws IllegalArgumentException The parameter {@code range} is not a basic
+     * language range, or {@code tag} is not a potentially valid language
+     * tag.
      */
     public static boolean MatchesLanguageTag(String range, String tag) {
       List<String> tags = LanguageTagFilter(

@@ -73,7 +73,8 @@ if (type.length() == 0) {
 
     /**
      * Gets a value indicating whether this is a text media type.
-     * @return {@code true} If this is a text media type; otherwise, {@code false}.
+     * @return {@code true} If this is a text media type; otherwise, . {@code
+     * false}.
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated
@@ -83,7 +84,7 @@ if (type.length() == 0) {
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return {@code true} If this is a multipart media type; otherwise, {@code
+     * @return {@code true} If this is a multipart media type; otherwise, . {@code
      * false}.
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
@@ -105,6 +106,7 @@ if (type.length() == 0) {
      * @param str The parameter {@code str} is a text string.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException Str is empty.
      */
     public DispositionBuilder SetDispositionType(String str) {
       if (str == null) {

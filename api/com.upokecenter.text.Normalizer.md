@@ -84,8 +84,8 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> if this string is normalized; otherwise, <code>false</code>.
- Returns <code>false</code> if the string contains an unpaired surrogate
+* <code>true</code> if this string is normalized; otherwise, <code>false</code>
+ . Returns <code>false</code> if the string contains an unpaired surrogate
  code point.
 
 ### ReadChar
@@ -118,6 +118,6 @@ Deprecated.
 
 * <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
  less than 0 or greater than <code>chars</code> 's length, or <code>chars</code>
- ' s length minus <code>index</code> is less than <code>length</code>.
+ ' s length minus <code>index</code> is less than <code>length</code> .
 
 * <code>NullPointerException</code> - The parameter <code>chars</code> is null.

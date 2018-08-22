@@ -10,9 +10,25 @@ namespace MailLibTest {
       var na = new NamedAddress("b <" + str + "@example.com>");
       Address addr = na.Address;
       Assert.AreEqual(expected, addr.LocalPart);
+addr = new Address(str + "@example.com");
+      Assert.AreEqual(expected, addr.LocalPart);
+    }
+
+    private static void TestParseLocalPartNAOnly(string str, string expected) {
+      var na = new NamedAddress("b <" + str + "@example.com>");
+      Address addr = na.Address;
+      Assert.AreEqual(expected, addr.LocalPart);
     }
 
     private static void TestParseDomain(string str, string expected) {
+      var na = new NamedAddress("b <example@" + str + ">");
+      Address addr = na.Address;
+      Assert.AreEqual(expected, addr.Domain);
+addr = new Address("example@" + str);
+      Assert.AreEqual(expected, addr.Domain);
+    }
+
+    private static void TestParseDomainNAOnly(string str, string expected) {
       var na = new NamedAddress("b <example@" + str + ">");
       Address addr = na.Address;
       Assert.AreEqual(expected, addr.Domain);
@@ -72,20 +88,31 @@ Assert.AreEqual(objectTemp, objectTemp2);
   "x.example\ud800\udc00.example.com",
   "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
-      TestParseDomain("(comment1) x (comment2)", "x");
-      TestParseDomain(
+      TestParseDomainNAOnly("(comment1) x (comment2)", "x");
+      TestParseDomainNAOnly(
   "(comment1) example (comment2) . (comment3) com",
   "example.com");
-      TestParseDomain("(comment1) [x] (comment2)", "[x]");
-      TestParseDomain("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
+      TestParseDomainNAOnly(
+        "(co(mme)nt1) example (comment2) . (comment3) com",
+        "example.com");
+      TestParseDomainNAOnly("(comment1) [x] (comment2)", "[x]");
+      TestParseDomainNAOnly("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
       TestParseDomain("[]", "[]");
-      TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
+      TestParseDomainNAOnly("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
     [Test]
     public void TestLocalPart() {
       var addr = new Address("local.local@example.com");
       Assert.AreEqual("local.local", addr.LocalPart);
+addr = new Address("x!y!z!example@example.com");
+      Assert.AreEqual("x!y!z!example", addr.LocalPart);
+addr = new Address("x%y%z%example@example.com");
+      Assert.AreEqual("x%y%z%example", addr.LocalPart);
+addr = new Address("x!y%z!example@example.com");
+      Assert.AreEqual("x!y%z!example", addr.LocalPart);
+
       TestParseLocalPart("x", "x");
+      TestParseLocalPart("x!y!z", "x!y!z");
       TestParseLocalPart("\"" + "\"", String.Empty);
       TestParseLocalPart("x.example", "x.example");
       TestParseLocalPart(
@@ -93,10 +120,14 @@ Assert.AreEqual(objectTemp, objectTemp2);
   "x.example\ud800\udc00.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      TestParseLocalPart("(comment1) x (comment2)", "x");
-      TestParseLocalPart(
+      TestParseLocalPartNAOnly("(comment1) x (comment2)", "x");
+      TestParseLocalPartNAOnly("(comment1)x(comment2)", "x");
+      TestParseLocalPartNAOnly(
   "(comment1) example (comment2) . (comment3) com",
   "example.com");
+      TestParseLocalPartNAOnly(
+        "(com(plex)comment) example (comment2) . (comment3) com",
+        "example.com");
     }
     [Test]
     public void TestToString() {

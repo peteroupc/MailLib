@@ -16,7 +16,7 @@ import java.io.*;
      * form of the Unicode Standard which uses one byte to encode the most
      * basic characters and two to four bytes to encode other characters.
      * For example, the <code>GetUtf8</code> method converts a text string to an
-     * array of bytes in UTF-8.</p> <p>In C# and Java, text strings are
+     * array of bytes in UTF-8. </p> <p>In C# and Java, text strings are
      * represented as sequences of 16-bit values called <code>char</code> s. These
      * sequences are well-formed under UTF-16, a 16-bit encoding form of
      * Unicode, except if they contain unpaired surrogate code points. (A
@@ -27,8 +27,8 @@ import java.io.*;
      * not appearing in a surrogate pair.) Many of the methods in this class
      * allow setting the behavior to follow when unpaired surrogate code
      * points are found in text strings, such as throwing an error or
-     * treating the unpaired surrogate as a replacement character
-     * (U + FFFD).</p>
+     * treating the unpaired surrogate as a replacement character (U + FFFD).
+     * </p>
      */
   public final class DataUtilities {
 private DataUtilities() {
@@ -251,9 +251,7 @@ try { if (ms != null) {
      * @return The Unicode code point at the previous position. Returns -1 if
      * {@code index} is 0 or less, or is greater than the string's length.
      * Returns the replacement character (U + FFFD) if the previous character
-     * is an unpaired surrogate code point. NOTE: If the return value is
-     * 65536 (0x10000) or greater, this indicates a supplementary code point
-     * that takes up two {@code char}s rather than one.
+     * is an unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointBefore(String str, int index) {
@@ -271,10 +269,7 @@ try { if (ms != null) {
      * @return The Unicode code point at the previous position. Returns -1 if
      * {@code index} is 0 or less, or is greater than the string's length.
      * Returns a value as specified under {@code surrogateBehavior} if the
-     * previous character is an unpaired surrogate code point. NOTE: If the
-     * return value is 65536 (0x10000) or greater, this indicates a
-     * supplementary code point that takes up two {@code char}s rather than
-     * one.
+     * previous character is an unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointBefore(
@@ -311,9 +306,7 @@ try { if (ms != null) {
      * @return The Unicode code point at the given position. Returns -1 if {@code
      * index} is less than 0, or is the string's length or greater. Returns
      * the replacement character (U + FFFD) if the current character is an
-     * unpaired surrogate code point. NOTE: If the return value is 65536
-     * (0x10000) or greater, this indicates a supplementary code point that
-     * takes up two {@code char}s rather than one.
+     * unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointAt(String str, int index) {
@@ -331,9 +324,7 @@ try { if (ms != null) {
      * @return The Unicode code point at the current position. Returns -1 if {@code
      * index} is less than 0, or is the string's length or greater. Returns
      * a value as specified under {@code surrogateBehavior} if the previous
-     * character is an unpaired surrogate code point. NOTE: If the return
-     * value is 65536 (0x10000) or greater, this indicates a supplementary
-     * code point that takes up two {@code char}s rather than one.
+     * character is an unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointAt(
@@ -716,7 +707,7 @@ try { if (ms != null) {
      * {@code builder} is null.
      * @throws IllegalArgumentException The parameter {@code offset} is less than
      * 0, {@code bytesCount} is less than 0, or offset plus bytesCount is
-     * greater than the length of {@code data}.
+     * greater than the length of {@code data} .
      */
     public static int ReadUtf8FromBytes(
   byte[] data,
