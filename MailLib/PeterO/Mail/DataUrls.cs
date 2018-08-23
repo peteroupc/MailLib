@@ -101,13 +101,14 @@ namespace PeterO.Mail {
         // even if longer than 76 characters,
         // since RFC 2397 doesn't state otherwise
         // (see RFC 4648).
-        var aw = new PeterO.ArrayWriter();
+        var aw = new ArrayWriter();
+var i = 0;
         if (usesBase64) {
           int base64Length = path.Length - (mediaTypePart + 1);
           if ((base64Length % 4) != 0) {
             return null;
           }
-          for (var i = mediaTypePart + 1; i < path.Length; i += 4) {
+          for (i = mediaTypePart + 1; i < path.Length; i += 4) {
             bool lastBlock = i + 4 >= path.Length;
             int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
             b1 = (path[i] > 0x7f) ? -1 : Alphabet[(int)path[i]];
@@ -132,7 +133,7 @@ namespace PeterO.Mail {
             }
           }
         } else {
-          for (var i = mediaTypePart + 1; i < path.Length;) {
+          for (i = mediaTypePart + 1; i < path.Length;) {
             if (path[i] == '%') {
               // NOTE: No further character checking done here
               // because splitURI already did all needed pct-encoding checking

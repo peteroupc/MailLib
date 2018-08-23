@@ -1030,8 +1030,8 @@ Adds an attachment to this message in the form of data from the given
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>inputStream</code> or
- "mediaType" is null.
+* <code>NullPointerException</code> - The parameter <code>inputStream</code> is
+ null.
 
 * <code>MessageDataException</code> - An I/O error occurred.
 

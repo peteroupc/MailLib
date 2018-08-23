@@ -33,7 +33,7 @@ namespace PeterO.Mail {
     }
 
 private static string DomainToString(string domain, bool useALabelDomain) {
- var dom = domain;
+ string dom = domain;
  if (useALabelDomain && dom.Length > 0 && dom[0] != '[') {
   dom = Idna.EncodeDomainName(domain);
  }

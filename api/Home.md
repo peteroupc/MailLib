@@ -11,7 +11,7 @@ Specifies how a message body should be displayed or handled by a mail user
 Contains methods for parsing and generating data URLs.
 
 * [com.upokecenter.mail.DispositionBuilder](com.upokecenter.mail.DispositionBuilder.md) -
-Description of DispositionBuilder.
+A mutable data type that allows a content disposition to be built.
 
 * [com.upokecenter.mail.LanguageTags](com.upokecenter.mail.LanguageTags.md) -
 Contains methods for parsing and matching language tags.

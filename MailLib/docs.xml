@@ -1222,17 +1222,17 @@ ns me
     </summary>
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlBytes(System.String)">
-<summary>Extracts the data from a data URL in the form of a byte
-            array.</summary>
-            <param name='url'>A data URL string.</param>
-            <returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data
+
+            <summary>Extracts the data from a data URL in the form of a byte
+            array.</summary><param name='url'>A data URL string.</param><returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data
             URL.</returns>
+
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlMediaType(System.String)">
-<summary>Extracts the media type from a data URL.</summary>
-            <param name='url'>A data URL string.</param>
-            <returns>The media type. Returns null if <paramref name='url'/> is
+
+            <summary>Extracts the media type from a data URL.</summary><param name='url'>A data URL string.</param><returns>The media type. Returns null if <paramref name='url'/> is
             null, is syntactically invalid, or is not a data URL.</returns>
+
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.Byte[],PeterO.Mail.MediaType)">
 
@@ -1240,11 +1240,10 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.String)">
-<summary>Encodes text as a data URL.</summary>
-            <param name='textString'>A text string to encode as a data
-            URL.</param>
-            <returns>A data URL that encodes the given text.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='textString'/> is null.</exception>
+
+            <summary>Encodes text as a data URL.</summary><param name='textString'>A text string to encode as a data
+            URL.</param><returns>A data URL that encodes the given text.</returns><exception cref='T:System.ArgumentNullException'>The parameter <paramref name='textString'/> is null.</exception>
+
 </doc>
 <doc name="T:PeterO.Mail.DispositionBuilder">
 
@@ -2236,24 +2235,27 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)">
-
-            <summary>Adds an attachment to this message in the form of data
-             from the given readable stream, and with the given
-             file name. Before the new attachment is added, if this message
-             isn't already a multipart message, it becomes a "multipart/mixed"
-             message with the current body converted to an inline body
-             part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the
-             attachment.</param><param name='filename'>A file name to assign to the attachment. Can
-             be null or empty, in which case no file name is assigned. Only the
-             file name portion of this parameter is used, which in this case
-             means the portion of the string after the last "/" or "\", if
-             either character exists, or the entire string otherwise
-An appropriate media type (or "application/octet-stream") will be assigned to the attachment based on this
-file name's extension.  If the file name has an extension .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type will have a "charset" of "utf-8".</param><returns>A Message object for the generated attachment.</returns><exception cref='T:System.ArgumentNullException'>The parameter
-             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
-             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
-             occurred.</exception>
-
+<summary>Adds an attachment to this message in the form of data
+            from the given readable stream, and with the given file name.
+            Before the new attachment is added, if this message isn't already a
+            multipart message, it becomes a "multipart/mixed" message with the
+            current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='filename'>A file name to assign to the attachment. Can
+            be null or empty, in which case no file name is assigned. Only the
+            file name portion of this parameter is used, which in this case
+            means the portion of the string after the last "/" or "\", if
+            either character exists, or the entire string otherwise An
+            appropriate media type (or "application/octet-stream") will be
+            assigned to the attachment based on this file name's extension. If
+            the file name has an extension .txt, .text, .htm, .html, .shtml,
+            .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
+            will have a "charset" of "utf-8".</param>
+            <returns>A Message object for the generated attachment.</returns>
+            <exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='inputStream'/> is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+            occurred.</exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})">
 
@@ -2338,24 +2340,27 @@ file name's extension.  If the file name has an extension .txt, .text, .htm, .ht
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)">
-
-            <summary>Adds an inline body part to this message in the form of data
-             from the given readable stream, and with the given
-             file name. Before the new body part is added, if this message
-             isn't already a multipart message, it becomes a "multipart/mixed"
-             message with the current body converted to an inline body
-             part.</summary><param name='inputStream'>A readable data stream.</param><param name='mediaType'>A media type to assign to the
-             attachment.</param><param name='filename'>A file name to assign to the inline body part. Can
-             be null or empty, in which case no file name is assigned. Only the
-             file name portion of this parameter is used, which in this case
-             means the portion of the string after the last "/" or "\", if
-             either character exists, or the entire string otherwise
-An appropriate media type (or "application/octet-stream") will be assigned to the body part based on this
-file name's extension.  If the file name has an extension .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type will have a "charset" of "utf-8".</param><returns>A Message object for the generated body part.</returns><exception cref='T:System.ArgumentNullException'>The parameter
-             <paramref name='inputStream'/> or <paramref name='mediaType'/> is
-             null.</exception><exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
-             occurred.</exception>
-
+<summary>Adds an inline body part to this message in the form of
+            data from the given readable stream, and with the given file name.
+            Before the new body part is added, if this message isn't already a
+            multipart message, it becomes a "multipart/mixed" message with the
+            current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='filename'>A file name to assign to the inline body
+            part. Can be null or empty, in which case no file name is assigned.
+            Only the file name portion of this parameter is used, which in this
+            case means the portion of the string after the last "/" or "\", if
+            either character exists, or the entire string otherwise An
+            appropriate media type (or "application/octet-stream") will be
+            assigned to the body part based on this file name's extension. If
+            the file name has an extension .txt, .text, .htm, .html, .shtml,
+            .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
+            will have a "charset" of "utf-8".</param>
+            <returns>A Message object for the generated body part.</returns>
+            <exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='inputStream'/> or "mediaType" is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
+            occurred.</exception>
 </doc>
 <doc name="P:PeterO.Mail.Message.BccAddresses">
 
@@ -2457,8 +2462,7 @@ file name's extension.  If the file name has an extension .txt, .text, .htm, .ht
 
 </doc>
 <doc name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)">
-
-            <summary>Creates a message object from a MailTo URL. The URL can
+<summary>Creates a message object from a MailTo URL. The URL can
             contain key-value pairs that follow a question-mark, as in the
             following example: "mailto:me@example.com?subject=A%20Subject". In
             this example, "subject" is the subject of the email address. Only
@@ -2467,8 +2471,11 @@ file name's extension.  If the file name has an extension .txt, .text, .htm, .ht
             are header field names that will be used to set the returned
             message's corresponding header fields. The last, "body", sets the
             body of the message to the given text. Keys other than these eight
-            will be ignored.</summary><param name='url'>A string representing a MailTo URL.</param><returns>A Message object created from the given MailTo URL.  Returs null if "url" is null, is syntactically invalid, or is not a MailTo URL.</returns>
-
+            will be ignored.</summary>
+            <param name='url'>A string representing a MailTo URL.</param>
+            <returns>A Message object created from the given MailTo URL. Returs
+            null if <paramref name='url'/> is null, is syntactically invalid,
+            or is not a MailTo URL.</returns>
 </doc>
 <doc name="M:PeterO.Mail.Message.Generate">
 
@@ -3164,12 +3171,13 @@ file name's extension.  If the file name has an extension .txt, .text, .htm, .ht
 
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)">
-
-            <summary>Generates a list of NamedAddress objects from a
+<summary>Generates a list of NamedAddress objects from a
             comma-separated list of addresses. Each address must follow the
             syntax accepted by the one-argument constructor of
-            NamedAddress.</summary><param name='addressValue'>A comma-separate list of addresses in the form of a text string.</param><returns>A list of addresses generated from the "addressValue" parameter.</returns>
-
+            NamedAddress.</summary>
+            <param name='addressValue'>A comma-separate list of addresses in
+            the form of a text string.</param>
+            <returns>A list of addresses generated from the <paramref name='addressValue'/> parameter.</returns>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.ToString">
 

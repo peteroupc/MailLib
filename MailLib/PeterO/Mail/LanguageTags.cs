@@ -392,20 +392,22 @@ if (str == null) {
       var rangeIndex = 1;
       var tagIndex = 1;
       while (rangeIndex < rangeSub.Length) {
-        if (rangeSub[rangeIndex].Length == 0) {
+     string range = rangeSub[rangeIndex];
+        if (range.Length == 0) {
           return false;
         }
-        if (rangeSub[rangeIndex].Equals("*")) {
+        if (range.Equals("*")) {
           continue;
         }
         if (tagIndex >= tagSub.Length) {
           return false;
         }
-        if (rangeSub[rangeIndex].Equals(tagSub[tagIndex])) {
+string tag = tagSub[tagIndex];
+        if (range.Equals(tag)) {
           ++rangeIndex;
           ++tagIndex;
         }
-        if (tagSub[tagIndex].Length == 1) {
+        if (tag.Length == 1) {
           return false;
         }
         ++tagIndex;

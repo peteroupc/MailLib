@@ -477,9 +477,9 @@ namespace PeterO.Mail {
         if (ch >= 0x10000) {
           ++i;
         }
-        var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
+        int unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
                  0xffff) ? (3) : (4)));
-        var bytesNeeded = 4 + (base64state[2] + unitLength > 3 ? 4 : 0);
+        int bytesNeeded = 4 + (base64state[2] + unitLength > 3 ? 4 : 0);
         if (!CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
           if (currentWordLength > 0) {
             AppendFinalBase64(base64state);
@@ -825,7 +825,8 @@ namespace PeterO.Mail {
       if (colon < 0 || colon + 1 < s.Length || s[colon + 1] != ' ') {
         return false;
       }
-      for (var i = colon + 1; i < s.Length; ++i) {
+int i = colon + 1;
+      for (;i < s.Length; ++i) {
         char c = s[i];
         if (c != 0x0d && c != 0x0a && c != 0x20 && c != 0x09) {
           return true;
@@ -869,18 +870,20 @@ namespace PeterO.Mail {
 
     public static string EncodeFieldAsEncodedWords(string fieldName, string
         fieldValue) {
-      var sa = new HeaderEncoder().AppendFieldName(fieldName);
+      var sa = new HeaderEncoder();
+      sa.AppendFieldName(fieldName);
       sa.AppendAsEncodedWords(TrimLeadingFWS(fieldValue));
       return sa.ToString();
     }
     public static string EncodeField(string fieldName, string
         fieldValue) {
       bool structured = HeaderFieldParsers.GetParser(fieldName).IsStructured();
-      var trialField = CapitalizeHeaderField(fieldName) + ": " + fieldValue;
+      string trialField = CapitalizeHeaderField(fieldName) + ": " + fieldValue;
       if (CanOutputRaw(trialField)) {
         return trialField;
       }
-      var sa = new HeaderEncoder().AppendFieldName(fieldName);
+      var sa = new HeaderEncoder();
+sa.AppendFieldName(fieldName);
       if (sa.SimpleAppendString(fieldValue, 0, fieldValue.Length)) {
         trialField = sa.ToString();
         if (CanOutputRaw(trialField)) {

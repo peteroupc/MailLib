@@ -9,7 +9,7 @@ import com.upokecenter.mail.*;
 
   public class MessageTest {
     @Test
-    public static void TestPseudoboundary() {
+    public void TestPseudoboundary() {
       String msgstr =
 
   "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed;boundary=BOUNDARY\r\nContent-Encoding: 7bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n"
@@ -22,8 +22,7 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestMultilingual() {
-      List<String> languages =
-        new ArrayList<String>(new String[] { "en", "fr" });
+      List<String> languages = Arrays.asList(new String[] { "en", "fr" });
       ArrayList<Message> messages = new ArrayList<Message>();
       messages.add(new Message()
               .SetHeader("from", "From-Lang1 <lang@example.com>")
@@ -35,7 +34,7 @@ import com.upokecenter.mail.*;
       if (msg == null) {
  Assert.fail();
  }
-      languages = new ArrayList<String>(new String[] { "fr" });
+      languages = Arrays.asList(new String[] { "fr" });
       Message msg2 = msg.SelectLanguageMessage(languages);
       {
 String stringTemp = msg2.GetHeader("subject");
@@ -43,7 +42,7 @@ Assert.assertEquals(
   "Subject-Lang2",
   stringTemp);
 }
-      languages = new ArrayList<String>(new String[] { "en" });
+      languages = Arrays.asList(new String[] { "en" });
        msg2 = msg.SelectLanguageMessage(languages);
       {
 String stringTemp = msg2.GetHeader("subject");
@@ -389,7 +388,7 @@ try { if (ms != null) {
 }
 }
         }
-      } catch (IOException ioe) {
+      } catch (Exception ioe) {
         Assert.fail(ioe.toString());
         throw new IllegalStateException("", ioe);
       }
@@ -1592,7 +1591,7 @@ try { if (ms != null) {
 
     @Test
     public void TestBoundaryReading() {
-      byte[] body;
+      byte[] bodyBytes;
       Message msg;
       String message;
       String messageStart = "MIME-Version: 1.0\r\n";
@@ -1665,12 +1664,12 @@ try { if (ms != null) {
       }
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
-      body = msg.getParts().get(0).GetBody();
-      Assert.assertEquals(0, body.charAt(0));
-      Assert.assertEquals(16, body.charAt(1));
-      Assert.assertEquals(1, body.charAt(2));
-      Assert.assertEquals(93, body.charAt(3));
-      Assert.assertEquals(4, body.length());
+      bodyBytes = msg.getParts().get(0).GetBody();
+      Assert.assertEquals(0, bodyBytes[0]);
+      Assert.assertEquals(16, bodyBytes[1]);
+      Assert.assertEquals(1, bodyBytes[2]);
+      Assert.assertEquals(93, bodyBytes[3]);
+      Assert.assertEquals(4, bodyBytes.length);
       // Base64 body part II
       message = messageStart;
       message += "Content-Type: application/octet-stream\r\n";
@@ -1688,12 +1687,12 @@ try { if (ms != null) {
       }
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
-      body = msg.getParts().get(0).GetBody();
-      Assert.assertEquals(0, body.charAt(0));
-      Assert.assertEquals(16, body.charAt(1));
-      Assert.assertEquals(1, body.charAt(2));
-      Assert.assertEquals(93, body.charAt(3));
-      Assert.assertEquals(4, body.length());
+      bodyBytes = msg.getParts().get(0).GetBody();
+      Assert.assertEquals(0, bodyBytes[0]);
+      Assert.assertEquals(16, bodyBytes[1]);
+      Assert.assertEquals(1, bodyBytes[2]);
+      Assert.assertEquals(93, bodyBytes[3]);
+      Assert.assertEquals(4, bodyBytes.length);
       // Base64 in nested body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1715,12 +1714,12 @@ try { if (ms != null) {
       Assert.assertEquals(1, msg.getParts().size());
       Message part = msg.getParts().get(0);
       Assert.assertEquals("application", part.getParts().get(0).getContentType().getTopLevelType());
-      body = part.getParts().get(0).GetBody();
-      Assert.assertEquals(0, body.charAt(0));
-      Assert.assertEquals(16, body.charAt(1));
-      Assert.assertEquals(1, body.charAt(2));
-      Assert.assertEquals(93, body.charAt(3));
-      Assert.assertEquals(4, body.length());
+      bodyBytes = part.getParts().get(0).GetBody();
+      Assert.assertEquals(0, bodyBytes[0]);
+      Assert.assertEquals(16, bodyBytes[1]);
+      Assert.assertEquals(1, bodyBytes[2]);
+      Assert.assertEquals(93, bodyBytes[3]);
+      Assert.assertEquals(4, bodyBytes.length);
       // Nested Multipart body part II
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -2424,9 +2423,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestFileName() {
-      String[] fn = ContentDispositionTest.FileNames;
-      for (int i = 0; i < fn.length(); i += 2) {
-        TestFileNameOne(fn.charAt(i), fn.charAt(i + 1));
+      String[] fileNames = ContentDispositionTest.FileNames;
+      for (int i = 0; i < fileNames.length; i += 2) {
+        TestFileNameOne(fileNames[i], fileNames[i + 1]);
       }
     }
     @Test

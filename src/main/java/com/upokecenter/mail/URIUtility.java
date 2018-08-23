@@ -317,7 +317,8 @@ private URIUtility() {
       // Quick check
       boolean quickCheck = true;
       int lastIndex = 0;
-      for (int i = 0; i < str.length(); ++i) {
+      int i = 0;
+      for (;i < str.length(); ++i) {
         if (str.charAt(i) >= 0xd800 || str.charAt(i) == '%') {
           quickCheck = false;
           lastIndex = i;
@@ -335,7 +336,7 @@ private URIUtility() {
       int lower = 0x80;
       int upper = 0xbf;
       int markedPos = -1;
-      for (var i = lastIndex; i < str.length(); ++i) {
+      for (i = lastIndex; i < str.length(); ++i) {
         int c = str.charAt(i);
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
             str.charAt(i + 1) >= 0xdc00 && str.charAt(i + 1) <= 0xdfff) {
@@ -350,7 +351,7 @@ private URIUtility() {
             int a = ToHex(str.charAt(i + 1));
             int b = ToHex(str.charAt(i + 2));
             if (a >= 0 && b >= 0) {
-              b = (byte)(a * 16 + b);
+              b = a * 16 + b;
               i += 2;
               // b now contains the byte read
               if (bytesNeeded == 0) {
@@ -864,7 +865,7 @@ public static String BuildIRI(
       }
       if (s.charAt(index) == ':' ||
           isHexChar(s.charAt(index))) {
-     var startIndex = index;
+     int startIndex = index;
 while (index < endOffset && ((s.charAt(index) >= 65 && s.charAt(index) <= 70) ||
   (s.charAt(index) >= 97 && s.charAt(index) <= 102) || (s.charAt(index) >= 48 && s.charAt(index)
   <= 58) || (s.charAt(index) == 46))) {
@@ -875,7 +876,7 @@ if (index >= endOffset || (s.charAt(index) != ']' && s.charAt(index) != '%')) {
 }
 // NOTE: Array is initialized to zeros
 int[] addressParts = new int[8];
-var ipEndIndex = index;
+int ipEndIndex = index;
 boolean doubleColon = false;
 int doubleColonPos = 0;
 int totalParts = 0;
@@ -1202,16 +1203,19 @@ totalParts += 2;
     }
 
     public static String[] splitIRIToStrings(String s) {
-      int[] ret = splitIRI(s);
-if (ret == null) {
+      int[] indexes = splitIRI(s);
+if (indexes == null) {
  return null;
 }
 return new String[] {
- ret.charAt(0) < 0 ? null : ToLowerCaseAscii(s.substring(ret.charAt(0), (ret.charAt(0))+(ret.charAt(1) - ret.charAt(0)))),
- ret.charAt(2) < 0 ? null : s.substring(ret.charAt(2), (ret.charAt(2))+(ret.charAt(3) - ret.charAt(2))),
- ret.charAt(4) < 0 ? null : s.substring(ret.charAt(4), (ret.charAt(4))+(ret.charAt(5) - ret.charAt(4))),
- ret.charAt(6) < 0 ? null : s.substring(ret.charAt(6), (ret.charAt(6))+(ret.charAt(7) - ret.charAt(6))),
- ret.charAt(8) < 0 ? null : s.substring(ret.charAt(8), (ret.charAt(8))+(ret.charAt(9) - ret.charAt(8)))
+ indexes[0] < 0 ? null : ToLowerCaseAscii(
+  s.substring(
+  indexes[0], (
+  indexes[0])+(indexes[1] - indexes[0]))),
+ indexes[2] < 0 ? null : s.substring(indexes[2], (indexes[2])+(indexes[3] - indexes[2])),
+ indexes[4] < 0 ? null : s.substring(indexes[4], (indexes[4])+(indexes[5] - indexes[4])),
+ indexes[6] < 0 ? null : s.substring(indexes[6], (indexes[6])+(indexes[7] - indexes[6])),
+ indexes[8] < 0 ? null : s.substring(indexes[8], (indexes[8])+(indexes[9] - indexes[8]))
 };
     }
 

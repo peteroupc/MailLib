@@ -83,7 +83,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a text media type
     /// ("text/*").</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise,.
+    /// <value><c>true</c> If this is a text media type; otherwise, .
     /// <c>false</c>.</value>
     public bool IsText {
       get {
@@ -93,7 +93,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value><c>true</c> If this is a multipart media type; otherwise,.
+    /// <value><c>true</c> If this is a multipart media type; otherwise, .
     /// <c>false</c>.</value>
     public bool IsMultipart {
       get {

@@ -8523,8 +8523,8 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     private void TestMatchBasicNone(string[] langranges, string str) {
       IList<string> r = LanguageTags.LanguageTagFilter(
-        langranges,
-        new string[] { str },
+        new List<string>(langranges),
+        new List<string>(new string[] { str }),
         false,
  false);
       Assert.AreEqual(0, r.Count);
@@ -8532,8 +8532,8 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     private void TestMatchBasicContained(string[] langranges, string str) {
       IList<string> r = LanguageTags.LanguageTagFilter(
-        langranges,
-        new string[] { str },
+        new List<string>(langranges),
+        new List<string>(new string[] { str }),
         false,
  false);
       Assert.IsTrue(r.Count > 0);
@@ -8573,16 +8573,16 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
       string data2 = DataUrls.MakeDataUrl(bytes, mt);
       MediaType mt2 = DataUrls.DataUrlMediaType(data2);
       byte[] bytes2 = DataUrls.DataUrlBytes(data2);
-      Test.TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      TestCommon.AssertByteArraysEqual(bytes, bytes2);
       Assert.AreEqual(mt, mt2, data);
     }
 
     private static void TestEmptyPathOne(string uri) {
-      int[] iri = Test.URIUtility.splitIRI(uri);
+      int[] iri = URIUtility.splitIRI(uri);
       if (iri == null) {
  Assert.Fail();
  }
-      Assert.GreaterOrEqual(iri[4], 0);
+      Assert.IsTrue(iri[4] >= 0);
       Assert.AreEqual(iri[4], iri[5]);
     }
 

@@ -231,7 +231,8 @@ Generates a list of NamedAddress objects from a comma-separated list of addresse
 
 <b>Return Value:</b>
 
-A list of addresses generated from the "addressValue" parameter.
+A list of addresses generated from the  <i>addressValue</i>
+ parameter.
 
 ### ToString
 

@@ -60,7 +60,7 @@ if (type.Length == 0) {
 
     /// <summary>Gets a value indicating whether this is a text media
     /// type.</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise,.
+    /// <value><c>true</c> If this is a text media type; otherwise, .
     /// <c>false</c>.</value>
 [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
@@ -72,7 +72,7 @@ if (type.Length == 0) {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value><c>true</c> If this is a multipart media type; otherwise,.
+    /// <value><c>true</c> If this is a multipart media type; otherwise, .
     /// <c>false</c>.</value>
 [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]

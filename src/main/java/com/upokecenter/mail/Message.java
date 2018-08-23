@@ -1059,8 +1059,8 @@ try { if (ms != null) {
       return bodyPart;
     }
     private static String BaseName(String filename) {
-      var i = filename.length()-1;
-      for (; i >= 0; --i) {
+      int i = 0;
+      for (i = filename.length()-1; i >= 0; --i) {
         if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
           return filename.substring(i + 1);
         }
@@ -1069,8 +1069,8 @@ try { if (ms != null) {
     }
 
     private static String ExtensionName(String filename) {
-      var i = filename.length()-1;
-      for (; i >= 0; --i) {
+      int i = 0;
+      for (i = filename.length()-1; i >= 0; --i) {
         if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
           return "";
         } else if (filename.charAt(i) == '.') {
@@ -1177,8 +1177,8 @@ try { if (ms != null) {
      * .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md,
      * .markdown, or .srt, the media type will have a "charset" of "utf-8".
      * @return A Message object for the generated attachment.
-     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
-     * "mediaType" is null.
+     * @throws java.lang.NullPointerException The parameter {@code inputStream} is
+     * null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, String filename) {
@@ -1346,7 +1346,7 @@ private static String GetContentTranslationType(String ctt) {
         // Fall back
         Message firstmsg = this.getParts().get(1);
         Message lastPart = this.getParts().get(this.getParts().size() - 1);
-        List<String> zxx = new ArrayList<String>(new String[] { "zxx" });
+        List<String> zxx = Arrays.asList(new String[] { "zxx" });
         clang = LanguageTags.GetLanguageList(
           lastPart.GetHeader("content-language"));
         if (clang != null) {
@@ -1385,6 +1385,7 @@ private static String GetContentTranslationType(String ctt) {
         throw new IllegalArgumentException("messages.size() (" + messages.size() +
           ") is not equal to " + (languages.size()));
       }
+      StringBuilder prefaceBody;
       for (int i = 0; i < messages.size(); ++i) {
         if (messages.get(i) == null) {
  throw new IllegalArgumentException("messages");
@@ -1401,7 +1402,7 @@ private static String GetContentTranslationType(String ctt) {
             lang + " is an invalid list of language tags");
           }
         }
-      StringBuilder prefaceBody = new StringBuilder().append("This is a multilingual " +
+       prefaceBody= new StringBuilder().append("This is a multilingual " +
         "message, a message that\r\ncan be read in one or more different " +
         "languages. Each\r\npart of the message may appear inline, as an " +
         "attachment, or both.\r\n\r\n");
@@ -1447,13 +1448,14 @@ private static String GetContentTranslationType(String ctt) {
       Message msg = new Message();
       msg.setContentType(MediaType.Parse("multipart/multilingual"));
       msg.SetHeader("from", fromHeader);
-      msg.setContentDisposition(PeterO.Mail.ContentDisposition.Inline);
+      msg.setContentDisposition(ContentDisposition.Parse("inline"));
       String toHeader = messages.get(0).GetHeader("to");
+      Message preface;
       if (toHeader != null) {
         msg.SetHeader("to", toHeader);
       }
       msg.SetHeader("subject", prefaceSubject.toString());
-      var preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
+      preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
       preface.SetTextBody(prefaceBody.toString());
       for (int i = 0; i < messages.size(); ++i) {
         MediaType mt=MediaType.Parse("message/rfc822");
