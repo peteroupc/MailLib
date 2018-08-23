@@ -2,7 +2,7 @@
 
     public class DispositionBuilder extends Object
 
-Description of DispositionBuilder.
+A mutable data type that allows a content disposition to be built.
 
 ## Methods
 

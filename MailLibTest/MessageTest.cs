@@ -9,7 +9,7 @@ namespace MailLibTest {
   [TestFixture]
   public class MessageTest {
     [Test]
-    public static void TestPseudoboundary() {
+    public void TestPseudoboundary() {
       string msgstr =
 
   "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed;boundary=BOUNDARY\r\nContent-Encoding: 7bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n"
@@ -362,7 +362,7 @@ Assert.AreEqual(
             Assert.AreEqual(stringPart, msg.Parts[1].BodyString);
           }
         }
-      } catch (IOException ioe) {
+      } catch (Exception ioe) {
         Assert.Fail(ioe.ToString());
         throw new InvalidOperationException(String.Empty, ioe);
       }
@@ -1567,7 +1567,7 @@ Assert.AreEqual(
 
     [Test]
     public void TestBoundaryReading() {
-      byte[] body;
+      byte[] bodyBytes;
       Message msg;
       string message;
       string messageStart = "MIME-Version: 1.0\r\n";
@@ -1640,12 +1640,12 @@ Assert.AreEqual(
       }
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("application", msg.Parts[0].ContentType.TopLevelType);
-      body = msg.Parts[0].GetBody();
-      Assert.AreEqual(0, body[0]);
-      Assert.AreEqual(16, body[1]);
-      Assert.AreEqual(1, body[2]);
-      Assert.AreEqual(93, body[3]);
-      Assert.AreEqual(4, body.Length);
+      bodyBytes = msg.Parts[0].GetBody();
+      Assert.AreEqual(0, bodyBytes[0]);
+      Assert.AreEqual(16, bodyBytes[1]);
+      Assert.AreEqual(1, bodyBytes[2]);
+      Assert.AreEqual(93, bodyBytes[3]);
+      Assert.AreEqual(4, bodyBytes.Length);
       // Base64 body part II
       message = messageStart;
       message += "Content-Type: application/octet-stream\r\n";
@@ -1663,12 +1663,12 @@ Assert.AreEqual(
       }
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("application", msg.Parts[0].ContentType.TopLevelType);
-      body = msg.Parts[0].GetBody();
-      Assert.AreEqual(0, body[0]);
-      Assert.AreEqual(16, body[1]);
-      Assert.AreEqual(1, body[2]);
-      Assert.AreEqual(93, body[3]);
-      Assert.AreEqual(4, body.Length);
+      bodyBytes = msg.Parts[0].GetBody();
+      Assert.AreEqual(0, bodyBytes[0]);
+      Assert.AreEqual(16, bodyBytes[1]);
+      Assert.AreEqual(1, bodyBytes[2]);
+      Assert.AreEqual(93, bodyBytes[3]);
+      Assert.AreEqual(4, bodyBytes.Length);
       // Base64 in nested body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1690,12 +1690,12 @@ Assert.AreEqual(
       Assert.AreEqual(1, msg.Parts.Count);
       Message part = msg.Parts[0];
       Assert.AreEqual("application", part.Parts[0].ContentType.TopLevelType);
-      body = part.Parts[0].GetBody();
-      Assert.AreEqual(0, body[0]);
-      Assert.AreEqual(16, body[1]);
-      Assert.AreEqual(1, body[2]);
-      Assert.AreEqual(93, body[3]);
-      Assert.AreEqual(4, body.Length);
+      bodyBytes = part.Parts[0].GetBody();
+      Assert.AreEqual(0, bodyBytes[0]);
+      Assert.AreEqual(16, bodyBytes[1]);
+      Assert.AreEqual(1, bodyBytes[2]);
+      Assert.AreEqual(93, bodyBytes[3]);
+      Assert.AreEqual(4, bodyBytes.Length);
       // Nested Multipart body part II
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -2394,9 +2394,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestFileName() {
-      string[] fn = ContentDispositionTest.FileNames;
-      for (var i = 0; i < fn.Length; i += 2) {
-        TestFileNameOne(fn[i], fn[i + 1]);
+      string[] fileNames = ContentDispositionTest.FileNames;
+      for (var i = 0; i < fileNames.Length; i += 2) {
+        TestFileNameOne(fileNames[i], fileNames[i + 1]);
       }
     }
     [Test]

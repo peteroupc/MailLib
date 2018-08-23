@@ -11,7 +11,7 @@ import java.util.*;
 import com.upokecenter.util.*;
 
     /**
-     * Description of DispositionBuilder.
+     * A mutable data type that allows a content disposition to be built.
      */
   public class DispositionBuilder {
     private final Map<String, String> parameters;

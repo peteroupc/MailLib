@@ -1,4 +1,4 @@
-package com.upokecenter.enriched;
+package com.upokecenter.test; import com.upokecenter.util.*;
 
 import java.util.*;
 
@@ -195,15 +195,20 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
 
     /**
      * Not documented yet.
-     * @param s The parameter {@code s} is not documented yet.
-     * @param delimiter The parameter {@code delimiter} is not documented yet.
+     * @param str Not documented yet.
+     * @param delimiter Not documented yet.
      * @return A string[] object.
+     * @throws NullPointerException The parameter {@code delimiter} is null.
+     * @throws IllegalArgumentException Delimiter is empty.
      */
-    private static String[] SplitAt(String s, String delimiter) {
-      if (delimiter == null || delimiter.length() == 0) {
-        throw new IllegalArgumentException();
+    private static String[] SplitAt(String str, String delimiter) {
+      if (delimiter == null) {
+        throw new NullPointerException("delimiter");
       }
-      if (s == null || s.length() == 0) {
+      if (delimiter.length() == 0) {
+        throw new IllegalArgumentException("delimiter is empty.");
+      }
+      if (((str) == null || (str).length() == 0)) {
         return new String[] { "" };
       }
       int index = 0;
@@ -211,25 +216,25 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       ArrayList<String> strings = null;
       int delimLength = delimiter.length();
       while (true) {
-        int index2 = s.indexOf(
-  delimiter, index);
+        int index2 = str.indexOf(delimiter, index);
         if (index2 < 0) {
           if (first) {
-            return new String[] { s };
+            String[] strret = new String[1];
+            strret[0] = str;
+            return strret;
           }
-          strings.add(s.substring(index));
+          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings.add(str.substring(index));
           break;
         } else {
-          if (first) {
-            strings = new ArrayList<String>();
-            first = false;
-          }
-          String newstr = s.substring(index, (index)+(index2 - index));
+          first = false;
+          String newstr = str.substring(index, (index)+((index2) - index));
+          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
         }
       }
-      return strings.ToArray();
+      return strings.toArray(new String[] { });
     }
 
     /**

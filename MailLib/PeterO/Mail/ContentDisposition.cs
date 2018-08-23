@@ -57,7 +57,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether the disposition type is
     /// inline.</summary>
-    /// <value><c>true</c> If the disposition type is inline; otherwise,.
+    /// <value><c>true</c> If the disposition type is inline; otherwise, .
     /// <c>false</c>.</value>
     public bool IsInline {
       get {
@@ -68,7 +68,7 @@ namespace PeterO.Mail {
     /// <summary>Gets a value indicating whether the disposition type is
     /// attachment.</summary>
     /// <value><c>true</c> If the disposition type is attachment;
-    /// otherwise,. <c>false</c>.</value>
+    /// otherwise, . <c>false</c>.</value>
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment");

@@ -675,8 +675,8 @@ return GetAddresses("to");
       return bodyPart;
     }
     private static string BaseName(string filename) {
-      var i = filename.Length-1;
-      for (; i >= 0; --i) {
+      var i = 0;
+      for (i = filename.Length-1; i >= 0; --i) {
         if (filename[i] == '\\' || filename[i] == '/') {
           return filename.Substring(i + 1);
         }
@@ -685,8 +685,8 @@ return GetAddresses("to");
     }
 
     private static string ExtensionName(string filename) {
-      var i = filename.Length-1;
-      for (; i >= 0; --i) {
+      var i = 0;
+      for (i = filename.Length-1; i >= 0; --i) {
         if (filename[i] == '\\' || filename[i] == '/') {
           return String.Empty;
         } else if (filename[i] == '.') {
@@ -765,27 +765,8 @@ return GetAddresses("to");
       return AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
-    /// <summary>Adds an attachment to this message in the form of data
-    /// from the given readable stream, and with the given file name.
-    /// Before the new attachment is added, if this message isn't already a
-    /// multipart message, it becomes a "multipart/mixed" message with the
-    /// current body converted to an inline body part.</summary>
-    /// <param name='inputStream'>A readable data stream.</param>
-    /// <param name='filename'>A file name to assign to the attachment. Can
-    /// be null or empty, in which case no file name is assigned. Only the
-    /// file name portion of this parameter is used, which in this case
-    /// means the portion of the string after the last "/" or "\", if
-    /// either character exists, or the entire string otherwise An
-    /// appropriate media type (or "application/octet-stream") will be
-    /// assigned to the attachment based on this file name's extension. If
-    /// the file name has an extension .txt, .text, .htm, .html, .shtml,
-    /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
-    /// will have a "charset" of "utf-8".</param>
-    /// <returns>A Message object for the generated attachment.</returns>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='inputStream'/> or "mediaType" is null.</exception>
-    /// <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
-    /// occurred.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
     public Message AddAttachment(Stream inputStream, string filename) {
       return
   AddBodyPart(inputStream, SuggestMediaType(filename), filename, "attachment");
@@ -804,27 +785,8 @@ return GetAddresses("to");
       return AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
-    /// <summary>Adds an inline body part to this message in the form of
-    /// data from the given readable stream, and with the given file name.
-    /// Before the new body part is added, if this message isn't already a
-    /// multipart message, it becomes a "multipart/mixed" message with the
-    /// current body converted to an inline body part.</summary>
-    /// <param name='inputStream'>A readable data stream.</param>
-    /// <param name='filename'>A file name to assign to the inline body
-    /// part. Can be null or empty, in which case no file name is assigned.
-    /// Only the file name portion of this parameter is used, which in this
-    /// case means the portion of the string after the last "/" or "\", if
-    /// either character exists, or the entire string otherwise An
-    /// appropriate media type (or "application/octet-stream") will be
-    /// assigned to the body part based on this file name's extension. If
-    /// the file name has an extension .txt, .text, .htm, .html, .shtml,
-    /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
-    /// will have a "charset" of "utf-8".</param>
-    /// <returns>A Message object for the generated body part.</returns>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='inputStream'/> or "mediaType" is null.</exception>
-    /// <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error
-    /// occurred.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, string filename) {
       return AddBodyPart(inputStream, SuggestMediaType(filename), filename,
         "inline");
@@ -948,6 +910,7 @@ private static string GetContentTranslationType(string ctt) {
         throw new ArgumentException("messages.Count (" + messages.Count +
           ") is not equal to " + (languages.Count));
       }
+      StringBuilder prefaceBody;
       for (var i = 0; i < messages.Count; ++i) {
         if (messages[i] == null) {
  throw new ArgumentException("messages");
@@ -964,7 +927,7 @@ private static string GetContentTranslationType(string ctt) {
             lang + " is an invalid list of language tags");
           }
         }
-      var prefaceBody = new StringBuilder().Append("This is a multilingual " +
+       prefaceBody= new StringBuilder().Append("This is a multilingual " +
         "message, a message that\r\ncan be read in one or more different " +
         "languages. Each\r\npart of the message may appear inline, as an " +
         "attachment, or both.\r\n\r\n");
@@ -1010,13 +973,14 @@ private static string GetContentTranslationType(string ctt) {
       var msg = new Message();
       msg.ContentType = MediaType.Parse("multipart/multilingual");
       msg.SetHeader("from", fromHeader);
-      msg.ContentDisposition = PeterO.Mail.ContentDisposition.Inline;
+      msg.ContentDisposition = ContentDisposition.Parse("inline");
       string toHeader = messages[0].GetHeader("to");
+      Message preface;
       if (toHeader != null) {
         msg.SetHeader("to", toHeader);
       }
       msg.SetHeader("subject", prefaceSubject.ToString());
-      var preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
+      preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
       preface.SetTextBody(prefaceBody.ToString());
       for (var i = 0; i < messages.Count; ++i) {
         MediaType mt=MediaType.Parse("message/rfc822");
@@ -2530,20 +2494,8 @@ if ((ungetState[1]) < 0x80) {
       return true;
     }
 
-    /// <summary>Creates a message object from a MailTo URL. The URL can
-    /// contain key-value pairs that follow a question-mark, as in the
-    /// following example: "mailto:me@example.com?subject=A%20Subject". In
-    /// this example, "subject" is the subject of the email address. Only
-    /// certain keys are supported, namely, "to", "cc", "bcc", "subject",
-    /// "in-reply-to", "comments", "keywords", and "body". The first seven
-    /// are header field names that will be used to set the returned
-    /// message's corresponding header fields. The last, "body", sets the
-    /// body of the message to the given text. Keys other than these eight
-    /// will be ignored.</summary>
-    /// <param name='url'>A string representing a MailTo URL.</param>
-    /// <returns>A Message object created from the given MailTo URL. Returs
-    /// null if <paramref name='url'/> is null, is syntactically invalid,
-    /// or is not a MailTo URL.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
     public static Message FromMailtoUrl(string url) {
       return MailtoUrls.MailtoUrlMessage(url);
     }

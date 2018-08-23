@@ -435,20 +435,22 @@ if (str == null) {
       int rangeIndex = 1;
       int tagIndex = 1;
       while (rangeIndex < rangeSub.length) {
-        if (rangeSub[rangeIndex].length == 0) {
+     String range = rangeSub[rangeIndex];
+        if (range.length() == 0) {
           return false;
         }
-        if (rangeSub[rangeIndex].equals("*")) {
+        if (range.equals("*")) {
           continue;
         }
         if (tagIndex >= tagSub.length) {
           return false;
         }
-        if (rangeSub[rangeIndex].equals(tagSub[tagIndex])) {
+String tag = tagSub[tagIndex];
+        if (range.equals(tag)) {
           ++rangeIndex;
           ++tagIndex;
         }
-        if (tagSub[tagIndex].length == 1) {
+        if (tag.length() == 1) {
           return false;
         }
         ++tagIndex;
@@ -547,8 +549,8 @@ if (str == null) {
      */
     public static boolean MatchesLanguageTag(String range, String tag) {
       List<String> tags = LanguageTagFilter(
-        new ArrayList<String>(new String[] { range }),
-        new ArrayList<String>(new String[] { tag }),
+        Arrays.asList(new String[] { range }),
+        Arrays.asList(new String[] { tag }),
         false,
  false);
       return tags.size() > 0;
@@ -592,7 +594,7 @@ if (str == null) {
   String defaultValue,
   boolean extended) {
       return LanguageTagLookup(
-        new ArrayList<String>(new String[] { range }),
+        Arrays.asList(new String[] { range }),
         languages,
         defaultValue,
         extended);

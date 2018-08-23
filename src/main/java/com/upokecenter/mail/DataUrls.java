@@ -115,13 +115,14 @@ private DataUrls() {
         // even if longer than 76 characters,
         // since RFC 2397 doesn't state otherwise
         // (see RFC 4648).
-        PeterO.ArrayWriter aw = new PeterO.ArrayWriter();
+        ArrayWriter aw = new ArrayWriter();
+int i = 0;
         if (usesBase64) {
           int base64Length = path.length() - (mediaTypePart + 1);
           if ((base64Length % 4) != 0) {
             return null;
           }
-          for (var i = mediaTypePart + 1; i < path.length(); i += 4) {
+          for (i = mediaTypePart + 1; i < path.length(); i += 4) {
             boolean lastBlock = i + 4 >= path.length();
             int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
             b1 = (path.charAt(i) > 0x7f) ? -1 : Alphabet[(int)path.charAt(i)];
@@ -146,7 +147,7 @@ private DataUrls() {
             }
           }
         } else {
-          for (var i = mediaTypePart + 1; i < path.length();) {
+          for (i = mediaTypePart + 1; i < path.length();) {
             if (path.charAt(i) == '%') {
               // NOTE: No further character checking done here
               // because splitURI already did all needed pct-encoding checking

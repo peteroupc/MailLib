@@ -38,8 +38,8 @@ import com.upokecenter.text.*;
       }
 
 private static String DomainToString(String domain, boolean useALabelDomain) {
- var dom = domain;
- if (useALabelDomain && dom.length > 0 && dom.get(0) != '[') {
+ String dom = domain;
+ if (useALabelDomain && dom.length() > 0 && dom.charAt(0) != '[') {
   dom = Idna.EncodeDomainName(domain);
  }
  return dom;

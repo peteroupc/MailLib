@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PeterO.Enriched {
+namespace PeterO {
     /// <summary>Not documented yet.</summary>
   public static class EnrichedText {
     /// <summary>Not documented yet.</summary>
@@ -194,44 +194,46 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='s'>The parameter <paramref name='s'/> is not
-    /// documented yet.</param>
-    /// <param name='delimiter'>The parameter <paramref name='delimiter'/>
-    /// is not documented yet.</param>
+    /// <param name='str'>Not documented yet.</param>
+    /// <param name='delimiter'>Not documented yet.</param>
     /// <returns>A string[] object.</returns>
-    private static string[] SplitAt(string s, string delimiter) {
-      if (delimiter == null || delimiter.Length == 0) {
-        throw new ArgumentException();
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='delimiter'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Delimiter is empty.</exception>
+    private static string[] SplitAt(string str, string delimiter) {
+      if (delimiter == null) {
+        throw new ArgumentNullException(nameof(delimiter));
       }
-      if (s == null || s.Length == 0) {
-        return new string[] { String.Empty };
+      if (delimiter.Length == 0) {
+        throw new ArgumentException("delimiter is empty.");
+      }
+      if (String.IsNullOrEmpty(str)) {
+        return new[] { String.Empty };
       }
       var index = 0;
       var first = true;
       List<string> strings = null;
       int delimLength = delimiter.Length;
       while (true) {
-        int index2 = s.IndexOf(
-  delimiter,
-  index,
-  StringComparison.Ordinal);
+        int index2 = str.IndexOf(delimiter, index, StringComparison.Ordinal);
         if (index2 < 0) {
           if (first) {
-            return new string[] { s };
+            var strret = new string[1];
+            strret[0] = str;
+            return strret;
           }
-          strings.Add(s.Substring(index));
+          strings = strings ?? (new List<string>());
+          strings.Add(str.Substring(index));
           break;
         } else {
-          if (first) {
-            strings = new List<string>();
-            first = false;
-          }
-          string newstr = s.Substring(index, index2 - index);
+          first = false;
+          string newstr = str.Substring(index, (index2) - index);
+          strings = strings ?? (new List<string>());
           strings.Add(newstr);
           index = index2 + delimLength;
         }
       }
-      return strings.ToArray();
+      return (string[])strings.ToArray();
     }
 
     /// <summary>Not documented yet.</summary>

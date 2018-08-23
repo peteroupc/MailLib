@@ -312,7 +312,7 @@ if (this.innerBufferCount < this.innerBufferIndex) {
 
     /// <summary>Gets a value indicating whether a new body part was
     /// detected.</summary>
-    /// <value><c>true</c> If a new body part was detected; otherwise,.
+    /// <value><c>true</c> If a new body part was detected; otherwise, .
     /// <c>false</c>.</value>
     public bool HasNewBodyPart {
       get {

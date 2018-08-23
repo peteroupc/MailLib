@@ -324,7 +324,10 @@ import java.util.*;
         }
       }
       this.address = null;
-      this.groupAddresses = new ArrayList<NamedAddress>(mailboxes);
+      this.groupAddresses = new ArrayList<NamedAddress>();
+      for (NamedAddress mailbox : mailboxes) {
+         this.groupAddresses.add(mailbox);
+      }
     }
 
     private final List<NamedAddress> groupAddresses;

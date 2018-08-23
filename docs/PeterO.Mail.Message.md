@@ -309,8 +309,6 @@ Adds an attachment to this message in the form of data from the given readable s
 
  * <i>inputStream</i>: A readable data stream.
 
- * <i>mediaType</i>: A media type to assign to the attachment.
-
  * <i>filename</i>: A file name to assign to the attachment. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise An appropriate media type (or "application/octet-stream") will be assigned to the attachment based on this file name's extension. If the file name has an extension .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type will have a "charset" of "utf-8".
 
 <b>Return Value:</b>
@@ -321,8 +319,7 @@ A Message object for the generated attachment.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
+ or "mediaType" is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -471,8 +468,6 @@ Adds an inline body part to this message in the form of data from the given read
 
  * <i>inputStream</i>: A readable data stream.
 
- * <i>mediaType</i>: A media type to assign to the attachment.
-
  * <i>filename</i>: A file name to assign to the inline body part. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise An appropriate media type (or "application/octet-stream") will be assigned to the body part based on this file name's extension. If the file name has an extension .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type will have a "charset" of "utf-8".
 
 <b>Return Value:</b>
@@ -483,8 +478,7 @@ A Message object for the generated body part.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
+ or "mediaType" is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -536,7 +530,8 @@ Creates a message object from a MailTo URL. The URL can contain key-value pairs 
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URL. Returs null if "url" is null, is syntactically invalid, or is not a MailTo URL.
+A Message object created from the given MailTo URL. Returs null if  <i>url</i>
+ is null, is syntactically invalid, or is not a MailTo URL.
 
 ### Generate
 

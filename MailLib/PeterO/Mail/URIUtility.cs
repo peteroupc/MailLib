@@ -267,7 +267,8 @@ using System.Text;
       // Quick check
       var quickCheck = true;
       var lastIndex = 0;
-      for (var i = 0; i < str.Length; ++i) {
+      var i = 0;
+      for (;i < str.Length; ++i) {
         if (str[i] >= 0xd800 || str[i] == '%') {
           quickCheck = false;
           lastIndex = i;
@@ -285,7 +286,7 @@ using System.Text;
       var lower = 0x80;
       var upper = 0xbf;
       var markedPos = -1;
-      for (var i = lastIndex; i < str.Length; ++i) {
+      for (i = lastIndex; i < str.Length; ++i) {
         int c = str[i];
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
             str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
@@ -300,7 +301,7 @@ using System.Text;
             int a = ToHex(str[i + 1]);
             int b = ToHex(str[i + 2]);
             if (a >= 0 && b >= 0) {
-              b = (byte)(a * 16 + b);
+              b = a * 16 + b;
               i += 2;
               // b now contains the byte read
               if (bytesNeeded == 0) {
@@ -803,7 +804,7 @@ public static string BuildIRI(
       }
       if (s[index] == ':' ||
           isHexChar(s[index])) {
-     var startIndex = index;
+     int startIndex = index;
 while (index < endOffset && ((s[index] >= 65 && s[index] <= 70) ||
   (s[index] >= 97 && s[index] <= 102) || (s[index] >= 48 && s[index]
   <= 58) || (s[index] == 46))) {
@@ -814,7 +815,7 @@ if (index >= endOffset || (s[index] != ']' && s[index] != '%')) {
 }
 // NOTE: Array is initialized to zeros
 int[] addressParts = new int[8];
-var ipEndIndex = index;
+int ipEndIndex = index;
 var doubleColon = false;
 var doubleColonPos = 0;
 var totalParts = 0;
@@ -1097,7 +1098,7 @@ totalParts += 2;
       if (str == null) {
         return null;
       }
-      var len = str.Length;
+      int len = str.Length;
       var c = (char)0;
       var hasUpperCase = false;
       for (var i = 0; i < len; ++i) {
@@ -1123,16 +1124,19 @@ totalParts += 2;
     }
 
     public static string[] splitIRIToStrings(string s) {
-      int[] ret = splitIRI(s);
-if (ret == null) {
+      int[] indexes = splitIRI(s);
+if (indexes == null) {
  return null;
 }
 return new string[] {
- ret[0] < 0 ? null : ToLowerCaseAscii(s.Substring(ret[0], ret[1] - ret[0])),
- ret[2] < 0 ? null : s.Substring(ret[2], ret[3] - ret[2]),
- ret[4] < 0 ? null : s.Substring(ret[4], ret[5] - ret[4]),
- ret[6] < 0 ? null : s.Substring(ret[6], ret[7] - ret[6]),
- ret[8] < 0 ? null : s.Substring(ret[8], ret[9] - ret[8])
+ indexes[0] < 0 ? null : ToLowerCaseAscii(
+  s.Substring(
+  indexes[0],
+  indexes[1] - indexes[0])),
+ indexes[2] < 0 ? null : s.Substring(indexes[2], indexes[3] - indexes[2]),
+ indexes[4] < 0 ? null : s.Substring(indexes[4], indexes[5] - indexes[4]),
+ indexes[6] < 0 ? null : s.Substring(indexes[6], indexes[7] - indexes[6]),
+ indexes[8] < 0 ? null : s.Substring(indexes[8], indexes[9] - indexes[8])
 };
     }
 
