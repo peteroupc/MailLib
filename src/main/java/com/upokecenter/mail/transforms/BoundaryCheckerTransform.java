@@ -24,9 +24,12 @@ import com.upokecenter.mail.*;
 
     private void StartInnerBuffer() {
       if (this.innerBufferCount > 0) {
-        System.arraycopy(this.innerBuffer, this.innerBufferIndex,
-          this.innerBuffer, 0,
-          this.innerBufferCount - this.innerBufferIndex);
+        System.arraycopy(
+  this.innerBuffer,
+  this.innerBufferIndex,
+  this.innerBuffer,
+  0,
+  this.innerBufferCount - this.innerBufferIndex);
        this.innerBufferCount -= this.innerBufferIndex;
       }
       this.innerBufferIndex = 0;
@@ -83,8 +86,9 @@ import com.upokecenter.mail.*;
       return ret;
     }
 
-    public BoundaryCheckerTransform(IByteReader stream, String
-        initialBoundary) {
+    public BoundaryCheckerTransform(
+  IByteReader stream,
+  String initialBoundary) {
       this.input = stream;
       this.boundaries = new ArrayList<String>();
       this.started = true;
@@ -95,7 +99,7 @@ import com.upokecenter.mail.*;
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-      int c = InnerBufferRead();
+      int c = this.InnerBufferRead();
       if (this.readingHeaders) {
         return c;
       }
@@ -108,13 +112,13 @@ import com.upokecenter.mail.*;
       if (c == '-' && this.started) {
         // Check for a boundary at the start
         // of the body part
-        StartInnerBuffer();
-        c = InnerBufferReadAndStore();
+        this.StartInnerBuffer();
+        c = this.InnerBufferReadAndStore();
         if (c == '-') {
           // Possible boundary candidate
           return this.CheckBoundaries(PartStart);
         }
-        ResetInnerBuffer();
+        this.ResetInnerBuffer();
         return '-';
       }
       this.started = false;
@@ -123,10 +127,11 @@ import com.upokecenter.mail.*;
         return c;
       }
       // CR might signal next boundary or not
-      StartInnerBuffer();
-      if (InnerBufferReadAndStore() != 0x0a ||
-         InnerBufferReadAndStore() != '-' || InnerBufferReadAndStore() != '-') {
-        ResetInnerBuffer();
+      this.StartInnerBuffer();
+      if (this.InnerBufferReadAndStore() != 0x0a ||
+         this.InnerBufferReadAndStore() != '-' ||
+           this.InnerBufferReadAndStore() != '-') {
+        this.ResetInnerBuffer();
         return 0x0d;
       }
       // Possible boundary candidate
@@ -152,7 +157,7 @@ import com.upokecenter.mail.*;
       String matchingBoundary = null;
       int matchingIndex = -1;
       for (int i = 0; i < 72; ++i) {
-        c = InnerBufferReadAndStore();
+        c = this.InnerBufferReadAndStore();
         if (c < 0 || c >= 0x80 || c == 0x0d) {
           lastC = c;
           break;
@@ -181,8 +186,8 @@ import com.upokecenter.mail.*;
       }
       if (matchingBoundary == null) {
         // No matching boundary
-        ResetInnerBuffer();
-        return (state==PartBody ||state==PartEpilogue) ? 0x0d : '-';
+        this.ResetInnerBuffer();
+        return (state == PartBody || state == PartEpilogue) ? 0x0d : '-';
       }
       boolean closingDelim = false;
       // Pop the stack until the matching body part
@@ -196,7 +201,7 @@ import com.upokecenter.mail.*;
           boundaryBuffer[matchingBoundary.length()] == '-' &&
           boundaryBuffer[matchingBoundary.length() + 1] == '-';
       }
-      ClearInnerBuffer();
+      this.ClearInnerBuffer();
       if (closingDelim) {
         // Pop this entry, it's the top of the stack
         this.boundaries.remove(this.boundaries.size() - 1);
@@ -218,7 +223,7 @@ import com.upokecenter.mail.*;
         }
         boolean unget = true;
         while (true) {
-          c = unget ? lastC : InnerBufferRead();
+          c = unget ? lastC : this.InnerBufferRead();
           unget = false;
           if (c < 0) {
             // The body higher up didn't end yet
@@ -226,17 +231,17 @@ import com.upokecenter.mail.*;
           }
           if (c == 0x0d) {
             // CR might signal next boundary or not
-            c = InnerBufferRead();
+            c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
  unget = true;
 }
             if (c == 0x0a) {
               // Start of new body part
-              StartInnerBuffer();
-              if (InnerBufferReadAndStore() != '-' ||
-                InnerBufferReadAndStore() != '-') {
+              this.StartInnerBuffer();
+              if (this.InnerBufferReadAndStore() != '-' ||
+                this.InnerBufferReadAndStore() != '-') {
                 // No boundary delimiter
-                ResetInnerBuffer();
+                this.ResetInnerBuffer();
               } else {
                 if (this.CheckBoundaries(PartEpilogue) == -1) {
                   return -1;
@@ -251,14 +256,14 @@ import com.upokecenter.mail.*;
         // next body part).
         boolean unget = true;
         while (true) {
-          c = unget ? lastC : InnerBufferRead();
+          c = unget ? lastC : this.InnerBufferRead();
           unget = false;
           if (c < 0) {
             // The body higher up didn't end yet
             throw new MessageDataException("Premature end of message");
           }
           if (c == 0x0d) {
-            c = InnerBufferRead();
+            c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
  unget = true;
 }

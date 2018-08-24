@@ -28,9 +28,9 @@ namespace PeterO.Mail {
        // space), and that parentheses can appear in that
        // field only within quoted strings or as comment delimiters.
        int index = startIndex;
-       while (index<endIndex) {
+       while (index < endIndex) {
            int c = str[index];
-           if (c == 0x28||c == 0x29) {
+           if (c == 0x28 || c == 0x29) {
                 // comment found
                 return true;
            } else if (c == 0x22) {
@@ -38,7 +38,7 @@ namespace PeterO.Mail {
                 int
   si = HeaderParser.ParseQuotedStringCore(str, index, endIndex, null);
                     if (si == index) {
- throw new InvalidOperationException("Internal error: "+str);
+ throw new InvalidOperationException("Internal error: " + str);
 }
                     index = si;
            } else {
@@ -48,29 +48,32 @@ namespace PeterO.Mail {
        return false;
     }
 
-    public static void TraverseCFWSAndQuotedStrings(string str, int
-      startIndex, int endIndex, ITokener tokener) {
+    public static void TraverseCFWSAndQuotedStrings(
+  string str,
+  int startIndex,
+  int endIndex,
+  ITokener tokener) {
        // Fills a tokener with "comment" and "quoted-string"
        // tokens. Assumes the portion of the string is a syntactically valid
        // header field according to the Parse method of the header
        // field in question.
       if (tokener != null) {
        int index = startIndex;
-       while (index<endIndex) {
+       while (index < endIndex) {
            int c = str[index];
            if (c == 0x20 || c == 0x0d || c == 0x0a || c == 0x28 || c == 0x29) {
                 // Whitespace or parentheses
                 int state = tokener.GetState();
                 int si = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
                 if (si == index) {
- throw new InvalidOperationException("Internal error: "+str);
+ throw new InvalidOperationException("Internal error: " + str);
 }
-                if (si<endIndex && str[si]==(char)0x22) {
+                if (si < endIndex && str[si] == (char)0x22) {
                     // Note that quoted-string starts with optional CFWS
                     tokener.RestoreState(state);
   si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
                     if (si == index) {
- throw new InvalidOperationException("Internal error: "+str);
+ throw new InvalidOperationException("Internal error: " + str);
 }
                 }
             index = si;
@@ -78,7 +81,7 @@ namespace PeterO.Mail {
              int
   si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
                 if (si == index) {
- throw new InvalidOperationException("Internal error: "+str);
+ throw new InvalidOperationException("Internal error: " + str);
 }
                 index = si;
            } else {
@@ -87,6 +90,7 @@ namespace PeterO.Mail {
        }
        }
     }
+
     public static string ParseGroupList(string str, int index, int endIndex) {
       // NOTE: Assumes the string matches the production "group"
       int tmp = HeaderParser.ParsePhrase(str, index, endIndex, null);
@@ -222,7 +226,7 @@ namespace PeterO.Mail {
               addresses.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
 // } catch (IndexOutOfRangeException ex) {
 // throw new InvalidOperationException(
-  //  "str=" + str + " index=" + index,  // ex);
+  // "str=" + str + " index=" + index,  // ex);
   // }
             lastIndex = tokenEnd;
           }
@@ -231,8 +235,11 @@ namespace PeterO.Mail {
       return addresses;
     }
 
-    public static int ParseWord(string str, int index, int endIndex,
-      StringBuilder builder) {
+    public static int ParseWord(
+  string str,
+  int index,
+  int endIndex,
+  StringBuilder builder) {
       // NOTE: Assumes all CFWS has been read beforehand
       if (index == endIndex) {
  return index;
@@ -364,9 +371,9 @@ namespace PeterO.Mail {
         return index;
       }
       int state = (tokener != null) ? tokener.GetState() : 0;
-      while (index<endIndex) {
+      while (index < endIndex) {
         index = HeaderParser.ParseFWS(str, index, endIndex, null);
-  bool backslash=(index<endIndex && str[index]=='\\');
+  bool backslash = index < endIndex && str[index] == '\\';
   if (backslash) {
  ++index;
 }

@@ -14,7 +14,7 @@ using PeterO.Text;
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.Base64Encoder"]/*'/>
-  sealed class Base64Encoder : ICharacterEncoder {
+  internal sealed class Base64Encoder : ICharacterEncoder {
     internal const int MaxLineLength = 76;
 
     private static readonly byte[] Base64Classic = {

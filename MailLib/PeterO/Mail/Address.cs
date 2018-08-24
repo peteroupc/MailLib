@@ -71,11 +71,11 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
  string domainstr = DomainToString(this.domain, true);
  long length = DataUtilities.GetUtf8Length(lp, true);
  long length2 = DataUtilities.GetUtf8Length(domainstr, true);
- if (length2 + length + 1 <= Message.MaxRecHeaderLineLength-1) {
+ if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
   // Avoid breaking email addresses if it can comfortably
   // fit the recommended line length
-        int tlength=(int)(length2 + length + 1);
-  encoder.AppendSymbolWithLength(lp+"@"+domainstr,tlength);
+        var tlength = (int)(length2 + length + 1);
+  encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
  } else {
         // NOTE: Both lengths can't exceed MaxRecHeaderLineLength,
         // which is well below the maximum value for 32-bit
@@ -90,7 +90,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
     /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]/*'/>
     public override string ToString() {
      var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
-     AppendThisAddress(sa);
+     this.AppendThisAddress(sa);
   return sa.ToString();
     }
 
@@ -102,32 +102,32 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
         // we check if the length exceeds that number (thus excluding the space
         // character of a folded line).
      if
-  (DataUtilities.GetUtf8Length(lp, true)>Message.MaxHardHeaderLineLength
+  (DataUtilities.GetUtf8Length(lp, true) > Message.MaxHardHeaderLineLength
        - 1) {
  return true;
 }
      if
-  (DataUtilities.GetUtf8Length(domainstr, true)>Message.MaxHardHeaderLineLength
-       - 1) {
+(DataUtilities.GetUtf8Length(domainstr, true) >
+    Message.MaxHardHeaderLineLength - 1) {
  return true;
 }
      return
-  (DataUtilities.GetUtf8Length(domain2, true)>Message.MaxHardHeaderLineLength
-       - 1) ? (true) : (false);
-    }
+  (DataUtilities.GetUtf8Length(domain2, true) > Message.MaxHardHeaderLineLength
+       - 1) ? (true) : false; }
+
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
-      if (domain != null) {
-        for (var i = 0; i < domain.Length; ++i) {
-          hashCode *= -1521134295 + domain[i];
+      if (this.domain != null) {
+        for (var i = 0; i < this.domain.Length; ++i) {
+          hashCode *= -1521134295 + this.domain[i];
         }
       }
-      if (localPart != null) {
-        for (var i = 0; i < localPart.Length; ++i) {
-          hashCode *= -1521134295 + localPart[i];
+      if (this.localPart != null) {
+        for (var i = 0; i < this.localPart.Length; ++i) {
+          hashCode *= -1521134295 + this.localPart[i];
         }
       }
       return hashCode;

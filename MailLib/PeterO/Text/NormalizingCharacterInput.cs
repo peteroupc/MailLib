@@ -58,7 +58,7 @@ using System.Collections.Generic;
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
       public NormalizingCharacterInput(string str, Normalization form) {
-        if ((str) == null) {
+        if (str == null) {
   throw new ArgumentNullException(nameof(str));
 }
         this.nci = new NormalizerInput(str, 0, str.Length, form);

@@ -51,13 +51,16 @@ private Rfc2047() {
       return false;
     }
 
-    public static void EncodeComment(HeaderEncoder enc, String str, int
-      index, int endIndex) {
+    public static void EncodeComment(
+  HeaderEncoder enc,
+  String str,
+  int index,
+  int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
 
       int length = endIndex - index;
       if (length < 2 || str.charAt(index) != '(' || str.charAt(endIndex - 1) != ')') {
-        enc.AppendString(str.substring(index, (index)+(length-index)));
+        enc.AppendString(str.substring(index, (index)+(length - index)));
       }
       int nextComment = str.indexOf('(',index + 1);
       int nextBackslash = str.indexOf('\\',index + 1);
@@ -81,8 +84,8 @@ private Rfc2047() {
       if (nextComment < 0 && nextBackslash < 0) {
         // No escapes or nested comments, so it's relatively easy
         enc.AppendSymbol("(");
-        if (length>2) {
-          enc.AppendAsEncodedWords(str.substring(index + 1, (index + 1)+((length-2))));
+        if (length > 2) {
+          enc.AppendAsEncodedWords(str.substring(index + 1, (index + 1)+(length - 2)));
         }
         enc.AppendSymbol(")");
         return;
@@ -233,7 +236,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
     }
 
     // See point 3 of RFC 2047 sec. 5 (but excludes '=')
-    private static final int[] smallchars = {
+    private static final int[] ValueSmallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -242,7 +245,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
 
     // ASCII characters allowed in atoms
-    private static final int[] asciiAtext = {
+    private static final int[] ValueAsciiAtext = {
       0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -267,8 +270,8 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
           break;
         }
         if (context == EncodedWordContext.Phrase &&
-            (encodingChar=='Q' || encodingChar=='q') &&
-            (smallchars[c-0x20]==0 && c!='=')) {
+            (encodingChar == 'Q' || encodingChar == 'q') &&
+            (ValueSmallchars[c - 0x20] == 0 && c != '=')) {
           // NOTE: Smallchars excludes '=' to be consistent
           // with the same array used in HeaderEncoder.
           // We check for '=' here separately. This is
@@ -278,7 +281,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
           break;
         }
         if (context == EncodedWordContext.Phrase &&
-            asciiAtext[c-0x20]==0) {
+            ValueAsciiAtext[c - 0x20] == 0) {
           break;
         }
         ++i;
@@ -747,7 +750,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
    index,
    endIndex,
    builderPhrase);
-        } else if (str.charAt(index)=='.') {
+        } else if (str.charAt(index) == '.') {
           // Dot
           builderPhrase.append(".");
           ++index;

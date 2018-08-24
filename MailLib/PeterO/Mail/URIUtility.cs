@@ -268,7 +268,7 @@ using System.Text;
       var quickCheck = true;
       var lastIndex = 0;
       var i = 0;
-      for (;i < str.Length; ++i) {
+      for (; i < str.Length; ++i) {
         if (str[i] >= 0xd800 || str[i] == '%') {
           quickCheck = false;
           lastIndex = i;
@@ -301,7 +301,7 @@ using System.Text;
             int a = ToHex(str[i + 1]);
             int b = ToHex(str[i + 2]);
             if (a >= 0 && b >= 0) {
-              b = a * 16 + b;
+              b = (a * 16) + b;
               i += 2;
               // b now contains the byte read
               if (bytesNeeded == 0) {

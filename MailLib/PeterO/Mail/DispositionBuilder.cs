@@ -58,10 +58,8 @@ if (type.Length == 0) {
       this.SetDispositionType(type);
     }
 
-    /// <summary>Gets a value indicating whether this is a text media
-    /// type.</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsText"]/*'/>
 [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsText {
@@ -70,10 +68,8 @@ if (type.Length == 0) {
       }
     }
 
-    /// <summary>Gets a value indicating whether this is a multipart media
-    /// type.</summary>
-    /// <value><c>true</c> If this is a multipart media type; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsMultipart"]/*'/>
 [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsMultipart {

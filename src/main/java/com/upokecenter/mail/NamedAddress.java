@@ -56,16 +56,16 @@ import java.util.*;
      */
     @Override public int hashCode() {
       int valueHashCode = -1524613162;
-      if (displayName != null) {
-        for (int i = 0; i < displayName.length(); ++i) {
-          valueHashCode *= -1521134295 + displayName.charAt(i);
+      if (this.displayName != null) {
+        for (int i = 0; i < this.displayName.length(); ++i) {
+          valueHashCode *= -1521134295 + this.displayName.charAt(i);
         }
       }
-      valueHashCode *= -1521134295 + (address == null ? 0 :
-        address.hashCode());
-      valueHashCode *= -1521134295 + (isGroup ? 0 : 1);
-      if (groupAddresses != null) {
-        valueHashCode *= -1521134295 + (groupAddresses.size());
+      valueHashCode *= -1521134295 + (this.address == null ? 0 :
+        this.address.hashCode());
+      valueHashCode *= -1521134295 + (this.isGroup ? 0 : 1);
+      if (this.groupAddresses != null) {
+        valueHashCode *= -1521134295 + this.groupAddresses.size();
       }
       return valueHashCode;
     }
@@ -79,24 +79,25 @@ import java.util.*;
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
       return other != null &&
-      (displayName == null ? other.displayName == null :
-        displayName.equals(other.displayName)) &&
-   (address == null ? other.address == null : address.equals(other.address)) &&
-        isGroup == other.isGroup &&
-          (!isGroup || CollectionUtilities.ListEquals(groupAddresses,
-            other.groupAddresses));
+      (this.displayName == null ? other.displayName == null :
+        this.displayName.equals(other.displayName)) &&
+   (this.address == null ? other.address == null :
+     this.address.equals(other.address)) && this.isGroup == other.isGroup &&
+          (!this.isGroup || CollectionUtilities.ListEquals(
+  this.groupAddresses,
+  other.groupAddresses));
     }
 
     /**
-     *
+     * Not documented yet.
      * @param na A named address object to compare with this one. Can be null.
      * @return Either {@code true} or {@code false} .
      */
     public boolean AddressesEqual(NamedAddress na) {
-      if (na == null || isGroup != na.isGroup) {
+      if (na == null || this.isGroup != na.isGroup) {
         return false;
       }
-      if (isGroup) {
+      if (this.isGroup) {
         if (this.groupAddresses.size() != na.getGroupAddresses().size()) {
           return false;
         }
@@ -171,7 +172,7 @@ import java.util.*;
           groupAddress.AppendThisAddress(enc);
         }
         enc.AppendSymbol(";");
-      } else if (displayName == null) {
+      } else if (this.displayName == null) {
         this.address.AppendThisAddress(enc);
       } else {
         enc.AppendPhrase(this.displayName);
@@ -189,32 +190,32 @@ import java.util.*;
      */
     @Override public String toString() {
       HeaderEncoder enc = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
-      AppendThisAddress(enc);
+      this.AppendThisAddress(enc);
       return enc.toString();
     }
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class. Examples: <ul> <li><code>john@example.com</code> </li> <li><code>"John
-     * Doe" &lt;john@example.com&gt;</code> </li> <li><code>=?utf-8?q?John</code>
-     * <code>=</code> <code>27s_Office?= &lt;john@example.com&gt;</code> </li>
-     * <li><code>John &lt;john@example.com&gt;</code> </li> <li><code>"Group" : Tom
-     * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code> </li>
-     * </ul>
+     * class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
+     * Doe" &lt;john@example.com&gt;</code></li>
+     * <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
+     * &lt;john@example.com&gt;</code></li> <li><code>John
+     * &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
+     * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code></li></ul>
      * @param address A text string identifying a single email address or a group
      * of email addresses. Comments, or text within parentheses, can appear.
      * Multiple email addresses are not allowed unless they appear in the
      * group syntax given above. Encoded words under RFC 2047 that appear
      * within comments or display names will be decoded. <p>An RFC 2047
      * encoded word consists of "=?", a character encoding name, such as
-     * {@code utf-8} , either "?B?" or "?Q?" (in upper or lower case), a
+     * {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
      * series of bytes in the character encoding, further encoded using B or
      * Q encoding, and finally "?=". B encoding uses Base64, while in Q
      * encoding, spaces are changed to "_", equals are changed to "=3D", and
      * most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
      * basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
      * "=" followed by their 2-digit hexadecimal form. An encoded word's
-     * maximum length is 75 characters. See the third example. </p> .
+     * maximum length is 75 characters. See the third example.</p>.
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException The named address has an invalid syntax.
      */

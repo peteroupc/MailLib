@@ -197,8 +197,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
     /// <param name='str'>Not documented yet.</param>
     /// <param name='delimiter'>Not documented yet.</param>
     /// <returns>A string[] object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='delimiter'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter
+    /// &#x22;delimiter&#x22; is null.</exception>
     /// <exception cref='ArgumentException'>Delimiter is empty.</exception>
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {

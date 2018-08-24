@@ -142,7 +142,7 @@ import java.util.*;
      * "charArray" is null.
      */
       public NormalizingCharacterInput(String str, Normalization form) {
-        if ((str) == null) {
+        if (str == null) {
   throw new NullPointerException("str");
 }
         this.nci = new NormalizerInput(str, 0, str.length(), form);
@@ -164,7 +164,7 @@ import java.util.*;
      * Determines whether the text provided by a character input is normalized.
      * @param chars A object that implements a streamable character input.
      * @param form Specifies the normalization form to check.
-     * @return {@code true} if the text is normalized; otherwise, {@code false} .
+     * @return {@code true} if the text is normalized; otherwise, {@code false}.
      * @throws java.lang.NullPointerException The parameter {@code chars} is null.
      */
     public static boolean IsNormalized(
@@ -193,7 +193,7 @@ import java.util.*;
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return {@code true} if the given string is in the given Unicode
-     * normalization form; otherwise, {@code false} . Returns {@code false}
+     * normalization form; otherwise, {@code false}. Returns {@code false}
      * if the string contains an unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
@@ -304,7 +304,7 @@ import java.util.*;
      * @throws java.lang.NullPointerException The parameter {@code chars} is null.
      * @throws IllegalArgumentException Either {@code index} or {@code length} is
      * less than 0 or greater than {@code chars} 's length, or {@code chars}
-     * ' s length minus {@code index} is less than {@code length} .
+     * ' s length minus {@code index} is less than {@code length}.
      */
       public int Read(int[] chars, int index, int length) {
         return this.nci.Read(chars, index, length);

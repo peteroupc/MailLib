@@ -36,8 +36,8 @@ import java.util.*;
      * @param x An integer array.
      * @param y An integer array.
      * @return Zero if both values are equal; a negative number if {@code x} is
-     * less than {@code y} , or a positive number if {@code x} is greater
-     * than {@code y} .
+     * less than {@code y}, or a positive number if {@code x} is greater
+     * than {@code y}.
      * @throws java.lang.NullPointerException The parameter {@code x} or {@code y} is
      * null.
      */

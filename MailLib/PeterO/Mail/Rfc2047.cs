@@ -49,8 +49,11 @@ namespace PeterO.Mail {
       return false;
     }
 
-    public static void EncodeComment(HeaderEncoder enc, string str, int
-      index, int endIndex) {
+    public static void EncodeComment(
+  HeaderEncoder enc,
+  string str,
+  int index,
+  int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
 #if DEBUG
       if (str == null) {
@@ -75,7 +78,7 @@ namespace PeterO.Mail {
 #endif
       int length = endIndex - index;
       if (length < 2 || str[index] != '(' || str[endIndex - 1] != ')') {
-        enc.AppendString(str.Substring(index, length-index));
+        enc.AppendString(str.Substring(index, length - index));
       }
       int nextComment = str.IndexOf('(', index + 1);
       int nextBackslash = str.IndexOf('\\', index + 1);
@@ -99,8 +102,8 @@ namespace PeterO.Mail {
       if (nextComment < 0 && nextBackslash < 0) {
         // No escapes or nested comments, so it's relatively easy
         enc.AppendSymbol("(");
-        if (length>2) {
-          enc.AppendAsEncodedWords(str.Substring(index + 1, (length-2)));
+        if (length > 2) {
+          enc.AppendAsEncodedWords(str.Substring(index + 1, length - 2));
         }
         enc.AppendSymbol(")");
         return;
@@ -251,7 +254,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
     }
 
     // See point 3 of RFC 2047 sec. 5 (but excludes '=')
-    private static readonly int[] smallchars = {
+    private static readonly int[] ValueSmallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -260,7 +263,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
 
     // ASCII characters allowed in atoms
-    private static readonly int[] asciiAtext = {
+    private static readonly int[] ValueAsciiAtext = {
       0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -285,8 +288,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           break;
         }
         if (context == EncodedWordContext.Phrase &&
-            (encodingChar=='Q' || encodingChar=='q') &&
-            (smallchars[c-0x20]==0 && c!='=')) {
+            (encodingChar == 'Q' || encodingChar == 'q') &&
+            (ValueSmallchars[c - 0x20] == 0 && c != '=')) {
           // NOTE: Smallchars excludes '=' to be consistent
           // with the same array used in HeaderEncoder.
           // We check for '=' here separately. This is
@@ -296,7 +299,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           break;
         }
         if (context == EncodedWordContext.Phrase &&
-            asciiAtext[c-0x20]==0) {
+            ValueAsciiAtext[c - 0x20] == 0) {
           break;
         }
         ++i;
@@ -767,7 +770,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
    index,
    endIndex,
    builderPhrase);
-        } else if (str[index]=='.') {
+        } else if (str[index] == '.') {
           // Dot
           builderPhrase.Append(".");
           ++index;

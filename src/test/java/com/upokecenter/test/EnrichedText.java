@@ -198,7 +198,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
      * @param str Not documented yet.
      * @param delimiter Not documented yet.
      * @return A string[] object.
-     * @throws NullPointerException The parameter {@code delimiter} is null.
+     * @throws NullPointerException The parameter "delimiter" is null.
      * @throws IllegalArgumentException Delimiter is empty.
      */
     private static String[] SplitAt(String str, String delimiter) {

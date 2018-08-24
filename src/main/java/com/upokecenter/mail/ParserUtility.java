@@ -14,7 +14,8 @@ import com.upokecenter.util.*;
   final class ParserUtility {
 private ParserUtility() {
 }
-    private static String ValueDigits = "0123456789";
+    private static String valueDigits = "0123456789";
+
     public static String IntToString(int value) {
       if (value == Integer.MIN_VALUE) {
         return "-2147483648";
@@ -30,18 +31,18 @@ private ParserUtility() {
       }
       while (value > 43698) {
         int intdivvalue = value / 10;
-        char digit = ValueDigits.charAt((int)(value - (intdivvalue * 10)));
+        char digit = valueDigits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
         int intdivvalue = (value * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(value - (intdivvalue * 10)));
+        char digit = valueDigits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = ValueDigits.charAt((int)value);
+        chars[count--] = valueDigits.charAt((int)value);
       }
       if (neg) {
         chars[count] = '-';

@@ -45,16 +45,16 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
-      if (displayName != null) {
-        for (var i = 0; i < displayName.Length; ++i) {
-          hashCode *= -1521134295 + displayName[i];
+      if (this.displayName != null) {
+        for (var i = 0; i < this.displayName.Length; ++i) {
+          hashCode *= -1521134295 + this.displayName[i];
         }
       }
-      hashCode *= -1521134295 + (address == null ? 0 :
-        address.GetHashCode());
-      hashCode *= -1521134295 + (isGroup ? 0 : 1);
-      if (groupAddresses != null) {
-        hashCode *= -1521134295 + (groupAddresses.Count);
+      hashCode *= -1521134295 + (this.address == null ? 0 :
+        this.address.GetHashCode());
+      hashCode *= -1521134295 + (this.isGroup ? 0 : 1);
+      if (this.groupAddresses != null) {
+        hashCode *= -1521134295 + this.groupAddresses.Count;
       }
       return hashCode;
     }
@@ -64,21 +64,23 @@ namespace PeterO.Mail {
     public override bool Equals(object obj) {
       var other = obj as NamedAddress;
       return other != null &&
-      (displayName == null ? other.displayName == null :
-        displayName.Equals(other.displayName)) &&
-   (address == null ? other.address == null : address.Equals(other.address)) &&
-        isGroup == other.isGroup &&
-          (!isGroup || CollectionUtilities.ListEquals(groupAddresses,
-            other.groupAddresses));
+      (this.displayName == null ? other.displayName == null :
+        this.displayName.Equals(other.displayName)) &&
+   (this.address == null ? other.address == null :
+     this.address.Equals(other.address)) && this.isGroup == other.isGroup &&
+          (!this.isGroup || CollectionUtilities.ListEquals(
+  this.groupAddresses,
+  other.groupAddresses));
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)"]/*'/>
+    /// <summary>Not documented yet.</summary>
     public bool AddressesEqual(NamedAddress na) {
-      if (na == null || isGroup != na.isGroup) {
+      if (na == null || this.isGroup != na.isGroup) {
         return false;
       }
-      if (isGroup) {
+      if (this.isGroup) {
         if (this.groupAddresses.Count != na.GroupAddresses.Count) {
           return false;
         }
@@ -124,10 +126,8 @@ namespace PeterO.Mail {
 
     private readonly bool isGroup;
 
-    /// <summary>Gets a value indicating whether this represents a group of
-    /// addresses rather than a single address.</summary>
-    /// <value><c>true</c> If this represents a group of addresses;
-    /// otherwise, . <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.IsGroup"]/*'/>
     public bool IsGroup {
       get {
         return this.isGroup;
@@ -149,7 +149,7 @@ namespace PeterO.Mail {
           groupAddress.AppendThisAddress(enc);
         }
         enc.AppendSymbol(";");
-      } else if (displayName == null) {
+      } else if (this.displayName == null) {
         this.address.AppendThisAddress(enc);
       } else {
         enc.AppendPhrase(this.displayName);
@@ -164,7 +164,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
     public override string ToString() {
       var enc = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
-      AppendThisAddress(enc);
+      this.AppendThisAddress(enc);
       return enc.ToString();
     }
 

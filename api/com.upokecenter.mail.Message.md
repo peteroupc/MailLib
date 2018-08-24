@@ -205,9 +205,15 @@ Use GetAddresses(\To\) instead.
  Removes a header field by index.
 * `Message RemoveHeader​(String name)`<br>
  Removes all instances of the given header field from this message.
-* `Message SelectLanguageMessage​(List<String> languages)`<br>
+* `Message SelectLanguageMessage​(List<String> languages) multipart/multilingual`<br>
+ Selects a body part for a multiple-language message (
+ multipart/multilingual) according to the given language
+ priority list.
 * `Message SelectLanguageMessage​(List<String> languages,
-                     boolean preferOriginals)`<br>
+                     boolean preferOriginals) multipart/multilingual`<br>
+ Selects a body part for a multiple-language message (
+ multipart/multilingual) according to the given language
+ priority list and original-language preference.
 * `Message SetBody​(byte[] bytes)`<br>
  Sets the body of this message to the given byte array.
 * `void setContentDisposition​(ContentDisposition value)`<br>
@@ -266,7 +272,7 @@ Initializes a new instance of the <code>Message</code>
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>stream</code> is null.
+* <code>NullPointerException</code> - The parameter <code>stream</code> is null. .
 
 ### Message
     public Message​(byte[] bytes)
@@ -279,7 +285,7 @@ Initializes a new instance of the <code>Message</code>
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
+* <code>NullPointerException</code> - The parameter <code>bytes</code> is null. .
 
 ### Message
     public Message()
@@ -328,7 +334,7 @@ Gets the body of this message as a text string.
  message, so it doesn't have its own body text, or this message has no
  character encoding declared or assumed for it (which is usually the
  case for non-text messages), or the character encoding is not
- supported.
+ supported. .
 
 ### getCCAddresses
     @Deprecated public final List<NamedAddress> getCCAddresses()
@@ -367,7 +373,7 @@ Gets this message's media type. When getting, the media type may differ in
 **Throws:**
 
 * <code>NullPointerException</code> - This value is being set and "value" is
- null.
+ null. .
 
 ### setContentType
     public final void setContentType​(MediaType value)
@@ -465,7 +471,7 @@ Deprecated.
     public Message AddHeader​(Map.Entry<String,String> header)
 Adds a header field to the end of the message's header. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
- have been modified by this method. </p>
+ have been modified by this method.</p>
 
 **Parameters:**
 
@@ -480,17 +486,17 @@ Adds a header field to the end of the message's header. <p>Updates the
 **Throws:**
 
 * <code>NullPointerException</code> - The key or value of <code>header</code> is
- null.
+ null. .
 
 * <code>IllegalArgumentException</code> - The header field name is too long or
  contains an invalid character, or the header field's value is
- syntactically invalid.
+ syntactically invalid. .
 
 ### AddHeader
     public Message AddHeader​(String name, String value)
 Adds a header field to the end of the message's header. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
- have been modified by this method. </p>
+ have been modified by this method.</p>
 
 **Parameters:**
 
@@ -505,36 +511,37 @@ Adds a header field to the end of the message's header. <p>Updates the
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>name</code> or <code>
- value</code> is null.
+ value</code> is null. .
 
 * <code>IllegalArgumentException</code> - The header field name is too long or
  contains an invalid character, or the header field's value is
- syntactically invalid.
+ syntactically invalid. .
 
 ### Generate
     public String Generate()
 Generates this message's data in text form. <p>The generated message will
  have only Basic Latin code points (U + 0000 to U + 007F), and the
  transfer encoding will always be 7bit, quoted-printable, or base64
- (the declared transfer encoding for this message will be ignored).
- </p> <p>The following applies to the following header fields: From,
- To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
- Resent-Bcc, and Resent-Sender. If the header field exists, but has an
- invalid syntax, has no addresses, or appears more than once, this
- method will generate a synthetic header field with the display-name
- set to the contents of all of the header fields with the same name,
- and the address set to <code>me@[header-name]-address.invalid</code> as the
- address (a <code>.invalid</code> address is a reserved address that can
- never belong to anyone). (An exception is that the Resent-* header
- fields may appear more than once.) The generated message should
- always have a From header field. </p> <p>If a Date and/or Message-ID
- header field doesn't exist, a field with that name will be generated
- (using the current local time for the Date field). </p> <p>When
- encoding the message's body, if the message has a text content type
- ("text/*"), the line breaks are a CR byte (carriage return, 0x0d)
- followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If
- the message has any other content type, only CR followed by LF is
- considered a line break. </p>
+ (the declared transfer encoding for this message will be
+ ignored).</p> <p>The following applies to the following header
+ fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From,
+ Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists,
+ but has an invalid syntax, has no addresses, or appears more than
+ once, this method will generate a synthetic header field with the
+ display-name set to the contents of all of the header fields with the
+ same name, and the address set to
+ <code>me@[header-name]-address.invalid</code> as the address (a
+ <code>.invalid</code> address is a reserved address that can never belong
+ to anyone). (An exception is that the Resent-* header fields may
+ appear more than once.) The generated message should always have a
+ From header field.</p> <p>If a Date and/or Message-ID header field
+ doesn't exist, a field with that name will be generated (using the
+ current local time for the Date field).</p> <p>When encoding the
+ message's body, if the message has a text content type ("text/*"),
+ the line breaks are a CR byte (carriage return, 0x0d) followed by an
+ LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has
+ any other content type, only CR followed by LF is considered a line
+ break.</p>
 
 **Returns:**
 
@@ -543,7 +550,7 @@ Generates this message's data in text form. <p>The generated message will
 **Throws:**
 
 * <code>MessageDataException</code> - The message can't be
- generated.
+ generated. .
 
 ### GenerateBytes
     public byte[] GenerateBytes()
@@ -586,19 +593,19 @@ Sets this message's Date header field to the given date and time.
 
 * <code>dateTime</code> - An array containing eight elements. Each element of the
  array (starting from 0) is as follows: <ul> <li>0 - The year. For
- example, the value 2000 means 2000 C.E. </li> <li>1 - Month of the
- year, from 1 (January) through 12 (December). </li> <li>2 - Day of
- the month, from 1 through 31. </li> <li>3 - Hour of the day, from 0
- through 23. </li> <li>4 - Minute of the hour, from 0 through 59.
- </li> <li>5 - Second of the minute, from 0 through 60 (this value can
- go up to 60 to accommodate leap seconds). (Leap seconds are
- additional seconds added to adjust international atomic time, or TAI,
- to an approximation of astronomical time known as coordinated
- universal time, or UTC.) </li> <li>6 - Milliseconds of the second,
- from 0 through 999. This value is not used to generate the date
- string, but must still be valid. </li> <li>7 - Number of minutes to
- subtract from this date and time to get global time. This number can
- be positive or negative. </li> </ul> .
+ example, the value 2000 means 2000 C.E.</li> <li>1 - Month of the
+ year, from 1 (January) through 12 (December).</li> <li>2 - Day of the
+ month, from 1 through 31.</li> <li>3 - Hour of the day, from 0
+ through 23.</li> <li>4 - Minute of the hour, from 0 through 59.</li>
+ <li>5 - Second of the minute, from 0 through 60 (this value can go up
+ to 60 to accommodate leap seconds). (Leap seconds are additional
+ seconds added to adjust international atomic time, or TAI, to an
+ approximation of astronomical time known as coordinated universal
+ time, or UTC.)</li> <li>6 - Milliseconds of the second, from 0
+ through 999. This value is not used to generate the date string, but
+ must still be valid.</li> <li>7 - Number of minutes to subtract from
+ this date and time to get global time. This number can be positive or
+ negative.</li></ul>.
 
 **Returns:**
 
@@ -608,9 +615,10 @@ Sets this message's Date header field to the given date and time.
 
 * <code>IllegalArgumentException</code> - The parameter <code>dateTime</code> contains
  fewer than eight elements, contains invalid values, or contains a
- year less than 0.
+ year less than 0. .
 
 * <code>NullPointerException</code> - The parameter <code>dateTime</code> is null.
+ .
 
 ### GetBodyMessage
     public Message GetBodyMessage()
@@ -637,7 +645,7 @@ Gets the name and value of a header field by index.
 **Throws:**
 
 * <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
- least as high as the number of header fields.
+ least as high as the number of header fields. .
 
 ### GetHeader
     public String GetHeader​(String name)
@@ -657,7 +665,7 @@ Gets the first instance of the header field with the specified name, using a
 
 **Throws:**
 
-* <code>NullPointerException</code> - Name is null.
+* <code>NullPointerException</code> - Name is null. .
 
 ### GetHeaderArray
     public String[] GetHeaderArray​(String name)
@@ -679,7 +687,7 @@ Gets an array with the values of all header fields with the specified name,
 
 **Throws:**
 
-* <code>NullPointerException</code> - Name is null.
+* <code>NullPointerException</code> - Name is null. .
 
 ### ClearHeaders
     public Message ClearHeaders()
@@ -695,7 +703,7 @@ Deletes all header fields in this message. Also clears this message's
     public Message RemoveHeader​(int index)
 Removes a header field by index. <p>Updates the ContentType and
  ContentDisposition properties if those header fields have been
- modified by this method. </p>
+ modified by this method.</p>
 
 **Parameters:**
 
@@ -708,7 +716,7 @@ Removes a header field by index. <p>Updates the ContentType and
 **Throws:**
 
 * <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
- least as high as the number of header fields.
+ least as high as the number of header fields. .
 
 ### RemoveHeader
     public Message RemoveHeader​(String name)
@@ -719,7 +727,7 @@ Removes all instances of the given header field from this message. If this
  converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
  both strings to lower case.). <p>Updates the ContentType and
  ContentDisposition properties if those header fields have been
- modified by this method. </p>
+ modified by this method.</p>
 
 **Parameters:**
 
@@ -731,7 +739,7 @@ Removes all instances of the given header field from this message. If this
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>name</code> is null.
+* <code>NullPointerException</code> - The parameter <code>name</code> is null. .
 
 ### SetBody
     public Message SetBody​(byte[] bytes)
@@ -748,13 +756,13 @@ Sets the body of this message to the given byte array. This method doesn't
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
+* <code>NullPointerException</code> - The parameter <code>bytes</code> is null. .
 
 ### SetHeader
     public Message SetHeader​(int index, Map.Entry<String,String> header)
 Sets the name and value of a header field by index. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
- have been modified by this method. </p>
+ have been modified by this method.</p>
 
 **Parameters:**
 
@@ -773,16 +781,16 @@ Sets the name and value of a header field by index. <p>Updates the
 * <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
  least as high as the number of header fields; or, the header field
  name is too long or contains an invalid character, or the header
- field's value is syntactically invalid.
+ field's value is syntactically invalid. .
 
 * <code>NullPointerException</code> - The key or value of <code>header</code> is
- null.
+ null. .
 
 ### SetHeader
     public Message SetHeader​(int index, String name, String value)
 Sets the name and value of a header field by index. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
- have been modified by this method. </p>
+ have been modified by this method.</p>
 
 **Parameters:**
 
@@ -801,16 +809,16 @@ Sets the name and value of a header field by index. <p>Updates the
 * <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
  least as high as the number of header fields; or, the header field
  name is too long or contains an invalid character, or the header
- field's value is syntactically invalid.
+ field's value is syntactically invalid. .
 
 * <code>NullPointerException</code> - The parameter <code>name</code> or <code>
- value</code> is null.
+ value</code> is null. .
 
 ### SetHeader
     public Message SetHeader​(int index, String value)
 Sets the value of a header field by index without changing its name.
  <p>Updates the ContentType and ContentDisposition properties if those
- header fields have been modified by this method. </p>
+ header fields have been modified by this method.</p>
 
 **Parameters:**
 
@@ -827,9 +835,9 @@ Sets the value of a header field by index without changing its name.
 * <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
  least as high as the number of header fields; or, the header field
  name is too long or contains an invalid character, or the header
- field's value is syntactically invalid.
+ field's value is syntactically invalid. .
 
-* <code>NullPointerException</code> - The parameter <code>value</code> is null.
+* <code>NullPointerException</code> - The parameter <code>value</code> is null. .
 
 ### DecodeHeaderValue
     public static String DecodeHeaderValue​(String name, String value)
@@ -853,7 +861,7 @@ Decodes RFC 2047 encoded words from the given header field value and returns
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>name</code> is null.
+* <code>NullPointerException</code> - The parameter <code>name</code> is null. .
 
 ### SetHeader
     public Message SetHeader​(String name, String value)
@@ -861,8 +869,8 @@ Sets the value of this message's header field. If a header field with the
  same name exists, its value is replaced. If the header field's name
  occurs more than once, only the first instance of the header field is
  replaced. <p>Updates the ContentType and ContentDisposition
- properties if those header fields have been modified by this method.
- </p>
+ properties if those header fields have been modified by this
+ method.</p>
 
 **Parameters:**
 
@@ -878,10 +886,10 @@ Sets the value of this message's header field. If a header field with the
 
 * <code>IllegalArgumentException</code> - The header field name is too long or
  contains an invalid character, or the header field's value is
- syntactically invalid.
+ syntactically invalid. .
 
 * <code>NullPointerException</code> - The parameter <code>name</code> or <code>
- value</code> is null.
+ value</code> is null. .
 
 ### SetHtmlBody
     public Message SetHtmlBody​(String str)
@@ -901,7 +909,7 @@ Sets the body of this message to the specified string in HTML format. The
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>NullPointerException</code> - The parameter <code>str</code> is null. .
 
 ### SetTextAndHtml
     public Message SetTextAndHtml​(String text, String html)
@@ -924,7 +932,7 @@ Sets the body of this message to a multipart body with plain text and HTML
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>text</code> or <code>
- html</code> is null.
+ html</code> is null. .
 
 ### SetTextBody
     public Message SetTextBody​(String str)
@@ -945,7 +953,7 @@ Sets the body of this message to the specified plain text string. The
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>NullPointerException</code> - The parameter <code>str</code> is null. .
 
 ### AddInline
     public Message AddInline​(MediaType mediaType)
@@ -1153,8 +1161,59 @@ Adds an inline body part to this message in the form of data from the given
 
 ### SelectLanguageMessage
     public Message SelectLanguageMessage​(List<String> languages)
+Selects a body part for a multiple-language message (
+ <code>multipart/multilingual</code>) according to the given language
+ priority list.
+
+**Parameters:**
+
+* <code>languages</code> - A list of basic language ranges, sorted in descending order
+ of priority (see the LanguageTags.LanguageTagFilter method).
+
+**Returns:**
+
+* The best matching body part for the given languages. If the body
+ part has no subject, then the top-level subject is used. If this
+ message is not a multipart/multilingual message or has fewer than two
+ body parts, returns this object. If no body part matches the given
+ languages, returns the last body part if its language is "zxx", or
+ the second body part otherwise.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>languages</code> is
+ null. .
+
 ### SelectLanguageMessage
     public Message SelectLanguageMessage​(List<String> languages, boolean preferOriginals)
+Selects a body part for a multiple-language message (
+ <code>multipart/multilingual</code>) according to the given language
+ priority list and original-language preference.
+
+**Parameters:**
+
+* <code>languages</code> - A list of basic language ranges, sorted in descending order
+ of priority (see the LanguageTags.LanguageTagFilter method).
+
+* <code>preferOriginals</code> - If true, a body part marked as the original language
+ version is chosen if it matches one of the given language ranges,
+ even if the original language has a lower priority than another
+ language with a matching body part.
+
+**Returns:**
+
+* The best matching body part for the given languages. If the body
+ part has no subject, then the top-level subject is used. If this
+ message is not a multipart/multilingual message or has fewer than two
+ body parts, returns this object. If no body part matches the given
+ languages, returns the last body part if its language is "zxx", or
+ the second body part otherwise.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>languages</code> is
+ null. .
+
 ### MakeMultilingualMessage
     public static Message MakeMultilingualMessage​(List<Message> messages, List<String> languages)
 ### FromMailtoUrl

@@ -53,13 +53,13 @@ namespace PeterO.Mail {
     public override int GetHashCode() {
       var hashCode = 632580499;
       if (this.topLevelType != null) {
-        for (var i = 0;i<this.topLevelType.Length; ++i) {
+        for (var i = 0; i < this.topLevelType.Length; ++i) {
  hashCode = unchecked(hashCode + (632580563 *
              this.topLevelType[i]));
  }
       }
       if (this.subType != null) {
-        for (var i = 0;i<this.subType.Length; ++i) {
+        for (var i = 0; i < this.subType.Length; ++i) {
  hashCode = unchecked(hashCode + (632580563 *
              this.subType[i]));
  }
@@ -81,20 +81,16 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value indicating whether this is a text media type
-    /// ("text/*").</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsText"]/*'/>
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text");
       }
     }
 
-    /// <summary>Gets a value indicating whether this is a multipart media
-    /// type.</summary>
-    /// <value><c>true</c> If this is a multipart media type; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsMultipart"]/*'/>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");
@@ -317,6 +313,7 @@ namespace PeterO.Mail {
                     (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
                     "!$&*+-._~".IndexOf((char)c) >= 0);
     }
+
     private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
       // to encode according to RFC 2231, but the augmented
@@ -330,8 +327,11 @@ namespace PeterO.Mail {
       sb.Append(ValueHex[w & 15]);
     }
 
-    private static int EncodeContinuation(string str, int startPos,
-      HeaderEncoder sa, bool uriSafe) {
+    private static int EncodeContinuation(
+  string str,
+  int startPos,
+  HeaderEncoder sa,
+  bool uriSafe) {
       int column = sa.GetColumn();
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
@@ -339,7 +339,7 @@ namespace PeterO.Mail {
  while (index < str.Length && (maxLineLength < 0 || column <=
         maxLineLength)) {
         int c = str[index];
-        bool first = (index == 0);
+        bool first = index == 0;
         int contin = (index == 0) ? 7 : 0;
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
             str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
@@ -370,17 +370,17 @@ namespace PeterO.Mail {
         } else if (c <= 0x7f) {
           PctAppend(sb, c);
         } else if (c <= 0x7ff) {
-          PctAppend(sb, (0xc0 | ((c >> 6) & 0x1f)));
-          PctAppend(sb, (0x80 | (c & 0x3f)));
+          PctAppend(sb, 0xc0 | ((c >> 6) & 0x1f));
+          PctAppend(sb, 0x80 | (c & 0x3f));
         } else if (c <= 0xffff) {
-          PctAppend(sb, (0xe0 | ((c >> 12) & 0x0f)));
-          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
-          PctAppend(sb, (0x80 | (c & 0x3f)));
+          PctAppend(sb, 0xe0 | ((c >> 12) & 0x0f));
+          PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
+          PctAppend(sb, 0x80 | (c & 0x3f));
         } else {
-          PctAppend(sb, (0xf0 | ((c >> 18) & 0x07)));
-          PctAppend(sb, (0x80 | ((c >> 12) & 0x3f)));
-          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
-          PctAppend(sb, (0x80 | (c & 0x3f)));
+          PctAppend(sb, 0xf0 | ((c >> 18) & 0x07));
+          PctAppend(sb, 0x80 | ((c >> 12) & 0x3f));
+          PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
+          PctAppend(sb, 0x80 | (c & 0x3f));
           ++index;  // Because it uses 2 surrogates
         }
         ++index;
@@ -402,16 +402,16 @@ namespace PeterO.Mail {
   HeaderEncoder sa,
   bool uriSafe) {
 #if DEBUG
-      if ((str) == null) {
+      if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
-      if ((str).Length == 0) {
+      if (str.Length == 0) {
         throw new ArgumentException("str" + " is empty.");
       }
-      if ((name) == null) {
+      if (name == null) {
         throw new ArgumentNullException(nameof(name));
       }
-      if ((name).Length == 0) {
+      if (name.Length == 0) {
         throw new ArgumentException("name" + " is empty.");
       }
 #endif
@@ -494,11 +494,13 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       sb.Append('"');
       return sa.TryAppendSymbol(sb.ToString());
     }
+
     internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa) {
        AppendParameters(parameters, sa, false);
     }
+
       internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa,
@@ -965,8 +967,9 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
         new PercentEncodingStringTransform(value));
     }
 
-    private static bool ExpandRfc2231Extensions(IDictionary<string, string>
-      parameters, bool httpRules) {
+    private static bool ExpandRfc2231Extensions(
+  IDictionary<string, string> parameters,
+ bool httpRules) {
       if (parameters.Count == 0) {
         return true;
       }
@@ -1050,7 +1053,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
         // in RFC6838
         if (SkipMimeTypeSubtype(name, 0, name.Length, null) != name.Length) {
           // Illegal parameter name, so use default media type
-          //return false;
+          // return false;
           parameters.Remove(name);
         }
       }
@@ -1147,7 +1150,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
         attribute = DataUtilities.ToLowerCaseAscii(attribute);
         if (parameters.ContainsKey(attribute)) {
           parameters.Remove(attribute);
-          duplicateAttributes[attribute]=String.Empty;
+          duplicateAttributes[attribute] = String.Empty;
           hasDuplicateAttributes = true;
         }
         ++index;

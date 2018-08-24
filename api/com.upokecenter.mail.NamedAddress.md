@@ -25,8 +25,11 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes)`<br>
+            List<NamedAddress> mailboxes) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 * `boolean AddressesEqual​(NamedAddress na)`<br>
+ Not documented yet.
 * `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal.
 * `Address getAddress()`<br>
@@ -70,19 +73,21 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes)`<br>
+            List<NamedAddress> mailboxes) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 
 ## Method Details
 
 ### NamedAddress
     public NamedAddress​(String address)
 Initializes a new instance of the <code>NamedAddress</code>
- class. Examples: <ul> <li><code>john@example.com</code> </li> <li><code>"John
- Doe" &lt;john@example.com&gt;</code> </li> <li><code>=?utf-8?q?John</code>
- <code>=</code> <code>27s_Office?= &lt;john@example.com&gt;</code> </li>
- <li><code>John &lt;john@example.com&gt;</code> </li> <li><code>"Group" : Tom
- &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code> </li>
- </ul>
+ class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
+ Doe" &lt;john@example.com&gt;</code></li>
+ <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
+ &lt;john@example.com&gt;</code></li> <li><code>John
+ &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
+ &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code></li></ul>
 
 **Parameters:**
 
@@ -92,20 +97,21 @@ Initializes a new instance of the <code>NamedAddress</code>
  group syntax given above. Encoded words under RFC 2047 that appear
  within comments or display names will be decoded. <p>An RFC 2047
  encoded word consists of "=?", a character encoding name, such as
- <code>utf-8</code> , either "?B?" or "?Q?" (in upper or lower case), a
+ <code>utf-8</code>, either "?B?" or "?Q?" (in upper or lower case), a
  series of bytes in the character encoding, further encoded using B or
  Q encoding, and finally "?=". B encoding uses Base64, while in Q
  encoding, spaces are changed to "_", equals are changed to "=3D", and
  most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
  basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
  "=" followed by their 2-digit hexadecimal form. An encoded word's
- maximum length is 75 characters. See the third example. </p> .
+ maximum length is 75 characters. See the third example.</p>.
 
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
+ .
 
-* <code>IllegalArgumentException</code> - The named address has an invalid syntax.
+* <code>IllegalArgumentException</code> - The named address has an invalid syntax. .
 
 ### NamedAddress
     public NamedAddress​(String displayName, String address)
@@ -122,9 +128,10 @@ Initializes a new instance of the <code>NamedAddress</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
+ .
 
 * <code>IllegalArgumentException</code> - The display name or address has an invalid
- syntax.
+ syntax. .
 
 ### NamedAddress
     public NamedAddress​(String displayName, Address address)
@@ -141,6 +148,7 @@ Initializes a new instance of the <code>NamedAddress</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
+ .
 
 ### NamedAddress
     public NamedAddress​(String displayName, String localPart, String domain)
@@ -160,10 +168,28 @@ Initializes a new instance of the <code>NamedAddress</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>localPart</code> or
- <code>domain</code> is null.
+ <code>domain</code> is null. .
 
 ### NamedAddress
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
+Initializes a new instance of the <code>NamedAddress</code>
+ class. Takes a group name and several named email addresses as
+ parameters, and forms a group with them.
+
+**Parameters:**
+
+* <code>groupName</code> - The group's name.
+
+* <code>mailboxes</code> - A list of named addresses that make up the group.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>groupName</code> or
+ <code>mailboxes</code> is null. .
+
+* <code>IllegalArgumentException</code> - The parameter <code>groupName</code> is empty,
+ or an item in the list is itself a group. .
+
 ### ParseAddresses
     public static List<NamedAddress> ParseAddresses​(String addressValue)
 Generates a list of NamedAddress objects from a comma-separated list of
@@ -212,6 +238,7 @@ Determines whether this object and another object are equal.
 
 ### AddressesEqual
     public boolean AddressesEqual​(NamedAddress na)
+Not documented yet.
 
 **Parameters:**
 
