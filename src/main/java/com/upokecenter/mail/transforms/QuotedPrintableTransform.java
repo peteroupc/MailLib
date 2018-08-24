@@ -54,7 +54,8 @@ import com.upokecenter.mail.*;
     public QuotedPrintableTransform(
   IByteReader input,
   boolean allowBareLfCr) {
- this(input, allowBareLfCr, MaxLineLength, false);
+ this(
+  input, allowBareLfCr, MaxLineLength, false);
     }
 
     public QuotedPrintableTransform(

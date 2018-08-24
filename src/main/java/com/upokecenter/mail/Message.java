@@ -225,7 +225,7 @@ import com.upokecenter.text.*;
  */
 @Deprecated
     public final List<NamedAddress> getBccAddresses() {
-return GetAddresses("bcc");
+return this.GetAddresses("bcc");
       }
 
     /**
@@ -262,7 +262,7 @@ return GetAddresses("bcc");
  */
 @Deprecated
     public final List<NamedAddress> getCCAddresses() {
-return GetAddresses("cc");
+return this.GetAddresses("cc");
       }
 
     /**
@@ -370,7 +370,7 @@ public final void setContentType(MediaType value) {
  */
 @Deprecated
     public final List<NamedAddress> getFromAddresses() {
-return GetAddresses("from");
+return this.GetAddresses("from");
       }
 
     /**
@@ -420,13 +420,13 @@ public final void setSubject(String value) {
  */
 @Deprecated
     public final List<NamedAddress> getToAddresses() {
-return GetAddresses("to");
+return this.GetAddresses("to");
       }
 
     /**
      * Adds a header field to the end of the message's header. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method. </p>
+     * have been modified by this method.</p>
      * @param header A key/value pair. The key is the name of the header field,
      * such as "From" or "Content-ID". The value is the header field's
      * value.
@@ -444,7 +444,7 @@ return GetAddresses("to");
     /**
      * Adds a header field to the end of the message's header. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method. </p>
+     * have been modified by this method.</p>
      * @param name Name of a header field, such as "From" or "Content-ID".
      * @param value Value of the header field.
      * @return This instance.
@@ -466,25 +466,26 @@ return GetAddresses("to");
      * Generates this message's data in text form. <p>The generated message will
      * have only Basic Latin code points (U + 0000 to U + 007F), and the
      * transfer encoding will always be 7bit, quoted-printable, or base64
-     * (the declared transfer encoding for this message will be ignored).
-     * </p> <p>The following applies to the following header fields: From,
-     * To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
-     * Resent-Bcc, and Resent-Sender. If the header field exists, but has an
-     * invalid syntax, has no addresses, or appears more than once, this
-     * method will generate a synthetic header field with the display-name
-     * set to the contents of all of the header fields with the same name,
-     * and the address set to <code>me@[header-name]-address.invalid</code> as the
-     * address (a <code>.invalid</code> address is a reserved address that can
-     * never belong to anyone). (An exception is that the Resent-* header
-     * fields may appear more than once.) The generated message should
-     * always have a From header field. </p> <p>If a Date and/or Message-ID
-     * header field doesn't exist, a field with that name will be generated
-     * (using the current local time for the Date field). </p> <p>When
-     * encoding the message's body, if the message has a text content type
-     * ("text/*"), the line breaks are a CR byte (carriage return, 0x0d)
-     * followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If
-     * the message has any other content type, only CR followed by LF is
-     * considered a line break. </p>
+     * (the declared transfer encoding for this message will be
+     * ignored).</p> <p>The following applies to the following header
+     * fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From,
+     * Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists,
+     * but has an invalid syntax, has no addresses, or appears more than
+     * once, this method will generate a synthetic header field with the
+     * display-name set to the contents of all of the header fields with the
+     * same name, and the address set to
+     * <code>me@[header-name]-address.invalid</code> as the address (a
+     * <code>.invalid</code> address is a reserved address that can never belong
+     * to anyone). (An exception is that the Resent-* header fields may
+     * appear more than once.) The generated message should always have a
+     * From header field.</p> <p>If a Date and/or Message-ID header field
+     * doesn't exist, a field with that name will be generated (using the
+     * current local time for the Date field).</p> <p>When encoding the
+     * message's body, if the message has a text content type ("text/*"),
+     * the line breaks are a CR byte (carriage return, 0x0d) followed by an
+     * LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has
+     * any other content type, only CR followed by LF is considered a line
+     * break.</p>
      * @return The generated message.
      * @throws com.upokecenter.mail.MessageDataException The message can't be
      * generated.
@@ -529,27 +530,26 @@ return GetAddresses("to");
      */
     public int[] GetDate() {
       String field = this.GetHeader("date");
-      return (field == null) ? (null) : (MailDateTime.ParseDateString(field,
-             true));
+ return (field == null) ? null : MailDateTime.ParseDateString(field, true);
     }
 
     /**
      * Sets this message's Date header field to the given date and time.
      * @param dateTime An array containing eight elements. Each element of the
      * array (starting from 0) is as follows: <ul> <li>0 - The year. For
-     * example, the value 2000 means 2000 C.E. </li> <li>1 - Month of the
-     * year, from 1 (January) through 12 (December). </li> <li>2 - Day of
-     * the month, from 1 through 31. </li> <li>3 - Hour of the day, from 0
-     * through 23. </li> <li>4 - Minute of the hour, from 0 through 59.
-     * </li> <li>5 - Second of the minute, from 0 through 60 (this value can
-     * go up to 60 to accommodate leap seconds). (Leap seconds are
-     * additional seconds added to adjust international atomic time, or TAI,
-     * to an approximation of astronomical time known as coordinated
-     * universal time, or UTC.) </li> <li>6 - Milliseconds of the second,
-     * from 0 through 999. This value is not used to generate the date
-     * string, but must still be valid. </li> <li>7 - Number of minutes to
-     * subtract from this date and time to get global time. This number can
-     * be positive or negative. </li> </ul> .
+     * example, the value 2000 means 2000 C.E.</li> <li>1 - Month of the
+     * year, from 1 (January) through 12 (December).</li> <li>2 - Day of the
+     * month, from 1 through 31.</li> <li>3 - Hour of the day, from 0
+     * through 23.</li> <li>4 - Minute of the hour, from 0 through 59.</li>
+     * <li>5 - Second of the minute, from 0 through 60 (this value can go up
+     * to 60 to accommodate leap seconds). (Leap seconds are additional
+     * seconds added to adjust international atomic time, or TAI, to an
+     * approximation of astronomical time known as coordinated universal
+     * time, or UTC.)</li> <li>6 - Milliseconds of the second, from 0
+     * through 999. This value is not used to generate the date string, but
+     * must still be valid.</li> <li>7 - Number of minutes to subtract from
+     * this date and time to get global time. This number can be positive or
+     * negative.</li></ul>.
      * @return This object.
      * @throws IllegalArgumentException The parameter {@code dateTime} contains
      * fewer than eight elements, contains invalid values, or contains a
@@ -675,7 +675,7 @@ return GetAddresses("to");
     /**
      * Removes a header field by index. <p>Updates the ContentType and
      * ContentDisposition properties if those header fields have been
-     * modified by this method. </p>
+     * modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @return This instance.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at
@@ -710,7 +710,7 @@ return GetAddresses("to");
      * converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
      * both strings to lower case.). <p>Updates the ContentType and
      * ContentDisposition properties if those header fields have been
-     * modified by this method. </p>
+     * modified by this method.</p>
      * @param name The name of the header field to remove.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code name} is null.
@@ -754,7 +754,7 @@ return GetAddresses("to");
     /**
      * Sets the name and value of a header field by index. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method. </p>
+     * have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param header A key/value pair. The key is the name of the header field,
      * such as "From" or "Content-ID". The value is the header field's
@@ -774,7 +774,7 @@ return GetAddresses("to");
     /**
      * Sets the name and value of a header field by index. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method. </p>
+     * have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param name Name of a header field, such as "From" or "Content-ID".
      * @param value Value of the header field.
@@ -810,7 +810,7 @@ return GetAddresses("to");
     /**
      * Sets the value of a header field by index without changing its name.
      * <p>Updates the ContentType and ContentDisposition properties if those
-     * header fields have been modified by this method. </p>
+     * header fields have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param value Value of the header field.
      * @return This instance.
@@ -855,8 +855,8 @@ return GetAddresses("to");
      * same name exists, its value is replaced. If the header field's name
      * occurs more than once, only the first instance of the header field is
      * replaced. <p>Updates the ContentType and ContentDisposition
-     * properties if those header fields have been modified by this method.
-     * </p>
+     * properties if those header fields have been modified by this
+     * method.</p>
      * @param name The name of a header field, such as "from" or "subject".
      * @param value The header field's value.
      * @return This instance.
@@ -931,7 +931,7 @@ return GetAddresses("to");
       // this case, the HTML version)
       Message textMessage = NewBodyPart().SetTextBody(text);
       Message htmlMessage = NewBodyPart().SetHtmlBody(html);
-    String mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
+    String mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
       messageParts.clear();
@@ -966,7 +966,12 @@ return GetAddresses("to");
          MediaType mediaType,
          String filename,
          String disposition) {
-      return AddBodyPart(inputStream, mediaType, filename, disposition, false);
+      return this.AddBodyPart(
+  inputStream,
+  mediaType,
+  filename,
+  disposition,
+  false);
     }
 
     /**
@@ -978,7 +983,7 @@ return GetAddresses("to");
      * @return A Message object for the generated body part.
      */
     public Message AddInline(MediaType mediaType) {
-      return AddBodyPart(null, mediaType, null, "inline", true);
+      return this.AddBodyPart(null, mediaType, null, "inline", true);
     }
 
     /**
@@ -990,7 +995,7 @@ return GetAddresses("to");
      * @return A Message object for the generated attachment.
      */
     public Message AddAttachment(MediaType mediaType) {
-      return AddBodyPart(null, mediaType, null, "attachment", true);
+      return this.AddBodyPart(null, mediaType, null, "attachment", true);
     }
 
     private Message AddBodyPart(
@@ -999,10 +1004,10 @@ return GetAddresses("to");
              String filename,
              String disposition,
              boolean allowNullStream) {
-      if (!allowNullStream && (inputStream) == null) {
+      if (!allowNullStream && inputStream == null) {
         throw new NullPointerException("inputStream");
       }
-      if ((mediaType) == null) {
+      if (mediaType == null) {
         throw new NullPointerException("mediaType");
       }
       Message bodyPart = NewBodyPart();
@@ -1039,8 +1044,9 @@ try { if (ms != null) {
       if (!((filename) == null || (filename).length() == 0)) {
         String basename = BaseName(filename);
         if (!((basename) == null || (basename).length() == 0)) {
-          dispBuilder.SetParameter("filename",
-            basename);
+          dispBuilder.SetParameter(
+  "filename",
+  basename);
         }
       }
       bodyPart.setContentDisposition(dispBuilder.ToDisposition());
@@ -1058,9 +1064,10 @@ try { if (ms != null) {
       }
       return bodyPart;
     }
+
     private static String BaseName(String filename) {
       int i = 0;
-      for (i = filename.length()-1; i >= 0; --i) {
+      for (i = filename.length() - 1; i >= 0; --i) {
         if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
           return filename.substring(i + 1);
         }
@@ -1070,7 +1077,7 @@ try { if (ms != null) {
 
     private static String ExtensionName(String filename) {
       int i = 0;
-      for (i = filename.length()-1; i >= 0; --i) {
+      for (i = filename.length() - 1; i >= 0; --i) {
         if (filename.charAt(i) == '\\' || filename.charAt(i) == '/') {
           return "";
         } else if (filename.charAt(i) == '.') {
@@ -1157,7 +1164,7 @@ try { if (ms != null) {
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType) {
-      return AddBodyPart(inputStream, mediaType, null, "attachment");
+      return this.AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
     /**
@@ -1183,7 +1190,11 @@ try { if (ms != null) {
      */
     public Message AddAttachment(InputStream inputStream, String filename) {
       return
-  AddBodyPart(inputStream, SuggestMediaType(filename), filename, "attachment");
+  this.AddBodyPart(
+  inputStream,
+  SuggestMediaType(filename),
+  filename,
+  "attachment");
     }
 
     /**
@@ -1204,9 +1215,15 @@ try { if (ms != null) {
      * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
-    public Message AddAttachment(InputStream inputStream, MediaType mediaType,
-      String filename) {
-      return AddBodyPart(inputStream, mediaType, filename, "attachment");
+    public Message AddAttachment(
+  InputStream inputStream,
+  MediaType mediaType,
+  String filename) {
+  return this.AddBodyPart(
+  inputStream,
+  mediaType,
+  filename,
+  "attachment");
     }
 
     /**
@@ -1223,7 +1240,7 @@ try { if (ms != null) {
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, MediaType mediaType) {
-      return AddBodyPart(inputStream, mediaType, null, "inline");
+      return this.AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
     /**
@@ -1248,8 +1265,11 @@ try { if (ms != null) {
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, String filename) {
-      return AddBodyPart(inputStream, SuggestMediaType(filename), filename,
-        "inline");
+      return this.AddBodyPart(
+  inputStream,
+  SuggestMediaType(filename),
+  filename,
+  "inline");
     }
 
     /**
@@ -1266,9 +1286,11 @@ try { if (ms != null) {
      * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
-    public Message AddInline(InputStream inputStream, MediaType mediaType, String
-      filename) {
-      return AddBodyPart(inputStream, mediaType, filename, "inline");
+    public Message AddInline(
+  InputStream inputStream,
+  MediaType mediaType,
+  String filename) {
+      return this.AddBodyPart(inputStream, mediaType, filename, "inline");
     }
 
     private static boolean HasSameAddresses(Message m1, Message m2) {
@@ -1284,6 +1306,7 @@ try { if (ms != null) {
       }
       return true;
     }
+
 private static String GetContentTranslationType(String ctt) {
       if (((ctt) == null || (ctt).length() == 0)) {
  return "";
@@ -1302,7 +1325,7 @@ private static String GetContentTranslationType(String ctt) {
      */
     public Message SelectLanguageMessage(
        List<String> languages) {
-      return SelectLanguageMessage(languages, false);
+      return this.SelectLanguageMessage(languages, false);
     }
 
     /**
@@ -1314,7 +1337,7 @@ private static String GetContentTranslationType(String ctt) {
       if (this.getContentType().getTypeAndSubType().equals("multipart/multilingual") &&
          this.getParts().size() >= 2) {
         String subject = this.GetHeader("subject");
-        int passes = (preferOriginals) ? 2 : 1;
+        int passes = preferOriginals ? 2 : 1;
         List<String> clang;
         List<String> filt;
         for (int i = 0; i < passes; ++i) {
@@ -1335,7 +1358,7 @@ private static String GetContentTranslationType(String ctt) {
             if (filt.size() > 0) {
               Message ret = part.GetBodyMessage();
               if (ret != null) {
-                if (subject!=null && ret.GetHeader("subject") == null) {
+                if (subject != null && ret.GetHeader("subject") == null) {
  ret.SetHeader("subject", subject);
 }
                 return ret;
@@ -1357,7 +1380,7 @@ private static String GetContentTranslationType(String ctt) {
         }
         firstmsg = firstmsg.GetBodyMessage();
         if (firstmsg != null) {
-          if (subject!=null && firstmsg.GetHeader("subject") == null) {
+          if (subject != null && firstmsg.GetHeader("subject") == null) {
  firstmsg.SetHeader("subject", subject);
 }
           return firstmsg;
@@ -1369,24 +1392,23 @@ private static String GetContentTranslationType(String ctt) {
     /**
      *
      */
-    public static Message MakeMultilingualMessage(List<Message> messages,
-      List<String> languages) {
-      if ((messages) == null) {
+    public static Message MakeMultilingualMessage(
+  List<Message> messages,
+  List<String> languages) {
+      if (messages == null) {
         throw new NullPointerException("messages");
       }
-      if ((languages) == null) {
+      if (languages == null) {
         throw new NullPointerException("languages");
       }
       if (messages.size() < 0) {
         throw new IllegalArgumentException("messages.size() (" + messages.size() +
           ") is less than 0");
       }
-      if ((messages.size()) != (languages.size())) {
+      if (messages.size() != languages.size()) {
         throw new IllegalArgumentException("messages.size() (" + messages.size() +
-          ") is not equal to " + (languages.size()));
-      }
-      StringBuilder prefaceBody;
-      for (int i = 0; i < messages.size(); ++i) {
+          ") is not equal to " + languages.size()); } StringBuilder
+            prefaceBody; for (int i = 0; i < messages.size(); ++i) {
         if (messages.get(i) == null) {
  throw new IllegalArgumentException("messages");
 }
@@ -1402,7 +1424,7 @@ private static String GetContentTranslationType(String ctt) {
             lang + " is an invalid list of language tags");
           }
         }
-       prefaceBody= new StringBuilder().append("This is a multilingual " +
+       prefaceBody = new StringBuilder().append("This is a multilingual " +
         "message, a message that\r\ncan be read in one or more different " +
         "languages. Each\r\npart of the message may appear inline, as an " +
         "attachment, or both.\r\n\r\n");
@@ -1415,11 +1437,11 @@ private static String GetContentTranslationType(String ctt) {
       zxx.add("zxx");
       for (int i = 0; i < languages.size(); ++i) {
         List<String> langs = LanguageTags.GetLanguageList(languages.get(i));
-        boolean langInd=(i == languages.size()-1 && langs.size() == 1 &&
-          langs.get(0).equals("zxx"));
+        boolean langInd = i == languages.size() - 1 && langs.size() == 1 &&
+          langs.get(0).equals("zxx");
         if (!langInd && LanguageTags.LanguageTagFilter(
         zxx,
-        langs).size()>0) {
+        langs).size() > 0) {
           throw new IllegalArgumentException("zxx tag can only appear at end");
         }
         String subject = messages.get(i).GetHeader("subject");
@@ -1458,9 +1480,9 @@ private static String GetContentTranslationType(String ctt) {
       preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
       preface.SetTextBody(prefaceBody.toString());
       for (int i = 0; i < messages.size(); ++i) {
-        MediaType mt=MediaType.Parse("message/rfc822");
+        MediaType mt = MediaType.Parse("message/rfc822");
         String msgstring = messages.get(i).Generate();
-        if (msgstring.indexOf("\r\n--") >= 0 || msgstring.indexOf("--")==0) {
+        if (msgstring.indexOf("\r\n--") >= 0 || msgstring.indexOf("--") == 0) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");
@@ -1721,15 +1743,16 @@ private static String GetContentTranslationType(String ctt) {
               writer.write(newBytes, 0, newBytes.length);
             } else {
               // Encapsulated
-              String field = (origRecipient ?
-       "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient");
+              String field = origRecipient ? "Downgraded-Original-Recipient":
+                "Downgraded-Final-Recipient" ;
               headerValue = DataUtilities.GetUtf8String(
                   bytes,
                   headerValueStart,
                   headerValueEnd - headerValueStart,
                   true);  // replaces invalid UTF-8
-              String newField = HeaderEncoder.EncodeFieldAsEncodedWords(field,
-                headerValue);
+              String newField = HeaderEncoder.EncodeFieldAsEncodedWords(
+  field,
+  headerValue);
               byte[] newBytes = DataUtilities.GetUtf8Bytes(
                 newField,
                 true);
@@ -1746,16 +1769,20 @@ private static String GetContentTranslationType(String ctt) {
       return bytes;
     }
 
-    private static HeaderEncoder EncodeCommentsInText(HeaderEncoder enc,
-      String str) {
+    private static HeaderEncoder EncodeCommentsInText(
+  HeaderEncoder enc,
+  String str) {
       int i = 0;
       int begin = 0;
       if (str.indexOf('(') < 0) return enc.AppendString(str);
       StringBuilder sb = new StringBuilder();
       while (i < str.length()) {
         if (str.charAt(i) == '(') {
-          int si = HeaderParserUtility.ParseCommentLax(str, i, str.length(),
-            null);
+          int si = HeaderParserUtility.ParseCommentLax(
+  str,
+  i,
+  str.length(),
+  null);
           if (si != i) {
             enc.AppendString(str, begin, i);
             Rfc2047.EncodeComment(enc, str, i, si);
@@ -1802,9 +1829,9 @@ private static String GetContentTranslationType(String ctt) {
           headerValue.length(),
           null);
         // NOTE: Commented out for now (see below)
-        //if (atomText != typeEnd) {
+        // if (atomText != typeEnd) {
         // isUtf8 = false;
-        //}
+        // }
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
           int addressPart = HeaderParser.ParseCFWS(
            headerValue,
@@ -1857,11 +1884,13 @@ private static String GetContentTranslationType(String ctt) {
             // 2.3.1 and 2.3.2, which uses the conventions in RFC
             // 822, where linear white space can appear between lexical
             // tokens of a header field).
-            EncodeCommentsInText(encoder,
-                    HeaderEncoder.TrimLeadingFWS(typePart + builder));
+            EncodeCommentsInText(
+  encoder,
+  HeaderEncoder.TrimLeadingFWS(typePart + builder));
           } else {
-            EncodeCommentsInText(encoder,
-                    HeaderEncoder.TrimLeadingFWS(headerValue));
+            EncodeCommentsInText(
+  encoder,
+  HeaderEncoder.TrimLeadingFWS(headerValue));
           }
           headerValue = encoder.toString();
         }
@@ -1910,8 +1939,10 @@ private static String GetContentTranslationType(String ctt) {
       return HasTextToEscapeOrEncodedWordStarts(s, 0, s.length(), true);
     }
 
-    static boolean HasTextToEscapeOrEncodedWordStarts(String s, int
-      index, int endIndex) {
+    static boolean HasTextToEscapeOrEncodedWordStarts(
+  String s,
+  int index,
+  int endIndex) {
       return HasTextToEscapeOrEncodedWordStarts(s, index, endIndex, true);
     }
 
@@ -1923,8 +1954,11 @@ private static String GetContentTranslationType(String ctt) {
       return HasTextToEscapeOrEncodedWordStarts(s, 0, s.length(), false);
     }
 
-    static boolean HasTextToEscapeOrEncodedWordStarts(String s, int
-      index, int endIndex, boolean checkEWStarts) {
+    static boolean HasTextToEscapeOrEncodedWordStarts(
+  String s,
+  int index,
+  int endIndex,
+  boolean checkEWStarts) {
       int len = endIndex;
       int chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
@@ -1976,8 +2010,10 @@ private static String GetContentTranslationType(String ctt) {
       return list;
     }
 
-    static int ParseUnstructuredText(String s, int startIndex, int
-      endIndex) {
+    static int ParseUnstructuredText(
+  String s,
+  int startIndex,
+  int endIndex) {
       // Parses "unstructured" in RFC 5322 without obsolete syntax
       // and with non-ASCII characters allowed
       for (int i = startIndex; i < endIndex;) {
@@ -2375,10 +2411,10 @@ private static String GetContentTranslationType(String ctt) {
           } else {
             int[] state = { lineCount, c, 1 };
             c = ReadUtf8Char(stream, state);
-            //DebugUtility.Log("c=" + c + "," + lineCount + "," +
+            // DebugUtility.Log("c=" + c + "," + lineCount + "," +
              // state[0]+ ","+state[1]+","+state[2]);
             lineCount = state[0];
-            ungetLast = (state[2] == 1);
+            ungetLast = state[2] == 1;
             lastByte = state[1];
             if (c <= 0xffff) {
               sb.append((char)c);
@@ -2548,7 +2584,7 @@ private static String GetContentTranslationType(String ctt) {
         ++lineLength;
         allTextBytes &= lineLength <= MaxShortHeaderLineLength;
       }
-      return (allTextBytes) ? EncodingSevenBit :
+      return allTextBytes ? EncodingSevenBit :
     ((highBytes > lengthCheck / 3) ? EncodingBase64 :
           EncodingQuotedPrintable);
     }
@@ -2688,7 +2724,7 @@ private static String GetContentTranslationType(String ctt) {
           haveFrom = true;
         }
         if (
-          depth > 0 && name.indexOf("--")==0) {
+          depth > 0 && name.indexOf("--") == 0) {
           // don't generate header fields starting with "--"
           // in body parts
           continue;
@@ -2755,11 +2791,11 @@ private static String GetContentTranslationType(String ctt) {
             }
           }
         }
-        rawField = (rawField == null) ? ((HeaderEncoder.EncodeField(name, value))) : rawField;
+        rawField = (rawField == null) ? (HeaderEncoder.EncodeField(name, value)) : rawField;
         if (HeaderEncoder.CanOutputRaw(rawField)) {
           AppendAscii(output, rawField);
         } else {
-          //DebugUtility.Log("Can't output '"+name+"' raw");
+          // DebugUtility.Log("Can't output '"+name+"' raw");
           String downgraded = HeaderFieldParsers.GetParser(name)
                     .DowngradeHeaderField(name, value);
           if (
@@ -2846,7 +2882,7 @@ private static String GetContentTranslationType(String ctt) {
           }
         }
       } else {
-        boolean writeNewLine = (depth > 0);
+        boolean writeNewLine = depth > 0;
         for (Message part : this.getParts()) {
           if (writeNewLine) {
  AppendAscii(output, "\r\n");

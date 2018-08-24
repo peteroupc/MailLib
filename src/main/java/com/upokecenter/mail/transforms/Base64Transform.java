@@ -36,7 +36,8 @@ import com.upokecenter.mail.*;
     public Base64Transform(
   IByteReader input,
   boolean lenientLineBreaks) {
- this(input, lenientLineBreaks, MaxLineLength, false);
+ this(
+  input, lenientLineBreaks, MaxLineLength, false);
     }
 
     public Base64Transform(

@@ -10,7 +10,7 @@ at: http://peteroupc.github.io/
   final class UnicodeDatabase {
 private UnicodeDatabase() {
 }
-    private static final Object syncRoot = new Object();
+    private static final Object ValueSyncRoot = new Object();
 
     private static volatile ByteData classes;
 
@@ -27,7 +27,7 @@ private UnicodeDatabase() {
  return 0;
 }
   if (classes == null) {
-synchronized (syncRoot) {
+synchronized (ValueSyncRoot) {
 classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
 }
 }
@@ -127,7 +127,7 @@ classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningCl
 
     public static int GetIdnaCategory(int cp) {
         if (idnaCat == null) {
-synchronized (syncRoot) {
+synchronized (ValueSyncRoot) {
 idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
 }
 }
@@ -136,7 +136,7 @@ idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : i
 
     public static boolean IsCombiningMark(int cp) {
         if (combmark == null) {
-synchronized (syncRoot) {
+synchronized (ValueSyncRoot) {
 combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) : combmark;
 }
 }
@@ -169,7 +169,7 @@ combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) :
       }
         if (form == Normalization.NFC) {
           if (qcsnfc == null) {
-synchronized (syncRoot) {
+synchronized (ValueSyncRoot) {
 qcsnfc = (qcsnfc == null) ? (ByteData.Decompress(NormalizationData.QCSNFC)) : qcsnfc;
 }
 }
@@ -177,7 +177,7 @@ bd = qcsnfc;
         }
         if (form == Normalization.NFD) {
           if (qcsnfd == null) {
-synchronized (syncRoot) {
+synchronized (ValueSyncRoot) {
 qcsnfd = (qcsnfd == null) ? (ByteData.Decompress(NormalizationData.QCSNFD)) : qcsnfd;
 }
 }
@@ -185,7 +185,7 @@ bd = qcsnfd;
         }
         if (form == Normalization.NFKC) {
       if (qcsnfkc == null) {
-synchronized (syncRoot) {
+synchronized (ValueSyncRoot) {
 qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(NormalizationData.QCSNFKC)) : qcsnfkc;
 }
 }
@@ -193,7 +193,7 @@ bd = qcsnfkc;
         }
         if (form == Normalization.NFKD) {
       if (qcsnfkd == null) {
-synchronized (syncRoot) {
+synchronized (ValueSyncRoot) {
 qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(NormalizationData.QCSNFKD)) : qcsnfkd;
 }
 }

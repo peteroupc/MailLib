@@ -335,7 +335,7 @@ namespace PeterO.Mail {
       return builder.ToString();
     }
 
-    private static readonly int[] charCheck = {
+    private static readonly int[] ValueCharCheck = {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
@@ -345,7 +345,8 @@ namespace PeterO.Mail {
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
-    private static readonly int[] charCheckInitial = {
+
+    private static readonly int[] ValueCharCheckInitial = {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -355,6 +356,7 @@ namespace PeterO.Mail {
       0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
       2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
+
     private static bool SimplifiedFileCheck(string name) {
       if (String.IsNullOrEmpty(name) || name.Length > 128) {
         return false;
@@ -372,7 +374,7 @@ namespace PeterO.Mail {
           dotSeen = true;
           continue;
         }
-        int cc = (i == 0) ? charCheckInitial[c] : charCheck[c];
+        int cc = (i == 0) ? ValueCharCheckInitial[c] : ValueCharCheck[c];
         dotSeen = false;
         if (cc == 0) {
           return false;
@@ -564,7 +566,7 @@ namespace PeterO.Mail {
           "con.",
           StringComparison.Ordinal) == 0;
         // LPTn, COMn
-     if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.'||
+     if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
           strLower[4] == ' '))) {
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "lpt",

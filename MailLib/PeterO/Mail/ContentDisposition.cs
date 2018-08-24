@@ -42,7 +42,7 @@ namespace PeterO.Mail {
     public override int GetHashCode() {
       var hashCode = 632580499;
       if (this.dispositionType != null) {
-        for (var i = 0;i<this.dispositionType.Length; ++i) {
+        for (var i = 0; i < this.dispositionType.Length; ++i) {
  hashCode = unchecked(hashCode + (632580503 *
           this.dispositionType[i]));
  }
@@ -55,20 +55,16 @@ namespace PeterO.Mail {
     }
     #endregion
 
-    /// <summary>Gets a value indicating whether the disposition type is
-    /// inline.</summary>
-    /// <value><c>true</c> If the disposition type is inline; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]/*'/>
     public bool IsInline {
       get {
         return this.dispositionType.Equals("inline");
       }
     }
 
-    /// <summary>Gets a value indicating whether the disposition type is
-    /// attachment.</summary>
-    /// <value><c>true</c> If the disposition type is attachment;
-    /// otherwise, . <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]/*'/>
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment");
@@ -78,7 +74,7 @@ namespace PeterO.Mail {
     internal ContentDisposition(
  string type,
  IDictionary<string, string> parameters) {
-      if ((type) == null) {
+      if (type == null) {
         throw new ArgumentNullException(nameof(type));
       }
       this.dispositionType = type;
@@ -178,8 +174,12 @@ namespace PeterO.Mail {
       int endIndex = str.Length;
       var parameters = new Dictionary<string, string>();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      int i = MediaType.SkipMimeToken(str, index, endIndex, null,
-             HttpRules);
+      int i = MediaType.SkipMimeToken(
+  str,
+  index,
+  endIndex,
+  null,
+  HttpRules);
       if (i == index) {
         return null;
       }

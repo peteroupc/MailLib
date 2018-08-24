@@ -24,7 +24,7 @@ namespace PeterO.Mail {
         // Strip out ";base64" at end
         if (mediaType.Length >= 7 &&
       DataUtilities.ToLowerCaseAscii(mediaType.Substring(mediaType.Length -
-             7)) .Equals(";base64")) {
+             7)).Equals(";base64")) {
           mediaType = mediaType.Substring(0, mediaType.Length - 7);
         }
         if (mediaType.Length == 0 || mediaType[0] == ';') {
@@ -200,7 +200,7 @@ var i = 0;
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.String)"]/*'/>
     public static string MakeDataUrl(string textString) {
-if ((textString) == null) {
+if (textString == null) {
   throw new ArgumentNullException(nameof(textString));
 }
       return MakeDataUrl(

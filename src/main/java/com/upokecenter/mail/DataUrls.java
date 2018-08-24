@@ -34,7 +34,7 @@ private DataUrls() {
         // Strip out ";base64" at end
         if (mediaType.length() >= 7 &&
       DataUtilities.ToLowerCaseAscii(mediaType.substring(mediaType.length() -
-             7)) .equals(";base64")) {
+             7)).equals(";base64")) {
           mediaType = mediaType.substring(0, mediaType.length() - 7);
         }
         if (mediaType.length() == 0 || mediaType.charAt(0) == ';') {
@@ -219,7 +219,7 @@ int i = 0;
      * null.
      */
     public static String MakeDataUrl(String textString) {
-if ((textString) == null) {
+if (textString == null) {
   throw new NullPointerException("textString");
 }
       return MakeDataUrl(

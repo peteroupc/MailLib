@@ -318,7 +318,7 @@ private URIUtility() {
       boolean quickCheck = true;
       int lastIndex = 0;
       int i = 0;
-      for (;i < str.length(); ++i) {
+      for (; i < str.length(); ++i) {
         if (str.charAt(i) >= 0xd800 || str.charAt(i) == '%') {
           quickCheck = false;
           lastIndex = i;
@@ -351,7 +351,7 @@ private URIUtility() {
             int a = ToHex(str.charAt(i + 1));
             int b = ToHex(str.charAt(i + 2));
             if (a >= 0 && b >= 0) {
-              b = a * 16 + b;
+              b = (a * 16) + b;
               i += 2;
               // b now contains the byte read
               if (bytesNeeded == 0) {

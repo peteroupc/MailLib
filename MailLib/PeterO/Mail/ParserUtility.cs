@@ -12,7 +12,8 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal static class ParserUtility {
-    private static string ValueDigits = "0123456789";
+    private static string valueDigits = "0123456789";
+
     public static string IntToString(int value) {
       if (value == Int32.MinValue) {
         return "-2147483648";
@@ -28,18 +29,18 @@ namespace PeterO.Mail {
       }
       while (value > 43698) {
         int intdivvalue = value / 10;
-        char digit = ValueDigits[(int)(value - (intdivvalue * 10))];
+        char digit = valueDigits[(int)(value - (intdivvalue * 10))];
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
         int intdivvalue = (value * 26215) >> 18;
-        char digit = ValueDigits[(int)(value - (intdivvalue * 10))];
+        char digit = valueDigits[(int)(value - (intdivvalue * 10))];
         chars[count--] = digit;
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = ValueDigits[(int)value];
+        chars[count--] = valueDigits[(int)value];
       }
       if (neg) {
         chars[count] = '-';

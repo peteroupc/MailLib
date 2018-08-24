@@ -162,7 +162,7 @@ Gets a value indicating whether the disposition type is attachment.
 Gets a list of parameter names associated with this object and their values.
  <p>For the "filename" parameter, the value of that parameter is not
  adapted with the ContentDisposition.MakeFilename method; see the
- documentation for the ContentDisposition class. </p>
+ documentation for the ContentDisposition class.</p>
 
 **Returns:**
 
@@ -365,21 +365,21 @@ Parses a content disposition string and returns a content disposition
  from the Content-Disposition header field (as defined for email
  messages) and follows the syntax given in RFC 2183. Accordingly,
  among other things, the content disposition string can contain
- comments (delimited by parentheses). </p> <p>RFC 2231 extensions
- allow each content disposition parameter to be associated with a
- character encoding and/or language, and support parameter values that
- span two or more key-value pairs. Parameters making use of RFC 2231
- extensions have names with an asterisk ("*"). Such a parameter will
- be ignored if it is ill-formed because of RFC 2231's rules (except
- for illegal percent-decoding or undecodable sequences for the given
- character enoding). Examples of RFC 2231 extensions follow (both
- examples encode the same "filename" parameter): </p> <p><b>inline;
- filename*=utf-8'en'filename.txt</b> </p> <p><b>inline;
- filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b> </p> <p>This
+ comments (delimited by parentheses).</p> <p>RFC 2231 extensions allow
+ each content disposition parameter to be associated with a character
+ encoding and/or language, and support parameter values that span two
+ or more key-value pairs. Parameters making use of RFC 2231 extensions
+ have names with an asterisk ("*"). Such a parameter will be ignored
+ if it is ill-formed because of RFC 2231's rules (except for illegal
+ percent-decoding or undecodable sequences for the given character
+ enoding). Examples of RFC 2231 extensions follow (both examples
+ encode the same "filename" parameter):</p> <p><b>inline;
+ filename*=utf-8'en'filename.txt</b></p> <p><b>inline;
+ filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
  implementation ignores keys (in parameter key-value pairs) that
  appear more than once in the content disposition. Nothing in RFCs
  2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or
- otherwise specifies error-handling behavior for such keys. </p>
+ otherwise specifies error-handling behavior for such keys.</p>
 
 **Parameters:**
 

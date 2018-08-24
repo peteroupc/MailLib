@@ -32,9 +32,12 @@ if (this.innerBufferCount < this.innerBufferIndex) {
 }
 #endif
 
-        Array.Copy(this.innerBuffer, this.innerBufferIndex,
-          this.innerBuffer, 0,
-          this.innerBufferCount - this.innerBufferIndex);
+        Array.Copy(
+  this.innerBuffer,
+  this.innerBufferIndex,
+  this.innerBuffer,
+  0,
+  this.innerBufferCount - this.innerBufferIndex);
        this.innerBufferCount -= this.innerBufferIndex;
       }
       this.innerBufferIndex = 0;
@@ -91,8 +94,9 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       return ret;
     }
 
-    public BoundaryCheckerTransform(IByteReader stream, string
-        initialBoundary) {
+    public BoundaryCheckerTransform(
+  IByteReader stream,
+  string initialBoundary) {
       this.input = stream;
       this.boundaries = new List<string>();
       this.started = true;
@@ -103,7 +107,7 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-      int c = InnerBufferRead();
+      int c = this.InnerBufferRead();
       if (this.readingHeaders) {
         return c;
       }
@@ -116,13 +120,13 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       if (c == '-' && this.started) {
         // Check for a boundary at the start
         // of the body part
-        StartInnerBuffer();
-        c = InnerBufferReadAndStore();
+        this.StartInnerBuffer();
+        c = this.InnerBufferReadAndStore();
         if (c == '-') {
           // Possible boundary candidate
           return this.CheckBoundaries(PartStart);
         }
-        ResetInnerBuffer();
+        this.ResetInnerBuffer();
         return '-';
       }
       this.started = false;
@@ -131,10 +135,11 @@ if (this.innerBufferCount < this.innerBufferIndex) {
         return c;
       }
       // CR might signal next boundary or not
-      StartInnerBuffer();
-      if (InnerBufferReadAndStore() != 0x0a ||
-         InnerBufferReadAndStore() != '-' || InnerBufferReadAndStore() != '-') {
-        ResetInnerBuffer();
+      this.StartInnerBuffer();
+      if (this.InnerBufferReadAndStore() != 0x0a ||
+         this.InnerBufferReadAndStore() != '-' ||
+           this.InnerBufferReadAndStore() != '-') {
+        this.ResetInnerBuffer();
         return 0x0d;
       }
       // Possible boundary candidate
@@ -160,7 +165,7 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       string matchingBoundary = null;
       var matchingIndex = -1;
       for (int i = 0; i < 72; ++i) {
-        c = InnerBufferReadAndStore();
+        c = this.InnerBufferReadAndStore();
         if (c < 0 || c >= 0x80 || c == 0x0d) {
           lastC = c;
           break;
@@ -189,8 +194,8 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       }
       if (matchingBoundary == null) {
         // No matching boundary
-        ResetInnerBuffer();
-        return (state==PartBody ||state==PartEpilogue) ? 0x0d : '-';
+        this.ResetInnerBuffer();
+        return (state == PartBody || state == PartEpilogue) ? 0x0d : '-';
       }
       var closingDelim = false;
       // Pop the stack until the matching body part
@@ -204,7 +209,7 @@ if (this.innerBufferCount < this.innerBufferIndex) {
           boundaryBuffer[matchingBoundary.Length] == '-' &&
           boundaryBuffer[matchingBoundary.Length + 1] == '-';
       }
-      ClearInnerBuffer();
+      this.ClearInnerBuffer();
       if (closingDelim) {
         // Pop this entry, it's the top of the stack
         this.boundaries.RemoveAt(this.boundaries.Count - 1);
@@ -226,7 +231,7 @@ if (this.innerBufferCount < this.innerBufferIndex) {
         }
         var unget = true;
         while (true) {
-          c = unget ? lastC : InnerBufferRead();
+          c = unget ? lastC : this.InnerBufferRead();
           unget = false;
           if (c < 0) {
             // The body higher up didn't end yet
@@ -234,17 +239,17 @@ if (this.innerBufferCount < this.innerBufferIndex) {
           }
           if (c == 0x0d) {
             // CR might signal next boundary or not
-            c = InnerBufferRead();
+            c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
  unget = true;
 }
             if (c == 0x0a) {
               // Start of new body part
-              StartInnerBuffer();
-              if (InnerBufferReadAndStore() != '-' ||
-                InnerBufferReadAndStore() != '-') {
+              this.StartInnerBuffer();
+              if (this.InnerBufferReadAndStore() != '-' ||
+                this.InnerBufferReadAndStore() != '-') {
                 // No boundary delimiter
-                ResetInnerBuffer();
+                this.ResetInnerBuffer();
               } else {
                 if (this.CheckBoundaries(PartEpilogue) == -1) {
                   return -1;
@@ -259,14 +264,14 @@ if (this.innerBufferCount < this.innerBufferIndex) {
         // next body part).
         var unget = true;
         while (true) {
-          c = unget ? lastC : InnerBufferRead();
+          c = unget ? lastC : this.InnerBufferRead();
           unget = false;
           if (c < 0) {
             // The body higher up didn't end yet
             throw new MessageDataException("Premature end of message");
           }
           if (c == 0x0d) {
-            c = InnerBufferRead();
+            c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
  unget = true;
 }
@@ -310,10 +315,8 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       this.started = true;  // in case a boundary delimiter immediately starts
     }
 
-    /// <summary>Gets a value indicating whether a new body part was
-    /// detected.</summary>
-    /// <value><c>true</c> If a new body part was detected; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]/*'/>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

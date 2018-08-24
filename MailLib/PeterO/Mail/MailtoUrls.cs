@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using PeterO;
+
 namespace PeterO.Mail {
   internal static class MailtoUrls {
     private static string Implode(string[] strings, string delim) {
@@ -210,8 +211,8 @@ namespace PeterO.Mail {
                 emails += "," + decoded;
               }
             } else {
-              //DebugUtility.Log(name);
-              //DebugUtility.Log(value);
+              // DebugUtility.Log(name);
+              // DebugUtility.Log(value);
             }
           }
         }

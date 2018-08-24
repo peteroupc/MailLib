@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using PeterO;
+
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
@@ -85,8 +86,13 @@ namespace PeterO.Mail {
  return null;
 }
       var ret = new int[8];
-      if (ParseHeaderExpandedDate(str, 0, str.Length, ret,
-        parseObsoleteZones) == str.Length) {
+      if (
+  ParseHeaderExpandedDate(
+  str,
+  0,
+  str.Length,
+  ret,
+  parseObsoleteZones) == str.Length) {
         return ret;
       } else {
         return null;

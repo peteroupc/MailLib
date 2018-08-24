@@ -50,7 +50,7 @@ Gets a value indicating whether the disposition type is attachment.
 
 <b>Returns:</b>
 
- `true`  If the disposition type is attachment; otherwise,.  `false` .
+ `true`  If the disposition type is attachment; otherwise, .  `false` .
 
 ### IsInline
 
@@ -60,7 +60,7 @@ Gets a value indicating whether the disposition type is inline.
 
 <b>Returns:</b>
 
- `true`  If the disposition type is inline; otherwise,. `false` .
+ `true`  If the disposition type is inline; otherwise, . `false` .
 
 ### Parameters
 
@@ -70,7 +70,7 @@ Gets a list of parameter names associated with this object and their values.For 
 
 <b>Returns:</b>
 
-A read-only list of parameter names associated with this object and their values.NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
+A read-only list of parameter names associated with this object and their values. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
 ### Equals
 
@@ -147,11 +147,11 @@ The value of the parameter, or null if the parameter does not exist.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
-is empty.
+ is empty.
 
 ### GetReadDate
 
@@ -227,7 +227,7 @@ A ContentDisposition object.
 
  * System.ArgumentNullException:
 The parameter <i>dispositionValue</i>
-is null.
+ is null.
 
 ### Parse
 
@@ -238,19 +238,19 @@ Creates a new content disposition object from the value of a Content-Disposition
 
 <b>Parameters:</b>
 
- * <i>dispoValue</i>: The parameter <i>dispoValue</i>
-is a text string.
+ * <i>dispoValue</i>: The parameter  <i>dispoValue</i>
+ is a text string.
 
 <b>Return Value:</b>
 
-A content disposition object, or ContentDisposition.Attachment" if <i>dispoValue</i>
-is empty or syntactically invalid.
+A content disposition object, or ContentDisposition.Attachment" if  <i>dispoValue</i>
+ is empty or syntactically invalid.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>dispoValue</i>
-is null.
+ is null.
 
 ### ToSingleLineString
 

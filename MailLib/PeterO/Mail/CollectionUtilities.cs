@@ -36,6 +36,7 @@ namespace PeterO.Mail {
       }
       return true;
     }
+
     public static bool ListEquals<T>(IList<T> listA, IList<T> listB) {
       if (listA == null) {
  return listB == null;

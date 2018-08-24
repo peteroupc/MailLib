@@ -77,13 +77,13 @@ import com.upokecenter.text.*;
     @Override public int hashCode() {
       int valueHashCode = 632580499;
       if (this.topLevelType != null) {
-        for (int i = 0;i<this.topLevelType.length(); ++i) {
+        for (int i = 0; i < this.topLevelType.length(); ++i) {
  valueHashCode = (valueHashCode + (632580563 *
              this.topLevelType.charAt(i)));
  }
       }
       if (this.subType != null) {
-        for (int i = 0;i<this.subType.length(); ++i) {
+        for (int i = 0; i < this.subType.length(); ++i) {
  valueHashCode = (valueHashCode + (632580563 *
              this.subType.charAt(i)));
  }
@@ -344,6 +344,7 @@ import com.upokecenter.text.*;
                     (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
                     "!$&*+-._~".indexOf((char)c) >= 0);
     }
+
     private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
       // to encode according to RFC 2231, but the augmented
@@ -357,8 +358,11 @@ import com.upokecenter.text.*;
       sb.append(ValueHex.charAt(w & 15));
     }
 
-    private static int EncodeContinuation(String str, int startPos,
-      HeaderEncoder sa, boolean uriSafe) {
+    private static int EncodeContinuation(
+  String str,
+  int startPos,
+  HeaderEncoder sa,
+  boolean uriSafe) {
       int column = sa.GetColumn();
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
@@ -366,7 +370,7 @@ import com.upokecenter.text.*;
  while (index < str.length() && (maxLineLength < 0 || column <=
         maxLineLength)) {
         int c = str.charAt(index);
-        boolean first = (index == 0);
+        boolean first = index == 0;
         int contin = (index == 0) ? 7 : 0;
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
             str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
@@ -397,17 +401,17 @@ import com.upokecenter.text.*;
         } else if (c <= 0x7f) {
           PctAppend(sb, c);
         } else if (c <= 0x7ff) {
-          PctAppend(sb, (0xc0 | ((c >> 6) & 0x1f)));
-          PctAppend(sb, (0x80 | (c & 0x3f)));
+          PctAppend(sb, 0xc0 | ((c >> 6) & 0x1f));
+          PctAppend(sb, 0x80 | (c & 0x3f));
         } else if (c <= 0xffff) {
-          PctAppend(sb, (0xe0 | ((c >> 12) & 0x0f)));
-          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
-          PctAppend(sb, (0x80 | (c & 0x3f)));
+          PctAppend(sb, 0xe0 | ((c >> 12) & 0x0f));
+          PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
+          PctAppend(sb, 0x80 | (c & 0x3f));
         } else {
-          PctAppend(sb, (0xf0 | ((c >> 18) & 0x07)));
-          PctAppend(sb, (0x80 | ((c >> 12) & 0x3f)));
-          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
-          PctAppend(sb, (0x80 | (c & 0x3f)));
+          PctAppend(sb, 0xf0 | ((c >> 18) & 0x07));
+          PctAppend(sb, 0x80 | ((c >> 12) & 0x3f));
+          PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
+          PctAppend(sb, 0x80 | (c & 0x3f));
           ++index;  // Because it uses 2 surrogates
         }
         ++index;
@@ -506,11 +510,13 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       sb.append('"');
       return sa.TryAppendSymbol(sb.toString());
     }
+
     static void AppendParameters(
       Map<String, String> parameters,
       HeaderEncoder sa) {
        AppendParameters(parameters, sa, false);
     }
+
       static void AppendParameters(
       Map<String, String> parameters,
       HeaderEncoder sa,
@@ -1010,8 +1016,9 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
         new PercentEncodingStringTransform(value));
     }
 
-    private static boolean ExpandRfc2231Extensions(Map<String, String>
-      parameters, boolean httpRules) {
+    private static boolean ExpandRfc2231Extensions(
+  Map<String, String> parameters,
+ boolean httpRules) {
       if (parameters.size() == 0) {
         return true;
       }
@@ -1095,7 +1102,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
         // in RFC6838
         if (SkipMimeTypeSubtype(name, 0, name.length(), null) != name.length()) {
           // Illegal parameter name, so use default media type
-          //return false;
+          // return false;
           parameters.remove(name);
         }
       }
@@ -1354,7 +1361,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
      * media type string was directly extracted from the Content-Type header
      * field (as defined for email messages) and follows the syntax given in
      * RFC 2045. Accordingly, among other things, the media type string can
-     * contain comments (delimited by parentheses). </p> <p>RFC 2231
+     * contain comments (delimited by parentheses).</p> <p>RFC 2231
      * extensions allow each media type parameter to be associated with a
      * character encoding and/or language, and support parameter values that
      * span two or more key-value pairs. Parameters making use of RFC 2231
@@ -1362,14 +1369,14 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
      * be ignored if it is ill-formed because of RFC 2231's rules (except
      * for illegal percent-decoding or undecodable sequences for the given
      * character enoding). Examples of RFC 2231 extensions follow (both
-     * examples encode the same "filename" parameter): </p>
-     * <p><b>text/example; filename*=utf-8'en'filename.txt</b> </p>
+     * examples encode the same "filename" parameter):</p>
+     * <p><b>text/example; filename*=utf-8'en'filename.txt</b></p>
      * <p><b>text/example; filename*0*=utf-8'en'file;
-     * filename*1*=name%2Etxt</b> </p> <p>This implementation ignores keys
+     * filename*1*=name%2Etxt</b></p> <p>This implementation ignores keys
      * (in parameter key-value pairs) that appear more than once in the
      * media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231
      * explicitly disallows such keys, or otherwise specifies error-handling
-     * behavior for such keys. </p>
+     * behavior for such keys.</p>
      * @param str A text string representing a media type. This media type can
      * include parameters.
      * @param defaultValue The media type to return if the string is syntactically

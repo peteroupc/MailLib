@@ -287,7 +287,7 @@ Parses a media type string and returns a media type object, or the default
  media type string was directly extracted from the Content-Type header
  field (as defined for email messages) and follows the syntax given in
  RFC 2045. Accordingly, among other things, the media type string can
- contain comments (delimited by parentheses). </p> <p>RFC 2231
+ contain comments (delimited by parentheses).</p> <p>RFC 2231
  extensions allow each media type parameter to be associated with a
  character encoding and/or language, and support parameter values that
  span two or more key-value pairs. Parameters making use of RFC 2231
@@ -295,14 +295,14 @@ Parses a media type string and returns a media type object, or the default
  be ignored if it is ill-formed because of RFC 2231's rules (except
  for illegal percent-decoding or undecodable sequences for the given
  character enoding). Examples of RFC 2231 extensions follow (both
- examples encode the same "filename" parameter): </p>
- <p><b>text/example; filename*=utf-8'en'filename.txt</b> </p>
+ examples encode the same "filename" parameter):</p>
+ <p><b>text/example; filename*=utf-8'en'filename.txt</b></p>
  <p><b>text/example; filename*0*=utf-8'en'file;
- filename*1*=name%2Etxt</b> </p> <p>This implementation ignores keys
+ filename*1*=name%2Etxt</b></p> <p>This implementation ignores keys
  (in parameter key-value pairs) that appear more than once in the
  media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231
  explicitly disallows such keys, or otherwise specifies error-handling
- behavior for such keys. </p>
+ behavior for such keys.</p>
 
 **Parameters:**
 

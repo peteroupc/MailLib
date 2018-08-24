@@ -13,14 +13,14 @@ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.Med
 
 <b>Parameters:</b>
 
- * <i>mt</i>: The parameter <i>mt</i>
-is a MediaType object.
+ * <i>mt</i>: The parameter  <i>mt</i>
+ is a MediaType object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>mt</i>
-is null.
+ is null.
 
 ### MediaTypeBuilder Constructor
 
@@ -50,7 +50,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise,. `false` .
+ `true`  If this is a multipart media type; otherwise, . `false` .
 
 ### IsText
 
@@ -60,7 +60,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise,. `false` .
+ `true`  If this is a text media type; otherwise, . `false` .
 
 ### SubType
 
@@ -101,7 +101,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
-is null.
+ is null.
 
 ### SetParameter
 
@@ -125,12 +125,12 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
-or <i>name</i>
-is null.
+ or  <i>name</i>
+ is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
-is empty or syntactically invalid.
+ is empty or syntactically invalid.
 
 ### SetSubType
 
@@ -151,11 +151,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
-is empty or syntactically invalid.
+ is empty or syntactically invalid.
 
 ### SetTopLevelType
 
@@ -176,11 +176,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
-is syntactically invalid for a top-level type.
+ is syntactically invalid for a top-level type.
 
 ### ToMediaType
 

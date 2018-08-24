@@ -135,8 +135,13 @@ private MailDateTime() {
  return null;
 }
       int[] ret = new int[8];
-      if (ParseHeaderExpandedDate(str, 0, str.length(), ret,
-        parseObsoleteZones) == str.length()) {
+      if (
+  ParseHeaderExpandedDate(
+  str,
+  0,
+  str.length(),
+  ret,
+  parseObsoleteZones) == str.length()) {
         return ret;
       } else {
         return null;

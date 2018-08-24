@@ -9,7 +9,7 @@ using System;
 
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
-    private static readonly object syncRoot = new Object();
+    private static readonly object ValueSyncRoot = new Object();
 
     private static volatile ByteData classes;
 
@@ -26,7 +26,7 @@ namespace PeterO.Text {
  return 0;
 }
   if (classes == null) {
-lock (syncRoot) {
+lock (ValueSyncRoot) {
 classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
 }
 }
@@ -126,7 +126,7 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
 
     public static int GetIdnaCategory(int cp) {
         if (idnaCat == null) {
-lock (syncRoot) {
+lock (ValueSyncRoot) {
 idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
 }
 }
@@ -135,7 +135,7 @@ idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
 
     public static bool IsCombiningMark(int cp) {
         if (combmark == null) {
-lock (syncRoot) {
+lock (ValueSyncRoot) {
 combmark = combmark ?? ByteData.Decompress(IdnaData.CombiningMarks);
 }
 }
@@ -168,7 +168,7 @@ combmark = combmark ?? ByteData.Decompress(IdnaData.CombiningMarks);
       }
         if (form == Normalization.NFC) {
           if (qcsnfc == null) {
-lock (syncRoot) {
+lock (ValueSyncRoot) {
 qcsnfc = qcsnfc ?? ByteData.Decompress(NormalizationData.QCSNFC);
 }
 }
@@ -176,7 +176,7 @@ bd = qcsnfc;
         }
         if (form == Normalization.NFD) {
           if (qcsnfd == null) {
-lock (syncRoot) {
+lock (ValueSyncRoot) {
 qcsnfd = qcsnfd ?? ByteData.Decompress(NormalizationData.QCSNFD);
 }
 }
@@ -184,7 +184,7 @@ bd = qcsnfd;
         }
         if (form == Normalization.NFKC) {
       if (qcsnfkc == null) {
-lock (syncRoot) {
+lock (ValueSyncRoot) {
 qcsnfkc = qcsnfkc ?? ByteData.Decompress(NormalizationData.QCSNFKC);
 }
 }
@@ -192,7 +192,7 @@ bd = qcsnfkc;
         }
         if (form == Normalization.NFKD) {
       if (qcsnfkd == null) {
-lock (syncRoot) {
+lock (ValueSyncRoot) {
 qcsnfkd = qcsnfkd ?? ByteData.Decompress(NormalizationData.QCSNFKD);
 }
 }

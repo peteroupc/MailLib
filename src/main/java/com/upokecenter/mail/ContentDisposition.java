@@ -80,7 +80,7 @@ import com.upokecenter.text.*;
     @Override public int hashCode() {
       int valueHashCode = 632580499;
       if (this.dispositionType != null) {
-        for (int i = 0;i<this.dispositionType.length(); ++i) {
+        for (int i = 0; i < this.dispositionType.length(); ++i) {
  valueHashCode = (valueHashCode + (632580503 *
           this.dispositionType.charAt(i)));
  }
@@ -113,7 +113,7 @@ import com.upokecenter.text.*;
     ContentDisposition(
  String type,
  Map<String, String> parameters) {
-      if ((type) == null) {
+      if (type == null) {
         throw new NullPointerException("type");
       }
       this.dispositionType = type;
@@ -131,7 +131,7 @@ import com.upokecenter.text.*;
      * Gets a list of parameter names associated with this object and their values.
      * <p>For the "filename" parameter, the value of that parameter is not
      * adapted with the ContentDisposition.MakeFilename method; see the
-     * documentation for the ContentDisposition class. </p>
+     * documentation for the ContentDisposition class.</p>
      * @return A read-only list of parameter names associated with this object and
      * their values. NOTE: Previous versions erroneously stated that the
      * list will be sorted by name. In fact, the names will not be
@@ -324,8 +324,12 @@ import com.upokecenter.text.*;
       int endIndex = str.length();
       HashMap<String, String> parameters = new HashMap<String, String>();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      int i = MediaType.SkipMimeToken(str, index, endIndex, null,
-             HttpRules);
+      int i = MediaType.SkipMimeToken(
+  str,
+  index,
+  endIndex,
+  null,
+  HttpRules);
       if (i == index) {
         return null;
       }
@@ -400,21 +404,21 @@ import com.upokecenter.text.*;
      * from the Content-Disposition header field (as defined for email
      * messages) and follows the syntax given in RFC 2183. Accordingly,
      * among other things, the content disposition string can contain
-     * comments (delimited by parentheses). </p> <p>RFC 2231 extensions
-     * allow each content disposition parameter to be associated with a
-     * character encoding and/or language, and support parameter values that
-     * span two or more key-value pairs. Parameters making use of RFC 2231
-     * extensions have names with an asterisk ("*"). Such a parameter will
-     * be ignored if it is ill-formed because of RFC 2231's rules (except
-     * for illegal percent-decoding or undecodable sequences for the given
-     * character enoding). Examples of RFC 2231 extensions follow (both
-     * examples encode the same "filename" parameter): </p> <p><b>inline;
-     * filename*=utf-8'en'filename.txt</b> </p> <p><b>inline;
-     * filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b> </p> <p>This
+     * comments (delimited by parentheses).</p> <p>RFC 2231 extensions allow
+     * each content disposition parameter to be associated with a character
+     * encoding and/or language, and support parameter values that span two
+     * or more key-value pairs. Parameters making use of RFC 2231 extensions
+     * have names with an asterisk ("*"). Such a parameter will be ignored
+     * if it is ill-formed because of RFC 2231's rules (except for illegal
+     * percent-decoding or undecodable sequences for the given character
+     * enoding). Examples of RFC 2231 extensions follow (both examples
+     * encode the same "filename" parameter):</p> <p><b>inline;
+     * filename*=utf-8'en'filename.txt</b></p> <p><b>inline;
+     * filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
      * implementation ignores keys (in parameter key-value pairs) that
      * appear more than once in the content disposition. Nothing in RFCs
      * 2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or
-     * otherwise specifies error-handling behavior for such keys. </p>
+     * otherwise specifies error-handling behavior for such keys.</p>
      * @param dispositionValue A text string that should be the value of a
      * Content-Disposition header field.
      * @param defaultValue The value to return in case the disposition value is

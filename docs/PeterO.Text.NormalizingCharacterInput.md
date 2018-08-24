@@ -103,21 +103,21 @@ is a Normalization object.
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter <i>str</i>
-is a text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
- * <i>form</i>: The parameter <i>form</i>
-is a Normalization object.
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-or "input" or "charArray" is null.
+ or "input" or "charArray" is null.
 
 ### NormalizingCharacterInput Constructor
 
@@ -171,7 +171,7 @@ A list of the normalized Unicode characters.
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
-is null.
+ is null.
 
 ### GetChars
 
@@ -185,8 +185,8 @@ Gets a list of normalized code points after reading from a string.
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter <i>str</i>
-is a text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
@@ -198,7 +198,7 @@ A list of the normalized Unicode characters.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-is null.
+ is null.
 
 ### IsNormalized
 
@@ -218,7 +218,7 @@ Determines whether the given array of characters is in the given Unicode normali
 
 <b>Return Value:</b>
 
- `true` if the given list of characters is in the given Unicode normalization orm; otherwise,  `false` .
+ `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -241,13 +241,13 @@ Determines whether the text provided by a character input is normalized.
 
 <b>Return Value:</b>
 
- `true` if the text is normalized; otherwise,  `false` .
+ `true`  if the text is normalized; otherwise, `false` .
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
-is null.
+ is null.
 
 ### IsNormalized
 
@@ -265,13 +265,13 @@ Determines whether the given string is in the given Unicode normalization form.
 
 <b>Return Value:</b>
 
- `true` if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns `false` if the string contains an unpaired surrogate code point.
+ `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns  `false` if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-is null.
+ is null.
 
 ### IsNormalized
 
@@ -291,13 +291,13 @@ Determines whether the given list of characters is in the given Unicode normaliz
 
 <b>Return Value:</b>
 
- `true` if the given list of characters is in the given Unicode normalization orm; otherwise,  `false` .
+ `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>charList</i>
-is null.
+ is null.
 
 ### Normalize
 
@@ -315,18 +315,18 @@ Converts a string to the given Unicode normalization form.
 
 <b>Return Value:</b>
 
-The parameter <i>str</i>
-converted to the given normalization form.
+The parameter  <i>str</i>
+ converted to the given normalization form.
 
 <b>Exceptions:</b>
 
  * System.ArgumentException:
 The parameter <i>str</i>
-contains an unpaired surrogate code point.
+ contains an unpaired surrogate code point.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-is null.
+ is null.
 
 ### Read
 
@@ -341,12 +341,12 @@ Reads a sequence of Unicode code points from a data source.
 
  * <i>chars</i>: Output buffer.
 
- * <i>index</i>: A zero-based index showing where the desired portion of <i>chars</i>
-begins.
+ * <i>index</i>: A zero-based index showing where the desired portion of  <i>chars</i>
+ begins.
 
- * <i>length</i>: The number of elements in the desired portion of <i>chars</i>
-(but not more than <i>chars</i>
-'s length).
+ * <i>length</i>: The number of elements in the desired portion of  <i>chars</i>
+ (but not more than  <i>chars</i>
+ 's length).
 
 <b>Return Value:</b>
 
@@ -356,15 +356,15 @@ The number of Unicode code points read, or 0 if the end of the source is reached
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
-is null.
+ is null.
 
  * System.ArgumentException:
-Either <i>index</i>
-or <i>length</i>
-is less than 0 or greater than <i>chars</i>
-'s length, or <i>chars</i>
-' s length minus <i>index</i>
-is less than <i>length</i>
+Either  <i>index</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>chars</i>
+ 's length, or  <i>chars</i>
+ ' s length minus  <i>index</i>
+ is less than  <i>length</i>
 .
 
 ### ReadChar

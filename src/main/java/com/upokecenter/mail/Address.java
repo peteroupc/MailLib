@@ -76,11 +76,11 @@ void AppendThisAddress(HeaderEncoder encoder) {
  String domainstr = DomainToString(this.domain, true);
  long length = DataUtilities.GetUtf8Length(lp, true);
  long length2 = DataUtilities.GetUtf8Length(domainstr, true);
- if (length2 + length + 1 <= Message.MaxRecHeaderLineLength-1) {
+ if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
   // Avoid breaking email addresses if it can comfortably
   // fit the recommended line length
-        int tlength=(int)(length2 + length + 1);
-  encoder.AppendSymbolWithLength(lp+"@"+domainstr,tlength);
+        int tlength = (int)(length2 + length + 1);
+  encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
  } else {
         // NOTE: Both lengths can't exceed MaxRecHeaderLineLength,
         // which is well below the maximum value for 32-bit
@@ -97,7 +97,7 @@ void AppendThisAddress(HeaderEncoder encoder) {
      */
     @Override public String toString() {
      HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
-     AppendThisAddress(sa);
+     this.AppendThisAddress(sa);
   return sa.toString();
     }
 
@@ -109,35 +109,30 @@ void AppendThisAddress(HeaderEncoder encoder) {
         // we check if the length exceeds that number (thus excluding the space
         // character of a folded line).
      if
-  (DataUtilities.GetUtf8Length(lp, true)>Message.MaxHardHeaderLineLength
+  (DataUtilities.GetUtf8Length(lp, true) > Message.MaxHardHeaderLineLength
        - 1) {
  return true;
 }
      if
-  (DataUtilities.GetUtf8Length(domainstr, true)>Message.MaxHardHeaderLineLength
-       - 1) {
+(DataUtilities.GetUtf8Length(domainstr, true) >
+    Message.MaxHardHeaderLineLength - 1) {
  return true;
 }
      return
-  (DataUtilities.GetUtf8Length(domain2, true)>Message.MaxHardHeaderLineLength
-       - 1) ? (true) : (false);
-    }
+  (DataUtilities.GetUtf8Length(domain2, true) > Message.MaxHardHeaderLineLength
+       - 1) ? (true) : false; }
+         path='docs/doc[@name="M:PeterO.Mail.Address.hashCode"]/*' />
 
-    /**
-     * Calculates the hash code of this object. No application or process IDs are
-     * used in the hash code calculation.
-     * @return A 32-bit hash code.
-     */
     @Override public int hashCode() {
       int valueHashCode = -1524613162;
-      if (domain != null) {
-        for (int i = 0; i < domain.length(); ++i) {
-          valueHashCode *= -1521134295 + domain.charAt(i);
+      if (this.domain != null) {
+        for (int i = 0; i < this.domain.length(); ++i) {
+          valueHashCode *= -1521134295 + this.domain.charAt(i);
         }
       }
-      if (localPart != null) {
-        for (int i = 0; i < localPart.length(); ++i) {
-          valueHashCode *= -1521134295 + localPart.charAt(i);
+      if (this.localPart != null) {
+        for (int i = 0; i < this.localPart.length(); ++i) {
+          valueHashCode *= -1521134295 + this.localPart.charAt(i);
         }
       }
       return valueHashCode;

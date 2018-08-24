@@ -336,7 +336,7 @@ private MakeFilenameMethod() {
       return builder.toString();
     }
 
-    private static final int[] charCheck = {
+    private static final int[] ValueCharCheck = {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
@@ -346,7 +346,8 @@ private MakeFilenameMethod() {
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
-    private static final int[] charCheckInitial = {
+
+    private static final int[] ValueCharCheckInitial = {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -356,6 +357,7 @@ private MakeFilenameMethod() {
       0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
       2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
+
     private static boolean SimplifiedFileCheck(String name) {
       if (((name) == null || (name).length() == 0) || name.length() > 128) {
         return false;
@@ -373,7 +375,7 @@ private MakeFilenameMethod() {
           dotSeen = true;
           continue;
         }
-        int cc = (i == 0) ? charCheckInitial[c] : charCheck[c];
+        int cc = (i == 0) ? ValueCharCheckInitial[c] : ValueCharCheck[c];
         dotSeen = false;
         if (cc == 0) {
           return false;
@@ -560,7 +562,7 @@ private MakeFilenameMethod() {
           "con") || strLower.indexOf(
           "con.") == 0;
         // LPTn, COMn
-     if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.'||
+     if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
           strLower.charAt(4) == ' '))) {
           reservedFilename = reservedFilename || (strLower.indexOf(
             "lpt") == 0 && strLower.charAt(3) >= '0' &&

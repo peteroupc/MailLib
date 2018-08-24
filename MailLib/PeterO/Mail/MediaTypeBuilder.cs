@@ -68,20 +68,16 @@ namespace PeterO.Mail {
       this.SetSubType(subtype);
     }
 
-    /// <summary>Gets a value indicating whether this is a text media
-    /// type.</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.IsText"]/*'/>
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text");
       }
     }
 
-    /// <summary>Gets a value indicating whether this is a multipart media
-    /// type.</summary>
-    /// <value><c>true</c> If this is a multipart media type; otherwise, .
-    /// <c>false</c>.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.IsMultipart"]/*'/>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");

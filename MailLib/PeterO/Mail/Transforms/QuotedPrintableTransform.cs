@@ -53,8 +53,11 @@ namespace PeterO.Mail.Transforms {
 
     public QuotedPrintableTransform(
   IByteReader input,
-  bool allowBareLfCr) : this(input, allowBareLfCr,
-                    MaxLineLength, false) {
+  bool allowBareLfCr) : this(
+  input,
+  allowBareLfCr,
+  MaxLineLength,
+  false) {
     }
 
     public QuotedPrintableTransform(
