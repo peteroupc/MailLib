@@ -100,8 +100,12 @@ import com.upokecenter.text.*;
      * </p>
      */
   public final class Message {
+    // Recomm. max. number of CHARACTERS per line (excluding CRLF)
+    // (see RFC 5322, 6532)
     static final int MaxRecHeaderLineLength = 78;
     static final int MaxShortHeaderLineLength = 76;
+    // Max. number of OCTETS per line (excluding CRLF)
+    // (see RFC 5322, 6532)
     static final int MaxHardHeaderLineLength = 998;
 
     private static final int EncodingBase64 = 2;
@@ -1542,6 +1546,10 @@ private static String GetContentTranslationType(String ctt) {
           // System.out.println("Bare CR or bare LF");
           return false;
         }
+        if (c == 0 || c == 0x7f) {
+          // System.out.println("NULL or DEL character");
+          return false;
+        }
         ++lineLength;
         if (lineLength > MaxRecHeaderLineLength) {
           // System.out.println("Line length exceeded (" + lineLength +
@@ -2186,6 +2194,7 @@ private static String GetContentTranslationType(String ctt) {
       IByteReader stream,
       Collection<String> headerList,
       boolean start) {
+      // Line length in OCTETS, not characters
       int lineCount = 0;
       int[] bytesRead = new int[1];
       StringBuilder sb = new StringBuilder();
@@ -2241,7 +2250,7 @@ private static String GetContentTranslationType(String ctt) {
             sb.append((char)c);
           } else if (!first && c == ':') {
             if (lineCount > Message.MaxHardHeaderLineLength) {
-              // MaxHardHeaderLineLength characters includes the colon
+              // MaxHardHeaderLineLength octets includes the colon
               throw new MessageDataException("Header field name too long");
             }
             break;

@@ -187,7 +187,7 @@ import com.upokecenter.text.*;
           }
           colon = true;
         }
-        if (c == 0) {
+        if (c == 0 || c == 0x7f) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
           builder.append(fn + ": CTL in valueMessage (0x");

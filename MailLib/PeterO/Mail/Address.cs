@@ -115,7 +115,6 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
   (DataUtilities.GetUtf8Length(domain2, true) > Message.MaxHardHeaderLineLength
        - 1) ? (true) : false; }
 
-
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
     public override int GetHashCode() {

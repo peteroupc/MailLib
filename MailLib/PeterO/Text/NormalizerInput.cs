@@ -45,6 +45,10 @@ namespace PeterO.Text {
       return offset;
     }
 
+   private static bool IsDecompositionForm(Normalization form) {
+      return form == Normalization.NFD || form == Normalization.NFKD;
+   }
+
     internal static int DecompToBuffer(
   int ch,
   bool compat,
@@ -537,8 +541,7 @@ UnicodeDatabase.IsQuickCheckStarter(
             return (total == 0) ? -1 : total;
           }
           if (c < 0x80 || UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
-            if (this.form == Normalization.NFD ||
-            this.form == Normalization.NFKD) {
+            if (IsDecompositionForm(this.form)) {
               chars[index] = c;
               ++total;
               ++index;
@@ -584,8 +587,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         index += count;
         total += count;
         this.flushIndex += count;
-        bool decompForm = this.form == Normalization.NFD ||
-            this.form == Normalization.NFKD;
+        bool decompForm = IsDecompositionForm(this.form);
         // Try to fill buffer with quick-check starters,
         // as an optimization.
         // There is a check for processedIndex == endIndex
@@ -679,6 +681,7 @@ UnicodeDatabase.IsQuickCheckStarter(
             this.endOfString = true;
             break;
           }
+
           this.endIndex = DecompToBuffer(
   c,
   this.compatMode,
@@ -690,8 +693,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         if (!this.endOfString) {
           var haveNewQcs = false;
           // NOTE: lastQcsIndex begins at -1
-          bool decompForm = this.form == Normalization.NFD ||
-            this.form == Normalization.NFKD;
+          bool decompForm = IsDecompositionForm(this.form);
           var nextIsQCS = false;
           for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
             if (
@@ -741,11 +743,11 @@ UnicodeDatabase.IsQuickCheckStarter(
         return false;
       }
       this.flushIndex = 0;
-      // DebugUtility.Log ("reordering " + (// EC (buffer, 0, lastQcsIndex)) +
+       //DebugUtility.Log ("reordering " +  // (EC (buffer, 0, lastQcsIndex)) +
       // " [" + this.form + "]");
       // Canonical reordering
       ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
-      if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
+      if (!IsDecompositionForm(this.form)) {
         // Composition
         // DebugUtility.Log ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");

@@ -1071,10 +1071,23 @@
              backslash) are replaced with underscores; spaces and tabs are
              collapsed to a single space; leading and trailing spaces and tabs
              are removed; and the filename is truncated if it would otherwise be
-             too long. The returned string will be in normalization form C.
+             too long. Also, for reasons stated in the remarks, a character that is
+ the combined form
+ of a base character and a combining slash is replaced with "!" followed
+ by the base character. The returned string will be in normalization form C.
              Returns the empty string if <paramref name='str'/> is null or
              empty.</returns><remarks>
-             <para><b>Remark:</b> Email and HTTP headers may specify suggested
+             <para><b>Remarks:</b></para>
+<list>
+<item>The string returned by this method is normalized using
+Unicode normalization form C (see the <see cref="T:PeterO.Text.NormalizerInput"/>
+class for details).  However, some file systems may use a different kind of
+normalization. For example, the HFS Plus file system on macOS uses a modified
+version of normalization form D in which certain code points are not
+decomposed (including all base+slash code points) (this is mentioned in Apple's Technical Q&amp;A entitled "Text Encodings in VFS").  If the filename will be
+used to save a file to an HFS Plus storage device, it is enough to normalize
+the return value with normalization form D for this purpose.</item>
+<item><para>Email and HTTP headers may specify suggested
              filenames using the Content-Disposition header field's
              <c>filename</c> parameter or, in practice, the Content-Type header
              field's <c>name</c> parameter.</para>
@@ -1103,9 +1116,11 @@
              deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which
              says that "[t]here are NO globally meaningful parameters that apply
              to all media types"). (Some email implementations may still write
-             out the "name" parameter, even in media types other than
+             out the "name" parameter, even for media types other than
              <c>application/octet-stream</c> and even though RFC 2046 has
-             deprecated that parameter.)</para></remarks>
+             deprecated that parameter.)</para></item></list>
+
+</remarks>
 
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.Parameters">

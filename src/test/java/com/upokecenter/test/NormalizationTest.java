@@ -293,7 +293,47 @@ Assert.assertEquals(
  }
       }
     }
+    /*
 
+@Test
+public void TestNormD() {
+  int[] cp = new int[1];
+      int[] pairs = NormalizationData.ComposedPairs;
+      for (int i = 0; i < pairs.length; i += 3) {
+        int p1 = pairs[i];
+        int p2 = pairs[i + 1];
+        int p3 = pairs[i + 2];
+        if (IsSpecialChar(p1) || IsSpecialChar(p2) ||
+           IsSpecialChar(p3)) {
+          System.out.println("{0:X4},{1:X4},{2:X4}", p1, p2, p3);
+        }
+      }
+  for (int i = 0; i < 0x110000; ++i) {
+          if ((i & 0xf800) == 0xd800) {
+ continue;
+}
+          cp.charAt(0) = i;
+          String cps = ToCodePointString(cp);
+          String nfc = NormalizerInput.Normalize(cps, Normalization.NFD);
+          String nfd = NormalizerInput.Normalize(cps, Normalization.NFD);
+String nfdfs = NormalizerInput.Normalize(cps,
+            Normalization.NFDForFilesystems);
+          if (!(nfdfs.length() > 0)) {
+ Assert.fail(EncodingTest.EscapeString(cps));
+ }
+          if (!nfc.equals(cps)) {
+ continue;
+}
+          if (!nfd.equals(nfdfs)) {
+            System.out.println("---");
+            System.out.println(EncodingTest.EscapeString(cps));
+            System.out.println(EncodingTest.EscapeString(nfc));
+            System.out.println(EncodingTest.EscapeString(nfd));
+            System.out.println(EncodingTest.EscapeString(nfdfs));
+          }
+        }
+    }
+*/
     @Test(timeout = 60000)
     public void NormTest() {
       boolean[] handled = new boolean[0x110000];
@@ -323,7 +363,7 @@ Assert.assertEquals(
         String[] columns = SplitAt(line, ";");
         int[] cps = GetCodePoints(columns[0]);
         if (part1) {
-          handled[cps[0]] = true;
+          handled[cps.charAt(0)] = true;
         }
         NormResult[] nr = new NormResult[5];
         for (int i = 0; i < 5; ++i) {

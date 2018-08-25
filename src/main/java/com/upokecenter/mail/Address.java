@@ -121,8 +121,12 @@ void AppendThisAddress(HeaderEncoder encoder) {
      return
   (DataUtilities.GetUtf8Length(domain2, true) > Message.MaxHardHeaderLineLength
        - 1) ? (true) : false; }
-         path='docs/doc[@name="M:PeterO.Mail.Address.hashCode"]/*' />
 
+    /**
+     * Calculates the hash code of this object. No application or process IDs are
+     * used in the hash code calculation.
+     * @return A 32-bit hash code.
+     */
     @Override public int hashCode() {
       int valueHashCode = -1524613162;
       if (this.domain != null) {

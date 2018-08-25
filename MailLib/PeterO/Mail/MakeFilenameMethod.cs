@@ -335,6 +335,50 @@ namespace PeterO.Mail {
       return builder.ToString();
     }
 
+    private static string BaseAndSlashCleanup(string str) {
+      var i = 0;
+      while (i < str.Length) {
+        int c = str[i];
+        if (c >= 0x219a && c <= 0x22ed) {
+          break;
+        } else {
+          ++i;
+        }
+      }
+      if (i >= str.Length) {
+        return str;
+      }
+      var builder = new StringBuilder();
+      builder.Append(str.Substring(0, i));
+      while (i < str.Length) {
+        int c = str[i];
+        if (c >= 0x219a && c <= 0x22ed) {
+          // If this is a character that is the combined form
+          // of another character and a combining slash, use
+          // an alternate form to ease compatibility when converting
+          // the return value to normalization form D: this kind of
+          // character can appear composed in NFC and is decomposed
+          // in NFD, but will be left alone by HFS Plus's version of NFD.
+          // This is the only kind of character in Unicode with this
+          // normalization property.
+          var tsb = new StringBuilder().Append((char)c);
+          string tss = NormalizerInput.Normalize(tsb.ToString(),
+           Normalization.NFD);
+          if (tss.IndexOf((char)0x338) >= 0) {
+              builder.Append('!');
+              builder.Append(tss[0]);
+          } else {
+            builder.Append(c);
+          }
+          ++i;
+        } else {
+          builder.Append((char)c);
+          ++i;
+        }
+      }
+      return builder.ToString();
+    }
+
     private static readonly int[] ValueCharCheck = {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -595,6 +639,7 @@ namespace PeterO.Mail {
         }
         str = TrimAndCollapseSpaceAndTab(str);
         str = NormalizerInput.Normalize(str, Normalization.NFC);
+        str = BaseAndSlashCleanup(str);
         // Avoid space before and after last dot
         for (i = str.Length - 1; i >= 0; --i) {
           if (str[i] == '.') {
