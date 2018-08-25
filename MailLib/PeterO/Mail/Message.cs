@@ -17,8 +17,12 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
+    // Recomm. max. number of CHARACTERS per line (excluding CRLF)
+    // (see RFC 5322, 6532)
     internal const int MaxRecHeaderLineLength = 78;
     internal const int MaxShortHeaderLineLength = 76;
+    // Max. number of OCTETS per line (excluding CRLF)
+    // (see RFC 5322, 6532)
     internal const int MaxHardHeaderLineLength = 998;
 
     private const int EncodingBase64 = 2;
@@ -1066,6 +1070,10 @@ private static string GetContentTranslationType(string ctt) {
           // Console.WriteLine("Bare CR or bare LF");
           return false;
         }
+        if (c == 0 || c == 0x7f) {
+          // Console.WriteLine("NULL or DEL character");
+          return false;
+        }
         ++lineLength;
         if (lineLength > MaxRecHeaderLineLength) {
           // Console.WriteLine("Line length exceeded (" + lineLength +
@@ -1711,6 +1719,7 @@ private static string GetContentTranslationType(string ctt) {
       IByteReader stream,
       ICollection<string> headerList,
       bool start) {
+      // Line length in OCTETS, not characters
       var lineCount = 0;
       var bytesRead = new int[1];
       var sb = new StringBuilder();
@@ -1766,7 +1775,7 @@ private static string GetContentTranslationType(string ctt) {
             sb.Append((char)c);
           } else if (!first && c == ':') {
             if (lineCount > Message.MaxHardHeaderLineLength) {
-              // MaxHardHeaderLineLength characters includes the colon
+              // MaxHardHeaderLineLength octets includes the colon
               throw new MessageDataException("Header field name too long");
             }
             break;

@@ -25,9 +25,7 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+            List<NamedAddress> mailboxes)`<br>
 * `boolean AddressesEqual​(NamedAddress na)`<br>
  Not documented yet.
 * `boolean equals​(Object obj)`<br>
@@ -73,9 +71,7 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+            List<NamedAddress> mailboxes)`<br>
 
 ## Method Details
 
@@ -109,9 +105,8 @@ Initializes a new instance of the <code>NamedAddress</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
- .
 
-* <code>IllegalArgumentException</code> - The named address has an invalid syntax. .
+* <code>IllegalArgumentException</code> - The named address has an invalid syntax.
 
 ### NamedAddress
     public NamedAddress​(String displayName, String address)
@@ -128,10 +123,9 @@ Initializes a new instance of the <code>NamedAddress</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
- .
 
 * <code>IllegalArgumentException</code> - The display name or address has an invalid
- syntax. .
+ syntax.
 
 ### NamedAddress
     public NamedAddress​(String displayName, Address address)
@@ -148,7 +142,6 @@ Initializes a new instance of the <code>NamedAddress</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
- .
 
 ### NamedAddress
     public NamedAddress​(String displayName, String localPart, String domain)
@@ -168,28 +161,10 @@ Initializes a new instance of the <code>NamedAddress</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>localPart</code> or
- <code>domain</code> is null. .
+ <code>domain</code> is null.
 
 ### NamedAddress
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
-Initializes a new instance of the <code>NamedAddress</code>
- class. Takes a group name and several named email addresses as
- parameters, and forms a group with them.
-
-**Parameters:**
-
-* <code>groupName</code> - The group's name.
-
-* <code>mailboxes</code> - A list of named addresses that make up the group.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>groupName</code> or
- <code>mailboxes</code> is null. .
-
-* <code>IllegalArgumentException</code> - The parameter <code>groupName</code> is empty,
- or an item in the list is itself a group. .
-
 ### ParseAddresses
     public static List<NamedAddress> ParseAddresses​(String addressValue)
 Generates a list of NamedAddress objects from a comma-separated list of

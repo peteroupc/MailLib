@@ -188,7 +188,7 @@ namespace MailLibTest {
           }
           colon = true;
         }
-        if (c == 0) {
+        if (c == 0 || c == 0x7f) {
           var builder = new StringBuilder();
           const string ValueHex = "0123456789ABCDEF";
           builder.Append(fn + ": CTL in valueMessage (0x");

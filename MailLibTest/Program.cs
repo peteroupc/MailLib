@@ -12,7 +12,7 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-      new EncodingTest().TestRandomEncodedBytes();
+      new NormalizationTest().NormTest();
     }
   }
 }

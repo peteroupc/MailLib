@@ -336,6 +336,50 @@ private MakeFilenameMethod() {
       return builder.toString();
     }
 
+    private static String BaseAndSlashCleanup(String str) {
+      int i = 0;
+      while (i < str.length()) {
+        int c = str.charAt(i);
+        if (c >= 0x219a && c <= 0x22ed) {
+          break;
+        } else {
+          ++i;
+        }
+      }
+      if (i >= str.length()) {
+        return str;
+      }
+      StringBuilder builder = new StringBuilder();
+      builder.append(str.substring(0, i));
+      while (i < str.length()) {
+        int c = str.charAt(i);
+        if (c >= 0x219a && c <= 0x22ed) {
+          // If this is a character that is the combined form
+          // of another character and a combining slash, use
+          // an alternate form to ease compatibility when converting
+          // the return value to normalization form D: this kind of
+          // character can appear composed in NFC and is decomposed
+          // in NFD, but will be left alone by HFS Plus's version of NFD.
+          // This is the only kind of character in Unicode with this
+          // normalization property.
+          StringBuilder tsb = new StringBuilder().append((char)c);
+          String tss = NormalizerInput.Normalize(tsb.toString(),
+           Normalization.NFD);
+          if (tss.indexOf((char)0x338) >= 0) {
+              builder.append('!');
+              builder.append(tss.charAt(0));
+          } else {
+            builder.append(c);
+          }
+          ++i;
+        } else {
+          builder.append((char)c);
+          ++i;
+        }
+      }
+      return builder.toString();
+    }
+
     private static final int[] ValueCharCheck = {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -589,6 +633,7 @@ private MakeFilenameMethod() {
         }
         str = TrimAndCollapseSpaceAndTab(str);
         str = NormalizerInput.Normalize(str, Normalization.NFC);
+        str = BaseAndSlashCleanup(str);
         // Avoid space before and after last dot
         for (i = str.length() - 1; i >= 0; --i) {
           if (str.charAt(i) == '.') {

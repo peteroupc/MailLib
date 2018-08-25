@@ -40,12 +40,12 @@ Initializes a new instance of the <code>Address</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>addressValue</code> is
- null. .
+ null.
 
 * <code>IllegalArgumentException</code> - The email address contains invalid syntax.
  For example, it doesn't contain an '@' sign or either side of the '@'
  contains invalid characters, the address is too long, or the address
- contains comments (text within parentheses). .
+ contains comments (text within parentheses).
 
 ### Address
     public Address​(String addressValue)
@@ -59,12 +59,12 @@ Initializes a new instance of the <code>Address</code>
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>addressValue</code> is
- null. .
+ null.
 
 * <code>IllegalArgumentException</code> - The email address contains invalid syntax.
  For example, it doesn't contain an '@' sign or either side of the '@'
  contains invalid characters, the address is too long, or the address
- contains comments (text within parentheses). .
+ contains comments (text within parentheses).
 
 ### equals
     public boolean equals​(Object obj)
