@@ -7,15 +7,11 @@
 
 A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
-The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines four<i>normalization forms</i>that convert strings to a single equivalent form:
-
- * <b>NFD</b>(Normalization Form D) decomposes combined forms to their constituent haracters (E plus acute, for example). This is called canonical ecomposition.
+ * <b>NFD</b>(Normalization Form D) decomposes combined forms to their constituent haracters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
 
  * <b>NFC</b>does canonical decomposition, then combines certain constituent haracters to their composites (E-acute, for example). This is called anonical composition.
 
  * Two normalization forms,<b>NFKC</b>and<b>NFKD</b>, are similar to NFC and NFD, except they also "decompose" certain haracters, such as ligatures, font or positional variants, and ubscripts, whose visual distinction can matter in some contexts. This s called compatibility decomposition.
-
- * The four normalization forms also enforce a standardized order for combining marks, since they can otherwise appear in an arbitrary order.
 
 For more information, see Standard Annex 15 at `http://www.unicode.org/reports/tr15/` .
 
@@ -103,7 +99,7 @@ is a Normalization object.
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the[PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md)class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -241,7 +237,7 @@ Determines whether the text provided by a character input is normalized.
 
 <b>Return Value:</b>
 
- `true`  if the text is normalized; otherwise, `false` .
+ `true`  if the text is normalized; otherwise,  `false` .
 
 <b>Exceptions:</b>
 

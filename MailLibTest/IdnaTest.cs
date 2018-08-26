@@ -137,6 +137,9 @@ namespace MailLibTest {
   Idna.IsValidDomainName(
   "x\u0300\u0300\u200c\u0300\u0300\ua840",
   false));
+      // Consecutive ZWNJs
+      Assert.IsFalse(Idna.IsValidDomainName("\ua840\u200c\u200c\ua840", false));
+
       // Keraia
       Assert.IsTrue(Idna.IsValidDomainName("x\u0375\u03b1", false));  // Greek
       Assert.IsFalse(Idna.IsValidDomainName("x\u0375a", false));  // Non-Greek
@@ -153,8 +156,7 @@ namespace MailLibTest {
       // Arabic-indic digits and extended Arabic-indic digits
       Assert.IsFalse(Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627", false));
       // Right-joining character (U + 062F; since the only right-joining
-      // characters in
-      // Unicode have Bidi type R,
+      // characters in Unicode 6.3 have Bidi type R,
       // a different dual-joining character is used, U + 062D, which also has
       // the same Bidi type).
       Assert.IsTrue(Idna.IsValidDomainName("\u062d\u200c\u062f", false));
@@ -170,6 +172,11 @@ namespace MailLibTest {
   Idna.IsValidDomainName(
   "\u062f\u0300\u0300\u200c\u0300\u0300\u062d",
   false));
+      // Regression testa: U + 07FA mistakenly allowed (since
+      // U + 07FA has Bidi type R, the other characters in these tests
+      // also have Bidi type R).
+      Assert.IsFalse(Idna.IsValidDomainName("\u07ca\u07fa\u07ca", false));
+      Assert.IsFalse(Idna.IsValidDomainName("\u07fa", false));
     }
   }
 }

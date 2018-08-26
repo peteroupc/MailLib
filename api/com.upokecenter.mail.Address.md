@@ -16,7 +16,7 @@ Represents an email address.
 * `String getLocalPart()`<br>
  Gets the local part of this email address (the part before the "@" sign).
 * `int hashCode()`<br>
- Calculates the hash code of this object.
+ Not documented yet.
 * `String toString()`<br>
  Converts this address object to a text string.
 
@@ -105,8 +105,7 @@ Converts this address object to a text string.
 
 ### hashCode
     public int hashCode()
-Calculates the hash code of this object. No application or process IDs are
- used in the hash code calculation.
+Not documented yet.
 
 **Overrides:**
 
@@ -114,7 +113,7 @@ Calculates the hash code of this object. No application or process IDs are
 
 **Returns:**
 
-* A 32-bit hash code.
+* A 32-bit signed integer.
 
 ### getDomain
     public final String getDomain()

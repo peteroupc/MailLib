@@ -86,6 +86,7 @@
     <Compile Include="URIUtility.cs" />
     <Compile Include="DataUrlTest.cs" />
     <Compile Include="EnrichedText.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

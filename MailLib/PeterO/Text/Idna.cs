@@ -17,6 +17,7 @@ namespace PeterO.Text {
     private const int Disallowed = 2;
     private const int ContextJ = 3;
     private const int ContextO = 4;
+    private const int IDDisallowed = 5;
     private const int BidiClassL = 0;
     private const int BidiClassR = 1;
     private const int BidiClassAL = 2;
@@ -74,34 +75,35 @@ namespace PeterO.Text {
 
     internal static int GetBidiClass(int ch) {
       ByteData table = null;
-        if (bidiClasses == null) {
-lock (syncRoot) {
-bidiClasses = bidiClasses ?? ByteData.Decompress(IdnaData.BidiClasses);
-}
-}
-        table = bidiClasses;
+      if (bidiClasses == null) {
+        lock (syncRoot) {
+        bidiClasses = bidiClasses ??
+            ByteData.Decompress(IdnaData.BidiClasses);
+        }
+      }
+      table = bidiClasses;
       return table.GetByte(ch);
     }
 
     private static int GetJoiningType(int ch) {
       ByteData table = null;
-     if (joiningTypes == null) {
-lock (syncRoot) {
-joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
-}
-}
-        table = joiningTypes;
+      if (joiningTypes == null) {
+        lock (syncRoot) {
+     joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
+        }
+      }
+      table = joiningTypes;
       return table.GetByte(ch);
     }
 
     private static int GetScript(int ch) {
       ByteData table = null;
-        if (scripts == null) {
-lock (syncRoot) {
-scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
-}
-}
-        table = scripts;
+      if (scripts == null) {
+        lock (syncRoot) {
+        scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
+        }
+      }
+      table = scripts;
       return table.GetByte(ch);
     }
 
@@ -209,10 +211,10 @@ scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
           lastIndex = i + 1;
         }
       }
-  retval = DomainUtility.PunycodeEncodePortion(
-  value,
-  lastIndex,
-  value.Length);
+      retval = DomainUtility.PunycodeEncodePortion(
+      value,
+      lastIndex,
+      value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -280,10 +282,10 @@ scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
       return builder.ToString();
     }
 
-private static bool IsValidLabel(
-  string str,
-  bool lookupRules,
-  bool bidiRule) {
+    private static bool IsValidLabel(
+      string str,
+      bool lookupRules,
+      bool bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
@@ -291,8 +293,9 @@ private static bool IsValidLabel(
         (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
       var allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
-    if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') ||
-                (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
+    if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'
+) ||
+                    (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
           // LDH character
           continue;
         }
@@ -335,6 +338,260 @@ private static bool IsValidLabel(
       return IsValidULabel(str, lookupRules, bidiRule);
     }
 
+    private static bool PassesContextChecks(string str) {
+      var regArabDigits = false;
+      var extArabDigits = false;
+      var haveKatakanaMiddleDot = false;
+      var haveKanaOrHan = false;
+      var lastChar = 0;
+      for (int i = 0; i < str.Length; ++i) {
+        int thisChar = CodePointAt(str, i);
+        if (thisChar >= 0x660 && thisChar <= 0x669) {
+          // Arabic-Indic digits
+          // NOTE: Test done here even under lookup rules,
+          // even though they're CONTEXTO characters
+          if (extArabDigits) {
+            return false;
+          }
+          regArabDigits = true;
+        } else if (thisChar >= 0x6f0 && thisChar <= 0x6f9) {
+          // Extended Arabic-Indic digits
+          // NOTE: Test done here even under lookup rules,
+          // even though they're CONTEXTO characters
+          if (regArabDigits) {
+            return false;
+          }
+          extArabDigits = true;
+        } else if (thisChar == 0xb7) {
+          // Middle dot
+          // NOTE: Test done here even under lookup rules,
+          // even though it's a CONTEXTO character
+          if (!(i - 1 >= 0 && i + 1 < str.Length &&
+              lastChar == 0x6c && str[i + 1] == 0x6c)) {
+            // Dot must come between two l's
+            return false;
+          }
+        } else if (thisChar == 0x200d) {
+          // Zero-width joiner
+          if (UnicodeDatabase.GetCombiningClass(lastChar) != 9) {
+            return false;
+          }
+        } else if (thisChar == 0x200c) {
+          // Zero-width non-joiner
+          if (UnicodeDatabase.GetCombiningClass(lastChar) != 9 &&
+              !IsValidConjunct(str, i)) {
+            return false;
+          }
+        } else if (thisChar == 0x375) {
+          // Keraia
+          // NOTE: Test done here even under lookup rules,
+          // even though it's a CONTEXTO character
+          if (i + 1 >= str.Length || !IsGreek(CodePointAt(str, i + 1))) {
+            return false;
+          }
+        } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
+          // Geresh or gershayim
+          // NOTE: Test done here even under lookup rules,
+          // even though they're CONTEXTO characters
+          if (i <= 0 || !IsHebrew(lastChar)) {
+            return false;
+          }
+        } else if (thisChar == 0x30fb) {
+          haveKatakanaMiddleDot = true;
+        } else {
+          int category = UnicodeDatabase.GetIdnaCategory(thisChar);
+          if (category == ContextJ || category == ContextO) {
+            // Context character without a rule
+            return false;
+          }
+        }
+        if (!haveKanaOrHan && IsKanaOrHan(thisChar)) {
+          haveKanaOrHan = true;
+        }
+        if (thisChar >= 0x10000) {
+          ++i;
+        }
+        lastChar = thisChar;
+      }
+      if (haveKatakanaMiddleDot && !haveKanaOrHan) {
+        // NOTE: Test done here even under lookup rules,
+        // even though it's a CONTEXTO character
+        return false;
+      }
+      return true;
+    }
+
+    internal static bool IsInPrecisClass(string str, bool freeform) {
+      if (String.IsNullOrEmpty(str)) {
+        return false;
+      }
+      var haveContextual = false;
+      for (int i = 0; i < str.Length; ++i) {
+        int ch = CodePointAt(str, i);
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        int category = UnicodeDatabase.GetIdnaCategory(ch);
+        if (category == Disallowed || category == Unassigned) {
+          return false;
+        }
+        if (category == IDDisallowed && !freeform) {
+          // Disallowed in identifiers only
+          return false;
+        }
+        haveContextual |= category == ContextO || category == ContextJ;
+      }
+      if (haveContextual) {
+        if (!PassesContextChecks(str)) {
+ return false;
+}
+      }
+      return true;
+    }
+
+    private static bool PassesBidiRule(string str) {
+      if (String.IsNullOrEmpty(str)) {
+ return true;
+}
+      int bidiClass;
+      var rtl = false;
+      int ch = CodePointAt(str, 0);
+      if (ch < 0) {
+ return false;
+}
+      int bidi = GetBidiClass(ch);
+      if (bidi == BidiClassR || bidi == BidiClassAL) {
+        rtl = true;
+      } else if (bidi != BidiClassL) {
+ return false;
+}
+      var found = false;
+      for (int i = str.Length; i > 0; --i) {
+        int c = CodePointBefore(str, i);
+        if (c < 0) {
+ return false;
+}
+        if (c >= 0x10000) {
+          --i;
+        }
+        bidiClass = GetBidiClass(c);
+        if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+          bidiClass == BidiClassAN)) {
+          found = true;
+          break;
+        }
+        if (!rtl && (bidiClass == BidiClassL)) {
+          found = true;
+          break;
+        }
+        if (bidiClass == BidiClassEN) {
+          found = true;
+          break;
+        }
+        if (bidiClass != BidiClassNSM) {
+          return false;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+      var haveEN = false;
+      var haveAN = false;
+      for (int i = 0; i < str.Length; ++i) {
+        int c = CodePointAt(str, i);
+        if (c >= 0x10000) {
+          ++i;
+        }
+        bidiClass = GetBidiClass(c);
+        if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+          bidiClass == BidiClassAN)) {
+          if (bidiClass == BidiClassAN) {
+            if (haveEN) {
+              return false;
+            }
+            haveAN = true;
+          }
+          continue;
+        }
+        if (!rtl && (bidiClass == BidiClassL)) {
+          continue;
+        }
+        if (bidiClass == BidiClassEN) {
+          if (rtl) {
+            if (haveAN) {
+              return false;
+            }
+            haveEN = false;
+          }
+          continue;
+        }
+        if (bidiClass == BidiClassES ||
+              bidiClass == BidiClassCS || bidiClass == BidiClassET ||
+              bidiClass == BidiClassON || bidiClass == BidiClassBN ||
+                 bidiClass == BidiClassNSM) {
+          continue;
+        }
+        return false;
+      }
+      return true;
+    }
+
+    private static string WidthMapping(string str) {
+      var index = 0;
+      for (var i = 0; i < str.Length; ++i) {
+        int ch = CodePointAt(str, i);
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+ return str;
+}
+        if (ch >= 0x10000) {
+          ++i;
+        }
+// NOTE: Not coextensive with code points having
+// Decomposition_Type=Wide or Narrow, since U+3000,
+// ideographic space, is excluded.  However, this
+// code point (as well as its decomposition mapping,
+// which is U+0020) will be excluded by the 
+// IdentifierClass.
+        if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
+          break;
+        }
+        index = i;
+      }
+      if (index == str.Length) {
+ return str;
+}
+      var sb = new StringBuilder();
+      sb.Append(str.Substring(0, index));
+      for (var i = index; i < str.Length; ++i) {
+        int ch = CodePointAt(str, i);
+        int istart = i;
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+ return str;
+}
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
+          string chs = str.Substring(istart, (i - istart) + 1);
+          string nfkd = NormalizerInput.Normalize(
+             chs,
+             Normalization.NFKD);
+          sb.Append(nfkd);
+        } else {
+          if (ch <= 0xffff) {
+  { sb.Append((char)(ch));
+}
+  } else if (ch <= 0x10ffff) {
+sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
+sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+}
+        }
+      }
+      return sb.ToString();
+    }
+
     private static bool IsValidULabel(
   string str,
   bool lookupRules,
@@ -366,8 +623,6 @@ private static bool IsValidLabel(
       int ch;
       var first = true;
       var haveContextual = false;
-      var rtl = false;
-      int bidiClass;
       for (int i = 0; i < str.Length; ++i) {
         ch = CodePointAt(str, i);
         if (ch >= 0x10000) {
@@ -381,167 +636,19 @@ private static bool IsValidLabel(
           if (UnicodeDatabase.IsCombiningMark(ch)) {
             return false;
           }
-          if (bidiRule) {
-            bidiClass = GetBidiClass(ch);
-            if (bidiClass == BidiClassR || bidiClass == BidiClassAL) {
-              rtl = true;
-            } else if (bidiClass != BidiClassL) {
-              // forbidden bidi type as the first character
-              return false;
-            }
-          }
         }
         haveContextual |= category == ContextO || category == ContextJ;
         first = false;
       }
       if (haveContextual) {
-        var regArabDigits = false;
-        var extArabDigits = false;
-        var haveKatakanaMiddleDot = false;
-        var haveKanaOrHan = false;
-        var lastChar = 0;
-        for (int i = 0; i < str.Length; ++i) {
-          int thisChar = CodePointAt(str, i);
-          if (thisChar >= 0x660 && thisChar <= 0x669) {
-            // Arabic-Indic digits
-            // NOTE: Test done here even under lookup rules,
-            // even though they're CONTEXTO characters
-            if (extArabDigits) {
-              return false;
-            }
-            regArabDigits = true;
-          } else if (thisChar >= 0x6f0 && thisChar <= 0x6f9) {
-            // Extended Arabic-Indic digits
-            // NOTE: Test done here even under lookup rules,
-            // even though they're CONTEXTO characters
-            if (regArabDigits) {
-              return false;
-            }
-            extArabDigits = true;
-          } else if (thisChar == 0xb7) {
-            // Middle dot
-            // NOTE: Test done here even under lookup rules,
-            // even though it's a CONTEXTO character
-            if (!(i - 1 >= 0 && i + 1 < str.Length &&
-                lastChar == 0x6c && str[i + 1] == 0x6c)) {
-              // Dot must come between two l's
-              return false;
-            }
-          } else if (thisChar == 0x200d) {
-            // Zero-width joiner
-            if (UnicodeDatabase.GetCombiningClass(lastChar) != 9) {
-              return false;
-            }
-          } else if (thisChar == 0x200c) {
-            // Zero-width non-joiner
-            if (UnicodeDatabase.GetCombiningClass(lastChar) != 9 &&
-                !IsValidConjunct(str, i)) {
-              return false;
-            }
-          } else if (thisChar == 0x375) {
-            // Keraia
-            // NOTE: Test done here even under lookup rules,
-            // even though it's a CONTEXTO character
-            if (i + 1 >= str.Length || !IsGreek(CodePointAt(str, i + 1))) {
-              return false;
-            }
-          } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
-            // Geresh or gershayim
-            // NOTE: Test done here even under lookup rules,
-            // even though they're CONTEXTO characters
-            if (i <= 0 || !IsHebrew(lastChar)) {
-              return false;
-            }
-          } else if (thisChar == 0x30fb) {
-            haveKatakanaMiddleDot = true;
-          } else {
-            int category = UnicodeDatabase.GetIdnaCategory(thisChar);
-            if (category == ContextJ || category == ContextO) {
-              // Context character without a rule
-              return false;
-            }
-          }
-          if (!haveKanaOrHan && IsKanaOrHan(thisChar)) {
-            haveKanaOrHan = true;
-          }
-          if (thisChar >= 0x10000) {
-            ++i;
-          }
-          lastChar = thisChar;
-        }
-        if (haveKatakanaMiddleDot && !haveKanaOrHan) {
-          // NOTE: Test done here even under lookup rules,
-          // even though it's a CONTEXTO character
-          return false;
-        }
+        if (!PassesContextChecks(str)) {
+ return false;
+}
       }
-      // Bidi Rule
       if (bidiRule) {
-        var found = false;
-        for (int i = str.Length; i > 0; --i) {
-          int c = CodePointBefore(str, i);
-          if (c >= 0x10000) {
-            --i;
-          }
-          bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
-            found = true;
-            break;
-          }
-          if (!rtl && (bidiClass == BidiClassL)) {
-            found = true;
-            break;
-          }
-          if (bidiClass == BidiClassEN) {
-            found = true;
-            break;
-          }
-          if (bidiClass != BidiClassNSM) {
-            return false;
-          }
-        }
-        if (!found) {
-          return false;
-        }
-        var haveEN = false;
-        var haveAN = false;
-        for (int i = 0; i < str.Length; ++i) {
-          int c = CodePointAt(str, i);
-          if (c >= 0x10000) {
-            ++i;
-          }
-          bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
-            if (bidiClass == BidiClassAN) {
-              if (haveEN) {
-                return false;
-              }
-              haveAN = true;
-            }
-            continue;
-          }
-          if (!rtl && (bidiClass == BidiClassL)) {
-            continue;
-          }
-          if (bidiClass == BidiClassEN) {
-            if (rtl) {
-              if (haveAN) {
-                return false;
-              }
-              haveEN = false;
-            }
-            continue;
-          }
-          if (bidiClass == BidiClassES ||
-                bidiClass == BidiClassCS || bidiClass == BidiClassET ||
-                bidiClass == BidiClassON || bidiClass == BidiClassBN ||
-                   bidiClass == BidiClassNSM) {
-            continue;
-          }
-          return false;
-        }
+        if (!PassesBidiRule(str)) {
+ return false;
+}
       }
       int aceLength = DomainUtility.PunycodeLength(str, 0, str.Length);
       if (aceLength < 0) {

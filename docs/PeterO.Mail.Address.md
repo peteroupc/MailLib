@@ -9,7 +9,7 @@ Represents an email address.
     public Address(
         string addressValue);
 
-Initializes a new instance of the[PeterO.Mail.Address](PeterO.Mail.Address.md) class.
+Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.
 
 <b>Parameters:</b>
 
@@ -64,11 +64,7 @@ is an arbitrary object.
 
     public override int GetHashCode();
 
-Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
-
-<b>Return Value:</b>
-
-A 32-bit hash code.
+Not documented yet.
 
 ### ToString
 

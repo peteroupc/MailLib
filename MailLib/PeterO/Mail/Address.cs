@@ -101,22 +101,20 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
         // Maximum character length per line for an Internet message minus 1;
         // we check if the length exceeds that number (thus excluding the space
         // character of a folded line).
-     if
-  (DataUtilities.GetUtf8Length(lp, true) > Message.MaxHardHeaderLineLength
-       - 1) {
- return true;
-}
-     if
-(DataUtilities.GetUtf8Length(domainstr, true) >
-    Message.MaxHardHeaderLineLength - 1) {
- return true;
-}
-     return
-  (DataUtilities.GetUtf8Length(domain2, true) > Message.MaxHardHeaderLineLength
-       - 1) ? (true) : false; }
+     if (DataUtilities.GetUtf8Length(lp, true) >
+      Message.MaxHardHeaderLineLength - 1) {
+      return true;
+     }
+     if (DataUtilities.GetUtf8Length(domainstr, true) >
+       Message.MaxHardHeaderLineLength - 1) {
+      return true;
+     }
+     return (DataUtilities.GetUtf8Length(domain2, true) >
+       Message.MaxHardHeaderLineLength - 1) ? true : false;
+    }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
       var hashCode = -1524613162;
       if (this.domain != null) {

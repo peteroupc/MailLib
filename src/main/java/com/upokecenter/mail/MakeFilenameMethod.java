@@ -363,8 +363,9 @@ private MakeFilenameMethod() {
           // This is the only kind of character in Unicode with this
           // normalization property.
           StringBuilder tsb = new StringBuilder().append((char)c);
-          String tss = NormalizerInput.Normalize(tsb.toString(),
-           Normalization.NFD);
+          String tss = NormalizerInput.Normalize(
+  tsb.toString(),
+  Normalization.NFD);
           if (tss.indexOf((char)0x338) >= 0) {
               builder.append('!');
               builder.append(tss.charAt(0));

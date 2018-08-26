@@ -9,7 +9,7 @@ Represents an email address and a name for that address. Can represent a group o
     public NamedAddress(
         string address);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class. Examples:
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class. Examples:
 
  *  `john@example.com`
 
@@ -44,7 +44,7 @@ The named address has an invalid syntax.
         string displayName,
         PeterO.Mail.Address address);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
 
 <b>Parameters:</b>
 
@@ -64,7 +64,7 @@ The parameter <i>address</i>
         string displayName,
         string address);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
 
 <b>Parameters:</b>
 
@@ -88,7 +88,7 @@ The display name or address has an invalid syntax.
         string localPart,
         string domain);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given name and an email address made up of its local part and domain.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given name and an email address made up of its local part and domain.
 
 <b>Parameters:</b>
 
@@ -111,7 +111,7 @@ The parameter <i>localPart</i>
         string groupName,
         System.Collections.Generic.IList mailboxes);
 
-Initializes a new instance of the[PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class. Takes a group name and several named email addresses as parameters, and forms a group with them.
+Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class. Takes a group name and several named email addresses as parameters, and forms a group with them.
 
 <b>Parameters:</b>
 
