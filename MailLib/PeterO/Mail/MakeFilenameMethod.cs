@@ -362,8 +362,9 @@ namespace PeterO.Mail {
           // This is the only kind of character in Unicode with this
           // normalization property.
           var tsb = new StringBuilder().Append((char)c);
-          string tss = NormalizerInput.Normalize(tsb.ToString(),
-           Normalization.NFD);
+          string tss = NormalizerInput.Normalize(
+  tsb.ToString(),
+  Normalization.NFD);
           if (tss.IndexOf((char)0x338) >= 0) {
               builder.Append('!');
               builder.Append(tss[0]);

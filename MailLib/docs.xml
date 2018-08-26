@@ -822,15 +822,14 @@
 
 </doc>
 <doc name="M:PeterO.Mail.Address.#ctor(System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Address'/> class.</summary>
-            <param name='addressValue'>An email address.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='addressValue'/> is null.</exception>
-            <exception cref='T:System.ArgumentException'>The email address
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Address'/> class.</summary><param name='addressValue'>An email address.</param><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='addressValue'/> is null.</exception><exception cref='T:System.ArgumentException'>The email address
             contains invalid syntax. For example, it doesn't contain an '@'
             sign or either side of the '@' contains invalid characters, the
             address is too long, or the address contains comments (text within
             parentheses).</exception>
+
 </doc>
 <doc name="P:PeterO.Mail.Address.Domain">
 <summary>Gets the domain of this email address (the part after the "@" sign).
@@ -851,12 +850,7 @@
 
 </doc>
 <doc name="M:PeterO.Mail.Address.GetHashCode">
-
-            <summary>Calculates the hash code of this object. No application or process IDs
-      are used in the hash code calculation.
-    </summary><returns>A 32-bit hash code.
-    </returns>
-
+<summary>Not documented yet.</summary>
 </doc>
 <doc name="P:PeterO.Mail.Address.LocalPart">
 <summary>Gets the local part of this email address (the part before the "@" sign).
@@ -880,17 +874,17 @@
 </doc>
 <doc name="T:PeterO.Mail.ContentDisposition">
 
-            <summary>Specifies how a message body should be displayed or handled by a mail
+            <summary><para>Specifies how a message body should be displayed or handled by a mail
       user agent. This type is immutable; its contents can't be changed after
       it's created. To create a changeable disposition object, use the
-      DispositionBuilder class.
+      DispositionBuilder class.</para>
       <para><b>About the "filename" parameter</b>
       </para>
       <para>The "filename" parameter of a content disposition suggests a name to
         use when saving data to a file. For the "filename" parameter, the
         GetParameter method and Parameters property (
-        <c>getParameters</c>
-         ) method in Java) do not adapt that parameter's value using the
+        <c>getParameters</c>)
+        method in Java) do not adapt that parameter's value using the
         ContentDisposition.MakeFilename method. Thus, for example, the
         "filename" parameter, if any, returned by this method could have an
         arbitrary length, be encoded using RFC 2047 encoded words (which some
@@ -1080,13 +1074,9 @@
              <para><b>Remarks:</b></para>
 <list>
 <item>The string returned by this method is normalized using
-Unicode normalization form C (see the <see cref="T:PeterO.Text.NormalizerInput"/>
-class for details).  However, some file systems may use a different kind of
-normalization. For example, the HFS Plus file system on macOS uses a modified
-version of normalization form D in which certain code points are not
-decomposed (including all base+slash code points) (this is mentioned in Apple's Technical Q&amp;A entitled "Text Encodings in VFS").  If the filename will be
-used to save a file to an HFS Plus storage device, it is enough to normalize
-the return value with normalization form D for this purpose.</item>
+Unicode normalization form C (NFC) (see the <see cref='T:PeterO.Text.NormalizerInput'/> class for details).  Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus
+ file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not
+decomposed, including all base+slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD.  If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base+slash code points were converted beforehand by MakeFilename to an alternate form).  See also Apple's Technical Q&amp;A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".</item>
 <item><para>Email and HTTP headers may specify suggested
              filenames using the Content-Disposition header field's
              <c>filename</c> parameter or, in practice, the Content-Type header
@@ -1147,38 +1137,49 @@ the return value with normalization form D for this purpose.</item>
 
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)">
-
-            <summary>Parses a content disposition string and returns a content
-            disposition object, or the default value if the string is invalid.
-            This method checks the syntactic validity of the string, but not
-            whether it has all parameters it's required to have or whether the
-            parameters themselves are set to valid values for the parameter.
-            <para>This method assumes the given content disposition string was
-            directly extracted from the Content-Disposition header field (as
-            defined for email messages) and follows the syntax given in RFC
-            2183. Accordingly, among other things, the content disposition
-            string can contain comments (delimited by parentheses).</para>
-            <para>RFC 2231 extensions allow each content disposition parameter
-            to be associated with a character encoding and/or language, and
-            support parameter values that span two or more key-value pairs.
-            Parameters making use of RFC 2231 extensions have names with an
-            asterisk ("*"). Such a parameter will be ignored if it is
-            ill-formed because of RFC 2231's rules (except for illegal
-            percent-decoding or undecodable sequences for the given character
-            enoding). Examples of RFC 2231 extensions follow (both examples
-            encode the same "filename" parameter):</para>
-            <para><b>inline; filename*=utf-8'en'filename.txt</b></para>
-            <para><b>inline; filename*0*=utf-8'en'file;
-            filename*1*=name%2Etxt</b></para>
-            <para>This implementation ignores keys (in parameter key-value
-            pairs) that appear more than once in the content disposition.
-            Nothing in RFCs 2045, 2183, 2231, 6266, or 7231 explicitly
-            disallows such keys, or otherwise specifies error-handling behavior
-            for such keys.</para></summary><param name='dispositionValue'>A text string that should be the
-            value of a Content-Disposition header field.</param><param name='defaultValue'>The value to return in case the
-            disposition value is syntactically invalid. Can be null.</param><returns>A ContentDisposition object.</returns><exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='dispositionValue'/> is null.</exception>
-
+<summary>Parses a content disposition string and returns a content disposition
+      object, or the default value if the string is invalid. This method checks
+      the syntactic validity of the string, but not whether it has all
+      parameters it's required to have or whether the parameters themselves are
+      set to valid values for the parameter.
+      <para>This method assumes the given content disposition string was directly
+        extracted from the Content-Disposition header field (as defined for
+        email messages) and follows the syntax given in RFC 2183. Accordingly,
+        among other things, the content disposition string can contain comments
+        (delimited by parentheses).
+      </para>
+      <para>RFC 2231 extensions allow each content disposition parameter to be
+        associated with a character encoding and/or language, and support
+        parameter values that span two or more key-value pairs. Parameters
+        making use of RFC 2231 extensions have names with an asterisk
+        ("&#x2a;"). Such a parameter will be ignored if it is ill-formed because
+        of RFC 2231's rules (except for illegal percent-decoding or undecodable
+        sequences for the given character enoding). Examples of RFC 2231
+        extensions follow (both examples encode the same "filename" parameter):
+      </para>
+      <para><b>inline; filename&#x2a;=utf-8'en'filename.txt</b>
+      </para>
+      <para><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
+          filename&#x2a;1&#x2a;=name%2Etxt</b>
+      </para>
+      <para>This implementation ignores keys (in parameter key-value pairs) that
+        appear more than once in the content disposition. Nothing in RFCs 2045,
+        2183, 2231, 6266, or 7231 explicitly disallows such keys, or otherwise
+        specifies error-handling behavior for such keys.
+      </para>
+    </summary>
+    <param name='dispositionValue'>A text string that should be the value of a Content-Disposition header
+      field.
+    </param>
+    <param name='defaultValue'>The value to return in case the disposition value is syntactically
+      invalid. Can be null.
+    </param>
+    <returns>A ContentDisposition object.
+    </returns>
+    <exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='dispositionValue'/>
+       is null.
+    </exception>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.ToSingleLineString">
 
@@ -1395,25 +1396,33 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)">
-
-            <summary>Returns whether the given string is a basic language range under RFC
-      4647. Examples include "*", "en-us", and "fr".
-    </summary><param name='str'>The string to check. Can be null.
-    </param><returns><c>true</c>
+<summary>Returns whether the given string is a basic language range under RFC 4647.
+      Examples include "&#x2a;", "en-us", and "fr".
+    </summary>
+    <param name='str'>The string to check. Can be null.
+    </param>
+    <returns><c>true</c>
        if the given string is a basic language range; otherwise, <c>false</c>
        .
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)">
-
-            <summary>Returns whether the given string is a basic or extended
-             language range under RFC 4647. Examples of basic (and extended)
-             language ranges include "*", "en-us", and "fr". Examples of
-             extended language ranges include "*-de" and "it-*".</summary><param name='str'>The string to check. Can be null.</param><param name='extended'>Check whether the string is a basic language
-             range if "false", or an extended language range if "true".</param><returns><c>true</c> if the given string is a basic language range
-             (depending on the <paramref name='extended'/> parameter); otherwise, <c>false</c>.</returns>
-
+<summary>Returns whether the given string is a basic or extended language range
+      under RFC 4647. Examples of basic (and extended) language ranges include
+      "&#x2a;", "en-us", and "fr". Examples of extended language ranges include
+      "&#x2a;-de" and "it-&#x2a;".
+    </summary>
+    <param name='str'>The string to check. Can be null.
+    </param>
+    <param name='extended'>Check whether the string is a basic language range if "false", or an
+      extended language range if "true".
+    </param>
+    <returns><c>true</c>
+       if the given string is a basic language range (depending on the
+      <paramref name='extended'/>
+       parameter); otherwise, <c>false</c>
+      .
+    </returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)">
 
@@ -1454,20 +1463,35 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)">
-
-            <summary>Finds the language tags that match a priority list of
-             language ranges.</summary><param name='ranges'>A list of language ranges (see documentation
-             for the "IsLanguageRange" method), which should be given in order
-             of descending preference.</param><param name='languages'>A list of language tags, which should be
-             given in order of descending preference.</param><param name='extended'>If true, the ranges in "ranges" are extended
-             language ranges; otherwise, they are basic language ranges.</param><param name='matchStarAtEnd'>If true, treats any range equaling "*" as appearing at the end of the language priority list, no matter where it appears on that list.</param><returns>A list of language tags that match the given range, in
-             descending order of preference.</returns><exception cref='T:System.ArgumentNullException'>The parameter
-             <paramref name='languages'/> or <paramref name='ranges'/> is
-             null.</exception><exception cref='T:System.ArgumentException'>The parameter
-             <paramref name='ranges'/> contains a value that is not a basic or
-             extended language range, or <paramref name='languages'/> contains a
-             value that is not a potentially valid language tag.</exception>
-
+<summary>Finds the language tags that match a priority list of language ranges.
+    </summary>
+    <param name='ranges'>A list of language ranges (see documentation for the "IsLanguageRange"
+      method), which should be given in order of descending preference.
+    </param>
+    <param name='languages'>A list of language tags, which should be given in order of descending
+      preference.
+    </param>
+    <param name='extended'>If true, the ranges in "ranges" are extended language ranges; otherwise,
+      they are basic language ranges.
+    </param>
+    <param name='matchStarAtEnd'>If true, treats any range equaling "&#x2a;" as appearing at the end of the
+      language priority list, no matter where it appears on that list.
+    </param>
+    <returns>A list of language tags that match the given range, in descending order of
+      preference.
+    </returns>
+    <exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='languages'/>
+       or
+      <paramref name='ranges'/>
+       is null.
+    </exception>
+    <exception cref='T:System.ArgumentException'>The parameter
+      <paramref name='ranges'/>
+       contains a value that is not a basic or extended language range, or
+      <paramref name='languages'/>
+       contains a value that is not a potentially valid language tag.
+    </exception>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)">
 
@@ -1718,11 +1742,13 @@ ns me
 
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsText">
-
-            <summary>Gets a value indicating whether this is a text media type
-            ("text/*").</summary><value><c>true</c> If this is a text media type; otherwise, .
-            <c>false</c>.</value>
-
+<summary>Gets a value indicating whether this is a text media type ("text/&#x2a;").
+    </summary>
+    <value><c>true</c>
+       If this is a text media type; otherwise, .
+      <c>false</c>
+      .
+    </value>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.MessageRfc822">
 
@@ -1755,38 +1781,48 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)">
-
-            <summary>Parses a media type string and returns a media type
-            object, or the default value if the string is invalid. This method
-            checks the syntactic validity of the string, but not whether it has
-            all parameters it's required to have or whether the parameters
-            themselves are set to valid values for the parameter.
-            <para>This method assumes the given media type string was directly
-            extracted from the Content-Type header field (as defined for email
-            messages) and follows the syntax given in RFC 2045. Accordingly,
-            among other things, the media type string can contain comments
-            (delimited by parentheses).</para>
-            <para>RFC 2231 extensions allow each media type parameter to be
-            associated with a character encoding and/or language, and support
-            parameter values that span two or more key-value pairs. Parameters
-            making use of RFC 2231 extensions have names with an asterisk
-            ("*"). Such a parameter will be ignored if it is ill-formed because
-            of RFC 2231's rules (except for illegal percent-decoding or
-            undecodable sequences for the given character enoding). Examples of
-            RFC 2231 extensions follow (both examples encode the same
-            "filename" parameter):</para>
-            <para><b>text/example; filename*=utf-8'en'filename.txt</b></para>
-            <para><b>text/example; filename*0*=utf-8'en'file;
-            filename*1*=name%2Etxt</b></para>
-            <para>This implementation ignores keys (in parameter key-value
-            pairs) that appear more than once in the media type. Nothing in
-            RFCs 2045, 2183, 2231, 6266, or 7231 explicitly disallows such
-            keys, or otherwise specifies error-handling behavior for such
-            keys.</para></summary><param name='str'>A text string representing a media type. This
-            media type can include parameters.</param><param name='defaultValue'>The media type to return if the string
-            is syntactically invalid. Can be null.</param><returns>A MediaType object.</returns><exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='str'/> is null.</exception>
-
+<summary>Parses a media type string and returns a media type object, or the default
+      value if the string is invalid. This method checks the syntactic validity
+      of the string, but not whether it has all parameters it's required to have
+      or whether the parameters themselves are set to valid values for the
+      parameter.
+      <para>This method assumes the given media type string was directly extracted
+        from the Content-Type header field (as defined for email messages) and
+        follows the syntax given in RFC 2045. Accordingly, among other things,
+        the media type string can contain comments (delimited by parentheses).
+      </para>
+      <para>RFC 2231 extensions allow each media type parameter to be associated
+        with a character encoding and/or language, and support parameter values
+        that span two or more key-value pairs. Parameters making use of RFC 2231
+        extensions have names with an asterisk ("&#x2a;"). Such a parameter will
+        be ignored if it is ill-formed because of RFC 2231's rules (except for
+        illegal percent-decoding or undecodable sequences for the given
+        character enoding). Examples of RFC 2231 extensions follow (both
+        examples encode the same "filename" parameter):
+      </para>
+      <para><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b>
+      </para>
+      <para><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
+          filename&#x2a;1&#x2a;=name%2Etxt</b>
+      </para>
+      <para>This implementation ignores keys (in parameter key-value pairs) that
+        appear more than once in the media type. Nothing in RFCs 2045, 2183,
+        2231, 6266, or 7231 explicitly disallows such keys, or otherwise
+        specifies error-handling behavior for such keys.
+      </para>
+    </summary>
+    <param name='str'>A text string representing a media type. This media type can include
+      parameters.
+    </param>
+    <param name='defaultValue'>The media type to return if the string is syntactically invalid. Can be
+      null.
+    </param>
+    <returns>A MediaType object.
+    </returns>
+    <exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.QuotedStringRule.Http">
 
@@ -1976,8 +2012,7 @@ ns me
 
 </doc>
 <doc name="T:PeterO.Mail.Message">
-
-            <summary><para>Represents an email message, and contains methods and properties for
+<summary><para>Represents an email message, and contains methods and properties for
         accessing and modifying email message data. This class implements the
         Internet Message Format (RFC 5322) and Multipurpose Internet Mail
         Extensions (MIME; RFC 2045-2047, RFC 2049).
@@ -1994,14 +2029,14 @@ ns me
       <list type=''>
         <item>The content-transfer-encodings "quoted-printable" and "base64" are
           treated as 7bit instead if they occur in a message or body part with
-          content type "multipart/*" or "message/*" (other than
+          content type "multipart/&#x2a;" or "message/&#x2a;" (other than
           "message/global", "message/global-headers",
           "message/global-disposition-notification", or
           "message/global-delivery-status").
         </item>
-        <item>If a message has two or more Content-Type header fields, it is
-          treated as having a content type of "application/octet-stream", unless
-          one or more of the header fields is syntactically invalid.
+        <item>If a message has two or more Content-Type header fields, it is treated
+          as having a content type of "application/octet-stream", unless one or
+          more of the header fields is syntactically invalid.
         </item>
         <item>Illegal UTF-8 byte sequences appearing in header field values are
           replaced with replacement characters. Moreover, UTF-8 is parsed
@@ -2020,8 +2055,8 @@ ns me
         <item>There is no line length limit imposed when parsing header fields,
           except header field names.
         </item>
-        <item>There is no line length limit imposed when parsing quoted-printable
-          or base64 encoded bodies.
+        <item>There is no line length limit imposed when parsing quoted-printable or
+          base64 encoded bodies.
         </item>
         <item>If the transfer encoding is absent and the content type is
           "message/rfc822", bytes with values greater than 127 (called "8-bit
@@ -2041,8 +2076,8 @@ ns me
         <item>(c) If the content type is "text/html" and the charset is declared to
           be
           <c>us-ascii</c>
-           , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
-          encodings).
+           , "windows-1252", "windows-1251", or "iso-8859-&#x2a;" (all single
+          byte encodings).
         </item>
         <item>(d) In non-MIME message bodies and in text/plain message bodies. Any
           8-bit bytes are replaced with the substitute character byte (0x1a).
@@ -2059,10 +2094,9 @@ ns me
            is treated as a synonym for
           <c>us-ascii</c>
            , despite being a reserved name under RFC 2046. The name
-          <c>cp1252</c>
-           is treated as a synonym for
-          <c>windows-1252</c>
-           , even though it's not an IANA registered alias.
+          <c>cp1252</c> and <c>utf8</c>
+           are treated as synonyms for
+          <c>windows-1252</c> and <c>utf-8</c>, respectively, even though they are not IANA registered aliases.
         </item>
         <item>The following deviations involve encoded words under RFC 2047:
         </item>
@@ -2102,7 +2136,6 @@ ns me
         library's scope.
       </para>
     </summary>
-
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor">
 
@@ -2112,18 +2145,18 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor(System.Byte[])">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given
-            byte array to initialize the message.</summary>
-            <param name='bytes'>A readable data stream.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given
+            byte array to initialize the message.</summary><param name='bytes'>A readable data stream.</param><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='bytes'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given
-            Stream object to initialize the message.</summary>
-            <param name='stream'>A readable data stream.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given
+            Stream object to initialize the message.</summary><param name='stream'>A readable data stream.</param><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='stream'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)">
 
@@ -2196,35 +2229,30 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})">
-<summary>Adds a header field to the end of the message's header.
+
+            <summary>Adds a header field to the end of the message's header.
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='header'>A key/value pair. The key is the name of the
+            method.</para></summary><param name='header'>A key/value pair. The key is the name of the
             header field, such as "From" or "Content-ID". The value is the
-            header field's value.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentNullException'>The key or value
-            of <paramref name='header'/> is null.</exception>
-            <exception cref='T:System.ArgumentException'>The header field name
+            header field's value.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The key or value
+            of <paramref name='header'/> is null.</exception><exception cref='T:System.ArgumentException'>The header field name
             is too long or contains an invalid character, or the header field's
             value is syntactically invalid.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)">
-<summary>Adds a header field to the end of the message's header.
+
+            <summary>Adds a header field to the end of the message's header.
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='name'>Name of a header field, such as "From" or
-            "Content-ID".</param>
-            <param name='value'>Value of the header field.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            method.</para></summary><param name='name'>Name of a header field, such as "From" or
+            "Content-ID".</param><param name='value'>Value of the header field.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='name'/> or <paramref name='value'/> is
-            null.</exception>
-            <exception cref='T:System.ArgumentException'>The header field name
+            null.</exception><exception cref='T:System.ArgumentException'>The header field name
             is too long or contains an invalid character, or the header field's
             value is syntactically invalid.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)">
 
@@ -2300,13 +2328,13 @@ ns me
 
 </doc>
 <doc name="P:PeterO.Mail.Message.BodyString">
-<summary>Gets the body of this message as a text string.</summary>
-            <value>The body of this message as a text string.</value>
-            <exception cref='T:System.NotSupportedException'>Either this
+
+            <summary>Gets the body of this message as a text string.</summary><value>The body of this message as a text string.</value><exception cref='T:System.NotSupportedException'>Either this
             message is a multipart message, so it doesn't have its own body
             text, or this message has no character encoding declared or assumed
             for it (which is usually the case for non-text messages), or the
             character encoding is not supported.</exception>
+
 </doc>
 <doc name="P:PeterO.Mail.Message.CCAddresses">
 
@@ -2334,31 +2362,30 @@ ns me
     </value>
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentType">
-<summary>Gets or sets this message's media type. When getting, the
-            media type may differ in certain cases from the value of the
-            Content-Type header field, if any, and may have a value even if the
-            Content-Type header field is absent from this message. If set to a
-            media type, updates the Content-Type header field as appropriate.
-            Cannot be set to null.</summary>
-            <value>This message&apos;s media type.</value>
-            <exception cref='T:System.ArgumentNullException'>This value is
-            being set and "value" is null.</exception>
+<summary>Gets or sets this message's media type. When getting, the media type may
+      differ in certain cases from the value of the Content-Type header field,
+      if any, and may have a value even if the Content-Type header field is
+      absent from this message. If set to a media type, updates the Content-Type
+      header field as appropriate. Cannot be set to null.
+    </summary>
+    <value>This message&apos;s media type.
+    </value>
+    <exception cref='T:System.ArgumentNullException'>This value is being set and "value" is null.
+    </exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)">
-<summary>Decodes RFC 2047 encoded words from the given header field
+
+            <summary>Decodes RFC 2047 encoded words from the given header field
             value and returns a string with those words decoded. For an example
             of encoded words, see the constructor for
-            PeterO.Mail.NamedAddress.</summary>
-            <param name='name'>Name of the header field. This determines the
+            PeterO.Mail.NamedAddress.</summary><param name='name'>Name of the header field. This determines the
             syntax of the "value" parameter and is necessary to help this
-            method interpret encoded words properly.</param>
-            <param name='value'>A header field value that could contain encoded
+            method interpret encoded words properly.</param><param name='value'>A header field value that could contain encoded
             words. For example, if the name parameter is "From", this parameter
-            could be "=?utf-8?q?me?= &lt;me@example.com&gt;".</param>
-            <returns>The header field value with valid encoded words
-            decoded.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            could be "=?utf-8?q?me?= &lt;me@example.com&gt;".</param><returns>The header field value with valid encoded words
+            decoded.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='name'/> is null.</exception>
+
 </doc>
 <doc name="P:PeterO.Mail.Message.FileName">
 
@@ -2404,33 +2431,39 @@ ns me
 </doc>
 <doc name="M:PeterO.Mail.Message.Generate">
 <summary>Generates this message's data in text form.
-            <para>The generated message will have only Basic Latin code points
-            (U+0000 to U+007F), and the transfer encoding will always be 7bit,
-            quoted-printable, or base64 (the declared transfer encoding for
-            this message will be ignored).</para>
-            <para>The following applies to the following header fields: From,
-            To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
-            Resent-Bcc, and Resent-Sender. If the header field exists, but has
-            an invalid syntax, has no addresses, or appears more than once,
-            this method will generate a synthetic header field with the
-            display-name set to the contents of all of the header fields with
-            the same name, and the address set to
-            <c>me@[header-name]-address.invalid</c> as the address (a
-            <c>.invalid</c> address is a reserved address that can never belong
-            to anyone). (An exception is that the Resent-* header fields may
-            appear more than once.) The generated message should always have a
-            From header field.</para>
-            <para>If a Date and/or Message-ID header field doesn't exist, a
-            field with that name will be generated (using the current local
-            time for the Date field).</para>
-            <para>When encoding the message's body, if the message has a text
-            content type ("text/*"), the line breaks are a CR byte (carriage
-            return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone,
-            or LF alone. If the message has any other content type, only CR
-            followed by LF is considered a line break.</para></summary>
-            <returns>The generated message.</returns>
-            <exception cref='T:PeterO.Mail.MessageDataException'>The message
-            can't be generated.</exception>
+      <para>The generated message will have only Basic Latin code points (U+0000 to
+        U+007F), and the transfer encoding will always be 7bit,
+        quoted-printable, or base64 (the declared transfer encoding for this
+        message will be ignored).
+      </para>
+      <para>The following applies to the following header fields: From, To, Cc, Bcc,
+        Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and
+        Resent-Sender. If the header field exists, but has an invalid syntax,
+        has no addresses, or appears more than once, this method will generate a
+        synthetic header field with the display-name set to the contents of all
+        of the header fields with the same name, and the address set to
+        <c>me@[header-name]-address.invalid</c>
+         as the address (a
+        <c>.invalid</c>
+         address is a reserved address that can never belong to anyone). (An
+        exception is that the Resent-&#x2a; header fields may appear more than
+        once.) The generated message should always have a From header field.
+      </para>
+      <para>If a Date and/or Message-ID header field doesn't exist, a field with
+        that name will be generated (using the current local time for the Date
+        field).
+      </para>
+      <para>When encoding the message's body, if the message has a text content type
+        ("text/&#x2a;"), the line breaks are a CR byte (carriage return, 0x0d)
+        followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If the
+        message has any other content type, only CR followed by LF is considered
+        a line break.
+      </para>
+    </summary>
+    <returns>The generated message.
+    </returns>
+    <exception cref='T:PeterO.Mail.MessageDataException'>The message can't be generated.
+    </exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.GenerateBytes">
 
@@ -2484,41 +2517,38 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.Message.GetHeader(System.Int32)">
-<summary>Gets the name and value of a header field by
-            index.</summary>
-            <param name='index'>Zero-based index of the header field to
-            get.</param>
-            <returns>A key/value pair. The key is the name of the header field,
+
+            <summary>Gets the name and value of a header field by
+            index.</summary><param name='index'>Zero-based index of the header field to
+            get.</param><returns>A key/value pair. The key is the name of the header field,
             such as "From" or "Content-ID". The value is the header field's
-            value.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter
+            value.</returns><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='index'/> is 0 or at least as high as the number of
             header fields.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.GetHeader(System.String)">
-<summary>Gets the first instance of the header field with the
+
+            <summary>Gets the first instance of the header field with the
             specified name, using a basic case-insensitive comparison. (Two
             strings are equal in such a comparison, if they match after
             converting the basic upper-case letters A to Z (U+0041 to U+005A)
-            in both strings to lower case.).</summary>
-            <param name='name'>The name of a header field.</param>
-            <returns>The value of the first header field with that name, or
-            null if there is none.</returns>
-            <exception cref='T:System.ArgumentNullException'>Name is
+            in both strings to lower case.).</summary><param name='name'>The name of a header field.</param><returns>The value of the first header field with that name, or
+            null if there is none.</returns><exception cref='T:System.ArgumentNullException'>Name is
             null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.GetHeaderArray(System.String)">
-<summary>Gets an array with the values of all header fields with
+
+            <summary>Gets an array with the values of all header fields with
             the specified name, using a basic case-insensitive comparison. (Two
             strings are equal in such a comparison, if they match after
             converting the basic upper-case letters A to Z (U+0041 to U+005A)
-            in both strings to lower case.).</summary>
-            <param name='name'>The name of a header field.</param>
-            <returns>An array containing the values of all header fields with
+            in both strings to lower case.).</summary><param name='name'>The name of a header field.</param><returns>An array containing the values of all header fields with
             the given name, in the order they appear in the message. The array
-            will be empty if no header field has that name.</returns>
-            <exception cref='T:System.ArgumentNullException'>Name is
+            will be empty if no header field has that name.</returns><exception cref='T:System.ArgumentNullException'>Name is
             null.</exception>
+
 </doc>
 <doc name="P:PeterO.Mail.Message.HeaderFields">
 
@@ -2588,19 +2618,19 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)">
-<summary>Removes a header field by index.
+
+            <summary>Removes a header field by index.
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='index'>Zero-based index of the header field to
-            set.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter
+            method.</para></summary><param name='index'>Zero-based index of the header field to
+            set.</param><returns>This instance.</returns><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='index'/> is 0 or at least as high as the number of
             header fields.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.RemoveHeader(System.String)">
-<summary>Removes all instances of the given header field from this
+
+            <summary>Removes all instances of the given header field from this
             message. If this is a multipart message, the header field is not
             removed from its body part headers. A basic case-insensitive
             comparison is used. (Two strings are equal in such a comparison, if
@@ -2608,55 +2638,49 @@ ns me
             (U+0041 to U+005A) in both strings to lower case.).
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='name'>The name of the header field to remove.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            method.</para></summary><param name='name'>The name of the header field to remove.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='name'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})">
-<summary>Selects a body part for a multiple-language message (
+
+            <summary>Selects a body part for a multiple-language message (
             <c>multipart/multilingual</c> ) according to the given language
-            priority list.</summary>
-            <param name='languages'>A list of basic language ranges, sorted in
+            priority list.</summary><param name='languages'>A list of basic language ranges, sorted in
             descending order of priority (see the
-            LanguageTags.LanguageTagFilter method).</param>
-            <returns>The best matching body part for the given languages. If
+            LanguageTags.LanguageTagFilter method).</param><returns>The best matching body part for the given languages. If
             the body part has no subject, then the top-level subject is used.
             If this message is not a multipart/multilingual message or has
             fewer than two body parts, returns this object. If no body part
             matches the given languages, returns the last body part if its
-            language is "zxx", or the second body part otherwise.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            language is "zxx", or the second body part otherwise.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='languages'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)">
-<summary>Selects a body part for a multiple-language message (
+
+            <summary>Selects a body part for a multiple-language message (
             <c>multipart/multilingual</c> ) according to the given language
-            priority list and original-language preference.</summary>
-            <param name='languages'>A list of basic language ranges, sorted in
+            priority list and original-language preference.</summary><param name='languages'>A list of basic language ranges, sorted in
             descending order of priority (see the
-            LanguageTags.LanguageTagFilter method).</param>
-            <param name='preferOriginals'>If true, a body part marked as the
+            LanguageTags.LanguageTagFilter method).</param><param name='preferOriginals'>If true, a body part marked as the
             original language version is chosen if it matches one of the given
             language ranges, even if the original language has a lower priority
-            than another language with a matching body part.</param>
-            <returns>The best matching body part for the given languages. If
+            than another language with a matching body part.</param><returns>The best matching body part for the given languages. If
             the body part has no subject, then the top-level subject is used.
             If this message is not a multipart/multilingual message or has
             fewer than two body parts, returns this object. If no body part
             matches the given languages, returns the last body part if its
-            language is "zxx", or the second body part otherwise.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            language is "zxx", or the second body part otherwise.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='languages'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetBody(System.Byte[])">
-<summary>Sets the body of this message to the given byte array.
-            This method doesn't make a copy of that byte array.</summary>
-            <param name='bytes'>A byte array.</param>
-            <returns>This object.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+
+            <summary>Sets the body of this message to the given byte array.
+            This method doesn't make a copy of that byte array.</summary><param name='bytes'>A byte array.</param><returns>This object.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='bytes'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetCurrentDate">
 
@@ -2669,9 +2693,9 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.Message.SetDate(System.Int32[])">
-<summary>Sets this message's Date header field to the given date
-            and time.</summary>
-            <param name='dateTime'>An array containing eight elements. Each
+
+            <summary>Sets this message's Date header field to the given date
+            and time.</summary><param name='dateTime'>An array containing eight elements. Each
             element of the array (starting from 0) is as follows:
             <list>
             <item>0 - The year. For example, the value 2000 means 2000
@@ -2691,131 +2715,112 @@ ns me
             valid.</item>
             <item>7 - Number of minutes to subtract from this date and time to
             get global time. This number can be positive or
-            negative.</item></list>.</param>
-            <returns>This object.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter
+            negative.</item></list>.</param><returns>This object.</returns><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='dateTime'/> contains fewer than eight elements,
             contains invalid values, or contains a year less than
-            0.</exception>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            0.</exception><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='dateTime'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})">
-<summary>Sets the name and value of a header field by index.
+
+            <summary>Sets the name and value of a header field by index.
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='index'>Zero-based index of the header field to
-            set.</param>
-            <param name='header'>A key/value pair. The key is the name of the
+            method.</para></summary><param name='index'>Zero-based index of the header field to
+            set.</param><param name='header'>A key/value pair. The key is the name of the
             header field, such as "From" or "Content-ID". The value is the
-            header field's value.</param>
-            <returns>A Message object.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter
+            header field's value.</param><returns>A Message object.</returns><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='index'/> is 0 or at least as high as the number of
             header fields; or, the header field name is too long or contains an
             invalid character, or the header field's value is syntactically
-            invalid.</exception>
-            <exception cref='T:System.ArgumentNullException'>The key or value
+            invalid.</exception><exception cref='T:System.ArgumentNullException'>The key or value
             of <paramref name='header'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)">
-<summary>Sets the value of a header field by index without changing
+
+            <summary>Sets the value of a header field by index without changing
             its name.
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='index'>Zero-based index of the header field to
-            set.</param>
-            <param name='value'>Value of the header field.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter
+            method.</para></summary><param name='index'>Zero-based index of the header field to
+            set.</param><param name='value'>Value of the header field.</param><returns>This instance.</returns><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='index'/> is 0 or at least as high as the number of
             header fields; or, the header field name is too long or contains an
             invalid character, or the header field's value is syntactically
-            invalid.</exception>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            invalid.</exception><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='value'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)">
-<summary>Sets the name and value of a header field by index.
+
+            <summary>Sets the name and value of a header field by index.
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='index'>Zero-based index of the header field to
-            set.</param>
-            <param name='name'>Name of a header field, such as "From" or
-            "Content-ID".</param>
-            <param name='value'>Value of the header field.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter
+            method.</para></summary><param name='index'>Zero-based index of the header field to
+            set.</param><param name='name'>Name of a header field, such as "From" or
+            "Content-ID".</param><param name='value'>Value of the header field.</param><returns>This instance.</returns><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='index'/> is 0 or at least as high as the number of
             header fields; or, the header field name is too long or contains an
             invalid character, or the header field's value is syntactically
-            invalid.</exception>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            invalid.</exception><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='name'/> or <paramref name='value'/> is
             null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)">
-<summary>Sets the value of this message's header field. If a header
+
+            <summary>Sets the value of this message's header field. If a header
             field with the same name exists, its value is replaced. If the
             header field's name occurs more than once, only the first instance
             of the header field is replaced.
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
-            method.</para></summary>
-            <param name='name'>The name of a header field, such as "from" or
-            "subject".</param>
-            <param name='value'>The header field's value.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentException'>The header field name
+            method.</para></summary><param name='name'>The name of a header field, such as "from" or
+            "subject".</param><param name='value'>The header field's value.</param><returns>This instance.</returns><exception cref='T:System.ArgumentException'>The header field name
             is too long or contains an invalid character, or the header field's
-            value is syntactically invalid.</exception>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            value is syntactically invalid.</exception><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='name'/> or <paramref name='value'/> is
             null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetHtmlBody(System.String)">
-<summary>Sets the body of this message to the specified string in
+
+            <summary>Sets the body of this message to the specified string in
             HTML format. The character sequences CR (carriage return, "\r",
             U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted
             to CR/LF line breaks. Unpaired surrogate code points will be
-            replaced with replacement characters.</summary>
-            <param name='str'>A string consisting of the message in HTML
-            format.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            replaced with replacement characters.</summary><param name='str'>A string consisting of the message in HTML
+            format.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)">
-<summary>Sets the body of this message to a multipart body with
+
+            <summary>Sets the body of this message to a multipart body with
             plain text and HTML versions of the same message. The character
             sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n",
             U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired
             surrogate code points will be replaced with replacement
-            characters.</summary>
-            <param name='text'>A string consisting of the plain text version of
-            the message.</param>
-            <param name='html'>A string consisting of the HTML version of the
-            message.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            characters.</summary><param name='text'>A string consisting of the plain text version of
+            the message.</param><param name='html'>A string consisting of the HTML version of the
+            message.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='text'/> or <paramref name='html'/> is
             null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.SetTextBody(System.String)">
-<summary>Sets the body of this message to the specified plain text
+
+            <summary>Sets the body of this message to the specified plain text
             string. The character sequences CR (carriage return, "\r", U+000D),
             LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF
             line breaks. Unpaired surrogate code points will be replaced with
             replacement characters. This method changes this message's media
-            type to plain text.</summary>
-            <param name='str'>A string consisting of the message in plain text
-            format.</param>
-            <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            type to plain text.</summary><param name='str'>A string consisting of the message in plain text
+            format.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
+
 </doc>
 <doc name="P:PeterO.Mail.Message.Subject">
 <summary>Gets or sets this message's subject.
@@ -2880,7 +2885,8 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class. Examples:
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class. Examples:
             <list>
             <item><c>john@example.com</c></item>
             <item><c>"John Doe" &lt;john@example.com&gt;</c></item>
@@ -2888,8 +2894,7 @@ ns me
             &lt;john@example.com&gt;</c></item>
             <item><c>John &lt;john@example.com&gt;</c></item>
             <item><c>"Group" : Tom &lt;tom@example.com&gt;, Jane
-            &lt;jane@example.com&gt;;</c></item></list></summary>
-            <param name='address'>A text string identifying a single email
+            &lt;jane@example.com&gt;;</c></item></list></summary><param name='address'>A text string identifying a single email
             address or a group of email addresses. Comments, or text within
             parentheses, can appear. Multiple email addresses are not allowed
             unless they appear in the group syntax given above. Encoded words
@@ -2904,61 +2909,53 @@ ns me
             to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a,
             0x61 to 0x7a) are changed to "=" followed by their 2-digit
             hexadecimal form. An encoded word's maximum length is 75
-            characters. See the third example.</para>.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='address'/> is null.</exception>
-            <exception cref='T:System.ArgumentException'>The named address has
+            characters. See the third example.</para>.</param><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='address'/> is null.</exception><exception cref='T:System.ArgumentException'>The named address has
             an invalid syntax.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given
-            display name and email address.</summary>
-            <param name='displayName'>The display name of the email address.
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given
+            display name and email address.</summary><param name='displayName'>The display name of the email address.
             Can be null or empty. Encoded words under RFC 2047 will not be
-            decoded.</param>
-            <param name='address'>An email address.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            decoded.</param><param name='address'>An email address.</param><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='address'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class. Takes a group name
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class. Takes a group name
             and several named email addresses as parameters, and forms a group
-            with them.</summary>
-            <param name='groupName'>The group's name.</param>
-            <param name='mailboxes'>A list of named addresses that make up the
-            group.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            with them.</summary><param name='groupName'>The group's name.</param><param name='mailboxes'>A list of named addresses that make up the
+            group.</param><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='groupName'/> or <paramref name='mailboxes'/> is
-            null.</exception>
-            <exception cref='T:System.ArgumentException'>The parameter
+            null.</exception><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='groupName'/> is empty, or an item in the list is
             itself a group.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given
-            display name and email address.</summary>
-            <param name='displayName'>The display name of the email address.
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given
+            display name and email address.</summary><param name='displayName'>The display name of the email address.
             Can be null or empty. Encoded words under RFC 2047 will not be
-            decoded.</param>
-            <param name='address'>An email address.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='address'/> is null.</exception>
-            <exception cref='T:System.ArgumentException'>The display name or
+            decoded.</param><param name='address'>An email address.</param><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='address'/> is null.</exception><exception cref='T:System.ArgumentException'>The display name or
             address has an invalid syntax.</exception>
+
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given name
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given name
             and an email address made up of its local part and
-            domain.</summary>
-            <param name='displayName'>The display name of the email address.
-            Can be null or empty.</param>
-            <param name='localPart'>The local part of the email address (before
-            the "@").</param>
-            <param name='domain'>The domain of the email address (before the
-            "@").</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            domain.</summary><param name='displayName'>The display name of the email address.
+            Can be null or empty.</param><param name='localPart'>The local part of the email address (before
+            the "@").</param><param name='domain'>The domain of the email address (before the
+            "@").</param><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='localPart'/> or <paramref name='domain'/> is
             null.</exception>
+
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.Address">
 
@@ -3085,14 +3082,12 @@ of this NamedAddress object as it could appear in a "To" header field.
 
 </doc>
 <doc name="M:PeterO.Mail.Tokener.Compare(System.Int32[],System.Int32[])">
-<summary>Compares one integer array with another.</summary>
-            <param name='x'>An integer array.</param>
-            <param name='y'>An integer array.</param>
-            <returns>Zero if both values are equal; a negative number if
+
+            <summary>Compares one integer array with another.</summary><param name='x'>An integer array.</param><param name='y'>An integer array.</param><returns>Zero if both values are equal; a negative number if
             <paramref name='x'/> is less than <paramref name='y'/>, or a
-            positive number if <paramref name='x'/> is greater than <paramref name='y'/>.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            positive number if <paramref name='x'/> is greater than <paramref name='y'/>.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='x'/> or <paramref name='y'/> is null.</exception>
+
 </doc>
 <doc name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart">
 
@@ -3841,8 +3836,7 @@ of this NamedAddress object as it could appear in a "To" header field.
       <list>
         <item><b>NFD</b>
            (Normalization Form D) decomposes combined forms to their constituent
-          characters (E plus acute, for example). This is called canonical
-          decomposition.
+          characters (E plus acute, for example), then reorders combining marks to a standardized order.  This is called canonical decomposition.
         </item>
         <item><b>NFC</b>
            does canonical decomposition, then combines certain constituent
@@ -3857,10 +3851,6 @@ of this NamedAddress object as it could appear in a "To" header field.
           characters, such as ligatures, font or positional variants, and
           subscripts, whose visual distinction can matter in some contexts. This
           is called compatibility decomposition.
-        </item>
-        <item>The four normalization forms also enforce a standardized order for
-          combining marks, since they can otherwise appear in an arbitrary
-          order.
         </item>
       </list>
       <para>For more information, see Standard Annex 15 at
@@ -4069,22 +4059,10 @@ of this NamedAddress object as it could appear in a "To" header field.
         text strings for normalization. This is similar to the deprecated
         Normalizer class, except it implements the ICharacterInput interface.
       </para>
-      <para>The Unicode Standard includes characters, such as an acute accent, that
-        can be combined with other characters to make new characters. For
-        example, the letter E combines with an acute accent to make E-acute (É).
-        In some cases, the combined form (E-acute) should be treated as
-        equivalent to the uncombined form (E plus acute). For this reason, the
-        standard defines four
-        <i>
-           normalization forms
-        </i>
-         that convert strings to a single equivalent form:
-      </para>
       <list>
         <item><b>NFD</b>
            (Normalization Form D) decomposes combined forms to their constituent
-          characters (E plus acute, for example). This is called canonical
-          decomposition.
+          characters (E plus acute, for example), then reorders combining marks to a standardized order.  This is called canonical decomposition.
         </item>
         <item><b>NFC</b>
            does canonical decomposition, then combines certain constituent
@@ -4099,10 +4077,6 @@ of this NamedAddress object as it could appear in a "To" header field.
           characters, such as ligatures, font or positional variants, and
           subscripts, whose visual distinction can matter in some contexts. This
           is called compatibility decomposition.
-        </item>
-        <item>The four normalization forms also enforce a standardized order for
-          combining marks, since they can otherwise appear in an arbitrary
-          order.
         </item>
       </list>
       <para>For more information, see Standard Annex 15 at
@@ -4210,14 +4184,13 @@ of this NamedAddress object as it could appear in a "To" header field.
 
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary>
-            <param name='str'>The parameter <paramref name='str'/> is a text
-            string.</param>
-            <param name='form'>The parameter <paramref name='form'/> is a
-            Normalization object.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+
+            <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary><param name='str'>The parameter <paramref name='str'/> is a text
+            string.</param><param name='form'>The parameter <paramref name='form'/> is a
+            Normalization object.</param><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> or "input" or "charArray" is
             null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)">
 
@@ -4238,103 +4211,84 @@ of this NamedAddress object as it could appear in a "To" header field.
 
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
-<summary>Gets a list of normalized code points after reading from a
-            character stream.</summary>
-            <param name='chars'>An object that implements a stream of Unicode
-            characters.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns>A list of the normalized Unicode characters.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+
+            <summary>Gets a list of normalized code points after reading from a
+            character stream.</summary><param name='chars'>An object that implements a stream of Unicode
+            characters.</param><param name='form'>Specifies the normalization form to use when
+            normalizing the text.</param><returns>A list of the normalized Unicode characters.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='chars'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)">
-<summary>Gets a list of normalized code points after reading from a
-            string.</summary>
-            <param name='str'>The parameter <paramref name='str'/> is a text
-            string.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns>A list of the normalized Unicode characters.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+
+            <summary>Gets a list of normalized code points after reading from a
+            string.</summary><param name='str'>The parameter <paramref name='str'/> is a text
+            string.</param><param name='form'>Specifies the normalization form to use when
+            normalizing the text.</param><returns>A list of the normalized Unicode characters.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
-<summary>Determines whether the text provided by a character input
-            is normalized.</summary>
-            <param name='chars'>A object that implements a streamable character
-            input.</param>
-            <param name='form'>Specifies the normalization form to
-            check.</param>
-            <returns><c>true</c> if the text is normalized; otherwise, <c>false</c>.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+
+            <summary>Determines whether the text provided by a character input
+            is normalized.</summary><param name='chars'>A object that implements a streamable character
+            input.</param><param name='form'>Specifies the normalization form to
+            check.</param><returns><c>true</c> if the text is normalized; otherwise, <c>false</c>.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='chars'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
-<summary>Determines whether the given list of characters is in the
-            given Unicode normalization form.</summary>
-            <param name='charList'>A list of Unicode code points.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns><c>true</c> if the given list of characters is in the
+
+            <summary>Determines whether the given list of characters is in the
+            given Unicode normalization form.</summary><param name='charList'>A list of Unicode code points.</param><param name='form'>Specifies the normalization form to use when
+            normalizing the text.</param><returns><c>true</c> if the given list of characters is in the
             given Unicode normalization form; otherwise, <c>false</c>
-            .</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            .</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='charList'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)">
-<summary>Determines whether the given array of characters is in the
-            given Unicode normalization form.</summary>
-            <param name='charArray'>An array of Unicode code points.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns><c>true</c> if the given list of characters is in the
+
+            <summary>Determines whether the given array of characters is in the
+            given Unicode normalization form.</summary><param name='charArray'>An array of Unicode code points.</param><param name='form'>Specifies the normalization form to use when
+            normalizing the text.</param><returns><c>true</c> if the given list of characters is in the
             given Unicode normalization form; otherwise, <c>false</c>
-            .</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            .</returns><exception cref='T:System.ArgumentNullException'>The parameter
             "charList" is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)">
-<summary>Determines whether the given string is in the given
-            Unicode normalization form.</summary>
-            <param name='str'>An arbitrary string.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns><c>true</c> if the given string is in the given Unicode
+
+            <summary>Determines whether the given string is in the given
+            Unicode normalization form.</summary><param name='str'>An arbitrary string.</param><param name='form'>Specifies the normalization form to use when
+            normalizing the text.</param><returns><c>true</c> if the given string is in the given Unicode
             normalization form; otherwise, <c>false</c>. Returns <c>false</c>
-            if the string contains an unpaired surrogate code point.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            if the string contains an unpaired surrogate code point.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)">
-<summary>Converts a string to the given Unicode normalization
-            form.</summary>
-            <param name='str'>An arbitrary string.</param>
-            <param name='form'>The Unicode normalization form to convert
-            to.</param>
-            <returns>The parameter <paramref name='str'/> converted to the
-            given normalization form.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter
+
+            <summary>Converts a string to the given Unicode normalization
+            form.</summary><param name='str'>An arbitrary string.</param><param name='form'>The Unicode normalization form to convert
+            to.</param><returns>The parameter <paramref name='str'/> converted to the
+            given normalization form.</returns><exception cref='T:System.ArgumentException'>The parameter
             <paramref name='str'/> contains an unpaired surrogate code
-            point.</exception>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            point.</exception><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)">
-<summary>Reads a sequence of Unicode code points from a data
-            source.</summary>
-            <param name='chars'>Output buffer.</param>
-            <param name='index'>A zero-based index showing where the desired
-            portion of <paramref name='chars'/> begins.</param>
-            <param name='length'>The number of elements in the desired portion
-            of <paramref name='chars'/> (but not more than <paramref name='chars'/> 's length).</param>
-            <returns>The number of Unicode code points read, or 0 if the end of
-            the source is reached.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='chars'/> is null.</exception>
-            <exception cref='T:System.ArgumentException'>Either <paramref name='index'/> or <paramref name='length'/> is less than 0 or
+
+            <summary>Reads a sequence of Unicode code points from a data
+            source.</summary><param name='chars'>Output buffer.</param><param name='index'>A zero-based index showing where the desired
+            portion of <paramref name='chars'/> begins.</param><param name='length'>The number of elements in the desired portion
+            of <paramref name='chars'/> (but not more than <paramref name='chars'/> 's length).</param><returns>The number of Unicode code points read, or 0 if the end of
+            the source is reached.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='chars'/> is null.</exception><exception cref='T:System.ArgumentException'>Either <paramref name='index'/> or <paramref name='length'/> is less than 0 or
             greater than <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s length minus <paramref name='index'/> is less
             than <paramref name='length'/>.</exception>
+
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.ReadChar">
 

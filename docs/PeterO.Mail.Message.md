@@ -57,7 +57,7 @@ Note that this library (the MailLib library) has no facilities for sending and r
     public Message(
         byte[] bytes);
 
-Initializes a new instance of the[PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given byte array to initialize the message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given byte array to initialize the message.
 
 <b>Parameters:</b>
 
@@ -74,7 +74,7 @@ The parameter <i>bytes</i>
     public Message(
         System.IO.Stream stream);
 
-Initializes a new instance of the[PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given Stream object to initialize the message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given Stream object to initialize the message.
 
 <b>Parameters:</b>
 

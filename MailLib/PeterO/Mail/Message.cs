@@ -1276,8 +1276,8 @@ private static string GetContentTranslationType(string ctt) {
               writer.Write(newBytes, 0, newBytes.Length);
             } else {
               // Encapsulated
-              string field = origRecipient ? "Downgraded-Original-Recipient":
-                "Downgraded-Final-Recipient" ;
+              string field = origRecipient ? "Downgraded-Original-Recipient" :
+                "Downgraded-Final-Recipient";
               headerValue = DataUtilities.GetUtf8String(
                   bytes,
                   headerValueStart,
@@ -1854,7 +1854,7 @@ private static string GetContentTranslationType(string ctt) {
           ungetLast = false;
           if (c == -1) {
             string exstring = "Premature end before all headers were read," +
-              "while reading header field value";
+              " while reading header field value";
             throw new MessageDataException(exstring);
           }
           if (c == '\r') {
@@ -1863,7 +1863,7 @@ private static string GetContentTranslationType(string ctt) {
             c = stream.ReadByte();
             if (c < 0) {
               string exstring = "Premature end before all headers were read," +
-                "while looking for LF";
+                " while looking for LF";
               throw new MessageDataException(exstring);
             }
             if (c == '\n') {

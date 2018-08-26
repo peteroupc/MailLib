@@ -108,24 +108,21 @@ void AppendThisAddress(HeaderEncoder encoder) {
         // Maximum character length per line for an Internet message minus 1;
         // we check if the length exceeds that number (thus excluding the space
         // character of a folded line).
-     if
-  (DataUtilities.GetUtf8Length(lp, true) > Message.MaxHardHeaderLineLength
-       - 1) {
- return true;
-}
-     if
-(DataUtilities.GetUtf8Length(domainstr, true) >
-    Message.MaxHardHeaderLineLength - 1) {
- return true;
-}
-     return
-  (DataUtilities.GetUtf8Length(domain2, true) > Message.MaxHardHeaderLineLength
-       - 1) ? (true) : false; }
+     if (DataUtilities.GetUtf8Length(lp, true) >
+      Message.MaxHardHeaderLineLength - 1) {
+      return true;
+     }
+     if (DataUtilities.GetUtf8Length(domainstr, true) >
+       Message.MaxHardHeaderLineLength - 1) {
+      return true;
+     }
+     return (DataUtilities.GetUtf8Length(domain2, true) >
+       Message.MaxHardHeaderLineLength - 1) ? true : false;
+    }
 
     /**
-     * Calculates the hash code of this object. No application or process IDs are
-     * used in the hash code calculation.
-     * @return A 32-bit hash code.
+     * Not documented yet.
+     * @return A 32-bit signed integer.
      */
     @Override public int hashCode() {
       int valueHashCode = -1524613162;

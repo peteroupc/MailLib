@@ -12,7 +12,9 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-      new NormalizationTest().NormTest();
+var ot = new OtherTest();
+//ot.TestMessageBoxes();
+ot.TestMessageCore();
     }
   }
 }

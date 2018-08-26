@@ -27,6 +27,7 @@ private Idna() {
     private static final int Disallowed = 2;
     private static final int ContextJ = 3;
     private static final int ContextO = 4;
+    private static final int IDDisallowed = 5;
     private static final int BidiClassL = 0;
     private static final int BidiClassR = 1;
     private static final int BidiClassAL = 2;
@@ -84,34 +85,34 @@ private Idna() {
 
     static int GetBidiClass(int ch) {
       ByteData table = null;
-        if (bidiClasses == null) {
-synchronized (syncRoot) {
-bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
-}
-}
-        table = bidiClasses;
+      if (bidiClasses == null) {
+        synchronized (syncRoot) {
+        bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
+        }
+      }
+      table = bidiClasses;
       return table.GetByte(ch);
     }
 
     private static int GetJoiningType(int ch) {
       ByteData table = null;
-     if (joiningTypes == null) {
-synchronized (syncRoot) {
-joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
-}
-}
-        table = joiningTypes;
+      if (joiningTypes == null) {
+        synchronized (syncRoot) {
+     joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
+        }
+      }
+      table = joiningTypes;
       return table.GetByte(ch);
     }
 
     private static int GetScript(int ch) {
       ByteData table = null;
-        if (scripts == null) {
-synchronized (syncRoot) {
-scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
-}
-}
-        table = scripts;
+      if (scripts == null) {
+        synchronized (syncRoot) {
+        scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
+        }
+      }
+      table = scripts;
       return table.GetByte(ch);
     }
 
@@ -225,10 +226,10 @@ scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)
           lastIndex = i + 1;
         }
       }
-  retval = DomainUtility.PunycodeEncodePortion(
-  value,
-  lastIndex,
-  value.length());
+      retval = DomainUtility.PunycodeEncodePortion(
+      value,
+      lastIndex,
+      value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -303,10 +304,10 @@ scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)
       return builder.toString();
     }
 
-private static boolean IsValidLabel(
-  String str,
-  boolean lookupRules,
-  boolean bidiRule) {
+    private static boolean IsValidLabel(
+      String str,
+      boolean lookupRules,
+      boolean bidiRule) {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }
@@ -314,8 +315,9 @@ private static boolean IsValidLabel(
         (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-';
       boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
-    if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') || (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
-                (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
+    if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') || (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z'
+) ||
+                    (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
           // LDH character
           continue;
         }
@@ -358,6 +360,260 @@ private static boolean IsValidLabel(
       return IsValidULabel(str, lookupRules, bidiRule);
     }
 
+    private static boolean PassesContextChecks(String str) {
+      boolean regArabDigits = false;
+      boolean extArabDigits = false;
+      boolean haveKatakanaMiddleDot = false;
+      boolean haveKanaOrHan = false;
+      int lastChar = 0;
+      for (int i = 0; i < str.length(); ++i) {
+        int thisChar = CodePointAt(str, i);
+        if (thisChar >= 0x660 && thisChar <= 0x669) {
+          // Arabic-Indic digits
+          // NOTE: Test done here even under lookup rules,
+          // even though they're CONTEXTO characters
+          if (extArabDigits) {
+            return false;
+          }
+          regArabDigits = true;
+        } else if (thisChar >= 0x6f0 && thisChar <= 0x6f9) {
+          // Extended Arabic-Indic digits
+          // NOTE: Test done here even under lookup rules,
+          // even though they're CONTEXTO characters
+          if (regArabDigits) {
+            return false;
+          }
+          extArabDigits = true;
+        } else if (thisChar == 0xb7) {
+          // Middle dot
+          // NOTE: Test done here even under lookup rules,
+          // even though it's a CONTEXTO character
+          if (!(i - 1 >= 0 && i + 1 < str.length() &&
+              lastChar == 0x6c && str.charAt(i + 1) == 0x6c)) {
+            // Dot must come between two l's
+            return false;
+          }
+        } else if (thisChar == 0x200d) {
+          // Zero-width joiner
+          if (UnicodeDatabase.GetCombiningClass(lastChar) != 9) {
+            return false;
+          }
+        } else if (thisChar == 0x200c) {
+          // Zero-width non-joiner
+          if (UnicodeDatabase.GetCombiningClass(lastChar) != 9 &&
+              !IsValidConjunct(str, i)) {
+            return false;
+          }
+        } else if (thisChar == 0x375) {
+          // Keraia
+          // NOTE: Test done here even under lookup rules,
+          // even though it's a CONTEXTO character
+          if (i + 1 >= str.length() || !IsGreek(CodePointAt(str, i + 1))) {
+            return false;
+          }
+        } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
+          // Geresh or gershayim
+          // NOTE: Test done here even under lookup rules,
+          // even though they're CONTEXTO characters
+          if (i <= 0 || !IsHebrew(lastChar)) {
+            return false;
+          }
+        } else if (thisChar == 0x30fb) {
+          haveKatakanaMiddleDot = true;
+        } else {
+          int category = UnicodeDatabase.GetIdnaCategory(thisChar);
+          if (category == ContextJ || category == ContextO) {
+            // Context character without a rule
+            return false;
+          }
+        }
+        if (!haveKanaOrHan && IsKanaOrHan(thisChar)) {
+          haveKanaOrHan = true;
+        }
+        if (thisChar >= 0x10000) {
+          ++i;
+        }
+        lastChar = thisChar;
+      }
+      if (haveKatakanaMiddleDot && !haveKanaOrHan) {
+        // NOTE: Test done here even under lookup rules,
+        // even though it's a CONTEXTO character
+        return false;
+      }
+      return true;
+    }
+
+    static boolean IsInPrecisClass(String str, boolean freeform) {
+      if (((str) == null || (str).length() == 0)) {
+        return false;
+      }
+      boolean haveContextual = false;
+      for (int i = 0; i < str.length(); ++i) {
+        int ch = CodePointAt(str, i);
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        int category = UnicodeDatabase.GetIdnaCategory(ch);
+        if (category == Disallowed || category == Unassigned) {
+          return false;
+        }
+        if (category == IDDisallowed && !freeform) {
+          // Disallowed in identifiers only
+          return false;
+        }
+        haveContextual |= category == ContextO || category == ContextJ;
+      }
+      if (haveContextual) {
+        if (!PassesContextChecks(str)) {
+ return false;
+}
+      }
+      return true;
+    }
+
+    private static boolean PassesBidiRule(String str) {
+      if (((str) == null || (str).length() == 0)) {
+ return true;
+}
+      int bidiClass;
+      boolean rtl = false;
+      int ch = CodePointAt(str, 0);
+      if (ch < 0) {
+ return false;
+}
+      int bidi = GetBidiClass(ch);
+      if (bidi == BidiClassR || bidi == BidiClassAL) {
+        rtl = true;
+      } else if (bidi != BidiClassL) {
+ return false;
+}
+      boolean found = false;
+      for (int i = str.length(); i > 0; --i) {
+        int c = CodePointBefore(str, i);
+        if (c < 0) {
+ return false;
+}
+        if (c >= 0x10000) {
+          --i;
+        }
+        bidiClass = GetBidiClass(c);
+        if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+          bidiClass == BidiClassAN)) {
+          found = true;
+          break;
+        }
+        if (!rtl && (bidiClass == BidiClassL)) {
+          found = true;
+          break;
+        }
+        if (bidiClass == BidiClassEN) {
+          found = true;
+          break;
+        }
+        if (bidiClass != BidiClassNSM) {
+          return false;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+      boolean haveEN = false;
+      boolean haveAN = false;
+      for (int i = 0; i < str.length(); ++i) {
+        int c = CodePointAt(str, i);
+        if (c >= 0x10000) {
+          ++i;
+        }
+        bidiClass = GetBidiClass(c);
+        if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+          bidiClass == BidiClassAN)) {
+          if (bidiClass == BidiClassAN) {
+            if (haveEN) {
+              return false;
+            }
+            haveAN = true;
+          }
+          continue;
+        }
+        if (!rtl && (bidiClass == BidiClassL)) {
+          continue;
+        }
+        if (bidiClass == BidiClassEN) {
+          if (rtl) {
+            if (haveAN) {
+              return false;
+            }
+            haveEN = false;
+          }
+          continue;
+        }
+        if (bidiClass == BidiClassES ||
+              bidiClass == BidiClassCS || bidiClass == BidiClassET ||
+              bidiClass == BidiClassON || bidiClass == BidiClassBN ||
+                 bidiClass == BidiClassNSM) {
+          continue;
+        }
+        return false;
+      }
+      return true;
+    }
+
+    private static String WidthMapping(String str) {
+      int index = 0;
+      for (int i = 0; i < str.length(); ++i) {
+        int ch = CodePointAt(str, i);
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+ return str;
+}
+        if (ch >= 0x10000) {
+          ++i;
+        }
+// NOTE: Not coextensive with code points having
+// Decomposition_Type = Wide or Narrow, since U + 3000,
+// ideographic space, is excluded. However, this
+// code point (as well as its decomposition mapping,
+// which is U + 0020) will be excluded by the
+// IdentifierClass.
+        if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
+          break;
+        }
+        index = i;
+      }
+      if (index == str.length()) {
+ return str;
+}
+      StringBuilder sb = new StringBuilder();
+      sb.append(str.substring(0, index));
+      for (var i = index; i < str.length(); ++i) {
+        int ch = CodePointAt(str, i);
+        int istart = i;
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+ return str;
+}
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
+          String chs = str.substring(istart, (istart)+((i - istart) + 1));
+          String nfkd = NormalizerInput.Normalize(
+             chs,
+             Normalization.NFKD);
+          sb.append(nfkd);
+        } else {
+          if (ch <= 0xffff) {
+  { sb.append((char)(ch));
+}
+  } else if (ch <= 0x10ffff) {
+sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
+sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+}
+        }
+      }
+      return sb.toString();
+    }
+
     private static boolean IsValidULabel(
   String str,
   boolean lookupRules,
@@ -389,8 +645,6 @@ private static boolean IsValidLabel(
       int ch;
       boolean first = true;
       boolean haveContextual = false;
-      boolean rtl = false;
-      int bidiClass;
       for (int i = 0; i < str.length(); ++i) {
         ch = CodePointAt(str, i);
         if (ch >= 0x10000) {
@@ -404,167 +658,19 @@ private static boolean IsValidLabel(
           if (UnicodeDatabase.IsCombiningMark(ch)) {
             return false;
           }
-          if (bidiRule) {
-            bidiClass = GetBidiClass(ch);
-            if (bidiClass == BidiClassR || bidiClass == BidiClassAL) {
-              rtl = true;
-            } else if (bidiClass != BidiClassL) {
-              // forbidden bidi type as the first character
-              return false;
-            }
-          }
         }
         haveContextual |= category == ContextO || category == ContextJ;
         first = false;
       }
       if (haveContextual) {
-        boolean regArabDigits = false;
-        boolean extArabDigits = false;
-        boolean haveKatakanaMiddleDot = false;
-        boolean haveKanaOrHan = false;
-        int lastChar = 0;
-        for (int i = 0; i < str.length(); ++i) {
-          int thisChar = CodePointAt(str, i);
-          if (thisChar >= 0x660 && thisChar <= 0x669) {
-            // Arabic-Indic digits
-            // NOTE: Test done here even under lookup rules,
-            // even though they're CONTEXTO characters
-            if (extArabDigits) {
-              return false;
-            }
-            regArabDigits = true;
-          } else if (thisChar >= 0x6f0 && thisChar <= 0x6f9) {
-            // Extended Arabic-Indic digits
-            // NOTE: Test done here even under lookup rules,
-            // even though they're CONTEXTO characters
-            if (regArabDigits) {
-              return false;
-            }
-            extArabDigits = true;
-          } else if (thisChar == 0xb7) {
-            // Middle dot
-            // NOTE: Test done here even under lookup rules,
-            // even though it's a CONTEXTO character
-            if (!(i - 1 >= 0 && i + 1 < str.length() &&
-                lastChar == 0x6c && str.charAt(i + 1) == 0x6c)) {
-              // Dot must come between two l's
-              return false;
-            }
-          } else if (thisChar == 0x200d) {
-            // Zero-width joiner
-            if (UnicodeDatabase.GetCombiningClass(lastChar) != 9) {
-              return false;
-            }
-          } else if (thisChar == 0x200c) {
-            // Zero-width non-joiner
-            if (UnicodeDatabase.GetCombiningClass(lastChar) != 9 &&
-                !IsValidConjunct(str, i)) {
-              return false;
-            }
-          } else if (thisChar == 0x375) {
-            // Keraia
-            // NOTE: Test done here even under lookup rules,
-            // even though it's a CONTEXTO character
-            if (i + 1 >= str.length() || !IsGreek(CodePointAt(str, i + 1))) {
-              return false;
-            }
-          } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
-            // Geresh or gershayim
-            // NOTE: Test done here even under lookup rules,
-            // even though they're CONTEXTO characters
-            if (i <= 0 || !IsHebrew(lastChar)) {
-              return false;
-            }
-          } else if (thisChar == 0x30fb) {
-            haveKatakanaMiddleDot = true;
-          } else {
-            int category = UnicodeDatabase.GetIdnaCategory(thisChar);
-            if (category == ContextJ || category == ContextO) {
-              // Context character without a rule
-              return false;
-            }
-          }
-          if (!haveKanaOrHan && IsKanaOrHan(thisChar)) {
-            haveKanaOrHan = true;
-          }
-          if (thisChar >= 0x10000) {
-            ++i;
-          }
-          lastChar = thisChar;
-        }
-        if (haveKatakanaMiddleDot && !haveKanaOrHan) {
-          // NOTE: Test done here even under lookup rules,
-          // even though it's a CONTEXTO character
-          return false;
-        }
+        if (!PassesContextChecks(str)) {
+ return false;
+}
       }
-      // Bidi Rule
       if (bidiRule) {
-        boolean found = false;
-        for (int i = str.length(); i > 0; --i) {
-          int c = CodePointBefore(str, i);
-          if (c >= 0x10000) {
-            --i;
-          }
-          bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
-            found = true;
-            break;
-          }
-          if (!rtl && (bidiClass == BidiClassL)) {
-            found = true;
-            break;
-          }
-          if (bidiClass == BidiClassEN) {
-            found = true;
-            break;
-          }
-          if (bidiClass != BidiClassNSM) {
-            return false;
-          }
-        }
-        if (!found) {
-          return false;
-        }
-        boolean haveEN = false;
-        boolean haveAN = false;
-        for (int i = 0; i < str.length(); ++i) {
-          int c = CodePointAt(str, i);
-          if (c >= 0x10000) {
-            ++i;
-          }
-          bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
-            if (bidiClass == BidiClassAN) {
-              if (haveEN) {
-                return false;
-              }
-              haveAN = true;
-            }
-            continue;
-          }
-          if (!rtl && (bidiClass == BidiClassL)) {
-            continue;
-          }
-          if (bidiClass == BidiClassEN) {
-            if (rtl) {
-              if (haveAN) {
-                return false;
-              }
-              haveEN = false;
-            }
-            continue;
-          }
-          if (bidiClass == BidiClassES ||
-                bidiClass == BidiClassCS || bidiClass == BidiClassET ||
-                bidiClass == BidiClassON || bidiClass == BidiClassBN ||
-                   bidiClass == BidiClassNSM) {
-            continue;
-          }
-          return false;
-        }
+        if (!PassesBidiRule(str)) {
+ return false;
+}
       }
       int aceLength = DomainUtility.PunycodeLength(str, 0, str.length());
       if (aceLength < 0) {

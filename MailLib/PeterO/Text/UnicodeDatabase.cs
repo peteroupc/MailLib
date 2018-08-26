@@ -14,8 +14,10 @@ namespace PeterO.Text {
     private static volatile ByteData classes;
 
     private static volatile ByteData combmark;
+    private static volatile ByteData fhwidth;
 
     private static volatile ByteData idnaCat;
+    private static volatile ByteData precisCat;
     private static volatile ByteData qcsnfc;
     private static volatile ByteData qcsnfd;
     private static volatile ByteData qcsnfkc;
@@ -125,12 +127,27 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
     }
 
     public static int GetIdnaCategory(int cp) {
+       if (cp< 0) {
+ return 0;
+}
         if (idnaCat == null) {
 lock (ValueSyncRoot) {
 idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
 }
 }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
+    }
+
+    public static int GetPrecisCategory(int cp) {
+       if (cp< 0) {
+ return 0;
+}
+      if (precisCat == null) {
+lock (ValueSyncRoot) {
+precisCat = precisCat ?? ByteData.Decompress(IdnaData.PrecisCategories);
+}
+}
+      return ((int)precisCat.GetByte(cp)) & 0xff;
     }
 
     public static bool IsCombiningMark(int cp) {
@@ -140,6 +157,15 @@ combmark = combmark ?? ByteData.Decompress(IdnaData.CombiningMarks);
 }
 }
         return combmark.GetBoolean(cp);
+    }
+
+    public static bool IsFullOrHalfWidth(int cp) {
+        if (fhwidth == null) {
+lock (ValueSyncRoot) {
+fhwidth = fhwidth ?? ByteData.Decompress(IdnaData.FullHalfWidth);
+}
+}
+        return fhwidth.GetBoolean(cp);
     }
 
     public static bool IsQuickCheckStarter(int cp, Normalization form) {

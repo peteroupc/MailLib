@@ -726,6 +726,8 @@ downloadIfNeeded("cache/DerivedNormalizationProps.txt",
 compex=getCompEx("cache/DerivedNormalizationProps.txt")
 downloadIfNeeded("cache/UnicodeData.txt",
  "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")
+downloadIfNeeded("cache/EastAsianWidth.txt",
+ "http://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt")
 downloadIfNeeded("cache/ArabicShaping.txt",
  "http://www.unicode.org/Public/UNIDATA/ArabicShaping.txt")
 downloadIfNeeded("cache/Scripts.txt",
@@ -896,6 +898,7 @@ fjs.puts("if(typeof window!=='undefined')window['NormalizationData']=Normalizati
 puts "Generating IDNA data..."
 letterDigits=[]
 idnaCategories=[]
+precisCategories=[]
 combiningMarks=[]
 defaultIgnore=getProp("cache/DerivedCoreProperties.txt",
   "Default_Ignorable_Code_Point")
@@ -906,61 +909,123 @@ joinControls=getProp("cache/PropList.txt","Join_Control")
 hangulL=getProp("cache/HangulSyllableType.txt","L")
 hangulV=getProp("cache/HangulSyllableType.txt","V")
 hangulT=getProp("cache/HangulSyllableType.txt","T")
+UNASSIGNED = 0
+PVALID = 1
+DISALLOWED = 2
+CONTEXTJ = 3
+CONTEXTO = 4
+ID_DISALLOWED = 5
 categories=%w( Ll Lu Lo Lm Nd Mn Mc )
 for i in 0...0x110000
  cat=UnicodeDatabase.getGeneralCategory(i)
  if cat.include?("M")
    combiningMarks[i]=true
  end
+ # Exceptions
  if [0xdf,0x3c2,0x6fd,0x6fe,0xf0b,0x3007].include?(i)
-   idnaCategories[i]=1 # PVALID
+   idnaCategories[i]=PVALID;next
    next
  end
  if [0xb7,0x375,0x5f3,0x5f4,0x30fb].include?(i) ||
       (i>=0x660 && i<=0x669) || (i>=0x6f0 && i<=0x6f9)
-   idnaCategories[i]=4; next # CONTEXTO
-   next
+   idnaCategories[i]=CONTEXTO;next
  end
- if [0x640,0x7f,0x302e,0x302f,0x3031,0x3032,0x3033,0x3034,
-       0x3035,0x303b].include?(i)
-   idnaCategories[i]=2; next # DISALLOWED
+ if [0x640,0x7fa,0x303b].include?(i) ||
+   ((i>=0x302e && i<=0x3035) && i!=0x3030)
+   idnaCategories[i]=DISALLOWED;next
  end
  # Unassigned
  if cat=="Cn" && !noncharacterCP[i]
-   idnaCategories[i]=0; next # UNASSIGNED
+   idnaCategories[i]=UNASSIGNED;next
    next
  end
  # LDH
  if i==0x2d || (i>=0x30 && i<=0x39) || (i>=0x61 && i<=0x7a)
-   idnaCategories[i]=1; next # PVALID
+   idnaCategories[i]=PVALID;next
  end
  # Join Controls
  if joinControls[i]
-   idnaCategories[i]=3; next # CONTEXTJ
+   idnaCategories[i]=CONTEXTJ;next
  end
  # Ignorable properties
  if defaultIgnore[i] || whiteSpace[i] || noncharacterCP[i]
-   idnaCategories[i]=2; next # DISALLOWED
+   idnaCategories[i]=DISALLOWED;next
  end
  # Ignorable blocks
  if (i>=0x20d0 && i<=0x20ff) || (i>=0x1d100 && i<=0x1d24f)
-   idnaCategories[i]=2; next # DISALLOWED
+   idnaCategories[i]=DISALLOWED;next
  end
  # Hangul jamo
  if hangulL[i] || hangulV[i] || hangulT[i]
-   idnaCategories[i]=2; next # DISALLOWED
+   idnaCategories[i]=DISALLOWED;next
  end
  # Unstable
  temp=Normalizer.normalize([i],:NFKC)
  temp=toCaseFold(temp,$CaseFolding)
  temp=Normalizer.normalize(temp,:NFKC)
  if temp.length!=1 || temp[0]!=i
-   idnaCategories[i]=2; next # DISALLOWED
+   idnaCategories[i]=DISALLOWED;next
  end
  if categories.include?(cat)
-   idnaCategories[i]=1; next # PVALID
+   idnaCategories[i]=PVALID;next
  end
- idnaCategories[i]=2; next # DISALLOWED
+ idnaCategories[i]=DISALLOWED;next
+end
+
+# PRECIS categories
+for i in 0...0x110000
+ cat=UnicodeDatabase.getGeneralCategory(i)
+ # Exceptions
+ if [0xdf,0x3c2,0x6fd,0x6fe,0xf0b,0x3007].include?(i)
+   precisCategories[i]=PVALID;next
+   next
+ end
+ if [0xb7,0x375,0x5f3,0x5f4,0x30fb].include?(i) ||
+      (i>=0x660 && i<=0x669) || (i>=0x6f0 && i<=0x6f9)
+   precisCategories[i]=CONTEXTO;next
+ end
+ if [0x640,0x7fa,0x303b].include?(i) ||
+   ((i>=0x302e && i<=0x3035) && i!=0x3030)
+   precisCategories[i]=DISALLOWED;next
+ end
+ # Unassigned
+ if cat=="Cn" && !noncharacterCP[i]
+   precisCategories[i]=UNASSIGNED;next
+   next
+ end
+ # ASCII7
+ if i>=0x21 && i<=0x7e
+   precisCategories[i]=PVALID;next
+ end
+ # Join Controls
+ if joinControls[i]
+   precisCategories[i]=CONTEXTJ;next
+ end
+ # Ignorable properties
+ if defaultIgnore[i] || noncharacterCP[i]
+   precisCategories[i]=DISALLOWED;next
+ end
+ # Controls
+ if cat=="Cc"
+   precisCategories[i]=DISALLOWED;next
+ end
+ # Hangul jamo
+ if hangulL[i] || hangulV[i] || hangulT[i]
+   precisCategories[i]=DISALLOWED;next
+ end
+ # HasCompat
+ temp=Normalizer.normalize([i],:NFKC)
+ if temp.length!=1 || temp[0]!=i
+   precisCategories[i]=ID_DISALLOWED;next
+ end
+ if categories.include?(cat)
+   precisCategories[i]=PVALID;next
+ end
+ if %w( Lt Nl No Me Zs Sc Sk Sm So
+     Pc Pd Pe Pf Pi Po Ps ).include?(cat)
+   precisCategories[i]=ID_DISALLOWED;next
+ end
+ precisCategories[i]=DISALLOWED;next
 end
 
 File.open("IdnaData.js","wb"){|fjs|
@@ -976,12 +1041,21 @@ f.puts("    public static readonly string Notice = \"The IdnaData class was \" +
 "\"(see LICENSE.md in the source code root or visit \" +\n"+
 "\"http://www.unicode.org/copyright.html Exhibit 1).\";")
 final="readonly"
+# Bidi classes
 bidi=getMutexProp("cache/DerivedBidiClass.txt")
 bidivalues=%w( L R AL EN ES ET AN CS NSM BN ON B S WS
   LRE LRO RLE RLO PDF LRI RLI FSI PDI )
 bidivalueshash={}
 for i in 0...bidivalues.length; bidivalueshash[bidivalues[i]]=i; end
 for b in bidi.keys; bidi[b]=bidivalueshash[bidi[b]]; end
+# East Asian Widths
+eaw=getMutexProp("cache/EastAsianWidth.txt")
+bidivalues=%w( N W F H A Na )
+bidivalueshash={}
+# Not done here since we only care about F and H
+#for i in 0...0x100000; if !eaw[i]; eaw[i]="N"; end; end
+for i in 0...bidivalues.length; bidivalueshash[bidivalues[i]]=i; end
+for b in eaw.keys; eaw[b]=bidivalueshash[bidi[b]]; end
 scripts=getMutexProp("cache/Scripts.txt")
 idnaScripts={}
 for b in scripts.keys
@@ -1009,12 +1083,21 @@ for i in 0...0xF0000
    joining[i]=1 if !joining[i]
  end
 end
+fullHalfWidth=[]
+for i in 0...0x110000
+ fullHalfWidth[i]=(eaw[i]=="F" || eaw[i]=="H")
+end
 fjs.puts("var IdnaData = {};")
 f.puts("    public static #{final} byte[] IdnaCategories = new byte[] {")
 bin=LZ4.compress(toByteArray(idnaCategories))
 f.puts("      "+linebrokenjoinbytes(bin))
 f.puts("    };")
 fjs.puts(jsbytes("IdnaData['IdnaCategories']",bin))
+f.puts("    public static #{final} byte[] PrecisCategories = new byte[] {")
+bin=LZ4.compress(toByteArray(precisCategories))
+f.puts("      "+linebrokenjoinbytes(bin))
+f.puts("    };")
+fjs.puts(jsbytes("IdnaData['PrecisCategories']",bin))
 f.puts("    // 0=Other; 1=Greek; 2=Hebrew; 3=Han/Hiragana/Katakana")
 f.puts("    public static #{final} byte[] IdnaRelevantScripts = new byte[] {")
 bin=LZ4.compress(toByteArray(idnaScripts))
@@ -1033,6 +1116,11 @@ f.puts("    };")
 fjs.puts(jsbytes("IdnaData['JoiningTypes']",bin))
 f.puts("    public static #{final} byte[] CombiningMarks = new byte[] {")
 bin=LZ4.compress(toBoolArray(combiningMarks))
+f.puts("      "+linebrokenjoinbytes(bin))
+f.puts("    };")
+fjs.puts(jsbytes("IdnaData['FullHalfWidth']",bin))
+f.puts("    public static #{final} byte[] FullHalfWidth = new byte[] {")
+bin=LZ4.compress(toBoolArray(fullHalfWidth))
 f.puts("      "+linebrokenjoinbytes(bin))
 f.puts("    };")
 fjs.puts(jsbytes("IdnaData['CombiningMarks']",bin))

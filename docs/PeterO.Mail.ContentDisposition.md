@@ -2,9 +2,11 @@
 
     public class ContentDisposition
 
-Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.<b>About the "filename" parameter</b>
+Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
 
-The "filename" parameter of a content disposition suggests a name to use when saving data to a file. For the "filename" parameter, the GetParameter method and Parameters property ( `getParameters` ) method in Java) do not adapt that parameter's value using the ontentDisposition.MakeFilename method. Thus, for example, the filename" parameter, if any, returned by this method could have an rbitrary length, be encoded using RFC 2047 encoded words (which some mail and HTTP implementations still like to write out in headers, even hough that RFC says encoded words "MUST NOT appear within a quoted-string'"; see ContentDisposition.MakeFilename), or not be usable s is as a file name.
+<b>About the "filename" parameter</b>
+
+The "filename" parameter of a content disposition suggests a name to use when saving data to a file. For the "filename" parameter, the GetParameter method and Parameters property ( `getParameters` ) method in Java) do not adapt that parameter's value using the ContentDisposition.MakeFilename method. Thus, for example, the "filename" parameter, if any, returned by this method could have an arbitrary length, be encoded using RFC 2047 encoded words (which some email and HTTP implementations still like to write out in headers, even though that RFC says encoded words "MUST NOT appear within a 'quoted-string'"; see ContentDisposition.MakeFilename), or not be usable as is as a file name.
 
 <b>Example:</b>An example of RFC 2047 encoded words is:
 
@@ -180,13 +182,17 @@ Converts a file name from the Content-Disposition header to a suitable name for 
 
  `"dir1/dir2/file" -> "dir1_dir2_file"`  (Directory separators)
 
-<b>Remark:</b> Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's `filename`  parameter or, in practice, the Content-Type header field's  `name`  parameter.
+<b>Remarks:</b>
+
+ * The string returned by this method is normalized using Unicode normalization form C (NFD) (see the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base+slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base+slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
+
+ * Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's `filename`  parameter or, in practice, the Content-Type header field's  `name`  parameter.
 
 Although RFC 2047 encoded words appearing in both parameters are written out by some implementations, this practice is discouraged by some (especially since the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'"). Nevertheless, the MakeFilename method has a basis in the RFCs to decode RFC 2047 encoded words (and RFC 2231 encoding) in file names passed to this method.
 
 RFC 2046 sec. 4.5.1 (  `application/octet-stream`  subtype in Content-Type header field) cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave a<i>suggested</i> file name to be used if the data were written to a file". Also, RFC 2183 sec. 2.3 (  `filename`  parameter in Content-Disposition) confirms that the "<i>suggested</i> filename" in the  `filename`  parameter "should be<i>used as a basis</i> for the actual filename, where possible", and that that file name should "not [be] blindly use[d]". See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext Transfer Protocol (HTTP).
 
-To the extent that the "name" parameter is not allowed in message bodies other than those with the media type "application/octet-stream" or treated as that media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types"). (Some email implementations may still write out the "name" parameter, even in media types other than `application/octet-stream`  and even though RFC 2046 has deprecated that parameter.)
+To the extent that the "name" parameter is not allowed in message bodies other than those with the media type "application/octet-stream" or treated as that media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types"). (Some email implementations may still write out the "name" parameter, even for media types other than `application/octet-stream`  and even though RFC 2046 has deprecated that parameter.)
 
 <b>Parameters:</b>
 
@@ -194,7 +200,7 @@ To the extent that the "name" parameter is not allowed in message bodies other t
 
 <b>Return Value:</b>
 
-A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; spaces and tabs are collapsed to a single space; leading and trailing spaces and tabs are removed; and the filename is truncated if it would otherwise be too long. The returned string will be in normalization form C. Returns the empty string if  <i>str</i>
+A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; spaces and tabs are collapsed to a single space; leading and trailing spaces and tabs are removed; and the filename is truncated if it would otherwise be too long. Also, for reasons stated in the remarks, a character that is the combined form of a base character and a combining slash is replaced with "!" followed by the base character. The returned string will be in normalization form C. Returns the empty string if  <i>str</i>
  is null or empty.
 
 ### Parse

@@ -15,8 +15,10 @@ private UnicodeDatabase() {
     private static volatile ByteData classes;
 
     private static volatile ByteData combmark;
+    private static volatile ByteData fhwidth;
 
     private static volatile ByteData idnaCat;
+    private static volatile ByteData precisCat;
     private static volatile ByteData qcsnfc;
     private static volatile ByteData qcsnfd;
     private static volatile ByteData qcsnfkc;
@@ -126,12 +128,27 @@ classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningCl
     }
 
     public static int GetIdnaCategory(int cp) {
+       if (cp< 0) {
+ return 0;
+}
         if (idnaCat == null) {
 synchronized (ValueSyncRoot) {
 idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
 }
 }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
+    }
+
+    public static int GetPrecisCategory(int cp) {
+       if (cp< 0) {
+ return 0;
+}
+      if (precisCat == null) {
+synchronized (ValueSyncRoot) {
+precisCat = (precisCat == null) ? (ByteData.Decompress(IdnaData.PrecisCategories)) : precisCat;
+}
+}
+      return ((int)precisCat.GetByte(cp)) & 0xff;
     }
 
     public static boolean IsCombiningMark(int cp) {
@@ -141,6 +158,15 @@ combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) :
 }
 }
         return combmark.GetBoolean(cp);
+    }
+
+    public static boolean IsFullOrHalfWidth(int cp) {
+        if (fhwidth == null) {
+synchronized (ValueSyncRoot) {
+fhwidth = (fhwidth == null) ? (ByteData.Decompress(IdnaData.FullHalfWidth)) : fhwidth;
+}
+}
+        return fhwidth.GetBoolean(cp);
     }
 
     public static boolean IsQuickCheckStarter(int cp, Normalization form) {
