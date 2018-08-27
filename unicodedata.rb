@@ -77,6 +77,23 @@ def getQCNoOrMaybe(file,name)
   return ret
 end
 
+def getSpecialCasingMappings(file, ret)
+  File.open(file,"rb"){|f|
+    while !f.eof?
+      ln=f.gets.gsub(/^\s+|\s+$/,"").gsub(/\s*\#.*$/,"")
+      if ln[/^([A-Fa-f0-9]+)\s*;\s*([^;]+);\s*[^;]+;\s*[^;]+;\s*$/]
+        a=$1.to_i(16)
+        mapping=$2
+        mapping=mapping.split(/\s+/)
+        for i in 0...mapping.length
+          mapping[i]=mapping[i].gsub(/^\s+|\s+$/,"").to_i(16)
+        end
+        ret[a]=mapping
+      end
+    end
+  }
+end
+
 def getMutexProp(file)
   # Reads a file where all the properties are
   # mutually exclusive
@@ -110,6 +127,7 @@ def getUnicodeData(file)
   gencats=[]
   decompMapping={}
   names=[]
+  lcMapping={}
   File.open(file,"rb"){|f|
    while !f.eof?
     ln=f.gets.gsub(/^\s+|\s+$/,"").gsub(/\s*\#.*$/,"")
@@ -121,6 +139,8 @@ def getUnicodeData(file)
     lnccc=ln[3].to_i(10)
     type=""
     mapping=nil
+    # Get the lower case mapping
+    lcmap=(!ln[13] || ln[13].length==0) ? nil : [ln[13].to_i(16)]
     # Get the decomposition mapping and type
     if ln[5][/^(<[^>]+>\s*)?(.+)/]
       type=$1 || ""
@@ -141,11 +161,12 @@ def getUnicodeData(file)
       decompType[i]=type
       gencats[i]=gencat
       names[i]=name
+      lcMapping[i]=lcmap if lcmap
       decompMapping[i]=mapping if mapping
     end
    end
   }
-  return [ccc,decompType,decompMapping,gencats,names]
+  return [ccc,decompType,decompMapping,gencats,names,lcMapping]
 end
 
 def generateComposites(dtypes,dmappings,compex)
@@ -744,6 +765,8 @@ downloadIfNeeded("cache/PropList.txt",
  "http://www.unicode.org/Public/UNIDATA/PropList.txt")
 downloadIfNeeded("cache/CaseFolding.txt",
  "http://www.unicode.org/Public/UNIDATA/CaseFolding.txt")
+downloadIfNeeded("cache/SpecialCasing.txt",
+ "http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt")
 udata=getUnicodeData("cache/UnicodeData.txt")
 $CombiningClasses=udata[0]
 $DecompTypes=udata[1]
@@ -752,6 +775,19 @@ $GeneralCategories=udata[3]
 $CaseFolding=caseFoldingCF("cache/CaseFolding.txt")
 $ComposedPairs=generateComposites($DecompTypes,$DecompMappings,compex)
 $CharacterNames=udata[4]
+$LowerCaseMappings=udata[5]
+getSpecialCasingMappings("cache/SpecialCasing.txt",
+   $LowerCaseMappings)
+caseIgnorable=getProp("cache/DerivedCoreProperties.txt",
+  "Case_Ignorable")
+casedProp=getProp("cache/DerivedCoreProperties.txt",
+  "Cased")
+for k in caseIgnorable
+ if caseIgnorable[k] && casedProp[k]
+  puts "WARNING: for "+k+", cased and caseignorable are "+
+     "not mutually exclusive"
+ end
+end
 puts "Testing normalization..."
 #doNormTest("cache/NormalizationTest.txt")
 puts "Generating data files..."
@@ -823,10 +859,37 @@ fjs.puts("NormalizationData.CombiningClasses = [")
 fjs.puts("      "+linebrokenjoin(LZ4.compress(toByteArray($CombiningClasses))))
 fjs.puts("]; if(typeof Uint8Array!='undefined')NormalizationData.CombiningClasses = new Uint32Array(NormalizationData.CombiningClasses);")
 pointers=[]
+lcpointers=[]
+lcpointers32=[]
+lcpointers2=[]
 complexdecomps=[]
 complexcp=0
 paircp=0
-for i in 0..0xEFFFF # iterate to 0xEFFFF because the remaining characters are private use
+# iterate to 0xEFFFF because the remaining characters are private use
+for i in 0..0xEFFFF
+  next if val>=0xAC00 && val<0xAC00+11172 # Skip Hangul syllables
+  decomp=$LowerCaseMappings[i]
+  next if !decomp || decomp.length==0 || (decomp.length==1 && decomp[0]==i)
+  pointer=i
+  if decomp.length==1 && i<0x10000 && decomp[0]<0x10000
+   ptr=(i<<16)|decomp[0]
+   ptr=-((1<<32)-ptr)
+   lcpointers.push()
+   next
+  elsif decomp.length==1
+   lcpointers32.push(pointer)
+   lcpointers32.push(decomp[0])
+   next
+  elsif decomp.length==2
+   lcpointers2.push(pointer)
+   lcpointers2.push(decomp[0])
+   lcpointers2.push(decomp[1])
+   next
+  else
+   raise "on-to-three or more not supported"
+  end
+end
+for i in 0..0xEFFFF
   next if val>=0xAC00 && val<0xAC00+11172 # Skip Hangul syllables
   decomp=$DecompMappings[i]
   next if !decomp || decomp.length==0 || (decomp.length==1 && decomp[0]==i)
@@ -888,6 +951,30 @@ fjs.puts("]; if(typeof Uint32Array!='undefined')NormalizationData.DecompMappings
 fjs.puts("NormalizationData.ComplexDecompMappings = [")
 fjs.puts(linebrokenjoin(complexdecomps))
 fjs.puts("]; if(typeof Uint32Array!='undefined')NormalizationData.ComplexDecompMappings = new Uint32Array(NormalizationData.ComplexDecompMappings);")
+####
+caseProps=[]
+for i in 0...0x110000
+ caseProps[i]=caseIgnorable[i] ? 2 : (
+    casedProp[i] ? 1 : 0)
+end
+binary=[]
+binary.concat(lcpointers)
+f.puts("    public static #{final} int[] LowerCaseMappings = GetLowerCaseMappings();")
+data=binary.map{|x| (x>>31)!=0 ? "unchecked((int)#{x})" : x.to_s }
+f.puts(getChunkedFunctions(data, "GetLowerCaseMappings", 4000))
+binary=[]
+binary.concat(lcpointers32)
+f.puts("    public static #{final} int[] LowerCaseMappings32 = GetLowerCaseMappings();")
+data=binary.map{|x| (x>>31)!=0 ? "unchecked((int)#{x})" : x.to_s }
+f.puts(getChunkedFunctions(data, "GetLowerCaseMappings32", 4000))
+f.puts("    public static #{final} byte[] CaseProperty = new byte[] {")
+bin=LZ4.compress(toByteArray(caseProps))
+f.puts("      "+linebrokenjoinbytes(bin))
+f.puts("    };")
+f.puts("    public static #{final} int[] LowerCaseMappings2 = new int[] {")
+f.puts("      "+linebrokenjoin(lcpointers2))
+f.puts("    };")
+####
 f.puts("  }")
 if true
 f.puts("}")
@@ -900,6 +987,7 @@ letterDigits=[]
 idnaCategories=[]
 precisCategories=[]
 combiningMarks=[]
+zsCharacters=[]
 defaultIgnore=getProp("cache/DerivedCoreProperties.txt",
   "Default_Ignorable_Code_Point")
 whiteSpace=getProp("cache/PropList.txt",
@@ -920,6 +1008,8 @@ for i in 0...0x110000
  cat=UnicodeDatabase.getGeneralCategory(i)
  if cat.include?("M")
    combiningMarks[i]=true
+ elsif cat.include?("Zs")
+   zsCharacters[i]=true
  end
  # Exceptions
  if [0xdf,0x3c2,0x6fd,0x6fe,0xf0b,0x3007].include?(i)
@@ -1118,12 +1208,17 @@ f.puts("    public static #{final} byte[] CombiningMarks = new byte[] {")
 bin=LZ4.compress(toBoolArray(combiningMarks))
 f.puts("      "+linebrokenjoinbytes(bin))
 f.puts("    };")
-fjs.puts(jsbytes("IdnaData['FullHalfWidth']",bin))
+fjs.puts(jsbytes("IdnaData['CombiningMarks']",bin))
+f.puts("    public static #{final} byte[] ZsCharacters = new byte[] {")
+bin=LZ4.compress(toBoolArray(zsCharacters))
+f.puts("      "+linebrokenjoinbytes(bin))
+f.puts("    };")
+fjs.puts(jsbytes("IdnaData['ZsCharacters']",bin))
 f.puts("    public static #{final} byte[] FullHalfWidth = new byte[] {")
 bin=LZ4.compress(toBoolArray(fullHalfWidth))
 f.puts("      "+linebrokenjoinbytes(bin))
 f.puts("    };")
-fjs.puts(jsbytes("IdnaData['CombiningMarks']",bin))
+fjs.puts(jsbytes("IdnaData['FullHalfWidth']",bin))
 f.puts("  }")
 f.puts("}")
 fjs.puts("if(typeof exports!=='undefined')exports['IdnaData']=IdnaData;")

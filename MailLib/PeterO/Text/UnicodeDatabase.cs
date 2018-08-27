@@ -15,6 +15,7 @@ namespace PeterO.Text {
 
     private static volatile ByteData combmark;
     private static volatile ByteData fhwidth;
+    private static volatile ByteData casedprop;
 
     private static volatile ByteData idnaCat;
     private static volatile ByteData precisCat;
@@ -126,6 +127,67 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
       return offset;
     }
 
+    public static int GetLowerCaseMapping(
+  int cp,
+  int[] buffer,
+  int offset) {
+      if (cp < 0x80) {
+        buffer[offset++] = (cp >= 0x41 && cp <= 0x5a) ? cp + 32 : cp;
+        return offset;
+      }
+      int[] decomps=NormalizationData.LowerCaseMappings2;
+      for(var i=0;i<decomps.Length;i+=3){
+        if(decomps[i]==cp){
+          buffer[offset++]=decomps[i+1];
+          buffer[offset++]=decomps[i+2];
+          return offset;
+        }
+      }
+      if (cp >= 0x10000) {
+      decomps = NormalizationData.LowerCaseMappings32;
+      var left = 0;
+      int right = (decomps.Length >> 1) - 1;
+      while (left <= right) {
+        int index = (left + right) >> 1;
+        int realIndex = index << 1;
+        int dri = decomps[realIndex];
+        int dricp = dri;
+        if (dricp == cp) {
+          buffer[offset++] = decomps[realIndex + 1];
+          return offset;
+        }
+        if (dricp < cp) {
+          left = index + 1;
+        } else {
+          right = index - 1;
+        }
+      }
+      buffer[offset++] = cp;
+      return offset;
+      } else {
+      decomps = NormalizationData.LowerCaseMappings;
+      var left = 0;
+      int right = decomps.Length - 1;
+      while (left <= right) {
+        int index = (left + right) >> 1;
+        int realIndex = index;
+        int dri = decomps[realIndex];
+        int dricp = (dri >> 16) & 0xffff;
+        if (dricp == cp) {
+          buffer[offset++] = (dri & 0xffff);
+          return offset;
+        }
+        if (dricp < cp) {
+          left = index + 1;
+        } else {
+          right = index - 1;
+        }
+      }
+      buffer[offset++] = cp;
+      return offset;
+      }
+    }
+
     public static int GetIdnaCategory(int cp) {
        if (cp< 0) {
  return 0;
@@ -136,6 +198,18 @@ idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
 }
 }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
+    }
+
+    public static int GetCasedProperty(int cp) {
+       if (cp< 0) {
+ return 0;
+}
+        if (casedprop == null) {
+lock (ValueSyncRoot) {
+          casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
+}
+}
+      return ((int)casedprop.GetByte(cp)) & 0xff;
     }
 
     public static int GetPrecisCategory(int cp) {

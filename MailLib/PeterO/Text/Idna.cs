@@ -9,8 +9,8 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.Idna"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Text.Idna"]/*'/>
   public static class Idna {
     private const int Unassigned = 0;
     // PValid = 1;
@@ -34,6 +34,7 @@ namespace PeterO.Text {
     private static volatile ByteData bidiClasses;
     private static volatile ByteData joiningTypes;
     private static volatile ByteData scripts;
+    private static volatile ByteData zsChars;
 
     internal static int CodePointBefore(string str, int index) {
       if (str == null) {
@@ -77,8 +78,8 @@ namespace PeterO.Text {
       ByteData table = null;
       if (bidiClasses == null) {
         lock (syncRoot) {
-        bidiClasses = bidiClasses ??
-            ByteData.Decompress(IdnaData.BidiClasses);
+          bidiClasses = bidiClasses ??
+              ByteData.Decompress(IdnaData.BidiClasses);
         }
       }
       table = bidiClasses;
@@ -89,18 +90,29 @@ namespace PeterO.Text {
       ByteData table = null;
       if (joiningTypes == null) {
         lock (syncRoot) {
-     joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
+          joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
         }
       }
       table = joiningTypes;
       return table.GetByte(ch);
     }
 
+    private static bool IsZsCodePoint(int ch) {
+      ByteData table = null;
+      if (zsChars == null) {
+        lock (syncRoot) {
+          zsChars = zsChars ?? ByteData.Decompress(IdnaData.ZsCharacters);
+        }
+      }
+      table = zsChars;
+      return table.GetBoolean(ch);
+    }
+
     private static int GetScript(int ch) {
       ByteData table = null;
       if (scripts == null) {
         lock (syncRoot) {
-        scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
+          scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
         }
       }
       table = scripts;
@@ -131,6 +143,47 @@ namespace PeterO.Text {
 
     private static bool IsKanaOrHan(int ch) {
       return GetScript(ch) == 3;
+    }
+
+    private static bool IsCaseIgnorable(int ch) {
+      return UnicodeDatabase.GetCasedProperty(ch) == 2;
+    }
+
+    private static bool IsCased(int ch) {
+      return UnicodeDatabase.GetCasedProperty(ch) == 1;
+    }
+
+    private static bool IsFinalSigmaContext(string str, int index) {
+      // Assumes that the character at the given index
+      // is Capital Sigma
+      // Check the left
+      var found = false;
+      int oldIndex = index;
+      while (index > 0) {
+        int ch = CodePointBefore(str, index);
+        index -= (ch >= 0x10000) ? 2 : 1;
+        if (IsCased(ch)) {
+          found = true;
+        } else if (!IsCaseIgnorable(ch)) {
+          return false;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+      // Check the right
+      index = oldIndex + 1;
+      while (index < str.Length) {
+        int ch = CodePointAt(str, index);
+        index += (ch >= 0x10000) ? 2 : 1;
+        if (IsCased(ch)) {
+          return false;
+        }
+        if (!IsCaseIgnorable(ch)) {
+          return true;
+        }
+      }
+      return true;
     }
 
     private static bool IsValidConjunct(string str, int index) {
@@ -166,6 +219,35 @@ namespace PeterO.Text {
       return false;
     }
 
+    private static string ToLowerCase(string str) {
+      int[] buffer = new int[2];
+      StringBuilder sb = new StringBuilder();
+      for (var i = 0; i < str.Length; ++i) {
+        int ch = CodePointAt(str, i);
+        if (ch < 0) {
+          return str;
+        }
+        if (ch == 931 && IsFinalSigmaContext(str, i)) {
+          sb.Append((char)962);
+        } else {
+          int size = UnicodeDatabase.GetLowerCaseMapping(ch, buffer, 0);
+          for (var j = 0; j < size; ++j) {
+            int c2 = buffer[j];
+            if (c2 <= 0xffff) {
+              sb.Append((char)(c2));
+            } else if (ch <= 0x10ffff) {
+              sb.Append((char)((((c2 - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              sb.Append((char)(((c2 - 0x10000) & 0x3ff) + 0xdc00));
+            }
+          }
+        }
+        if (ch >= 0x10000) {
+          ++i;
+        }
+      }
+      return sb.ToString();
+    }
+
     private static bool HasRtlCharacters(string str) {
       for (int i = 0; i < str.Length; ++i) {
         if (str[i] >= 0x80) {
@@ -181,6 +263,54 @@ namespace PeterO.Text {
         }
       }
       return false;
+    }
+
+    private static string DecodeLabel(string str, int index, int endIndex) {
+      if (endIndex - index > 4 && str[index] == 'x' &&
+          str[index+1] == 'n' && str[index+2] == '-' &&
+          str[index+3] == '-') {
+        return DomainUtility.PunycodeDecode(str, index + 4, endIndex);
+      } else {
+        return str.Substring(index, endIndex - index);
+      }
+    }
+
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String,System.Boolean)"]/*'/>
+    public static string DecodeDomainName(string value, bool lookupRules) {
+      //ArgumentAssert.NotNull(value);
+      if (value.Length == 0) {
+        return String.Empty;
+      }
+      if (!IsValidDomainName(value, lookupRules))
+        return null;
+      int lastPos = 0;
+      var i = 0;
+      StringBuilder sb = null;
+      while (i <= value.Length) {
+        if (value[i] == '.') {
+          string part = DecodeLabel(
+            value, lastPos, i);
+          if (part == null) return null;
+          if (sb == null) sb = new StringBuilder();
+          sb.Append(part);
+          sb.Append('.');
+          i++;
+          lastPos = i;
+        } else {
+          i++;
+        }
+      }
+      if (lastPos == 0) return DecodeLabel(
+        value,0,value.Length);
+      if (lastPos != value.Length) {
+        string part = DecodeLabel(
+          value,lastPos, value.Length);
+        if (part == null) return null;
+        if (sb == null) sb = new StringBuilder();
+        sb.Append(part);
+      }
+      return sb.ToString();
     }
 
     /// <include file='../../docs.xml'
@@ -199,7 +329,7 @@ namespace PeterO.Text {
         char c = value[i];
         if (c == '.') {
           if (i != lastIndex) {
-            retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, i);
+            retval = DomainUtility.ALabelEncodePortion(value, lastIndex, i);
             if (retval == null) {
               // Append the unmodified domain plus the dot
               builder.Append(value.Substring(lastIndex, (i + 1) - lastIndex));
@@ -211,7 +341,7 @@ namespace PeterO.Text {
           lastIndex = i + 1;
         }
       }
-      retval = DomainUtility.PunycodeEncodePortion(
+      retval = DomainUtility.ALabelEncodePortion(
       value,
       lastIndex,
       value.Length);
@@ -289,13 +419,13 @@ namespace PeterO.Text {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
-      bool maybeALabel = str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') &&
+      bool maybeALabel = str.Length > 4 && (str[0] == 'x' || str[0] == 'X') &&
         (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
       var allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
-    if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'
-) ||
-                    (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
+        if ((str[i] >= 'a' && str[i] <= 'z') ||
+            (str[i] >= 'A' && str[i] <= 'Z') ||
+                        (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
           // LDH character
           continue;
         }
@@ -316,21 +446,24 @@ namespace PeterO.Text {
         if (!IsValidULabel(ustr, lookupRules, bidiRule)) {
           return false;
         }
-        string astr = DomainUtility.PunycodeEncodePortion(ustr, 0, ustr.Length);
+        string astr = DomainUtility.ALabelEncodePortion(ustr, 0, ustr.Length);
         // NOTE: "astr" and "str" will contain only ASCII characters
         // at this point, so a simple null check and
         // binary comparison are enough
         return (astr != null) && astr.Equals(str);
       }
       if (allLDH) {
+        if (bidiRule && str[0] >= '0' && str[0] <= '9') {
+          // First character is a digit and the Bidi rule applies
+          return false;
+        }
         if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
           // Contains a hyphen at the third and fourth (one-based) character
           // positions
           return false;
         }
-        if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0' &&
-          str[0] <= '9')) {
-          // Only LDH characters, doesn't start with hyphen or digit,
+        if (str[0] != '-' && str[str.Length - 1] != '-') {
+          // Only LDH characters, doesn't start with hyphen,
           // and doesn't end with hyphen
           return true;
         }
@@ -349,7 +482,8 @@ namespace PeterO.Text {
         if (thisChar >= 0x660 && thisChar <= 0x669) {
           // Arabic-Indic digits
           // NOTE: Test done here even under lookup rules,
-          // even though they're CONTEXTO characters
+          // even though they're CONTEXTO characters (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (extArabDigits) {
             return false;
           }
@@ -357,7 +491,8 @@ namespace PeterO.Text {
         } else if (thisChar >= 0x6f0 && thisChar <= 0x6f9) {
           // Extended Arabic-Indic digits
           // NOTE: Test done here even under lookup rules,
-          // even though they're CONTEXTO characters
+          // even though they're CONTEXTO characters (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (regArabDigits) {
             return false;
           }
@@ -365,7 +500,8 @@ namespace PeterO.Text {
         } else if (thisChar == 0xb7) {
           // Middle dot
           // NOTE: Test done here even under lookup rules,
-          // even though it's a CONTEXTO character
+          // even though it's a CONTEXTO character (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (!(i - 1 >= 0 && i + 1 < str.Length &&
               lastChar == 0x6c && str[i + 1] == 0x6c)) {
             // Dot must come between two l's
@@ -385,14 +521,16 @@ namespace PeterO.Text {
         } else if (thisChar == 0x375) {
           // Keraia
           // NOTE: Test done here even under lookup rules,
-          // even though it's a CONTEXTO character
+          // even though it's a CONTEXTO character (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (i + 1 >= str.Length || !IsGreek(CodePointAt(str, i + 1))) {
             return false;
           }
         } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
           // Geresh or gershayim
           // NOTE: Test done here even under lookup rules,
-          // even though they're CONTEXTO characters
+          // even though they're CONTEXTO characters (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (i <= 0 || !IsHebrew(lastChar)) {
             return false;
           }
@@ -415,15 +553,151 @@ namespace PeterO.Text {
       }
       if (haveKatakanaMiddleDot && !haveKanaOrHan) {
         // NOTE: Test done here even under lookup rules,
-        // even though it's a CONTEXTO character
+        // even though it's a CONTEXTO character (CONTEXTO
+        // checks are optional in lookup under RFC 5891, sec. 5.4).
         return false;
       }
       return true;
     }
 
-    internal static bool IsInPrecisClass(string str, bool freeform) {
+    internal static bool IsInIdentifierClass(string str) {
+      return IsInPrecisClass(str, false);
+    }
+
+    internal static bool IsInFreeformClass(string str) {
+      return IsInPrecisClass(str, true);
+    }
+
+    private static string UsernameCasePreservedEnforceInternal(string str) {
       if (String.IsNullOrEmpty(str)) {
-        return false;
+        return null;
+      }
+      str = WidthMapping(str);
+      if (IsInPrecisClass(str, false)) {
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
+          (str.Length == 0 ? null : str);
+      }
+      return null;
+    }
+
+    private static string NicknameInternal(string str, bool forComparison) {
+      if (String.IsNullOrEmpty(str)) {
+        return null;
+      }
+      if (IsInPrecisClass(str, true)) {
+        str = TrimAndCollapseUnicodeSpaces(str);
+        if (forComparison) str = ToLowerCase(str);
+        str = NormalizerInput.Normalize(str, Normalization.NFKC);
+        return (str.Length == 0 ? null : str);
+      }
+      return null;
+    }
+
+    internal static string NicknameEnforce(string str) {
+      string oldvalue = str;
+      for (var i = 0; i < 4; ++i) {
+        string newvalue = NicknameInternal(oldvalue, false);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.Equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    internal static string NicknameForComparison(string str) {
+      string oldvalue = str;
+      for (var i = 0; i < 4; ++i) {
+        string newvalue = NicknameInternal(oldvalue, true);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.Equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    internal static string UsernameCasePreservedEnforce(string str) {
+      string oldvalue = str;
+      for (var i = 0; i < 4; ++i) {
+        string newvalue = UsernameCasePreservedEnforceInternal(oldvalue);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.Equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    private static string UsernameCaseMappedEnforceInternal(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return null;
+      }
+      str = WidthMapping(str);
+      if (IsInPrecisClass(str, false)) {
+        str = ToLowerCase(str);
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
+          (str.Length == 0 ? null : str);
+      }
+      return null;
+    }
+
+    internal static string UsernameCaseMappedEnforce(string str) {
+      string oldvalue = str;
+      for (var i = 0; i < 4; ++i) {
+        string newvalue = UsernameCaseMappedEnforceInternal(oldvalue);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.Equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    private static string OpaqueStringEnforceInternal(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return null;
+      }
+      if (IsInPrecisClass(str, false)) {
+        str = SpaceMapping(str);
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        return str.Length == 0 ? null : str;
+      }
+      return null;
+    }
+
+    internal static string OpaqueStringEnforce(string str) {
+      string oldvalue = str;
+      for (var i = 0; i < 4; ++i) {
+        string newvalue = OpaqueStringEnforceInternal(oldvalue);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.Equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    private static bool IsInPrecisClass(string str, bool freeform) {
+      if (String.IsNullOrEmpty(str)) {
+        return str != null;
       }
       var haveContextual = false;
       for (int i = 0; i < str.Length; ++i) {
@@ -443,34 +717,34 @@ namespace PeterO.Text {
       }
       if (haveContextual) {
         if (!PassesContextChecks(str)) {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }
 
     private static bool PassesBidiRule(string str) {
       if (String.IsNullOrEmpty(str)) {
- return true;
-}
+        return true;
+      }
       int bidiClass;
       var rtl = false;
       int ch = CodePointAt(str, 0);
       if (ch < 0) {
- return false;
-}
+        return false;
+      }
       int bidi = GetBidiClass(ch);
       if (bidi == BidiClassR || bidi == BidiClassAL) {
         rtl = true;
       } else if (bidi != BidiClassL) {
- return false;
-}
+        return false;
+      }
       var found = false;
       for (int i = str.Length; i > 0; --i) {
         int c = CodePointBefore(str, i);
         if (c < 0) {
- return false;
-}
+          return false;
+        }
         if (c >= 0x10000) {
           --i;
         }
@@ -542,25 +816,25 @@ namespace PeterO.Text {
         int ch = CodePointAt(str, i);
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
- return str;
-}
+          return str;
+        }
         if (ch >= 0x10000) {
           ++i;
         }
-// NOTE: Not coextensive with code points having
-// Decomposition_Type=Wide or Narrow, since U+3000,
-// ideographic space, is excluded.  However, this
-// code point (as well as its decomposition mapping,
-// which is U+0020) will be excluded by the 
-// IdentifierClass.
+        // NOTE: Not coextensive with code points having
+        // Decomposition_Type = Wide or Narrow, since U + 3000,
+        // ideographic space, is excluded. However, this
+        // code point (as well as its decomposition mapping,
+        // which is U + 0020) will be excluded by the
+        // IdentifierClass.
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           break;
         }
         index = i;
       }
       if (index == str.Length) {
- return str;
-}
+        return str;
+      }
       var sb = new StringBuilder();
       sb.Append(str.Substring(0, index));
       for (var i = index; i < str.Length; ++i) {
@@ -568,8 +842,8 @@ namespace PeterO.Text {
         int istart = i;
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
- return str;
-}
+          return str;
+        }
         if (ch >= 0x10000) {
           ++i;
         }
@@ -581,12 +855,106 @@ namespace PeterO.Text {
           sb.Append(nfkd);
         } else {
           if (ch <= 0xffff) {
-  { sb.Append((char)(ch));
-}
-  } else if (ch <= 0x10ffff) {
-sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
-sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
-}
+            {
+              sb.Append((char)(ch));
+            }
+          } else if (ch <= 0x10ffff) {
+            sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
+            sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+          }
+        }
+      }
+      return sb.ToString();
+    }
+
+    private static string TrimAndCollapseUnicodeSpaces(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return str;
+      }
+      StringBuilder builder = null;
+      var index = 0;
+      int leadIndex;
+      // Skip leading whitespace, if any
+      while (index < str.Length) {
+        char c = str[index];
+        if (c == 0x20 || IsZsCodePoint(c)) {
+          builder = builder ?? (new StringBuilder());
+          ++index;
+        } else {
+          break;
+        }
+      }
+      leadIndex = index;
+      while (index < str.Length) {
+        int si = index;
+        char c = str[index++];
+        var count = 0;
+        while (c == 0x20 || IsZsCodePoint(c)) {
+          ++count;
+          if (index < str.Length) {
+            c = str[index++];
+          } else {
+            break;
+          }
+        }
+        if (count > 0) {
+          if (builder == null) {
+            builder = new StringBuilder();
+            builder.Append(str.Substring(leadIndex, si));
+          }
+          if (c != 0x20 && !IsZsCodePoint(c)) {
+            builder.Append(' ');
+            builder.Append(c);
+          }
+        } else {
+          if (builder != null) {
+            builder.Append(c);
+          }
+        }
+      }
+      return (builder == null) ? str : builder.ToString();
+    }
+
+    private static string SpaceMapping(string str) {
+      var index = 0;
+      for (var i = 0; i < str.Length; ++i) {
+        int ch = CodePointAt(str, i);
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+          return str;
+        }
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        if (ch != 0x20 && IsZsCodePoint(ch)) {
+          break;
+        }
+        index = i;
+      }
+      if (index == str.Length) {
+        return str;
+      }
+      var sb = new StringBuilder();
+      sb.Append(str.Substring(0, index));
+      for (var i = index; i < str.Length; ++i) {
+        int ch = CodePointAt(str, i);
+        int istart = i;
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+          return str;
+        }
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        if (ch < 0x80 || !IsZsCodePoint(ch)) {
+          if (ch <= 0xffff) {
+            sb.Append((char)(ch));
+          } else if (ch <= 0x10ffff) {
+            sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
+            sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+          }
+        } else {
+          sb.Append(' ');
         }
       }
       return sb.ToString();
@@ -623,10 +991,14 @@ sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
       int ch;
       var first = true;
       var haveContextual = false;
+      bool nonascii = false;
       for (int i = 0; i < str.Length; ++i) {
         ch = CodePointAt(str, i);
         if (ch >= 0x10000) {
           ++i;
+        }
+        if (ch >=0x80) {
+          nonascii = true;
         }
         int category = UnicodeDatabase.GetIdnaCategory(ch);
         if (category == Disallowed || category == Unassigned) {
@@ -640,17 +1012,19 @@ sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
         haveContextual |= category == ContextO || category == ContextJ;
         first = false;
       }
+      if (!nonascii)
+        return false;
       if (haveContextual) {
         if (!PassesContextChecks(str)) {
- return false;
-}
+          return false;
+        }
       }
       if (bidiRule) {
         if (!PassesBidiRule(str)) {
- return false;
-}
+          return false;
+        }
       }
-      int aceLength = DomainUtility.PunycodeLength(str, 0, str.Length);
+      int aceLength = DomainUtility.ALabelLength(str, 0, str.Length);
       if (aceLength < 0) {
         return false;  // Overflow error
       }

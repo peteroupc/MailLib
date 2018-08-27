@@ -44,6 +44,7 @@ private Idna() {
     private static volatile ByteData bidiClasses;
     private static volatile ByteData joiningTypes;
     private static volatile ByteData scripts;
+    private static volatile ByteData zsChars;
 
     static int CodePointBefore(String str, int index) {
       if (str == null) {
@@ -105,6 +106,17 @@ private Idna() {
       return table.GetByte(ch);
     }
 
+    private static int IsZsCodePoint(int ch) {
+      ByteData table = null;
+      if (zsChars == null) {
+        synchronized (syncRoot) {
+     zsChars = (zsChars == null) ? (ByteData.Decompress(IdnaData.ZsCharacters)) : zsChars;
+        }
+      }
+      table = zsChars;
+      return table.GetByte(ch);
+    }
+
     private static int GetScript(int ch) {
       ByteData table = null;
       if (scripts == null) {
@@ -142,6 +154,47 @@ private Idna() {
       return GetScript(ch) == 3;
     }
 
+    private static boolean IsCaseIgnorable(int ch) {
+      return GetCasedProperty(ch) == 2;
+    }
+
+    private static boolean IsCased(int ch) {
+      return GetCasedProperty(ch) == 1;
+    }
+
+    private static boolean IsFinalSigmaContext(String str, int index) {
+      // Assumes that the character at the given index
+      // is Capital Sigma
+      // Check the left
+      boolean found = false;
+      int oldIndex = index;
+      while (index > 0) {
+        int ch = CodePointBefore(str, index);
+        index -= (ch >= 0x10000) ? 2 : 1;
+        if (IsCased(ch)) {
+          found = true;
+        } else if (!IsCaseIgnorable(ch)) {
+          return false;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+      // Check the right
+      index = oldIndex + 1;
+      while (index < str.length()) {
+        int ch = CodePointAt(str, index);
+        index += (ch >= 0x10000) ? 2 : 1;
+        if (IsCased(ch)) {
+          return false;
+        }
+        if (!IsCaseIgnorable(ch)) {
+          return true;
+        }
+      }
+      return true;
+    }
+
     private static boolean IsValidConjunct(String str, int index) {
       // Assumes that the character at the given index
       // is Zero-Width Non-Joiner
@@ -173,6 +226,29 @@ private Idna() {
         }
       }
       return false;
+    }
+
+    private static String ToLowerCase(String str) {
+      int[] buffer = new int[2];
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0;i<str.length(); ++i) {
+        int ch = CodePointAt(str, i);
+        if (ch< 0) {
+ return str;
+}
+        if (ch == 0x3a3 && IsFinalSigmaContext(str, i)) {
+          sb.append((char)0x3c2);
+        } else {
+          int size = UnicodeDatabase.GetLowerCaseMapping(ch, buffer, 0);
+          for (int j = 0; j < size; ++j) {
+            sb.AppendChar(buffer[j]);
+          }
+        }
+        if (ch >= 0x10000) {
+ ++i;
+}
+      }
+      return sb.toString;
     }
 
     private static boolean HasRtlCharacters(String str) {
@@ -443,6 +519,90 @@ private Idna() {
       return true;
     }
 
+static String UsernameCasePreservedEnforceInternal(String str) {
+  if (((str) == null || (str).length() == 0)) {
+ return null;
+}
+  str = WidthMapping(str);
+  if (IsInPrecisClass(str, false)) {
+     str = NormalizerInput.Normalize(str, Normalization.NFC);
+     return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
+       (str.length() == 0 ? null : str);
+  }
+  return null;
+}
+
+static String UsernameCasePreservedEnforce(String str) {
+ String oldvalue = str;
+ for (int i = 0; i < 4; ++i) {
+  String newvalue = UsernameCasePreservedEnforceInternal(oldvalue);
+  if (newvalue == null) {
+ return null;
+}
+  if (oldvalue.equals(newvalue)) {
+ return oldvalue;
+}
+  oldvalue = newvalue;
+ }
+ return null;
+}
+
+static String UsernameCaseMappedEnforceInternal(String str) {
+  if (((str) == null || (str).length() == 0)) {
+ return null;
+}
+  str = WidthMapping(str);
+  if (IsInPrecisClass(str, false)) {
+     str = ToLowerCase(str);
+     str = NormalizerInput.Normalize(str, Normalization.NFC);
+     return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
+       (str.length() == 0 ? null : str);
+  }
+  return null;
+}
+
+static String UsernameCaseMappedEnforce(String str) {
+ String oldvalue = str;
+ for (int i = 0; i < 4; ++i) {
+  String newvalue = UsernameCaseMappedEnforceInternal(oldvalue);
+  if (newvalue == null) {
+ return null;
+}
+  if (oldvalue.equals(newvalue)) {
+ return oldvalue;
+}
+  oldvalue = newvalue;
+ }
+ return null;
+}
+
+static String OpaqueStringEnforceInternal(String str) {
+  if (((str) == null || (str).length() == 0)) {
+ return null;
+}
+  if (IsInPrecisClass(str, false)) {
+str = SpaceMapping(str);
+str = NormalizerInput.Normalize(str, Normalization.NFC);
+return str.length() == 0 ? null : str;
+  }
+  return null;
+}
+
+static String OpaqueStringEnforce(String str) {
+ String oldvalue = str;
+ for (int i = 0; i < 4; ++i) {
+  String newvalue = OpaqueStringEnforceInternal(oldvalue);
+  if (newvalue == null) {
+ return null;
+}
+  if (oldvalue.equals(newvalue)) {
+ return oldvalue;
+}
+  oldvalue = newvalue;
+ }
+ return null;
+}
+
     static boolean IsInPrecisClass(String str, boolean freeform) {
       if (((str) == null || (str).length() == 0)) {
         return false;
@@ -571,9 +731,9 @@ private Idna() {
         }
 // NOTE: Not coextensive with code points having
 // Decomposition_Type = Wide or Narrow, since U + 3000,
-// ideographic space, is excluded. However, this
+  // ideographic space, is excluded. However, this
 // code point (as well as its decomposition mapping,
-// which is U + 0020) will be excluded by the
+  // which is U + 0020) will be excluded by the
 // IdentifierClass.
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           break;
@@ -609,6 +769,52 @@ private Idna() {
 sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
 sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
 }
+        }
+      }
+      return sb.toString();
+    }
+
+    private static String SpaceMapping(String str) {
+      int index = 0;
+      for (int i = 0; i < str.length(); ++i) {
+        int ch = CodePointAt(str, i);
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+ return str;
+}
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        if (ch != 0x20 && UnicodeDatabase.IsZsCodePoint(ch)) {
+          break;
+        }
+        index = i;
+      }
+      if (index == str.length()) {
+ return str;
+}
+      StringBuilder sb = new StringBuilder();
+      sb.append(str.substring(0, index));
+      for (var i = index; i < str.length(); ++i) {
+        int ch = CodePointAt(str, i);
+        int istart = i;
+        // Contains an unpaired surrogate, so bail out
+        if (ch < 0) {
+ return str;
+}
+        if (ch >= 0x10000) {
+          ++i;
+        }
+        if (ch<0x80 || !UnicodeDatabase.IsZsCodePoint(ch)) {
+          if (ch <= 0xffff) {
+  { sb.append((char)(ch));
+}
+  } else if (ch <= 0x10ffff) {
+sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
+sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+}
+        } else {
+  sb.append(' ');
         }
       }
       return sb.toString();
