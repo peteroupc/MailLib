@@ -113,8 +113,8 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
        Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
       if (this.domain != null) {

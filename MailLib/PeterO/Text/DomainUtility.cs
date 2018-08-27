@@ -35,10 +35,15 @@ namespace PeterO.Text {
       }
       return c;
     }
-
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]/*'/>
+    [Obsolete("Renamed to ALabelLength.")]
     public static int PunycodeLength(string str, int index, int endIndex) {
+      return ALabelLength(str, index, endIndex);
+    }
+      /// <include file='../../docs.xml'
+      /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]/*'/>
+      public static int ALabelLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
@@ -321,11 +326,11 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
 private const string PunycodeAlphabet =
       "abcdefghijklmnopqrstuvwxyz0123456789";
 
-    internal static string PunycodeEncode(string str) {
-      return PunycodeEncodePortion(str, 0, str.Length);
+    internal static string ALabelEncode(string str) {
+      return ALabelEncodePortion(str, 0, str.Length);
     }
 
-    internal static string PunycodeEncodePortion(
+    internal static string ALabelEncodePortion(
   string str,
   int index,
   int endIndex) {

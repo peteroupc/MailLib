@@ -851,6 +851,7 @@
 </doc>
 <doc name="M:PeterO.Mail.Address.GetHashCode">
 <summary>Not documented yet.</summary>
+            <returns>A 32-bit signed integer.</returns>
 </doc>
 <doc name="P:PeterO.Mail.Address.LocalPart">
 <summary>Gets the local part of this email address (the part before the "@" sign).
@@ -1421,7 +1422,7 @@ ns me
        if the given string is a basic language range (depending on the
       <paramref name='extended'/>
        parameter); otherwise, <c>false</c>
-      .
+       .
     </returns>
 </doc>
 <doc name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)">
@@ -1743,11 +1744,12 @@ ns me
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsText">
 <summary>Gets a value indicating whether this is a text media type ("text/&#x2a;").
+
     </summary>
     <value><c>true</c>
        If this is a text media type; otherwise, .
       <c>false</c>
-      .
+       .
     </value>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.MessageRfc822">
@@ -2094,9 +2096,14 @@ ns me
            is treated as a synonym for
           <c>us-ascii</c>
            , despite being a reserved name under RFC 2046. The name
-          <c>cp1252</c> and <c>utf8</c>
+          <c>cp1252</c>
+           and
+          <c>utf8</c>
            are treated as synonyms for
-          <c>windows-1252</c> and <c>utf-8</c>, respectively, even though they are not IANA registered aliases.
+          <c>windows-1252</c>
+           and
+          <c>utf-8</c>
+          , respectively, even though they are not IANA registered aliases.
         </item>
         <item>The following deviations involve encoded words under RFC 2047:
         </item>
@@ -3665,6 +3672,9 @@ of this NamedAddress object as it could appear in a "To" header field.
     </summary>
 
 </doc>
+<doc name="M:PeterO.Text.Idna.DecodeDomainName(System.String,System.Boolean)">
+<summary>Not documented yet.</summary>
+</doc>
 <doc name="M:PeterO.Text.Idna.EncodeDomainName(System.String)">
 
             <summary>Tries to encode each label of a domain name into Punycode.
@@ -3679,13 +3689,11 @@ of this NamedAddress object as it could appear in a "To" header field.
 <doc name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)">
 
             <summary>Determines whether the given string is a syntactically valid domain name.
-
     </summary><param name='str'>The parameter
       <paramref name='str'/>
        is a text string.
     </param><param name='lookupRules'>If true, uses rules to apply when looking up the string as a domain name.
-      If false, uses rules to apply when registering the string as a domain
-      name.
+      If false, uses rules to apply when registering the string as a domain name.
     </param><returns><c>true</c>
        if the given string is a syntactically valid domain name; otherwise;
       false.
@@ -4297,5 +4305,35 @@ of this NamedAddress object as it could appear in a "To" header field.
       or the value -1 indicating the end of the source.
     </returns>
 
+</doc>
+<doc name="T:PeterO.Text.ProtocolStrings">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.IsInFreeformClass(System.String)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.IsInIdentifierClass(System.String)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.NicknameEnforce(System.String)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.NicknameForComparison(System.String)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.OpaqueStringEnforce(System.String)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.UsernameEnforce(System.String)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.UsernameEnforce(System.String,System.Boolean)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.UserpartEnforce(System.String)">
+<summary>Not documented yet.</summary>
+</doc>
+<doc name="M:PeterO.Text.ProtocolStrings.UserpartEnforce(System.String,System.Boolean)">
+<summary>Not documented yet.</summary>
 </doc>
 </docs>
