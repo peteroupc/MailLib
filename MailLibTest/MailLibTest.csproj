@@ -96,9 +96,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MailLib20\MailLib20.csproj">
-      <Project>{D24612C0-BDB6-4E3B-66F3-2276412A0599}</Project>
-      <Name>MailLib20</Name>
+    <ProjectReference Include="..\MailLib\MailLib.csproj">
+      <Project>{49EE222D-6E5D-4677-9E4D-1286B30E8BAA}</Project>
+      <Name>MailLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
