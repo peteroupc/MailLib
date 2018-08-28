@@ -11,17 +11,26 @@
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
     <Description>A .NET library for parsing and generating Internet email messages.</Description>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
-    <PackageReleaseNotes>Version 0.12.0:
+    <PackageReleaseNotes>
+Version 0.13.0:
 
-- The internal code for parsing and generating message headers was extensively refactored.  Much of the refactoring improves conformance with RFCs that define the message format and MIME.
-- As a result of the refactoring, the message generation can better ensure, when possible, that each line of a generated message is no more than 76 characters long, as recommended by those RFCs.
-- Many bugs were fixed, including those relating to downgrading header fields containing non-ASCII characters to ASCII in the Generate method.  Another bug involves an infinite decoding loop involving certain Content-Type and Content-Disposition strings.
-- One additional deviation to RFC 2047 (encoded words) is noted in the documentation for the Message class.  I think the deviation shows a weakness in that RFC.
-- At least three methods added to ContentDisposition class, including ToSingleLineString.
-- ToSingleLineString method added to MediaType class.
-- GenerateBytes method added to Message class.
-- Added MailDateTime class.
-- MakeFilename class in ContentDisposition is now idempotent and shows better. performance in some common cases of file names.
+- The code for parsing and generating message headers and bodies was again
+rewritten in many places to improve robustness and conformance with RFCs that define
+the message format and MIME.  For instance, parsed messages with an unknown character
+encoding have their ContentType property set to "application/octet-stream". (The original
+Content-Type header value is still available.)
+- Added methods to parse and generate Data URIs.
+- Added methods to parse and generate Mailto URIs.
+- Added ClearHeaders method to Message class.
+- Added public APIs to handle language tags.
+- Changed behavior of MakeFilename in a corner case.
+- Added ProtocolStrings class for checking protocol strings.
+- Added public APIs to process and generate multiple-language messages (multipart/multilingual).
+- Deprecated ToAddresses, FromAddresses, CcAddresses, and BccAddresses properties in Message.
+- Added convenience methods in Message class for creating attachments and inline body parts.
+- Updated Encoding library reference to 0.5.0.
+- Bug fixes
+
 </PackageReleaseNotes>
     <Copyright>Written by Peter O. in 2013-2018.  Any copyright is released to the Public Domain.
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See

@@ -4,7 +4,7 @@ using System.Text;
 namespace PeterO.Text {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Text.ProtocolStrings"]/*'/>
-  internal static class ProtocolStrings {
+  public static class ProtocolStrings {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.ProtocolStrings.IsInIdentifierClass(System.String)"]/*'/>
     public static bool IsInIdentifierClass(string str) {

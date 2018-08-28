@@ -163,6 +163,22 @@ namespace PeterO {
       return size;
     }
 
+/// <summary>Not documented yet.</summary>
+public static int CodePointLength(string str){
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
+      var i=0;
+      var count=0;
+     while(i<str.Length){
+       int c=CodePointAt(str,i);
+       count++;
+       i=(c>=0x10000) ? 2 : 1;
+     }
+     return count;
+}
+
+
     /// <include file='../docs.xml'
     /// path='docs/doc[@name="M:PeterO.DataUtilities.CodePointBefore(System.String,System.Int32)"]/*'/>
     public static int CodePointBefore(string str, int index) {

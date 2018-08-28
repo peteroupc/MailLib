@@ -70,6 +70,25 @@ An example of reading an email message from a file:
 Release Notes
 ---------
 
+Version 0.13.0:
+
+- The code for parsing and generating message headers and bodies was again
+rewritten in many places to improve robustness and conformance with RFCs that define
+the message format and MIME.  For instance, parsed messages with an unknown character
+encoding have their ContentType property set to "application/octet-stream". (The original
+Content-Type header value is still available.)
+- Added methods to parse and generate Data URIs.
+- Added methods to parse and generate Mailto URIs.
+- Added ClearHeaders method to Message class.
+- Added public APIs to handle language tags.
+- Changed behavior of MakeFilename in a corner case.
+- Added ProtocolStrings class for checking protocol strings.
+- Added public APIs to process and generate multiple-language messages (multipart/multilingual).
+- Deprecated ToAddresses, FromAddresses, CcAddresses, and BccAddresses properties in Message.
+- Added convenience methods in Message class for creating attachments and inline body parts.
+- Updated Encoding library reference to 0.5.0.
+- Bug fixes
+
 Version 0.12.0:
 
 - The internal code for parsing and generating message headers was extensively refactored.  Much of the refactoring improves conformance with RFCs that define the message format and MIME.
@@ -99,7 +118,7 @@ for release notes for older versions.
 About
 -----------
 
-Written in 2013-2014 by Peter O.
+Written in 2013-2018 by Peter O.
 
 Any copyright is dedicated to the Public Domain.
 [http://creativecommons.org/publicdomain/zero/1.0/](http://creativecommons.org/publicdomain/zero/1.0/)

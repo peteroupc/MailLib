@@ -69,20 +69,17 @@ internal static string LocalPartToString(string localPart) {
 internal void AppendThisAddress(HeaderEncoder encoder) {
  string lp = LocalPartToString(this.localPart);
  string domainstr = DomainToString(this.domain, true);
- long length = DataUtilities.GetUtf8Length(lp, true);
- long length2 = DataUtilities.GetUtf8Length(domainstr, true);
+ int length = DataUtilities.CodePointLength(lp);
+ int length2 = DataUtilities.CodePointLength(domainstr);
  if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
   // Avoid breaking email addresses if it can comfortably
   // fit the recommended line length
         var tlength = (int)(length2 + length + 1);
   encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
  } else {
-        // NOTE: Both lengths can't exceed MaxRecHeaderLineLength,
-        // which is well below the maximum value for 32-bit
-        // integers, so it's acceptable to cast to int here
-        encoder.AppendSymbolWithLength(lp, (int)length);
+        encoder.AppendSymbolWithLength(lp, length);
   encoder.AppendSymbol("@");
-        encoder.AppendSymbolWithLength(domainstr, (int)length);
+        encoder.AppendSymbolWithLength(domainstr, length);
  }
 }
 
@@ -98,7 +95,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
       string lp = LocalPartToString(this.localPart);
      string domainstr = DomainToString(this.domain, true);
      string domain2 = DomainToString(this.domain, false);
-        // Maximum character length per line for an Internet message minus 1;
+        // Maximum OCTET length per line for an Internet message minus 1;
         // we check if the length exceeds that number (thus excluding the space
         // character of a folded line).
      if (DataUtilities.GetUtf8Length(lp, true) >
