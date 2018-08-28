@@ -114,7 +114,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
       if (this.domain != null) {

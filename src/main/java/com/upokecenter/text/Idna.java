@@ -44,7 +44,7 @@ private Idna() {
     private static volatile ByteData bidiClasses;
     private static volatile ByteData joiningTypes;
     private static volatile ByteData scripts;
-    private static volatile ByteData zsChars;
+    private static volatile ByteData valueZsChars;
 
     static int CodePointBefore(String str, int index) {
       if (str == null) {
@@ -88,7 +88,7 @@ private Idna() {
       ByteData table = null;
       if (bidiClasses == null) {
         synchronized (syncRoot) {
-        bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
+          bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
         }
       }
       table = bidiClasses;
@@ -106,15 +106,15 @@ private Idna() {
       return table.GetByte(ch);
     }
 
-    private static int IsZsCodePoint(int ch) {
+    private static boolean IsZsCodePoint(int ch) {
       ByteData table = null;
-      if (zsChars == null) {
+      if (valueZsChars == null) {
         synchronized (syncRoot) {
-     zsChars = (zsChars == null) ? (ByteData.Decompress(IdnaData.ZsCharacters)) : zsChars;
+     valueZsChars = (valueZsChars == null) ? (ByteData.Decompress(IdnaData.ZsCharacters)) : valueZsChars;
         }
       }
-      table = zsChars;
-      return table.GetByte(ch);
+      table = valueZsChars;
+      return table.GetBoolean(ch);
     }
 
     private static int GetScript(int ch) {
@@ -155,11 +155,11 @@ private Idna() {
     }
 
     private static boolean IsCaseIgnorable(int ch) {
-      return GetCasedProperty(ch) == 2;
+      return UnicodeDatabase.GetCasedProperty(ch) == 2;
     }
 
     private static boolean IsCased(int ch) {
-      return GetCasedProperty(ch) == 1;
+      return UnicodeDatabase.GetCasedProperty(ch) == 1;
     }
 
     private static boolean IsFinalSigmaContext(String str, int index) {
@@ -231,24 +231,30 @@ private Idna() {
     private static String ToLowerCase(String str) {
       int[] buffer = new int[2];
       StringBuilder sb = new StringBuilder();
-      for (int i = 0;i<str.length(); ++i) {
+      for (int i = 0; i < str.length(); ++i) {
         int ch = CodePointAt(str, i);
-        if (ch< 0) {
- return str;
-}
-        if (ch == 0x3a3 && IsFinalSigmaContext(str, i)) {
-          sb.append((char)0x3c2);
+        if (ch < 0) {
+          return str;
+        }
+        if (ch == 931 && IsFinalSigmaContext(str, i)) {
+          sb.append((char)962);
         } else {
           int size = UnicodeDatabase.GetLowerCaseMapping(ch, buffer, 0);
           for (int j = 0; j < size; ++j) {
-            sb.AppendChar(buffer[j]);
+            int c2 = buffer[j];
+            if (c2 <= 0xffff) {
+              sb.append((char)c2);
+            } else if (ch <= 0x10ffff) {
+              sb.append((char)((((c2 - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              sb.append((char)(((c2 - 0x10000) & 0x3ff) + 0xdc00));
+            }
           }
         }
         if (ch >= 0x10000) {
- ++i;
-}
+          ++i;
+        }
       }
-      return sb.toString;
+      return sb.toString();
     }
 
     private static boolean HasRtlCharacters(String str) {
@@ -266,6 +272,74 @@ private Idna() {
         }
       }
       return false;
+    }
+
+    private static String DecodeLabel(String str, int index, int endIndex) {
+      if (endIndex - index > 4 && str.charAt(index) == 'x' &&
+          str.charAt(index + 1) == 'n' && str.charAt(index + 2) == '-' &&
+          str.charAt(index + 3) == '-') {
+        return DomainUtility.PunycodeDecode(str, index + 4, endIndex);
+      } else {
+        return str.substring(index, (index)+(endIndex - index));
+      }
+    }
+
+    /**
+     * Not documented yet.
+     * @param value The parameter {@code value} is not documented yet.
+     * @param lookupRules The parameter {@code lookupRules} is not documented yet.
+     * @return A text string.
+     * @throws java.lang.NullPointerException The parameter {@code value} is null.
+     */
+    public static String DecodeDomainName(String value, boolean lookupRules) {
+      if (value == null) {
+  throw new NullPointerException("value");
+}
+      if (value.length() == 0) {
+        return "";
+      }
+      if (!IsValidDomainName(value, lookupRules)) {
+ return null;
+}
+      int lastPos = 0;
+      int i = 0;
+      StringBuilder sb = null;
+      while (i <= value.length()) {
+        if (value.charAt(i) == '.') {
+          String part = DecodeLabel(
+            value,
+            lastPos,
+            i);
+          if (part == null) {
+ return null;
+}
+          sb = (sb == null) ? ((new StringBuilder())) : sb;
+          sb.append(part);
+          sb.append('.');
+          ++i;
+          lastPos = i;
+        } else {
+          ++i;
+        }
+      }
+      if (lastPos == 0) {
+ return DecodeLabel(
+        value,
+        0,
+        value.length());
+ }
+      if (lastPos != value.length()) {
+        String part = DecodeLabel(
+          value,
+          lastPos,
+          value.length());
+        if (part == null) {
+ return null;
+}
+        sb = (sb == null) ? ((new StringBuilder())) : sb;
+        sb.append(part);
+      }
+      return sb.toString();
     }
 
     /**
@@ -290,7 +364,7 @@ private Idna() {
         char c = value.charAt(i);
         if (c == '.') {
           if (i != lastIndex) {
-            retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, i);
+            retval = DomainUtility.ALabelEncodePortion(value, lastIndex, i);
             if (retval == null) {
               // Append the unmodified domain plus the dot
               builder.append(value.substring(lastIndex, (lastIndex)+((i + 1) - lastIndex)));
@@ -302,7 +376,7 @@ private Idna() {
           lastIndex = i + 1;
         }
       }
-      retval = DomainUtility.PunycodeEncodePortion(
+      retval = DomainUtility.ALabelEncodePortion(
       value,
       lastIndex,
       value.length());
@@ -387,12 +461,12 @@ private Idna() {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }
-      boolean maybeALabel = str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') &&
+      boolean maybeALabel = str.length() > 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') &&
         (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-';
       boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
-    if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') || (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z'
-) ||
+        if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') ||
+            (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
                     (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
           // LDH character
           continue;
@@ -414,21 +488,24 @@ private Idna() {
         if (!IsValidULabel(ustr, lookupRules, bidiRule)) {
           return false;
         }
-        String astr = DomainUtility.PunycodeEncodePortion(ustr, 0, ustr.length());
+        String astr = DomainUtility.ALabelEncodePortion(ustr, 0, ustr.length());
         // NOTE: "astr" and "str" will contain only ASCII characters
         // at this point, so a simple null check and
         // binary comparison are enough
         return (astr != null) && astr.equals(str);
       }
       if (allLDH) {
+        if (bidiRule && str.charAt(0) >= '0' && str.charAt(0) <= '9') {
+          // First character is a digit and the Bidi rule applies
+          return false;
+        }
         if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
           // Contains a hyphen at the third and fourth (one-based) character
           // positions
           return false;
         }
-        if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0' &&
-          str.charAt(0) <= '9')) {
-          // Only LDH characters, doesn't start with hyphen or digit,
+        if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-') {
+          // Only LDH characters, doesn't start with hyphen,
           // and doesn't end with hyphen
           return true;
         }
@@ -447,7 +524,8 @@ private Idna() {
         if (thisChar >= 0x660 && thisChar <= 0x669) {
           // Arabic-Indic digits
           // NOTE: Test done here even under lookup rules,
-          // even though they're CONTEXTO characters
+          // even though they're CONTEXTO characters (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (extArabDigits) {
             return false;
           }
@@ -455,7 +533,8 @@ private Idna() {
         } else if (thisChar >= 0x6f0 && thisChar <= 0x6f9) {
           // Extended Arabic-Indic digits
           // NOTE: Test done here even under lookup rules,
-          // even though they're CONTEXTO characters
+          // even though they're CONTEXTO characters (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (regArabDigits) {
             return false;
           }
@@ -463,7 +542,8 @@ private Idna() {
         } else if (thisChar == 0xb7) {
           // Middle dot
           // NOTE: Test done here even under lookup rules,
-          // even though it's a CONTEXTO character
+          // even though it's a CONTEXTO character (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (!(i - 1 >= 0 && i + 1 < str.length() &&
               lastChar == 0x6c && str.charAt(i + 1) == 0x6c)) {
             // Dot must come between two l's
@@ -483,14 +563,16 @@ private Idna() {
         } else if (thisChar == 0x375) {
           // Keraia
           // NOTE: Test done here even under lookup rules,
-          // even though it's a CONTEXTO character
+          // even though it's a CONTEXTO character (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (i + 1 >= str.length() || !IsGreek(CodePointAt(str, i + 1))) {
             return false;
           }
         } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
           // Geresh or gershayim
           // NOTE: Test done here even under lookup rules,
-          // even though they're CONTEXTO characters
+          // even though they're CONTEXTO characters (performing
+          // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (i <= 0 || !IsHebrew(lastChar)) {
             return false;
           }
@@ -513,99 +595,153 @@ private Idna() {
       }
       if (haveKatakanaMiddleDot && !haveKanaOrHan) {
         // NOTE: Test done here even under lookup rules,
-        // even though it's a CONTEXTO character
+        // even though it's a CONTEXTO character (CONTEXTO
+        // checks are optional in lookup under RFC 5891, sec. 5.4).
         return false;
       }
       return true;
     }
 
-static String UsernameCasePreservedEnforceInternal(String str) {
-  if (((str) == null || (str).length() == 0)) {
- return null;
-}
-  str = WidthMapping(str);
-  if (IsInPrecisClass(str, false)) {
-     str = NormalizerInput.Normalize(str, Normalization.NFC);
-     return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
-       (str.length() == 0 ? null : str);
-  }
-  return null;
-}
+    static boolean IsInIdentifierClass(String str) {
+      return IsInPrecisClass(str, false);
+    }
 
-static String UsernameCasePreservedEnforce(String str) {
- String oldvalue = str;
- for (int i = 0; i < 4; ++i) {
-  String newvalue = UsernameCasePreservedEnforceInternal(oldvalue);
-  if (newvalue == null) {
- return null;
-}
-  if (oldvalue.equals(newvalue)) {
- return oldvalue;
-}
-  oldvalue = newvalue;
- }
- return null;
-}
+    static boolean IsInFreeformClass(String str) {
+      return IsInPrecisClass(str, true);
+    }
 
-static String UsernameCaseMappedEnforceInternal(String str) {
-  if (((str) == null || (str).length() == 0)) {
- return null;
-}
-  str = WidthMapping(str);
-  if (IsInPrecisClass(str, false)) {
-     str = ToLowerCase(str);
-     str = NormalizerInput.Normalize(str, Normalization.NFC);
-     return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
-       (str.length() == 0 ? null : str);
-  }
-  return null;
-}
-
-static String UsernameCaseMappedEnforce(String str) {
- String oldvalue = str;
- for (int i = 0; i < 4; ++i) {
-  String newvalue = UsernameCaseMappedEnforceInternal(oldvalue);
-  if (newvalue == null) {
- return null;
-}
-  if (oldvalue.equals(newvalue)) {
- return oldvalue;
-}
-  oldvalue = newvalue;
- }
- return null;
-}
-
-static String OpaqueStringEnforceInternal(String str) {
-  if (((str) == null || (str).length() == 0)) {
- return null;
-}
-  if (IsInPrecisClass(str, false)) {
-str = SpaceMapping(str);
-str = NormalizerInput.Normalize(str, Normalization.NFC);
-return str.length() == 0 ? null : str;
-  }
-  return null;
-}
-
-static String OpaqueStringEnforce(String str) {
- String oldvalue = str;
- for (int i = 0; i < 4; ++i) {
-  String newvalue = OpaqueStringEnforceInternal(oldvalue);
-  if (newvalue == null) {
- return null;
-}
-  if (oldvalue.equals(newvalue)) {
- return oldvalue;
-}
-  oldvalue = newvalue;
- }
- return null;
-}
-
-    static boolean IsInPrecisClass(String str, boolean freeform) {
+    private static String UsernameCasePreservedEnforceInternal(String str) {
       if (((str) == null || (str).length() == 0)) {
-        return false;
+        return null;
+      }
+      str = WidthMapping(str);
+      if (IsInPrecisClass(str, false)) {
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? null :
+          (str.length() == 0 ? null : str);
+      }
+      return null;
+    }
+
+    private static String NicknameInternal(String str, boolean forComparison) {
+      if (((str) == null || (str).length() == 0)) {
+        return null;
+      }
+      if (IsInPrecisClass(str, true)) {
+        str = TrimAndCollapseUnicodeSpaces(str);
+        if (forComparison) {
+ str = ToLowerCase(str);
+}
+        str = NormalizerInput.Normalize(str, Normalization.NFKC);
+        return str.length() == 0 ? null : str;
+      }
+      return null;
+    }
+
+    static String NicknameEnforce(String str) {
+      String oldvalue = str;
+      for (int i = 0; i < 4; ++i) {
+        String newvalue = NicknameInternal(oldvalue, false);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    static String NicknameForComparison(String str) {
+      String oldvalue = str;
+      for (int i = 0; i < 4; ++i) {
+        String newvalue = NicknameInternal(oldvalue, true);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    static String UsernameCasePreservedEnforce(String str) {
+      String oldvalue = str;
+      for (int i = 0; i < 4; ++i) {
+        String newvalue = UsernameCasePreservedEnforceInternal(oldvalue);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    private static String UsernameCaseMappedEnforceInternal(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return null;
+      }
+      str = WidthMapping(str);
+      if (IsInPrecisClass(str, false)) {
+        str = ToLowerCase(str);
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? null :
+          (str.length() == 0 ? null : str);
+      }
+      return null;
+    }
+
+    static String UsernameCaseMappedEnforce(String str) {
+      String oldvalue = str;
+      for (int i = 0; i < 4; ++i) {
+        String newvalue = UsernameCaseMappedEnforceInternal(oldvalue);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    private static String OpaqueStringEnforceInternal(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return null;
+      }
+      if (IsInPrecisClass(str, false)) {
+        str = SpaceMapping(str);
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        return str.length() == 0 ? null : str;
+      }
+      return null;
+    }
+
+    static String OpaqueStringEnforce(String str) {
+      String oldvalue = str;
+      for (int i = 0; i < 4; ++i) {
+        String newvalue = OpaqueStringEnforceInternal(oldvalue);
+        if (newvalue == null) {
+          return null;
+        }
+        if (oldvalue.equals(newvalue)) {
+          return oldvalue;
+        }
+        oldvalue = newvalue;
+      }
+      return null;
+    }
+
+    private static boolean IsInPrecisClass(String str, boolean freeform) {
+      if (((str) == null || (str).length() == 0)) {
+        return str != null;
       }
       boolean haveContextual = false;
       for (int i = 0; i < str.length(); ++i) {
@@ -625,34 +761,34 @@ static String OpaqueStringEnforce(String str) {
       }
       if (haveContextual) {
         if (!PassesContextChecks(str)) {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }
 
     private static boolean PassesBidiRule(String str) {
       if (((str) == null || (str).length() == 0)) {
- return true;
-}
+        return true;
+      }
       int bidiClass;
       boolean rtl = false;
       int ch = CodePointAt(str, 0);
       if (ch < 0) {
- return false;
-}
+        return false;
+      }
       int bidi = GetBidiClass(ch);
       if (bidi == BidiClassR || bidi == BidiClassAL) {
         rtl = true;
       } else if (bidi != BidiClassL) {
- return false;
-}
+        return false;
+      }
       boolean found = false;
       for (int i = str.length(); i > 0; --i) {
         int c = CodePointBefore(str, i);
         if (c < 0) {
- return false;
-}
+          return false;
+        }
         if (c >= 0x10000) {
           --i;
         }
@@ -724,25 +860,25 @@ static String OpaqueStringEnforce(String str) {
         int ch = CodePointAt(str, i);
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
- return str;
-}
+          return str;
+        }
         if (ch >= 0x10000) {
           ++i;
         }
-// NOTE: Not coextensive with code points having
-// Decomposition_Type = Wide or Narrow, since U + 3000,
-  // ideographic space, is excluded. However, this
-// code point (as well as its decomposition mapping,
-  // which is U + 0020) will be excluded by the
-// IdentifierClass.
+        // NOTE: Not coextensive with code points having
+        // Decomposition_Type = Wide or Narrow, since U + 3000,
+        // ideographic space, is excluded. However, this
+        // code point (as well as its decomposition mapping,
+        // which is U + 0020) will be excluded by the
+        // IdentifierClass.
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           break;
         }
         index = i;
       }
       if (index == str.length()) {
- return str;
-}
+        return str;
+      }
       StringBuilder sb = new StringBuilder();
       sb.append(str.substring(0, index));
       for (var i = index; i < str.length(); ++i) {
@@ -750,8 +886,8 @@ static String OpaqueStringEnforce(String str) {
         int istart = i;
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
- return str;
-}
+          return str;
+        }
         if (ch >= 0x10000) {
           ++i;
         }
@@ -763,15 +899,64 @@ static String OpaqueStringEnforce(String str) {
           sb.append(nfkd);
         } else {
           if (ch <= 0xffff) {
-  { sb.append((char)(ch));
-}
-  } else if (ch <= 0x10ffff) {
-sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
-sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
-}
+            {
+              sb.append((char)ch);
+            }
+          } else if (ch <= 0x10ffff) {
+            sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
+            sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+          }
         }
       }
       return sb.toString();
+    }
+
+    private static String TrimAndCollapseUnicodeSpaces(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return str;
+      }
+      StringBuilder builder = null;
+      int index = 0;
+      int leadIndex;
+      // Skip leading whitespace, if any
+      while (index < str.length()) {
+        char c = str.charAt(index);
+        if (c == 0x20 || IsZsCodePoint(c)) {
+          builder = (builder == null) ? ((new StringBuilder())) : builder;
+          ++index;
+        } else {
+          break;
+        }
+      }
+      leadIndex = index;
+      while (index < str.length()) {
+        int si = index;
+        char c = str.charAt(index++);
+        int count = 0;
+        while (c == 0x20 || IsZsCodePoint(c)) {
+          ++count;
+          if (index < str.length()) {
+            c = str.charAt(index++);
+          } else {
+            break;
+          }
+        }
+        if (count > 0) {
+          if (builder == null) {
+            builder = new StringBuilder();
+            builder.append(str.substring(leadIndex, (leadIndex)+(si)));
+          }
+          if (c != 0x20 && !IsZsCodePoint(c)) {
+            builder.append(' ');
+            builder.append(c);
+          }
+        } else {
+          if (builder != null) {
+            builder.append(c);
+          }
+        }
+      }
+      return (builder == null) ? str : builder.toString();
     }
 
     private static String SpaceMapping(String str) {
@@ -780,19 +965,19 @@ sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
         int ch = CodePointAt(str, i);
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
- return str;
-}
+          return str;
+        }
         if (ch >= 0x10000) {
           ++i;
         }
-        if (ch != 0x20 && UnicodeDatabase.IsZsCodePoint(ch)) {
+        if (ch != 0x20 && IsZsCodePoint(ch)) {
           break;
         }
         index = i;
       }
       if (index == str.length()) {
- return str;
-}
+        return str;
+      }
       StringBuilder sb = new StringBuilder();
       sb.append(str.substring(0, index));
       for (var i = index; i < str.length(); ++i) {
@@ -800,21 +985,20 @@ sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
         int istart = i;
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
- return str;
-}
+          return str;
+        }
         if (ch >= 0x10000) {
           ++i;
         }
-        if (ch<0x80 || !UnicodeDatabase.IsZsCodePoint(ch)) {
+        if (ch < 0x80 || !IsZsCodePoint(ch)) {
           if (ch <= 0xffff) {
-  { sb.append((char)(ch));
-}
-  } else if (ch <= 0x10ffff) {
-sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
-sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
-}
+            sb.append((char)ch);
+          } else if (ch <= 0x10ffff) {
+            sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
+            sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+          }
         } else {
-  sb.append(' ');
+          sb.append(' ');
         }
       }
       return sb.toString();
@@ -851,10 +1035,14 @@ sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
       int ch;
       boolean first = true;
       boolean haveContextual = false;
+      boolean nonascii = false;
       for (int i = 0; i < str.length(); ++i) {
         ch = CodePointAt(str, i);
         if (ch >= 0x10000) {
           ++i;
+        }
+        if (ch >= 0x80) {
+          nonascii = true;
         }
         int category = UnicodeDatabase.GetIdnaCategory(ch);
         if (category == Disallowed || category == Unassigned) {
@@ -868,17 +1056,20 @@ sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
         haveContextual |= category == ContextO || category == ContextJ;
         first = false;
       }
-      if (haveContextual) {
-        if (!PassesContextChecks(str)) {
+      if (!nonascii) {
  return false;
 }
+      if (haveContextual) {
+        if (!PassesContextChecks(str)) {
+          return false;
+        }
       }
       if (bidiRule) {
         if (!PassesBidiRule(str)) {
- return false;
-}
+          return false;
+        }
       }
-      int aceLength = DomainUtility.PunycodeLength(str, 0, str.length());
+      int aceLength = DomainUtility.ALabelLength(str, 0, str.length());
       if (aceLength < 0) {
         return false;  // Overflow error
       }

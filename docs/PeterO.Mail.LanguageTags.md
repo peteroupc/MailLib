@@ -68,8 +68,8 @@ Returns whether the given string is a basic or extended language range under RFC
 
 <b>Return Value:</b>
 
- `true`  if the given string is a basic language range (depending on the  <i>extended</i>
- parameter); otherwise,  `false` .
+ `true` if the given string is a basic language range (depending on the <i>extended</i>
+parameter); otherwise,  `false` .
 
 ### IsPotentiallyValidLanguageTag
 
@@ -160,13 +160,13 @@ A list of language tags that match the given range, in descending order of prefe
 
  * System.ArgumentNullException:
 The parameter <i>languages</i>
- or  <i>ranges</i>
- is null.
+or <i>ranges</i>
+is null.
 
  * System.ArgumentException:
 The parameter <i>ranges</i>
- contains a value that is not a basic or extended language range, or  <i>languages</i>
- contains a value that is not a potentially valid language tag.
+contains a value that is not a basic or extended language range, or <i>languages</i>
+contains a value that is not a potentially valid language tag.
 
 ### LanguageTagLookup
 

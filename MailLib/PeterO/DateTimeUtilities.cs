@@ -109,8 +109,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       ret[6] = dt.Millisecond;
 #if NET20
       DateTime dtu = dt.ToUniversalTime();
-      TimeSpan ts = dt-dtu;
-      int minutes=(int)Math.Round(ts.TotalMinutes);
+      TimeSpan ts = dt - dtu;
+      var minutes = (int)Math.Round(ts.TotalMinutes);
       ret[7] = minutes;
 #else
     ret[7] = (int)Math.Round(TimeZoneInfo.Local.GetUtcOffset(dt).TotalMinutes);
