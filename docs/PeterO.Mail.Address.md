@@ -64,11 +64,11 @@ is an arbitrary object.
 
     public override int GetHashCode();
 
-Not documented yet.
+Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.
 
 <b>Return Value:</b>
 
-A 32-bit signed integer.
+A hash code for this instance.
 
 ### ToString
 

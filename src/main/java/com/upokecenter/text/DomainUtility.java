@@ -11,62 +11,10 @@ import com.upokecenter.util.*;
 
 // NOTE: Implements Punycode defined in RFC 3492
 
-    /**
-     * Utility methods for domain names.
-     */
-  final class DomainUtility {
+   final class DomainUtility {
 private DomainUtility() {
 }
-    private static int CodePointAt(String str, int index, int endIndex) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (index >= endIndex) {
-        return -1;
-      }
-      if (index < 0) {
-        return -1;
-      }
-      int c = str.charAt(index);
-      if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex &&
-          str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
-        // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
-      } else if ((c & 0xf800) == 0xd800) {
-        // unpaired surrogate
-        return 0xfffd;
-      }
-      return c;
-    }
-
-    /**
-     * Gets the Punycode length of a string (Punycode is defined in RFC 3492).
-     * @param str A string containing the desired portion to get the length for.
-     * @param index Zero-based index showing where the desired portion of {@code
-     * str} begins.
-     * @param endIndex Zero-based index showing where the desired portion of {@code
-     * str} ends. The character before this index is the last character.
-     * @return The Punycode length of the encoded string. If the string contains
-     * code points outside the Basic Latin range (U + 0000 to U + 007F), returns
-     * the Punycode length plus 4 (the length of the prefix "xn--", which
-     * indicates an internationalized domain name). If there are only Basic
-     * Latin code points, returns the length of the string. Returns -1 if an
-     * overflow error occurs.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
-     * @throws java.lang.NullPointerException Either {@code index} or {@code
-     * endIndex} is less than 0 or greater than {@code str} 's length, or
-     * {@code index} is greater than {@code endIndex} .
-     * @deprecated Renamed to ALabelLength.
- */
-@Deprecated
-    public static int PunycodeLength(String str, int index, int endIndex) {
-      return ALabelLength(str, index, endIndex);
-    }
-
-    /**
-     *
-     */
-      public static int ALabelLength(String str, int index, int endIndex) {
+    static int ALabelLength(String str, int index, int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -113,7 +61,15 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       int outputLength = 4;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = CodePointAt(str, tmpIndex, endIndex);
+        int c = str.charAt(tmpIndex);
+        if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          return -1;
+        }
         ++codePointLength;
         if (c < 0x80) {
           // This is a basic (ASCII) code point
@@ -139,7 +95,15 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         int min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = CodePointAt(str, tmpIndex, endIndex);
+          int c = str.charAt(tmpIndex);
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return -1;
+          }
           tmpIndex += (c >= 0x10000) ? 2 : 1;
           if (c >= vnum && c < min) {
             min = c;
@@ -161,7 +125,15 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = CodePointAt(str, tmpIndex, endIndex);
+          int c = str.charAt(tmpIndex);
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return -1;
+          }
           tmpIndex += (c >= 0x10000) ? 2 : 1;
           if (c < vnum) {
             if (delta == Integer.MAX_VALUE) {
@@ -411,7 +383,15 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       builder.append("xn--");
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = Idna.CodePointAt(str, tmpIndex);
+        int c = str.charAt(tmpIndex);
+        if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          return null;
+        }
         ++codePointLength;
         if (c >= 0x41 && c <= 0x5a) {
           // This is an uppercase ASCII character,
@@ -445,7 +425,15 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         int min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = Idna.CodePointAt(str, tmpIndex);
+          int c = str.charAt(tmpIndex);
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return null;
+          }
           if (c >= vnum && c < min) {
             min = c;
           }
@@ -470,7 +458,15 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = Idna.CodePointAt(str, tmpIndex);
+          int c = str.charAt(tmpIndex);
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return null;
+          }
           if (c >= 0x10000) {
             ++tmpIndex;
           }

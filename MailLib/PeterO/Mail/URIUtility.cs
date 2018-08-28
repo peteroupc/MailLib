@@ -141,7 +141,7 @@ using System.Text;
       while (index < valueSLength) {
         int c = s[index];
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            (s[index + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
           ++index;
@@ -289,7 +289,7 @@ using System.Text;
       for (i = lastIndex; i < str.Length; ++i) {
         int c = str[i];
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
-            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
+            (str[i + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
           ++i;
@@ -406,7 +406,7 @@ var builder = new StringBuilder();
       while (index < s.Length) {
         int c = s[index];
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.Length &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            (s[index + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -525,7 +525,7 @@ return builder.ToString();
         // Get the next Unicode character
         int c = s[index];
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            (s[index + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
           ++index;
@@ -605,7 +605,7 @@ public static string BuildIRI(
       while (index < s.Length) {
         int c = s[index];
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.Length &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            (s[index + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -1235,7 +1235,7 @@ if (s.Length - offset < length) {
             return null;
           }
           if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-              s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+              (s[index + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
             ++index;
@@ -1336,7 +1336,7 @@ if (s.Length - offset < length) {
           return null;
         }
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s[index + 1] >= 0xdc00 && s[index + 1] <= 0xdfff) {
+            (s[index + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
           ++index;

@@ -15,30 +15,39 @@
 
 ## Methods
 
-* `static String DecodeDomainName​(String value,
-                boolean lookupRules)`<br>
- Not documented yet.
+* `static String DecodeDomainName​(String value)`<br>
+ Tries to encode each XN-label (Basic Latin label starting with "xn--") of
+ the given domain name into Unicode.
 * `static String EncodeDomainName​(String value)`<br>
- Tries to encode each label of a domain name into Punycode.
+ Tries to encode each label of a domain name with code points outside the
+ Basic Latin range (U + 0000 to U + 007F) into an XN-label (a label
+ starting with "xn--" and having only basic letters, basic digits,
+ and/or "-").
 * `static boolean IsValidDomainName​(String str,
                  boolean lookupRules)`<br>
- Determines whether the given string is a syntactically valid domain name.
+ Determines whether the given string is a domain name containing only
+ U-labels (labels meeting IDNA2008 requirements for labels with
+ characters outside the Basic Latin range, U + 0000 to U + 007F), A-labels
+ (labels starting with "xn--" and convertible to U-labels), NR-LDH
+ labels (as defined in RFC 5890), or any combination of these,
+ separated by dots (".").
 
 ## Method Details
 
 ### DecodeDomainName
-    public static String DecodeDomainName​(String value, boolean lookupRules)
-Not documented yet.
+    public static String DecodeDomainName​(String value)
+Tries to encode each XN-label (Basic Latin label starting with "xn--") of
+ the given domain name into Unicode. This method does not check the
+ syntactic validity of the domain name before proceeding.
 
 **Parameters:**
 
-* <code>value</code> - The parameter <code>value</code> is not documented yet.
-
-* <code>lookupRules</code> - The parameter <code>lookupRules</code> is not documented yet.
+* <code>value</code> - A domain name.
 
 **Returns:**
 
-* A text string.
+* The domain name where each XN-label is encoded into Unicode. Labels
+ where this is not possible remain unchanged.
 
 **Throws:**
 
@@ -46,7 +55,11 @@ Not documented yet.
 
 ### EncodeDomainName
     public static String EncodeDomainName​(String value)
-Tries to encode each label of a domain name into Punycode.
+Tries to encode each label of a domain name with code points outside the
+ Basic Latin range (U + 0000 to U + 007F) into an XN-label (a label
+ starting with "xn--" and having only basic letters, basic digits,
+ and/or "-"). This method does not check the syntactic validity of the
+ domain name before proceeding.
 
 **Parameters:**
 
@@ -55,16 +68,21 @@ Tries to encode each label of a domain name into Punycode.
 **Returns:**
 
 * The domain name where each label with code points outside the Basic
- Latin range (U + 0000 to U + 007F) is encoded into Punycode. Labels where
- this is not possible remain unchanged.
+ Latin range (U + 0000 to U + 007F) is encoded into an XN-label. Labels
+ where this is not possible remain unchanged.
 
 **Throws:**
 
-* <code>NullPointerException</code> - Value is null.
+* <code>NullPointerException</code> - The parameter <code>value</code> is null.
 
 ### IsValidDomainName
     public static boolean IsValidDomainName​(String str, boolean lookupRules)
-Determines whether the given string is a syntactically valid domain name.
+Determines whether the given string is a domain name containing only
+ U-labels (labels meeting IDNA2008 requirements for labels with
+ characters outside the Basic Latin range, U + 0000 to U + 007F), A-labels
+ (labels starting with "xn--" and convertible to U-labels), NR-LDH
+ labels (as defined in RFC 5890), or any combination of these,
+ separated by dots ("."). See RFC 5890 and 5891 (IDNA).
 
 **Parameters:**
 

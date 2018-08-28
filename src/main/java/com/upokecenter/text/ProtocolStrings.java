@@ -10,8 +10,9 @@ private ProtocolStrings() {
     /**
      * Determines whether the given string belongs in RFC 8264's IdentifierClass.
      * In general, the IdentifierClass contains all code points in the
-     * Freeform class, except certain uncommon letters and digits as well as
-     * spaces, non-ASCII punctuation, and non-ASCII symbols.
+     * Freeform class, except certain uncommon letters and digits, spaces,
+     * as well as punctuation and symbols outside the Basic Latin range
+     * (U + 0000 to U + 007F).
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
      * characters allowed in RFC 8264's FreeformClass (in the contexts
@@ -26,8 +27,8 @@ private ProtocolStrings() {
      * Determines whether the given string belongs in RFC 8264's FreeformClass. In
      * general, the FreeformClass contains most letters, digits, spaces,
      * punctuation, and symbols in the Unicode standard, as well as all
-     * ASCII printable characters, but excludes control characters and
-     * separators.
+     * basic printable characters (U + 0021 to U + 007E), but excludes control
+     * characters and separators.
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
      * characters allowed in RFC 8264's FreeformClass (in the contexts
@@ -62,7 +63,7 @@ private ProtocolStrings() {
      * letters in the string is mapped to lowercase. This checking is done
      * using the UsernameCaseMapped profile in RFC 8265.
      * @param str A string to prepare that represents a user or account identifier.
-     * @return A user name where each of its parts is prepared under the
+     * @return A username where each of its parts is prepared under the
      * UsernameCaseMapped profile in RFC 8265 (among other things, the
      * string will be converted to lowercase). Returns null if any of those
      * parts is invalid under that profile (including if {@code str} is null
@@ -97,10 +98,10 @@ private ProtocolStrings() {
      */
     public static String UserpartEnforce(String str, boolean preserveCase) {
       if (preserveCase) {
- return Idna.UsernameCasePreservedEnforce(str);
-} else {
- return Idna.UsernameCaseMappedEnforce(str);
-}
+        return Idna.UsernameCasePreservedEnforce(str);
+      } else {
+        return Idna.UsernameCaseMappedEnforce(str);
+      }
     }
 
     /**
@@ -114,7 +115,7 @@ private ProtocolStrings() {
      * @param preserveCase If true, use the UsernameCasePreserved profile to
      * prepare each part of the string. If false, use the UsernameCaseMapped
      * profile.
-     * @return A user name where each of its parts is prepared under the
+     * @return A username where each of its parts is prepared under the
      * UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
      * Returns null if any of those parts is invalid under that profile
      * (including if {@code str} is null or empty). Note that there will be
@@ -129,11 +130,11 @@ private ProtocolStrings() {
      */
     public static String UsernameEnforce(String str, boolean preserveCase) {
       if (((str) == null || (str).length() == 0)) {
- return null;
-}
+        return null;
+      }
       if (str.charAt(0) == ' ' || str.charAt(str.length() - 1) == ' ') {
- return null;
-}
+        return null;
+      }
       int lastPos = 0;
       int i = 0;
       StringBuilder sb = null;
@@ -143,15 +144,15 @@ private ProtocolStrings() {
             str.substring(lastPos, (lastPos)+(i - lastPos)),
             preserveCase);
           if (part == null) {
- return null;
-}
+            return null;
+          }
           sb = (sb == null) ? ((new StringBuilder())) : sb;
           sb.append(part);
           sb.append(' ');
           while (i < str.length()) {
             if (str.charAt(i) != ' ') {
- break;
-}
+              break;
+            }
             sb.append(' ');
             ++i;
           }
@@ -161,15 +162,15 @@ private ProtocolStrings() {
         }
       }
       if (lastPos == 0) {
- return UserpartEnforce(str, preserveCase);
-}
+        return UserpartEnforce(str, preserveCase);
+      }
       if (lastPos != str.length()) {
         String part = UserpartEnforce(
           str.substring(lastPos, (lastPos)+(str.length() - lastPos)),
           preserveCase);
         if (part == null) {
- return null;
-}
+          return null;
+        }
         sb = (sb == null) ? ((new StringBuilder())) : sb;
         sb.append(part);
       }
@@ -207,8 +208,9 @@ private ProtocolStrings() {
      * @return A nickname prepared for enforcement under the Nickname profile in
      * RFC 8266. Returns null if that string is invalid under that profile
      * (including if {@code str} is null or empty). Return values of this
-     * method should be used for comparison purposes (see RFC 8266, sec.
-     * 2.3).
+     * method should not be used for comparison purposes (see RFC 8266, sec.
+     * 2.3); for such purposes, use the NicknameForComparison method
+     * instead.
      */
     public static String NicknameEnforce(String str) {
       return Idna.NicknameEnforce(str);

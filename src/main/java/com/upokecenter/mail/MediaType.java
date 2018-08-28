@@ -105,9 +105,9 @@ import com.upokecenter.text.*;
       }
 
     /**
-     * Gets a value indicating whether this is a text media type ("text/*").
+     * Gets a value indicating whether this is a text media type ("text/&#x2a;").
      * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false}.
+     * false} .
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -183,8 +183,8 @@ import com.upokecenter.text.*;
           char c = s.charAt(i2);
           // Non-ASCII (allowed in internationalized email headers under
           // RFC6532)
-          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s.charAt(i2 + 1) >=
-            0xdc00 && s.charAt(i2 + 1) <= 0xdfff) {
+          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && (s.charAt(i2 + 1) &
+            0xfc00) == 0xdc00) {
             i2 += 2;
           } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
@@ -215,8 +215,8 @@ import com.upokecenter.text.*;
       if (index + 1 < endIndex && s.charAt(index) == '\\') {
         char c = s.charAt(index + 1);
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
-        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s.charAt(index + 2)
-          >= 0xdc00 && s.charAt(index + 2) <= 0xdfff) {
+        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && (s.charAt(index + 2) &
+          0xfc00) == 0xdc00) {
           return index + 3;
         }
         if ((c & 0xf800) == 0xd800) {
@@ -373,7 +373,7 @@ import com.upokecenter.text.*;
         boolean first = index == 0;
         int contin = (index == 0) ? 7 : 0;
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
-            str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
+            (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
           c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
@@ -1361,22 +1361,22 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
      * media type string was directly extracted from the Content-Type header
      * field (as defined for email messages) and follows the syntax given in
      * RFC 2045. Accordingly, among other things, the media type string can
-     * contain comments (delimited by parentheses).</p> <p>RFC 2231
+     * contain comments (delimited by parentheses). </p> <p>RFC 2231
      * extensions allow each media type parameter to be associated with a
      * character encoding and/or language, and support parameter values that
      * span two or more key-value pairs. Parameters making use of RFC 2231
-     * extensions have names with an asterisk ("*"). Such a parameter will
-     * be ignored if it is ill-formed because of RFC 2231's rules (except
-     * for illegal percent-decoding or undecodable sequences for the given
-     * character enoding). Examples of RFC 2231 extensions follow (both
-     * examples encode the same "filename" parameter):</p>
-     * <p><b>text/example; filename*=utf-8'en'filename.txt</b></p>
-     * <p><b>text/example; filename*0*=utf-8'en'file;
-     * filename*1*=name%2Etxt</b></p> <p>This implementation ignores keys
-     * (in parameter key-value pairs) that appear more than once in the
-     * media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231
-     * explicitly disallows such keys, or otherwise specifies error-handling
-     * behavior for such keys.</p>
+     * extensions have names with an asterisk ("&#x2a;"). Such a parameter
+     * will be ignored if it is ill-formed because of RFC 2231's rules
+     * (except for illegal percent-decoding or undecodable sequences for the
+     * given character enoding). Examples of RFC 2231 extensions follow
+     * (both examples encode the same "filename" parameter): </p>
+     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
+     * <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
+     * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+     * ignores keys (in parameter key-value pairs) that appear more than
+     * once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
+     * 7231 explicitly disallows such keys, or otherwise specifies
+     * error-handling behavior for such keys. </p>
      * @param str A text string representing a media type. This media type can
      * include parameters.
      * @param defaultValue The media type to return if the string is syntactically

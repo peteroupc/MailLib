@@ -145,12 +145,12 @@ Gets this media type's subtype.
 
 ### isText
     public final boolean isText()
-Gets a value indicating whether this is a text media type ("text/*").
+Gets a value indicating whether this is a text media type ("text/&#x2a;").
 
 **Returns:**
 
 * <code>true</code> If this is a text media type; otherwise, . <code>
- false</code>.
+ false</code> .
 
 ### isMultipart
     public final boolean isMultipart()
@@ -287,22 +287,22 @@ Parses a media type string and returns a media type object, or the default
  media type string was directly extracted from the Content-Type header
  field (as defined for email messages) and follows the syntax given in
  RFC 2045. Accordingly, among other things, the media type string can
- contain comments (delimited by parentheses).</p> <p>RFC 2231
+ contain comments (delimited by parentheses). </p> <p>RFC 2231
  extensions allow each media type parameter to be associated with a
  character encoding and/or language, and support parameter values that
  span two or more key-value pairs. Parameters making use of RFC 2231
- extensions have names with an asterisk ("*"). Such a parameter will
- be ignored if it is ill-formed because of RFC 2231's rules (except
- for illegal percent-decoding or undecodable sequences for the given
- character enoding). Examples of RFC 2231 extensions follow (both
- examples encode the same "filename" parameter):</p>
- <p><b>text/example; filename*=utf-8'en'filename.txt</b></p>
- <p><b>text/example; filename*0*=utf-8'en'file;
- filename*1*=name%2Etxt</b></p> <p>This implementation ignores keys
- (in parameter key-value pairs) that appear more than once in the
- media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231
- explicitly disallows such keys, or otherwise specifies error-handling
- behavior for such keys.</p>
+ extensions have names with an asterisk ("&#x2a;"). Such a parameter
+ will be ignored if it is ill-formed because of RFC 2231's rules
+ (except for illegal percent-decoding or undecodable sequences for the
+ given character enoding). Examples of RFC 2231 extensions follow
+ (both examples encode the same "filename" parameter): </p>
+ <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
+ <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
+ filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+ ignores keys (in parameter key-value pairs) that appear more than
+ once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
+ 7231 explicitly disallows such keys, or otherwise specifies
+ error-handling behavior for such keys. </p>
 
 **Parameters:**
 
