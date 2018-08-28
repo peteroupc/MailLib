@@ -58,7 +58,7 @@ private Idna() {
       }
       int c = str.charAt(index - 1);
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-             str.charAt(index - 2) >= 0xd800 && str.charAt(index - 2) <= 0xdbff) {
+             (str.charAt(index - 2) & 0xfc00) == 0xd800) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str.charAt(index - 2) - 0xd800) << 10) + (c - 0xdc00);
       }
@@ -77,7 +77,7 @@ private Idna() {
       }
       int c = str.charAt(index);
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
-          str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
+          (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
       }
@@ -285,70 +285,63 @@ private Idna() {
     }
 
     /**
-     * Not documented yet.
-     * @param value The parameter {@code value} is not documented yet.
-     * @param lookupRules The parameter {@code lookupRules} is not documented yet.
-     * @return A text string.
+     * Tries to encode each XN-label (Basic Latin label starting with "xn--") of
+     * the given domain name into Unicode. This method does not check the
+     * syntactic validity of the domain name before proceeding.
+     * @param value A domain name.
+     * @return The domain name where each XN-label is encoded into Unicode. Labels
+     * where this is not possible remain unchanged.
      * @throws java.lang.NullPointerException The parameter {@code value} is null.
      */
-    public static String DecodeDomainName(String value, boolean lookupRules) {
+    public static String DecodeDomainName(String value) {
       if (value == null) {
-  throw new NullPointerException("value");
-}
+        throw new NullPointerException("value");
+      }
       if (value.length() == 0) {
         return "";
       }
-      if (!IsValidDomainName(value, lookupRules)) {
- return null;
-}
-      int lastPos = 0;
-      int i = 0;
-      StringBuilder sb = null;
-      while (i <= value.length()) {
-        if (value.charAt(i) == '.') {
-          String part = DecodeLabel(
-            value,
-            lastPos,
-            i);
-          if (part == null) {
- return null;
-}
-          sb = (sb == null) ? ((new StringBuilder())) : sb;
-          sb.append(part);
-          sb.append('.');
-          ++i;
-          lastPos = i;
-        } else {
-          ++i;
+      StringBuilder builder = new StringBuilder();
+      String retval = null;
+      int lastIndex = 0;
+      for (int i = 0; i < value.length(); ++i) {
+        char c = value.charAt(i);
+        if (c == '.') {
+          if (i != lastIndex) {
+            retval = DecodeLabel(value, lastIndex, i);
+            if (retval == null) {
+              // Append the unmodified domain plus the dot
+              builder.append(value.substring(lastIndex, (lastIndex)+((i + 1) - lastIndex)));
+            } else {
+              builder.append(retval);
+              builder.append('.');
+            }
+          }
+          lastIndex = i + 1;
         }
       }
-      if (lastPos == 0) {
- return DecodeLabel(
-        value,
-        0,
-        value.length());
- }
-      if (lastPos != value.length()) {
-        String part = DecodeLabel(
-          value,
-          lastPos,
-          value.length());
-        if (part == null) {
- return null;
-}
-        sb = (sb == null) ? ((new StringBuilder())) : sb;
-        sb.append(part);
+      retval = DecodeLabel(
+      value,
+      lastIndex,
+      value.length());
+      if (retval == null) {
+        builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
+      } else {
+        builder.append(retval);
       }
-      return sb.toString();
+      return builder.toString();
     }
 
     /**
-     * Tries to encode each label of a domain name into Punycode.
+     * Tries to encode each label of a domain name with code points outside the
+     * Basic Latin range (U + 0000 to U + 007F) into an XN-label (a label
+     * starting with "xn--" and having only basic letters, basic digits,
+     * and/or "-"). This method does not check the syntactic validity of the
+     * domain name before proceeding.
      * @param value A domain name.
      * @return The domain name where each label with code points outside the Basic
-     * Latin range (U + 0000 to U + 007F) is encoded into Punycode. Labels where
-     * this is not possible remain unchanged.
-     * @throws java.lang.NullPointerException Value is null.
+     * Latin range (U + 0000 to U + 007F) is encoded into an XN-label. Labels
+     * where this is not possible remain unchanged.
+     * @throws java.lang.NullPointerException The parameter {@code value} is null.
      */
     public static String EncodeDomainName(String value) {
       if (value == null) {
@@ -389,7 +382,12 @@ private Idna() {
     }
 
     /**
-     * Determines whether the given string is a syntactically valid domain name.
+     * Determines whether the given string is a domain name containing only
+     * U-labels (labels meeting IDNA2008 requirements for labels with
+     * characters outside the Basic Latin range, U + 0000 to U + 007F), A-labels
+     * (labels starting with "xn--" and convertible to U-labels), NR-LDH
+     * labels (as defined in RFC 5890), or any combination of these,
+     * separated by dots ("."). See RFC 5890 and 5891 (IDNA).
      * @param str The parameter {@code str} is a text string.
      * @param lookupRules If true, uses rules to apply when looking up the string
      * as a domain name. If false, uses rules to apply when registering the

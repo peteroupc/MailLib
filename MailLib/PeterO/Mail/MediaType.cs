@@ -152,8 +152,8 @@ namespace PeterO.Mail {
           char c = s[i2];
           // Non-ASCII (allowed in internationalized email headers under
           // RFC6532)
-          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s[i2 + 1] >=
-            0xdc00 && s[i2 + 1] <= 0xdfff) {
+          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && (s[i2 + 1] &
+            0xfc00) == 0xdc00) {
             i2 += 2;
           } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
@@ -184,8 +184,8 @@ namespace PeterO.Mail {
       if (index + 1 < endIndex && s[index] == '\\') {
         char c = s[index + 1];
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
-        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s[index + 2]
-          >= 0xdc00 && s[index + 2] <= 0xdfff) {
+        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && (s[index + 2] &
+          0xfc00) == 0xdc00) {
           return index + 3;
         }
         if ((c & 0xf800) == 0xd800) {
@@ -342,7 +342,7 @@ namespace PeterO.Mail {
         bool first = index == 0;
         int contin = (index == 0) ? 7 : 0;
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
-            str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
+            (str[index + 1] & 0xfc00) == 0xdc00) {
           c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;

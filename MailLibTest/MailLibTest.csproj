@@ -59,11 +59,11 @@
       <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Encoding">
-      <HintPath>..\packages\PeterO.Encoding.0.5.0\lib\net40\Encoding.dll</HintPath>
+      <HintPath>..\packages\PeterO.Encoding.0.5.1\lib\net40\Encoding.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<Compile Include="..\..\UnitTest1.cs"><Link>UnitTest1.cs</Link></Compile><Compile Include="AddressTest.cs" />
+<Compile Include="AddressTest.cs" />
     <Compile Include="ContentDispositionTest.cs" />
     <Compile Include="DispositionBuilderTest.cs" />
     <Compile Include="EncodingTest.cs" />
@@ -96,9 +96,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MailLib\MailLib.csproj">
-      <Project>{49EE222D-6E5D-4677-9E4D-1286B30E8BAA}</Project>
-      <Name>MailLib</Name>
+    <ProjectReference Include="..\MailLib20\MailLib20.csproj">
+      <Project>{D24612C0-BDB6-4E3B-66F3-2276412A0599}</Project>
+      <Name>MailLib20</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

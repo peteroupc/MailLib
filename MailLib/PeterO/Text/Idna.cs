@@ -48,7 +48,7 @@ namespace PeterO.Text {
       }
       int c = str[index - 1];
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-             str[index - 2] >= 0xd800 && str[index - 2] <= 0xdbff) {
+             (str[index - 2] & 0xfc00) == 0xd800) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str[index - 2] - 0xd800) << 10) + (c - 0xdc00);
       }
@@ -67,7 +67,7 @@ namespace PeterO.Text {
       }
       int c = str[index];
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
-          str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
+          (str[index + 1] & 0xfc00) == 0xdc00) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
       }
@@ -275,61 +275,66 @@ namespace PeterO.Text {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String,System.Boolean)"]/*'/>
-    public static string DecodeDomainName(string value, bool lookupRules) {
+    /// <summary>Tries to encode each XN-label (Basic Latin label starting
+    /// with "xn--") of the given domain name into Unicode. This method
+    /// does not check the syntactic validity of the domain name before
+    /// proceeding.</summary>
+    /// <param name='value'>A domain name.</param>
+    /// <returns>The domain name where each XN-label is encoded into
+    /// Unicode. Labels where this is not possible remain
+    /// unchanged.</returns>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='value'/> is null.</exception>
+    public static string DecodeDomainName(string value) {
       if (value == null) {
-  throw new ArgumentNullException(nameof(value));
-}
+        throw new ArgumentNullException(nameof(value));
+      }
       if (value.Length == 0) {
         return String.Empty;
       }
-      if (!IsValidDomainName(value, lookupRules)) {
- return null;
-}
-      var lastPos = 0;
-      var i = 0;
-      StringBuilder sb = null;
-      while (i <= value.Length) {
-        if (value[i] == '.') {
-          string part = DecodeLabel(
-            value,
-            lastPos,
-            i);
-          if (part == null) {
- return null;
-}
-          sb = sb ?? (new StringBuilder());
-          sb.Append(part);
-          sb.Append('.');
-          ++i;
-          lastPos = i;
-        } else {
-          ++i;
+      var builder = new StringBuilder();
+      string retval = null;
+      var lastIndex = 0;
+      for (int i = 0; i < value.Length; ++i) {
+        char c = value[i];
+        if (c == '.') {
+          if (i != lastIndex) {
+            retval = DecodeLabel(value, lastIndex, i);
+            if (retval == null) {
+              // Append the unmodified domain plus the dot
+              builder.Append(value.Substring(lastIndex, (i + 1) - lastIndex));
+            } else {
+              builder.Append(retval);
+              builder.Append('.');
+            }
+          }
+          lastIndex = i + 1;
         }
       }
-      if (lastPos == 0) {
- return DecodeLabel(
-        value,
-        0,
-        value.Length);
- }
-      if (lastPos != value.Length) {
-        string part = DecodeLabel(
-          value,
-          lastPos,
-          value.Length);
-        if (part == null) {
- return null;
-}
-        sb = sb ?? (new StringBuilder());
-        sb.Append(part);
+      retval = DecodeLabel(
+      value,
+      lastIndex,
+      value.Length);
+      if (retval == null) {
+        builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
+      } else {
+        builder.Append(retval);
       }
-      return sb.ToString();
+      return builder.ToString();
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
+    /// <summary>Tries to encode each label of a domain name with code
+    /// points outside the Basic Latin range (U+0000 to U+007F) into an
+    /// XN-label (a label starting with "xn--" and having only basic
+    /// letters, basic digits, and/or "-"). This method does not check the
+    /// syntactic validity of the domain name before proceeding.</summary>
+    /// <param name='value'>A domain name.</param>
+    /// <returns>The domain name where each label with code points outside
+    /// the Basic Latin range (U+0000 to U+007F) is encoded into an
+    /// XN-label. Labels where this is not possible remain
+    /// unchanged.</returns>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='value'/> is null.</exception>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));

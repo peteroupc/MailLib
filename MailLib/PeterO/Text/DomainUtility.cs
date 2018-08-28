@@ -11,40 +11,7 @@ using PeterO;
 
 // NOTE: Implements Punycode defined in RFC 3492
 namespace PeterO.Text {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.DomainUtility"]/*'/>
-  [Obsolete("This class may be removed from the external API in the future.")]
-  internal static class DomainUtility {
-    private static int CodePointAt(string str, int index, int endIndex) {
-      if (str == null) {
-        throw new ArgumentNullException(nameof(str));
-      }
-      if (index >= endIndex) {
-        return -1;
-      }
-      if (index < 0) {
-        return -1;
-      }
-      int c = str[index];
-      if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-          str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
-        // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
-      } else if ((c & 0xf800) == 0xd800) {
-        // unpaired surrogate
-        return 0xfffd;
-      }
-      return c;
-    }
-
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]/*'/>
-    [Obsolete("This method may be removed from the external API in the future. "+
-              "Consider using Idna.DecodeDomainName instead.")]
-    public static int PunycodeLength(string str, int index, int endIndex) {
-      return ALabelLength(str, index, endIndex);
-    }
-
+   internal static class DomainUtility {
     internal static int ALabelLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -92,9 +59,9 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       var outputLength = 4;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = str[index];
+        int c = str[tmpIndex];
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-            str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -126,9 +93,9 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         var min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = str[index];
+          int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
           } else if ((c & 0xf800) == 0xd800) {
@@ -156,9 +123,9 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = str[index];
+          int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
           } else if ((c & 0xf800) == 0xd800) {
@@ -414,9 +381,9 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       builder.Append("xn--");
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = str[index];
+        int c = str[tmpIndex];
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-            str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -456,9 +423,9 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         var min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = str[index];
+          int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
           } else if ((c & 0xf800) == 0xd800) {
@@ -489,9 +456,9 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = str[index];
+          int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
           } else if ((c & 0xf800) == 0xd800) {
