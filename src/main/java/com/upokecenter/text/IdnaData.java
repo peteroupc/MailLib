@@ -259,8 +259,10 @@ private IdnaData() {
       2, (byte)0xff, (byte)0xff, 113, 15, 10, 9, (byte)0xbb, 15, 105,
       25, (byte)0xff, 87, 15, 3, 12, (byte)0x86, 15, 32, 21, 107, 15,
       0, 22, (byte)0xff, 94, 11, (byte)0xff, 0, 16, 0 };
-    public static final byte[] PrecisCategories = new byte[] {
-      (byte)0xf0, 41, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0,
+    public static final byte[] PrecisCategories = GetPrecisCategories();
+    private static byte[] GetPrecisCategories() {
+      return new byte[] { (byte)0xf0, 41, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5,
+        0, 6, 0, 7, 0,
       8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0, 16, 0, 5,
       (byte)0x80, 17, 0, 5, (byte)0x80, 5, (byte)0x80, 18, 0, 19, 0,
       20, 0, 21, 0, 22, 0, 1, (byte)0x80, 1, (byte)0x80, 4, 0, 4, 8,
@@ -504,6 +506,7 @@ private IdnaData() {
       13, 32, 2, 2, 4, 0, 4, 8, 0, 12, 16, 0, 15, 32, 0, 13, 15, 32,
       0, 13, 15, 2, 13, 111, 15, (byte)0xe2, 0, 77, 15, 98, 0, 79, 15,
       112, 1, 40, 16, 0 };
+    }
     // 0 = Other; 1 = Greek; 2 = Hebrew; 3 = Han/Hiragana/Katakana
     public static final byte[] IdnaRelevantScripts = new byte[] {
       (byte)0xa0, 0, (byte)0x80, 0, 0, 1, 0, 0, (byte)0x80, 0, (byte)0x80,

@@ -149,7 +149,7 @@ private URIUtility() {
       while (index < valueSLength) {
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+            (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
@@ -300,7 +300,7 @@ private URIUtility() {
       for (i = lastIndex; i < str.length(); ++i) {
         int c = str.charAt(i);
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
-            str.charAt(i + 1) >= 0xdc00 && str.charAt(i + 1) <= 0xdfff) {
+            (str.charAt(i + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
           ++i;
@@ -417,7 +417,7 @@ StringBuilder builder = new StringBuilder();
       while (index < s.length()) {
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
-            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+            (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -537,7 +537,7 @@ return builder.toString();
         // Get the next Unicode character
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+            (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
@@ -617,7 +617,7 @@ public static String BuildIRI(
       while (index < s.length()) {
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
-            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+            (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -1250,7 +1250,7 @@ if (s.length() - offset < length) {
             return null;
           }
           if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-              s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+              (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
             ++index;
@@ -1351,7 +1351,7 @@ if (s.length() - offset < length) {
           return null;
         }
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
-            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+            (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;

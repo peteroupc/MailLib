@@ -854,7 +854,8 @@ private Idna() {
 
     private static String WidthMapping(String str) {
       int index = 0;
-      for (int i = 0; i < str.length(); ++i) {
+      int i = 0;
+      for (i = 0; i < str.length(); ++i) {
         int ch = CodePointAt(str, i);
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
@@ -879,7 +880,7 @@ private Idna() {
       }
       StringBuilder sb = new StringBuilder();
       sb.append(str.substring(0, index));
-      for (var i = index; i < str.length(); ++i) {
+      for (i = index; i < str.length(); ++i) {
         int ch = CodePointAt(str, i);
         int istart = i;
         // Contains an unpaired surrogate, so bail out
@@ -959,7 +960,8 @@ private Idna() {
 
     private static String SpaceMapping(String str) {
       int index = 0;
-      for (int i = 0; i < str.length(); ++i) {
+      int i = 0;
+      for (i = 0; i < str.length(); ++i) {
         int ch = CodePointAt(str, i);
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
@@ -978,7 +980,7 @@ private Idna() {
       }
       StringBuilder sb = new StringBuilder();
       sb.append(str.substring(0, index));
-      for (var i = index; i < str.length(); ++i) {
+      for (i = index; i < str.length(); ++i) {
         int ch = CodePointAt(str, i);
         int istart = i;
         // Contains an unpaired surrogate, so bail out

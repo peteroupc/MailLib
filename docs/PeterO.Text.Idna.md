@@ -24,7 +24,8 @@ The domain name where each XN-label is encoded into Unicode. Labels where this i
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-"value" is null.
+The parameter <i>value</i>
+ is null.
 
 ### EncodeDomainName
 
@@ -44,7 +45,8 @@ The domain name where each label with code points outside the Basic Latin range 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-"value" is null.
+The parameter <i>value</i>
+ is null.
 
 ### IsValidDomainName
 

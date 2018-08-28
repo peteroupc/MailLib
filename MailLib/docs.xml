@@ -516,6 +516,12 @@
     </returns>
 
 </doc>
+<doc name="M:PeterO.DataUtilities.CodePointLength(System.String)">
+<summary>Finds the number of Unicode code points in the given text string.  Unpaired surrogate code points increase this number by 1.  This is not necessarily the length of the string in "char"s.</summary>
+            <param name='str'>A text string.</param>
+            <returns>The number of Unicode code points in the given string.</returns>
+            <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
+</doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean)">
 
             <summary>Encodes a string in UTF-8 as a byte array.
@@ -3610,9 +3616,7 @@ of this NamedAddress object as it could appear in a "To" header field.
             <summary>Decompresses a byte array compressed using the LZ4 format
              (see "LZ4 Format Description" by Y Collet for more
              information).</summary><param name='input'>Input byte array.</param><returns>Decompressed output byte array.</returns><exception cref='T:System.ArgumentNullException'>The parameter
-             "output" is null.</exception><exception cref='T:System.ArgumentException'>Invalid LZ4; Invalid LZ4;
-             Invalid LZ4; Invalid LZ4; Invalid LZ4; Invalid LZ4; Invalid
-             LZ4.</exception>
+             "output" is null.</exception><exception cref='T:System.ArgumentException'>Invalid LZ4.</exception>
 
 </doc>
 <doc name="T:PeterO.Text.DomainUtility">
@@ -3663,6 +3667,13 @@ of this NamedAddress object as it could appear in a "To" header field.
         numbers, and certain other characters in domain names. This class
         implements the 2008 revision of IDNA, also known as IDNA2008.
       </para>
+<para>The following summarizes the rules for domain names in IDNA2008; see RFC5890 for more information and additional terminology.</para>
+<para>A domain name is divided into one or more strings separated by dots ("."), called <b>labels</b>.  For IDNA2008's purposes, a valid label can be an <b>NR-LDH label</b>, an <b>A-label</b>, or a <b>U-label</b>.</para>
+<para>An LDH label contains only basic letters, basic digits, and "-", and neither begins nor ends with "-".</para>
+<para>An NR-LDH label is an LDH label whose third and fourth characters are not both "-".</para>
+<para>A U-label contains one or more characters outside the Basic Latin range (U+0000 to U+007F) and meets IDNA2008 requirements for labels with such characters.</para>
+<para>An A-label is an LDH label beginning with "xn--" in any combination of case, and is convertible to a U-label.</para>
+<para>An XN-label is an LDH label beginning with "xn--" in any combination of case.</para>
       <para>NOTICE: While this class's source code is in the public domain, the
         class uses two internal classes, called
         <c>NormalizationData</c>
@@ -3675,10 +3686,17 @@ of this NamedAddress object as it could appear in a "To" header field.
     </summary>
 
 </doc>
+<doc name="M:PeterO.Text.Idna.DecodeDomainName(System.String)">
+
+            <summary>Tries to encode each XN-label of the given domain name into Unicode. This method does not check the syntactic validity of the domain name before proceeding.</summary><param name='value'>A domain name.</param><returns>The domain name where each XN-label is encoded into
+            Unicode. Labels where this is not possible remain
+            unchanged.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='value'/> is null.</exception>
+
+</doc>
 <doc name="M:PeterO.Text.Idna.DecodeDomainName(System.String,System.Boolean)">
-<summary>Tries to encode each XN-label (Basic Latin label starting with "xn--") of
-      the given domain name into Unicode. This method does not check the
-      syntactic validity of the domain name before proceeding.
+<summary>Tries to encode each XN-label of the given domain name into Unicode. 
+    This method does not check the syntactic validity of the domain name before proceeding.
     </summary>
     <param name='value'>A domain name.
     </param>
@@ -3690,18 +3708,19 @@ of this NamedAddress object as it could appear in a "To" header field.
 </doc>
 <doc name="M:PeterO.Text.Idna.EncodeDomainName(System.String)">
 
-            <summary>Tries to encode each label of a domain name with code points outside the Basic Latin range (U+0000 to U+007F) into an XN-label (a label starting with "xn--" and having only basic letters, basic digits, and/or "-").
-This method does not check the syntactic validity of the domain name before proceeding.
-    </summary><param name='value'>A domain name.
-    </param><returns>The domain name where each label with code points outside the Basic Latin
-      range (U+0000 to U+007F) is encoded into an XN-label. Labels where this is not possible remain unchanged.
-    </returns><exception cref='T:System.ArgumentNullException'>"value" is null.
-    </exception>
+            <summary>Tries to encode each label of a domain name with code
+            points outside the Basic Latin range (U+0000 to U+007F) into an
+            XN-label. This method does not check the
+            syntactic validity of the domain name before proceeding.</summary><param name='value'>A domain name.</param><returns>The domain name where each label with code points outside
+            the Basic Latin range (U+0000 to U+007F) is encoded into an
+            XN-label. Labels where this is not possible remain
+            unchanged.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='value'/> is null.</exception>
 
 </doc>
 <doc name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)">
 
-            <summary>Determines whether the given string is a domain name containing only U-labels (labels meeting IDNA2008 requirements for labels with characters outside the Basic Latin range, U+0000 to U+007F), A-labels (labels starting with "xn--" and convertible to U-labels), NR-LDH labels (as defined in RFC 5890), or any combination of these, separated by dots (".").  See RFC 5890 and 5891 (IDNA).
+            <summary>Determines whether the given string is a domain name containing only U-labels, A-labels, NR-LDH labels, or any combination of these, separated by dots (".").
     </summary><param name='str'>The parameter
       <paramref name='str'/>
        is a text string.

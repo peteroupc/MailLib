@@ -41,6 +41,8 @@ Contains methods useful for reading and writing strings. It is designed to
 * `static int CodePointCompare​(String strA,
                 String strB)`<br>
  Compares two strings in Unicode code point order.
+* `static int CodePointLength​(String str)`<br>
+ Not documented yet.
 * `static byte[] GetUtf8Bytes​(String str,
             boolean replace)`<br>
  Encodes a string in UTF-8 as a byte array.
@@ -125,6 +127,22 @@ Generates a text string from a UTF-8 byte array.
 
 * <code>IllegalArgumentException</code> - The string is not valid UTF-8 and <code>
  replace</code> is false.
+
+### CodePointLength
+    public static int CodePointLength​(String str)
+Not documented yet.
+
+**Parameters:**
+
+* <code>str</code> - The parameter <code>str</code> is not documented yet.
+
+**Returns:**
+
+* A 32-bit signed integer.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetUtf8String
     public static String GetUtf8String​(byte[] bytes, int offset, int bytesCount, boolean replace)

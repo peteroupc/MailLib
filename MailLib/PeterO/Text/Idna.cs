@@ -275,16 +275,8 @@ namespace PeterO.Text {
       }
     }
 
-    /// <summary>Tries to encode each XN-label (Basic Latin label starting
-    /// with "xn--") of the given domain name into Unicode. This method
-    /// does not check the syntactic validity of the domain name before
-    /// proceeding.</summary>
-    /// <param name='value'>A domain name.</param>
-    /// <returns>The domain name where each XN-label is encoded into
-    /// Unicode. Labels where this is not possible remain
-    /// unchanged.</returns>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='value'/> is null.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String)"]/*'/>
     public static string DecodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -323,18 +315,8 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    /// <summary>Tries to encode each label of a domain name with code
-    /// points outside the Basic Latin range (U+0000 to U+007F) into an
-    /// XN-label (a label starting with "xn--" and having only basic
-    /// letters, basic digits, and/or "-"). This method does not check the
-    /// syntactic validity of the domain name before proceeding.</summary>
-    /// <param name='value'>A domain name.</param>
-    /// <returns>The domain name where each label with code points outside
-    /// the Basic Latin range (U+0000 to U+007F) is encoded into an
-    /// XN-label. Labels where this is not possible remain
-    /// unchanged.</returns>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='value'/> is null.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -834,7 +816,8 @@ namespace PeterO.Text {
 
     private static string WidthMapping(string str) {
       var index = 0;
-      for (var i = 0; i < str.Length; ++i) {
+      var i = 0;
+      for (i = 0; i < str.Length; ++i) {
         int ch = CodePointAt(str, i);
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
@@ -859,7 +842,7 @@ namespace PeterO.Text {
       }
       var sb = new StringBuilder();
       sb.Append(str.Substring(0, index));
-      for (var i = index; i < str.Length; ++i) {
+      for (i = index; i < str.Length; ++i) {
         int ch = CodePointAt(str, i);
         int istart = i;
         // Contains an unpaired surrogate, so bail out
@@ -939,7 +922,8 @@ namespace PeterO.Text {
 
     private static string SpaceMapping(string str) {
       var index = 0;
-      for (var i = 0; i < str.Length; ++i) {
+      var i = 0;
+      for (i = 0; i < str.Length; ++i) {
         int ch = CodePointAt(str, i);
         // Contains an unpaired surrogate, so bail out
         if (ch < 0) {
@@ -958,7 +942,7 @@ namespace PeterO.Text {
       }
       var sb = new StringBuilder();
       sb.Append(str.Substring(0, index));
-      for (var i = index; i < str.Length; ++i) {
+      for (i = index; i < str.Length; ++i) {
         int ch = CodePointAt(str, i);
         int istart = i;
         // Contains an unpaired surrogate, so bail out
