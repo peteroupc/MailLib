@@ -275,11 +275,21 @@ private URIUtility() {
      *
      */
     public static String PercentDecode(String str) {
+      return (str == null) ? (null) : (PercentDecode(str, 0, str.length()));
+    }
+
+    /**
+     *
+     */
+    public static String PercentDecode(String str, int index, int endIndex) {
+      if (str == null) {
+ return null;
+}
       // Quick check
       boolean quickCheck = true;
       int lastIndex = 0;
-      int i = 0;
-      for (; i < str.length(); ++i) {
+      int i = index;
+      for (; i < endIndex; ++i) {
         if (str.charAt(i) >= 0xd800 || str.charAt(i) == '%') {
           quickCheck = false;
           lastIndex = i;
@@ -287,19 +297,19 @@ private URIUtility() {
         }
       }
       if (quickCheck) {
- return str;
+ return str.substring(index, (index)+(endIndex-index));
 }
       StringBuilder retString = new StringBuilder();
-      retString.append(str, 0, (0)+(lastIndex));
+      retString.append(str, index, (index)+(lastIndex));
       int cp = 0;
       int bytesSeen = 0;
       int bytesNeeded = 0;
       int lower = 0x80;
       int upper = 0xbf;
       int markedPos = -1;
-      for (i = lastIndex; i < str.length(); ++i) {
+      for (i = lastIndex; i < endIndex; ++i) {
         int c = str.charAt(i);
-        if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
+        if ((c & 0xfc00) == 0xd800 && i + 1 < endIndex &&
             (str.charAt(i + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
@@ -308,7 +318,7 @@ private URIUtility() {
           c = 0xfffd;
         }
         if (c == '%') {
-          if (i + 2 < str.length()) {
+          if (i + 2 < endIndex) {
             int a = ToHex(str.charAt(i + 1));
             int b = ToHex(str.charAt(i + 2));
             if (a >= 0 && b >= 0) {

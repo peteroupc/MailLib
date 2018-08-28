@@ -313,20 +313,23 @@ public void TestNormD() {
  continue;
 }
           cp.charAt(0) = i;
-          String cps = ToCodePointString(cp);
-          String nfc = NormalizerInput.Normalize(cps, Normalization.NFD);
-          String nfd = NormalizerInput.Normalize(cps, Normalization.NFD);
-String nfdfs = NormalizerInput.Normalize(cps,
+          String codePointString = ToCodePointString(cp);
+    String nfc = NormalizerInput.Normalize(codePointString,
+            Normalization.NFD);
+    String nfd = NormalizerInput.Normalize(codePointString,
+            Normalization.NFD);
+String nfdfs = NormalizerInput.Normalize(codePointString,
             Normalization.NFDForFilesystems);
-          if (!(nfdfs.length() > 0)) {
- Assert.fail(EncodingTest.EscapeString(cps));
+   if (!(nfdfs.length() > 0)) {
+ Assert.fail(
+            EncodingTest.EscapeString(codePointString));
  }
-          if (!nfc.equals(cps)) {
+          if (!nfc.equals(codePointString)) {
  continue;
 }
           if (!nfd.equals(nfdfs)) {
             System.out.println("---");
-            System.out.println(EncodingTest.EscapeString(cps));
+            System.out.println(EncodingTest.EscapeString(codePointString));
             System.out.println(EncodingTest.EscapeString(nfc));
             System.out.println(EncodingTest.EscapeString(nfd));
             System.out.println(EncodingTest.EscapeString(nfdfs));
@@ -363,7 +366,7 @@ String nfdfs = NormalizerInput.Normalize(cps,
         String[] columns = SplitAt(line, ";");
         int[] cps = GetCodePoints(columns[0]);
         if (part1) {
-          handled[cps.charAt(0)] = true;
+          handled[cps[0]] = true;
         }
         NormResult[] nr = new NormResult[5];
         for (int i = 0; i < 5; ++i) {

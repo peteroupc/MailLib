@@ -128,7 +128,7 @@ addr = new Address("x!y%z!example@example.com");
         "(com(plex)comment) example (comment2) . (comment3) com",
         "example.com");
     }
-    @Test
+    @Test(timeout = 5000)
     public void TestToString() {
       Address addr = new Address("local.local@example.com");
       {

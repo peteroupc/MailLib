@@ -104,31 +104,46 @@ namespace PeterO.Mail {
         var aw = new ArrayWriter();
 var i = 0;
         if (usesBase64) {
-          int base64Length = path.Length - (mediaTypePart + 1);
+          int base64Length;
+          int payloadIndex = mediaTypePart + 1;
+          string payload = path;
+          var hasPercent = false;
+          for (i = mediaTypePart + 1; i < path.Length; i += 4) {
+            if (path[i] == '%') {
+              hasPercent = true;
+              break;
+            }
+          }
+          if (hasPercent) {
+  payload = URIUtility.PercentDecode(
+    path.Substring(mediaTypePart + 1, path.Length-(mediaTypePart + 1)));
+  payloadIndex = 0;
+          }
+      base64Length = payload.Length - payloadIndex;
           if ((base64Length % 4) != 0) {
             return null;
           }
-          for (i = mediaTypePart + 1; i < path.Length; i += 4) {
-            bool lastBlock = i + 4 >= path.Length;
+          for (i = payloadIndex; i < payload.Length; i += 4) {
+            bool lastBlock = i + 4 >= payload.Length;
             int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
-            b1 = (path[i] > 0x7f) ? -1 : Alphabet[(int)path[i]];
-            b2 = (path[i + 1] > 0x7f) ? -1 : Alphabet[(int)path[i + 1]];
-            if (lastBlock && path[i + 2] == '=' && path[i + 3] == '=') {
+            b1 = (payload[i] > 0x7f) ? -1 : Alphabet[(int)payload[i]];
+            b2 = (payload[i + 1] > 0x7f) ? -1 : Alphabet[(int)payload[i + 1]];
+            if (lastBlock && payload[i + 2] == '=' && payload[i + 3] == '=') {
             } else if (lastBlock && path[i + 3] == '=') {
-              b3 = (path[i + 2] > 0x7f) ? -1 : Alphabet[(int)path[i + 2]];
+              b3 = (payload[i + 2] > 0x7f) ? -1 : Alphabet[(int)payload[i + 2]];
             } else {
-              b3 = (path[i + 2] > 0x7f) ? -1 : Alphabet[(int)path[i + 2]];
-              b4 = (path[i + 3] > 0x7f) ? -1 : Alphabet[(int)path[i + 3]];
+              b3 = (payload[i + 2] > 0x7f) ? -1 : Alphabet[(int)payload[i + 2]];
+              b4 = (payload[i + 3] > 0x7f) ? -1 : Alphabet[(int)payload[i + 3]];
             }
             if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0) {
               return null;
             }
             int v = (b1 << 18) | (b2 << 12) | (b3 << 6) | b4;
             aw.WriteByte((byte)((v >> 16) & 0xff));
-            if (path[i + 2] != '=') {
+            if (payload[i + 2] != '=') {
               aw.WriteByte((byte)((v >> 8) & 0xff));
             }
-            if (path[i + 3] != '=') {
+            if (payload[i + 3] != '=') {
               aw.WriteByte((byte)(v & 0xff));
             }
           }

@@ -118,31 +118,46 @@ private DataUrls() {
         ArrayWriter aw = new ArrayWriter();
 int i = 0;
         if (usesBase64) {
-          int base64Length = path.length() - (mediaTypePart + 1);
+          int base64Length;
+          int payloadIndex = mediaTypePart + 1;
+          String payload = path;
+          boolean hasPercent = false;
+          for (i = mediaTypePart + 1; i < path.length(); i += 4) {
+            if (path.charAt(i) == '%') {
+              hasPercent = true;
+              break;
+            }
+          }
+          if (hasPercent) {
+  payload = URIUtility.PercentDecode(
+    path.substring(mediaTypePart + 1, (mediaTypePart + 1)+(path.length()-(mediaTypePart + 1))));
+  payloadIndex = 0;
+          }
+      base64Length = payload.length() - payloadIndex;
           if ((base64Length % 4) != 0) {
             return null;
           }
-          for (i = mediaTypePart + 1; i < path.length(); i += 4) {
-            boolean lastBlock = i + 4 >= path.length();
+          for (i = payloadIndex; i < payload.length(); i += 4) {
+            boolean lastBlock = i + 4 >= payload.length();
             int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
-            b1 = (path.charAt(i) > 0x7f) ? -1 : Alphabet[(int)path.charAt(i)];
-            b2 = (path.charAt(i + 1) > 0x7f) ? -1 : Alphabet[(int)path.charAt(i + 1)];
-            if (lastBlock && path.charAt(i + 2) == '=' && path.charAt(i + 3) == '=') {
+            b1 = (payload.charAt(i) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i)];
+            b2 = (payload.charAt(i + 1) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 1)];
+            if (lastBlock && payload.charAt(i + 2) == '=' && payload.charAt(i + 3) == '=') {
             } else if (lastBlock && path.charAt(i + 3) == '=') {
-              b3 = (path.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)path.charAt(i + 2)];
+              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
             } else {
-              b3 = (path.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)path.charAt(i + 2)];
-              b4 = (path.charAt(i + 3) > 0x7f) ? -1 : Alphabet[(int)path.charAt(i + 3)];
+              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
+              b4 = (payload.charAt(i + 3) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 3)];
             }
             if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0) {
               return null;
             }
             int v = (b1 << 18) | (b2 << 12) | (b3 << 6) | b4;
             aw.write((byte)((v >> 16) & 0xff));
-            if (path.charAt(i + 2) != '=') {
+            if (payload.charAt(i + 2) != '=') {
               aw.write((byte)((v >> 8) & 0xff));
             }
-            if (path.charAt(i + 3) != '=') {
+            if (payload.charAt(i + 3) != '=') {
               aw.write((byte)(v & 0xff));
             }
           }

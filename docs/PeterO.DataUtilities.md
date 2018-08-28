@@ -141,20 +141,20 @@ A value indicating which string is " less" or " greater" . 0: Both strings are e
     public static int CodePointLength(
         string str);
 
-Not documented yet.
+Finds the number of Unicode code points in the given text string. Unpaired surrogate code points increase this number by 1. This is not necessarily the length of the string in "char" s.
 
 <b>Parameters:</b>
 
- * <i>str</i>: Not documented yet.
+ * <i>str</i>: A text string.
 
 <b>Return Value:</b>
 
-A 32-bit signed integer.
+The number of Unicode code points in the given string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### GetUtf8Bytes
