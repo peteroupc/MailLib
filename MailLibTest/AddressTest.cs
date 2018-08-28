@@ -130,6 +130,7 @@ addr = new Address("x!y%z!example@example.com");
         "example.com");
     }
     [Test]
+    [Timeout(5000)]
     public void TestToString() {
       var addr = new Address("local.local@example.com");
       {

@@ -28,12 +28,8 @@ namespace PeterO {
       return b.ToString();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>The parameter <paramref name='str'/> is not
-    /// documented yet.</param>
-    /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <include file='../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.DataUtilities.CodePointLength(System.String)"]/*'/>
     public static int CodePointLength(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -43,7 +39,7 @@ namespace PeterO {
      while (i < str.Length) {
        int c = CodePointAt(str, i);
        ++count;
-       i = (c >= 0x10000) ? 2 : 1;
+       i += (c >= 0x10000) ? 2 : 1;
      }
      return count;
 }

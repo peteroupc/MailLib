@@ -42,7 +42,7 @@ Contains methods useful for reading and writing strings. It is designed to
                 String strB)`<br>
  Compares two strings in Unicode code point order.
 * `static int CodePointLength​(String str)`<br>
- Not documented yet.
+ Finds the number of Unicode code points in the given text string.
 * `static byte[] GetUtf8Bytes​(String str,
             boolean replace)`<br>
  Encodes a string in UTF-8 as a byte array.
@@ -130,15 +130,17 @@ Generates a text string from a UTF-8 byte array.
 
 ### CodePointLength
     public static int CodePointLength​(String str)
-Not documented yet.
+Finds the number of Unicode code points in the given text string. Unpaired
+ surrogate code points increase this number by 1. This is not
+ necessarily the length of the string in "char" s.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is not documented yet.
+* <code>str</code> - A text string.
 
 **Returns:**
 
-* A 32-bit signed integer.
+* The number of Unicode code points in the given string.
 
 **Throws:**
 

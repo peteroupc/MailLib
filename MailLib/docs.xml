@@ -182,7 +182,8 @@
     </summary>
     <param name='str'>A string that may contain percent encoding. May be null.
     </param>
-    <returns>The string in which percent-encoding was decoded.
+    <returns>The string in which percent-encoding was decoded. Returns null if "str" is
+      null.
     </returns>
 </doc>
 <doc name="M:PeterO.Cbor.URIUtility.escapeURI(System.String,System.Int32)">
@@ -517,10 +518,15 @@
 
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointLength(System.String)">
-<summary>Finds the number of Unicode code points in the given text string.  Unpaired surrogate code points increase this number by 1.  This is not necessarily the length of the string in "char"s.</summary>
-            <param name='str'>A text string.</param>
-            <returns>The number of Unicode code points in the given string.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
+<summary>Finds the number of Unicode code points in the given text
+            string. Unpaired surrogate code points increase this number by 1.
+            This is not necessarily the length of the string in "char"
+            s.</summary>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
+            <returns>The number of Unicode code points in the given
+            string.</returns>
+            <exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='str'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean)">
 
@@ -3170,14 +3176,30 @@ of this NamedAddress object as it could appear in a "To" header field.
 
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.PercentDecode(System.String)">
-
-            <summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
+<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
       digit) in the given string. Successive percent-encoded bytes are assumed
       to form characters in UTF-8.
-    </summary><param name='str'>A string that may contain percent encoding. May be null.
-    </param><returns>The string in which percent-encoding was decoded.
+    </summary>
+    <param name='str'>A string that may contain percent encoding. May be null.
+    </param>
+    <returns>The string in which percent-encoding was decoded.
     </returns>
-
+</doc>
+<doc name="M:PeterO.Mail.URIUtility.PercentDecode(System.String,System.Int32,System.Int32)">
+<summary>Decodes percent-encoding (of the form "%XX" where X is a
+            hexadecimal digit) in the given portion of a string. Successive
+            percent-encoded bytes are assumed to form characters in
+            UTF-8.</summary>
+            <param name='str'>A string a portion of which may contain percent
+            encoding. May be null.</param>
+            <param name='index'>Zero-based index showing where the desired
+            portion of <paramref name='str'/> begins.</param>
+            <param name='endIndex'>Zero-based index showing where the desired
+            portion of <paramref name='str'/> ends. The character before this
+            index is the last character.</param>
+            <returns>The portion of the given string in which percent-encoding
+            was decoded. Returns null if <paramref name='str'/> is
+            ull.</returns>
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.escapeURI(System.String,System.Int32)">
 
@@ -3661,19 +3683,42 @@ of this NamedAddress object as it could appear in a "To" header field.
     </exception>
 </doc>
 <doc name="T:PeterO.Text.Idna">
-
-            <summary><para>Contains methods that implement Internationalized Domain Names in
+<summary><para>Contains methods that implement Internationalized Domain Names in
         Applications (IDNA). IDNA enables using a wider range of letters,
         numbers, and certain other characters in domain names. This class
         implements the 2008 revision of IDNA, also known as IDNA2008.
       </para>
-<para>The following summarizes the rules for domain names in IDNA2008; see RFC5890 for more information and additional terminology.</para>
-<para>A domain name is divided into one or more strings separated by dots ("."), called <b>labels</b>.  For IDNA2008's purposes, a valid label can be an <b>NR-LDH label</b>, an <b>A-label</b>, or a <b>U-label</b>.</para>
-<para>An LDH label contains only basic letters, basic digits, and "-", and neither begins nor ends with "-".</para>
-<para>An NR-LDH label is an LDH label whose third and fourth characters are not both "-".</para>
-<para>A U-label contains one or more characters outside the Basic Latin range (U+0000 to U+007F) and meets IDNA2008 requirements for labels with such characters.</para>
-<para>An A-label is an LDH label beginning with "xn--" in any combination of case, and is convertible to a U-label.</para>
-<para>An XN-label is an LDH label beginning with "xn--" in any combination of case.</para>
+      <para>The following summarizes the rules for domain names in IDNA2008; see
+        RFC5890 for more information and additional terminology.
+      </para>
+      <para>A domain name is divided into one or more strings separated by dots
+        ("."), called
+        <b>labels</b>
+        . For IDNA2008's purposes, a valid label can be an
+        <b>NR-LDH label</b>
+        , an
+        <b>A-label</b>
+        , or a
+        <b>U-label</b>
+        .
+      </para>
+      <para>An LDH label contains only basic letters, basic digits, and/or "-", and
+        neither begins nor ends with "-". For example, "exa-mple" and "1example"
+        are LDH labels, but not "-example".
+      </para>
+      <para>An NR-LDH label is an LDH label whose third and fourth characters are
+        not both "-". For example, "ex--ample" is not an NR-LDH label.
+      </para>
+      <para>A U-label contains one or more characters outside the Basic Latin range
+        (U+0000 to U+007F) and meets IDNA2008 requirements for labels with such
+        characters. An example is "e&#xe1;".
+      </para>
+      <para>An A-label is an LDH label beginning with "xn--" in any combination of
+        case, and is convertible to a U-label. An example is "xn--e-ufa".
+      </para>
+      <para>An XN-label is an LDH label beginning with "xn--" in any combination of
+        case.
+      </para>
       <para>NOTICE: While this class's source code is in the public domain, the
         class uses two internal classes, called
         <c>NormalizationData</c>
@@ -3684,7 +3729,6 @@ of this NamedAddress object as it could appear in a "To" header field.
         notice for the Unicode Character Database.
       </para>
     </summary>
-
 </doc>
 <doc name="M:PeterO.Text.Idna.DecodeDomainName(System.String)">
 
@@ -3695,8 +3739,9 @@ of this NamedAddress object as it could appear in a "To" header field.
 
 </doc>
 <doc name="M:PeterO.Text.Idna.DecodeDomainName(System.String,System.Boolean)">
-<summary>Tries to encode each XN-label of the given domain name into Unicode. 
-    This method does not check the syntactic validity of the domain name before proceeding.
+<summary>Tries to encode each XN-label of the given domain name into Unicode. This
+      method does not check the syntactic validity of the domain name before
+      proceeding.
     </summary>
     <param name='value'>A domain name.
     </param>
@@ -4405,7 +4450,7 @@ of this NamedAddress object as it could appear in a "To" header field.
             application concerned about security may want to reimplement this
             method by passing a clearable array of characters rather than a
             text string.).</summary><param name='str'>A string to prepare that represents an arbitrary
-            sequence of characters entered by a user.</param><returns>An opaque string prepared under the OpaqueString profile
+            sequence of characters entered by a user.</param><returns>A string prepared under the OpaqueString profile
             in RFC 8265. Returns null if that string is invalid under that
             profile (including if <paramref name='str'/> is null or empty). For
             comparison purposes, return values of this method should be

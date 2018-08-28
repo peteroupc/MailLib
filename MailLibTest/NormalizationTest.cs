@@ -295,7 +295,7 @@ Assert.AreEqual(
 
 [Test]
 public void TestNormD() {
-  int[] cp = new int[1];
+  var cp = new int[1];
       int[] pairs = NormalizationData.ComposedPairs;
       for (var i = 0; i < pairs.Length; i += 3) {
         int p1 = pairs[i];
@@ -311,18 +311,21 @@ public void TestNormD() {
  continue;
 }
           cp[0] = i;
-          string cps = ToCodePointString(cp);
-          string nfc = NormalizerInput.Normalize(cps, Normalization.NFD);
-          string nfd = NormalizerInput.Normalize(cps, Normalization.NFD);
-string nfdfs = NormalizerInput.Normalize(cps,
+          string codePointString = ToCodePointString(cp);
+    string nfc = NormalizerInput.Normalize(codePointString,
+            Normalization.NFD);
+    string nfd = NormalizerInput.Normalize(codePointString,
+            Normalization.NFD);
+string nfdfs = NormalizerInput.Normalize(codePointString,
             Normalization.NFDForFilesystems);
-          Assert.IsTrue(nfdfs.Length > 0, EncodingTest.EscapeString(cps));
-          if (!nfc.Equals(cps)) {
+   Assert.IsTrue(nfdfs.Length > 0,
+            EncodingTest.EscapeString(codePointString));
+          if (!nfc.Equals(codePointString)) {
  continue;
 }
           if (!nfd.Equals(nfdfs)) {
             Console.WriteLine("---");
-            Console.WriteLine(EncodingTest.EscapeString(cps));
+            Console.WriteLine(EncodingTest.EscapeString(codePointString));
             Console.WriteLine(EncodingTest.EscapeString(nfc));
             Console.WriteLine(EncodingTest.EscapeString(nfd));
             Console.WriteLine(EncodingTest.EscapeString(nfdfs));

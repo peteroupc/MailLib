@@ -57,12 +57,14 @@ private DataUtilities() {
       return b.toString();
     }
 
-   /**
-    * Not documented yet.
-    * @param str The parameter {@code str} is not documented yet.
-    * @return A 32-bit signed integer.
-    * @throws java.lang.NullPointerException The parameter {@code str} is null.
-    */
+    /**
+     * Finds the number of Unicode code points in the given text string. Unpaired
+     * surrogate code points increase this number by 1. This is not
+     * necessarily the length of the string in "char" s.
+     * @param str A text string.
+     * @return The number of Unicode code points in the given string.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     */
     public static int CodePointLength(String str) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -72,7 +74,7 @@ private DataUtilities() {
      while (i < str.length()) {
        int c = CodePointAt(str, i);
        ++count;
-       i = (c >= 0x10000) ? 2 : 1;
+       i += (c >= 0x10000) ? 2 : 1;
      }
      return count;
 }

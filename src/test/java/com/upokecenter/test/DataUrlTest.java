@@ -8608,7 +8608,7 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
       TestEmptyPathOne("s:?x");
       TestEmptyPathOne("s:#x");
     }
-    @Test
+    @Test(timeout = 5000)
     public void TestMailTo() {
       Message msg;
       this.TestMailToOne("mailto:me@example.com");
