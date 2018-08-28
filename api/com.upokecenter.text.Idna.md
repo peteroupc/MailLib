@@ -15,6 +15,9 @@
 
 ## Methods
 
+* `static String DecodeDomainName​(String value,
+                boolean lookupRules)`<br>
+ Not documented yet.
 * `static String EncodeDomainName​(String value)`<br>
  Tries to encode each label of a domain name into Punycode.
 * `static boolean IsValidDomainName​(String str,
@@ -22,6 +25,24 @@
  Determines whether the given string is a syntactically valid domain name.
 
 ## Method Details
+
+### DecodeDomainName
+    public static String DecodeDomainName​(String value, boolean lookupRules)
+Not documented yet.
+
+**Parameters:**
+
+* <code>value</code> - The parameter <code>value</code> is not documented yet.
+
+* <code>lookupRules</code> - The parameter <code>lookupRules</code> is not documented yet.
+
+**Returns:**
+
+* A text string.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>value</code> is null.
 
 ### EncodeDomainName
     public static String EncodeDomainName​(String value)

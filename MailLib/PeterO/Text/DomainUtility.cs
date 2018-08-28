@@ -13,6 +13,7 @@ using PeterO;
 namespace PeterO.Text {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Text.DomainUtility"]/*'/>
+  [Obsolete("This class may be removed from the external API in the future.")]
   internal static class DomainUtility {
     private static int CodePointAt(string str, int index, int endIndex) {
       if (str == null) {
@@ -25,25 +26,26 @@ namespace PeterO.Text {
         return -1;
       }
       int c = str[index];
-      if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex &&
-          str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
+      if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+          str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
+        c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
       } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return 0xfffd;
       }
       return c;
     }
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]/*'/>
-    [Obsolete("Renamed to ALabelLength.")]
+    [Obsolete("This method may be removed from the external API in the future. "+
+              "Consider using Idna.DecodeDomainName instead.")]
     public static int PunycodeLength(string str, int index, int endIndex) {
       return ALabelLength(str, index, endIndex);
     }
-      /// <include file='../../docs.xml'
-      /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]/*'/>
-      public static int ALabelLength(string str, int index, int endIndex) {
+
+    internal static int ALabelLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
@@ -90,7 +92,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       var outputLength = 4;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = CodePointAt(str, tmpIndex, endIndex);
+        int c = str[index];
+        if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+            str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          return -1;
+        }
         ++codePointLength;
         if (c < 0x80) {
           // This is a basic (ASCII) code point
@@ -116,7 +126,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         var min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = CodePointAt(str, tmpIndex, endIndex);
+          int c = str[index];
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return -1;
+          }
           tmpIndex += (c >= 0x10000) ? 2 : 1;
           if (c >= vnum && c < min) {
             min = c;
@@ -138,7 +156,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = CodePointAt(str, tmpIndex, endIndex);
+          int c = str[index];
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return -1;
+          }
           tmpIndex += (c >= 0x10000) ? 2 : 1;
           if (c < vnum) {
             if (delta == Int32.MaxValue) {
@@ -388,7 +414,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       builder.Append("xn--");
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = Idna.CodePointAt(str, tmpIndex);
+        int c = str[index];
+        if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+            str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          return null;
+        }
         ++codePointLength;
         if (c >= 0x41 && c <= 0x5a) {
           // This is an uppercase ASCII character,
@@ -422,7 +456,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         var min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = Idna.CodePointAt(str, tmpIndex);
+          int c = str[index];
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return null;
+          }
           if (c >= vnum && c < min) {
             min = c;
           }
@@ -447,7 +489,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = Idna.CodePointAt(str, tmpIndex);
+          int c = str[index];
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
+              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
+            // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            // unpaired surrogate
+            return null;
+          }
           if (c >= 0x10000) {
             ++tmpIndex;
           }

@@ -30,13 +30,13 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (b) If the charset is declared to be `utf-8` .
 
- * (c) If the content type is "text/html" and the charset is declared to be `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte ncodings).
+ * (c) If the content type is "text/html" and the charset is declared to be `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single yte encodings).
 
  * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
 
  * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U+000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
 
- * The name `ascii` is treated as a synonym for `us-ascii` , despite being a reserved name under RFC 2046. The name `cp1252` is treated as a synonym for `windows-1252` , even though it's not an IANA registered alias.
+ * The name `ascii` is treated as a synonym for `us-ascii` , despite being a reserved name under RFC 2046. The name `cp1252` and `utf8` are treated as synonyms for `windows-1252` and `utf-8` , respectively, even though they are not IANA registered aliases.
 
  * The following deviations involve encoded words under RFC 2047:
 
@@ -539,7 +539,7 @@ A Message object created from the given MailTo URL. Returs null if  <i>url</i>
 
 Generates this message's data in text form.The generated message will have only Basic Latin code points (U+0000 to U+007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
-The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). (An exception is that the Resent-* header fields may appear more than once.) The generated message should always have a From header field.
+The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid` as the address (a `.invalid` address is a reserved address that can never belong to anyone). (An xception is that the Resent-* header fields may appear more than nce.) The generated message should always have a From header field.
 
 If a Date and/or Message-ID header field doesn't exist, a field with that name will be generated (using the current local time for the Date field).
 

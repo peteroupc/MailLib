@@ -54,7 +54,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise, . `false` .
+ `true` If this is a text media type; otherwise, . `false` .
 
 ### Parameters
 
@@ -202,7 +202,7 @@ A MediaType object.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 ### ToSingleLineString
 

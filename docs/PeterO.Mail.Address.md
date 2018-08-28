@@ -66,6 +66,10 @@ is an arbitrary object.
 
 Not documented yet.
 
+<b>Return Value:</b>
+
+A 32-bit signed integer.
+
 ### ToString
 
     public override string ToString();

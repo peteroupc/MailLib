@@ -6,6 +6,30 @@ Contains methods that implement Internationalized Domain Names in Applications (
 
 NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called `NormalizationData` and `IdnaData` , that include data derived from the Unicode Character Database. See he documentation for the NormalizerInput class for the permission otice for the Unicode Character Database.
 
+### DecodeDomainName
+
+    public static string DecodeDomainName(
+        string value,
+        bool lookupRules);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>value</i>: Not documented yet.
+
+ * <i>lookupRules</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A string object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>value</i>
+ is null.
+
 ### EncodeDomainName
 
     public static string EncodeDomainName(

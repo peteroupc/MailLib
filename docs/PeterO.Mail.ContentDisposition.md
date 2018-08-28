@@ -184,7 +184,7 @@ Converts a file name from the Content-Disposition header to a suitable name for 
 
 <b>Remarks:</b>
 
- * The string returned by this method is normalized using Unicode normalization form C (NFD) (see the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base+slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base+slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
+ * The string returned by this method is normalized using Unicode normalization form C (NFC) (see the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base+slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base+slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
 
  * Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's `filename`  parameter or, in practice, the Content-Type header field's  `name`  parameter.
 
@@ -233,7 +233,7 @@ A ContentDisposition object.
 
  * System.ArgumentNullException:
 The parameter <i>dispositionValue</i>
- is null.
+is null.
 
 ### Parse
 

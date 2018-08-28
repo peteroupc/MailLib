@@ -56,8 +56,17 @@ private DomainUtility() {
      * @throws java.lang.NullPointerException Either {@code index} or {@code
      * endIndex} is less than 0 or greater than {@code str} 's length, or
      * {@code index} is greater than {@code endIndex} .
-     */
+     * @deprecated Renamed to ALabelLength.
+ */
+@Deprecated
     public static int PunycodeLength(String str, int index, int endIndex) {
+      return ALabelLength(str, index, endIndex);
+    }
+
+    /**
+     *
+     */
+      public static int ALabelLength(String str, int index, int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -340,11 +349,11 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
 private static final String PunycodeAlphabet =
       "abcdefghijklmnopqrstuvwxyz0123456789";
 
-    static String PunycodeEncode(String str) {
-      return PunycodeEncodePortion(str, 0, str.length());
+    static String ALabelEncode(String str) {
+      return ALabelEncodePortion(str, 0, str.length());
     }
 
-    static String PunycodeEncodePortion(
+    static String ALabelEncodePortion(
   String str,
   int index,
   int endIndex) {

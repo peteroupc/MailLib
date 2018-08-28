@@ -59,7 +59,7 @@
       <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Encoding">
-      <HintPath>..\packages\PeterO.Encoding.0.4.0\lib\netstandard1.0\Encoding.dll</HintPath>
+      <HintPath>..\packages\PeterO.Encoding.0.5.0\lib\net40\Encoding.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

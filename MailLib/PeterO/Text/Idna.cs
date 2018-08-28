@@ -9,8 +9,8 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Text.Idna"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Text.Idna"]/*'/>
   public static class Idna {
     private const int Unassigned = 0;
     // PValid = 1;
@@ -34,7 +34,7 @@ namespace PeterO.Text {
     private static volatile ByteData bidiClasses;
     private static volatile ByteData joiningTypes;
     private static volatile ByteData scripts;
-    private static volatile ByteData zsChars;
+    private static volatile ByteData valueZsChars;
 
     internal static int CodePointBefore(string str, int index) {
       if (str == null) {
@@ -90,7 +90,7 @@ namespace PeterO.Text {
       ByteData table = null;
       if (joiningTypes == null) {
         lock (syncRoot) {
-          joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
+     joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
         }
       }
       table = joiningTypes;
@@ -99,12 +99,12 @@ namespace PeterO.Text {
 
     private static bool IsZsCodePoint(int ch) {
       ByteData table = null;
-      if (zsChars == null) {
+      if (valueZsChars == null) {
         lock (syncRoot) {
-          zsChars = zsChars ?? ByteData.Decompress(IdnaData.ZsCharacters);
+     valueZsChars = valueZsChars ?? ByteData.Decompress(IdnaData.ZsCharacters);
         }
       }
-      table = zsChars;
+      table = valueZsChars;
       return table.GetBoolean(ch);
     }
 
@@ -112,7 +112,7 @@ namespace PeterO.Text {
       ByteData table = null;
       if (scripts == null) {
         lock (syncRoot) {
-          scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
+        scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
         }
       }
       table = scripts;
@@ -220,8 +220,8 @@ namespace PeterO.Text {
     }
 
     private static string ToLowerCase(string str) {
-      int[] buffer = new int[2];
-      StringBuilder sb = new StringBuilder();
+      var buffer = new int[2];
+      var sb = new StringBuilder();
       for (var i = 0; i < str.Length; ++i) {
         int ch = CodePointAt(str, i);
         if (ch < 0) {
@@ -234,7 +234,7 @@ namespace PeterO.Text {
           for (var j = 0; j < size; ++j) {
             int c2 = buffer[j];
             if (c2 <= 0xffff) {
-              sb.Append((char)(c2));
+              sb.Append((char)c2);
             } else if (ch <= 0x10ffff) {
               sb.Append((char)((((c2 - 0x10000) >> 10) & 0x3ff) + 0xd800));
               sb.Append((char)(((c2 - 0x10000) & 0x3ff) + 0xdc00));
@@ -267,8 +267,8 @@ namespace PeterO.Text {
 
     private static string DecodeLabel(string str, int index, int endIndex) {
       if (endIndex - index > 4 && str[index] == 'x' &&
-          str[index+1] == 'n' && str[index+2] == '-' &&
-          str[index+3] == '-') {
+          str[index + 1] == 'n' && str[index + 2] == '-' &&
+          str[index + 3] == '-') {
         return DomainUtility.PunycodeDecode(str, index + 4, endIndex);
       } else {
         return str.Substring(index, endIndex - index);
@@ -276,38 +276,53 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String,System.Boolean)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String,System.Boolean)"]/*'/>
     public static string DecodeDomainName(string value, bool lookupRules) {
-      //ArgumentAssert.NotNull(value);
+      if (value == null) {
+  throw new ArgumentNullException(nameof(value));
+}
       if (value.Length == 0) {
         return String.Empty;
       }
-      if (!IsValidDomainName(value, lookupRules))
-        return null;
-      int lastPos = 0;
+      if (!IsValidDomainName(value, lookupRules)) {
+ return null;
+}
+      var lastPos = 0;
       var i = 0;
       StringBuilder sb = null;
       while (i <= value.Length) {
         if (value[i] == '.') {
           string part = DecodeLabel(
-            value, lastPos, i);
-          if (part == null) return null;
-          if (sb == null) sb = new StringBuilder();
+            value,
+            lastPos,
+            i);
+          if (part == null) {
+ return null;
+}
+          sb = sb ?? (new StringBuilder());
           sb.Append(part);
           sb.Append('.');
-          i++;
+          ++i;
           lastPos = i;
         } else {
-          i++;
+          ++i;
         }
       }
-      if (lastPos == 0) return DecodeLabel(
-        value,0,value.Length);
+      if (lastPos == 0) {
+ return DecodeLabel(
+        value,
+        0,
+        value.Length);
+ }
       if (lastPos != value.Length) {
         string part = DecodeLabel(
-          value,lastPos, value.Length);
-        if (part == null) return null;
-        if (sb == null) sb = new StringBuilder();
+          value,
+          lastPos,
+          value.Length);
+        if (part == null) {
+ return null;
+}
+        sb = sb ?? (new StringBuilder());
         sb.Append(part);
       }
       return sb.ToString();
@@ -425,7 +440,7 @@ namespace PeterO.Text {
       for (int i = 0; i < str.Length; ++i) {
         if ((str[i] >= 'a' && str[i] <= 'z') ||
             (str[i] >= 'A' && str[i] <= 'Z') ||
-                        (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
+                    (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
           // LDH character
           continue;
         }
@@ -575,7 +590,7 @@ namespace PeterO.Text {
       str = WidthMapping(str);
       if (IsInPrecisClass(str, false)) {
         str = NormalizerInput.Normalize(str, Normalization.NFC);
-        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
+        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? null :
           (str.Length == 0 ? null : str);
       }
       return null;
@@ -587,9 +602,11 @@ namespace PeterO.Text {
       }
       if (IsInPrecisClass(str, true)) {
         str = TrimAndCollapseUnicodeSpaces(str);
-        if (forComparison) str = ToLowerCase(str);
+        if (forComparison) {
+ str = ToLowerCase(str);
+}
         str = NormalizerInput.Normalize(str, Normalization.NFKC);
-        return (str.Length == 0 ? null : str);
+        return str.Length == 0 ? null : str;
       }
       return null;
     }
@@ -647,7 +664,7 @@ namespace PeterO.Text {
       if (IsInPrecisClass(str, false)) {
         str = ToLowerCase(str);
         str = NormalizerInput.Normalize(str, Normalization.NFC);
-        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? (null) :
+        return (HasRtlCharacters(str) && !PassesBidiRule(str)) ? null :
           (str.Length == 0 ? null : str);
       }
       return null;
@@ -856,7 +873,7 @@ namespace PeterO.Text {
         } else {
           if (ch <= 0xffff) {
             {
-              sb.Append((char)(ch));
+              sb.Append((char)ch);
             }
           } else if (ch <= 0x10ffff) {
             sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
@@ -948,7 +965,7 @@ namespace PeterO.Text {
         }
         if (ch < 0x80 || !IsZsCodePoint(ch)) {
           if (ch <= 0xffff) {
-            sb.Append((char)(ch));
+            sb.Append((char)ch);
           } else if (ch <= 0x10ffff) {
             sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
             sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
@@ -991,13 +1008,13 @@ namespace PeterO.Text {
       int ch;
       var first = true;
       var haveContextual = false;
-      bool nonascii = false;
+      var nonascii = false;
       for (int i = 0; i < str.Length; ++i) {
         ch = CodePointAt(str, i);
         if (ch >= 0x10000) {
           ++i;
         }
-        if (ch >=0x80) {
+        if (ch >= 0x80) {
           nonascii = true;
         }
         int category = UnicodeDatabase.GetIdnaCategory(ch);
@@ -1012,8 +1029,9 @@ namespace PeterO.Text {
         haveContextual |= category == ContextO || category == ContextJ;
         first = false;
       }
-      if (!nonascii)
-        return false;
+      if (!nonascii) {
+ return false;
+}
       if (haveContextual) {
         if (!PassesContextChecks(str)) {
           return false;

@@ -135,11 +135,11 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
         buffer[offset++] = (cp >= 0x41 && cp <= 0x5a) ? cp + 32 : cp;
         return offset;
       }
-      int[] decomps=NormalizationData.LowerCaseMappings2;
-      for(var i=0;i<decomps.Length;i+=3){
-        if(decomps[i]==cp){
-          buffer[offset++]=decomps[i+1];
-          buffer[offset++]=decomps[i+2];
+      int[] decomps = NormalizationData.LowerCaseMappings2;
+      for (var i = 0; i < decomps.Length; i += 3) {
+        if (decomps[i] == cp) {
+          buffer[offset++] = decomps[i + 1];
+          buffer[offset++] = decomps[i + 2];
           return offset;
         }
       }
@@ -174,7 +174,7 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
         int dri = decomps[realIndex];
         int dricp = (dri >> 16) & 0xffff;
         if (dricp == cp) {
-          buffer[offset++] = (dri & 0xffff);
+          buffer[offset++] = dri & 0xffff;
           return offset;
         }
         if (dricp < cp) {
@@ -189,7 +189,7 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
     }
 
     public static int GetIdnaCategory(int cp) {
-       if (cp< 0) {
+       if (cp < 0) {
  return 0;
 }
         if (idnaCat == null) {
@@ -201,19 +201,19 @@ idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
     }
 
     public static int GetCasedProperty(int cp) {
-       if (cp< 0) {
+       if (cp < 0) {
  return 0;
 }
         if (casedprop == null) {
 lock (ValueSyncRoot) {
-          casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
+  casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
 }
 }
       return ((int)casedprop.GetByte(cp)) & 0xff;
     }
 
     public static int GetPrecisCategory(int cp) {
-       if (cp< 0) {
+       if (cp < 0) {
  return 0;
 }
       if (precisCat == null) {

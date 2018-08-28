@@ -135,8 +135,17 @@ classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningCl
       if (cp < 0x80) {
         buffer[offset++] = (cp >= 0x41 && cp <= 0x5a) ? cp + 32 : cp;
         return offset;
-      } else if (cp >= 0x10000) {
-      int[] decomps = NormalizationData.LowerCaseMappings32;
+      }
+      int[] decomps = NormalizationData.LowerCaseMappings2;
+      for (int i = 0; i < decomps.length; i += 3) {
+        if (decomps[i] == cp) {
+          buffer[offset++] = decomps[i + 1];
+          buffer[offset++] = decomps[i + 2];
+          return offset;
+        }
+      }
+      if (cp >= 0x10000) {
+      decomps = NormalizationData.LowerCaseMappings32;
       int left = 0;
       int right = (decomps.length >> 1) - 1;
       while (left <= right) {
@@ -156,12 +165,8 @@ classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningCl
       }
       buffer[offset++] = cp;
       return offset;
-      } else if (c == 0x130) {
-        buffer[offset++]=(int)'i';
-        buffer[offset++]=0x307;
-        return offset;
       } else {
-      int[] decomps = NormalizationData.LowerCaseMappings;
+      decomps = NormalizationData.LowerCaseMappings;
       int left = 0;
       int right = decomps.length - 1;
       while (left <= right) {
@@ -170,7 +175,7 @@ classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningCl
         int dri = decomps[realIndex];
         int dricp = (dri >> 16) & 0xffff;
         if (dricp == cp) {
-          buffer[offset++] = (dri & 0xffff);
+          buffer[offset++] = dri & 0xffff;
           return offset;
         }
         if (dricp < cp) {
@@ -185,7 +190,7 @@ classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningCl
     }
 
     public static int GetIdnaCategory(int cp) {
-       if (cp< 0) {
+       if (cp < 0) {
  return 0;
 }
         if (idnaCat == null) {
@@ -197,19 +202,19 @@ idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : i
     }
 
     public static int GetCasedProperty(int cp) {
-       if (cp< 0) {
+       if (cp < 0) {
  return 0;
 }
         if (casedprop == null) {
 synchronized (ValueSyncRoot) {
-casedprop = (casedprop == null) ? (ByteData.Decompress(NormalizationData.CasedProperty)) : casedprop;
+  casedprop = (casedprop == null) ? (ByteData.Decompress(NormalizationData.CaseProperty)) : casedprop;
 }
 }
       return ((int)casedprop.GetByte(cp)) & 0xff;
     }
 
     public static int GetPrecisCategory(int cp) {
-       if (cp< 0) {
+       if (cp < 0) {
  return 0;
 }
       if (precisCat == null) {
