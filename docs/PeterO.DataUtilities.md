@@ -136,6 +136,27 @@ Compares two strings in Unicode code point order. Unpaired surrogate code points
 
 A value indicating which string is " less" or " greater" . 0: Both strings are equal or null. Less than 0: a is null and b isn't; or the first code point that's different is less in A than in B; or b starts with a and is longer than a. Greater than 0: b is null and a isn't; or the first code point that's different is greater in A than in B; or a starts with b and is longer than b.
 
+### CodePointLength
+
+    public static int CodePointLength(
+        string str);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A 32-bit signed integer.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>str</i>
+ is null.
+
 ### GetUtf8Bytes
 
     public static byte[] GetUtf8Bytes(

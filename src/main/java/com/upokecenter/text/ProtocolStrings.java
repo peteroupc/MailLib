@@ -4,7 +4,7 @@ package com.upokecenter.text;
      * Contains methods for preparing protocol strings (such as user identifiers)
      * for comparison and validity checking. See RFC 8264.
      */
-  final class ProtocolStrings {
+  public final class ProtocolStrings {
 private ProtocolStrings() {
 }
     /**

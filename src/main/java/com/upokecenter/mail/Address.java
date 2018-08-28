@@ -74,20 +74,17 @@ static String LocalPartToString(String localPart) {
 void AppendThisAddress(HeaderEncoder encoder) {
  String lp = LocalPartToString(this.localPart);
  String domainstr = DomainToString(this.domain, true);
- long length = DataUtilities.GetUtf8Length(lp, true);
- long length2 = DataUtilities.GetUtf8Length(domainstr, true);
+ int length = DataUtilities.CodePointLength(lp);
+ int length2 = DataUtilities.CodePointLength(domainstr);
  if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
   // Avoid breaking email addresses if it can comfortably
   // fit the recommended line length
         int tlength = (int)(length2 + length + 1);
   encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
  } else {
-        // NOTE: Both lengths can't exceed MaxRecHeaderLineLength,
-        // which is well below the maximum value for 32-bit
-        // integers, so it's acceptable to cast to int here
-        encoder.AppendSymbolWithLength(lp, (int)length);
+        encoder.AppendSymbolWithLength(lp, length);
   encoder.AppendSymbol("@");
-        encoder.AppendSymbolWithLength(domainstr, (int)length);
+        encoder.AppendSymbolWithLength(domainstr, length);
  }
 }
 
@@ -105,7 +102,7 @@ void AppendThisAddress(HeaderEncoder encoder) {
       String lp = LocalPartToString(this.localPart);
      String domainstr = DomainToString(this.domain, true);
      String domain2 = DomainToString(this.domain, false);
-        // Maximum character length per line for an Internet message minus 1;
+        // Maximum OCTET length per line for an Internet message minus 1;
         // we check if the length exceeds that number (thus excluding the space
         // character of a folded line).
      if (DataUtilities.GetUtf8Length(lp, true) >
@@ -121,8 +118,9 @@ void AppendThisAddress(HeaderEncoder encoder) {
     }
 
     /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
+     * Returns a hash code for this address object. No application or process
+     * identifiers are used in the hash code calculation.
+     * @return A hash code for this instance.
      */
     @Override public int hashCode() {
       int valueHashCode = -1524613162;

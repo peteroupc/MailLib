@@ -29,6 +29,7 @@ Content-Type header value is still available.)
 - Deprecated ToAddresses, FromAddresses, CcAddresses, and BccAddresses properties in Message.
 - Added convenience methods in Message class for creating attachments and inline body parts.
 - Updated Encoding library reference to 0.5.0.
+- Add several methods to DataUtilities class
 - Bug fixes
 
 </PackageReleaseNotes>
