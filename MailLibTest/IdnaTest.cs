@@ -40,6 +40,55 @@ namespace MailLibTest {
       }
     }
     [Test]
+    public static void TestDecodeDomainName() {
+      Assert.AreEqual(
+       "e\u00e1",
+       Idna.DecodeDomainName("xn--e-ufa"));
+      Assert.AreEqual(
+       "e\u00e1.example",
+       Idna.DecodeDomainName("xn--e-ufa.example"));
+      Assert.AreEqual(
+       "site.e\u00e1.example",
+       Idna.DecodeDomainName("site.xn--e-ufa.example"));
+    }
+    [Test]
+    public static void TestProtocolStrings() {
+      Assert.IsTrue(
+       ProtocolStrings.IsInIdentifierClass("test{}[]?^&"));
+      Assert.IsTrue(
+       ProtocolStrings.IsInFreeformClass("test{}[]?^&"));
+      Assert.IsFalse(
+       ProtocolStrings.IsInIdentifierClass("test{} []?^&"));
+      Assert.IsTrue(
+       ProtocolStrings.IsInFreeformClass("test{} []?^&"));
+      Assert.IsFalse(
+       ProtocolStrings.IsInIdentifierClass("tes\nt{} []?^&"));
+      Assert.IsFalse(
+       ProtocolStrings.IsInFreeformClass("tes\nt{} []?^&"));
+      Assert.AreEqual(
+       "test",
+       ProtocolStrings.UserpartEnforce("TeSt"));
+      Assert.AreEqual(
+       "test",
+       ProtocolStrings.UserpartEnforce("TeSt", false));
+      Assert.AreEqual(
+       "TeSt",
+       ProtocolStrings.UserpartEnforce("TeSt", true));
+      Assert.AreEqual(
+       null,
+       ProtocolStrings.UserpartEnforce("Te St", false));
+      Assert.AreEqual(
+       "te st",
+       ProtocolStrings.UsernameEnforce("Te St", false));
+      Assert.AreEqual(
+       "Te St",
+       ProtocolStrings.UsernameEnforce("Te St", true));
+      // Final capital sigma
+      Assert.AreEqual(
+       "x\u03c2",
+       ProtocolStrings.UserpartEnforce("x\u03a3"));
+    }
+    [Test]
     public void TestIsValidDomainName() {
       Assert.IsTrue(Idna.IsValidDomainName("el\u00b7la", false));
       Assert.IsFalse(Idna.IsValidDomainName("-domain", false));

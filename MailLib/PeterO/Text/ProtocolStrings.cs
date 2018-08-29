@@ -51,7 +51,7 @@ namespace PeterO.Text {
       var lastPos = 0;
       var i = 0;
       StringBuilder sb = null;
-      while (i <= str.Length) {
+      while (i < str.Length) {
         if (str[i] == ' ') {
           string part = UserpartEnforce(
             str.Substring(lastPos, i - lastPos),
@@ -61,7 +61,6 @@ namespace PeterO.Text {
           }
           sb = sb ?? (new StringBuilder());
           sb.Append(part);
-          sb.Append(' ');
           while (i < str.Length) {
             if (str[i] != ' ') {
               break;
