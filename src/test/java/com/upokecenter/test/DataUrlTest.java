@@ -8550,7 +8550,9 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
       this.TestMatchBasicContained(langranges, "es-cam");
       this.TestMatchBasicContained(langranges, "es-ca-9999");
       this.TestMatchBasicContained(langranges, "es-zxxx-ca");
-      langranges = new String[] { "fr-ca", "*", "es"};
+      langranges = new String[] {
+        "fr-ca", "*", "es"
+      };
       this.TestMatchBasicContained(langranges, "es");
       this.TestMatchBasicContained(langranges, "nl");
       langranges = new String[] { null, "*" };

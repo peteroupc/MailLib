@@ -14,26 +14,18 @@ import java.util.*;
      * algorithm and contains methods and functionality to test and convert
      * text strings for normalization. This is similar to the deprecated
      * Normalizer class, except it implements the ICharacterInput interface.
-     * </p> <p>The Unicode Standard includes characters, such as an acute
-     * accent, that can be combined with other characters to make new
-     * characters. For example, the letter E combines with an acute accent
-     * to make E-acute (É). In some cases, the combined form (E-acute)
-     * should be treated as equivalent to the uncombined form (E plus
-     * acute). For this reason, the standard defines four <i> normalization
-     * forms </i> that convert strings to a single equivalent form: </p>
-     * <ul> <li><b>NFD</b> (Normalization Form D) decomposes combined forms
-     * to their constituent characters (E plus acute, for example). This is
-     * called canonical decomposition. </li> <li><b>NFC</b> does canonical
+     * </p> <ul> <li><b>NFD</b> (Normalization Form D) decomposes combined
+     * forms to their constituent characters (E plus acute, for example),
+     * then reorders combining marks to a standardized order. This is called
+     * canonical decomposition. </li> <li><b>NFC</b> does canonical
      * decomposition, then combines certain constituent characters to their
      * composites (E-acute, for example). This is called canonical
      * composition. </li> <li>Two normalization forms, <b>NFKC</b> and
      * <b>NFKD</b> , are similar to NFC and NFD, except they also
      * "decompose" certain characters, such as ligatures, font or positional
      * variants, and subscripts, whose visual distinction can matter in some
-     * contexts. This is called compatibility decomposition. </li> <li>The
-     * four normalization forms also enforce a standardized order for
-     * combining marks, since they can otherwise appear in an arbitrary
-     * order. </li> </ul> <p>For more information, see Standard Annex 15 at
+     * contexts. This is called compatibility decomposition. </li> </ul>
+     * <p>For more information, see Standard Annex 15 at
      * <code>http://www.unicode.org/reports/tr15/</code> . </p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.

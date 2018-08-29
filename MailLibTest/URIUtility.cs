@@ -9,17 +9,17 @@ namespace Test {
   using System;
 using System.Text;
 
-  internal static class URIUtility {
+    internal static class URIUtility {
     internal enum ParseMode {
-      IRIStrict,
+    IRIStrict,
 
-      URIStrict,
+    URIStrict,
 
-      IRILenient,
+    IRILenient,
 
-      URILenient,
+    URILenient,
 
-      IRISurrogateLenient
+    IRISurrogateLenient
     }
 
     private const string HexChars = "0123456789ABCDEF";
@@ -381,7 +381,6 @@ retString.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
       return retString.ToString();
       }
 
-// <summary></summary>
     public static string EncodeStringForURI(string s) {
       if (s == null) {
   throw new ArgumentNullException(nameof(s));
@@ -400,8 +399,8 @@ var builder = new StringBuilder();
         if (c >= 0x10000) {
  ++index;
 }
-    if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'
-) ||
+    if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
+        (c >= 'a' && c <= 'z') ||
             (c >= '0' && c <= '9') || "-_.~".IndexOf((char)c) >= 0)) {
           builder.Append((char)c);
           ++index;

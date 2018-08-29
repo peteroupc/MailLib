@@ -2,20 +2,20 @@
 
     public class ContentDisposition extends Object
 
-Specifies how a message body should be displayed or handled by a mail user
- agent. This type is immutable; its contents can't be changed after
- it's created. To create a changeable disposition object, use the
- DispositionBuilder class. <p><b>About the "filename" parameter</b>
- </p> <p>The "filename" parameter of a content disposition suggests a
- name to use when saving data to a file. For the "filename" parameter,
- the GetParameter method and Parameters property (
- <code>getParameters</code>) method in Java) do not adapt that parameter's
- value using the ContentDisposition.MakeFilename method. Thus, for
- example, the "filename" parameter, if any, returned by this method
- could have an arbitrary length, be encoded using RFC 2047 encoded
- words (which some email and HTTP implementations still like to write
- out in headers, even though that RFC says encoded words "MUST NOT
- appear within a 'quoted-string'"; see
+<p>Specifies how a message body should be displayed or handled by a mail
+ user agent. This type is immutable; its contents can't be changed
+ after it's created. To create a changeable disposition object, use
+ the DispositionBuilder class.</p> <p><b>About the "filename"
+ parameter</b> </p> <p>The "filename" parameter of a content
+ disposition suggests a name to use when saving data to a file. For
+ the "filename" parameter, the GetParameter method and Parameters
+ property (<code>getParameters</code>) method in Java) do not adapt that
+ parameter's value using the ContentDisposition.MakeFilename method.
+ Thus, for example, the "filename" parameter, if any, returned by this
+ method could have an arbitrary length, be encoded using RFC 2047
+ encoded words (which some email and HTTP implementations still like
+ to write out in headers, even though that RFC says encoded words
+ "MUST NOT appear within a 'quoted-string'"; see
  ContentDisposition.MakeFilename), or not be usable as is as a file
  name. </p> <p><b>Example:</b> An example of RFC 2047 encoded words
  is: </p> <p><b>=?UTF-8?Q?test?=</b> </p> <p>Content-Disposition
@@ -211,7 +211,21 @@ Converts a file name from the Content-Disposition header to a suitable name
  encoding)</p> <p><code>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</code> (RFC
  2231 encoding)</p> <p><code>"nul.txt" -&gt; "_nul.txt"</code> (Reserved
  name)</p> <p><code>"dir1/dir2/file" -&gt; "dir1_dir2_file"</code>
- (Directory separators)</p><p> <p><b>Remark:</b> Email and HTTP
+ (Directory separators)</p><p> <p><b>Remarks:</b></p> <ul> <li>The
+ string returned by this method is normalized using Unicode
+ normalization form C (NFC) (see the <code>NormalizerInput</code> class for details). Although
+ most file systems preserve the normalization of file names, there is
+ one notable exception: The HFS Plus file system (on macOS before High
+ Sierra) stores file names using a modified version of normalization
+ form D (NFD) in which certain code points are not decomposed,
+ including all base + slash code points, which are the only composed
+ code points in Unicode that are decomposed in NFD but not in HFS
+ Plus's version of NFD. If the filename will be used to save a file to
+ an HFS Plus storage device, it is enough to normalize the return
+ value with NFD for this purpose (because all base + slash code points
+ were converted beforehand by MakeFilename to an alternate form). See
+ also Apple's Technical Q&amp;A "Text Encodings in VFS" and Technical
+ Note TN1150, "HFS Plus Volume Format".</li> <li><p>Email and HTTP
  headers may specify suggested filenames using the Content-Disposition
  header field's <code>filename</code> parameter or, in practice, the
  Content-Type header field's <code>name</code> parameter.</p> <p>Although
@@ -236,9 +250,9 @@ Converts a file name from the Content-Disposition header to a suitable name
  that media-type, this is a deviation of RFC 2045 and 2046 (see also
  RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful
  parameters that apply to all media types"). (Some email
- implementations may still write out the "name" parameter, even in
+ implementations may still write out the "name" parameter, even for
  media types other than <code>application/octet-stream</code> and even
- though RFC 2046 has deprecated that parameter.)</p></p>
+ though RFC 2046 has deprecated that parameter.)</p></li></ul> </p>
 
 **Parameters:**
 
@@ -253,9 +267,12 @@ Converts a file name from the Content-Disposition header to a suitable name
  filename (including the directory separators slash and backslash) are
  replaced with underscores; spaces and tabs are collapsed to a single
  space; leading and trailing spaces and tabs are removed; and the
- filename is truncated if it would otherwise be too long. The returned
- string will be in normalization form C. Returns the empty string if
- <code>str</code> is null or empty.
+ filename is truncated if it would otherwise be too long. Also, for
+ reasons stated in the remarks, a character that is the combined form
+ of a base character and a combining slash is replaced with "!"
+ followed by the base character. The returned string will be in
+ normalization form C. Returns the empty string if <code>str</code> is null
+ or empty.
 
 ### GetFilename
     public String GetFilename()
@@ -365,21 +382,22 @@ Parses a content disposition string and returns a content disposition
  from the Content-Disposition header field (as defined for email
  messages) and follows the syntax given in RFC 2183. Accordingly,
  among other things, the content disposition string can contain
- comments (delimited by parentheses).</p> <p>RFC 2231 extensions allow
- each content disposition parameter to be associated with a character
- encoding and/or language, and support parameter values that span two
- or more key-value pairs. Parameters making use of RFC 2231 extensions
- have names with an asterisk ("*"). Such a parameter will be ignored
- if it is ill-formed because of RFC 2231's rules (except for illegal
- percent-decoding or undecodable sequences for the given character
- enoding). Examples of RFC 2231 extensions follow (both examples
- encode the same "filename" parameter):</p> <p><b>inline;
- filename*=utf-8'en'filename.txt</b></p> <p><b>inline;
- filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
- implementation ignores keys (in parameter key-value pairs) that
- appear more than once in the content disposition. Nothing in RFCs
- 2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or
- otherwise specifies error-handling behavior for such keys.</p>
+ comments (delimited by parentheses). </p> <p>RFC 2231 extensions
+ allow each content disposition parameter to be associated with a
+ character encoding and/or language, and support parameter values that
+ span two or more key-value pairs. Parameters making use of RFC 2231
+ extensions have names with an asterisk ("&#x2a;"). Such a parameter
+ will be ignored if it is ill-formed because of RFC 2231's rules
+ (except for illegal percent-decoding or undecodable sequences for the
+ given character enoding). Examples of RFC 2231 extensions follow
+ (both examples encode the same "filename" parameter): </p>
+ <p><b>inline; filename&#x2a;=utf-8'en'filename.txt</b> </p>
+ <p><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
+ filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+ ignores keys (in parameter key-value pairs) that appear more than
+ once in the content disposition. Nothing in RFCs 2045, 2183, 2231,
+ 6266, or 7231 explicitly disallows such keys, or otherwise specifies
+ error-handling behavior for such keys. </p>
 
 **Parameters:**
 

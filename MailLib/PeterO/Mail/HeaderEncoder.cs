@@ -310,7 +310,9 @@ namespace PeterO.Mail {
     private void AppendComment(string symbol, bool writeSpace) {
       // NOTE: Assumes 'symbol' is a syntactically valid 'comment'
       // and begins and ends with parentheses
-      if (symbol.Length == 0 || symbol[0] != '(') throw new ArgumentException();
+      if (symbol.Length == 0 || symbol[0] != '(') {
+ throw new ArgumentException();
+}
       var i = 0;
       var symbolBegin = 0;
       while (i < symbol.Length) {

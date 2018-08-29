@@ -12,6 +12,9 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class BoundaryCheckerTransform : IByteReader {
+    private const int PartStart = 0;
+    private const int PartBody = 1;
+    private const int PartEpilogue = 2;
     private readonly IByteReader input;
     private readonly List<string> boundaries;
     private byte[] innerBuffer;
@@ -145,10 +148,6 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       // Possible boundary candidate
       return this.CheckBoundaries(PartBody);
     }
-
-    private const int PartStart = 0;
-    private const int PartBody = 1;
-    private const int PartEpilogue = 2;
 
     private int CheckBoundaries(int state) {
       // Reached here when the "--" of a possible

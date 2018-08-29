@@ -1307,7 +1307,8 @@ private static string GetContentTranslationType(string ctt) {
   string str) {
       var i = 0;
       var begin = 0;
-      if (str.IndexOf('(') < 0) return enc.AppendString(str);
+      if (str.IndexOf('(') < 0) { return enc.AppendString(str);
+}
       var sb = new StringBuilder();
       while (i < str.Length) {
         if (str[i] == '(') {
@@ -2914,12 +2915,12 @@ if (ungetState[1] < 0x80) {
     }
 
     private class MessageStackEntry {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>This is an internal API.</value>
       public Message Message { get; private set; }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>This is an internal API.</value>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

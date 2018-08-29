@@ -145,7 +145,8 @@ Finds the number of Unicode code points in the given text string. Unpaired surro
 
 <b>Parameters:</b>
 
- * <i>str</i>: A text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
 <b>Return Value:</b>
 

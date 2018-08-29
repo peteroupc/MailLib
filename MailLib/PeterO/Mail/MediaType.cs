@@ -285,7 +285,7 @@ namespace PeterO.Mail {
         index = SkipQtextOrQuotedPair(str, index, endIndex, rule);
         if (index == oldIndex) {
           if (builder != null) {
-            builder.Remove(valueBLength, (builder.Length) - valueBLength);
+            builder.Remove(valueBLength, builder.Length - valueBLength);
           }
           return startIndex;
         }
@@ -296,7 +296,7 @@ namespace PeterO.Mail {
         }
       }
       if (builder != null) {
-        builder.Remove(valueBLength, (builder.Length) - valueBLength);
+        builder.Remove(valueBLength, builder.Length - valueBLength);
       }
       return startIndex;  // not a valid quoted-string
     }

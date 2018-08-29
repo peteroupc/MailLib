@@ -518,15 +518,14 @@
 
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointLength(System.String)">
-<summary>Finds the number of Unicode code points in the given text
+
+            <summary>Finds the number of Unicode code points in the given text
             string. Unpaired surrogate code points increase this number by 1.
             This is not necessarily the length of the string in "char"
-            s.</summary>
-            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
-            <returns>The number of Unicode code points in the given
-            string.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
+            s.</summary><param name='str'>The parameter <paramref name='str'/> is a text string.</param><returns>The number of Unicode code points in the given
+            string.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
+
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean)">
 
@@ -3117,63 +3116,49 @@ of this NamedAddress object as it could appear in a "To" header field.
 
 </doc>
 <doc name="T:PeterO.Mail.URIUtility">
-
-            <summary>Contains utility methods for processing Uniform Resource Identifiers
+<summary>Contains utility methods for processing Uniform Resource Identifiers
       (URIs) and Internationalized Resource Identifiers (IRIs) under RFC3986 and
       RFC3987, respectively. In the following documentation, URIs and IRIs
       include URI references and IRI references, for convenience.
     </summary>
-
 </doc>
 <doc name="T:PeterO.Mail.URIUtility.ParseMode">
-
-            <summary>Specifies whether certain characters are allowed when parsing IRIs and
+<summary>Specifies whether certain characters are allowed when parsing IRIs and
       URIs.
     </summary>
-
 </doc>
 <doc name="F:PeterO.Mail.URIUtility.ParseMode.IRILenient">
-
-            <summary>The rules only check for the appropriate delimiters when splitting the
+<summary>The rules only check for the appropriate delimiters when splitting the
       path, without checking if all the characters in each component are valid.
       Even with this mode, strings with unpaired surrogate code points are
       considered invalid.
     </summary>
-
 </doc>
 <doc name="F:PeterO.Mail.URIUtility.ParseMode.IRIStrict">
-
-            <summary>The rules follow the syntax for parsing IRIs. In particular, many code
+<summary>The rules follow the syntax for parsing IRIs. In particular, many code
       points outside the Basic Latin range (U+0000 to U+007F) are allowed.
       Strings with unpaired surrogate code points are considered invalid.
     </summary>
-
 </doc>
 <doc name="F:PeterO.Mail.URIUtility.ParseMode.IRISurrogateLenient">
-
-            <summary>The rules only check for the appropriate delimiters when splitting the
+<summary>The rules only check for the appropriate delimiters when splitting the
       path, without checking if all the characters in each component are valid.
       Unpaired surrogate code points are treated as though they were replacement
       characters instead for the purposes of these rules, so that strings with
       those code points are not considered invalid strings.
     </summary>
-
 </doc>
 <doc name="F:PeterO.Mail.URIUtility.ParseMode.URILenient">
-
-            <summary>The rules only check for the appropriate delimiters when splitting the
+<summary>The rules only check for the appropriate delimiters when splitting the
       path, without checking if all the characters in each component are valid.
       Code points outside the Basic Latin range (U+0000 to U+007F) are not
       allowed.
     </summary>
-
 </doc>
 <doc name="F:PeterO.Mail.URIUtility.ParseMode.URIStrict">
-
-            <summary>The rules follow the syntax for parsing IRIs, except that code points
+<summary>The rules follow the syntax for parsing IRIs, except that code points
       outside the Basic Latin range (U+0000 to U+007F) are not allowed.
     </summary>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.PercentDecode(System.String)">
 <summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
@@ -3186,37 +3171,42 @@ of this NamedAddress object as it could appear in a "To" header field.
     </returns>
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.PercentDecode(System.String,System.Int32,System.Int32)">
-<summary>Decodes percent-encoding (of the form "%XX" where X is a
-            hexadecimal digit) in the given portion of a string. Successive
-            percent-encoded bytes are assumed to form characters in
-            UTF-8.</summary>
-            <param name='str'>A string a portion of which may contain percent
-            encoding. May be null.</param>
-            <param name='index'>Zero-based index showing where the desired
-            portion of <paramref name='str'/> begins.</param>
-            <param name='endIndex'>Zero-based index showing where the desired
-            portion of <paramref name='str'/> ends. The character before this
-            index is the last character.</param>
-            <returns>The portion of the given string in which percent-encoding
-            was decoded. Returns null if <paramref name='str'/> is
-            ull.</returns>
+<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
+      digit) in the given portion of a string. Successive percent-encoded bytes
+      are assumed to form characters in UTF-8.
+    </summary>
+    <param name='str'>A string a portion of which may contain percent encoding. May be null.
+    </param>
+    <param name='index'>Zero-based index showing where the desired portion of
+      <paramref name='str'/>
+       begins.
+    </param>
+    <param name='endIndex'>Zero-based index showing where the desired portion of
+      <paramref name='str'/>
+       ends. The character before this index is the last character.
+    </param>
+    <returns>The portion of the given string in which percent-encoding was decoded.
+      Returns null if
+      <paramref name='str'/>
+       is ull.
+    </returns>
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.escapeURI(System.String,System.Int32)">
-
-            <summary>Escapes characters that can't appear in URIs or IRIs. The function is
+<summary>Escapes characters that can't appear in URIs or IRIs. The function is
       idempotent; that is, calling the function again on the result with the
       same mode doesn't change the result.
-    </summary><param name='s'>A string to escape.
-    </param><param name='mode'>The parameter
+    </summary>
+    <param name='s'>A string to escape.
+    </param>
+    <param name='mode'>The parameter
       <paramref name='mode'/>
        is a 32-bit signed integer.
-    </param><returns>A string possibly containing escaped characters, or null if s is null.
+    </param>
+    <returns>A string possibly containing escaped characters, or null if s is null.
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.hasScheme(System.String)">
-
-            <summary>Determines whether the string is a valid IRI with a scheme component. This
+<summary>Determines whether the string is a valid IRI with a scheme component. This
       can be used to check for relative IRI references.
       <para>The following cases return true:
       </para>
@@ -3225,16 +3215,16 @@ of this NamedAddress object as it could appear in a "To" header field.
        The following cases return false:
       <code>x@y:/z /x/y/z example.xyz
       </code>
-    </summary><param name='refValue'>A string representing an IRI to check.
-    </param><returns><c>true</c>
+    </summary>
+    <param name='refValue'>A string representing an IRI to check.
+    </param>
+    <returns><c>true</c>
        if the string is a valid IRI with a scheme component; otherwise, <c>false</c>
        .
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.hasSchemeForURI(System.String)">
-
-            <summary>Determines whether the string is a valid URI with a scheme component. This
+<summary>Determines whether the string is a valid URI with a scheme component. This
       can be used to check for relative URI references. The following cases
       return true:
       <code>http://example/z xx-x:mm example:/ww
@@ -3242,27 +3232,32 @@ of this NamedAddress object as it could appear in a "To" header field.
        The following cases return false:
       <code>x@y:/z /x/y/z example.xyz
       </code>
-    </summary><param name='refValue'>A string representing an IRI to check.
-    </param><returns><c>true</c>
+    </summary>
+    <param name='refValue'>A string representing an IRI to check.
+    </param>
+    <returns><c>true</c>
        if the string is a valid URI with a scheme component; otherwise, <c>false</c>
        .
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.isValidCurieReference(System.String,System.Int32,System.Int32)">
-
-            <summary>Determines whether the substring is a valid CURIE reference under RDFA
+<summary>Determines whether the substring is a valid CURIE reference under RDFA
       1.1. (The CURIE reference is the part after the colon.).
-    </summary><param name='s'>A string containing a CURIE reference. Can be null.
-    </param><param name='offset'>A zero-based index showing where the desired portion of "s" begins.
-    </param><param name='length'>The number of elements in the desired portion of "s" (but not more than
+    </summary>
+    <param name='s'>A string containing a CURIE reference. Can be null.
+    </param>
+    <param name='offset'>A zero-based index showing where the desired portion of "s" begins.
+    </param>
+    <param name='length'>The number of elements in the desired portion of "s" (but not more than
       "s" 's length).
-    </param><returns><c>true</c>
+    </param>
+    <returns><c>true</c>
        if the substring is a valid CURIE reference under RDFA 1; otherwise, <c>false</c>
        . Returns false if
       <paramref name='s'/>
        is null.
-    </returns><exception cref='T:System.ArgumentException'>Either
+    </returns>
+    <exception cref='T:System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -3276,18 +3271,19 @@ of this NamedAddress object as it could appear in a "To" header field.
       <paramref name='length'/>
        .
     </exception>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.relativeResolve(System.String,System.String)">
-
-            <summary>Resolves a URI or IRI relative to another URI or IRI.
-    </summary><param name='refValue'>A string representing a URI or IRI reference. Example:
+<summary>Resolves a URI or IRI relative to another URI or IRI.
+    </summary>
+    <param name='refValue'>A string representing a URI or IRI reference. Example:
       <c>dir/file.txt</c>
        .
-    </param><param name='baseURI'>A string representing an absolute URI reference. Example:
+    </param>
+    <param name='baseURI'>A string representing an absolute URI reference. Example:
       <c>http://example.com/my/path/</c>
        .
-    </param><returns>The resolved IRI, or null if
+    </param>
+    <returns>The resolved IRI, or null if
       <paramref name='refValue'/>
        is null or is not a valid IRI. If
       <paramref name='baseURI'/>
@@ -3295,35 +3291,37 @@ of this NamedAddress object as it could appear in a "To" header field.
       <c>http://example.com/my/path/dir/file.txt</c>
        .
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.relativeResolve(System.String,System.String,PeterO.Mail.URIUtility.ParseMode)">
-
-            <summary>Resolves a URI or IRI relative to another URI or IRI.
-    </summary><param name='refValue'>A string representing a URI or IRI reference. Example:
+<summary>Resolves a URI or IRI relative to another URI or IRI.
+    </summary>
+    <param name='refValue'>A string representing a URI or IRI reference. Example:
       <c>dir/file.txt</c>
        . Can be null.
-    </param><param name='baseURI'>A string representing an absolute URI reference. Example:
+    </param>
+    <param name='baseURI'>A string representing an absolute URI reference. Example:
       <c>http://example.com/my/path/</c>
        .
-    </param><param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
+    </param>
+    <param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
-    </param><returns>The resolved IRI, or null if
+    </param>
+    <returns>The resolved IRI, or null if
       <paramref name='refValue'/>
        is null or is not a valid IRI. If
       <paramref name='baseURI'/>
        is null or is not a valid IRI, returns refValue.
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.splitIRI(System.String)">
-
-            <summary>Parses an Internationalized Resource Identifier (IRI) reference under
+<summary>Parses an Internationalized Resource Identifier (IRI) reference under
       RFC3987. If the IRI reference is syntactically valid, splits the string
       into its components and returns an array containing the indices into the
       components.
-    </summary><param name='s'>A string that contains an IRI. Can be null.
-    </param><returns>If the string is a valid IRI reference, returns an array of 10 integers.
+    </summary>
+    <param name='s'>A string that contains an IRI. Can be null.
+    </param>
+    <returns>If the string is a valid IRI reference, returns an array of 10 integers.
       Each of the five pairs corresponds to the start and end index of the IRI's
       scheme, authority, path, query, or fragment component, respectively. The
       scheme, authority, query, and fragment components, if present, will each
@@ -3332,19 +3330,20 @@ of this NamedAddress object as it could appear in a "To" header field.
       in that pair will be -1. If the string is null or is not a valid IRI,
       returns null.
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.splitIRI(System.String,PeterO.Mail.URIUtility.ParseMode)">
-
-            <summary>Parses an Internationalized Resource Identifier (IRI) reference under
+<summary>Parses an Internationalized Resource Identifier (IRI) reference under
       RFC3987. If the IRI is syntactically valid, splits the string into its
       components and returns an array containing the indices into the
       components.
-    </summary><param name='s'>A string representing an IRI. Can be null.
-    </param><param name='parseMode'>The parameter
+    </summary>
+    <param name='s'>A string representing an IRI. Can be null.
+    </param>
+    <param name='parseMode'>The parameter
       <paramref name='parseMode'/>
        is a ParseMode object.
-    </param><returns>If the string is a valid IRI reference, returns an array of 10 integers.
+    </param>
+    <returns>If the string is a valid IRI reference, returns an array of 10 integers.
       Each of the five pairs corresponds to the start and end index of the IRI's
       scheme, authority, path, query, or fragment component, respectively. The
       scheme, authority, query, and fragment components, if present, will each
@@ -3353,21 +3352,24 @@ of this NamedAddress object as it could appear in a "To" header field.
       in that pair will be -1. If the string is null or is not a valid IRI,
       returns null.
     </returns>
-
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.splitIRI(System.String,System.Int32,System.Int32,PeterO.Mail.URIUtility.ParseMode)">
-
-            <summary>Parses a substring that represents an Internationalized Resource
+<summary>Parses a substring that represents an Internationalized Resource
       Identifier (IRI) under RFC3987. If the IRI is syntactically valid, splits
       the string into its components and returns an array containing the indices
       into the components.
-    </summary><param name='s'>A string that contains an IRI. Can be null.
-    </param><param name='offset'>A zero-based index showing where the desired portion of "s" begins.
-    </param><param name='length'>The length of the desired portion of "s" (but not more than "s" 's
+    </summary>
+    <param name='s'>A string that contains an IRI. Can be null.
+    </param>
+    <param name='offset'>A zero-based index showing where the desired portion of "s" begins.
+    </param>
+    <param name='length'>The length of the desired portion of "s" (but not more than "s" 's
       length).
-    </param><param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
+    </param>
+    <param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
-    </param><returns>If the string is a valid IRI, returns an array of 10 integers. Each of the
+    </param>
+    <returns>If the string is a valid IRI, returns an array of 10 integers. Each of the
       five pairs corresponds to the start and end index of the IRI's scheme,
       authority, path, query, or fragment component, respectively. The scheme,
       authority, query, and fragment components, if present, will each be given
@@ -3375,7 +3377,8 @@ of this NamedAddress object as it could appear in a "To" header field.
       starting "#", respectively. If a component is absent, both indices in that
       pair will be -1 (an index won't be less than 0 in any other case). If the
       string is null or is not a valid IRI, returns null.
-    </returns><exception cref='T:System.ArgumentException'>Either
+    </returns>
+    <exception cref='T:System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -3388,11 +3391,11 @@ of this NamedAddress object as it could appear in a "To" header field.
        is less than
       <paramref name='length'/>
        .
-    </exception><exception cref='T:System.ArgumentNullException'>The parameter
+    </exception>
+    <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='s'/>
        is null.
     </exception>
-
 </doc>
 <doc name="T:PeterO.Rdf.URIUtility">
 <summary>Contains utility methods for processing Uniform Resource Identifiers
@@ -3694,13 +3697,13 @@ of this NamedAddress object as it could appear in a "To" header field.
       <para>A domain name is divided into one or more strings separated by dots
         ("."), called
         <b>labels</b>
-        . For IDNA2008's purposes, a valid label can be an
+         . For IDNA2008's purposes, a valid label can be an
         <b>NR-LDH label</b>
-        , an
+         , an
         <b>A-label</b>
-        , or a
+         , or a
         <b>U-label</b>
-        .
+         .
       </para>
       <para>An LDH label contains only basic letters, basic digits, and/or "-", and
         neither begins nor ends with "-". For example, "exa-mple" and "1example"

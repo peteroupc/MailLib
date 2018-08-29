@@ -316,7 +316,7 @@ import com.upokecenter.text.*;
         index = SkipQtextOrQuotedPair(str, index, endIndex, rule);
         if (index == oldIndex) {
           if (builder != null) {
-            builder.delete(valueBLength, (valueBLength)+((builder.length()) - valueBLength));
+            builder.delete(valueBLength, (valueBLength)+(builder.length() - valueBLength));
           }
           return startIndex;
         }
@@ -327,7 +327,7 @@ import com.upokecenter.text.*;
         }
       }
       if (builder != null) {
-        builder.delete(valueBLength, (valueBLength)+((builder.length()) - valueBLength));
+        builder.delete(valueBLength, (valueBLength)+(builder.length() - valueBLength));
       }
       return startIndex;  // not a valid quoted-String
     }
