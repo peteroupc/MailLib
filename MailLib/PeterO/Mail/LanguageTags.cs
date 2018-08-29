@@ -34,7 +34,7 @@ namespace PeterO.Mail {
           break;
         } else {
           first = false;
-          string newstr = str.Substring(index, (index2) - index);
+          string newstr = str.Substring(index, index2 - index);
           strings = strings ?? (new List<string>());
           strings.Add(newstr);
           index = index2 + delimLength;
@@ -240,8 +240,8 @@ namespace PeterO.Mail {
 }
       while (index < str.Length) {
         if (!first) {
-          if (index < str.Length && str[index] == ',') index++;
-          else {
+          if (index < str.Length && str[index] == ',') { index++;
+} else {
  return null;
 }
         }
@@ -296,8 +296,8 @@ if (str == null) {
 }
       while (index < str.Length) {
         if (!first) {
-          if (index < str.Length && str[index] == ',') index++;
-          else {
+          if (index < str.Length && str[index] == ',') { index++;
+} else {
  return null;
 }
         }

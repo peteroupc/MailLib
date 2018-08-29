@@ -7,20 +7,19 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-  final class URIUtility {
+    final class URIUtility {
 private URIUtility() {
 }
-
     enum ParseMode {
-      IRIStrict,
+    IRIStrict,
 
-      URIStrict,
+    URIStrict,
 
-      IRILenient,
+    IRILenient,
 
-      URILenient,
+    URILenient,
 
-      IRISurrogateLenient
+    IRISurrogateLenient
     }
 
     private static final String HexChars = "0123456789ABCDEF";
@@ -382,7 +381,6 @@ retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
       return retString.toString();
       }
 
-// <summary></summary>
     public static String EncodeStringForURI(String s) {
       if (s == null) {
   throw new NullPointerException("s");
@@ -401,8 +399,8 @@ StringBuilder builder = new StringBuilder();
         if (c >= 0x10000) {
  ++index;
 }
-    if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'
-) ||
+    if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
+        (c >= 'a' && c <= 'z') ||
             (c >= '0' && c <= '9') || "-_.~".indexOf((char)c) >= 0)) {
           builder.append((char)c);
           ++index;

@@ -4,8 +4,8 @@
 Represents an email address.
 
 * [com.upokecenter.mail.ContentDisposition](com.upokecenter.mail.ContentDisposition.md) -
-Specifies how a message body should be displayed or handled by a mail user
- agent.
+Specifies how a message body should be displayed or handled by a mail
+ user agent.
 
 * [com.upokecenter.mail.DataUrls](com.upokecenter.mail.DataUrls.md) -
 Contains methods for parsing and generating data URLs.

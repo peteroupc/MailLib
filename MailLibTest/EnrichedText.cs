@@ -5,14 +5,6 @@ using System.Text;
 namespace PeterO {
     /// <summary>Not documented yet.</summary>
   public static class EnrichedText {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>The parameter <paramref name='str'/> is not
-    /// documented yet.</param>
-    /// <param name='index'>The parameter <paramref name='index'/> is not
-    /// documented yet.</param>
-    /// <param name='endIndex'>The parameter <paramref name='endIndex'/> is
-    /// not documented yet.</param>
-    /// <returns>A string object.</returns>
     private static string ParseColor(string str, int index, int endIndex) {
       if (index + 2 == endIndex - 1 && (str[index] & ~32) == 82 &&
         (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 68) {
@@ -75,42 +67,42 @@ namespace PeterO {
         } else {
           return null;
         }
-   if (index + 4 < endIndex && (str[index] == 44) && (((str[index + 1] >= 65
-          &&
+      if (index + 4 < endIndex && (str[index] == 44) && (((str[index + 1] >=
+          65 &&
     str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102) ||
-          (str[index + 1] >= 48 && str[index + 1] <=
+           (str[index + 1] >= 48 && str[index + 1] <=
 
-     57)) && ((str[index + 2] >= 65 && str[index + 2] <= 70) || (str[index +
-          2] >= 97 && str[index + 2] <= 102) || (str[index + 2] >= 48 &&
+        57)) && ((str[index + 2] >= 65 && str[index + 2] <= 70) ||
+            (str[index +
+               2] >= 97 && str[index + 2] <= 102) || (str[index + 2] >= 48 &&
 
    str[index + 2] <= 57)) && ((str[index + 3] >= 65 && str[index + 3] <= 70) ||
           (str[index + 3] >= 97 && str[index + 3] <= 102) ||
 
-   (str[index + 3] >= 48 && str[index + 3] <= 57)) && ((str[index + 4] >= 65
-          &&
+      (str[index + 3] >= 48 && str[index + 3] <= 57)) && ((str[index + 4] >=
+          65 &&
     str[index + 4] <= 70) || (str[index + 4] >= 97 && str[index + 4] <= 102) ||
-          (str[index + 4] >= 48 && str[index + 4] <=
+           (str[index + 4] >= 48 && str[index + 4] <=
 
                     57)))) {
           index += 5;
         } else {
           return null;
         }
-    if (index + 4 == endIndex - 1 && (str[index] == 44) && (((str[index + 1]
-          >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97
-&&
-                str[index + 1] <= 102) || (str[index + 1] >= 48 &&
+        if (index + 4 == endIndex - 1 && (str[index] == 44) && (((str[index + 1]
+              >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97 &&
+    str[index + 1] <= 102) || (str[index + 1] >= 48 &&
                     str[index +
                     1] <= 57)) && ((str[index + 2] >= 65 && str[index + 2] <=
-   70) || (str[index + 2] >= 97 && str[index + 2] <= 102) || (str[index + 2]
-          >= 48 && str[index + 2] <= 57)) && ((str[index + 3] >= 65 &&
+       70) || (str[index + 2] >= 97 && str[index + 2] <= 102) || (str[index + 2]
+              >= 48 && str[index + 2] <= 57)) && ((str[index + 3] >= 65 &&
 
-                  str[index + 3] <= 70) || (str[index + 3] >= 97 &&
+                    str[index + 3] <= 70) || (str[index + 3] >= 97 &&
                     str[index +
                     3] <= 102) || (str[index + 3] >= 48 && str[index + 3] <=
                     57)) && ((str[index + 4] >= 65 && str[index + 4] <= 70) ||
-    (str[index + 4] >= 97 && str[index + 4] <= 102) || (str[index + 4] >= 48
-               &&
+        (str[index + 4] >= 97 && str[index + 4] <= 102) || (str[index + 4] >= 48
+                   &&
 
                     str[index + 4] <= 57)))) {
           index += 5;
@@ -126,14 +118,6 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>The parameter <paramref name='str'/> is not
-    /// documented yet.</param>
-    /// <param name='index'>The parameter <paramref name='index'/> is not
-    /// documented yet.</param>
-    /// <param name='endIndex'>The parameter <paramref name='endIndex'/> is
-    /// not documented yet.</param>
-    /// <returns>A 32-bit signed integer.</returns>
     private static int SkipFont(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
@@ -176,14 +160,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       return indexTemp;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>The parameter <paramref name='str'/> is not
-    /// documented yet.</param>
-    /// <param name='index'>The parameter <paramref name='index'/> is not
-    /// documented yet.</param>
-    /// <param name='endIndex'>The parameter <paramref name='endIndex'/> is
-    /// not documented yet.</param>
-    /// <returns>A 32-bit signed integer.</returns>
     private static int SkipLang(string str, int index, int endIndex) {
       while (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
             (str[index] == 45) || (str[index] >= 97 && str[index] <= 122) ||
@@ -193,13 +169,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       return index;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <param name='delimiter'>Not documented yet.</param>
-    /// <returns>A string[] object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter
-    /// &#x22;delimiter&#x22; is null.</exception>
-    /// <exception cref='ArgumentException'>Delimiter is empty.</exception>
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException(nameof(delimiter));
@@ -227,7 +196,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           break;
         } else {
           first = false;
-          string newstr = str.Substring(index, (index2) - index);
+          string newstr = str.Substring(index, index2 - index);
           strings = strings ?? (new List<string>());
           strings.Add(newstr);
           index = index2 + delimLength;
@@ -236,10 +205,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       return (string[])strings.ToArray();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='s'>The parameter <paramref name='s'/> is not
-    /// documented yet.</param>
-    /// <returns>A string object.</returns>
     private static string TrimSpaces(string s) {
       if (s == null || s.Length == 0) {
         return s;
@@ -270,14 +235,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       return String.Empty;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>The parameter <paramref name='str'/> is not
-    /// documented yet.</param>
-    /// <param name='index'>The parameter <paramref name='index'/> is not
-    /// documented yet.</param>
-    /// <param name='endIndex'>The parameter <paramref name='endIndex'/> is
-    /// not documented yet.</param>
-    /// <returns>A string object.</returns>
     public static string EnrichedToPlain(
   string str,
   int index,
@@ -291,8 +248,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
         while (true) {
           int indexTemp2 = index;
           do {
-        if (index + 1 < endIndex && str[index] == 60 && str[index + 1] ==
-              60) {
+            if (index + 1 < endIndex && str[index] == 60 && str[index + 1] ==
+                  60) {
               currentBuilder.Append("<");
               indexTemp2 += 2; break;
             }
@@ -360,11 +317,12 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             }
             int indexStart2 = index;
             var lineBreakCount = 0;
-            for (int i2 = 0; ; ++i2) {
+            var i2 = 0;
+            for (;; ++i2) {
               indexTemp3 = index;
               do {
-        if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
-                  10) {
+              if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
+                == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]
@@ -458,14 +416,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       return originalBuilder.ToString();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>The parameter <paramref name='str'/> is not
-    /// documented yet.</param>
-    /// <param name='index'>The parameter <paramref name='index'/> is not
-    /// documented yet.</param>
-    /// <param name='endIndex'>The parameter <paramref name='endIndex'/> is
-    /// not documented yet.</param>
-    /// <returns>A string object.</returns>
     public static string EnrichedToHtml(
   string str,
   int index,
@@ -483,8 +433,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
         while (true) {
           int indexTemp2 = index;
           do {
-        if (index + 1 < endIndex && str[index] == 60 && str[index + 1] ==
-              60) {
+            if (index + 1 < endIndex && str[index] == 60 && str[index + 1] ==
+                  60) {
               currentBuilder.Append("&lt;");
               indexTemp2 += 2; break;
             }
@@ -627,10 +577,10 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                     currentBuilder.Append("<span>");
                     }
                     } else if (lastCommand.Equals("color")) {
-                p = ParseColor(
-  DataUtilities.ToLowerCaseAscii(p),
-  0,
-  p.Length);
+                    p = ParseColor(
+        DataUtilities.ToLowerCaseAscii(p),
+        0,
+        p.Length);
                     if (p != null) {
                     currentBuilder.Append("<span style='color: " + p + "'>");
                     } else {
@@ -639,7 +589,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                     } else if (lastCommand.Equals("lang")) {
                     if (SkipLang(p, 0, p.Length) == p.Length) {
     currentBuilder.Append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
-           "'> ");
+                    "'> ");
                     } else {
                     currentBuilder.Append("<span>");
                     }
@@ -697,11 +647,11 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             }
             int indexStart2 = index;
             var lineBreakCount = 0;
-            for (int i2 = 0; ; ++i2) {
+            for (int i2 = 0;; ++i2) {
               indexTemp3 = index;
               do {
-        if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
-                  10) {
+              if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
+                == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]

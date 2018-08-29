@@ -53,7 +53,7 @@ Contains methods for parsing and matching language tags.
 ### IsLanguageRange
     public static boolean IsLanguageRange​(String str)
 Returns whether the given string is a basic language range under RFC 4647.
- Examples include "*", "en-us", and "fr".
+ Examples include "&#x2a;", "en-us", and "fr".
 
 **Parameters:**
 
@@ -68,8 +68,8 @@ Returns whether the given string is a basic language range under RFC 4647.
     public static boolean IsLanguageRange​(String str, boolean extended)
 Returns whether the given string is a basic or extended language range under
  RFC 4647. Examples of basic (and extended) language ranges include
- "*", "en-us", and "fr". Examples of extended language ranges include
- "*-de" and "it-*".
+ "&#x2a;", "en-us", and "fr". Examples of extended language ranges
+ include "&#x2a;-de" and "it-&#x2a;".
 
 **Parameters:**
 
@@ -82,7 +82,7 @@ Returns whether the given string is a basic or extended language range under
 
 * <code>true</code> if the given string is a basic language range
  (depending on the <code>extended</code> parameter); otherwise, <code>
- false</code>.
+ false</code> .
 
 ### LanguageTagCase
     public static String LanguageTagCase​(String str)

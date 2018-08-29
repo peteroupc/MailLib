@@ -12,6 +12,9 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class BoundaryCheckerTransform implements IByteReader {
+    private static final int PartStart = 0;
+    private static final int PartBody = 1;
+    private static final int PartEpilogue = 2;
     private final IByteReader input;
     private final ArrayList<String> boundaries;
     private byte[] innerBuffer;
@@ -137,10 +140,6 @@ import com.upokecenter.mail.*;
       // Possible boundary candidate
       return this.CheckBoundaries(PartBody);
     }
-
-    private static final int PartStart = 0;
-    private static final int PartBody = 1;
-    private static final int PartEpilogue = 2;
 
     private int CheckBoundaries(int state) {
       // Reached here when the "--" of a possible

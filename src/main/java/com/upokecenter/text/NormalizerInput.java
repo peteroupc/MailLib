@@ -20,18 +20,17 @@ package com.upokecenter.text;
      * acute). For this reason, the standard defines four <i> normalization
      * forms </i> that convert strings to a single equivalent form: </p>
      * <ul> <li><b>NFD</b> (Normalization Form D) decomposes combined forms
-     * to their constituent characters (E plus acute, for example). This is
-     * called canonical decomposition. </li> <li><b>NFC</b> does canonical
+     * to their constituent characters (E plus acute, for example), then
+     * reorders combining marks to a standardized order. This is called
+     * canonical decomposition. </li> <li><b>NFC</b> does canonical
      * decomposition, then combines certain constituent characters to their
      * composites (E-acute, for example). This is called canonical
      * composition. </li> <li>Two normalization forms, <b>NFKC</b> and
      * <b>NFKD</b> , are similar to NFC and NFD, except they also
      * "decompose" certain characters, such as ligatures, font or positional
      * variants, and subscripts, whose visual distinction can matter in some
-     * contexts. This is called compatibility decomposition. </li> <li>The
-     * four normalization forms also enforce a standardized order for
-     * combining marks, since they can otherwise appear in an arbitrary
-     * order. </li> </ul> <p>For more information, see Standard Annex 15 at
+     * contexts. This is called compatibility decomposition. </li> </ul>
+     * <p>For more information, see Standard Annex 15 at
      * <code>http://www.unicode.org/reports/tr15/</code> . </p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
@@ -430,7 +429,7 @@ UnicodeDatabase.IsQuickCheckStarter(
       for (int i = 0; i < str.length(); ++i) {
         int c = str.charAt(i);
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
-            str.charAt(i + 1) >= 0xdc00 && str.charAt(i + 1) <= 0xdfff) {
+            (str.charAt(i + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -501,7 +500,7 @@ UnicodeDatabase.IsQuickCheckStarter(
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charString.charAt(i);
         if ((c & 0x1ffc00) == 0xd800 && i + 1 < endIndex &&
-            charString.charAt(i + 1) >= 0xdc00 && charString.charAt(i + 1) <= 0xdfff) {
+            (charString.charAt(i + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (charString.charAt(i + 1) - 0xdc00);
           ++i;

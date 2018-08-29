@@ -8,13 +8,6 @@ import java.util.*;
   public final class EnrichedText {
 private EnrichedText() {
 }
-    /**
-     * Not documented yet.
-     * @param str The parameter {@code str} is not documented yet.
-     * @param index The parameter {@code index} is not documented yet.
-     * @param endIndex The parameter {@code endIndex} is not documented yet.
-     * @return A string object.
-     */
     private static String ParseColor(String str, int index, int endIndex) {
       if (index + 2 == endIndex - 1 && (str.charAt(index) & ~32) == 82 &&
         (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 68) {
@@ -77,42 +70,42 @@ private EnrichedText() {
         } else {
           return null;
         }
-   if (index + 4 < endIndex && (str.charAt(index) == 44) && (((str.charAt(index + 1) >= 65
-          &&
+      if (index + 4 < endIndex && (str.charAt(index) == 44) && (((str.charAt(index + 1) >=
+          65 &&
     str.charAt(index + 1) <= 70) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102) ||
-          (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <=
+           (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <=
 
-     57)) && ((str.charAt(index + 2) >= 65 && str.charAt(index + 2) <= 70) || (str.charAt(index +
-          2) >= 97 && str.charAt(index + 2) <= 102) || (str.charAt(index + 2) >= 48 &&
+        57)) && ((str.charAt(index + 2) >= 65 && str.charAt(index + 2) <= 70) ||
+            (str.charAt(index +
+               2) >= 97 && str.charAt(index + 2) <= 102) || (str.charAt(index + 2) >= 48 &&
 
    str.charAt(index + 2) <= 57)) && ((str.charAt(index + 3) >= 65 && str.charAt(index + 3) <= 70) ||
           (str.charAt(index + 3) >= 97 && str.charAt(index + 3) <= 102) ||
 
-   (str.charAt(index + 3) >= 48 && str.charAt(index + 3) <= 57)) && ((str.charAt(index + 4) >= 65
-          &&
+      (str.charAt(index + 3) >= 48 && str.charAt(index + 3) <= 57)) && ((str.charAt(index + 4) >=
+          65 &&
     str.charAt(index + 4) <= 70) || (str.charAt(index + 4) >= 97 && str.charAt(index + 4) <= 102) ||
-          (str.charAt(index + 4) >= 48 && str.charAt(index + 4) <=
+           (str.charAt(index + 4) >= 48 && str.charAt(index + 4) <=
 
                     57)))) {
           index += 5;
         } else {
           return null;
         }
-    if (index + 4 == endIndex - 1 && (str.charAt(index) == 44) && (((str.charAt(index + 1)
-          >= 65 && str.charAt(index + 1) <= 70) || (str.charAt(index + 1) >= 97
-&&
-                str.charAt(index + 1) <= 102) || (str.charAt(index + 1) >= 48 &&
+        if (index + 4 == endIndex - 1 && (str.charAt(index) == 44) && (((str.charAt(index + 1)
+              >= 65 && str.charAt(index + 1) <= 70) || (str.charAt(index + 1) >= 97 &&
+    str.charAt(index + 1) <= 102) || (str.charAt(index + 1) >= 48 &&
                     str.charAt(index +
                     1) <= 57)) && ((str.charAt(index + 2) >= 65 && str.charAt(index + 2) <=
-   70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102) || (str.charAt(index + 2)
-          >= 48 && str.charAt(index + 2) <= 57)) && ((str.charAt(index + 3) >= 65 &&
+       70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102) || (str.charAt(index + 2)
+              >= 48 && str.charAt(index + 2) <= 57)) && ((str.charAt(index + 3) >= 65 &&
 
-                  str.charAt(index + 3) <= 70) || (str.charAt(index + 3) >= 97 &&
+                    str.charAt(index + 3) <= 70) || (str.charAt(index + 3) >= 97 &&
                     str.charAt(index +
                     3) <= 102) || (str.charAt(index + 3) >= 48 && str.charAt(index + 3) <=
                     57)) && ((str.charAt(index + 4) >= 65 && str.charAt(index + 4) <= 70) ||
-    (str.charAt(index + 4) >= 97 && str.charAt(index + 4) <= 102) || (str.charAt(index + 4) >= 48
-               &&
+        (str.charAt(index + 4) >= 97 && str.charAt(index + 4) <= 102) || (str.charAt(index + 4) >= 48
+                   &&
 
                     str.charAt(index + 4) <= 57)))) {
           index += 5;
@@ -128,13 +121,6 @@ private EnrichedText() {
       }
     }
 
-    /**
-     * Not documented yet.
-     * @param str The parameter {@code str} is not documented yet.
-     * @param index The parameter {@code index} is not documented yet.
-     * @param endIndex The parameter {@code endIndex} is not documented yet.
-     * @return A 32-bit signed integer.
-     */
     private static int SkipFont(String str, int index, int endIndex) {
       int indexTemp = index;
       do {
@@ -177,13 +163,6 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       return indexTemp;
     }
 
-    /**
-     * Not documented yet.
-     * @param str The parameter {@code str} is not documented yet.
-     * @param index The parameter {@code index} is not documented yet.
-     * @param endIndex The parameter {@code endIndex} is not documented yet.
-     * @return A 32-bit signed integer.
-     */
     private static int SkipLang(String str, int index, int endIndex) {
       while (index < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
             (str.charAt(index) == 45) || (str.charAt(index) >= 97 && str.charAt(index) <= 122) ||
@@ -193,14 +172,6 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       return index;
     }
 
-    /**
-     * Not documented yet.
-     * @param str Not documented yet.
-     * @param delimiter Not documented yet.
-     * @return A string[] object.
-     * @throws NullPointerException The parameter "delimiter" is null.
-     * @throws IllegalArgumentException Delimiter is empty.
-     */
     private static String[] SplitAt(String str, String delimiter) {
       if (delimiter == null) {
         throw new NullPointerException("delimiter");
@@ -228,7 +199,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
           break;
         } else {
           first = false;
-          String newstr = str.substring(index, (index)+((index2) - index));
+          String newstr = str.substring(index, (index)+(index2 - index));
           strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
@@ -237,11 +208,6 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       return strings.toArray(new String[] { });
     }
 
-    /**
-     * Not documented yet.
-     * @param s The parameter {@code s} is not documented yet.
-     * @return A string object.
-     */
     private static String TrimSpaces(String s) {
       if (s == null || s.length() == 0) {
         return s;
@@ -272,13 +238,6 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       return "";
     }
 
-    /**
-     * Not documented yet.
-     * @param str The parameter {@code str} is not documented yet.
-     * @param index The parameter {@code index} is not documented yet.
-     * @param endIndex The parameter {@code endIndex} is not documented yet.
-     * @return A string object.
-     */
     public static String EnrichedToPlain(
   String str,
   int index,
@@ -292,8 +251,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
         while (true) {
           int indexTemp2 = index;
           do {
-        if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
-              60) {
+            if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
+                  60) {
               currentBuilder.append("<");
               indexTemp2 += 2; break;
             }
@@ -361,11 +320,12 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             }
             int indexStart2 = index;
             int lineBreakCount = 0;
-            for (int i2 = 0; ; ++i2) {
+            int i2 = 0;
+            for (;; ++i2) {
               indexTemp3 = index;
               do {
-        if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
-                  10) {
+              if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
+                == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)
@@ -459,13 +419,6 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       return originalBuilder.toString();
     }
 
-    /**
-     * Not documented yet.
-     * @param str The parameter {@code str} is not documented yet.
-     * @param index The parameter {@code index} is not documented yet.
-     * @param endIndex The parameter {@code endIndex} is not documented yet.
-     * @return A string object.
-     */
     public static String EnrichedToHtml(
   String str,
   int index,
@@ -483,8 +436,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
         while (true) {
           int indexTemp2 = index;
           do {
-        if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
-              60) {
+            if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
+                  60) {
               currentBuilder.append("&lt;");
               indexTemp2 += 2; break;
             }
@@ -627,10 +580,10 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                     currentBuilder.append("<span>");
                     }
                     } else if (lastCommand.equals("color")) {
-                p = ParseColor(
-  DataUtilities.ToLowerCaseAscii(p),
-  0,
-  p.length());
+                    p = ParseColor(
+        DataUtilities.ToLowerCaseAscii(p),
+        0,
+        p.length());
                     if (p != null) {
                     currentBuilder.append("<span style='color: " + p + "'>");
                     } else {
@@ -639,7 +592,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                     } else if (lastCommand.equals("lang")) {
                     if (SkipLang(p, 0, p.length()) == p.length()) {
     currentBuilder.append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
-           "'> ");
+                    "'> ");
                     } else {
                     currentBuilder.append("<span>");
                     }
@@ -697,11 +650,11 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             }
             int indexStart2 = index;
             int lineBreakCount = 0;
-            for (int i2 = 0; ; ++i2) {
+            for (int i2 = 0;; ++i2) {
               indexTemp3 = index;
               do {
-        if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
-                  10) {
+              if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
+                == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)

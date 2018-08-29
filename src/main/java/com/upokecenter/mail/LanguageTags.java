@@ -37,7 +37,7 @@ private LanguageTags() {
           break;
         } else {
           first = false;
-          String newstr = str.substring(index, (index)+((index2) - index));
+          String newstr = str.substring(index, (index)+(index2 - index));
           strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
@@ -48,7 +48,7 @@ private LanguageTags() {
 
     /**
      * Returns whether the given string is a basic language range under RFC 4647.
-     * Examples include "*", "en-us", and "fr".
+     * Examples include "&#x2a;", "en-us", and "fr".
      * @param str The string to check. Can be null.
      * @return {@code true} if the given string is a basic language range;
      * otherwise, {@code false} .
@@ -60,14 +60,14 @@ private LanguageTags() {
     /**
      * Returns whether the given string is a basic or extended language range under
      * RFC 4647. Examples of basic (and extended) language ranges include
-     * "*", "en-us", and "fr". Examples of extended language ranges include
-     * "*-de" and "it-*".
+     * "&#x2a;", "en-us", and "fr". Examples of extended language ranges
+     * include "&#x2a;-de" and "it-&#x2a;".
      * @param str The string to check. Can be null.
      * @param extended Check whether the string is a basic language range if
      * "false", or an extended language range if "true".
      * @return {@code true} if the given string is a basic language range
      * (depending on the {@code extended} parameter); otherwise, {@code
-     * false}.
+     * false} .
      */
     public static boolean IsLanguageRange(String str, boolean extended) {
       if (((str) == null || (str).length() == 0)) {
@@ -272,8 +272,8 @@ private LanguageTags() {
 }
       while (index < str.length()) {
         if (!first) {
-          if (index < str.length() && str.charAt(index) == ',') index++;
-          else {
+          if (index < str.length() && str.charAt(index) == ',') { index++;
+} else {
  return null;
 }
         }
@@ -339,8 +339,8 @@ if (str == null) {
 }
       while (index < str.length()) {
         if (!first) {
-          if (index < str.length() && str.charAt(index) == ',') index++;
-          else {
+          if (index < str.length() && str.charAt(index) == ',') { index++;
+} else {
  return null;
 }
         }

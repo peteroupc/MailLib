@@ -68,7 +68,7 @@ import com.upokecenter.text.*;
      * kind.) </li> <li>The name <code>ascii</code> is treated as a synonym for
      * <code>us-ascii</code> , despite being a reserved name under RFC 2046. The
      * name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
-     * <code>windows-1252</code> and <code>utf-8</code>, respectively, even though they
+     * <code>windows-1252</code> and <code>utf-8</code> , respectively, even though they
      * are not IANA registered aliases. </li> <li>The following deviations
      * involve encoded words under RFC 2047: </li> <li>(a) If a sequence of
      * encoded words decodes to a string with a CTL character (U + 007F, or a
@@ -1782,7 +1782,8 @@ private static String GetContentTranslationType(String ctt) {
   String str) {
       int i = 0;
       int begin = 0;
-      if (str.indexOf('(') < 0) return enc.AppendString(str);
+      if (str.indexOf('(') < 0) { return enc.AppendString(str);
+}
       StringBuilder sb = new StringBuilder();
       while (i < str.length()) {
         if (str.charAt(i) == '(') {
@@ -3347,14 +3348,14 @@ private static String GetContentTranslationType(String ctt) {
 
     private static class MessageStackEntry {
     /**
-     * This is an internal API.
+     * Gets a value not documented yet.
      * @return This is an internal API.
      */
       public final Message getMessage() { return propVarmessage; }
 private final Message propVarmessage;
 
     /**
-     * This is an internal API.
+     * Gets a value not documented yet.
      * @return This is an internal API.
      */
       public final String getBoundary() { return propVarboundary; }

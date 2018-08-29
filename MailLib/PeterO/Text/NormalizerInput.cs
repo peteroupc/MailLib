@@ -345,7 +345,7 @@ UnicodeDatabase.IsQuickCheckStarter(
       for (int i = 0; i < str.Length; ++i) {
         int c = str[i];
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
-            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
+            (str[i + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
@@ -416,7 +416,7 @@ UnicodeDatabase.IsQuickCheckStarter(
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charString[i];
         if ((c & 0x1ffc00) == 0xd800 && i + 1 < endIndex &&
-            charString[i + 1] >= 0xdc00 && charString[i + 1] <= 0xdfff) {
+            (charString[i + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (charString[i + 1] - 0xdc00);
           ++i;

@@ -308,7 +308,9 @@ import com.upokecenter.util.*;
     private void AppendComment(String symbol, boolean writeSpace) {
       // NOTE: Assumes 'symbol' is a syntactically valid 'comment'
       // and begins and ends with parentheses
-      if (symbol.length() == 0 || symbol.charAt(0) != '(') throw new IllegalArgumentException();
+      if (symbol.length() == 0 || symbol.charAt(0) != '(') {
+ throw new IllegalArgumentException();
+}
       int i = 0;
       int symbolBegin = 0;
       while (i < symbol.length()) {
