@@ -2607,18 +2607,12 @@ ns me
 
 </doc>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Boundary">
-
-            <summary>This is an internal API.
-    </summary><value>This is an internal API.
-    </value>
-
+<summary>Gets a value not documented yet.</summary>
+            <value>This is an internal API.</value>
 </doc>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Message">
-
-            <summary>This is an internal API.
-    </summary><value>This is an internal API.
-    </value>
-
+<summary>Gets a value not documented yet.</summary>
+            <value>This is an internal API.</value>
 </doc>
 <doc name="M:PeterO.Mail.Message.NewBodyPart">
 

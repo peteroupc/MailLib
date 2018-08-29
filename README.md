@@ -36,7 +36,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     <dependency>
       <groupId>com.upokecenter</groupId>
       <artifactId>maillib</artifactId>
-      <version>0.13.0</version>
+      <version>0.13.1</version>
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
@@ -69,6 +69,10 @@ An example of reading an email message from a file:
 
 Release Notes
 ---------
+
+Version 0.13.1:
+
+- Java version only: Make Java version depend on Encoding library 0.5.0.
 
 Version 0.13.0:
 

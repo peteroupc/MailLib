@@ -2915,12 +2915,12 @@ if (ungetState[1] < 0x80) {
     }
 
     private class MessageStackEntry {
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>This is an internal API.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message { get; private set; }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>This is an internal API.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {
