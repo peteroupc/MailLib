@@ -709,7 +709,7 @@ namespace PeterO.Text {
         if (ch >= 0x10000) {
           ++i;
         }
-        int category = UnicodeDatabase.GetIdnaCategory(ch);
+        int category = UnicodeDatabase.GetPrecisCategory(ch);
         if (category == Disallowed || category == Unassigned) {
           return false;
         }
