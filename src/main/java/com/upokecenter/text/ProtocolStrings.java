@@ -138,7 +138,7 @@ private ProtocolStrings() {
       int lastPos = 0;
       int i = 0;
       StringBuilder sb = null;
-      while (i <= str.length()) {
+      while (i < str.length()) {
         if (str.charAt(i) == ' ') {
           String part = UserpartEnforce(
             str.substring(lastPos, (lastPos)+(i - lastPos)),
@@ -148,7 +148,6 @@ private ProtocolStrings() {
           }
           sb = (sb == null) ? ((new StringBuilder())) : sb;
           sb.append(part);
-          sb.append(' ');
           while (i < str.length()) {
             if (str.charAt(i) != ' ') {
               break;
@@ -188,11 +187,11 @@ private ProtocolStrings() {
      * passing a clearable array of characters rather than a text string.).
      * @param str A string to prepare that represents an arbitrary sequence of
      * characters entered by a user.
-     * @return An opaque string prepared under the OpaqueString profile in RFC
-     * 8265. Returns null if that string is invalid under that profile
-     * (including if {@code str} is null or empty). For comparison purposes,
-     * return values of this method should be compared code point by code
-     * point (see RFC 8265, sec. 4.2.3).
+     * @return A string prepared under the OpaqueString profile in RFC 8265.
+     * Returns null if that string is invalid under that profile (including
+     * if {@code str} is null or empty). For comparison purposes, return
+     * values of this method should be compared code point by code point
+     * (see RFC 8265, sec. 4.2.3).
      */
     public static String OpaqueStringEnforce(String str) {
       return Idna.OpaqueStringEnforce(str);

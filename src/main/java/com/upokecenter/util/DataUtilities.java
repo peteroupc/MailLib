@@ -61,7 +61,7 @@ private DataUtilities() {
      * Finds the number of Unicode code points in the given text string. Unpaired
      * surrogate code points increase this number by 1. This is not
      * necessarily the length of the string in "char" s.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @return The number of Unicode code points in the given string.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */

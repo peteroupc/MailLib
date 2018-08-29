@@ -1,4 +1,5 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.text.*;
@@ -38,6 +39,177 @@ import com.upokecenter.text.*;
         "xn--e-ufa",
         stringTemp);
       }
+    }
+    @Test
+    public void TestDecodeDomainName() {
+      {
+String stringTemp = Idna.DecodeDomainName("xn--e-ufa");
+Assert.assertEquals(
+  "e\u00e1",
+  stringTemp);
+}
+      {
+String stringTemp = Idna.DecodeDomainName("xn--e-ufa.example");
+Assert.assertEquals(
+  "e\u00e1.example",
+  stringTemp);
+}
+      {
+String stringTemp = Idna.DecodeDomainName("site.xn--e-ufa.example");
+Assert.assertEquals(
+  "site.e\u00e1.example",
+  stringTemp);
+}
+    }
+    @Test
+    public void TestProtocolStrings() {
+      if (!(
+       ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"))) {
+ Assert.fail();
+ }
+      if (!(
+       ProtocolStrings.IsInFreeformClass("test\u007b}[]?^&"))) {
+ Assert.fail();
+ }
+      if (
+       ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&")) {
+ Assert.fail();
+ }
+      if (!(
+       ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"))) {
+ Assert.fail();
+ }
+      if (
+       ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&")) {
+ Assert.fail();
+ }
+      if (
+       ProtocolStrings.IsInFreeformClass("tes\nt\u007b} []?^&")) {
+ Assert.fail();
+ }
+      {
+String stringTemp = ProtocolStrings.UserpartEnforce("TeSt");
+Assert.assertEquals(
+  "test",
+  stringTemp);
+}
+      {
+String stringTemp = ProtocolStrings.UserpartEnforce("TeSt", false);
+Assert.assertEquals(
+  "test",
+  stringTemp);
+}
+      {
+String stringTemp = ProtocolStrings.UserpartEnforce("TeSt", true);
+Assert.assertEquals(
+  "TeSt",
+  stringTemp);
+}
+      Assert.assertEquals(
+       null,
+       ProtocolStrings.UserpartEnforce("Te St", false));
+      {
+String stringTemp = ProtocolStrings.UsernameEnforce("Te St", false);
+Assert.assertEquals(
+  "te st",
+  stringTemp);
+}
+      {
+String stringTemp = ProtocolStrings.UsernameEnforce("Te St", true);
+Assert.assertEquals(
+  "Te St",
+  stringTemp);
+}
+      // Final capital sigma
+      {
+String stringTemp = ProtocolStrings.UserpartEnforce("x\u03a3");
+Assert.assertEquals(
+  "x\u03c2",
+  stringTemp);
+}
+Assert.assertEquals(
+  null,
+  ProtocolStrings.UsernameEnforce(null));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.UsernameEnforce(""));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.UserpartEnforce(null));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.UserpartEnforce(""));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.OpaqueStringEnforce(null));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.OpaqueStringEnforce(""));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.NicknameEnforce(null));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.NicknameEnforce(""));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.NicknameForComparison(null));
+Assert.assertEquals(
+  null,
+  ProtocolStrings.NicknameForComparison(""));
+
+{
+String stringTemp = ProtocolStrings.OpaqueStringEnforce("a b ccccc test");
+Assert.assertEquals(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+String stringTemp = ProtocolStrings.NicknameEnforce("a b ccccc test");
+Assert.assertEquals(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+String stringTemp = ProtocolStrings.NicknameEnforce("  a b ccccc test  ");
+Assert.assertEquals(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+String stringTemp = ProtocolStrings.NicknameEnforce("  a b ccccc   test  ");
+Assert.assertEquals(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+String stringTemp =
+  ProtocolStrings.NicknameEnforce("  a b\u00a0ccccc   test  ");
+Assert.assertEquals(
+  "a b ccccc test",
+  stringTemp);
+}
+Assert.assertEquals(
+  null,
+  ProtocolStrings.OpaqueStringEnforce("a\ntest"));
+{
+String stringTemp = ProtocolStrings.OpaqueStringEnforce("A b Ccccc tEst");
+Assert.assertEquals(
+  "A b Ccccc tEst",
+  stringTemp);
+}
+{
+String stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00e7c");
+Assert.assertEquals(
+  "a\u00e7c",
+  stringTemp);
+}
+{
+String stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00a0c");
+Assert.assertEquals(
+  "a c",
+  stringTemp);
+}
     }
     @Test
     public void TestIsValidDomainName() {

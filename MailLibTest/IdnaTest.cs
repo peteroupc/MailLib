@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using PeterO.Text;
 
@@ -40,53 +41,163 @@ namespace MailLibTest {
       }
     }
     [Test]
-    public static void TestDecodeDomainName() {
-      Assert.AreEqual(
-       "e\u00e1",
-       Idna.DecodeDomainName("xn--e-ufa"));
-      Assert.AreEqual(
-       "e\u00e1.example",
-       Idna.DecodeDomainName("xn--e-ufa.example"));
-      Assert.AreEqual(
-       "site.e\u00e1.example",
-       Idna.DecodeDomainName("site.xn--e-ufa.example"));
+    public void TestDecodeDomainName() {
+      {
+string stringTemp = Idna.DecodeDomainName("xn--e-ufa");
+Assert.AreEqual(
+  "e\u00e1",
+  stringTemp);
+}
+      {
+string stringTemp = Idna.DecodeDomainName("xn--e-ufa.example");
+Assert.AreEqual(
+  "e\u00e1.example",
+  stringTemp);
+}
+      {
+string stringTemp = Idna.DecodeDomainName("site.xn--e-ufa.example");
+Assert.AreEqual(
+  "site.e\u00e1.example",
+  stringTemp);
+}
     }
     [Test]
-    public static void TestProtocolStrings() {
+    public void TestProtocolStrings() {
       Assert.IsTrue(
-       ProtocolStrings.IsInIdentifierClass("test{}[]?^&"));
+       ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"));
       Assert.IsTrue(
-       ProtocolStrings.IsInFreeformClass("test{}[]?^&"));
+       ProtocolStrings.IsInFreeformClass("test\u007b}[]?^&"));
       Assert.IsFalse(
-       ProtocolStrings.IsInIdentifierClass("test{} []?^&"));
+       ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&"));
       Assert.IsTrue(
-       ProtocolStrings.IsInFreeformClass("test{} []?^&"));
+       ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"));
       Assert.IsFalse(
-       ProtocolStrings.IsInIdentifierClass("tes\nt{} []?^&"));
+       ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&"));
       Assert.IsFalse(
-       ProtocolStrings.IsInFreeformClass("tes\nt{} []?^&"));
-      Assert.AreEqual(
-       "test",
-       ProtocolStrings.UserpartEnforce("TeSt"));
-      Assert.AreEqual(
-       "test",
-       ProtocolStrings.UserpartEnforce("TeSt", false));
-      Assert.AreEqual(
-       "TeSt",
-       ProtocolStrings.UserpartEnforce("TeSt", true));
+       ProtocolStrings.IsInFreeformClass("tes\nt\u007b} []?^&"));
+      {
+string stringTemp = ProtocolStrings.UserpartEnforce("TeSt");
+Assert.AreEqual(
+  "test",
+  stringTemp);
+}
+      {
+string stringTemp = ProtocolStrings.UserpartEnforce("TeSt", false);
+Assert.AreEqual(
+  "test",
+  stringTemp);
+}
+      {
+string stringTemp = ProtocolStrings.UserpartEnforce("TeSt", true);
+Assert.AreEqual(
+  "TeSt",
+  stringTemp);
+}
       Assert.AreEqual(
        null,
        ProtocolStrings.UserpartEnforce("Te St", false));
-      Assert.AreEqual(
-       "te st",
-       ProtocolStrings.UsernameEnforce("Te St", false));
-      Assert.AreEqual(
-       "Te St",
-       ProtocolStrings.UsernameEnforce("Te St", true));
+      {
+string stringTemp = ProtocolStrings.UsernameEnforce("Te St", false);
+Assert.AreEqual(
+  "te st",
+  stringTemp);
+}
+      {
+string stringTemp = ProtocolStrings.UsernameEnforce("Te St", true);
+Assert.AreEqual(
+  "Te St",
+  stringTemp);
+}
       // Final capital sigma
-      Assert.AreEqual(
-       "x\u03c2",
-       ProtocolStrings.UserpartEnforce("x\u03a3"));
+      {
+string stringTemp = ProtocolStrings.UserpartEnforce("x\u03a3");
+Assert.AreEqual(
+  "x\u03c2",
+  stringTemp);
+}
+Assert.AreEqual(
+  null,
+  ProtocolStrings.UsernameEnforce(null));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.UsernameEnforce(String.Empty));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.UserpartEnforce(null));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.UserpartEnforce(String.Empty));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.OpaqueStringEnforce(null));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.OpaqueStringEnforce(String.Empty));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.NicknameEnforce(null));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.NicknameEnforce(String.Empty));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.NicknameForComparison(null));
+Assert.AreEqual(
+  null,
+  ProtocolStrings.NicknameForComparison(String.Empty));
+
+{
+string stringTemp = ProtocolStrings.OpaqueStringEnforce("a b ccccc test");
+Assert.AreEqual(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+string stringTemp = ProtocolStrings.NicknameEnforce("a b ccccc test");
+Assert.AreEqual(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+string stringTemp = ProtocolStrings.NicknameEnforce("  a b ccccc test  ");
+Assert.AreEqual(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+string stringTemp = ProtocolStrings.NicknameEnforce("  a b ccccc   test  ");
+Assert.AreEqual(
+  "a b ccccc test",
+  stringTemp);
+}
+{
+string stringTemp =
+  ProtocolStrings.NicknameEnforce("  a b\u00a0ccccc   test  ");
+Assert.AreEqual(
+  "a b ccccc test",
+  stringTemp);
+}
+Assert.AreEqual(
+  null,
+  ProtocolStrings.OpaqueStringEnforce("a\ntest"));
+{
+string stringTemp = ProtocolStrings.OpaqueStringEnforce("A b Ccccc tEst");
+Assert.AreEqual(
+  "A b Ccccc tEst",
+  stringTemp);
+}
+{
+string stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00e7c");
+Assert.AreEqual(
+  "a\u00e7c",
+  stringTemp);
+}
+{
+string stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00a0c");
+Assert.AreEqual(
+  "a c",
+  stringTemp);
+}
     }
     [Test]
     public void TestIsValidDomainName() {
