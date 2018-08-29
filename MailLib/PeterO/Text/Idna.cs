@@ -676,7 +676,7 @@ namespace PeterO.Text {
       if (String.IsNullOrEmpty(str)) {
         return null;
       }
-      if (IsInPrecisClass(str, false)) {
+      if (IsInPrecisClass(str, true)) {
         str = SpaceMapping(str);
         str = NormalizerInput.Normalize(str, Normalization.NFC);
         return str.Length == 0 ? null : str;

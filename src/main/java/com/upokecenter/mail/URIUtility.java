@@ -7,56 +7,19 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     * Contains utility methods for processing Uniform Resource Identifiers (URIs)
-     * and Internationalized Resource Identifiers (IRIs) under RFC3986 and
-     * RFC3987, respectively. In the following documentation, URIs and IRIs
-     * include URI references and IRI references, for convenience.
-     */
   final class URIUtility {
 private URIUtility() {
 }
-    /**
-     * Specifies whether certain characters are allowed when parsing IRIs and URIs.
-     */
+
     enum ParseMode {
-    /**
-     * The rules follow the syntax for parsing IRIs. In particular, many code
-     * points outside the Basic Latin range (U + 0000 to U + 007F) are allowed.
-     * Strings with unpaired surrogate code points are considered invalid.
-     */
       IRIStrict,
 
-    /**
-     * The rules follow the syntax for parsing IRIs, except that code points
-     * outside the Basic Latin range (U + 0000 to U + 007F) are not allowed.
-     */
       URIStrict,
 
-    /**
-     * The rules only check for the appropriate delimiters when splitting the path,
-     * without checking if all the characters in each component are valid.
-     * Even with this mode, strings with unpaired surrogate code points are
-     * considered invalid.
-     */
       IRILenient,
 
-    /**
-     * The rules only check for the appropriate delimiters when splitting the path,
-     * without checking if all the characters in each component are valid.
-     * Code points outside the Basic Latin range (U + 0000 to U + 007F) are not
-     * allowed.
-     */
       URILenient,
 
-    /**
-     * The rules only check for the appropriate delimiters when splitting the path,
-     * without checking if all the characters in each component are valid.
-     * Unpaired surrogate code points are treated as though they were
-     * replacement characters instead for the purposes of these rules, so
-     * that strings with those code points are not considered invalid
-     * strings.
-     */
       IRISurrogateLenient
     }
 
@@ -135,15 +98,6 @@ private URIUtility() {
       }
     }
 
-    /**
-     * Escapes characters that can't appear in URIs or IRIs. The function is
-     * idempotent; that is, calling the function again on the result with
-     * the same mode doesn't change the result.
-     * @param s A string to escape.
-     * @param mode The parameter {@code mode} is a 32-bit signed integer.
-     * @return A string possibly containing escaped characters, or null if s is
-     * null.
-     */
     public static String escapeURI(String s, int mode) {
       if (s == null) {
         return null;
@@ -255,15 +209,6 @@ private URIUtility() {
       return builder.toString();
     }
 
-    /**
-     * Determines whether the string is a valid IRI with a scheme component. This
-     * can be used to check for relative IRI references. <p>The following
-     * cases return true: </p> <pre>xx-x:mm example:/ww </pre> The
-     * following cases return false: <pre>x@y:/z /x/y/z example.xyz </pre>
-     * @param refValue A string representing an IRI to check.
-     * @return {@code true} if the string is a valid IRI with a scheme component;
-     * otherwise, {@code false} .
-     */
     public static boolean hasScheme(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
@@ -273,15 +218,6 @@ private URIUtility() {
       return segments != null && segments[0] >= 0;
     }
 
-    /**
-     * Determines whether the string is a valid URI with a scheme component. This
-     * can be used to check for relative URI references. The following cases
-     * return true: <pre>http://example/z xx-x:mm example:/ww </pre> The
-     * following cases return false: <pre>x@y:/z /x/y/z example.xyz </pre>
-     * @param refValue A string representing an IRI to check.
-     * @return {@code true} if the string is a valid URI with a scheme component;
-     * otherwise, {@code false} .
-     */
     public static boolean hasSchemeForURI(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
@@ -306,21 +242,10 @@ private URIUtility() {
       }
     }
 
-    /**
-     * Decodes percent-encoding (of the form "%XX" where X is a hexadecimal digit)
-     * in the given string. Successive percent-encoded bytes are assumed to
-     * form characters in UTF-8.
-     * @param str A string that may contain percent encoding. May be null.
-     * @return The string in which percent-encoding was decoded. Returns null if
-     * "str" is null.
-     */
     public static String PercentDecode(String str) {
-      return (str == null) ? (null) : (PercentDecode(str, 0, str.length()));
+      return (str == null) ? null : PercentDecode(str, 0, str.length());
     }
 
-    /**
-     *
-     */
     public static String PercentDecode(String str, int index, int endIndex) {
       if (str == null) {
  return null;
@@ -337,7 +262,7 @@ private URIUtility() {
         }
       }
       if (quickCheck) {
- return str.substring(index, (index)+(endIndex-index));
+ return str.substring(index, (index)+(endIndex - index));
 }
       StringBuilder retString = new StringBuilder();
       retString.append(str, index, (index)+(lastIndex));
@@ -544,20 +469,6 @@ return builder.toString();
           0xfffe) != 0xfffe);
     }
 
-    /**
-     * Determines whether the substring is a valid CURIE reference under RDFA 1.1.
-     * (The CURIE reference is the part after the colon.).
-     * @param s A string containing a CURIE reference. Can be null.
-     * @param offset A zero-based index showing where the desired portion of "s"
-     * begins.
-     * @param length The number of elements in the desired portion of "s" (but not
-     * more than "s" 's length).
-     * @return {@code true} if the substring is a valid CURIE reference under RDFA
-     * 1; otherwise, {@code false} . Returns false if {@code s} is null.
-     * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code s} 's length, or {@code s} ' s
-     * length minus {@code offset} is less than {@code length} .
-     */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
         return false;
@@ -1087,32 +998,10 @@ totalParts += 2;
       }
     }
 
-    /**
-     * Resolves a URI or IRI relative to another URI or IRI.
-     * @param refValue A string representing a URI or IRI reference. Example:
-     * {@code dir/file.txt} .
-     * @param baseURI A string representing an absolute URI reference. Example:
-     * {@code http://example.com/my/path/} .
-     * @return The resolved IRI, or null if {@code refValue} is null or is not a
-     * valid IRI. If {@code baseURI} is null or is not a valid IRI, returns
-     * refValue. Example: {@code http://example.com/my/path/dir/file.txt} .
-     */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
     }
 
-    /**
-     * Resolves a URI or IRI relative to another URI or IRI.
-     * @param refValue A string representing a URI or IRI reference. Example:
-     * {@code dir/file.txt} . Can be null.
-     * @param baseURI A string representing an absolute URI reference. Example:
-     * {@code http://example.com/my/path/} .
-     * @param parseMode Parse mode that specifies whether certain characters are
-     * allowed when parsing IRIs and URIs.
-     * @return The resolved IRI, or null if {@code refValue} is null or is not a
-     * valid IRI. If {@code baseURI} is null or is not a valid IRI, returns
-     * refValue.
-     */
     public static String relativeResolve(
   String refValue,
   String baseURI,
@@ -1230,52 +1119,10 @@ return new String[] {
 };
     }
 
-    /**
-     * Parses an Internationalized Resource Identifier (IRI) reference under
-     * RFC3987. If the IRI reference is syntactically valid, splits the
-     * string into its components and returns an array containing the
-     * indices into the components.
-     * @param s A string that contains an IRI. Can be null.
-     * @return If the string is a valid IRI reference, returns an array of 10
-     * integers. Each of the five pairs corresponds to the start and end
-     * index of the IRI's scheme, authority, path, query, or fragment
-     * component, respectively. The scheme, authority, query, and fragment
-     * components, if present, will each be given without the ending colon,
-     * the starting "//", the starting "?", and the starting "#",
-     * respectively. If a component is absent, both indices in that pair
-     * will be -1. If the string is null or is not a valid IRI, returns
-     * null.
-     */
     public static int[] splitIRI(String s) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), ParseMode.IRIStrict);
     }
 
-    /**
-     * Parses a substring that represents an Internationalized Resource Identifier
-     * (IRI) under RFC3987. If the IRI is syntactically valid, splits the
-     * string into its components and returns an array containing the
-     * indices into the components.
-     * @param s A string that contains an IRI. Can be null.
-     * @param offset A zero-based index showing where the desired portion of "s"
-     * begins.
-     * @param length The length of the desired portion of "s" (but not more than
-     * "s" 's length).
-     * @param parseMode Parse mode that specifies whether certain characters are
-     * allowed when parsing IRIs and URIs.
-     * @return If the string is a valid IRI, returns an array of 10 integers. Each
-     * of the five pairs corresponds to the start and end index of the IRI's
-     * scheme, authority, path, query, or fragment component, respectively.
-     * The scheme, authority, query, and fragment components, if present,
-     * will each be given without the ending colon, the starting "//", the
-     * starting "?", and the starting "#", respectively. If a component is
-     * absent, both indices in that pair will be -1 (an index won't be less
-     * than 0 in any other case). If the string is null or is not a valid
-     * IRI, returns null.
-     * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code s} 's length, or {@code s} ' s
-     * length minus {@code offset} is less than {@code length} .
-     * @throws java.lang.NullPointerException The parameter {@code s} is null.
-     */
     public static int[] splitIRI(
   String s,
   int offset,
@@ -1528,23 +1375,6 @@ if (s.length() - offset < length) {
       return retval;
     }
 
-    /**
-     * Parses an Internationalized Resource Identifier (IRI) reference under
-     * RFC3987. If the IRI is syntactically valid, splits the string into
-     * its components and returns an array containing the indices into the
-     * components.
-     * @param s A string representing an IRI. Can be null.
-     * @param parseMode The parameter {@code parseMode} is a ParseMode object.
-     * @return If the string is a valid IRI reference, returns an array of 10
-     * integers. Each of the five pairs corresponds to the start and end
-     * index of the IRI's scheme, authority, path, query, or fragment
-     * component, respectively. The scheme, authority, query, and fragment
-     * components, if present, will each be given without the ending colon,
-     * the starting "//", the starting "?", and the starting "#",
-     * respectively. If a component is absent, both indices in that pair
-     * will be -1. If the string is null or is not a valid IRI, returns
-     * null.
-     */
     public static int[] splitIRI(String s, ParseMode parseMode) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), parseMode);
     }

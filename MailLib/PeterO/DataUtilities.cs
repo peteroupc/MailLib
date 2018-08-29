@@ -28,15 +28,8 @@ namespace PeterO {
       return b.ToString();
     }
 
-    /// <summary>Finds the number of Unicode code points in the given text
-    /// string. Unpaired surrogate code points increase this number by 1.
-    /// This is not necessarily the length of the string in "char"
-    /// s.</summary>
-    /// <param name='str'>A text string.</param>
-    /// <returns>The number of Unicode code points in the given
-    /// string.</returns>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <include file='../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.DataUtilities.CodePointLength(System.String)"]/*'/>
     public static int CodePointLength(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));

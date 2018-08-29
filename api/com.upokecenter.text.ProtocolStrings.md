@@ -204,11 +204,11 @@ Checks the validity of a string serving as an arbitrary sequence of
 
 **Returns:**
 
-* An opaque string prepared under the OpaqueString profile in RFC
- 8265. Returns null if that string is invalid under that profile
- (including if <code>str</code> is null or empty). For comparison purposes,
- return values of this method should be compared code point by code
- point (see RFC 8265, sec. 4.2.3).
+* A string prepared under the OpaqueString profile in RFC 8265.
+ Returns null if that string is invalid under that profile (including
+ if <code>str</code> is null or empty). For comparison purposes, return
+ values of this method should be compared code point by code point
+ (see RFC 8265, sec. 4.2.3).
 
 ### NicknameEnforce
     public static String NicknameEnforce​(String str)

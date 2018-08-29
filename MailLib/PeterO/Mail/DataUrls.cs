@@ -116,7 +116,7 @@ var i = 0;
           }
           if (hasPercent) {
   payload = URIUtility.PercentDecode(
-    path.Substring(mediaTypePart + 1, path.Length-(mediaTypePart + 1)));
+    path.Substring(mediaTypePart + 1, path.Length - (mediaTypePart + 1)));
   payloadIndex = 0;
           }
       base64Length = payload.Length - payloadIndex;

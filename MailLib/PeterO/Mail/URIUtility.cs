@@ -9,30 +9,18 @@ namespace PeterO.Mail {
   using System;
 using System.Text;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Cbor.URIUtility"]/*'/>
   internal static class URIUtility {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Cbor.URIUtility.ParseMode"]/*'/>
+
     internal enum ParseMode {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.IRIStrict"]/*'/>
+
       IRIStrict,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.URIStrict"]/*'/>
       URIStrict,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.IRILenient"]/*'/>
       IRILenient,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.URILenient"]/*'/>
       URILenient,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Cbor.URIUtility.ParseMode.IRISurrogateLenient"]/*'/>
       IRISurrogateLenient
     }
 
@@ -111,8 +99,6 @@ using System.Text;
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.escapeURI(System.String,System.Int32)"]/*'/>
     public static string escapeURI(string s, int mode) {
       if (s == null) {
         return null;
@@ -224,8 +210,6 @@ using System.Text;
       return builder.ToString();
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.hasScheme(System.String)"]/*'/>
     public static bool hasScheme(string refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
@@ -235,8 +219,6 @@ using System.Text;
       return segments != null && segments[0] >= 0;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.hasSchemeForURI(System.String)"]/*'/>
     public static bool hasSchemeForURI(string refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
@@ -261,14 +243,10 @@ using System.Text;
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.PercentDecode(System.String)"]/*'/>
     public static string PercentDecode(string str) {
-      return (str == null) ? (null) : (PercentDecode(str, 0, str.Length));
+      return (str == null) ? null : PercentDecode(str, 0, str.Length);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.PercentDecode(System.String,System.Int32,System.Int32)"]/*'/>
     public static string PercentDecode(string str, int index, int endIndex) {
       if (str == null) {
  return null;
@@ -285,7 +263,7 @@ using System.Text;
         }
       }
       if (quickCheck) {
- return str.Substring(index, endIndex-index);
+ return str.Substring(index, endIndex - index);
 }
       var retString = new StringBuilder();
       retString.Append(str, index, lastIndex);
@@ -492,8 +470,6 @@ return builder.ToString();
           0xfffe) != 0xfffe);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.isValidCurieReference(System.String,System.Int32,System.Int32)"]/*'/>
     public static bool isValidCurieReference(string s, int offset, int length) {
       if (s == null) {
         return false;
@@ -1024,14 +1000,10 @@ totalParts += 2;
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.relativeResolve(System.String,System.String)"]/*'/>
     public static string relativeResolve(string refValue, string baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.relativeResolve(System.String,System.String,PeterO.Cbor.URIUtility.ParseMode)"]/*'/>
     public static string relativeResolve(
   string refValue,
   string baseURI,
@@ -1149,14 +1121,10 @@ return new string[] {
 };
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.splitIRI(System.String)"]/*'/>
     public static int[] splitIRI(string s) {
       return (s == null) ? null : splitIRI(s, 0, s.Length, ParseMode.IRIStrict);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.splitIRI(System.String,System.Int32,System.Int32,PeterO.Cbor.URIUtility.ParseMode)"]/*'/>
     public static int[] splitIRI(
   string s,
   int offset,
@@ -1409,8 +1377,6 @@ if (s.Length - offset < length) {
       return retval;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Cbor.URIUtility.splitIRI(System.String,PeterO.Cbor.URIUtility.ParseMode)"]/*'/>
     public static int[] splitIRI(string s, ParseMode parseMode) {
       return (s == null) ? null : splitIRI(s, 0, s.Length, parseMode);
     }

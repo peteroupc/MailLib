@@ -7,39 +7,18 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     *
-     */
   final class URIUtility {
 private URIUtility() {
 }
-    /**
-     *
-     */
     enum ParseMode {
-    /**
-     *
-     */
       IRIStrict,
 
-    /**
-     *
-     */
       URIStrict,
 
-    /**
-     *
-     */
       IRILenient,
 
-    /**
-     *
-     */
       URILenient,
 
-    /**
-     *
-     */
       IRISurrogateLenient
     }
 
@@ -118,9 +97,6 @@ private URIUtility() {
       }
     }
 
-    /**
-     *
-     */
     public static String escapeURI(String s, int mode) {
       if (s == null) {
         return null;
@@ -232,9 +208,6 @@ private URIUtility() {
       return builder.toString();
     }
 
-    /**
-     *
-     */
     public static boolean hasScheme(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
@@ -244,9 +217,6 @@ private URIUtility() {
       return segments != null && segments[0] >= 0;
     }
 
-    /**
-     *
-     */
     public static boolean hasSchemeForURI(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
@@ -271,16 +241,10 @@ private URIUtility() {
       }
     }
 
-    /**
-     *
-     */
     public static String PercentDecode(String str) {
-      return (str == null) ? (null) : (PercentDecode(str, 0, str.length()));
+      return (str == null) ? null : PercentDecode(str, 0, str.length());
     }
 
-    /**
-     *
-     */
     public static String PercentDecode(String str, int index, int endIndex) {
       if (str == null) {
  return null;
@@ -297,7 +261,7 @@ private URIUtility() {
         }
       }
       if (quickCheck) {
- return str.substring(index, (index)+(endIndex-index));
+ return str.substring(index, (index)+(endIndex - index));
 }
       StringBuilder retString = new StringBuilder();
       retString.append(str, index, (index)+(lastIndex));
@@ -504,9 +468,6 @@ return builder.toString();
           0xfffe) != 0xfffe);
     }
 
-    /**
-     *
-     */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
         return false;
@@ -1036,16 +997,10 @@ totalParts += 2;
       }
     }
 
-    /**
-     *
-     */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
     }
 
-    /**
-     *
-     */
     public static String relativeResolve(
   String refValue,
   String baseURI,
@@ -1163,16 +1118,10 @@ return new String[] {
 };
     }
 
-    /**
-     *
-     */
     public static int[] splitIRI(String s) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), ParseMode.IRIStrict);
     }
 
-    /**
-     *
-     */
     public static int[] splitIRI(
   String s,
   int offset,
@@ -1425,9 +1374,6 @@ if (s.length() - offset < length) {
       return retval;
     }
 
-    /**
-     *
-     */
     public static int[] splitIRI(String s, ParseMode parseMode) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), parseMode);
     }

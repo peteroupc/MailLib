@@ -136,7 +136,7 @@ Finds the number of Unicode code points in the given text string. Unpaired
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 **Returns:**
 
