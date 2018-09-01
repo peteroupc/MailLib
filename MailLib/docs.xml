@@ -1218,8 +1218,7 @@ decomposed, including all base+slash code points, which are the only composed co
 </doc>
 <doc name="T:PeterO.Mail.DataUrls">
 ns me
-    <summary>Contains methods for parsing and generating data URLs. Data URLs are
-      described in RFC 2397. Examples for data URLs follow.
+    <summary>Contains methods for parsing and generating Data URIs (uniform resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
       <code>data:,hello%20world
       </code>
       <code>data:text/markdown,hello%20world
@@ -1230,26 +1229,24 @@ ns me
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlBytes(System.String)">
 
-            <summary>Extracts the data from a data URL in the form of a byte
-            array.</summary><param name='url'>A data URL string.</param><returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data
-            URL.</returns>
+            <summary>Extracts the data from a Data URI (uniform resource identifier) in the form of a byte
+            array.</summary><param name='url'>A Data URI string.</param><returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data URI.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlMediaType(System.String)">
 
-            <summary>Extracts the media type from a data URL.</summary><param name='url'>A data URL string.</param><returns>The media type. Returns null if <paramref name='url'/> is
-            null, is syntactically invalid, or is not a data URL.</returns>
+            <summary>Extracts the media type from a Data URI (uniform resource identifier).</summary><param name='url'>A Data URI string.</param><returns>The media type. Returns null if <paramref name='url'/> is
+            null, is syntactically invalid, or is not a Data URI.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.Byte[],PeterO.Mail.MediaType)">
 
-            <summary>Encodes data with the given media type in a data URL.</summary><param name='bytes'>A byte array containing the data to encode in a data URL.</param><param name='mediaType'>A media type to assign to the data.</param><returns>A data URL that encodes the given data and media type.</returns><exception cref='T:System.ArgumentNullException'>The parameter <paramref name='bytes'/> or <paramref name='mediaType'/> is null.</exception>
+            <summary>Encodes data with the given media type in a Data URI (uniform resource identifier).</summary><param name='bytes'>A byte array containing the data to encode in a Data URI.</param><param name='mediaType'>A media type to assign to the data.</param><returns>A Data URI that encodes the given data and media type.</returns><exception cref='T:System.ArgumentNullException'>The parameter <paramref name='bytes'/> or <paramref name='mediaType'/> is null.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.String)">
 
-            <summary>Encodes text as a data URL.</summary><param name='textString'>A text string to encode as a data
-            URL.</param><returns>A data URL that encodes the given text.</returns><exception cref='T:System.ArgumentNullException'>The parameter <paramref name='textString'/> is null.</exception>
+            <summary>Encodes text as a Data URI (uniform resource identifier).</summary><param name='textString'>A text string to encode as a data URI.</param><returns>A Data URI that encodes the given text.</returns><exception cref='T:System.ArgumentNullException'>The parameter <paramref name='textString'/> is null.</exception>
 
 </doc>
 <doc name="T:PeterO.Mail.DispositionBuilder">
@@ -2434,7 +2431,7 @@ ns me
 </doc>
 <doc name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)">
 
-            <summary>Creates a message object from a MailTo URL. The URL can
+            <summary>Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can
             contain key-value pairs that follow a question-mark, as in the
             following example: "mailto:me@example.com?subject=A%20Subject". In
             this example, "subject" is the subject of the email address. Only
@@ -2443,9 +2440,9 @@ ns me
             are header field names that will be used to set the returned
             message's corresponding header fields. The last, "body", sets the
             body of the message to the given text. Keys other than these eight
-            will be ignored.</summary><param name='url'>A string representing a MailTo URL.</param><returns>A Message object created from the given MailTo URL. Returs
+            will be ignored.</summary><param name='url'>A string representing a MailTo URI.</param><returns>A Message object created from the given MailTo URI. Returs
             null if <paramref name='url'/> is null, is syntactically invalid,
-            or is not a MailTo URL.</returns>
+            or is not a MailTo URI.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.Generate">
@@ -2607,12 +2604,18 @@ ns me
 
 </doc>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Boundary">
-<summary>Gets a value not documented yet.</summary>
-            <value>This is an internal API.</value>
+
+            <summary>Gets a value which is used in an internal API.
+    </summary><value>This is an internal API.
+    </value>
+
 </doc>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Message">
-<summary>Gets a value not documented yet.</summary>
-            <value>This is an internal API.</value>
+
+            <summary>Gets a value which is used in an internal API.
+    </summary><value>This is an internal API.
+    </value>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.NewBodyPart">
 
@@ -2850,14 +2853,14 @@ ns me
 </doc>
 <doc name="M:PeterO.Mail.Message.ToMailtoUrl">
 
-            <summary>Generates a "mailto:" URL corresponding to this message. The following
-      header fields, and only these, are used to generate the URL: To, Cc, Bcc,
+            <summary>Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following
+      header fields, and only these, are used to generate the URI: To, Cc, Bcc,
       In-Reply-To, Subject, Keywords, Comments. The message body is included in the
-      URL only if this message has a text media type and uses a supported
+      URI only if this message has a text media type and uses a supported
       character encoding ("charset" parameter). The To header field is included in
-      the URL only if it
+      the URI only if it
       has display names or group syntax.
-    </summary><returns>A "mailto:" URL corresponding to this message.
+    </summary><returns>A MailTo URI corresponding to this message.
     </returns>
 
 </doc>

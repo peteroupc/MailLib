@@ -10,6 +10,10 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 
   final class HeaderEncoder {
+    private static final String HexChars = "0123456789ABCDEF";
+    private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
+            "jklmnopqrstuvwxyz0123456789+/";
+
     private final StringBuilder builder;
     private int maxLineLength;
     private int column;
@@ -414,8 +418,6 @@ this.AppendSpaceAndSymbol(
       ++this.column;
     }
 
-    private static final String HexChars = "0123456789ABCDEF";
-
     private void AppendQEncoding(int ch) {
       this.builder.append('=');
       this.builder.append(HexChars.charAt((ch >> 4) & 15));
@@ -489,9 +491,6 @@ this.AppendSpaceAndSymbol(
       }
       return this;
     }
-
-    private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
-            "jklmnopqrstuvwxyz0123456789+/";
 
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];

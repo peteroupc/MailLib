@@ -984,7 +984,12 @@ Adds an attachment to this message in the form of data from the given
  readable stream, and with the given media type. Before the new
  attachment is added, if this message isn't already a multipart
  message, it becomes a "multipart/mixed" message with the current body
- converted to an inline body part.
+ converted to an inline body part.<p>The following example (written in
+ C# for the .NET version) is an extension method that adds an
+ attachment from a byte array to a message. <pre>public static
+ Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
+ MediaType mediaType) { using(java.io.ByteArrayInputStream fs = new java.io.ByteArrayInputStream(bytes)) {
+ return msg.AddAttachment(fs, mediaType); } } </pre> </p>
 
 **Parameters:**
 
@@ -1073,7 +1078,12 @@ Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given media type. Before the new body
  part is added, if this message isn't already a multipart message, it
  becomes a "multipart/mixed" message with the current body converted
- to an inline body part.
+ to an inline body part.<p>The following example (written in C# for
+ the .NET version) is an extension method that adds an inline body
+ part from a byte array to a message. <pre>public static Message
+ AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
+ mediaType) { using(java.io.ByteArrayInputStream fs = new java.io.ByteArrayInputStream(bytes)) {
+ return msg.AddInline(fs, mediaType); } } </pre> </p>
 
 **Parameters:**
 

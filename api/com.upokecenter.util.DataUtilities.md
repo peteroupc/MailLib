@@ -156,7 +156,7 @@ Generates a text string from a portion of a UTF-8 byte array.
 
 * <code>offset</code> - Offset into the byte array to start reading.
 
-* <code>bytesCount</code> - Length, in bytes, of the UTF-8 string.
+* <code>bytesCount</code> - Length, in bytes, of the UTF-8 text string.
 
 * <code>replace</code> - If true, replaces invalid encoding with the replacement
  character (U + FFFD). If false, stops processing when invalid UTF-8 is
@@ -494,11 +494,11 @@ Reads a string in UTF-8 encoding from a byte array.
 
 **Parameters:**
 
-* <code>data</code> - A byte array containing a UTF-8 string.
+* <code>data</code> - A byte array containing a UTF-8 text string.
 
 * <code>offset</code> - Offset into the byte array to start reading.
 
-* <code>bytesCount</code> - Length, in bytes, of the UTF-8 string.
+* <code>bytesCount</code> - Length, in bytes, of the UTF-8 text string.
 
 * <code>builder</code> - A string builder object where the resulting string will be
  stored.

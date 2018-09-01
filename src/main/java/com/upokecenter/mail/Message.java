@@ -1159,7 +1159,23 @@ try { if (ms != null) {
      * readable stream, and with the given media type. Before the new
      * attachment is added, if this message isn't already a multipart
      * message, it becomes a "multipart/mixed" message with the current body
-     * converted to an inline body part.
+     * converted to an inline body part.<p>The following example (written in
+     * C# for the .NET version) is an extension method that adds an
+     * attachment from a byte array to a message. <pre>public static
+     * Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
+     * MediaType mediaType) { {
+java.io.ByteArrayInputStream fs = null;
+try {
+fs = new java.io.ByteArrayInputStream(bytes);
+
+     * return msg.AddAttachment(fs, mediaType);
+}
+finally {
+try { if (fs != null) {
+ fs.close();
+ } } catch (java.io.IOException ex) {}
+}
+} } </pre> </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
@@ -1235,7 +1251,23 @@ try { if (ms != null) {
      * readable stream, and with the given media type. Before the new body
      * part is added, if this message isn't already a multipart message, it
      * becomes a "multipart/mixed" message with the current body converted
-     * to an inline body part.
+     * to an inline body part.<p>The following example (written in C# for
+     * the .NET version) is an extension method that adds an inline body
+     * part from a byte array to a message. <pre>public static Message
+     * AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
+     * mediaType) { {
+java.io.ByteArrayInputStream fs = null;
+try {
+fs = new java.io.ByteArrayInputStream(bytes);
+
+     * return msg.AddInline(fs, mediaType);
+}
+finally {
+try { if (fs != null) {
+ fs.close();
+ } } catch (java.io.IOException ex) {}
+}
+} } </pre> </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @return A Message object for the generated body part.
@@ -2993,8 +3025,9 @@ private static String GetContentTranslationType(String ctt) {
     }
 
     /**
-     * Creates a message object from a MailTo URL. The URL can contain key-value
-     * pairs that follow a question-mark, as in the following example:
+     * Creates a message object from a MailTo URI (uniform resource identifier).
+     * The MailTo URI can contain key-value pairs that follow a
+     * question-mark, as in the following example:
      * "mailto:me@example.com?subject=A%20Subject". In this example,
      * "subject" is the subject of the email address. Only certain keys are
      * supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
@@ -3002,27 +3035,65 @@ private static String GetContentTranslationType(String ctt) {
      * names that will be used to set the returned message's corresponding
      * header fields. The last, "body", sets the body of the message to the
      * given text. Keys other than these eight will be ignored.
-     * @param url A string representing a MailTo URL.
-     * @return A Message object created from the given MailTo URL. Returs null if
+     * @param url A string representing a MailTo URI.
+     * @return A Message object created from the given MailTo URI. Returs null if
      * {@code url} is null, is syntactically invalid, or is not a MailTo
-     * URL.
-     */
+     * URI.
+     * @deprecated Renamed to FromMailtoUri.
+ */
+@Deprecated
     public static Message FromMailtoUrl(String url) {
       return MailtoUrls.MailtoUrlMessage(url);
     }
 
     /**
-     * Generates a "mailto:" URL corresponding to this message. The following
-     * header fields, and only these, are used to generate the URL: To, Cc,
-     * Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is
-     * included in the URL only if this message has a text media type and
-     * uses a supported character encoding ("charset" parameter). The To
-     * header field is included in the URL only if it has display names or
-     * group syntax.
-     * @return A "mailto:" URL corresponding to this message.
-     */
+     * Generates a MailTo URI (uniform resource identifier) corresponding to this
+     * message. The following header fields, and only these, are used to
+     * generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
+     * Comments. The message body is included in the URI only if this
+     * message has a text media type and uses a supported character encoding
+     * ("charset" parameter). The To header field is included in the URI
+     * only if it has display names or group syntax.
+     * @return A MailTo URI corresponding to this message.
+     * @deprecated Renamed to ToMailtoUri.
+ */
+@Deprecated
     public String ToMailtoUrl() {
       return MailtoUrls.MessageToMailtoUrl(this);
+    }
+
+    /**
+     * Creates a message object from a MailTo URI (uniform resource identifier).
+     * The MailTo URI can contain key-value pairs that follow a
+     * question-mark, as in the following example:
+     * "mailto:me@example.com?subject=A%20Subject". In this example,
+     * "subject" is the subject of the email address. Only certain keys are
+     * supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+     * "comments", "keywords", and "body". The first seven are header field
+     * names that will be used to set the returned message's corresponding
+     * header fields. The last, "body", sets the body of the message to the
+     * given text. Keys other than these eight will be ignored.
+     * @param uri A string object.
+     * @return A Message object created from the given MailTo URI. Returs null if
+     * {@code url} is null, is syntactically invalid, or is not a MailTo
+     * URI.
+     */
+    public static Message FromMailtoUri(String uri) {
+      return MailtoUrls.MailtoUrlMessage(uri);
+    }
+
+    /**
+     * Generates a MailTo URI (uniform resource identifier) corresponding to this
+     * message. The following header fields, and only these, are used to
+     * generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
+     * Comments. The message body is included in the URI only if this
+     * message has a text media type and uses a supported character encoding
+     * ("charset" parameter). The To header field is included in the URI
+     * only if it has display names or group syntax.
+     * @return A MailTo URI corresponding to this message.
+     */
+    public String ToMailtoUri() {
+      return MailtoUrls.MessageToMailtoUri(this);
     }
 
     private void ProcessHeaders(boolean assumeMime, boolean digest) {
@@ -3348,14 +3419,14 @@ private static String GetContentTranslationType(String ctt) {
 
     private static class MessageStackEntry {
     /**
-     * Gets a value not documented yet.
+     * Gets a value which is used in an internal API.
      * @return This is an internal API.
      */
       public final Message getMessage() { return propVarmessage; }
 private final Message propVarmessage;
 
     /**
-     * Gets a value not documented yet.
+     * Gets a value which is used in an internal API.
      * @return This is an internal API.
      */
       public final String getBoundary() { return propVarboundary; }

@@ -2541,14 +2541,41 @@ if (ungetState[1] < 0x80) {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
+    [Obsolete("Renamed to FromMailtoUri.")]
     public static Message FromMailtoUrl(string url) {
       return MailtoUrls.MailtoUrlMessage(url);
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
+    [Obsolete("Renamed to ToMailtoUri.")]
     public string ToMailtoUrl() {
       return MailtoUrls.MessageToMailtoUrl(this);
+    }
+
+    /// <summary>Creates a message object from a MailTo URI (uniform
+    /// resource identifier). The MailTo URI can contain key-value pairs
+    /// that follow a question-mark, as in the following example:
+    /// "mailto:me@example.com?subject=A%20Subject". In this example,
+    /// "subject" is the subject of the email address. Only certain keys
+    /// are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+    /// "comments", "keywords", and "body". The first seven are header
+    /// field names that will be used to set the returned message's
+    /// corresponding header fields. The last, "body", sets the body of the
+    /// message to the given text. Keys other than these eight will be
+    /// ignored.</summary>
+    /// <param name='uri'>A string object.</param>
+    /// <returns>A Message object created from the given MailTo URI. Returs
+    /// null if <paramref name='url'/> is null, is syntactically invalid,
+    /// or is not a MailTo URI.</returns>
+    public static Message FromMailtoUri(string uri) {
+      return MailtoUrls.MailtoUrlMessage(uri);
+    }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
+    public string ToMailtoUri() {
+      return MailtoUrls.MessageToMailtoUri(this);
     }
 
     private void ProcessHeaders(bool assumeMime, bool digest) {

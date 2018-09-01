@@ -83,7 +83,7 @@ private DataUtilities() {
      * Generates a text string from a portion of a UTF-8 byte array.
      * @param bytes A byte array containing text encoded in UTF-8.
      * @param offset Offset into the byte array to start reading.
-     * @param bytesCount Length, in bytes, of the UTF-8 string.
+     * @param bytesCount Length, in bytes, of the UTF-8 text string.
      * @param replace If true, replaces invalid encoding with the replacement
      * character (U + FFFD). If false, stops processing when invalid UTF-8 is
      * seen.
@@ -713,9 +713,9 @@ try { if (ms != null) {
 
     /**
      * Reads a string in UTF-8 encoding from a byte array.
-     * @param data A byte array containing a UTF-8 string.
+     * @param data A byte array containing a UTF-8 text string.
      * @param offset Offset into the byte array to start reading.
-     * @param bytesCount Length, in bytes, of the UTF-8 string.
+     * @param bytesCount Length, in bytes, of the UTF-8 text string.
      * @param builder A string builder object where the resulting string will be
      * stored.
      * @param replace If true, replaces invalid encoding with the replacement

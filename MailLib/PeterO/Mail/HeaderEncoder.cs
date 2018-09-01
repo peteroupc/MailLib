@@ -11,6 +11,10 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal sealed class HeaderEncoder {
+    private const string HexChars = "0123456789ABCDEF";
+    private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
+            "jklmnopqrstuvwxyz0123456789+/";
+
     private readonly StringBuilder builder;
     private int maxLineLength;
     private int column;
@@ -416,8 +420,6 @@ this.AppendSpaceAndSymbol(
       ++this.column;
     }
 
-    private const string HexChars = "0123456789ABCDEF";
-
     private void AppendQEncoding(int ch) {
       this.builder.Append('=');
       this.builder.Append(HexChars[(ch >> 4) & 15]);
@@ -491,9 +493,6 @@ this.AppendSpaceAndSymbol(
       }
       return this;
     }
-
-    private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
-            "jklmnopqrstuvwxyz0123456789+/";
 
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];
