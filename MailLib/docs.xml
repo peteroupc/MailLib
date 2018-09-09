@@ -1086,6 +1086,7 @@
              empty.</returns><remarks>
              <para><b>Remarks:</b></para>
 <list>
+<item>The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library.</item>
 <item>The string returned by this method is normalized using
 Unicode normalization form C (NFC) (see the <see cref='T:PeterO.Text.NormalizerInput'/> class for details).  Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus
  file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not
@@ -1849,7 +1850,7 @@ ns me
 </doc>
 <doc name="P:PeterO.Mail.MediaType.SubType">
 
-            <summary>Gets this media type's subtype.</summary><value>This media type's subtype.</value>
+            <summary>Gets this media type's subtype (for example, "plain" in "text/plain").  The resulting string will be in lowercase letters.</summary><value>This media type's subtype.</value>
 
 </doc>
 <doc name="F:PeterO.Mail.MediaType.TextPlainAscii">
@@ -1902,14 +1903,14 @@ ns me
 <doc name="P:PeterO.Mail.MediaType.TopLevelType">
 
             <summary>Gets the name of this media type's top-level type (such as
-            "text" or "audio").</summary><value>The name of this media type's top-level type (such as "text"
+            "text" in "text/plain", or "audio" in "audio/basic"). The resulting string will be in lowercase letters.</summary><value>The name of this media type's top-level type (such as "text"
             or "audio".</value>
 
 </doc>
 <doc name="P:PeterO.Mail.MediaType.TypeAndSubType">
 
             <summary>Gets the top level type and subtype of this media type,
-            separated by a slash; for example, "text/plain".</summary><value>The top level type and subtype of this media type, separated
+            separated by a slash; for example, "text/plain".  The resulting string will be in lowercase letters.</summary><value>The top level type and subtype of this media type, separated
             by a slash; for example, "text/plain".</value>
 
 </doc>
@@ -4385,7 +4386,8 @@ of this NamedAddress object as it could appear in a "To" header field.
 </doc>
 <doc name="T:PeterO.Text.ProtocolStrings">
 
-            <summary>Contains methods for preparing protocol strings (such as user identifiers) for comparison and validity checking.  See RFC 8264.</summary>
+            <summary>Contains methods for preparing user-facing protocol strings (such as user identifiers) for comparison and validity checking.  Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See RFC 8264.
+(Currently there are three profiles for internationalized strings: one each for strings serving as user identifiers, arbitrary single-line strings [such as passwords], or display names.  Other user-facing internationalized strings not expressly handled by this class include file and directory names, profile data voluntarily entered by users, and the text of article, post, and message bodies.)</summary>
 
 </doc>
 <doc name="M:PeterO.Text.ProtocolStrings.IsInFreeformClass(System.String)">
@@ -4442,14 +4444,14 @@ of this NamedAddress object as it could appear in a "To" header field.
 <doc name="M:PeterO.Text.ProtocolStrings.OpaqueStringEnforce(System.String)">
 
             <summary>Checks the validity of a string serving as an arbitrary
-            sequence of characters, such as a passphrase. This checking is done
+            single-line sequence of characters, such as a passphrase. This checking is done
             using the OpaqueString profile in RFC 8265. (REMARK: Specifying a
             string as this method does is not ideal if the string represents a
             password or other sensitive data, since strings are immutable in
             .NET and Java, so that its contents cannot be cleared when done. An
             application concerned about security may want to reimplement this
             method by passing a clearable array of characters rather than a
-            text string.).</summary><param name='str'>A string to prepare that represents an arbitrary
+            text string.).</summary><param name='str'>A string to prepare that represents an arbitrary single-line
             sequence of characters entered by a user.</param><returns>A string prepared under the OpaqueString profile
             in RFC 8265. Returns null if that string is invalid under that
             profile (including if <paramref name='str'/> is null or empty). For

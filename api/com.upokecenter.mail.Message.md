@@ -141,8 +141,12 @@
                  String value)`<br>
  Decodes RFC 2047 encoded words from the given header field value and returns
  a string with those words decoded.
+* `static Message FromMailtoUri​(String uri)`<br>
+ Creates a message object from a MailTo URI (uniform resource identifier).
 * `static Message FromMailtoUrl​(String url)`<br>
- Creates a message object from a MailTo URL.
+ Deprecated.
+Renamed to FromMailtoUri.
+ Renamed to FromMailtoUri.
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
@@ -239,8 +243,13 @@ Use GetAddresses(\To\) instead.
  versions of the same message.
 * `Message SetTextBody​(String str)`<br>
  Sets the body of this message to the specified plain text string.
+* `String ToMailtoUri()`<br>
+ Generates a MailTo URI (uniform resource identifier) corresponding to this
+ message.
 * `String ToMailtoUrl()`<br>
- Generates a "mailto:" URL corresponding to this message.
+ Deprecated.
+Renamed to ToMailtoUri.
+ Renamed to ToMailtoUri.
 
 ## Constructors
 
@@ -988,8 +997,19 @@ Adds an attachment to this message in the form of data from the given
  C# for the .NET version) is an extension method that adds an
  attachment from a byte array to a message. <pre>public static
  Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
- MediaType mediaType) { using(java.io.ByteArrayInputStream fs = new java.io.ByteArrayInputStream(bytes)) {
- return msg.AddAttachment(fs, mediaType); } } </pre> </p>
+ MediaType mediaType) { {
+java.io.ByteArrayInputStream fs = null;
+try {
+fs = new java.io.ByteArrayInputStream(bytes);
+
+ return msg.AddAttachment(fs, mediaType);
+}
+finally {
+try { if (fs != null) {
+ fs.close();
+ } } catch (java.io.IOException ex) {}
+}
+} } </pre> </p>
 
 **Parameters:**
 
@@ -1082,8 +1102,19 @@ Adds an inline body part to this message in the form of data from the given
  the .NET version) is an extension method that adds an inline body
  part from a byte array to a message. <pre>public static Message
  AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
- mediaType) { using(java.io.ByteArrayInputStream fs = new java.io.ByteArrayInputStream(bytes)) {
- return msg.AddInline(fs, mediaType); } } </pre> </p>
+ mediaType) { {
+java.io.ByteArrayInputStream fs = null;
+try {
+fs = new java.io.ByteArrayInputStream(bytes);
+
+ return msg.AddInline(fs, mediaType);
+}
+finally {
+try { if (fs != null) {
+ fs.close();
+ } } catch (java.io.IOException ex) {}
+}
+} } </pre> </p>
 
 **Parameters:**
 
@@ -1169,9 +1200,34 @@ Adds an inline body part to this message in the form of data from the given
 ### MakeMultilingualMessage
     public static Message MakeMultilingualMessage​(List<Message> messages, List<String> languages)
 ### FromMailtoUrl
-    public static Message FromMailtoUrl​(String url)
-Creates a message object from a MailTo URL. The URL can contain key-value
- pairs that follow a question-mark, as in the following example:
+    @Deprecated public static Message FromMailtoUrl​(String url)
+Deprecated.
+<div class='deprecationComment'>Renamed to FromMailtoUri.</div>
+
+**Parameters:**
+
+* <code>url</code> - A string representing a MailTo URI.
+
+**Returns:**
+
+* A Message object created from the given MailTo URI. Returs null if
+ <code>url</code> is null, is syntactically invalid, or is not a MailTo
+ URI.
+
+### ToMailtoUrl
+    @Deprecated public String ToMailtoUrl()
+Deprecated.
+<div class='deprecationComment'>Renamed to ToMailtoUri.</div>
+
+**Returns:**
+
+* A MailTo URI corresponding to this message.
+
+### FromMailtoUri
+    public static Message FromMailtoUri​(String uri)
+Creates a message object from a MailTo URI (uniform resource identifier).
+ The MailTo URI can contain key-value pairs that follow a
+ question-mark, as in the following example:
  "mailto:me@example.com?subject=A%20Subject". In this example,
  "subject" is the subject of the email address. Only certain keys are
  supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
@@ -1182,24 +1238,24 @@ Creates a message object from a MailTo URL. The URL can contain key-value
 
 **Parameters:**
 
-* <code>url</code> - A string representing a MailTo URL.
+* <code>uri</code> - A string object.
 
 **Returns:**
 
-* A Message object created from the given MailTo URL. Returs null if
+* A Message object created from the given MailTo URI. Returs null if
  <code>url</code> is null, is syntactically invalid, or is not a MailTo
- URL.
+ URI.
 
-### ToMailtoUrl
-    public String ToMailtoUrl()
-Generates a "mailto:" URL corresponding to this message. The following
- header fields, and only these, are used to generate the URL: To, Cc,
- Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is
- included in the URL only if this message has a text media type and
- uses a supported character encoding ("charset" parameter). The To
- header field is included in the URL only if it has display names or
- group syntax.
+### ToMailtoUri
+    public String ToMailtoUri()
+Generates a MailTo URI (uniform resource identifier) corresponding to this
+ message. The following header fields, and only these, are used to
+ generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
+ Comments. The message body is included in the URI only if this
+ message has a text media type and uses a supported character encoding
+ ("charset" parameter). The To header field is included in the URI
+ only if it has display names or group syntax.
 
 **Returns:**
 
-* A "mailto:" URL corresponding to this message.
+* A MailTo URI corresponding to this message.

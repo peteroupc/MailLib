@@ -34,4 +34,5 @@ return DataUris.MakeDataUri(textString);
     public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
 return DataUris.MakeDataUri(bytes, mediaType);
   }
+ }
 }

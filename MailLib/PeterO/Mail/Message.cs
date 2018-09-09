@@ -161,6 +161,34 @@ return this.GetAddresses("cc");
       }
     }
 
+    /// <summary>
+    /// </summary>
+    public string GetFormattedBodyString() {
+      string text = this.BodyString;
+      if (text == null) return null;
+      MediaType mt = this.ContentType;
+      bool formatFlowed = DataUtilities.ToLowerCaseAscii(
+      mt.GetParameter("format") ?? "fixed")
+    .Equals("flowed");
+      bool delSp = DataUtilities.ToLowerCaseAscii(
+          mt.GetParameter("delsp") ?? "no")
+        .Equals("yes");
+      if (mt.TypeAndSubType.Equals("text/plain")) {
+        if (formatFlowed) {
+          return FormatFlowed.FormatFlowedText(text, delSp);
+        } else {
+          return FormatFlowed.NonFormatFlowedText(text);
+        }
+      } else if (mt.TypeAndSubType.Equals("text/html")) {
+        return text;
+      } else if (mt.TypeAndSubType.Equals("text/enriched")) {
+        return EnrichedText.EnrichedToHtml(text, 0, text.Length);
+      } else {
+        return FormatFlowed.NonFormatFlowedText(text);
+      }
+    }
+
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
     public ContentDisposition ContentDisposition {
@@ -2543,14 +2571,14 @@ if (ungetState[1] < 0x80) {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
     [Obsolete("Renamed to FromMailtoUri.")]
     public static Message FromMailtoUrl(string url) {
-      return MailtoUrls.MailtoUrlMessage(url);
+      return MailtoUris.MailtoUriMessage(url);
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
     [Obsolete("Renamed to ToMailtoUri.")]
     public string ToMailtoUrl() {
-      return MailtoUrls.MessageToMailtoUrl(this);
+      return MailtoUris.MessageToMailtoUri(this);
     }
 
     /// <summary>Creates a message object from a MailTo URI (uniform
@@ -2569,13 +2597,13 @@ if (ungetState[1] < 0x80) {
     /// null if <paramref name='url'/> is null, is syntactically invalid,
     /// or is not a MailTo URI.</returns>
     public static Message FromMailtoUri(string uri) {
-      return MailtoUrls.MailtoUrlMessage(uri);
+      return MailtoUris.MailtoUriMessage(uri);
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
     public string ToMailtoUri() {
-      return MailtoUrls.MessageToMailtoUri(this);
+      return MailtoUris.MessageToMailtoUri(this);
     }
 
     private void ProcessHeaders(bool assumeMime, bool digest) {

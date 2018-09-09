@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PeterO {
+namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
-  public static class EnrichedText {
+  internal static class EnrichedText {
     private static string ParseColor(string str, int index, int endIndex) {
       if (index + 2 == endIndex - 1 && (str[index] & ~32) == 82 &&
         (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 68) {

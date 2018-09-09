@@ -64,7 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<Compile Include="AddressTest.cs" />
+<Compile Include="..\..\UnitTest1.cs"><Link>UnitTest1.cs</Link></Compile><Compile Include="AddressTest.cs" />
     <Compile Include="ContentDispositionTest.cs" />
     <Compile Include="DispositionBuilderTest.cs" />
     <Compile Include="EncodingTest.cs" />
@@ -86,8 +86,6 @@
     <Compile Include="DictUtility.cs" />
     <Compile Include="URIUtility.cs" />
     <Compile Include="DataUrlTest.cs" />
-    <Compile Include="EnrichedText.cs" />
-
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

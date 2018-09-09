@@ -1,64 +1,72 @@
 # com.upokecenter.mail.DataUrls
 
-    public final class DataUrls extends Object
+    @Deprecated public final class DataUrls extends Object
 
-Contains methods for parsing and generating data URLs. Data URLs are
- described in RFC 2397. Examples for data URLs follow.
- <pre>data:, hello%20world </pre>
- <pre>data:text/markdown, hello%20world </pre>
- <pre>data:application/octet-stream;base64, AAAAAA== </pre>
+Deprecated.
+<div class='deprecationComment'>Renamed to DataUris.</div>
 
 ## Methods
 
 * `static byte[] DataUrlBytes​(String url)`<br>
- Extracts the data from a data URL in the form of a byte array.
+ Deprecated.
+Renamed to DataUriBytes.
+ Renamed to DataUriBytes.
 * `static MediaType DataUrlMediaType​(String url)`<br>
- Extracts the media type from a data URL.
+ Deprecated.
+Renamed to DataUriMediaType.
+ Renamed to DataUriMediaType.
 * `static String MakeDataUrl​(byte[] bytes,
            MediaType mediaType)`<br>
- Encodes data with the given media type in a data URL.
+ Deprecated.
+Renamed to MakeDataUri.
+ Renamed to MakeDataUri.
 * `static String MakeDataUrl​(String textString)`<br>
- Encodes text as a data URL.
+ Deprecated.
+Renamed to MakeDataUri.
+ Renamed to MakeDataUri.
 
 ## Method Details
 
 ### DataUrlMediaType
-    public static MediaType DataUrlMediaType​(String url)
-Extracts the media type from a data URL.
+    @Deprecated public static MediaType DataUrlMediaType​(String url)
+Deprecated.
+<div class='deprecationComment'>Renamed to DataUriMediaType.</div>
 
 **Parameters:**
 
-* <code>url</code> - A data URL string.
+* <code>url</code> - A Data URI string.
 
 **Returns:**
 
 * The media type. Returns null if <code>url</code> is null, is
- syntactically invalid, or is not a data URL.
+ syntactically invalid, or is not a Data URI.
 
 ### DataUrlBytes
-    public static byte[] DataUrlBytes​(String url)
-Extracts the data from a data URL in the form of a byte array.
+    @Deprecated public static byte[] DataUrlBytes​(String url)
+Deprecated.
+<div class='deprecationComment'>Renamed to DataUriBytes.</div>
 
 **Parameters:**
 
-* <code>url</code> - A data URL string.
+* <code>url</code> - A Data URI string.
 
 **Returns:**
 
 * The data as a byte array. Returns null if <code>url</code> is null, is
- syntactically invalid, or is not a data URL.
+ syntactically invalid, or is not a data URI.
 
 ### MakeDataUrl
-    public static String MakeDataUrl​(String textString)
-Encodes text as a data URL.
+    @Deprecated public static String MakeDataUrl​(String textString)
+Deprecated.
+<div class='deprecationComment'>Renamed to MakeDataUri.</div>
 
 **Parameters:**
 
-* <code>textString</code> - A text string to encode as a data URL.
+* <code>textString</code> - A text string to encode as a data URI.
 
 **Returns:**
 
-* A data URL that encodes the given text.
+* A Data URI that encodes the given text.
 
 **Throws:**
 
@@ -66,18 +74,19 @@ Encodes text as a data URL.
  null.
 
 ### MakeDataUrl
-    public static String MakeDataUrl​(byte[] bytes, MediaType mediaType)
-Encodes data with the given media type in a data URL.
+    @Deprecated public static String MakeDataUrl​(byte[] bytes, MediaType mediaType)
+Deprecated.
+<div class='deprecationComment'>Renamed to MakeDataUri.</div>
 
 **Parameters:**
 
-* <code>bytes</code> - A byte array containing the data to encode in a data URL.
+* <code>bytes</code> - A byte array containing the data to encode in a Data URI.
 
 * <code>mediaType</code> - A media type to assign to the data.
 
 **Returns:**
 
-* A data URL that encodes the given data and media type.
+* A Data URI that encodes the given data and media type.
 
 **Throws:**
 

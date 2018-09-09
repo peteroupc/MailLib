@@ -66,3 +66,4 @@ return DataUris.MakeDataUri(textString);
     public static String MakeDataUrl(byte[] bytes, MediaType mediaType) {
 return DataUris.MakeDataUri(bytes, mediaType);
   }
+ }

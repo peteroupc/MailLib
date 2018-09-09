@@ -8734,7 +8734,7 @@ Assert.AreEqual(
         Assert.AreEqual(stringTemp, stringTemp2);
       }
       {
-        var stringTemp = (string)URIUtility.escapeURI(
+        var stringTemp = (string)URIUtility.escapeURI(s,
           2);
         var stringTemp2 = (string)URIUtility.escapeURI(
           (string)URIUtility.escapeURI(s, 2),

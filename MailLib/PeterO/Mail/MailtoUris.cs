@@ -4,7 +4,7 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  internal static class MailtoUrls {
+  internal static class MailtoUris {
     private static string Implode(string[] strings, string delim) {
       if (strings.Length == 0) {
         return String.Empty;
@@ -40,7 +40,7 @@ namespace PeterO.Mail {
       return ret.Substring(headerName.Length + 2);
     }
 
-    public static string MessageToMailtoUrl(Message msg) {
+    public static string MessageToMailtoUri(Message msg) {
       if (msg == null) {
         throw new ArgumentNullException(nameof(msg));
       }
@@ -131,9 +131,9 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    public static Message MailtoUrlMessage(string url) {
+    public static Message MailtoUriMessage(string uri) {
       string[] parts = URIUtility.splitIRIToStrings(
-        url);
+        uri);
       if (parts == null || parts[0] == null) {
         return null;
       }

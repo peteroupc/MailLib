@@ -5,13 +5,13 @@ using PeterO;
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.DataUrls"]/*'/>
-  public static class DataUrls {
+  public static class DataUris {
     /// <summary>Extracts the media type from a Data URI (uniform resource
     /// identifier).</summary>
     /// <param name='uri'>A string object.</param>
     /// <returns>The media type. Returns null if <paramref name='url'/> is
     /// null, is syntactically invalid, or is not a Data URI.</returns>
-    public static MediaType DataUrlMediaType(string uri) {
+    public static MediaType DataUriMediaType(string uri) {
   string url = uri;
       string[] parts = URIUtility.splitIRIToStrings(
         url);
@@ -87,7 +87,7 @@ namespace PeterO.Mail {
     /// <returns>The data as a byte array. Returns null if <paramref
     /// name='url'/> is null, is syntactically invalid, or is not a data
     /// URI.</returns>
-    public static byte[] DataUrlBytes(string uri) {
+    public static byte[] DataUriBytes(string uri) {
   string url = uri;
       string[] parts = URIUtility.splitIRIToStrings(
         url);
@@ -223,18 +223,18 @@ var i = 0;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.String)"]/*'/>
-    public static string MakeDataUrl(string textString) {
+    public static string MakeDataUri(string textString) {
 if (textString == null) {
   throw new ArgumentNullException(nameof(textString));
 }
-      return MakeDataUrl(
+      return MakeDataUri(
   DataUtilities.GetUtf8Bytes(textString, true),
   MediaType.Parse("text/plain;charset=utf-8"));
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.Byte[],PeterO.Mail.MediaType)"]/*'/>
-    public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
+    public static string MakeDataUri(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
       }
