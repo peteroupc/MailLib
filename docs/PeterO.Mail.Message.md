@@ -517,21 +517,40 @@ The header field value with valid encoded words decoded.
 The parameter <i>name</i>
  is null.
 
+### FromMailtoUri
+
+    public static PeterO.Mail.Message FromMailtoUri(
+        string uri);
+
+Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored.
+
+<b>Parameters:</b>
+
+ * <i>uri</i>: The parameter  <i>uri</i>
+ is a text string.
+
+<b>Return Value:</b>
+
+A Message object created from the given MailTo URI. Returs null if  <i>url</i>
+ is null, is syntactically invalid, or is not a MailTo URI.
+
 ### FromMailtoUrl
 
     public static PeterO.Mail.Message FromMailtoUrl(
         string url);
 
-Creates a message object from a MailTo URL. The URL can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored.
+<b>Deprecated.</b> Renamed to FromMailtoUri.
+
+Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored.
 
 <b>Parameters:</b>
 
- * <i>url</i>: A string representing a MailTo URL.
+ * <i>url</i>: A string representing a MailTo URI.
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URL. Returs null if  <i>url</i>
- is null, is syntactically invalid, or is not a MailTo URL.
+A Message object created from the given MailTo URI. Returs null if  <i>url</i>
+ is null, is syntactically invalid, or is not a MailTo URI.
 
 ### Generate
 
@@ -622,6 +641,16 @@ Gets the date and time extracted from this message's Date header field (the valu
 <b>Return Value:</b>
 
 An array containing eight elements. Returns null if the Date header doesn't exist, if the Date field is syntactically or semantically invalid, or if the field's year would overflow a 32-bit signed integer.
+
+### GetFormattedBodyString
+
+    public string GetFormattedBodyString();
+
+Not documented yet.
+
+<b>Return Value:</b>
+
+A string object.
 
 ### GetHeader
 
@@ -1009,7 +1038,7 @@ The parameter <i>name</i>
     public PeterO.Mail.Message SetHtmlBody(
         string str);
 
-Sets the body of this message to the specified string in HTML format. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+Sets the body of this message to the specified string in Hypertext Markup Language (HTML) format. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
 
 <b>Parameters:</b>
 
@@ -1031,7 +1060,7 @@ The parameter <i>str</i>
         string text,
         string html);
 
-Sets the body of this message to a multipart body with plain text and HTML versions of the same message. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+Sets the body of this message to a multipart body with plain text and Hypertext Markup Language (HTML) versions of the same message. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
 
 <b>Parameters:</b>
 
@@ -1071,12 +1100,24 @@ This instance.
 The parameter <i>str</i>
  is null.
 
+### ToMailtoUri
+
+    public string ToMailtoUri();
+
+Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if this message has a text media type and uses a supported character encoding ("charset" parameter). The To header field is included in the URI only if it has display names or group syntax.
+
+<b>Return Value:</b>
+
+A MailTo URI corresponding to this message.
+
 ### ToMailtoUrl
 
     public string ToMailtoUrl();
 
-Generates a "mailto:" URL corresponding to this message. The following header fields, and only these, are used to generate the URL: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URL only if this message has a text media type and uses a supported character encoding ("charset" parameter). The To header field is included in the URL only if it has display names or group syntax.
+<b>Deprecated.</b> Renamed to ToMailtoUri.
+
+Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if this message has a text media type and uses a supported character encoding ("charset" parameter). The To header field is included in the URI only if it has display names or group syntax.
 
 <b>Return Value:</b>
 
-A "mailto:" URL corresponding to this message.
+A MailTo URI corresponding to this message.

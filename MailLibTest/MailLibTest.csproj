@@ -86,6 +86,7 @@
     <Compile Include="DictUtility.cs" />
     <Compile Include="URIUtility.cs" />
     <Compile Include="DataUrlTest.cs" />
+    <Compile Include="MarkdownTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -227,8 +227,9 @@ namespace PeterO.Text {
         if (ch < 0) {
           return str;
         }
-        if (ch == 931 && IsFinalSigmaContext(str, i)) {
-          sb.Append((char)962);
+        if (ch == 931) {
+          sb.Append(IsFinalSigmaContext(str, i) ?
+                    (char)962 : (char)963);
         } else {
           int size = UnicodeDatabase.GetLowerCaseMapping(ch, buffer, 0);
           for (var j = 0; j < size; ++j) {

@@ -874,7 +874,7 @@ for i in 0..0xEFFFF
   if decomp.length==1 && i<0x10000 && decomp[0]<0x10000
    ptr=(i<<16)|decomp[0]
    ptr=-((1<<32)-ptr)
-   lcpointers.push()
+   lcpointers.push(ptr)
    next
   elsif decomp.length==1
    lcpointers32.push(pointer)

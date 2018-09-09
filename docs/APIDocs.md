@@ -4,7 +4,8 @@
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) -
 Specifies how a message body should be displayed or handled by a mail       user agent.
- * [PeterO.Mail.DataUrls](PeterO.Mail.DataUrls.md) - Contains methods for parsing and generating data URLs.
+ * [PeterO.Mail.DataUris](PeterO.Mail.DataUris.md) - Contains methods for parsing and generating Data URIs (uniform resource       identifiers).
+ * [PeterO.Mail.DataUrls](PeterO.Mail.DataUrls.md) - Contains methods for parsing and generating Data URIs (uniform resource       identifiers).
  * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - A mutable data type that allows a content disposition to be built.
  * [PeterO.Mail.LanguageTags](PeterO.Mail.LanguageTags.md) - Contains methods for parsing and matching language tags.
  * [PeterO.Mail.MailDateTime](PeterO.Mail.MailDateTime.md) - Contains methods for parsing and generating date-time strings following       the Internet Message Format (RFC 5322).
@@ -25,4 +26,4 @@ Implements the Unicode normalization algorithm and contains methods and         
 A character input class that implements the Unicode normalization         algorithm and contains methods and functionality to test and convert         text strings for normalization.
  * [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) -
 A character input class that implements the Unicode normalization         algorithm and contains methods and functionality to test and convert         text strings for normalization.
- * [PeterO.Text.ProtocolStrings](PeterO.Text.ProtocolStrings.md) - Contains methods for preparing protocol strings (such as user identifiers) for comparison and validity checking.
+ * [PeterO.Text.ProtocolStrings](PeterO.Text.ProtocolStrings.md) - Contains methods for preparing user-facing protocol strings (such as user identifiers) for comparison and validity checking.

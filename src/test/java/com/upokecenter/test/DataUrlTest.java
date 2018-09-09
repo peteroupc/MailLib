@@ -8742,7 +8742,7 @@ Assert.assertEquals(
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.escapeURI(s,
           2);
         String stringTemp2 = (String)URIUtility.escapeURI(
           (String)URIUtility.escapeURI(s, 2),
