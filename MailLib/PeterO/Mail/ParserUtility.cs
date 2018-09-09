@@ -83,16 +83,23 @@ namespace PeterO.Mail {
       return String.Empty;
     }
 
-    // Wsp, a.k.a. 1*LWSP-char under RFC 822
-    public static int SkipSpaceAndTab(string str, int index, int endIndex) {
-      while (index < endIndex) {
-        if (str[index] == 0x09 || str[index] == 0x20) {
-          ++index;
-        } else {
-          break;
-        }
+    public static string Implode(string[] strings, string delim) {
+      if (strings.Length == 0) {
+        return String.Empty;
       }
-      return index;
+      if (strings.Length == 1) {
+        return strings[0];
+      }
+      var sb = new StringBuilder();
+      var first = true;
+      foreach (string s in strings) {
+        if (!first) {
+          sb.Append(delim);
+        }
+        sb.Append(s);
+        first = false;
+      }
+      return sb.ToString();
     }
-    }
+  }
 }

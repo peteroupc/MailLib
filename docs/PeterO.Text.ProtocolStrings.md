@@ -2,7 +2,7 @@
 
     public static class ProtocolStrings
 
-Contains methods for preparing protocol strings (such as user identifiers) for comparison and validity checking. See RFC 8264.
+Contains methods for preparing user-facing protocol strings (such as user identifiers) for comparison and validity checking. Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See RFC 8264. (Currently there are three profiles for internationalized strings: one each for strings serving as user identifiers, arbitrary single-line strings [such as passwords], or display names. Other user-facing internationalized strings not expressly handled by this class include file and directory names, profile data voluntarily entered by users, and the text of article, post, and message bodies.)
 
 ### IsInFreeformClass
 
@@ -73,11 +73,11 @@ A nickname prepared for comparison under the Nickname profile in RFC 8266. Retur
     public static string OpaqueStringEnforce(
         string str);
 
-Checks the validity of a string serving as an arbitrary sequence of characters, such as a passphrase. This checking is done using the OpaqueString profile in RFC 8265. (REMARK: Specifying a string as this method does is not ideal if the string represents a password or other sensitive data, since strings are immutable in .NET and Java, so that its contents cannot be cleared when done. An application concerned about security may want to reimplement this method by passing a clearable array of characters rather than a text string.).
+Checks the validity of a string serving as an arbitrary single-line sequence of characters, such as a passphrase. This checking is done using the OpaqueString profile in RFC 8265. (REMARK: Specifying a string as this method does is not ideal if the string represents a password or other sensitive data, since strings are immutable in .NET and Java, so that its contents cannot be cleared when done. An application concerned about security may want to reimplement this method by passing a clearable array of characters rather than a text string.).
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string to prepare that represents an arbitrary sequence of characters entered by a user.
+ * <i>str</i>: A string to prepare that represents an arbitrary single-line sequence of characters entered by a user.
 
 <b>Return Value:</b>
 

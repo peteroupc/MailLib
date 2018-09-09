@@ -1217,9 +1217,25 @@ decomposed, including all base+slash code points, which are the only composed co
     </returns>
 
 </doc>
+<doc name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)">
+
+            <summary>Extracts the data from a Data URI (uniform resource
+            identifier) in the form of a byte array.</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data
+            URI.</returns>
+
+</doc>
+<doc name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)">
+
+            <summary>Extracts the media type from a Data URI (uniform resource
+            identifier).</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>The media type. Returns null if <paramref name='url'/> is
+            null, is syntactically invalid, or is not a Data URI.</returns>
+
+</doc>
 <doc name="T:PeterO.Mail.DataUrls">
 ns me
-    <summary>Contains methods for parsing and generating Data URIs (uniform resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
+    <summary>Contains methods for parsing and generating Data URIs (uniform resource
+      identifiers). Data URIs are described in RFC 2397. Examples for Data URIs
+      follow.
       <code>data:,hello%20world
       </code>
       <code>data:text/markdown,hello%20world
@@ -1365,6 +1381,11 @@ ns me
 
             <summary>In an unstructured header field's value.
     </summary>
+
+</doc>
+<doc name="T:PeterO.Mail.EnrichedText">
+
+            <summary>Not documented yet.</summary>
 
 </doc>
 <doc name="T:PeterO.Mail.IdentityEncoder">
@@ -2430,6 +2451,23 @@ ns me
     </value>
 
 </doc>
+<doc name="M:PeterO.Mail.Message.FromMailtoUri(System.String)">
+
+            <summary>Creates a message object from a MailTo URI (uniform
+            resource identifier). The MailTo URI can contain key-value pairs
+            that follow a question-mark, as in the following example:
+            "mailto:me@example.com?subject=A%20Subject". In this example,
+            "subject" is the subject of the email address. Only certain keys
+            are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+            "comments", "keywords", and "body". The first seven are header
+            field names that will be used to set the returned message's
+            corresponding header fields. The last, "body", sets the body of the
+            message to the given text. Keys other than these eight will be
+            ignored.</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>A Message object created from the given MailTo URI. Returs
+            null if <paramref name='url'/> is null, is syntactically invalid,
+            or is not a MailTo URI.</returns>
+
+</doc>
 <doc name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)">
 
             <summary>Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can
@@ -2532,6 +2570,10 @@ ns me
       or if the field's year would overflow a 32-bit signed integer.
     </returns>
 
+</doc>
+<doc name="M:PeterO.Mail.Message.GetFormattedBodyString">
+<summary>Not documented yet.</summary>
+            <returns>A text string.</returns>
 </doc>
 <doc name="M:PeterO.Mail.Message.GetHeader(System.Int32)">
 
@@ -2805,7 +2847,7 @@ ns me
 <doc name="M:PeterO.Mail.Message.SetHtmlBody(System.String)">
 
             <summary>Sets the body of this message to the specified string in
-            HTML format. The character sequences CR (carriage return, "\r",
+            Hypertext Markup Language (HTML) format. The character sequences CR (carriage return, "\r",
             U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted
             to CR/LF line breaks. Unpaired surrogate code points will be
             replaced with replacement characters.</summary><param name='str'>A string consisting of the message in HTML
@@ -2816,7 +2858,7 @@ ns me
 <doc name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)">
 
             <summary>Sets the body of this message to a multipart body with
-            plain text and HTML versions of the same message. The character
+            plain text and Hypertext Markup Language (HTML) versions of the same message. The character
             sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n",
             U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired
             surrogate code points will be replaced with replacement

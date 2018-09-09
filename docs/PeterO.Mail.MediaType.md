@@ -70,7 +70,7 @@ A list of the parameters contained in this media type object; the names of each 
 
     public string SubType { get; }
 
-Gets this media type's subtype.
+Gets this media type's subtype (for example, "plain" in "text/plain"). The resulting string will be in lowercase letters.
 
 <b>Returns:</b>
 
@@ -80,7 +80,7 @@ This media type's subtype.
 
     public string TopLevelType { get; }
 
-Gets the name of this media type's top-level type (such as "text" or "audio").
+Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic"). The resulting string will be in lowercase letters.
 
 <b>Returns:</b>
 
@@ -90,7 +90,7 @@ The name of this media type's top-level type (such as "text" or "audio".
 
     public string TypeAndSubType { get; }
 
-Gets the top level type and subtype of this media type, separated by a slash; for example, "text/plain".
+Gets the top level type and subtype of this media type, separated by a slash; for example, "text/plain". The resulting string will be in lowercase letters.
 
 <b>Returns:</b>
 

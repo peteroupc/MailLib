@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Not documented yet.</summary>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
   internal static class EnrichedText {
     private static string ParseColor(string str, int index, int endIndex) {
       if (index + 2 == endIndex - 1 && (str[index] & ~32) == 82 &&

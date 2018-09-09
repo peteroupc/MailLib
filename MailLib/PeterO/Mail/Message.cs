@@ -161,18 +161,19 @@ return this.GetAddresses("cc");
       }
     }
 
-    /// <summary>
-    /// </summary>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetFormattedBodyString"]/*'/>
     public string GetFormattedBodyString() {
       string text = this.BodyString;
-      if (text == null) return null;
+      if (text == null) {
+ return null;
+}
       MediaType mt = this.ContentType;
       bool formatFlowed = DataUtilities.ToLowerCaseAscii(
       mt.GetParameter("format") ?? "fixed")
     .Equals("flowed");
       bool delSp = DataUtilities.ToLowerCaseAscii(
-          mt.GetParameter("delsp") ?? "no")
-        .Equals("yes");
+          mt.GetParameter("delsp") ?? "no").Equals("yes");
       if (mt.TypeAndSubType.Equals("text/plain")) {
         if (formatFlowed) {
           return FormatFlowed.FormatFlowedText(text, delSp);
@@ -181,13 +182,23 @@ return this.GetAddresses("cc");
         }
       } else if (mt.TypeAndSubType.Equals("text/html")) {
         return text;
+      } else if (mt.TypeAndSubType.Equals("text/markdown")) {
+MediaType previewType = MediaType.Parse("text/html");
+        if (this.ContentDisposition != null) {
+          string pt = this.ContentDisposition.GetParameter("preview-type");
+          previewType = MediaType.Parse(pt ?? String.Empty, previewType);
+        }
+        if (previewType.TypeAndSubType.Equals("text/html")) {
+          return FormatFlowed.MarkdownText(text, 0);
+        } else {
+          return FormatFlowed.NonFormatFlowedText(text);
+        }
       } else if (mt.TypeAndSubType.Equals("text/enriched")) {
         return EnrichedText.EnrichedToHtml(text, 0, text.Length);
       } else {
         return FormatFlowed.NonFormatFlowedText(text);
       }
     }
-
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
@@ -1641,25 +1652,6 @@ private static string GetContentTranslationType(string ctt) {
       return sb.ToString();
     }
 
-    private static string Implode(string[] strings, string delim) {
-      if (strings.Length == 0) {
-        return String.Empty;
-      }
-      if (strings.Length == 1) {
-        return strings[0];
-      }
-      var sb = new StringBuilder();
-      var first = true;
-      foreach (string s in strings) {
-        if (!first) {
-          sb.Append(delim);
-        }
-        sb.Append(s);
-        first = false;
-      }
-      return sb.ToString();
-    }
-
     private static bool IsShortAndAllAscii(string str) {
       if (str.Length > 0x10000) {
         return false;
@@ -2581,21 +2573,8 @@ if (ungetState[1] < 0x80) {
       return MailtoUris.MessageToMailtoUri(this);
     }
 
-    /// <summary>Creates a message object from a MailTo URI (uniform
-    /// resource identifier). The MailTo URI can contain key-value pairs
-    /// that follow a question-mark, as in the following example:
-    /// "mailto:me@example.com?subject=A%20Subject". In this example,
-    /// "subject" is the subject of the email address. Only certain keys
-    /// are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
-    /// "comments", "keywords", and "body". The first seven are header
-    /// field names that will be used to set the returned message's
-    /// corresponding header fields. The last, "body", sets the body of the
-    /// message to the given text. Keys other than these eight will be
-    /// ignored.</summary>
-    /// <param name='uri'>A string object.</param>
-    /// <returns>A Message object created from the given MailTo URI. Returs
-    /// null if <paramref name='url'/> is null, is syntactically invalid,
-    /// or is not a MailTo URI.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUri(System.String)"]/*'/>
     public static Message FromMailtoUri(string uri) {
       return MailtoUris.MailtoUriMessage(uri);
     }
@@ -2957,7 +2936,10 @@ if (ungetState[1] < 0x80) {
       var encoder = new HeaderEncoder(76, 0);
       encoder.AppendSymbol(name + ":");
       encoder.AppendSpace();
-      string fullField = Implode(this.GetMultipleHeaders(name), ", ");
+ string fullField = ParserUtility.Implode(
+  this.GetMultipleHeaders(name),
+  ",
+  ");
       string lcname = DataUtilities.ToLowerCaseAscii(name);
       if (fullField.Length == 0) {
         encoder.AppendSymbol("me@" + name + "-address.invalid");

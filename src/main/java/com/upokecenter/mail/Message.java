@@ -271,6 +271,47 @@ return this.GetAddresses("cc");
       }
 
     /**
+     * Not documented yet.
+     * @return A text string.
+     */
+    public String GetFormattedBodyString() {
+      String text = this.getBodyString();
+      if (text == null) {
+ return null;
+}
+      MediaType mt = this.getContentType();
+      boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
+      mt.GetParameter("format") ?? "fixed")
+    .equals("flowed");
+      boolean delSp = DataUtilities.ToLowerCaseAscii(
+          mt.GetParameter("delsp") ?? "no").equals("yes");
+      if (mt.getTypeAndSubType().equals("text/plain")) {
+        if (formatFlowed) {
+          return FormatFlowed.FormatFlowedText(text, delSp);
+        } else {
+          return FormatFlowed.NonFormatFlowedText(text);
+        }
+      } else if (mt.getTypeAndSubType().equals("text/html")) {
+        return text;
+      } else if (mt.getTypeAndSubType().equals("text/markdown")) {
+MediaType previewType = MediaType.Parse("text/html");
+        if (this.getContentDisposition() != null) {
+          String pt = this.getContentDisposition().GetParameter("preview-type");
+          previewType = MediaType.Parse(pt ?? "", previewType);
+        }
+        if (previewType.getTypeAndSubType().equals("text/html")) {
+          return FormatFlowed.MarkdownText(text, 0);
+        } else {
+          return FormatFlowed.NonFormatFlowedText(text);
+        }
+      } else if (mt.getTypeAndSubType().equals("text/enriched")) {
+        return EnrichedText.EnrichedToHtml(text, 0, text.length());
+      } else {
+        return FormatFlowed.NonFormatFlowedText(text);
+      }
+    }
+
+    /**
      * Gets this message's content disposition. The content disposition specifies
      * how a user agent should display or otherwise handle this message. Can
      * be set to null. If set to a disposition or to null, updates the
@@ -892,11 +933,11 @@ return this.GetAddresses("to");
       MediaType.Parse("text/html; charset=utf-8");
 
     /**
-     * Sets the body of this message to the specified string in HTML format. The
-     * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
-     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
-     * breaks. Unpaired surrogate code points will be replaced with
-     * replacement characters.
+     * Sets the body of this message to the specified string in Hypertext Markup
+     * Language (HTML) format. The character sequences CR (carriage return,
+     * "&#x5c;r", U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will be
+     * converted to CR/LF line breaks. Unpaired surrogate code points will
+     * be replaced with replacement characters.
      * @param str A string consisting of the message in HTML format.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
@@ -912,11 +953,12 @@ return this.GetAddresses("to");
     }
 
     /**
-     * Sets the body of this message to a multipart body with plain text and HTML
-     * versions of the same message. The character sequences CR (carriage
-     * return, "&#x5c;r" , U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will
-     * be converted to CR/LF line breaks. Unpaired surrogate code points
-     * will be replaced with replacement characters.
+     * Sets the body of this message to a multipart body with plain text and
+     * Hypertext Markup Language (HTML) versions of the same message. The
+     * character sequences CR (carriage return, "&#x5c;r" , U+000D), LF (line
+     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+     * breaks. Unpaired surrogate code points will be replaced with
+     * replacement characters.
      * @param text A string consisting of the plain text version of the message.
      * @param html A string consisting of the HTML version of the message.
      * @return This instance.
@@ -2120,25 +2162,6 @@ private static String GetContentTranslationType(String ctt) {
       return sb.toString();
     }
 
-    private static String Implode(String[] strings, String delim) {
-      if (strings.length == 0) {
-        return "";
-      }
-      if (strings.length == 1) {
-        return strings[0];
-      }
-      StringBuilder sb = new StringBuilder();
-      boolean first = true;
-      for (String s : strings) {
-        if (!first) {
-          sb.append(delim);
-        }
-        sb.append(s);
-        first = false;
-      }
-      return sb.toString();
-    }
-
     private static boolean IsShortAndAllAscii(String str) {
       if (str.length() > 0x10000) {
         return false;
@@ -3043,7 +3066,7 @@ private static String GetContentTranslationType(String ctt) {
  */
 @Deprecated
     public static Message FromMailtoUrl(String url) {
-      return MailtoUrls.MailtoUrlMessage(url);
+      return MailtoUris.MailtoUriMessage(url);
     }
 
     /**
@@ -3059,7 +3082,7 @@ private static String GetContentTranslationType(String ctt) {
  */
 @Deprecated
     public String ToMailtoUrl() {
-      return MailtoUrls.MessageToMailtoUrl(this);
+      return MailtoUris.MessageToMailtoUri(this);
     }
 
     /**
@@ -3073,13 +3096,13 @@ private static String GetContentTranslationType(String ctt) {
      * names that will be used to set the returned message's corresponding
      * header fields. The last, "body", sets the body of the message to the
      * given text. Keys other than these eight will be ignored.
-     * @param uri A string object.
+     * @param uri The parameter {@code uri} is a text string.
      * @return A Message object created from the given MailTo URI. Returs null if
      * {@code url} is null, is syntactically invalid, or is not a MailTo
      * URI.
      */
     public static Message FromMailtoUri(String uri) {
-      return MailtoUrls.MailtoUrlMessage(uri);
+      return MailtoUris.MailtoUriMessage(uri);
     }
 
     /**
@@ -3093,7 +3116,7 @@ private static String GetContentTranslationType(String ctt) {
      * @return A MailTo URI corresponding to this message.
      */
     public String ToMailtoUri() {
-      return MailtoUrls.MessageToMailtoUri(this);
+      return MailtoUris.MessageToMailtoUri(this);
     }
 
     private void ProcessHeaders(boolean assumeMime, boolean digest) {
@@ -3405,7 +3428,10 @@ private static String GetContentTranslationType(String ctt) {
       HeaderEncoder encoder = new HeaderEncoder(76, 0);
       encoder.AppendSymbol(name + ":");
       encoder.AppendSpace();
-      String fullField = Implode(this.GetMultipleHeaders(name), ", ");
+ String fullField = ParserUtility.Implode(
+  this.GetMultipleHeaders(name),
+  ",
+  ");
       String lcname = DataUtilities.ToLowerCaseAscii(name);
       if (fullField.length() == 0) {
         encoder.AppendSymbol("me@" + name + "-address.invalid");

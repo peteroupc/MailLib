@@ -85,15 +85,22 @@ private ParserUtility() {
       return "";
     }
 
-    // Wsp, a.k.a. 1*LWSP-char under RFC 822
-    public static int SkipSpaceAndTab(String str, int index, int endIndex) {
-      while (index < endIndex) {
-        if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
-          ++index;
-        } else {
-          break;
-        }
+    public static String Implode(String[] strings, String delim) {
+      if (strings.length == 0) {
+        return "";
       }
-      return index;
+      if (strings.length == 1) {
+        return strings[0];
+      }
+      StringBuilder sb = new StringBuilder();
+      boolean first = true;
+      for (String s : strings) {
+        if (!first) {
+          sb.append(delim);
+        }
+        sb.append(s);
+        first = false;
+      }
+      return sb.toString();
     }
-    }
+  }

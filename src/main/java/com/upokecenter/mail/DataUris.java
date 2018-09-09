@@ -14,7 +14,7 @@ private DataUris() {
 }
     /**
      * Extracts the media type from a Data URI (uniform resource identifier).
-     * @param uri A string object.
+     * @param uri The parameter {@code uri} is a text string.
      * @return The media type. Returns null if {@code url} is null, is
      * syntactically invalid, or is not a Data URI.
      */
@@ -91,7 +91,7 @@ private DataUris() {
     /**
      * Extracts the data from a Data URI (uniform resource identifier) in the form
      * of a byte array.
-     * @param uri A string object.
+     * @param uri The parameter {@code uri} is a text string.
      * @return The data as a byte array. Returns null if {@code url} is null, is
      * syntactically invalid, or is not a data URI.
      */
@@ -240,7 +240,7 @@ int i = 0;
 if (textString == null) {
   throw new NullPointerException("textString");
 }
-      return MakeDataUrl(
+      return MakeDataUri(
   DataUtilities.GetUtf8Bytes(textString, true),
   MediaType.Parse("text/plain;charset=utf-8"));
     }

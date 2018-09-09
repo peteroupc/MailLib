@@ -6,11 +6,8 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.DataUrls"]/*'/>
   public static class DataUris {
-    /// <summary>Extracts the media type from a Data URI (uniform resource
-    /// identifier).</summary>
-    /// <param name='uri'>A string object.</param>
-    /// <returns>The media type. Returns null if <paramref name='url'/> is
-    /// null, is syntactically invalid, or is not a Data URI.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
     public static MediaType DataUriMediaType(string uri) {
   string url = uri;
       string[] parts = URIUtility.splitIRIToStrings(
@@ -81,12 +78,8 @@ namespace PeterO.Mail {
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-    /// <summary>Extracts the data from a Data URI (uniform resource
-    /// identifier) in the form of a byte array.</summary>
-    /// <param name='uri'>A string object.</param>
-    /// <returns>The data as a byte array. Returns null if <paramref
-    /// name='url'/> is null, is syntactically invalid, or is not a data
-    /// URI.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
     public static byte[] DataUriBytes(string uri) {
   string url = uri;
       string[] parts = URIUtility.splitIRIToStrings(
