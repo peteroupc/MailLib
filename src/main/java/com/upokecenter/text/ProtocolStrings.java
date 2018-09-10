@@ -7,12 +7,11 @@ package com.upokecenter.text;
      * Latin block (U + 0000 to U + 007F) of the Unicode Standard. See RFC 8264.
      * (Currently there are three profiles for internationalized strings:
      * one each for strings serving as user identifiers, arbitrary
-     * single-line strings.get(((such instanceof passwords)) ?
-     * (passwords])such : null), or display names. Other user-facing
-     * internationalized strings not expressly handled by this class include
-     * file and directory names, domain names, profile data voluntarily
-     * entered by users, and the text of article, post, and message
-     * bodies.).
+     * single-line strings.get(such as passwords), or display names. Other
+     * user-facing internationalized strings not expressly handled by this
+     * class include file and directory names, domain names, profile data
+     * voluntarily entered by users, and the text of article, post, and
+     * message bodies.).
      */
   public final class ProtocolStrings {
 private ProtocolStrings() {
