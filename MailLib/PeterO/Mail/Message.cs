@@ -628,6 +628,31 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)"]/*'/>
+    public Message SetTextAndMarkdown(string text, string markdown) {
+      if (markdown == null) {
+        throw new ArgumentNullException(nameof(markdown));
+      }
+      text = text ?? markdown;
+      Message textMessage = NewBodyPart().SetTextBody(text);
+      Message markdownMessage = NewBodyPart().SetTextBody(markdown);
+    string mtypestr = "text/markdown; charset=utf-8";
+      markdownMessage.ContentType = MediaType.Parse(mtypestr);
+     // Take advantage of SetTextBody's line break conversion
+    string markdownText = markdownMessage.BodyString;
+      Message htmlMessage = NewBodyPart().SetHtmlBody(
+         FormatFlowed.MarkdownText(markdownText, 0));
+    mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      this.ContentType = MediaType.Parse(mtypestr);
+      IList<Message> messageParts = this.Parts;
+      messageParts.Clear();
+      messageParts.Add(textMessage);
+      messageParts.Add(markdownMessage);
+      messageParts.Add(htmlMessage);
+      return this;
+    }
+
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
     public Message SetTextBody(string str) {
       if (str == null) {

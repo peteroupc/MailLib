@@ -252,8 +252,8 @@ private Idna() {
         if (ch < 0) {
           return str;
         }
-        if (ch == 931 && IsFinalSigmaContext(str, i)) {
-          sb.append((char)962);
+        if (ch == 931) {
+          sb.append(IsFinalSigmaContext(str, i) ? (char)962 : (char)963);
         } else {
           int size = UnicodeDatabase.GetLowerCaseMapping(ch, buffer, 0);
           for (int j = 0; j < size; ++j) {

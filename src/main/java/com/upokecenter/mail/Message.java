@@ -987,6 +987,45 @@ return this.GetAddresses("to");
     }
 
     /**
+     * Sets the body of this message to a multipart body with plain text, Markdown,
+     * and Hypertext Markup Language (HTML) versions of the same message.
+     * The character sequences CR (carriage return, "&#x5c;r" , U+000D), LF (line
+     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+     * breaks. Unpaired surrogate code points will be replaced with
+     * replacement characters.
+     * @param text A string consisting of the plain text version of the message.
+     * Can be null, in which case the value of the "markdown" parameter is
+     * used as the plain text version.
+     * @param markdown A string consisting of the Markdown version of the message.
+     * For interoperability, this Markdown version will be converted to
+     * HTML.
+     * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code markdown} is null.
+     */
+    public Message SetTextAndMarkdown(String text, String markdown) {
+      if (markdown == null) {
+        throw new NullPointerException("markdown");
+      }
+      text = (text == null) ? (markdown) : text;
+      Message textMessage = NewBodyPart().SetTextBody(text);
+      Message markdownMessage = NewBodyPart().SetTextBody(markdown);
+    String mtypestr = "text/markdown; charset=utf-8";
+      markdownMessage.setContentType(MediaType.Parse(mtypestr));
+     // Take advantage of SetTextBody's line break conversion
+    String markdownText = markdownMessage.getBodyString();
+      Message htmlMessage = NewBodyPart().SetHtmlBody(
+         FormatFlowed.MarkdownText(markdownText, 0));
+    mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      this.setContentType(MediaType.Parse(mtypestr));
+      List<Message> messageParts = this.getParts();
+      messageParts.clear();
+      messageParts.add(textMessage);
+      messageParts.add(markdownMessage);
+      messageParts.add(htmlMessage);
+      return this;
+    }
+
+    /**
      * Sets the body of this message to the specified plain text string. The
      * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
      * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
@@ -3430,8 +3469,7 @@ private static String GetContentTranslationType(String ctt) {
       encoder.AppendSpace();
  String fullField = ParserUtility.Implode(
   this.GetMultipleHeaders(name),
-  ",
-  ");
+  "\u002c ");
       String lcname = DataUtilities.ToLowerCaseAscii(name);
       if (fullField.length() == 0) {
         encoder.AppendSymbol("me@" + name + "-address.invalid");

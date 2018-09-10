@@ -61,6 +61,7 @@ Assert.assertEquals(
   stringTemp);
 }
     }
+
     @Test
     public void TestProtocolStrings() {
       if (!(
@@ -79,6 +80,12 @@ Assert.assertEquals(
        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"))) {
  Assert.fail();
  }
+      {
+String stringTemp = ProtocolStrings.UsernameEnforce("Σa");
+Assert.assertEquals(
+  "σa",
+  stringTemp);
+}
       if (
        ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&")) {
  Assert.fail();

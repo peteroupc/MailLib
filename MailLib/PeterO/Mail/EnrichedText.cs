@@ -6,117 +6,59 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
   internal static class EnrichedText {
+private static bool IsTokenAsciiIgnoreCase(
+  string str,
+  int index,
+  int endIndex,
+  string strToMatch) {
+      for (var i = 0; i < strToMatch.Length; ++i) {
+        int idx = index + i;
+        if (idx >= endIndex) {
+ return false;
+}
+        char c1 = (str[idx] >= 0x41 && str[idx] <= 0x5a) ?
+            (char)(str[idx] + 0x20) : str[idx];
+        char c2 = (strToMatch[i] >= 0x41 && strToMatch[i] <= 0x5a) ?
+            (char)(strToMatch[i] + 0x20) : strToMatch[i];
+        if (c1 != c2) {
+ return false;
+}
+      }
+      return true;
+    }
+
+    private static bool IsHexChar(char c) {
+      return (c >= 'a' && c <= 'f') ||
+        (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9');
+    }
+
     private static string ParseColor(string str, int index, int endIndex) {
-      if (index + 2 == endIndex - 1 && (str[index] & ~32) == 82 &&
-        (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 68) {
-        return str.Substring(index, endIndex - index);
+    string[] colorNames = {"yellow" ,"red" ,"green" ,"blue" ,"black" ,"white",
+  "cyan",
+   "magenta"};
+      foreach (string name in colorNames) {
+        if (IsTokenAsciiIgnoreCase(str, index, endIndex, name)) {
+ return name;
+}
       }
-      if (index + 3 == endIndex - 1 && (str[index] & ~32) == 66 && (str[index +
-
-   1] & ~32) == 76 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32)
-                   == 69) {
-        return str.Substring(index, endIndex - index);
+      if (index + 13 >= endIndex) {
+ return null;
+}
+      for (var i = 0; i < 14; ++i) {
+        if (i == 4 || i == 8) {
+{ if (str[index + i] != ',') {
+{ return null;
+} }
+} } else { if (!IsHexChar(str[index + i])) {
+ return null;
+} }
       }
-      if (index + 4 == endIndex - 1 && (str[index] & ~32) == 71 &&
-      (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 69 &&
-      (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) == 78) {
-        return str.Substring(index, endIndex - index);
-      }
-      if (index + 5 == endIndex - 1 && (str[index] & ~32) == 89 &&
-      (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 76 &&
-      (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) == 79 &&
-      (str[index + 5] & ~32) == 87) {
-        return str.Substring(index, endIndex - index);
-      }
-      if (index + 3 == endIndex - 1 && (str[index] & ~32) == 67 &&
-      (str[index + 1] & ~32) == 89 && (str[index + 2] & ~32) == 65 &&
-      (str[index + 3] & ~32) == 78) {
-        return str.Substring(index, endIndex - index);
-      }
-      if (index + 6 == endIndex - 1 && (str[index] & ~32) == 77 &&
-      (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 71 &&
-      (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) == 78 &&
-      (str[index + 5] & ~32) == 84 && (str[index + 6] & ~32) == 65) {
-        return str.Substring(index, endIndex - index);
-      }
-      if (index + 4 == endIndex - 1 && (str[index] & ~32) == 66 &&
-      (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 &&
-      (str[index + 3] & ~32) == 67 && (str[index + 4] & ~32) == 75) {
-        return str.Substring(index, endIndex - index);
-      }
-      if (index + 4 == endIndex - 1 && (str[index] & ~32) == 87 &&
-      (str[index + 1] & ~32) == 72 && (str[index + 2] & ~32) == 73 &&
-      (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 69) {
-        return str.Substring(index, endIndex - index);
-      }
-      {
-        if (index + 3 < endIndex && (((str[index] >= 65 && str[index] <=
-               70) || (str[index] >= 97 && str[index] <= 102) || (str[index] >=
-               48 && str[index] <= 57)) && ((str[index + 1] >= 65 && str[index +
-               1] <=
-70) || (str[index + 1] >= 97 && str[index + 1] <= 102) || (str[index + 1] >=
- 48 && str[index + 1] <= 57)) && ((str[index + 2] >=
-
-               65 &&
-           str[index + 2] <= 70) || (str[index + 2] >= 97 && str[index +
-             2] <= 102) || (str[index + 2] >= 48 && str[index + 2] <=
-             57)) && ((str[index + 3] >= 65 && str[index + 3] <= 70) ||
-    (str[index + 3] >= 97 && str[index + 3] <= 102) || (str[index + 3] >= 48 &&
-
-               str[index + 3] <= 57)))) {
-          index += 4;
-        } else {
-          return null;
-        }
-      if (index + 4 < endIndex && (str[index] == 44) && (((str[index + 1] >=
-          65 &&
-    str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102) ||
-           (str[index + 1] >= 48 && str[index + 1] <=
-
-        57)) && ((str[index + 2] >= 65 && str[index + 2] <= 70) ||
-            (str[index +
-               2] >= 97 && str[index + 2] <= 102) || (str[index + 2] >= 48 &&
-
-   str[index + 2] <= 57)) && ((str[index + 3] >= 65 && str[index + 3] <= 70) ||
-          (str[index + 3] >= 97 && str[index + 3] <= 102) ||
-
-      (str[index + 3] >= 48 && str[index + 3] <= 57)) && ((str[index + 4] >=
-          65 &&
-    str[index + 4] <= 70) || (str[index + 4] >= 97 && str[index + 4] <= 102) ||
-           (str[index + 4] >= 48 && str[index + 4] <=
-
-                    57)))) {
-          index += 5;
-        } else {
-          return null;
-        }
-        if (index + 4 == endIndex - 1 && (str[index] == 44) && (((str[index + 1]
-              >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97 &&
-    str[index + 1] <= 102) || (str[index + 1] >= 48 &&
-                    str[index +
-                    1] <= 57)) && ((str[index + 2] >= 65 && str[index + 2] <=
-       70) || (str[index + 2] >= 97 && str[index + 2] <= 102) || (str[index + 2]
-              >= 48 && str[index + 2] <= 57)) && ((str[index + 3] >= 65 &&
-
-                    str[index + 3] <= 70) || (str[index + 3] >= 97 &&
-                    str[index +
-                    3] <= 102) || (str[index + 3] >= 48 && str[index + 3] <=
-                    57)) && ((str[index + 4] >= 65 && str[index + 4] <= 70) ||
-        (str[index + 4] >= 97 && str[index + 4] <= 102) || (str[index + 4] >= 48
-                   &&
-
-                    str[index + 4] <= 57)))) {
-          index += 5;
-        } else {
-          return null;
-        }
-        string ret = "#";
-        return
-  ret + str.Substring(index, 2) + str.Substring(index + 5, 2) +
-    str.Substring(
+      string ret = "#";
+      return
+ret + str.Substring(index, 2) + str.Substring(index + 5, 2) +
+  str.Substring(
   index,
   10);
-      }
     }
 
     private static int SkipFont(string str, int index, int endIndex) {
@@ -207,7 +149,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
     }
 
     private static string TrimSpaces(string s) {
-      if (s == null || s.Length == 0) {
+      if (String.IsNullOrEmpty(s)) {
         return s;
       }
       var index = 0;
@@ -319,11 +261,11 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             int indexStart2 = index;
             var lineBreakCount = 0;
             var i2 = 0;
-            for (;; ++i2) {
+            for (; ; ++i2) {
               indexTemp3 = index;
               do {
-              if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
-                == 10) {
+                if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
+                  == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]
@@ -579,9 +521,9 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                     }
                     } else if (lastCommand.Equals("color")) {
                     p = ParseColor(
-        DataUtilities.ToLowerCaseAscii(p),
-        0,
-        p.Length);
+          DataUtilities.ToLowerCaseAscii(p),
+          0,
+          p.Length);
                     if (p != null) {
                     currentBuilder.Append("<span style='color: " + p + "'>");
                     } else {
@@ -648,11 +590,11 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             }
             int indexStart2 = index;
             var lineBreakCount = 0;
-            for (int i2 = 0;; ++i2) {
+            for (int i2 = 0; ; ++i2) {
               indexTemp3 = index;
               do {
-              if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
-                == 10) {
+                if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
+                  == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]

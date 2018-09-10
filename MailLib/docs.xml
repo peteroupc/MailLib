@@ -2855,6 +2855,21 @@ ns me
             <paramref name='str'/> is null.</exception>
 
 </doc>
+<doc name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)">
+
+            <summary>Sets the body of this message to a multipart body with
+            plain text, Markdown, and Hypertext Markup Language (HTML) versions of the same message. The character
+            sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n",
+            U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired
+            surrogate code points will be replaced with replacement
+            characters.</summary><param name='text'>A string consisting of the plain text version of
+            the message.  Can be null, in which case the value of the "markdown" parameter is used as the plain text version.</param><param name='markdown'>A string consisting of the Markdown version of the
+            message.  For interoperability, this Markdown version will be converted to HTML.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='markdown'/> is
+            null.</exception>
+
+</doc>
+
 <doc name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)">
 
             <summary>Sets the body of this message to a multipart body with
@@ -4429,7 +4444,7 @@ of this NamedAddress object as it could appear in a "To" header field.
 <doc name="T:PeterO.Text.ProtocolStrings">
 
             <summary>Contains methods for preparing user-facing protocol strings (such as user identifiers) for comparison and validity checking.  Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See RFC 8264.
-(Currently there are three profiles for internationalized strings: one each for strings serving as user identifiers, arbitrary single-line strings [such as passwords], or display names.  Other user-facing internationalized strings not expressly handled by this class include file and directory names, profile data voluntarily entered by users, and the text of article, post, and message bodies.)</summary>
+(Currently there are three profiles for internationalized strings: one each for strings serving as user identifiers, arbitrary single-line strings [such as passwords], or display names.  Other user-facing internationalized strings not expressly handled by this class include file and directory names, domain names, profile data voluntarily entered by users, and the text of article, post, and message bodies.)</summary>
 
 </doc>
 <doc name="M:PeterO.Text.ProtocolStrings.IsInFreeformClass(System.String)">

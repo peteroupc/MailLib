@@ -9,22 +9,26 @@ import com.upokecenter.mail.*;
     public Message MarkdownMessage(String str) {
       Message msg = new Message();
       msg.SetTextBody(str);
-      msg.setContentType(MediaType.Parse("text/markdown);charset=utf-8");
+      msg.setContentType(MediaType.Parse("text/markdown\u003bcharset=utf-8"));
       return msg;
     }
 
-    public void TestMarkdownOne(String expectedOutput,
-                    String input) {
-      Message msg = MarkdownMessage(input);
+    public void TestMarkdownOne(
+  String expectedOutput,
+  String input) {
+      Message msg = this.MarkdownMessage(input);
       Assert.assertEquals(expectedOutput, msg.GetFormattedBodyString());
     }
 
     @Test
     public void TestMarkdown() {
-      TestMarkdownOne("<p><em>Text</em></p>", "_Text_");
-      TestMarkdownOne("<p><em>Text</em></p>", "*Text*");
-      TestMarkdownOne("<p><strong>Text</strong></p>", "__Text__");
-      TestMarkdownOne("<p><strong>Text</strong></p>", "**Text**");
-      TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
+      this.TestMarkdownOne("<p><em>Text</em></p>", "_Text_");
+      this.TestMarkdownOne("<p><em>Text</em></p>", "*Text*");
+      this.TestMarkdownOne("<p><strong>Text</strong></p>", "__Text__");
+      this.TestMarkdownOne("<p><strong>Text</strong></p>", "**Text**");
+      this.TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
+      this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
+    this.TestMarkdownOne("<p><img src=\"x\" alt=\"y\" /></p>",
+        "![y](x)");
     }
   }

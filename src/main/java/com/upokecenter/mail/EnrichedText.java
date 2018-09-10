@@ -8,117 +8,59 @@ import java.util.*;
   final class EnrichedText {
 private EnrichedText() {
 }
+private static boolean IsTokenAsciiIgnoreCase(
+  String str,
+  int index,
+  int endIndex,
+  String strToMatch) {
+      for (int i = 0; i < strToMatch.length(); ++i) {
+        int idx = index + i;
+        if (idx >= endIndex) {
+ return false;
+}
+        char c1 = (str.charAt(idx) >= 0x41 && str.charAt(idx) <= 0x5a) ?
+            (char)(str.charAt(idx) + 0x20) : str.charAt(idx);
+        char c2 = (strToMatch.charAt(i) >= 0x41 && strToMatch.charAt(i) <= 0x5a) ?
+            (char)(strToMatch.charAt(i) + 0x20) : strToMatch.charAt(i);
+        if (c1 != c2) {
+ return false;
+}
+      }
+      return true;
+    }
+
+    private static boolean IsHexChar(char c) {
+      return (c >= 'a' && c <= 'f') ||
+        (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9');
+    }
+
     private static String ParseColor(String str, int index, int endIndex) {
-      if (index + 2 == endIndex - 1 && (str.charAt(index) & ~32) == 82 &&
-        (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 68) {
-        return str.substring(index, (index)+(endIndex - index));
+    String[] colorNames = {"yellow" ,"red" ,"green" ,"blue" ,"black" ,"white",
+  "cyan",
+   "magenta"};
+      for (String name : colorNames) {
+        if (IsTokenAsciiIgnoreCase(str, index, endIndex, name)) {
+ return name;
+}
       }
-      if (index + 3 == endIndex - 1 && (str.charAt(index) & ~32) == 66 && (str.charAt(index +
-
-   1) & ~32) == 76 && (str.charAt(index + 2) & ~32) == 85 && (str.charAt(index + 3) & ~32)
-                   == 69) {
-        return str.substring(index, (index)+(endIndex - index));
+      if (index + 13 >= endIndex) {
+ return null;
+}
+      for (int i = 0; i < 14; ++i) {
+        if (i == 4 || i == 8) {
+{ if (str.charAt(index + i) != ',') {
+{ return null;
+} }
+} } else { if (!IsHexChar(str.charAt(index + i))) {
+ return null;
+} }
       }
-      if (index + 4 == endIndex - 1 && (str.charAt(index) & ~32) == 71 &&
-      (str.charAt(index + 1) & ~32) == 82 && (str.charAt(index + 2) & ~32) == 69 &&
-      (str.charAt(index + 3) & ~32) == 69 && (str.charAt(index + 4) & ~32) == 78) {
-        return str.substring(index, (index)+(endIndex - index));
-      }
-      if (index + 5 == endIndex - 1 && (str.charAt(index) & ~32) == 89 &&
-      (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 76 &&
-      (str.charAt(index + 3) & ~32) == 76 && (str.charAt(index + 4) & ~32) == 79 &&
-      (str.charAt(index + 5) & ~32) == 87) {
-        return str.substring(index, (index)+(endIndex - index));
-      }
-      if (index + 3 == endIndex - 1 && (str.charAt(index) & ~32) == 67 &&
-      (str.charAt(index + 1) & ~32) == 89 && (str.charAt(index + 2) & ~32) == 65 &&
-      (str.charAt(index + 3) & ~32) == 78) {
-        return str.substring(index, (index)+(endIndex - index));
-      }
-      if (index + 6 == endIndex - 1 && (str.charAt(index) & ~32) == 77 &&
-      (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 71 &&
-      (str.charAt(index + 3) & ~32) == 69 && (str.charAt(index + 4) & ~32) == 78 &&
-      (str.charAt(index + 5) & ~32) == 84 && (str.charAt(index + 6) & ~32) == 65) {
-        return str.substring(index, (index)+(endIndex - index));
-      }
-      if (index + 4 == endIndex - 1 && (str.charAt(index) & ~32) == 66 &&
-      (str.charAt(index + 1) & ~32) == 76 && (str.charAt(index + 2) & ~32) == 65 &&
-      (str.charAt(index + 3) & ~32) == 67 && (str.charAt(index + 4) & ~32) == 75) {
-        return str.substring(index, (index)+(endIndex - index));
-      }
-      if (index + 4 == endIndex - 1 && (str.charAt(index) & ~32) == 87 &&
-      (str.charAt(index + 1) & ~32) == 72 && (str.charAt(index + 2) & ~32) == 73 &&
-      (str.charAt(index + 3) & ~32) == 84 && (str.charAt(index + 4) & ~32) == 69) {
-        return str.substring(index, (index)+(endIndex - index));
-      }
-      {
-        if (index + 3 < endIndex && (((str.charAt(index) >= 65 && str.charAt(index) <=
-               70) || (str.charAt(index) >= 97 && str.charAt(index) <= 102) || (str.charAt(index) >=
-               48 && str.charAt(index) <= 57)) && ((str.charAt(index + 1) >= 65 && str.charAt(index +
-               1) <=
-70) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102) || (str.charAt(index + 1) >=
- 48 && str.charAt(index + 1) <= 57)) && ((str.charAt(index + 2) >=
-
-               65 &&
-           str.charAt(index + 2) <= 70) || (str.charAt(index + 2) >= 97 && str.charAt(index +
-             2) <= 102) || (str.charAt(index + 2) >= 48 && str.charAt(index + 2) <=
-             57)) && ((str.charAt(index + 3) >= 65 && str.charAt(index + 3) <= 70) ||
-    (str.charAt(index + 3) >= 97 && str.charAt(index + 3) <= 102) || (str.charAt(index + 3) >= 48 &&
-
-               str.charAt(index + 3) <= 57)))) {
-          index += 4;
-        } else {
-          return null;
-        }
-      if (index + 4 < endIndex && (str.charAt(index) == 44) && (((str.charAt(index + 1) >=
-          65 &&
-    str.charAt(index + 1) <= 70) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102) ||
-           (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <=
-
-        57)) && ((str.charAt(index + 2) >= 65 && str.charAt(index + 2) <= 70) ||
-            (str.charAt(index +
-               2) >= 97 && str.charAt(index + 2) <= 102) || (str.charAt(index + 2) >= 48 &&
-
-   str.charAt(index + 2) <= 57)) && ((str.charAt(index + 3) >= 65 && str.charAt(index + 3) <= 70) ||
-          (str.charAt(index + 3) >= 97 && str.charAt(index + 3) <= 102) ||
-
-      (str.charAt(index + 3) >= 48 && str.charAt(index + 3) <= 57)) && ((str.charAt(index + 4) >=
-          65 &&
-    str.charAt(index + 4) <= 70) || (str.charAt(index + 4) >= 97 && str.charAt(index + 4) <= 102) ||
-           (str.charAt(index + 4) >= 48 && str.charAt(index + 4) <=
-
-                    57)))) {
-          index += 5;
-        } else {
-          return null;
-        }
-        if (index + 4 == endIndex - 1 && (str.charAt(index) == 44) && (((str.charAt(index + 1)
-              >= 65 && str.charAt(index + 1) <= 70) || (str.charAt(index + 1) >= 97 &&
-    str.charAt(index + 1) <= 102) || (str.charAt(index + 1) >= 48 &&
-                    str.charAt(index +
-                    1) <= 57)) && ((str.charAt(index + 2) >= 65 && str.charAt(index + 2) <=
-       70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102) || (str.charAt(index + 2)
-              >= 48 && str.charAt(index + 2) <= 57)) && ((str.charAt(index + 3) >= 65 &&
-
-                    str.charAt(index + 3) <= 70) || (str.charAt(index + 3) >= 97 &&
-                    str.charAt(index +
-                    3) <= 102) || (str.charAt(index + 3) >= 48 && str.charAt(index + 3) <=
-                    57)) && ((str.charAt(index + 4) >= 65 && str.charAt(index + 4) <= 70) ||
-        (str.charAt(index + 4) >= 97 && str.charAt(index + 4) <= 102) || (str.charAt(index + 4) >= 48
-                   &&
-
-                    str.charAt(index + 4) <= 57)))) {
-          index += 5;
-        } else {
-          return null;
-        }
-        String ret = "#";
-        return
-  ret + str.substring(index, (index)+(2)) + str.substring(index + 5, (index + 5)+(2)) +
-    str.substring(
+      String ret = "#";
+      return
+ret + str.substring(index, (index)+(2)) + str.substring(index + 5, (index + 5)+(2)) +
+  str.substring(
   index, (
   index)+(10));
-      }
     }
 
     private static int SkipFont(String str, int index, int endIndex) {
@@ -209,7 +151,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
     }
 
     private static String TrimSpaces(String s) {
-      if (s == null || s.length() == 0) {
+      if (((s) == null || (s).length() == 0)) {
         return s;
       }
       int index = 0;
@@ -321,11 +263,11 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             int indexStart2 = index;
             int lineBreakCount = 0;
             int i2 = 0;
-            for (;; ++i2) {
+            for (; ; ++i2) {
               indexTemp3 = index;
               do {
-              if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
-                == 10) {
+                if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
+                  == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)
@@ -581,9 +523,9 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                     }
                     } else if (lastCommand.equals("color")) {
                     p = ParseColor(
-        DataUtilities.ToLowerCaseAscii(p),
-        0,
-        p.length());
+          DataUtilities.ToLowerCaseAscii(p),
+          0,
+          p.length());
                     if (p != null) {
                     currentBuilder.append("<span style='color: " + p + "'>");
                     } else {
@@ -650,11 +592,11 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             }
             int indexStart2 = index;
             int lineBreakCount = 0;
-            for (int i2 = 0;; ++i2) {
+            for (int i2 = 0; ; ++i2) {
               indexTemp3 = index;
               do {
-              if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
-                == 10) {
+                if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
+                  == 10) {
                   indexTemp3 += 2; break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)

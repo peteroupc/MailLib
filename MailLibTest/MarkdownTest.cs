@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using PeterO;
 using PeterO.Mail;
+
 namespace MailLibTest {
   [TestFixture]
   public class MarkdownTest {
@@ -12,19 +13,23 @@ namespace MailLibTest {
       return msg;
     }
 
-    public void TestMarkdownOne(string expectedOutput,
-                    string input) {
-      Message msg = MarkdownMessage(input);
+    public void TestMarkdownOne(
+  string expectedOutput,
+  string input) {
+      Message msg = this.MarkdownMessage(input);
       Assert.AreEqual(expectedOutput, msg.GetFormattedBodyString());
     }
 
     [Test]
     public void TestMarkdown() {
-      TestMarkdownOne("<p><em>Text</em></p>", "_Text_");
-      TestMarkdownOne("<p><em>Text</em></p>", "*Text*");
-      TestMarkdownOne("<p><strong>Text</strong></p>", "__Text__");
-      TestMarkdownOne("<p><strong>Text</strong></p>", "**Text**");
-      TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
+      this.TestMarkdownOne("<p><em>Text</em></p>", "_Text_");
+      this.TestMarkdownOne("<p><em>Text</em></p>", "*Text*");
+      this.TestMarkdownOne("<p><strong>Text</strong></p>", "__Text__");
+      this.TestMarkdownOne("<p><strong>Text</strong></p>", "**Text**");
+      this.TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
+      this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
+    this.TestMarkdownOne("<p><img src=\"x\" alt=\"y\" /></p>",
+        "![y](x)");
     }
   }
 }
