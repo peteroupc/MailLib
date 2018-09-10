@@ -148,11 +148,23 @@ namespace PeterO.Mail {
     }
 
     private static bool IsBarLine(string str) {
-      if (str == null || str.Length < 4) {
+      if (str == null || str.Length < 3) {
         return false;
       }
       for (var i = 0; i < str.Length; ++i) {
         if (str[i] != '-') {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static bool IsEqualsLine(string str) {
+      if (str == null || str.Length < 3) {
+        return false;
+      }
+      for (var i = 0; i < str.Length; ++i) {
+        if (str[i] != '=') {
           return false;
         }
       }
@@ -175,7 +187,23 @@ namespace PeterO.Mail {
       return Math.Min(str.Length, 6);
     }
 
+    private static string TrimShortSpaces(string str) {
+      if (str != null) {
+        int i = 0;
+        while (i < str.Length) {
+          if (str[i] == ' ' || str[i] == '\t') {
+            if (i >= 4) return str;
+          } else if (i <= 3) {
+            return str.Substring(i);
+          }
+          i++;
+        }
+      }
+      return str;
+    }
+
     private static bool IsUnorderedListLine(string str) {
+      str = TrimShortSpaces(str);
       return str != null && str.Length >= 2 &&
           (str[0] == '-' || str[0] == '*') && (str[1] == ' ' || str[1] == '\t');
     }
@@ -189,7 +217,7 @@ namespace PeterO.Mail {
     }
 
     private static bool IsSpacedOrEmptyLine(string str) {
-      return String.IsNullOrEmpty(str) ? true : (str[0] == ' ' || str[0] ==
+      return String.IsNullOrEmpty(str) || (str[0] == ' ' || str[0] ==
            '\t');
     }
 
@@ -288,38 +316,52 @@ namespace PeterO.Mail {
           int linkStart = i + 2;
           int index = i + 2;
           while (index < str.Length) {
-            if (str[i] == ']') {
-  { found = true;
-} break; }
+            if (str[index] == ']') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.Append(str[i]);
-} continue; }
+            {
+              sb.Append(str[i]);
+            }
+            continue;
+          }
           string linkText = str.Substring(linkStart, index - linkStart);
           ++index;
- if (index >= str.Length || str[index] != '(') { sb.Append(str[i]);
-            continue; }
+          if (index >= str.Length || str[index] != '(') {
+            sb.Append(str[i]);
+            continue;
+          }
           ++index;
           found = false;
           linkStart = index;
           while (index < str.Length) {
-            if (str[i] == ')') {
-  { found = true;
-} break; }
+            if (str[index] == ')') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.Append(str[i]);
-} continue; }
+            {
+              sb.Append(str[i]);
+            }
+            continue;
+          }
           string urlText = str.Substring(linkStart, index - linkStart);
           sb.Append("<img src=\"")
           .Append(HtmlEscapeStrong(urlText)).Append("\" alt=\"")
           .Append(HtmlEscapeStrong(linkText)).Append("\" />");
           i = index;
         } else {
- sb.Append(str[i]);
-}
+          sb.Append(str[i]);
+        }
       }
       return sb.ToString();
     }
@@ -335,38 +377,52 @@ namespace PeterO.Mail {
           int linkStart = i + 1;
           int index = i + 1;
           while (index < str.Length) {
-            if (str[i] == ']') {
-  { found = true;
-} break; }
+            if (str[index] == ']') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.Append(str[i]);
-} continue; }
+            {
+              sb.Append(str[i]);
+            }
+            continue;
+          }
           string linkText = str.Substring(linkStart, index - linkStart);
           ++index;
- if (index >= str.Length || str[index] != '(') { sb.Append(str[i]);
-            continue; }
+          if (index >= str.Length || str[index] != '(') {
+            sb.Append(str[i]);
+            continue;
+          }
           ++index;
           found = false;
           linkStart = index;
           while (index < str.Length) {
-            if (str[i] == ')') {
-  { found = true;
-} break; }
+            if (str[index] == ')') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.Append(str[i]);
-} continue; }
+            {
+              sb.Append(str[i]);
+            }
+            continue;
+          }
           string urlText = str.Substring(linkStart, index - linkStart);
           sb.Append("<a href=\"")
           .Append(HtmlEscapeStrong(urlText)).Append("\">")
           .Append(linkText).Append("</a>");
           i = index;
         } else {
- sb.Append(str[i]);
-}
+          sb.Append(str[i]);
+        }
       }
       return sb.ToString();
     }
@@ -439,7 +495,7 @@ namespace PeterO.Mail {
     }
 
     private static string StripHeadingStart(string str) {
-      if (str == null || str.Length == 0) {
+      if (string.IsNullOrEmpty(str)) {
         return String.Empty;
       }
       var i = 0;
@@ -453,8 +509,11 @@ namespace PeterO.Mail {
     }
 
     private static string StripListItemStart(string str) {
-      if (str == null || str.Length == 0) {
+      if (string.IsNullOrEmpty(str)) {
         return String.Empty;
+      }
+      if (IsUnorderedListLine(str)) {
+        str = TrimShortSpaces(str);
       }
       var i = 0;
       if (str[i] == '*' || str[i] == '-') {
@@ -603,6 +662,11 @@ namespace PeterO.Mail {
           formatted.Append("<pre>");
           formatted.Append(HtmlEscape(qs.ToString()));
           formatted.Append("</pre>");
+        } else if (IsEqualsLine(line) && haveParagraph) {
+          haveParagraph = false;
+          formatted.Append("<h1>");
+          formatted.Append(paragraph.ToString());
+          formatted.Append("</h1>");
         } else {
           if (line.Length > 0) {
             if (haveParagraph) {
