@@ -149,11 +149,23 @@ private FormatFlowed() {
     }
 
     private static boolean IsBarLine(String str) {
-      if (str == null || str.length() < 4) {
+      if (str == null || str.length() < 3) {
         return false;
       }
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) != '-') {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static boolean IsEqualsLine(String str) {
+      if (str == null || str.length() < 3) {
+        return false;
+      }
+      for (int i = 0; i < str.length(); ++i) {
+        if (str.charAt(i) != '=') {
           return false;
         }
       }
@@ -176,7 +188,25 @@ private FormatFlowed() {
       return Math.min(str.length(), 6);
     }
 
+    private static String TrimShortSpaces(String str) {
+      if (str != null) {
+        int i = 0;
+        while (i < str.length()) {
+          if (str.charAt(i) == ' ' || str.charAt(i) == '\t') {
+            if (i >= 4) {
+ return str;
+}
+          } else if (i <= 3) {
+            return str.substring(i);
+          }
+          ++i;
+        }
+      }
+      return str;
+    }
+
     private static boolean IsUnorderedListLine(String str) {
+      str = TrimShortSpaces(str);
       return str != null && str.length() >= 2 &&
           (str.charAt(0) == '-' || str.charAt(0) == '*') && (str.charAt(1) == ' ' || str.charAt(1) == '\t');
     }
@@ -190,7 +220,7 @@ private FormatFlowed() {
     }
 
     private static boolean IsSpacedOrEmptyLine(String str) {
-      return ((str)==null || (str).length()==0) ? true : (str.charAt(0) == ' ' || str.charAt(0) ==
+      return ((str)==null || (str).length()==0) || (str.charAt(0) == ' ' || str.charAt(0) ==
            '\t');
     }
 
@@ -289,38 +319,52 @@ private FormatFlowed() {
           int linkStart = i + 2;
           int index = i + 2;
           while (index < str.length()) {
-            if (str.charAt(i) == ']') {
-  { found = true;
-} break; }
+            if (str.charAt(index) == ']') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.append(str.charAt(i));
-} continue; }
+            {
+              sb.append(str.charAt(i));
+            }
+            continue;
+          }
           String linkText = str.substring(linkStart, (linkStart)+(index - linkStart));
           ++index;
- if (index >= str.length() || str.charAt(index) != '(') { sb.append(str.charAt(i));
-            continue; }
+          if (index >= str.length() || str.charAt(index) != '(') {
+            sb.append(str.charAt(i));
+            continue;
+          }
           ++index;
           found = false;
           linkStart = index;
           while (index < str.length()) {
-            if (str.charAt(i) == ')') {
-  { found = true;
-} break; }
+            if (str.charAt(index) == ')') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.append(str.charAt(i));
-} continue; }
+            {
+              sb.append(str.charAt(i));
+            }
+            continue;
+          }
           String urlText = str.substring(linkStart, (linkStart)+(index - linkStart));
           sb.append("<img src=\"")
           .append(HtmlEscapeStrong(urlText)).append("\" alt=\"")
           .append(HtmlEscapeStrong(linkText)).append("\" />");
           i = index;
         } else {
- sb.append(str.charAt(i));
-}
+          sb.append(str.charAt(i));
+        }
       }
       return sb.toString();
     }
@@ -336,38 +380,52 @@ private FormatFlowed() {
           int linkStart = i + 1;
           int index = i + 1;
           while (index < str.length()) {
-            if (str.charAt(i) == ']') {
-  { found = true;
-} break; }
+            if (str.charAt(index) == ']') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.append(str.charAt(i));
-} continue; }
+            {
+              sb.append(str.charAt(i));
+            }
+            continue;
+          }
           String linkText = str.substring(linkStart, (linkStart)+(index - linkStart));
           ++index;
- if (index >= str.length() || str.charAt(index) != '(') { sb.append(str.charAt(i));
-            continue; }
+          if (index >= str.length() || str.charAt(index) != '(') {
+            sb.append(str.charAt(i));
+            continue;
+          }
           ++index;
           found = false;
           linkStart = index;
           while (index < str.length()) {
-            if (str.charAt(i) == ')') {
-  { found = true;
-} break; }
+            if (str.charAt(index) == ')') {
+              {
+                found = true;
+              }
+              break;
+            }
             ++index;
           }
           if (!found) {
-  { sb.append(str.charAt(i));
-} continue; }
+            {
+              sb.append(str.charAt(i));
+            }
+            continue;
+          }
           String urlText = str.substring(linkStart, (linkStart)+(index - linkStart));
           sb.append("<a href=\"")
           .append(HtmlEscapeStrong(urlText)).append("\">")
           .append(linkText).append("</a>");
           i = index;
         } else {
- sb.append(str.charAt(i));
-}
+          sb.append(str.charAt(i));
+        }
       }
       return sb.toString();
     }
@@ -420,7 +478,7 @@ private FormatFlowed() {
             havestr = true;
           }
           sb.append(hex.charAt(c & 15)).append(";");
-          break;
+          continue;
         }
         sb.append(str.charAt(i));
       }
@@ -440,7 +498,7 @@ private FormatFlowed() {
     }
 
     private static String StripHeadingStart(String str) {
-      if (str == null || str.length() == 0) {
+      if (((str) == null || (str).length() == 0)) {
         return "";
       }
       int i = 0;
@@ -454,8 +512,11 @@ private FormatFlowed() {
     }
 
     private static String StripListItemStart(String str) {
-      if (str == null || str.length() == 0) {
+      if (((str) == null || (str).length() == 0)) {
         return "";
+      }
+      if (IsUnorderedListLine(str)) {
+        str = TrimShortSpaces(str);
       }
       int i = 0;
       if (str.charAt(i) == '*' || str.charAt(i) == '-') {
@@ -604,6 +665,11 @@ private FormatFlowed() {
           formatted.append("<pre>");
           formatted.append(HtmlEscape(qs.toString()));
           formatted.append("</pre>");
+        } else if (IsEqualsLine(line) && haveParagraph) {
+          haveParagraph = false;
+          formatted.append("<h1>");
+          formatted.append(paragraph.toString());
+          formatted.append("</h1>");
         } else {
           if (line.length() > 0) {
             if (haveParagraph) {

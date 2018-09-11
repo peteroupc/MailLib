@@ -28,8 +28,9 @@ namespace MailLibTest {
       this.TestMarkdownOne("<p><strong>Text</strong></p>", "**Text**");
       this.TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
       this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
-    this.TestMarkdownOne("<p><img src=\"x\" alt=\"y\" /></p>",
-        "![y](x)");
+    this.TestMarkdownOne(
+  "<p><img src=\"x\" alt=\"y\" /></p>",
+  "![y](x)");
     }
   }
 }

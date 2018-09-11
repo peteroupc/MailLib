@@ -8683,8 +8683,9 @@ Assert.assertEquals(
  Assert.fail();
  }
       {
-        String stringTemp = (String)URIUtility.escapeURI(s,
-          0);
+        String stringTemp = (String)URIUtility.escapeURI(
+  s,
+  0);
         String stringTemp2 = (String)URIUtility.escapeURI(
           (String)URIUtility.escapeURI(s, 0),
           0);
@@ -8742,8 +8743,9 @@ Assert.assertEquals(
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(s,
-          2);
+        String stringTemp = (String)URIUtility.escapeURI(
+  s,
+  2);
         String stringTemp2 = (String)URIUtility.escapeURI(
           (String)URIUtility.escapeURI(s, 2),
           2);

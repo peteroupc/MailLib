@@ -189,14 +189,16 @@ namespace PeterO.Mail {
 
     private static string TrimShortSpaces(string str) {
       if (str != null) {
-        int i = 0;
+        var i = 0;
         while (i < str.Length) {
           if (str[i] == ' ' || str[i] == '\t') {
-            if (i >= 4) return str;
+            if (i >= 4) {
+ return str;
+}
           } else if (i <= 3) {
             return str.Substring(i);
           }
-          i++;
+          ++i;
         }
       }
       return str;
@@ -475,7 +477,7 @@ namespace PeterO.Mail {
             havestr = true;
           }
           sb.Append(hex[c & 15]).Append(";");
-          break;
+          continue;
         }
         sb.Append(str[i]);
       }
@@ -495,7 +497,7 @@ namespace PeterO.Mail {
     }
 
     private static string StripHeadingStart(string str) {
-      if (string.IsNullOrEmpty(str)) {
+      if (String.IsNullOrEmpty(str)) {
         return String.Empty;
       }
       var i = 0;
@@ -509,7 +511,7 @@ namespace PeterO.Mail {
     }
 
     private static string StripListItemStart(string str) {
-      if (string.IsNullOrEmpty(str)) {
+      if (String.IsNullOrEmpty(str)) {
         return String.Empty;
       }
       if (IsUnorderedListLine(str)) {

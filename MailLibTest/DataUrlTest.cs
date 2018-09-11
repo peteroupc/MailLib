@@ -8675,8 +8675,9 @@ Assert.AreEqual(
       bool cond = URIUtility.isValidIRI(s);
       Assert.IsTrue(cond);
       {
-        var stringTemp = (string)URIUtility.escapeURI(s,
-          0);
+        var stringTemp = (string)URIUtility.escapeURI(
+  s,
+  0);
         var stringTemp2 = (string)URIUtility.escapeURI(
           (string)URIUtility.escapeURI(s, 0),
           0);
@@ -8734,8 +8735,9 @@ Assert.AreEqual(
         Assert.AreEqual(stringTemp, stringTemp2);
       }
       {
-        var stringTemp = (string)URIUtility.escapeURI(s,
-          2);
+        var stringTemp = (string)URIUtility.escapeURI(
+  s,
+  2);
         var stringTemp2 = (string)URIUtility.escapeURI(
           (string)URIUtility.escapeURI(s, 2),
           2);
