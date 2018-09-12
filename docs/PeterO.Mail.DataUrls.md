@@ -23,11 +23,12 @@ Extracts the data from a Data URI (uniform resource identifier) in the form of a
 
 <b>Parameters:</b>
 
- * <i>url</i>: A Data URI string.
+ * <i>url</i>: The parameter  <i>url</i>
+ is not documented yet.
 
 <b>Return Value:</b>
 
-The data as a byte array. Returns null if  <i>url</i>
+The data as a byte array. Returns null if  <i>uri</i>
  is null, is syntactically invalid, or is not a data URI.
 
 ### DataUrlMediaType
@@ -41,11 +42,12 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 <b>Parameters:</b>
 
- * <i>url</i>: A Data URI string.
+ * <i>url</i>: The parameter  <i>url</i>
+ is not documented yet.
 
 <b>Return Value:</b>
 
-The media type. Returns null if  <i>url</i>
+The media type. Returns null if  <i>uri</i>
  is null, is syntactically invalid, or is not a Data URI.
 
 ### MakeDataUrl

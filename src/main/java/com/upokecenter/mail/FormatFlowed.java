@@ -283,7 +283,20 @@ private FormatFlowed() {
       }
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {
-        if (StartsWith(str, i, delim)) {
+        if (str.charAt(i) == '<') {
+          // Skip HTML markup tags
+          sb.append(str.charAt(i));
+          int qi = i + 1;
+          while (qi < str.length()) {
+            sb.append(str.charAt(qi));
+            if (str.charAt(qi) == '>') {
+              ++qi; break;
+            }
+            ++qi;
+          }
+          i = qi - 1;
+          continue;
+        } else if (StartsWith(str, i, delim)) {
           int qi = i + delim.length();
           int textStart = qi;
           while (qi < str.length()) {

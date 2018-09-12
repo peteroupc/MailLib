@@ -24,7 +24,7 @@ Extracts the data from a Data URI (uniform resource identifier) in the form of a
 
 <b>Return Value:</b>
 
-The data as a byte array. Returns null if  <i>url</i>
+The data as a byte array. Returns null if  <i>uri</i>
  is null, is syntactically invalid, or is not a data URI.
 
 ### DataUriMediaType
@@ -41,7 +41,7 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 <b>Return Value:</b>
 
-The media type. Returns null if  <i>url</i>
+The media type. Returns null if  <i>uri</i>
  is null, is syntactically invalid, or is not a Data URI.
 
 ### MakeDataUri

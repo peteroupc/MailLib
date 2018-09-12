@@ -2,18 +2,8 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary>Contains methods for preparing user-facing protocol
-    /// strings (such as user identifiers) for comparison and validity
-    /// checking. Such strings can be _internationalized_, that is, contain
-    /// characters beyond the Basic Latin block (U + 0000 to U + 007F) of
-    /// the Unicode Standard. See RFC 8264. (Currently there are three
-    /// profiles for internationalized strings: one each for strings
-    /// serving as user identifiers, arbitrary single-line strings [such as
-    /// passwords], or display names. Other user-facing internationalized
-    /// strings not expressly handled by this class include file and
-    /// directory names, domain names, profile data voluntarily entered by
-    /// users, and the text of article, post, and message
-    /// bodies.).</summary>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Text.ProtocolStrings"]/*'/>
   public static class ProtocolStrings {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.ProtocolStrings.IsInIdentifierClass(System.String)"]/*'/>

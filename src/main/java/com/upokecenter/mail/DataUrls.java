@@ -16,8 +16,8 @@ private DataUrls() {
 }
     /**
      * Extracts the media type from a Data URI (uniform resource identifier).
-     * @param url A Data URI string.
-     * @return The media type. Returns null if {@code url} is null, is
+     * @param url The parameter {@code url} is not documented yet.
+     * @return The media type. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a Data URI.
      * @deprecated Renamed to DataUriMediaType.
  */
@@ -29,8 +29,8 @@ return DataUris.DataUriMediaType(url);
     /**
      * Extracts the data from a Data URI (uniform resource identifier) in the form
      * of a byte array.
-     * @param url A Data URI string.
-     * @return The data as a byte array. Returns null if {@code url} is null, is
+     * @param url The parameter {@code url} is not documented yet.
+     * @return The data as a byte array. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a data URI.
      * @deprecated Renamed to DataUriBytes.
  */

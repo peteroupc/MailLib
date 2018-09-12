@@ -3097,9 +3097,9 @@ private static String GetContentTranslationType(String ctt) {
      * names that will be used to set the returned message's corresponding
      * header fields. The last, "body", sets the body of the message to the
      * given text. Keys other than these eight will be ignored.
-     * @param url A string representing a MailTo URI.
+     * @param url The parameter {@code url} is not documented yet.
      * @return A Message object created from the given MailTo URI. Returs null if
-     * {@code url} is null, is syntactically invalid, or is not a MailTo
+     * {@code uri} is null, is syntactically invalid, or is not a MailTo
      * URI.
      * @deprecated Renamed to FromMailtoUri.
  */
@@ -3137,7 +3137,7 @@ private static String GetContentTranslationType(String ctt) {
      * given text. Keys other than these eight will be ignored.
      * @param uri The parameter {@code uri} is a text string.
      * @return A Message object created from the given MailTo URI. Returs null if
-     * {@code url} is null, is syntactically invalid, or is not a MailTo
+     * {@code uri} is null, is syntactically invalid, or is not a MailTo
      * URI.
      */
     public static Message FromMailtoUri(String uri) {

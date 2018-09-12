@@ -1220,14 +1220,14 @@ decomposed, including all base+slash code points, which are the only composed co
 <doc name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)">
 
             <summary>Extracts the data from a Data URI (uniform resource
-            identifier) in the form of a byte array.</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data
+            identifier) in the form of a byte array.</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>The data as a byte array. Returns null if <paramref name='uri'/> is null, is syntactically invalid, or is not a data
             URI.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)">
 
             <summary>Extracts the media type from a Data URI (uniform resource
-            identifier).</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>The media type. Returns null if <paramref name='url'/> is
+            identifier).</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>The media type. Returns null if <paramref name='uri'/> is
             null, is syntactically invalid, or is not a Data URI.</returns>
 
 </doc>
@@ -1246,13 +1246,17 @@ ns me
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlBytes(System.String)">
 
-            <summary>Extracts the data from a Data URI (uniform resource identifier) in the form of a byte
-            array.</summary><param name='url'>A Data URI string.</param><returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data URI.</returns>
+            <summary>Extracts the data from a Data URI (uniform resource
+            identifier) in the form of a byte array.</summary><param name='url'>The parameter <paramref name='url'/> is not
+            documented yet.</param><returns>The data as a byte array. Returns null if <paramref name='uri'/> is null, is syntactically invalid, or is not a data
+            URI.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlMediaType(System.String)">
 
-            <summary>Extracts the media type from a Data URI (uniform resource identifier).</summary><param name='url'>A Data URI string.</param><returns>The media type. Returns null if <paramref name='url'/> is
+            <summary>Extracts the media type from a Data URI (uniform resource
+            identifier).</summary><param name='url'>The parameter <paramref name='url'/> is not
+            documented yet.</param><returns>The media type. Returns null if <paramref name='uri'/> is
             null, is syntactically invalid, or is not a Data URI.</returns>
 
 </doc>
@@ -2464,23 +2468,25 @@ ns me
             corresponding header fields. The last, "body", sets the body of the
             message to the given text. Keys other than these eight will be
             ignored.</summary><param name='uri'>The parameter <paramref name='uri'/> is a text string.</param><returns>A Message object created from the given MailTo URI. Returs
-            null if <paramref name='url'/> is null, is syntactically invalid,
+            null if <paramref name='uri'/> is null, is syntactically invalid,
             or is not a MailTo URI.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)">
 
-            <summary>Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can
-            contain key-value pairs that follow a question-mark, as in the
-            following example: "mailto:me@example.com?subject=A%20Subject". In
-            this example, "subject" is the subject of the email address. Only
-            certain keys are supported, namely, "to", "cc", "bcc", "subject",
-            "in-reply-to", "comments", "keywords", and "body". The first seven
-            are header field names that will be used to set the returned
-            message's corresponding header fields. The last, "body", sets the
-            body of the message to the given text. Keys other than these eight
-            will be ignored.</summary><param name='url'>A string representing a MailTo URI.</param><returns>A Message object created from the given MailTo URI. Returs
-            null if <paramref name='url'/> is null, is syntactically invalid,
+            <summary>Creates a message object from a MailTo URI (uniform
+            resource identifier). The MailTo URI can contain key-value pairs
+            that follow a question-mark, as in the following example:
+            "mailto:me@example.com?subject=A%20Subject". In this example,
+            "subject" is the subject of the email address. Only certain keys
+            are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+            "comments", "keywords", and "body". The first seven are header
+            field names that will be used to set the returned message's
+            corresponding header fields. The last, "body", sets the body of the
+            message to the given text. Keys other than these eight will be
+            ignored.</summary><param name='url'>The parameter <paramref name='url'/> is not
+            documented yet.</param><returns>A Message object created from the given MailTo URI. Returs
+            null if <paramref name='uri'/> is null, is syntactically invalid,
             or is not a MailTo URI.</returns>
 
 </doc>
@@ -2572,8 +2578,9 @@ ns me
 
 </doc>
 <doc name="M:PeterO.Mail.Message.GetFormattedBodyString">
-<summary>Not documented yet.</summary>
-            <returns>A text string.</returns>
+
+            <summary>Not documented yet.</summary><returns>A text string.</returns>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.GetHeader(System.Int32)">
 
@@ -2855,21 +2862,6 @@ ns me
             <paramref name='str'/> is null.</exception>
 
 </doc>
-<doc name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)">
-
-            <summary>Sets the body of this message to a multipart body with
-            plain text, Markdown, and Hypertext Markup Language (HTML) versions of the same message. The character
-            sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n",
-            U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired
-            surrogate code points will be replaced with replacement
-            characters.</summary><param name='text'>A string consisting of the plain text version of
-            the message.  Can be null, in which case the value of the "markdown" parameter is used as the plain text version.</param><param name='markdown'>A string consisting of the Markdown version of the
-            message.  For interoperability, this Markdown version will be converted to HTML.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='markdown'/> is
-            null.</exception>
-
-</doc>
-
 <doc name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)">
 
             <summary>Sets the body of this message to a multipart body with
@@ -2881,6 +2873,20 @@ ns me
             the message.</param><param name='html'>A string consisting of the HTML version of the
             message.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='text'/> or <paramref name='html'/> is
+            null.</exception>
+
+</doc>
+<doc name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)">
+
+            <summary>Sets the body of this message to a multipart body with
+            plain text, Markdown, and Hypertext Markup Language (HTML) versions of the same message. The character
+            sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n",
+            U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired
+            surrogate code points will be replaced with replacement
+            characters.</summary><param name='text'>A string consisting of the plain text version of
+            the message.  Can be null, in which case the value of the "markdown" parameter is used as the plain text version.</param><param name='markdown'>A string consisting of the Markdown version of the
+            message.  For interoperability, this Markdown version will be converted to HTML.</param><returns>This instance.</returns><exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='markdown'/> is
             null.</exception>
 
 </doc>
@@ -4443,8 +4449,18 @@ of this NamedAddress object as it could appear in a "To" header field.
 </doc>
 <doc name="T:PeterO.Text.ProtocolStrings">
 
-            <summary>Contains methods for preparing user-facing protocol strings (such as user identifiers) for comparison and validity checking.  Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See RFC 8264.
-(Currently there are three profiles for internationalized strings: one each for strings serving as user identifiers, arbitrary single-line strings [such as passwords], or display names.  Other user-facing internationalized strings not expressly handled by this class include file and directory names, domain names, profile data voluntarily entered by users, and the text of article, post, and message bodies.)</summary>
+            <summary>Contains methods for preparing user-facing protocol
+            strings (such as user identifiers) for comparison and validity
+            checking. Such strings can be _internationalized_, that is, contain
+            characters beyond the Basic Latin block (U+0000 to U+007F) of
+            the Unicode Standard. See RFC 8264. (Currently there are three
+            profiles for internationalized strings: one each for strings
+            serving as user identifiers, arbitrary single-line strings [such as
+            passwords], or display names. Other user-facing internationalized
+            strings not expressly handled by this class include file and
+            directory names, domain names, profile data voluntarily entered by
+            users, and the text of article, post, and message
+            bodies.).</summary>
 
 </doc>
 <doc name="M:PeterO.Text.ProtocolStrings.IsInFreeformClass(System.String)">

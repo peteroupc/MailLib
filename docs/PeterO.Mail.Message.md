@@ -531,7 +531,7 @@ Creates a message object from a MailTo URI (uniform resource identifier). The Ma
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>url</i>
+A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
  is null, is syntactically invalid, or is not a MailTo URI.
 
 ### FromMailtoUrl
@@ -545,11 +545,12 @@ Creates a message object from a MailTo URI (uniform resource identifier). The Ma
 
 <b>Parameters:</b>
 
- * <i>url</i>: A string representing a MailTo URI.
+ * <i>url</i>: The parameter  <i>url</i>
+ is not documented yet.
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>url</i>
+A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
  is null, is syntactically invalid, or is not a MailTo URI.
 
 ### Generate
@@ -650,7 +651,7 @@ Not documented yet.
 
 <b>Return Value:</b>
 
-A string object.
+A text string.
 
 ### GetHeader
 
@@ -1077,6 +1078,30 @@ This instance.
  * System.ArgumentNullException:
 The parameter <i>text</i>
  or  <i>html</i>
+ is null.
+
+### SetTextAndMarkdown
+
+    public PeterO.Mail.Message SetTextAndMarkdown(
+        string text,
+        string markdown);
+
+Sets the body of this message to a multipart body with plain text, Markdown, and Hypertext Markup Language (HTML) versions of the same message. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+
+<b>Parameters:</b>
+
+ * <i>text</i>: A string consisting of the plain text version of the message. Can be null, in which case the value of the "markdown" parameter is used as the plain text version.
+
+ * <i>markdown</i>: A string consisting of the Markdown version of the message. For interoperability, this Markdown version will be converted to HTML.
+
+<b>Return Value:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>markdown</i>
  is null.
 
 ### SetTextBody

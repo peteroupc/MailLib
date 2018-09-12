@@ -282,7 +282,20 @@ namespace PeterO.Mail {
       }
       var sb = new StringBuilder();
       for (var i = 0; i < str.Length; ++i) {
-        if (StartsWith(str, i, delim)) {
+        if (str[i] == '<') {
+          // Skip HTML markup tags
+          sb.Append(str[i]);
+          int qi = i + 1;
+          while (qi < str.Length) {
+            sb.Append(str[qi]);
+            if (str[qi] == '>') {
+              ++qi; break;
+            }
+            ++qi;
+          }
+          i = qi - 1;
+          continue;
+        } else if (StartsWith(str, i, delim)) {
           int qi = i + delim.Length;
           int textStart = qi;
           while (qi < str.Length) {
