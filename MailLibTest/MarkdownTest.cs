@@ -22,6 +22,7 @@ namespace MailLibTest {
 
     [Test]
     public void TestMarkdown() {
+      
       this.TestMarkdownOne("<p><em>Text</em></p>", "_Text_");
       this.TestMarkdownOne("<p><em>Text</em></p>", "*Text*");
       this.TestMarkdownOne("<p><strong>Text</strong></p>", "__Text__");
@@ -208,6 +209,162 @@ namespace MailLibTest {
       this.TestMarkdownOne(
       "<blockquote><p>A\r\nB\r\nC</p></blockquote>",
       "> A\r\nB\r\nC");
+      this.TestMarkdownOne(
+  "<p><a href=\"http://www.example.com\">Linktext</a></p>",
+  "[Linktext][TeSt]\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n[test]: http://www.example.com \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: <http://www.example.com>");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n[test]: <http://www.example.com> \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: http://www.example.com 'Title'");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n\u0020 [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: http://www.example.com\r\n(Not a title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: http://www.example.com\r\n (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: http://www.example.com\r\n \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext][TeSt]\r\n\r\n[test]: http://www.example.com\r\n 'Title'");
+      this.TestMarkdownOne(
+  "<p><a href=\"http://www.example.com\">Linktext</a></p>",
+  "[Linktext] [TeSt]\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n[test]: http://www.example.com \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: <http://www.example.com>");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n[test]: <http://www.example.com> \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: http://www.example.com 'Title'");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n\u0020 [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: http://www.example.com\r\n(Not a title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: http://www.example.com\r\n (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: http://www.example.com\r\n \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
+        "[Linktext] [TeSt]\r\n\r\n[test]: http://www.example.com\r\n 'Title'");
+      this.TestMarkdownOne(
+  "<p><a href=\"http://www.example.com\">tEsT</a></p>",
+  "[tEsT][]\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n[test]: http://www.example.com \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n[test]: <http://www.example.com>");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n[test]: <http://www.example.com> \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n[test]: http://www.example.com 'Title'");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n[test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n\u0020 [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\">tEsT</a></p><p>(Not a title)</p>",
+        "[tEsT][]\r\n\r\n[test]: http://www.example.com\r\n(Not a title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n[test]: http://www.example.com\r\n (Title)");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n[test]: http://www.example.com\r\n \"Title\"");
+      this.TestMarkdownOne(
+        "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
+        "[tEsT][]\r\n\r\n[test]: http://www.example.com\r\n 'Title'");
+      this.TestMarkdownOne(
+  "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
+  "![tEsT][]\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
+        "![tEsT][]\r\n\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n[test]: http://www.example.com \"Title\"");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
+        "![tEsT][]\r\n\r\n[test]: <http://www.example.com>");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n[test]: <http://www.example.com> \"Title\"");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n\r\n[test]: http://www.example.com 'Title'");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n\r\n[test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n\r\n [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n\r\n\u0020 [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p><p>(Not a title)</p>",
+        "![tEsT][]\r\n\r\n[test]: http://www.example.com\r\n(Not a title)");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n\r\n[test]: http://www.example.com\r\n (Title)");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n\r\n[test]: http://www.example.com\r\n \"Title\"");
+      this.TestMarkdownOne(
+        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
+        "![tEsT][]\r\n\r\n[test]: http://www.example.com\r\n 'Title'");
     }
     [Test]
     public void TestMarkdown3() {

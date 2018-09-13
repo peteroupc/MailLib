@@ -221,38 +221,38 @@ namespace PeterO.Mail {
 
     private static string GetLinkTitle(string str) {
       if (String.IsNullOrEmpty(str)) {
- return null;
-}
+        return null;
+      }
       var index = 0;
       while (index < str.Length && (str[index] == ' ' ||
           str[index] == '\t')) {
- ++index;
-}
+        ++index;
+      }
       if (index == 0 || index == str.Length) {
- return null;
-}
+        return null;
+      }
       if (str[index] == '"' || str[index] == '\'' || str[index] == '(') {
         int titleStart = index + 1;
         char endDelim = '"';
         if (str[index] == '\'') {
- endDelim = '\'';
-}
-        if (str[index] == '(') endDelim = ') {
- ';
-}
+          endDelim = '\'';
+        }
+        if (str[index] == '(') {
+          endDelim = ')';
+        }
         ++index;
         while (index < str.Length && str[index] != endDelim) {
- ++index;
-}
+          ++index;
+        }
         if (index == str.Length) {
- return null;
-}
+          return null;
+        }
         int titleEnd = index;
         ++index;
         while (index < str.Length && (str[index] == ' ' ||
             str[index] == '\t')) {
- ++index;
-}
+          ++index;
+        }
         return (index != str.Length) ? (null) : (str.Substring(titleStart,
           titleEnd - titleStart));
       }
@@ -261,32 +261,32 @@ namespace PeterO.Mail {
 
     private static string[] GetLinkLine(string str) {
       if (String.IsNullOrEmpty(str)) {
- return null;
-}
+        return null;
+      }
       str = TrimShortSpaces(str);
       if (str.Length > 0 && str[0] == '[') {
         var index = 1;
         int labelStart = index;
         while (index < str.Length && str[index] != ']') {
- ++index;
-}
+          ++index;
+        }
         if (index == str.Length) {
- return null;
-}
+          return null;
+        }
         int labelEnd = index;
         ++index;
         if (index >= str.Length || str[index] != ':') {
- return null;
-}
+          return null;
+        }
         ++index;
         int tmp = index;
         while (index < str.Length && (str[index] == ' ' ||
             str[index] == '\t')) {
- ++index;
-}
+          ++index;
+        }
         if (tmp == index) {
- return null;
-}
+          return null;
+        }
         int urlStart = index;
         string label = DataUtilities.ToLowerCaseAscii(
           str.Substring(labelStart, labelEnd - labelStart));
@@ -305,9 +305,6 @@ namespace PeterO.Mail {
       if (str != null) {
         var i = 0;
         while (i < str.Length) {
-          //if (i == 0 && str[i] == '\t') {
-          // return str.Substring(1);
-          //}
           if (str[i] == ' ') {
             if (i >= 4) {
               return str;
@@ -511,11 +508,9 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             int possibleTitleStart = qi;
             char endDelim = '"';
             if (startDelim == '\'') {
- endDelim = '\'';
-}
-            if (startDelim == '(') endDelim = ') {
- ';
-}
+              endDelim = '\'';
+            }
+            if (startDelim == '(') { endDelim = ')'; }
             while (qi < urlText.Length && (urlText[qi] != endDelim)) {
               ++qi;
             }
@@ -534,10 +529,18 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
       return new string[] { urlText, null };
     }
 
+    private static int GetLinkRefStart(string str, int index) {
+      if (index < str.Length && str[index] == '(') return index;
+      while (index < str.Length && (str[index] == ' ' || str[index] == '\t')) {
+        index++;
+      }
+      if (index < str.Length && str[index] == '[') return index;
+      return -1;
+    }
+
     private static string ReplaceImageLinks(
         string str,
-        IDictionary<string,
-        string[]> links) {
+        IDictionary<string, string[]> links) {
       if (str.IndexOf('!') < 0) {
         return str;
       }
@@ -562,15 +565,19 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
           }
           string linkText = str.Substring(linkStart, index - linkStart);
           ++index;
-          if (index >= str.Length || str[index] != '(') {
+          int linkRefStart = GetLinkRefStart(str, index);
+          if (linkRefStart < 0) {
             sb.Append(str[i]);
             continue;
           }
-          ++index;
+          index = linkRefStart + 1;
+          linkStart = linkRefStart + 1;
+          bool urlRef = (str[linkRefStart] == '(');
+          char endChar = urlRef ? ')' : ']';
           found = false;
           linkStart = index;
           while (index < str.Length) {
-            if (str[index] == ')') {
+            if (str[index] == endChar) {
               found = true;
               break;
             }
@@ -581,7 +588,19 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             continue;
           }
           string urlText = str.Substring(linkStart, index - linkStart);
-          string[] urlTitle = SplitUrl(urlText, false);
+          string[] urlTitle = null;
+          if (urlRef) {
+            urlTitle = SplitUrl(urlText, false);
+          } else {
+            urlText = DataUtilities.ToLowerCaseAscii(
+              String.IsNullOrEmpty(urlText) ? linkText : urlText);
+            if (links.ContainsKey(urlText)) {
+              urlTitle = links[urlText];
+            } else {
+              sb.Append(str[i]);
+              continue;
+            }
+          }
           sb.Append("<img src=\"")
           .Append(HtmlEscapeStrong(urlTitle[0])).Append("\" alt=\"")
           .Append(HtmlEscapeStrong(linkText)).Append("\"");
@@ -600,8 +619,7 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
 
     private static string ReplaceInlineLinks(
       string str,
-      IDictionary<string,
-      string[]> links) {
+      IDictionary<string, string[]> links) {
       if (str.IndexOf('[') < 0) {
         return str;
       }
@@ -628,18 +646,20 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
           }
           string linkText = str.Substring(linkStart, index - linkStart);
           ++index;
-          if (index >= str.Length || str[index] != '(') {
+          int linkRefStart = GetLinkRefStart(str, index);
+          if (linkRefStart < 0) {
             sb.Append(str[i]);
             continue;
           }
-          ++index;
+          index = linkRefStart + 1;
+          linkStart = linkRefStart + 1;
+          bool urlRef = (str[linkRefStart] == '(');
+          char endChar = urlRef ? ')' : ']';
           found = false;
           linkStart = index;
           while (index < str.Length) {
-            if (str[index] == ')') {
-              {
-                found = true;
-              }
+            if (str[index] == endChar) {
+              found = true;
               break;
             }
             ++index;
@@ -651,7 +671,19 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             continue;
           }
           string urlText = str.Substring(linkStart, index - linkStart);
-          string[] urlTitle = SplitUrl(urlText, false);
+          string[] urlTitle = null;
+          if (urlRef) {
+            urlTitle = SplitUrl(urlText, false);
+          } else {
+            urlText = DataUtilities.ToLowerCaseAscii(
+              String.IsNullOrEmpty(urlText) ? linkText : urlText);
+            if (links.ContainsKey(urlText)) {
+              urlTitle = links[urlText];
+            } else {
+              sb.Append(str[i]);
+              continue;
+            }
+          }
           sb.Append("<a href=\"")
           .Append(HtmlEscapeStrong(urlTitle[0])).Append("\"");
           if (urlTitle[1] != null) {
@@ -670,8 +702,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
 
     private static void HexEscape(StringBuilder sb, char c) {
       if (c >= 0x100) {
- throw new ArgumentException();
-}
+        throw new ArgumentException();
+      }
       string hex = "0123456789abcdef";
       sb.Append("&#x");
       if (c >= 0x10) {
@@ -810,8 +842,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
     private static string ReplaceAutomaticLinks(
          string str) {
       if (str.IndexOf('<') < 0) {
- return str;
-}
+        return str;
+      }
       var sb = new StringBuilder();
       for (var i = 0; i < str.Length; ++i) {
         if (str[i] == '<') {
@@ -833,8 +865,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             var found = false;
             while (qi < str.Length) {
               if (str[qi] == ' ' || str[qi] == '\t') {
- break;
-}
+                break;
+              }
               if (str[qi] == '>') {
                 {
                   linkEnd = qi;
@@ -848,17 +880,17 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
           }
           if (plausibleTag) {
             string payload = str.Substring(linkStart, linkEnd - linkStart);
-            if (payload.IndexOf("@") >= 1 && payload.IndexOf("?") < 0) {
+            if (payload.IndexOf('@') >= 1 && payload.IndexOf('?') < 0) {
               sb.Append("<a href=\"");
               sb.Append(HtmlEscapeStrong("mailto:" + payload));
-              sb.Append("\">") .Append(HtmlEscapeStrong(payload))
+              sb.Append("\">").Append(HtmlEscapeStrong(payload))
                .Append("</a>");
               i = linkEnd;
               continue;
-            } else if (payload.IndexOf(":") >= 1) {
+            } else if (payload.IndexOf(':') >= 1) {
               sb.Append("<a href=\"");
               sb.Append(HtmlEscapeStrong(payload));
-              sb.Append("\">") .Append(HtmlEscapeStrong(payload))
+              sb.Append("\">").Append(HtmlEscapeStrong(payload))
                .Append("</a>");
               i = linkEnd;
               continue;
@@ -1084,8 +1116,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             formatted.Append(HtmlEscape(qs.ToString()));
             formatted.Append("</code></pre>");
           } else {
-         formatted.Append(MarkdownText(qs.ToString(), depth + 1, true,
-              links));
+            formatted.Append(MarkdownText(qs.ToString(), depth + 1, true,
+                 links));
           }
           formatted.Append("</blockquote>");
         } else if (IsEqualsLine(line) && haveParagraph) {
@@ -1133,12 +1165,19 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             if (IsListLine(line, ordered)) {
               wrapLinesInParas |= seenBlankishLine;
               // DebugUtility.Log("para=" + qs.ToString());
-              string qss2 = MarkdownText(
-        qs.ToString(),
-        depth + 1,
-        wrapLinesInParas,
-        links);
-              formatted.Append(qss2);
+              string qss2;
+              if (depth >= 100) {
+                formatted.Append("<pre><code>");
+                formatted.Append(qs.ToString());
+                formatted.Append("</code></pre>");
+              } else {
+                qss2 = MarkdownText(
+                qs.ToString(),
+                depth + 1,
+                wrapLinesInParas,
+                links);
+                formatted.Append(qss2);
+              }
               formatted.Append("</li><li>");
               qs.Remove(0, qs.Length);
               ++qi;
@@ -1176,8 +1215,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             }
           }
           i = qi - 1;
-  string qss = MarkdownText(qs.ToString(), depth + 1, wrapLinesInParas,
-            links);
+          string qss = MarkdownText(qs.ToString(), depth + 1, wrapLinesInParas,
+                    links);
           formatted.Append(qss);
           formatted.Append("</li>");
           formatted.Append(ordered ? "</ol>" : "</ul>");
