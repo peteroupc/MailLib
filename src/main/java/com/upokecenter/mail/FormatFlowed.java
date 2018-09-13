@@ -152,6 +152,38 @@ private FormatFlowed() {
       if (str == null || str.length() < 3) {
         return false;
       }
+      if (str.charAt(0) != '-' && str.charAt(0) != '*' && str.charAt(0) != '_') {
+        return false;
+      }
+      int count = 0;
+      for (int i = 0; i < str.length(); ++i) {
+        if (str.charAt(i) == str.charAt(0)) {
+          if (count < 3) {
+ ++count;
+}
+        } else if (str.charAt(i) != ' ') {
+          return false;
+        }
+      }
+      return count >= 3;
+    }
+
+    private static boolean IsEqualsLine(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return false;
+      }
+      for (int i = 0; i < str.length(); ++i) {
+        if (str.charAt(i) != '=') {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static boolean IsDashLine(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return false;
+      }
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) != '-') {
           return false;
@@ -160,12 +192,12 @@ private FormatFlowed() {
       return true;
     }
 
-    private static boolean IsEqualsLine(String str) {
-      if (str == null || str.length() < 3) {
-        return false;
+    private static boolean IsBlankishLine(String str) {
+      if (str == null || str.length() == 0) {
+        return true;
       }
       for (int i = 0; i < str.length(); ++i) {
-        if (str.charAt(i) != '=') {
+        if (str.charAt(i) != '\t' && str.charAt(i) != ' ') {
           return false;
         }
       }
@@ -192,10 +224,13 @@ private FormatFlowed() {
       if (str != null) {
         int i = 0;
         while (i < str.length()) {
-          if (str.charAt(i) == ' ' || str.charAt(i) == '\t') {
-            if (i >= 4) {
- return str;
+          if (i == 0 && str.charAt(i) == '\t') {
+ return str.substring(1);
 }
+          if (str.charAt(i) == ' ') {
+            if (i >= 4) {
+              return str;
+            }
           } else if (i <= 3) {
             return str.substring(i);
           }
@@ -208,23 +243,75 @@ private FormatFlowed() {
     private static boolean IsUnorderedListLine(String str) {
       str = TrimShortSpaces(str);
       return str != null && str.length() >= 2 &&
-          (str.charAt(0) == '-' || str.charAt(0) == '*') && (str.charAt(1) == ' ' || str.charAt(1) == '\t');
+          (str.charAt(0) == '-' || str.charAt(0) == '*' || str.charAt(0) == '+') &&
+          (str.charAt(1) == ' ' || str.charAt(1) == '\t');
+    }
+
+    private static boolean IsOrderedListLine(String str) {
+      return IsOrderedListLine(str, true);
+    }
+
+    private static boolean IsOrderedListLine(String str, boolean trim) {
+      if (trim) {
+ str = TrimShortSpaces(str);
+}
+      if (str == null) {
+ return false;
+}
+      boolean digit = false;
+      int i = 0;
+      while (i < str.length()) {
+        if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+ digit = true;
+  } else if (str.charAt(i) == '.') {
+ return digit;
+} else {
+ return false;
+}
+        ++i;
+      }
+      return false;
     }
 
     private static boolean IsCodeBlockLine(String str) {
-      return str != null && str.length() >= 4 &&
-          (str.charAt(0) == ' ' || str.charAt(0) == '\t') &&
-          (str.charAt(1) == ' ' || str.charAt(1) == '\t') &&
-          (str.charAt(2) == ' ' || str.charAt(2) == '\t') &&
-          (str.charAt(3) == ' ' || str.charAt(3) == '\t');
+      if (((str) == null || (str).length() == 0)) {
+ return false;
+}
+      if (str.length() >= 1 && str.charAt(0) == '\t') {
+ return true;
+}
+      return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
+
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (true) : false; } private
+            static String ReplaceTwoOrMoreSpacesWithBR(String str) {
+      if (((str) == null || (str).length() == 0)) {
+ return "";
+}
+      if (str.length() >= 2 && str.charAt(str.length() - 1) == ' ' && str.charAt(str.length() -
+        2) == ' ') {
+        int i = str.length() - 1;
+        while (i >= 0) {
+          if (str.charAt(i) != ' ') {
+ return str.substring(0,i + 1) + "<br/>";
+}
+i--;
+        }
+        return "<br/>";
+      }
+      return str;
     }
 
-    private static boolean IsSpacedOrEmptyLine(String str) {
-      return ((str)==null || (str).length()==0) || (str.charAt(0) == ' ' || str.charAt(0) ==
-           '\t');
-    }
+    private static String StripCodeBlockSpaces(String str) {
+      if (((str) == null || (str).length() == 0)) {
+ return "";
+}
+      if (str.length() >= 1 && str.charAt(0) == '\t') {
+ return str.substring(1);
+}
+      return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-    private static String HtmlEscapeStrong(String str) {
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (str.substring(4)) : str; }
+            private static String HtmlEscapeStrong(String str) {
       int i = 0;
       StringBuilder sb = new StringBuilder();
       for (; i < str.length(); ++i) {
@@ -443,54 +530,66 @@ private FormatFlowed() {
       return sb.toString();
     }
 
-    private static String ReplaceBackslashEscapes(
+    private static String ReplaceCodeSpansAndBackslashEscapes(
          String str) {
-      if (str.indexOf('\\') < 0) {
+      if (str.indexOf('`') < 0 && str.indexOf('\\') < 0) {
         return str;
       }
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {
-        if (str.charAt(i) == '\\' && i + 1 < str.length()) {
-          int c = DataUtilities.CodePointAt(str, i + 1);
-          if (c >= 0x10000) {
-            i += 2;
-          } else {
-            ++i;
-          }
+        if (str.charAt(i) == '\\' && i + 1 < str.length() &&
+          "[]() {}#+-_`\\*!.".indexOf(str.charAt(i + 1)) >= 0) {
+          int c = str.charAt(i + 1);
           String hex = "0123456789abcdef";
-          boolean havestr = false;
           sb.append("&#x");
-          if (c >= 0x100000) {
-            {
-              sb.append(hex.charAt((c >> 20) & 15));
-            }
-            havestr = true;
-          }
-          if (c >= 0x10000 || havestr) {
-            {
-              sb.append(hex.charAt((c >> 16) & 15));
-            }
-            havestr = true;
-          }
-          if (c >= 0x1000 || havestr) {
-            {
-              sb.append(hex.charAt((c >> 12) & 15));
-            }
-            havestr = true;
-          }
-          if (c >= 0x100 || havestr) {
-            {
-              sb.append(hex.charAt((c >> 8) & 15));
-            }
-            havestr = true;
-          }
-          if (c >= 0x10 || havestr) {
-            {
-              sb.append(hex.charAt((c >> 4) & 15));
-            }
-            havestr = true;
+          if (c >= 0x10) {
+            sb.append(hex.charAt((c >> 4) & 15));
           }
           sb.append(hex.charAt(c & 15)).append(";");
+i++;
+          continue;
+        }
+        if (str.charAt(i) == '`') {
+          int qi = i + 1;
+          int backTicks = 1;
+          sb.append("<code>");
+          while (qi < str.length()) {
+            if (str.charAt(qi) == '`') {
+ ++backTicks;
+ }
+            else break;
+            ++qi;
+          }
+          while (qi < str.length()) {
+            if (str.charAt(qi) == '`') {
+              int endBackTicks = 1;
+int qi2 = qi + 1;
+          while (qi2 < str.length()) {
+            if (str.charAt(qi2) == '`') { endBackTicks++;
+              if (endBackTicks >= backTicks) {
+ break;
+ } }
+            else break;
+            ++qi2;
+          }
+              if (endBackTicks >= backTicks) { qi = qi2; break;
+}
+            }
+            char c = str.charAt(qi);
+            ++qi;
+            if ("[]() {}#+-_`\\*!.<>&".indexOf(str.charAt(qi)) >= 0) {
+              String hex = "0123456789abcdef";
+              sb.append("&#x");
+              if (c >= 0x10) {
+                sb.append(hex.charAt((c >> 4) & 15));
+              }
+              sb.append(hex.charAt(c & 15)).append(";");
+            } else {
+              sb.append(str.charAt(qi));
+            }
+          }
+          i = qi;
+          sb.append("<code>");
           continue;
         }
         sb.append(str.charAt(i));
@@ -499,14 +598,17 @@ private FormatFlowed() {
     }
 
     private static String FormatParagraph(String str) {
-      str = ReplaceBackslashEscapes(str);
+      // TODO: Escape ampersand/LT if necessary
+      // TODO: Automatic links
+      // TODO: Reference-style link/image syntax
+      str = ReplaceCodeSpansAndBackslashEscapes(str);
       str = ReplaceImageLinks(str);
       str = ReplaceInlineLinks(str);
-      str = FormatParagraph(str, "`", "code", true);
       str = FormatParagraph(str, "__", "strong", false);
       str = FormatParagraph(str, "**", "strong", false);
       str = FormatParagraph(str, "_", "em", false);
       str = FormatParagraph(str, "*", "em", false);
+      str = ReplaceTwoOrMoreSpacesWithBR(str);
       return str;
     }
 
@@ -521,6 +623,49 @@ private FormatFlowed() {
       while (i < str.length() && (str.charAt(i) == ' ' || str.charAt(i) == '\t')) {
         ++i;
       }
+      str = str.substring(i);
+      i = str.length() - 1;
+      boolean hashes = false;
+      while (i >= 0 && str.charAt(i) == '#') {
+        --i;
+        hashes = true;
+      }
+      if (hashes) {
+        hashes = false;
+        while (i >= 0 && (str.charAt(i) == ' ' || str.charAt(i) == '\t')) {
+          --i;
+          hashes = true;
+        }
+        ++i;
+        return hashes ? str.substring(0, i) : str;
+      }
+      return str;
+    }
+
+    private static String StripOrderedListItemStart(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return "";
+      }
+      if (IsOrderedListLine(str)) {
+        str = TrimShortSpaces(str);
+      }
+      int i = 0;
+      if (IsOrderedListLine(str, false)) {
+        while (i < str.length() && (str.charAt(i) >= '0' && str.charAt(i) <= '9')) {
+          ++i;
+        }
+        ++i;
+        while (i < str.length() && (str.charAt(i) == ' ' || str.charAt(i) == '\t')) {
+          ++i;
+        }
+      } else {
+        if (i + 1 < str.length() && str.charAt(i) == '\t') {
+ return str.substring(i + 1);
+ }
+        while (i < str.length() && (str.charAt(i) == ' ') && i < 4) {
+          ++i;
+        }
+      }
       return str.substring(i);
     }
 
@@ -532,13 +677,16 @@ private FormatFlowed() {
         str = TrimShortSpaces(str);
       }
       int i = 0;
-      if (str.charAt(i) == '*' || str.charAt(i) == '-') {
+      if (str.charAt(i) == '*' || str.charAt(i) == '-' || str.charAt(i) == '+') {
         ++i;
         while (i < str.length() && (str.charAt(i) == ' ' || str.charAt(i) == '\t')) {
           ++i;
         }
       } else {
-        while (i < str.length() && (str.charAt(i) == ' ' || str.charAt(i) == '\t') && i < 4) {
+        if (i + 1 < str.length() && str.charAt(i) == '\t') {
+ return str.substring(i + 1);
+ }
+        while (i < str.length() && (str.charAt(i) == ' ') && i < 4) {
           ++i;
         }
       }
@@ -554,12 +702,30 @@ private FormatFlowed() {
     }
 
     public static String MarkdownText(String str, int depth) {
+      return MarkdownText(str, depth, true);
+    }
+
+    public static boolean IsListLine(String line, boolean ordered) {
+      return ordered ? IsOrderedListLine(line) :
+                       IsUnorderedListLine(line);
+    }
+
+    public static String StripItemStart(String line, boolean ordered) {
+      return ordered ? StripOrderedListItemStart(line) :
+                       StripListItemStart(line);
+    }
+
+public static String MarkdownText(
+  String str,
+  int depth,
+  boolean alwaysUseParas) {
       int i = 0;
       int lineStart = i;
       StringBuilder formatted = new StringBuilder();
       ArrayList<String> lines = new ArrayList<String>();
       StringBuilder paragraph = new StringBuilder();
       boolean haveParagraph = false;
+      boolean isSingleParagraph = true;
       while (i <= str.length()) {
         if (i == str.length() ||
             (str.charAt(i) == 0x0d && i + 1 < str.length() && str.charAt(i + 1) == 0x0a)) {
@@ -576,6 +742,7 @@ private FormatFlowed() {
         String line = lines.get(i);
         if (IsQuoteLine(line)) {
           // Quote
+          isSingleParagraph = false;
           if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");
@@ -585,13 +752,33 @@ private FormatFlowed() {
           int qi = i + 1;
           StringBuilder qs = new StringBuilder()
               .append(StripQuoteStart(line));
+          boolean haveAnotherQuoteLine = false;
+          boolean valueGoToEndOfPara = false;
           while (qi < lines.size()) {
             line = lines.get(qi);
             if (IsQuoteLine(line)) {
               qs.append("\r\n").append(StripQuoteStart(line));
+              haveAnotherQuoteLine = true;
               ++qi;
+            } else if (!haveAnotherQuoteLine && !IsBlankishLine(line)) {
+              valueGoToEndOfPara = true;
+              break;
             } else {
               break;
+            }
+          }
+          if (valueGoToEndOfPara) {
+            while (qi < lines.size()) {
+              line = lines.get(qi);
+              if (IsQuoteLine(line)) {
+                qs.append("\r\n").append(StripQuoteStart(line));
+                ++qi;
+              } else if (IsBlankishLine(line)) {
+                break;
+              } else {
+                qs.append("\r\n").append(line);
+                ++qi;
+              }
             }
           }
           i = qi - 1;
@@ -605,6 +792,7 @@ private FormatFlowed() {
           }
           formatted.append("</blockquote>");
         } else if (IsBarLine(line)) {
+          isSingleParagraph = false;
           if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");
@@ -612,7 +800,9 @@ private FormatFlowed() {
             formatted.append("</p>");
           }
           formatted.append("<hr/>");
-        } else if (IsUnorderedListLine(line)) {
+        } else if (IsUnorderedListLine(line) || IsOrderedListLine(line)) {
+          boolean ordered = IsOrderedListLine(line);
+          isSingleParagraph = false;
           if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");
@@ -620,29 +810,70 @@ private FormatFlowed() {
             formatted.append("</p>");
           }
           int qi = i + 1;
-          StringBuilder qs = new StringBuilder().append(StripListItemStart(line));
-          formatted.append("<ul><li>");
+          String strippedLine = StripItemStart(line, ordered);
+          StringBuilder qs = new StringBuilder().append(strippedLine);
+          formatted.append(ordered ? "<ol>" : "<ul>");
+          formatted.append("<li>");
+          int itemLineCount = 0;
+          boolean seenBlankishLine = false;
+          boolean wrapLinesInParas = false;
+
+          // DebugUtility.Log("newlist");
           while (qi < lines.size()) {
             line = lines.get(qi);
-            if (IsSpacedOrEmptyLine(line)) {
-              qs.append("\r\n").append(StripQuoteStart(line));
-              ++qi;
-            } else if (IsUnorderedListLine(line)) {
-              String qss2 = MarkdownText(qs.toString(), depth + 1);
+            if (IsListLine(line, ordered)) {
+              if (seenBlankishLine) {
+ wrapLinesInParas = true;
+ }
+              // DebugUtility.Log("para=" + qs.toString());
+        String qss2 = MarkdownText(
+  qs.toString(),
+  depth + 1,
+  wrapLinesInParas);
               formatted.append(qss2);
               formatted.append("</li><li>");
               qs.delete(0, (0)+(qs.length()));
               ++qi;
-              qs.append(StripListItemStart(line));
+              strippedLine = StripItemStart(line, ordered);
+              qs.append(strippedLine);
+              ++itemLineCount;
+              seenBlankishLine = false;
             } else {
-              break;
+              // DebugUtility.Log("[" + line + "]");
+              // DebugUtility.Log("blankish=" + IsBlankishLine(line));
+              if (IsBlankishLine(line)) {
+                seenBlankishLine = true;
+                ++qi;
+              } else if (IsCodeBlockLine(line)) {
+if (seenBlankishLine) {
+ qs.append("\r\n");
+ }
+                seenBlankishLine = false;
+                qs.append("\r\n").append(StripItemStart(line, ordered));
+                // DebugUtility.Log("qs=" + qs);
+                ++qi;
+                ++itemLineCount;
+              } else if (seenBlankishLine) {
+                break;
+              } else {
+if (seenBlankishLine) {
+ qs.append("\r\n");
+ }
+                seenBlankishLine = false;
+                qs.append("\r\n").append(StripItemStart(line, ordered));
+                // DebugUtility.Log("qs=" + qs);
+                ++qi;
+                ++itemLineCount;
+              }
             }
           }
           i = qi - 1;
-          String qss = MarkdownText(qs.toString(), depth + 1);
+          String qss = MarkdownText(qs.toString(), depth + 1, wrapLinesInParas);
           formatted.append(qss);
-          formatted.append("</li></ul>");
+          formatted.append("</li>");
+          formatted.append(ordered ? "</ol>" : "</ul>");
         } else if (IsHeadingLine(line)) {
+          isSingleParagraph = false;
           if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");
@@ -656,6 +887,7 @@ private FormatFlowed() {
                .append("</h").append((char)('0' + heading))
                .append(">");
         } else if (IsCodeBlockLine(line)) {
+          isSingleParagraph = false;
           if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");
@@ -664,27 +896,34 @@ private FormatFlowed() {
           }
           int qi = i + 1;
           StringBuilder qs = new StringBuilder()
-              .append(line.substring(4));
+              .append(StripCodeBlockSpaces(line));
           while (qi < lines.size()) {
             line = lines.get(qi);
             if (IsCodeBlockLine(line)) {
-              qs.append("\r\n").append(line.substring(4));
+              qs.append("\r\n").append(StripCodeBlockSpaces(line));
               ++qi;
             } else {
               break;
             }
           }
           i = qi - 1;
-          formatted.append("<pre>");
+          formatted.append("<pre><code>");
           formatted.append(HtmlEscape(qs.toString()));
-          formatted.append("</pre>");
+          formatted.append("</code></pre>");
         } else if (IsEqualsLine(line) && haveParagraph) {
+          isSingleParagraph = false;
           haveParagraph = false;
           formatted.append("<h1>");
           formatted.append(paragraph.toString());
           formatted.append("</h1>");
+        } else if (IsDashLine(line) && haveParagraph) {
+          isSingleParagraph = false;
+          haveParagraph = false;
+          formatted.append("<h2>");
+          formatted.append(paragraph.toString());
+          formatted.append("</h2>");
         } else {
-          if (line.length() > 0) {
+          if (!IsBlankishLine(line)) {
             if (haveParagraph) {
               paragraph.append("\r\n");
             } else {
@@ -694,18 +933,22 @@ private FormatFlowed() {
             paragraph.append(FormatParagraph(line));
           } else if (haveParagraph) {
             haveParagraph = false;
+            isSingleParagraph = false;
             formatted.append("<p>");
             formatted.append(paragraph.toString());
             formatted.append("</p>");
           }
         }
       }
-
       if (haveParagraph) {
         haveParagraph = false;
-        formatted.append("<p>");
-        formatted.append(paragraph.toString());
-        formatted.append("</p>");
+        if (depth == 0 || !isSingleParagraph || alwaysUseParas) {
+          formatted.append("<p>");
+          formatted.append(paragraph.toString());
+          formatted.append("</p>");
+        } else {
+          formatted.append(paragraph.toString());
+        }
       }
 
       return formatted.toString();

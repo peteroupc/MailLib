@@ -28,160 +28,192 @@ namespace MailLibTest {
       this.TestMarkdownOne("<p><strong>Text</strong></p>", "**Text**");
       this.TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
       this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
-    this.TestMarkdownOne(
-  "<p><img src=\"x\" alt=\"y\" /></p>",
-  "![y](x)");
-      TestMarkdownOne(
-"<ul><li>ABC</li></ul>",
-"* ABC");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
+    "<p><img src=\"x\" alt=\"y\" /></p>",
+    "![y](x)");
+      this.TestMarkdownOne(
+  "<ul><li>ABC</li></ul>",
+  "* ABC");
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "* A\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ol><li>A</li><li>B</li></ol>",
       "0. A\r\n1. B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ol><li>A</li><li>B</li></ol>",
       "1. A\r\n2. B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ol><li>A</li><li>B</li></ol>",
       "1. A\r\n999999999999. B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "+ A\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "- A\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "* A\r\n+ B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "+ A\r\n+ B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "- A\r\n+ B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "* A\r\n- B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "+ A\r\n- B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A</li><li>B</li></ul>",
       "- A\r\n- B");
-TestMarkdownOne(
-"<ul><li><p>A</p></li><li><p>B</p></li></ul>",
-"* A\r\n\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li><p>A</p></li><li><p>B</p></li></ul>",
-      "* A\r\n   \r\n* B");
-TestMarkdownOne(
-"<ul><li><p>A</p></li><li><p>B</p></li></ul>",
-"* A\r\n\r\n* B");
-      TestMarkdownOne(
+      "* A\r\n\r\n* B");
+      this.TestMarkdownOne(
+      "<ul><li><p>A</p></li><li><p>B</p></li></ul>",
+      "* A\r\n \r\n* B");
+      this.TestMarkdownOne(
+      "<ul><li><p>A</p></li><li><p>B</p></li></ul>",
+      "* A\r\n\r\n* B");
+      this.TestMarkdownOne(
       "<ul><li>A\r\nB\r\nC</li><li>B</li></ul>",
       "* A\r\nB\r\nC\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li>A\r\nB\r\nC</li><li>B</li></ul>",
       "* A\r\n B\r\n C\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<ul><li><p>A</p><p>B</p></li><li>B</li></ul>",
       "* A\r\n\r\n\tB\r\n* B");
-      TestMarkdownOne(
-      "<ul><li>A\r\nB</li></ul><p>B</p><ul><li>B</li></ul>",
-      "* A\r\n\r\n   B\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
+      "<ul><li>A</li></ul><p>\u0020\u0020\u0020B</p><ul><li>B</li></ul>",
+      "* A\r\n\r\n\u0020\u0020\u0020B\r\n* B");
+      this.TestMarkdownOne(
       "<ul><li><p>A</p><p>B</p></li><li>B</li></ul>",
-      "* A\r\n\r\n    B\r\n* B");
-      TestMarkdownOne(
+      "* A\r\n\r\n\u0020 \u0020 B\r\n* B");
+      this.TestMarkdownOne(
       "<ul><li><p>A</p><p>B\r\nC</p></li><li>B</li></ul>",
-      "* A\r\n\r\n    B\r\nC\r\n* B");
-TestMarkdownOne(
-"<ul><li><p>A</p><blockquote>C\r\nD</blockquote></li><li>B</li></ul>",
-"* A\r\n\r\n\t> C\r\n\t> D\r\n* B");
-      TestMarkdownOne(
+      "* A\r\n\r\n\u0020 \u0020 B\r\nC\r\n* B");
+      this.TestMarkdownOne(
+  "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>",
+  "* A\r\n\r\n\t> C\r\n\t> D\r\n* B");
+      this.TestMarkdownOne(
       "<ul><li><p>A</p><pre><code>C\r\nD</code></pre></li><li>B</li></ul>",
       "* A\r\n\r\n\t\tC\r\n\t\tD\r\n* B");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>A</p><pre><code>C\r\nD</code></pre>",
       "A\r\n\r\n\tC\r\n\tD");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>A</p><pre><code>C\r\n\tD</code></pre>",
       "A\r\n\r\n\tC\r\n\t\tD");
-      TestMarkdownOne(
-      "<p>A</p><pre><code>C&\r\n\tD</code></pre>",
-      "A\r\n\r\n\tC&amp;\r\n\t\tD");
-      TestMarkdownOne(
+    }
+    [Test]
+    public void TestMarkdownAmpersand() {
+      this.TestMarkdownOne(
+        "<p>e&mdash;</p>",
+        "e&mdash;");
+      this.TestMarkdownOne(
+        "<p>e&amp;</p>",
+        "e&amp;");
+      this.TestMarkdownOne(
+        "<p>A</p><pre><code>C&amp;\r\n\tD</code></pre>",
+      "A\r\n\r\n\tC&\r\n\t\tD");
+      this.TestMarkdownOne(
+        "<p>e&amp;x</p>",
+        "e&x");
+    }
+    [Test]
+    public void TestMarkdown2() {
+      this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n***");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n---");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n___");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n* * *");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n- - -");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n_ _ _");
-TestMarkdownOne(
-"<blockquote><p>A\r\nB</p><p>C</p></blockquote>",
-"> A\r\n> B\r\n> \r\n> C");
-      TestMarkdownOne(
+this.TestMarkdownOne(
+  "<blockquote><p>A\r\nB</p><p>C</p></blockquote>",
+  "> A\r\n> B\r\n> \r\n> C");
+      this.TestMarkdownOne(
       "<blockquote><p>A\r\nB\r\nC</p></blockquote>",
       "> A\r\nB\r\nC");
-      TestMarkdownOne(
-"<blockquote><p>A</p><blockquote>B</blockquote><p>C</p></blockquote>",
-"> A\r\n> > B\r\n> C");
-      TestMarkdownOne(
-"<blockquote><pre><code>Code</code></pre></blockquote>",
-"> \tCode");
-      TestMarkdownOne(
-"<h1>Test</h1>",
-"# Test #");
-      TestMarkdownOne(
+    }
+    [Test]
+    public void TestMarkdown3() {
+      this.TestMarkdownOne(
+  "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
+  "> A\r\n> > B\r\n> \r\n> C");
+      this.TestMarkdownOne(
+  "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>",
+  "> A\r\n> > B\r\n> C");
+    }
+    [Test]
+    [Timeout(5000)]
+    public void TestMarkdown4() {
+      this.TestMarkdownOne(
+  "<blockquote><pre><code>Code</code></pre></blockquote>",
+  "> \tCode");
+    }
+    [Test]
+    [Timeout(5000)]
+    public void TestMarkdown5() {
+      this.TestMarkdownOne(
+  "<h1>Test</h1>",
+  "# Test #");
+      this.TestMarkdownOne(
       "<h1>Test</h1>",
       "# Test ##");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<h1>Test</h1>",
       "# Test #####");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<h1>Test</h1>",
       "# Test ##########");
-      TestMarkdownOne(
-"<p>A<br/>B</p>",
-"A  \r\nB");
-      TestMarkdownOne(
-"<p>A<br/>B</p>",
-"A  \r\nB");
-      TestMarkdownOne(
-      "A\r\n===\r\n\r\nA",
-      "<h1>A</h1><p>A</p>");
-      TestMarkdownOne(
-      "A\r\n---\r\n\r\nA",
-      "<h1>A</h1><p>A</p>");
-      TestMarkdownOne(
-"<p>C <code>abc</code> D</p>",
-"C `abc` D");
-      TestMarkdownOne(
+    }
+    [Test]
+    [Timeout(5000)]
+    public void TestMarkdown6() {
+      this.TestMarkdownOne(
+  "<p>A<br/>\r\nB</p>",
+  "A\u0020 \r\nB");
+      this.TestMarkdownOne(
+  "<p>A \r\nB</p>",
+  "A \r\nB");
+      this.TestMarkdownOne(
+  "<p>A<br/>\r\nB</p>",
+  "A\u0020 \r\nB");
+      this.TestMarkdownOne(
+        "<h1>A</h1><p>A</p>",
+        "A\r\n===\r\n\r\nA");
+      this.TestMarkdownOne(
+      "<h2>A</h2><p>A</p>","A\r\n---\r\n\r\nA"
+      );
+      this.TestMarkdownOne(
+  "<p>C <code>abc</code> D</p>",
+  "C `abc` D");
+      this.TestMarkdownOne(
       "<p>C <code>abc</code> D</p>",
       "C ``abc`` D");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>C <code> &#x60; </code> D</p>",
       "C `` ` `` D");
-      TestMarkdownOne(
+      this.TestMarkdownOne(
       "<p>C &#x60;<code>abc</code> D</p>",
       "C \\``abc` D");
-
-
-
-
     }
   }
 }

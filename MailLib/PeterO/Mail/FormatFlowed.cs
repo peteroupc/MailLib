@@ -154,10 +154,12 @@ namespace PeterO.Mail {
       if (str[0] != '-' && str[0] != '*' && str[0] != '_') {
         return false;
       }
-      int count = 0;
+      var count = 0;
       for (var i = 0; i < str.Length; ++i) {
-        if (str[i] != str[0]) {
-          if (count < 3) count++;
+        if (str[i] == str[0]) {
+          if (count < 3) {
+            ++count;
+          }
         } else if (str[i] != ' ') {
           return false;
         }
@@ -190,7 +192,7 @@ namespace PeterO.Mail {
     }
 
     private static bool IsBlankishLine(string str) {
-      if (str == null || str.Length == 0) {
+      if (string.IsNullOrEmpty(str)) {
         return true;
       }
       for (var i = 0; i < str.Length; ++i) {
@@ -221,7 +223,10 @@ namespace PeterO.Mail {
       if (str != null) {
         var i = 0;
         while (i < str.Length) {
-          if (str[i] == ' ' || str[i] == '\t') {
+          if (i == 0 && str[i] == '\t') {
+            return str.Substring(1);
+          }
+          if (str[i] == ' ') {
             if (i >= 4) {
               return str;
             }
@@ -245,36 +250,52 @@ namespace PeterO.Mail {
       return IsOrderedListLine(str, true);
     }
 
-
     private static bool IsOrderedListLine(string str, bool trim) {
-      if (trim) str = TrimShortSpaces(str);
-      if (str == null) return false;
-      bool digit = false;
-      int i = 0;
+      if (trim) {
+        str = TrimShortSpaces(str);
+      }
+      if (str == null) {
+        return false;
+      }
+      var digit = false;
+      var i = 0;
       while (i < str.Length) {
-        if (str[i] >= '0' && str[i] <= '9') digit = true;
-        else if (str[i] == '.') return digit;
-        else return false;
-        i++;
+        if (str[i] >= '0' && str[i] <= '9') {
+          digit = true;
+        } else if (str[i] == '.') {
+          return digit;
+        } else {
+          return false;
+        }
+        ++i;
       }
       return false;
     }
 
     private static bool IsCodeBlockLine(string str) {
-      if (String.IsNullOrEmpty(str)) return false;
-      if (str.Length >= 1 && str[0] == '\t') return true;
-      if (str.Length >= 4 && str[0] == ' ' &&
-          str[1] == ' ' &&
-          str[2] == ' ' &&
-          str[3] == ' ') return true;
-      return false;
+      if (String.IsNullOrEmpty(str)) {
+        return false;
+      }
+      if (str.Length >= 1 && str[0] == '\t') {
+        return true;
+      }
+      return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
+
+          str[2] == ' ' && str[3] == ' ') ? (true) : false;
     }
-    private static string ReplaceTwoOrMoreSpacesWithBR(string str) {
-      if (String.IsNullOrEmpty(str)) return String.Empty;
-      if (str.Length >= 2 && str[str.Length - 1] == ' ' && str[str.Length - 2] == ' ') {
+    private
+static string ReplaceTwoOrMoreSpacesWithBR(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return String.Empty;
+      }
+      if (str.Length >= 2 && str[str.Length - 1] == ' ' && str[str.Length -
+        2] == ' ') {
         int i = str.Length - 1;
         while (i >= 0) {
-          if (str[i] != ' ') return str.Substring(0, i) + "<br/>";
+          if (str[i] != ' ') {
+            return str.Substring(0, i + 1) + "<br/>";
+          }
+          i--;
         }
         return "<br/>";
       }
@@ -282,15 +303,16 @@ namespace PeterO.Mail {
     }
 
     private static string StripCodeBlockSpaces(string str) {
-      if (String.IsNullOrEmpty(str)) return String.Empty;
-      if (str.Length >= 1 && str[0] == '\t') return str.Substring(1);
-      if (str.Length >= 4 && str[0] == ' ' &&
-          str[1] == ' ' &&
-          str[2] == ' ' &&
-          str[3] == ' ') return str.Substring(4);
-      return str;
-    }
+      if (String.IsNullOrEmpty(str)) {
+        return String.Empty;
+      }
+      if (str.Length >= 1 && str[0] == '\t') {
+        return str.Substring(1);
+      }
+      return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
 
+          str[2] == ' ' && str[3] == ' ') ? (str.Substring(4)) : str;
+    }
     private static string HtmlEscapeStrong(string str) {
       var i = 0;
       var sb = new StringBuilder();
@@ -510,15 +532,43 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    private static string ReplaceCodeSpansAndBackslashEscapes(
+    private static string CodeSpansAndEscapes(
          string str) {
-      if (str.IndexOf('`') < 0 && str.IndexOf('\\') < 0) {
-        return str;
-      }
       var sb = new StringBuilder();
       for (var i = 0; i < str.Length; ++i) {
-        if (str[i] == '\\' && i + 1 < str.Length &&
-          "[](){}#+-_`\\*!.".IndexOf(str[i + 1]) >= 0) {
+        if (str[i] == '&') {
+          int qi = i + 1;
+          bool plausibleEscape = false;
+          while (qi < str.Length) {
+            if (str[qi] == ';') { plausibleEscape = true; break; } else if (str[qi] == '#' && qi != i + 1) break;
+            else if (str[qi] == '#') { qi++; continue; } else if (str[qi] >= '0' && str[qi] <= '9') { qi++; continue; } else if (str[qi] >= 'A' && str[qi] <= 'Z') { qi++; continue; } else if (str[qi] >= 'a' && str[qi] <= 'z') { qi++; continue; }
+            break;
+          }
+          if (plausibleEscape) sb.Append('&');
+          else sb.Append("&amp;");
+          continue;
+        } else if (str[i] == '<') {
+          int qi = i + 1;
+          bool plausibleTag = false;
+          if (qi < str.Length && (
+             (str[qi] >= '0' && str[qi] <= '9') ||
+             (str[qi] >= 'A' && str[qi] <= 'Z') ||
+             (str[qi] >= 'a' && str[qi] <= 'z') ||
+             (str[qi] == '_') ||
+                      (str[qi] == '/'))) { plausibleTag = true; qi++; }
+          if (plausibleTag) {
+            bool found = false;
+            while (qi < str.Length) {
+              if (str[qi] == '>') { found = true; break; }
+              qi++;
+            }
+            plausibleTag = plausibleTag && found;
+          }
+          if (plausibleTag) sb.Append('<');
+          else sb.Append("&lt;");
+          continue;
+        } else if (str[i] == '\\' && i + 1 < str.Length &&
+                  "[]()\u007b\u007d#+-_`\\*!.".IndexOf(str[i + 1]) >= 0) {
           int c = str[i + 1];
           string hex = "0123456789abcdef";
           sb.Append("&#x");
@@ -526,26 +576,39 @@ namespace PeterO.Mail {
             sb.Append(hex[(c >> 4) & 15]);
           }
           sb.Append(hex[c & 15]).Append(";");
+          i++;
           continue;
         }
         if (str[i] == '`') {
           int qi = i + 1;
-          int backTicks = 1;
-          int endBackTicks = 0;
+          var backTicks = 1;
           sb.Append("<code>");
           while (qi < str.Length) {
-            if (str[qi] == '`') backTicks++;
-            else break;
-            qi++;
+            if (str[qi] == '`') {
+              ++backTicks;
+            } else break;
+            ++qi;
           }
           while (qi < str.Length) {
             if (str[qi] == '`') {
-              endBackTicks++;
-              if (endBackTicks >= backTicks) break;
-            } else { endBackTicks = 0; }
+              int endBackTicks = 1;
+              int qi2 = qi + 1;
+              while (backTicks > 1 && qi2 < str.Length) {
+                if (str[qi2] == '`') {
+                  endBackTicks++;
+                  if (endBackTicks >= backTicks) {
+                    qi = qi2;
+                    break;
+                  }
+                } else break;
+                ++qi2;
+              }
+              if (endBackTicks >= backTicks) {
+                break;
+              }
+            }
             char c = str[qi];
-            qi++;
-            if ("[](){}#+-_`\\*!.<>&".IndexOf(str[qi]) >= 0) {
+            if ("[]()\u007b\u007d#+-_`\\*!.<>&".IndexOf(str[qi]) >= 0) {
               string hex = "0123456789abcdef";
               sb.Append("&#x");
               if (c >= 0x10) {
@@ -555,9 +618,10 @@ namespace PeterO.Mail {
             } else {
               sb.Append(str[qi]);
             }
+            ++qi;
           }
           i = qi;
-          sb.Append("<code>");
+          sb.Append("</code>");
           continue;
         }
         sb.Append(str[i]);
@@ -565,12 +629,10 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-
     private static string FormatParagraph(string str) {
-      // TODO: Escape ampersand/LT if necessary
       // TODO: Automatic links
       // TODO: Reference-style link/image syntax
-      str = ReplaceCodeSpansAndBackslashEscapes(str);
+      str = CodeSpansAndEscapes(str);
       str = ReplaceImageLinks(str);
       str = ReplaceInlineLinks(str);
       str = FormatParagraph(str, "__", "strong", false);
@@ -596,17 +658,21 @@ namespace PeterO.Mail {
       i = str.Length - 1;
       bool hashes = false;
       while (i >= 0 && str[i] == '#') {
-        i--;
+        --i;
         hashes = true;
       }
       if (hashes) {
+        hashes = false;
         while (i >= 0 && (str[i] == ' ' || str[i] == '\t')) {
-          i--;
+          --i;
           hashes = true;
         }
+        ++i;
+        return hashes ? str.Substring(0, i) : str;
       }
-      return str.Substring(0, i);
+      return str;
     }
+
     private static string StripOrderedListItemStart(string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
@@ -624,7 +690,10 @@ namespace PeterO.Mail {
           ++i;
         }
       } else {
-        while (i < str.Length && (str[i] == ' ' || str[i] == '\t') && i < 4) {
+        if (i + 1 < str.Length && str[i] == '\t') {
+          return str.Substring(i + 1);
+        }
+        while (i < str.Length && (str[i] == ' ') && i < 4) {
           ++i;
         }
       }
@@ -645,7 +714,10 @@ namespace PeterO.Mail {
           ++i;
         }
       } else {
-        while (i < str.Length && (str[i] == ' ' || str[i] == '\t') && i < 4) {
+        if (i + 1 < str.Length && str[i] == '\t') {
+          return str.Substring(i + 1);
+        }
+        while (i < str.Length && (str[i] == ' ') && i < 4) {
           ++i;
         }
       }
@@ -674,7 +746,10 @@ namespace PeterO.Mail {
                        StripListItemStart(line);
     }
 
-    public static string MarkdownText(string str, int depth, bool alwaysUseParas) {
+    public static string MarkdownText(
+      string str,
+      int depth,
+      bool alwaysUseParas) {
       var i = 0;
       int lineStart = i;
       var formatted = new StringBuilder();
@@ -709,7 +784,7 @@ namespace PeterO.Mail {
           var qs = new StringBuilder()
               .Append(StripQuoteStart(line));
           bool haveAnotherQuoteLine = false;
-          bool goToEndOfPara = false;
+          bool valueGoToEndOfPara = false;
           while (qi < lines.Count) {
             line = lines[qi];
             if (IsQuoteLine(line)) {
@@ -717,13 +792,13 @@ namespace PeterO.Mail {
               haveAnotherQuoteLine = true;
               ++qi;
             } else if (!haveAnotherQuoteLine && !IsBlankishLine(line)) {
-              goToEndOfPara = true;
+              valueGoToEndOfPara = true;
               break;
             } else {
               break;
             }
           }
-          if (goToEndOfPara) {
+          if (valueGoToEndOfPara) {
             while (qi < lines.Count) {
               line = lines[qi];
               if (IsQuoteLine(line)) {
@@ -740,13 +815,25 @@ namespace PeterO.Mail {
           i = qi - 1;
           formatted.Append("<blockquote>");
           if (depth > 10) {
-            formatted.Append("<pre>");
+            formatted.Append("<pre><code>");
             formatted.Append(HtmlEscape(qs.ToString()));
-            formatted.Append("</pre>");
+            formatted.Append("</code></pre>");
           } else {
             formatted.Append(MarkdownText(qs.ToString(), depth + 1));
           }
           formatted.Append("</blockquote>");
+        } else if (IsEqualsLine(line) && haveParagraph) {
+          isSingleParagraph = false;
+          haveParagraph = false;
+          formatted.Append("<h1>");
+          formatted.Append(paragraph.ToString());
+          formatted.Append("</h1>");
+        } else if (IsDashLine(line) && haveParagraph) {
+          isSingleParagraph = false;
+          haveParagraph = false;
+          formatted.Append("<h2>");
+          formatted.Append(paragraph.ToString());
+          formatted.Append("</h2>");
         } else if (IsBarLine(line)) {
           isSingleParagraph = false;
           if (haveParagraph) {
@@ -778,16 +865,19 @@ namespace PeterO.Mail {
           while (qi < lines.Count) {
             line = lines[qi];
             if (IsListLine(line, ordered)) {
-              if (seenBlankishLine) wrapLinesInParas = true;
+              wrapLinesInParas |= seenBlankishLine;
               // DebugUtility.Log("para=" + qs.ToString());
-              string qss2 = MarkdownText(qs.ToString(), depth + 1, wrapLinesInParas);
+              string qss2 = MarkdownText(
+        qs.ToString(),
+        depth + 1,
+        wrapLinesInParas);
               formatted.Append(qss2);
               formatted.Append("</li><li>");
               qs.Remove(0, qs.Length);
               ++qi;
               strippedLine = StripItemStart(line, ordered);
               qs.Append(strippedLine);
-              itemLineCount++;
+              ++itemLineCount;
               seenBlankishLine = false;
             } else {
               // DebugUtility.Log("[" + line + "]");
@@ -795,15 +885,26 @@ namespace PeterO.Mail {
               if (IsBlankishLine(line)) {
                 seenBlankishLine = true;
                 ++qi;
+              } else if (IsCodeBlockLine(line)) {
+                if (seenBlankishLine) {
+                  qs.Append("\r\n");
+                }
+                seenBlankishLine = false;
+                qs.Append("\r\n").Append(StripItemStart(line, ordered));
+                // DebugUtility.Log("qs=" + qs);
+                ++qi;
+                ++itemLineCount;
               } else if (seenBlankishLine) {
                 break;
               } else {
+                if (seenBlankishLine) {
+                  qs.Append("\r\n");
+                }
                 seenBlankishLine = false;
                 qs.Append("\r\n").Append(StripItemStart(line, ordered));
-
                 // DebugUtility.Log("qs=" + qs);
                 ++qi;
-                itemLineCount++;
+                ++itemLineCount;
               }
             }
           }
@@ -850,18 +951,6 @@ namespace PeterO.Mail {
           formatted.Append("<pre><code>");
           formatted.Append(HtmlEscape(qs.ToString()));
           formatted.Append("</code></pre>");
-        } else if (IsEqualsLine(line) && haveParagraph) {
-          isSingleParagraph = false;
-          haveParagraph = false;
-          formatted.Append("<h1>");
-          formatted.Append(paragraph.ToString());
-          formatted.Append("</h1>");
-        } else if (IsDashLine(line) && haveParagraph) {
-          isSingleParagraph = false;
-          haveParagraph = false;
-          formatted.Append("<h2>");
-          formatted.Append(paragraph.ToString());
-          formatted.Append("</h2>");
         } else {
           if (!IsBlankishLine(line)) {
             if (haveParagraph) {

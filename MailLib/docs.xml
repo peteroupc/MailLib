@@ -4456,8 +4456,7 @@ of this NamedAddress object as it could appear in a "To" header field.
             the Unicode Standard. See RFC 8264. Currently there are four
             profiles for internationalized strings: two for strings
             serving as user identifiers, one for arbitrary single-line strings [such as
-            passwords], and one for display names.</para></summary>
-<remarks><list>
+            passwords], and one for display names.</para></summary><remarks><list>
 <item>Other user-facing internationalized
             strings not expressly handled by this class include file and
             directory names, domain names, profile data voluntarily entered by
@@ -4477,6 +4476,7 @@ class is directed more to equality comparisons for authentication
 or authorization purposes, or to avoid creating multiple items that use
 the same string, rather than, say, to comparisons of names or parts of
 names for the purpose of showing matching records.</item></list></remarks>
+
 </doc>
 <doc name="M:PeterO.Text.ProtocolStrings.IsInFreeformClass(System.String)">
 

@@ -26,4 +26,5 @@ Implements the Unicode normalization algorithm and contains methods and         
 A character input class that implements the Unicode normalization         algorithm and contains methods and functionality to test and convert         text strings for normalization.
  * [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) -
 A character input class that implements the Unicode normalization         algorithm and contains methods and functionality to test and convert         text strings for normalization.
- * [PeterO.Text.ProtocolStrings](PeterO.Text.ProtocolStrings.md) - Contains methods for preparing user-facing protocol             strings (such as user identifiers) for comparison and validity             checking.
+ * [PeterO.Text.ProtocolStrings](PeterO.Text.ProtocolStrings.md) -
+Contains methods for preparing user-facing protocol             strings (such as user identifiers) for equality comparison and validity             checking.

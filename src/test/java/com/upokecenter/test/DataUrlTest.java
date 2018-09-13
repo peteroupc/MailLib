@@ -8569,7 +8569,7 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
     }
 
     static void TestDataUrlRoundTrip(String data) {
-      MediaType mt = DataUrls.DataUrlMediaType(data);
+      MediaType mt = DataUris.DataUriMediaType(data);
       byte[] bytes = DataUrls.DataUrlBytes(data);
       if ((mt) == null) {
  Assert.fail(data);
