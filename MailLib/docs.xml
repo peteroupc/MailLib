@@ -2579,8 +2579,17 @@ ns me
 </doc>
 <doc name="M:PeterO.Mail.Message.GetFormattedBodyString">
 
-            <summary>Not documented yet.</summary><returns>A text string.</returns>
-
+            <summary>
+<para>Gets a Hypertext Markup Language (HTML) rendering of this message's text body.  This method currently supports text/plain, text/plain with format=flowed, text/enriched, and text/markdown (original Markdown).</para>
+<para>The Markdown implementation currently supports all features of original Markdown, with the following exceptions:</para><list>
+<item>This implementation currently does not support reference links.</item>
+<item>This implementation does not use HTML escapes to obfuscate email addresses expressed in the "automatic link" syntax (that is, wrapping email addresses in angle brackets).  This is by design.</item></list>
+</summary><returns>An HTML rendering of this message's text.</returns>
+<exception cref='T:System.NotSupportedException'>Either this
+            message is a multipart message, so it doesn't have its own body
+            text, or this message has no character encoding declared or assumed
+            for it (which is usually the case for non-text messages), or the
+            character encoding is not supported.</exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.GetHeader(System.Int32)">
 

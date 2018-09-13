@@ -29,8 +29,15 @@ import com.upokecenter.mail.*;
       this.TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
       this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
       this.TestMarkdownOne(
+        "<p><a href=\"x\" title=\"z\">y</a></p>",
+        "[y](x \"z\")");
+      this.TestMarkdownOne(
     "<p><img src=\"x\" alt=\"y\" /></p>",
     "![y](x)");
+      this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
+      this.TestMarkdownOne(
+    "<p><img src=\"x\" alt=\"y\" title=\"z\" /></p>",
+    "![y](x \"z\")");
       this.TestMarkdownOne(
   "<ul><li>ABC</li></ul>",
   "* ABC");
@@ -89,14 +96,14 @@ import com.upokecenter.mail.*;
       "<ul><li><p>A</p><p>B</p></li><li>B</li></ul>",
       "* A\r\n\r\n\tB\r\n* B");
       this.TestMarkdownOne(
-      "<ul><li>A</li></ul><p> B</p><ul><li>B</li></ul>",
-      "* A\r\n\r\n B\r\n* B");
+      "<ul><li>A</li></ul><p>\u0020\u0020\u0020B</p><ul><li>B</li></ul>",
+      "* A\r\n\r\n\u0020\u0020\u0020B\r\n* B");
       this.TestMarkdownOne(
       "<ul><li><p>A</p><p>B</p></li><li>B</li></ul>",
-      "* A\r\n\r\n B\r\n* B");
+      "* A\r\n\r\n\u0020 \u0020 B\r\n* B");
       this.TestMarkdownOne(
       "<ul><li><p>A</p><p>B\r\nC</p></li><li>B</li></ul>",
-      "* A\r\n\r\n B\r\nC\r\n* B");
+      "* A\r\n\r\n\u0020 \u0020 B\r\nC\r\n* B");
       this.TestMarkdownOne(
   "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>",
   "* A\r\n\r\n\t> C\r\n\t> D\r\n* B");
@@ -109,12 +116,71 @@ import com.upokecenter.mail.*;
       this.TestMarkdownOne(
       "<p>A</p><pre><code>C\r\n\tD</code></pre>",
       "A\r\n\r\n\tC\r\n\t\tD");
+      this.TestMarkdownOne(
+  "<p><a href=\"http://www.example.com/\">http://www.example.com/</a></p>",
+  "<http://www.example.com/>");
+      // NOTE: Obfuscation of email addresses with
+      // automatic link syntax is deliberately not supported.
+      this.TestMarkdownOne(
+        "<p><a href=\"mailto:me@example.com\">me@example.com</a></p>",
+        "<me@example.com>");
     }
     @Test
     public void TestMarkdownAmpersand() {
       this.TestMarkdownOne(
-      "<p>A</p><pre><code>C&\r\n\tD</code></pre>",
-      "A\r\n\r\n\tC&amp;\r\n\t\tD");
+        "<p>e&mdash;</p>",
+        "e&mdash;");
+      this.TestMarkdownOne(
+        "<p>e&amp;</p>",
+        "e&amp;");
+      this.TestMarkdownOne(
+        "<p>A</p><pre><code>C&amp;\r\n\tD</code></pre>",
+        "A\r\n\r\n\tC&\r\n\t\tD");
+      this.TestMarkdownOne(
+        "<p>e&amp;x</p>",
+        "e&x");
+    }
+    @Test
+    public void TestMarkdownRefLinks() {
+      this.TestMarkdownOne(
+  "<p>test</p>",
+  "test\r\n.get(test): http://www.example.com");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): http://www.example.com");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n.get(test): http://www.example.com \"Title\"");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): <http://www.example.com>");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n.get(test): <http://www.example.com> \"Title\"");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): http://www.example.com 'Title'");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n\u0020.get(test): http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p><p>(Not a title)</p>",
+        "test\r\n\r\n.get(test): http://www.example.com\r\n(Not a title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): http://www.example.com\r\n (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): http://www.example.com\r\n \"Title\"");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n.get(test): http://www.example.com\r\n 'Title'");
     }
     @Test
     public void TestMarkdown2() {
@@ -136,9 +202,9 @@ import com.upokecenter.mail.*;
       this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n_ _ _");
-this.TestMarkdownOne(
-  "<blockquote><p>A\r\nB</p><p>C</p></blockquote>",
-  "> A\r\n> B\r\n> \r\n> C");
+      this.TestMarkdownOne(
+        "<blockquote><p>A\r\nB</p><p>C</p></blockquote>",
+        "> A\r\n> B\r\n> \r\n> C");
       this.TestMarkdownOne(
       "<blockquote><p>A\r\nB\r\nC</p></blockquote>",
       "> A\r\nB\r\nC");
@@ -147,6 +213,9 @@ this.TestMarkdownOne(
     public void TestMarkdown3() {
       this.TestMarkdownOne(
   "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
+  "> A\r\n> > B\r\n> \r\n> C");
+      this.TestMarkdownOne(
+  "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>",
   "> A\r\n> > B\r\n> C");
     }
     @Test(timeout = 5000)
@@ -174,19 +243,19 @@ this.TestMarkdownOne(
     public void TestMarkdown6() {
       this.TestMarkdownOne(
   "<p>A<br/>\r\nB</p>",
-  "A \r\nB");
+  "A\u0020 \r\nB");
       this.TestMarkdownOne(
   "<p>A \r\nB</p>",
   "A \r\nB");
       this.TestMarkdownOne(
   "<p>A<br/>\r\nB</p>",
-  "A \r\nB");
+  "A\u0020 \r\nB");
       this.TestMarkdownOne(
-      "A\r\n===\r\n\r\nA",
-      "<h1>A</h1><p>A</p>");
+        "<h1>A</h1><p>A</p>",
+        "A\r\n===\r\n\r\nA");
       this.TestMarkdownOne(
-      "A\r\n---\r\n\r\nA",
-      "<h1>A</h1><p>A</p>");
+      "<h2>A</h2><p>A</p>",
+      "A\r\n---\r\n\r\nA");
       this.TestMarkdownOne(
   "<p>C <code>abc</code> D</p>",
   "C `abc` D");

@@ -29,8 +29,15 @@ namespace MailLibTest {
       this.TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
       this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
       this.TestMarkdownOne(
+        "<p><a href=\"x\" title=\"z\">y</a></p>",
+        "[y](x \"z\")");
+      this.TestMarkdownOne(
     "<p><img src=\"x\" alt=\"y\" /></p>",
     "![y](x)");
+      this.TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
+      this.TestMarkdownOne(
+    "<p><img src=\"x\" alt=\"y\" title=\"z\" /></p>",
+    "![y](x \"z\")");
       this.TestMarkdownOne(
   "<ul><li>ABC</li></ul>",
   "* ABC");
@@ -109,6 +116,14 @@ namespace MailLibTest {
       this.TestMarkdownOne(
       "<p>A</p><pre><code>C\r\n\tD</code></pre>",
       "A\r\n\r\n\tC\r\n\t\tD");
+      this.TestMarkdownOne(
+  "<p><a href=\"http://www.example.com/\">http://www.example.com/</a></p>",
+  "<http://www.example.com/>");
+      // NOTE: Obfuscation of email addresses with
+      // automatic link syntax is deliberately not supported.
+      this.TestMarkdownOne(
+        "<p><a href=\"mailto:me@example.com\">me@example.com</a></p>",
+        "<me@example.com>");
     }
     [Test]
     public void TestMarkdownAmpersand() {
@@ -120,10 +135,52 @@ namespace MailLibTest {
         "e&amp;");
       this.TestMarkdownOne(
         "<p>A</p><pre><code>C&amp;\r\n\tD</code></pre>",
-      "A\r\n\r\n\tC&\r\n\t\tD");
+        "A\r\n\r\n\tC&\r\n\t\tD");
       this.TestMarkdownOne(
         "<p>e&amp;x</p>",
         "e&x");
+    }
+    [Test]
+    public void TestMarkdownRefLinks() {
+      this.TestMarkdownOne(
+  "<p>test</p>",
+  "test\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n[test]: http://www.example.com");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n[test]: http://www.example.com \"Title\"");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n[test]: <http://www.example.com>");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n[test]: <http://www.example.com> \"Title\"");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n[test]: http://www.example.com 'Title'");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n[test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n\u0020 [test]: http://www.example.com (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p><p>(Not a title)</p>",
+        "test\r\n\r\n[test]: http://www.example.com\r\n(Not a title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n[test]: http://www.example.com\r\n (Title)");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n[test]: http://www.example.com\r\n \"Title\"");
+      this.TestMarkdownOne(
+        "<p>test</p>",
+        "test\r\n\r\n[test]: http://www.example.com\r\n 'Title'");
     }
     [Test]
     public void TestMarkdown2() {
@@ -145,9 +202,9 @@ namespace MailLibTest {
       this.TestMarkdownOne(
       "<p>A</p><hr/>",
       "A\r\n\r\n_ _ _");
-this.TestMarkdownOne(
-  "<blockquote><p>A\r\nB</p><p>C</p></blockquote>",
-  "> A\r\n> B\r\n> \r\n> C");
+      this.TestMarkdownOne(
+        "<blockquote><p>A\r\nB</p><p>C</p></blockquote>",
+        "> A\r\n> B\r\n> \r\n> C");
       this.TestMarkdownOne(
       "<blockquote><p>A\r\nB\r\nC</p></blockquote>",
       "> A\r\nB\r\nC");
@@ -200,8 +257,8 @@ this.TestMarkdownOne(
         "<h1>A</h1><p>A</p>",
         "A\r\n===\r\n\r\nA");
       this.TestMarkdownOne(
-      "<h2>A</h2><p>A</p>","A\r\n---\r\n\r\nA"
-      );
+      "<h2>A</h2><p>A</p>",
+      "A\r\n---\r\n\r\nA");
       this.TestMarkdownOne(
   "<p>C <code>abc</code> D</p>",
   "C `abc` D");
