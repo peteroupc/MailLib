@@ -60,8 +60,8 @@ A character input class that implements the Unicode normalization
 Renamed to NormalizerInput.
 
 * [com.upokecenter.text.ProtocolStrings](com.upokecenter.text.ProtocolStrings.md) -
-Contains methods for preparing protocol strings (such as user identifiers)
- for comparison and validity checking.
+Contains methods for preparing user-facing protocol strings (such as user
+ identifiers) for comparison and validity checking.
 
 * [com.upokecenter.text.Normalization](com.upokecenter.text.Normalization.md) -
 Represents a Unicode normalization form.

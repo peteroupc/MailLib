@@ -2580,9 +2580,14 @@ ns me
 <doc name="M:PeterO.Mail.Message.GetFormattedBodyString">
 
             <summary>
-<para>Gets a Hypertext Markup Language (HTML) rendering of this message's text body.  This method currently supports text/plain, text/plain with format=flowed, text/enriched, and text/markdown (original Markdown).</para>
-<para>The Markdown implementation currently supports all features of original Markdown, except it does not use HTML escapes to obfuscate email addresses expressed in the "automatic link" syntax (that is, wrapping email addresses in angle brackets); this is by design.</para>
-</summary><returns>An HTML rendering of this message's text.</returns>
+<para>Gets a Hypertext Markup Language (HTML) rendering of this message's text body.  This method currently supports text/plain, text/plain with format=flowed, text/enriched, and text/markdown (original Markdown).</para></summary>
+<remarks>
+<para>REMARK: The Markdown implementation currently supports all features of original Markdown, except that the implementation--</para><list>
+<item>does not strictly check the placement of "block-level HTML elements",</item>
+<item>does not prevent Markdown content from being interpreted as such merely because it's contained in a "block-level HTML element", and</item>
+<item>does not deliberately use HTML escapes to obfuscate email addresses wrapped in angle-brackets.</item></list>
+</remarks>
+<returns>An HTML rendering of this message's text.</returns>
 <exception cref='T:System.NotSupportedException'>Either this
             message is a multipart message, so it doesn't have its own body
             text, or this message has no character encoding declared or assumed

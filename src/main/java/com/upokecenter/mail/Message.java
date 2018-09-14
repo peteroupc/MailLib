@@ -271,8 +271,23 @@ return this.GetAddresses("cc");
       }
 
     /**
-     * Not documented yet.
-     * @return A text string.
+     * <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
+     * body. This method currently supports text/plain, text/plain with
+     * format = flowed, text/enriched, and text/markdown (original
+     * Markdown).</p><p> <p>REMARK: The Markdown implementation currently
+     * supports all features of original Markdown, except that the
+     * implementation--</p> <ul> <li>does not strictly check the placement
+     * of "block-level HTML elements",</li> <li>does not prevent Markdown
+     * content from being interpreted as such merely because it's contained
+     * in a "block-level HTML element", and</li> <li>does not deliberately
+     * use HTML escapes to obfuscate email addresses wrapped in
+     * angle-brackets.</li></ul></p>
+     * @return An HTML rendering of this message's text.
+     * @throws UnsupportedOperationException Either this message is a multipart
+     * message, so it doesn't have its own body text, or this message has no
+     * character encoding declared or assumed for it (which is usually the
+     * case for non-text messages), or the character encoding is not
+     * supported.
      */
     public String GetFormattedBodyString() {
       String text = this.getBodyString();
@@ -280,11 +295,13 @@ return this.GetAddresses("cc");
  return null;
 }
       MediaType mt = this.getContentType();
+      String fmt=mt.GetParameter("format");
+      String dsp=mt.GetParameter("delsp");
       boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
-      mt.GetParameter("format") ?? "fixed")
+      fmt==null ? "fixed" : fmt)
     .equals("flowed");
       boolean delSp = DataUtilities.ToLowerCaseAscii(
-          mt.GetParameter("delsp") ?? "no").equals("yes");
+          dsp==null ? "no" : dsp) .equals("yes");
       if (mt.getTypeAndSubType().equals("text/plain")) {
         if (formatFlowed) {
           return FormatFlowed.FormatFlowedText(text, delSp);
@@ -297,7 +314,9 @@ return this.GetAddresses("cc");
 MediaType previewType = MediaType.Parse("text/html");
         if (this.getContentDisposition() != null) {
           String pt = this.getContentDisposition().GetParameter("preview-type");
-          previewType = MediaType.Parse(pt ?? "", previewType);
+          previewType = MediaType.Parse(
+            pt == null ? "" : pt,
+            previewType);
         }
         if (previewType.getTypeAndSubType().equals("text/html")) {
           return FormatFlowed.MarkdownText(text, 0);

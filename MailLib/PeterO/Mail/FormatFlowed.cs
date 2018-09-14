@@ -231,14 +231,14 @@ namespace PeterO.Mail {
       if (index == 0 || index == str.Length) {
         return null;
       }
-      if (str[index] == '"' || str[index] == '\'' || str[index] == '(') {
+      if (str[index] == '"' || str[index] == '\'' || str[index] == '\u0028') {
         int titleStart = index + 1;
         char endDelim = '"';
         if (str[index] == '\'') {
           endDelim = '\'';
         }
-        if (str[index] == '(') {
-          endDelim = ')';
+        if (str[index] == '\u0028') {
+          endDelim = '\u0029';
         }
         ++index;
         while (index < str.Length && str[index] != endDelim) {
@@ -341,7 +341,8 @@ namespace PeterO.Mail {
       while (i < str.Length) {
         if (str[i] >= '0' && str[i] <= '9') {
           digit = true;
-        } else if (str[i] == '.') {
+        } else if (str[i] == '.' && i+1<str.Length &&
+          (str[i+1]==' ' || str[i+1]=='\t')) {
           return digit;
         } else {
           return false;
@@ -502,7 +503,7 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             }
           }
           if (qi < urlText.Length && (urlText[qi] == '"' ||
-              (extended && (urlText[qi] == '\'' || urlText[qi] == '(')))) {
+              (extended && (urlText[qi] == '\'' || urlText[qi] == '\u0028')))) {
             char startDelim = urlText[qi];
             ++qi;
             int possibleTitleStart = qi;
@@ -510,7 +511,9 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
             if (startDelim == '\'') {
               endDelim = '\'';
             }
-            if (startDelim == '(') { endDelim = ')'; }
+            if (startDelim == '\u0028') {
+  { endDelim = '\u0029';
+} }
             while (qi < urlText.Length && (urlText[qi] != endDelim)) {
               ++qi;
             }
@@ -530,17 +533,19 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
     }
 
     private static int GetLinkRefStart(string str, int index) {
-      if (index < str.Length && str[index] == '(') return index;
+      if (index < str.Length && str[index] == '\u0028') {
+ return index;
+}
       while (index < str.Length && (str[index] == ' ' || str[index] == '\t')) {
-        index++;
+        ++index;
       }
-      if (index < str.Length && str[index] == '[') return index;
-      return -1;
+      return (index < str.Length && str[index] == '[') ? (index) : (-1);
     }
 
     private static string ReplaceImageLinks(
         string str,
-        IDictionary<string, string[]> links) {
+        IDictionary<string,
+        string[]> links) {
       if (str.IndexOf('!') < 0) {
         return str;
       }
@@ -552,9 +557,7 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
           int index = i + 2;
           while (index < str.Length) {
             if (str[index] == ']') {
-              {
                 found = true;
-              }
               break;
             }
             ++index;
@@ -572,8 +575,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
           }
           index = linkRefStart + 1;
           linkStart = linkRefStart + 1;
-          bool urlRef = (str[linkRefStart] == '(');
-          char endChar = urlRef ? ')' : ']';
+          bool urlRef = (str[linkRefStart] == '\u0028');
+          char endChar = urlRef ? '\u0029' : ']';
           found = false;
           linkStart = index;
           while (index < str.Length) {
@@ -619,7 +622,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
 
     private static string ReplaceInlineLinks(
       string str,
-      IDictionary<string, string[]> links) {
+      IDictionary<string,
+      string[]> links) {
       if (str.IndexOf('[') < 0) {
         return str;
       }
@@ -653,8 +657,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
           }
           index = linkRefStart + 1;
           linkStart = linkRefStart + 1;
-          bool urlRef = (str[linkRefStart] == '(');
-          char endChar = urlRef ? ')' : ']';
+          bool urlRef = (str[linkRefStart] == '\u0028');
+          char endChar = urlRef ? '\u0029' : ']';
           found = false;
           linkStart = index;
           while (index < str.Length) {
@@ -1009,7 +1013,8 @@ static string ReplaceTwoOrMoreSpacesWithBR(string str) {
     }
 
     public static string MarkdownText(string str, int depth) {
-      var dict = new Dictionary<string, string[]>();
+      Dictionary<string, string[]> dict;
+      dict = new Dictionary<string, string[]>();
       return MarkdownText(str, depth, true, dict);
     }
 

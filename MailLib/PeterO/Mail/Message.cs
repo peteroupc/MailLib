@@ -161,19 +161,42 @@ return this.GetAddresses("cc");
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetFormattedBodyString"]/*'/>
+    /// <summary>
+    /// <para>Gets a Hypertext Markup Language (HTML) rendering of this
+    /// message's text body. This method currently supports text/plain,
+    /// text/plain with format = flowed, text/enriched, and text/markdown
+    /// (original Markdown).</para></summary>
+    /// <returns>An HTML rendering of this message's text.</returns>
+    /// <exception cref='T:System.NotSupportedException'>Either this
+    /// message is a multipart message, so it doesn't have its own body
+    /// text, or this message has no character encoding declared or assumed
+    /// for it (which is usually the case for non-text messages), or the
+    /// character encoding is not supported.</exception>
+    /// <remarks>
+    /// <para>REMARK: The Markdown implementation currently supports all
+    /// features of original Markdown, except that the
+    /// implementation--</para>
+    /// <list>
+    /// <item>does not strictly check the placement of "block-level HTML
+    /// elements",</item>
+    /// <item>does not prevent Markdown content from being interpreted as
+    /// such merely because it's contained in a "block-level HTML element",
+    /// and</item>
+    /// <item>does not deliberately use HTML escapes to obfuscate email
+    /// addresses wrapped in angle-brackets.</item></list></remarks>
     public string GetFormattedBodyString() {
       string text = this.BodyString;
       if (text == null) {
  return null;
 }
       MediaType mt = this.ContentType;
+      string fmt=mt.GetParameter("format");
+      string dsp=mt.GetParameter("delsp");
       bool formatFlowed = DataUtilities.ToLowerCaseAscii(
-      mt.GetParameter("format") ?? "fixed")
+      fmt==null ? "fixed" : fmt)
     .Equals("flowed");
       bool delSp = DataUtilities.ToLowerCaseAscii(
-          mt.GetParameter("delsp") ?? "no").Equals("yes");
+          dsp==null ? "no" : dsp) .Equals("yes");
       if (mt.TypeAndSubType.Equals("text/plain")) {
         if (formatFlowed) {
           return FormatFlowed.FormatFlowedText(text, delSp);
@@ -186,7 +209,9 @@ return this.GetAddresses("cc");
 MediaType previewType = MediaType.Parse("text/html");
         if (this.ContentDisposition != null) {
           string pt = this.ContentDisposition.GetParameter("preview-type");
-          previewType = MediaType.Parse(pt ?? String.Empty, previewType);
+          previewType = MediaType.Parse(
+            pt == null ? String.Empty : pt,
+            previewType);
         }
         if (previewType.TypeAndSubType.Equals("text/html")) {
           return FormatFlowed.MarkdownText(text, 0);

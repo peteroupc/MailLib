@@ -222,38 +222,38 @@ private FormatFlowed() {
 
     private static String GetLinkTitle(String str) {
       if (((str) == null || (str).length() == 0)) {
- return null;
-}
+        return null;
+      }
       int index = 0;
       while (index < str.length() && (str.charAt(index) == ' ' ||
           str.charAt(index) == '\t')) {
- ++index;
-}
+        ++index;
+      }
       if (index == 0 || index == str.length()) {
- return null;
-}
-      if (str.charAt(index) == '"' || str.charAt(index) == '\'' || str.charAt(index) == '(') {
+        return null;
+      }
+      if (str.charAt(index) == '"' || str.charAt(index) == '\'' || str.charAt(index) == '\u0028') {
         int titleStart = index + 1;
         char endDelim = '"';
         if (str.charAt(index) == '\'') {
- endDelim = '\'';
-}
-        if (str.charAt(index) == '(') endDelim = ') {
- ';
-}
+          endDelim = '\'';
+        }
+        if (str.charAt(index) == '\u0028') {
+          endDelim = '\u0029';
+        }
         ++index;
         while (index < str.length() && str.charAt(index) != endDelim) {
- ++index;
-}
+          ++index;
+        }
         if (index == str.length()) {
- return null;
-}
+          return null;
+        }
         int titleEnd = index;
         ++index;
         while (index < str.length() && (str.charAt(index) == ' ' ||
             str.charAt(index) == '\t')) {
- ++index;
-}
+          ++index;
+        }
         return (index != str.length()) ? (null) : (str.substring(titleStart, (titleStart)+(titleEnd - titleStart)));
       }
       return null;
@@ -261,32 +261,32 @@ private FormatFlowed() {
 
     private static String[] GetLinkLine(String str) {
       if (((str) == null || (str).length() == 0)) {
- return null;
-}
+        return null;
+      }
       str = TrimShortSpaces(str);
       if (str.length() > 0 && str.charAt(0) == '[') {
         int index = 1;
         int labelStart = index;
         while (index < str.length() && str.charAt(index) != ']') {
- ++index;
-}
+          ++index;
+        }
         if (index == str.length()) {
- return null;
-}
+          return null;
+        }
         int labelEnd = index;
         ++index;
         if (index >= str.length() || str.charAt(index) != ':') {
- return null;
-}
+          return null;
+        }
         ++index;
         int tmp = index;
         while (index < str.length() && (str.charAt(index) == ' ' ||
             str.charAt(index) == '\t')) {
- ++index;
-}
+          ++index;
+        }
         if (tmp == index) {
- return null;
-}
+          return null;
+        }
         int urlStart = index;
         String label = DataUtilities.ToLowerCaseAscii(
           str.substring(labelStart, (labelStart)+(labelEnd - labelStart)));
@@ -305,9 +305,6 @@ private FormatFlowed() {
       if (str != null) {
         int i = 0;
         while (i < str.length()) {
-          //if (i == 0 && str.charAt(i) == '\t') {
-          // return str.substring(1);
-          //}
           if (str.charAt(i) == ' ') {
             if (i >= 4) {
               return str;
@@ -344,7 +341,8 @@ private FormatFlowed() {
       while (i < str.length()) {
         if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
           digit = true;
-        } else if (str.charAt(i) == '.') {
+        } else if (str.charAt(i) == '.' && i+1<str.length() &&
+          (str.charAt(i+1)==' ' || str.charAt(i+1)=='\t')) {
           return digit;
         } else {
           return false;
@@ -505,17 +503,17 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             }
           }
           if (qi < urlText.length() && (urlText.charAt(qi) == '"' ||
-              (extended && (urlText.charAt(qi) == '\'' || urlText.charAt(qi) == '(')))) {
+              (extended && (urlText.charAt(qi) == '\'' || urlText.charAt(qi) == '\u0028')))) {
             char startDelim = urlText.charAt(qi);
             ++qi;
             int possibleTitleStart = qi;
             char endDelim = '"';
             if (startDelim == '\'') {
- endDelim = '\'';
-}
-            if (startDelim == '(') endDelim = ') {
- ';
-}
+              endDelim = '\'';
+            }
+            if (startDelim == '\u0028') {
+  { endDelim = '\u0029';
+} }
             while (qi < urlText.length() && (urlText.charAt(qi) != endDelim)) {
               ++qi;
             }
@@ -533,6 +531,16 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
       return new String[] { urlText, null };
     }
 
+    private static int GetLinkRefStart(String str, int index) {
+      if (index < str.length() && str.charAt(index) == '\u0028') {
+ return index;
+}
+      while (index < str.length() && (str.charAt(index) == ' ' || str.charAt(index) == '\t')) {
+        ++index;
+      }
+      return (index < str.length() && str.charAt(index) == '[') ? (index) : (-1);
+    }
+
     private static String ReplaceImageLinks(
         String str,
         Map<String,
@@ -548,9 +556,7 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
           int index = i + 2;
           while (index < str.length()) {
             if (str.charAt(index) == ']') {
-              {
                 found = true;
-              }
               break;
             }
             ++index;
@@ -561,15 +567,19 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
           }
           String linkText = str.substring(linkStart, (linkStart)+(index - linkStart));
           ++index;
-          if (index >= str.length() || str.charAt(index) != '(') {
+          int linkRefStart = GetLinkRefStart(str, index);
+          if (linkRefStart < 0) {
             sb.append(str.charAt(i));
             continue;
           }
-          ++index;
+          index = linkRefStart + 1;
+          linkStart = linkRefStart + 1;
+          boolean urlRef = (str.charAt(linkRefStart) == '\u0028');
+          char endChar = urlRef ? '\u0029' : ']';
           found = false;
           linkStart = index;
           while (index < str.length()) {
-            if (str.charAt(index) == ')') {
+            if (str.charAt(index) == endChar) {
               found = true;
               break;
             }
@@ -580,7 +590,19 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             continue;
           }
           String urlText = str.substring(linkStart, (linkStart)+(index - linkStart));
-          String[] urlTitle = SplitUrl(urlText, false);
+          String[] urlTitle = null;
+          if (urlRef) {
+            urlTitle = SplitUrl(urlText, false);
+          } else {
+            urlText = DataUtilities.ToLowerCaseAscii(
+              ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
+            if (links.containsKey(urlText)) {
+              urlTitle = links.get(urlText);
+            } else {
+              sb.append(str.charAt(i));
+              continue;
+            }
+          }
           sb.append("<img src=\"")
           .append(HtmlEscapeStrong(urlTitle[0])).append("\" alt=\"")
           .append(HtmlEscapeStrong(linkText)).append("\"");
@@ -627,18 +649,20 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
           }
           String linkText = str.substring(linkStart, (linkStart)+(index - linkStart));
           ++index;
-          if (index >= str.length() || str.charAt(index) != '(') {
+          int linkRefStart = GetLinkRefStart(str, index);
+          if (linkRefStart < 0) {
             sb.append(str.charAt(i));
             continue;
           }
-          ++index;
+          index = linkRefStart + 1;
+          linkStart = linkRefStart + 1;
+          boolean urlRef = (str.charAt(linkRefStart) == '\u0028');
+          char endChar = urlRef ? '\u0029' : ']';
           found = false;
           linkStart = index;
           while (index < str.length()) {
-            if (str.charAt(index) == ')') {
-              {
-                found = true;
-              }
+            if (str.charAt(index) == endChar) {
+              found = true;
               break;
             }
             ++index;
@@ -650,7 +674,19 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             continue;
           }
           String urlText = str.substring(linkStart, (linkStart)+(index - linkStart));
-          String[] urlTitle = SplitUrl(urlText, false);
+          String[] urlTitle = null;
+          if (urlRef) {
+            urlTitle = SplitUrl(urlText, false);
+          } else {
+            urlText = DataUtilities.ToLowerCaseAscii(
+              ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
+            if (links.containsKey(urlText)) {
+              urlTitle = links.get(urlText);
+            } else {
+              sb.append(str.charAt(i));
+              continue;
+            }
+          }
           sb.append("<a href=\"")
           .append(HtmlEscapeStrong(urlTitle[0])).append("\"");
           if (urlTitle[1] != null) {
@@ -669,8 +705,8 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
 
     private static void HexEscape(StringBuilder sb, char c) {
       if (c >= 0x100) {
- throw new IllegalArgumentException();
-}
+        throw new IllegalArgumentException();
+      }
       String hex = "0123456789abcdef";
       sb.append("&#x");
       if (c >= 0x10) {
@@ -809,8 +845,8 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
     private static String ReplaceAutomaticLinks(
          String str) {
       if (str.indexOf('<') < 0) {
- return str;
-}
+        return str;
+      }
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) == '<') {
@@ -832,8 +868,8 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             boolean found = false;
             while (qi < str.length()) {
               if (str.charAt(qi) == ' ' || str.charAt(qi) == '\t') {
- break;
-}
+                break;
+              }
               if (str.charAt(qi) == '>') {
                 {
                   linkEnd = qi;
@@ -847,17 +883,17 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
           }
           if (plausibleTag) {
             String payload = str.substring(linkStart, (linkStart)+(linkEnd - linkStart));
-            if (payload.indexOf("@") >= 1 && payload.indexOf("?") < 0) {
+            if (payload.indexOf('@') >= 1 && payload.indexOf('?') < 0) {
               sb.append("<a href=\"");
               sb.append(HtmlEscapeStrong("mailto:" + payload));
-              sb.append("\">") .append(HtmlEscapeStrong(payload))
+              sb.append("\">").append(HtmlEscapeStrong(payload))
                .append("</a>");
               i = linkEnd;
               continue;
-            } else if (payload.indexOf(":") >= 1) {
+            } else if (payload.indexOf(':') >= 1) {
               sb.append("<a href=\"");
               sb.append(HtmlEscapeStrong(payload));
-              sb.append("\">") .append(HtmlEscapeStrong(payload))
+              sb.append("\">").append(HtmlEscapeStrong(payload))
                .append("</a>");
               i = linkEnd;
               continue;
@@ -976,7 +1012,8 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
     }
 
     public static String MarkdownText(String str, int depth) {
-      HashMap<String, String[] dict = new HashMap<String, String[]>();
+      HashMap<String, String[]> dict;
+      dict = new HashMap<String, String[]>();
       return MarkdownText(str, depth, true, dict);
     }
 
@@ -1083,8 +1120,8 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             formatted.append(HtmlEscape(qs.toString()));
             formatted.append("</code></pre>");
           } else {
-         formatted.append(MarkdownText(qs.toString(), depth + 1, true,
-              links));
+            formatted.append(MarkdownText(qs.toString(), depth + 1, true,
+                 links));
           }
           formatted.append("</blockquote>");
         } else if (IsEqualsLine(line) && haveParagraph) {
@@ -1132,12 +1169,19 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             if (IsListLine(line, ordered)) {
               wrapLinesInParas |= seenBlankishLine;
               // DebugUtility.Log("para=" + qs.toString());
-              String qss2 = MarkdownText(
-        qs.toString(),
-        depth + 1,
-        wrapLinesInParas,
-        links);
-              formatted.append(qss2);
+              String qss2;
+              if (depth >= 100) {
+                formatted.append("<pre><code>");
+                formatted.append(qs.toString());
+                formatted.append("</code></pre>");
+              } else {
+                qss2 = MarkdownText(
+                qs.toString(),
+                depth + 1,
+                wrapLinesInParas,
+                links);
+                formatted.append(qss2);
+              }
               formatted.append("</li><li>");
               qs.delete(0, (0)+(qs.length()));
               ++qi;
@@ -1175,8 +1219,8 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             }
           }
           i = qi - 1;
-  String qss = MarkdownText(qs.toString(), depth + 1, wrapLinesInParas,
-            links);
+          String qss = MarkdownText(qs.toString(), depth + 1, wrapLinesInParas,
+                    links);
           formatted.append(qss);
           formatted.append("</li>");
           formatted.append(ordered ? "</ol>" : "</ul>");
