@@ -254,7 +254,10 @@ private FormatFlowed() {
             str.charAt(index) == '\t')) {
           ++index;
         }
-        return (index != str.length()) ? (null) : (str.substring(titleStart, (titleStart)+(titleEnd - titleStart)));
+        return (
+  index != str.length()) ? null : str.substring(
+  titleStart, (
+  titleStart)+(titleEnd - titleStart));
       }
       return null;
     }
@@ -341,8 +344,8 @@ private FormatFlowed() {
       while (i < str.length()) {
         if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
           digit = true;
-        } else if (str.charAt(i) == '.' && i+1<str.length() &&
-          (str.charAt(i+1)==' ' || str.charAt(i+1)=='\t')) {
+        } else if (str.charAt(i) == '.' && i + 1 < str.length() &&
+          (str.charAt(i + 1) == ' ' || str.charAt(i + 1) == '\t')) {
           return digit;
         } else {
           return false;
@@ -361,10 +364,8 @@ private FormatFlowed() {
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (true) : false;
-    }
-    private
-static String ReplaceTwoOrMoreSpacesWithBR(String str) {
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (true) : false; } private
+            static String ReplaceTwoOrMoreSpacesWithBR(String str) {
       if (((str) == null || (str).length() == 0)) {
         return "";
       }
@@ -391,9 +392,8 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (str.substring(4)) : str;
-    }
-    private static String HtmlEscapeStrong(String str) {
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (str.substring(4)) : str; }
+            private static String HtmlEscapeStrong(String str) {
       int i = 0;
       StringBuilder sb = new StringBuilder();
       for (; i < str.length(); ++i) {
@@ -518,7 +518,9 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
               ++qi;
             }
             if (qi == urlText.length() - 1) {
-              titleText = urlText.substring(possibleTitleStart, (possibleTitleStart)+((urlText.length() - 1) - possibleTitleStart));
+              titleText = urlText.substring(
+  possibleTitleStart, (
+  possibleTitleStart)+((urlText.length() - 1) - possibleTitleStart));
               urlText = urlText.substring(0, possibleUrlEnd);
               return new String[] { urlText, titleText };
             }
@@ -538,7 +540,7 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
       while (index < str.length() && (str.charAt(index) == ' ' || str.charAt(index) == '\t')) {
         ++index;
       }
-      return (index < str.length() && str.charAt(index) == '[') ? (index) : (-1);
+      return (index < str.length() && str.charAt(index) == '[') ? index : (-1);
     }
 
     private static String ReplaceImageLinks(
@@ -574,7 +576,7 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
           }
           index = linkRefStart + 1;
           linkStart = linkRefStart + 1;
-          boolean urlRef = (str.charAt(linkRefStart) == '\u0028');
+          boolean urlRef = str.charAt(linkRefStart) == '\u0028';
           char endChar = urlRef ? '\u0029' : ']';
           found = false;
           linkStart = index;
@@ -656,7 +658,7 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
           }
           index = linkRefStart + 1;
           linkStart = linkRefStart + 1;
-          boolean urlRef = (str.charAt(linkRefStart) == '\u0028');
+          boolean urlRef = str.charAt(linkRefStart) == '\u0028';
           char endChar = urlRef ? '\u0029' : ']';
           found = false;
           linkStart = index;
@@ -1120,8 +1122,12 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             formatted.append(HtmlEscape(qs.toString()));
             formatted.append("</code></pre>");
           } else {
-            formatted.append(MarkdownText(qs.toString(), depth + 1, true,
-                 links));
+            formatted.append(
+  MarkdownText(
+  qs.toString(),
+  depth + 1,
+  true,
+  links));
           }
           formatted.append("</blockquote>");
         } else if (IsEqualsLine(line) && haveParagraph) {
@@ -1219,8 +1225,11 @@ static String ReplaceTwoOrMoreSpacesWithBR(String str) {
             }
           }
           i = qi - 1;
-          String qss = MarkdownText(qs.toString(), depth + 1, wrapLinesInParas,
-                    links);
+          String qss = MarkdownText(
+  qs.toString(),
+  depth + 1,
+  wrapLinesInParas,
+  links);
           formatted.append(qss);
           formatted.append("</li>");
           formatted.append(ordered ? "</ol>" : "</ul>");

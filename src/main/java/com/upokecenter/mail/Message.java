@@ -295,13 +295,13 @@ return this.GetAddresses("cc");
  return null;
 }
       MediaType mt = this.getContentType();
-      String fmt=mt.GetParameter("format");
-      String dsp=mt.GetParameter("delsp");
+      String fmt = mt.GetParameter("format");
+      String dsp = mt.GetParameter("delsp");
       boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
-      fmt==null ? "fixed" : fmt)
+      fmt == null ? "fixed" : fmt)
     .equals("flowed");
       boolean delSp = DataUtilities.ToLowerCaseAscii(
-          dsp==null ? "no" : dsp) .equals("yes");
+          dsp == null ? "no" : dsp).equals("yes");
       if (mt.getTypeAndSubType().equals("text/plain")) {
         if (formatFlowed) {
           return FormatFlowed.FormatFlowedText(text, delSp);

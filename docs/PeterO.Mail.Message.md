@@ -647,11 +647,24 @@ An array containing eight elements. Returns null if the Date header doesn't exis
 
     public string GetFormattedBodyString();
 
-Not documented yet.
+Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports text/plain, text/plain with format = flowed, text/enriched, and text/markdown (original Markdown).
+
+REMARK: The Markdown implementation currently supports all features of original Markdown, except that the implementation--
+
+ * does not strictly check the placement of "block-level HTML elements",
+
+ * does not prevent Markdown content from being interpreted as such merely because it's contained in a "block-level HTML element", and
+
+ * does not deliberately use HTML escapes to obfuscate email addresses wrapped in angle-brackets.
 
 <b>Return Value:</b>
 
-A text string.
+An HTML rendering of this message's text.
+
+<b>Exceptions:</b>
+
+ * System.NotSupportedException:
+Either this message is a multipart message, so it doesn't have its own body text, or this message has no character encoding declared or assumed for it (which is usually the case for non-text messages), or the character encoding is not supported.
 
 ### GetHeader
 
