@@ -12,6 +12,7 @@ This type is immutable, meaning its values can't be changed once it' s created. 
 
 <b>Note:</b>According to RFC 2049, unrecognized subtypes of the top-level type `multipart` must be treated as `multipart/mixed` and unrecognized media types as the media type `application/octet-stream` .
 
+
 ### Member Summary
 * <code>[public static readonly PeterO.Mail.MediaType ApplicationOctetStream;](#ApplicationOctetStream)</code> - Specifies the media type "application/octet-stream", used for arbitrary binary data.
 * <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
@@ -34,164 +35,7 @@ This type is immutable, meaning its values can't be changed once it' s created. 
 * <code>[TypeAndSubType](#TypeAndSubType)</code> - Gets the top level type and subtype of this media type, separated by a slash; for example, "text/plain".
 
 <a id="ApplicationOctetStream"></a>
-### ApplicationOctetStream
 
-    public static readonly PeterO.Mail.MediaType ApplicationOctetStream;
-
-Specifies the media type "application/octet-stream", used for arbitrary binary data.
-
-<a id="MessageRfc822"></a>
-### MessageRfc822
-
-    public static readonly PeterO.Mail.MediaType MessageRfc822;
-
-Specifies the media type "message/rfc822", used for Internet mail messages.
-
-<a id="TextPlainAscii"></a>
-### TextPlainAscii
-
-    public static readonly PeterO.Mail.MediaType TextPlainAscii;
-
-Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
-
-<a id="TextPlainUtf8"></a>
-### TextPlainUtf8
-
-    public static readonly PeterO.Mail.MediaType TextPlainUtf8;
-
-Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
-
-<a id="IsMultipart"></a>
-### IsMultipart
-
-    public bool IsMultipart { get; }
-
-Gets a value indicating whether this is a multipart media type.
-
-<b>Returns:</b>
-
- `true`  If this is a multipart media type; otherwise, . `false` .
-
-<a id="IsText"></a>
-### IsText
-
-    public bool IsText { get; }
-
-Gets a value indicating whether this is a text media type ("text/*").
-
-<b>Returns:</b>
-
- `true` If this is a text media type; otherwise, . `false` .
-
-<a id="Parameters"></a>
-### Parameters
-
-    public System.Collections.Generic.IDictionary Parameters { get; }
-
-Gets a list of the parameters contained in this media type object.
-
-<b>Returns:</b>
-
-A list of the parameters contained in this media type object; the names of each parameter appear in an undefined order. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
-
-<a id="SubType"></a>
-### SubType
-
-    public string SubType { get; }
-
-Gets this media type's subtype (for example, "plain" in "text/plain"). The resulting string will be in lowercase letters.
-
-<b>Returns:</b>
-
-This media type's subtype.
-
-<a id="TopLevelType"></a>
-### TopLevelType
-
-    public string TopLevelType { get; }
-
-Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic"). The resulting string will be in lowercase letters.
-
-<b>Returns:</b>
-
-The name of this media type's top-level type (such as "text" or "audio".
-
-<a id="TypeAndSubType"></a>
-### TypeAndSubType
-
-    public string TypeAndSubType { get; }
-
-Gets the top level type and subtype of this media type, separated by a slash; for example, "text/plain". The resulting string will be in lowercase letters.
-
-<b>Returns:</b>
-
-The top level type and subtype of this media type, separated by a slash; for example, "text/plain".
-
-<a id="Equals_object"></a>
-### Equals
-
-    public override bool Equals(
-        object obj);
-
-Determines whether this object and another object are equal.
-
-<b>Parameters:</b>
-
- * <i>obj</i>: The parameter <i>obj</i>
-is an arbitrary object.
-
-<b>Return Value:</b>
-
- `true` if this object and another object are equal; otherwise,  `false` .
-
-<a id="GetCharset"></a>
-### GetCharset
-
-    public string GetCharset();
-
-Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
-
-<b>Return Value:</b>
-
-If the "charset" parameter is present and non-empty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that result's basic upper-case letters A to Z (U+0041 to U+005A) are converted to lower case. If the "charset" parameter is absent or empty, returns the default value, if any, for that parameter given the media type (e.g., "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
-
-<a id="GetHashCode"></a>
-### GetHashCode
-
-    public override int GetHashCode();
-
-Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
-
-<b>Return Value:</b>
-
-A 32-bit signed integer.
-
-<a id="GetParameter_string"></a>
-### GetParameter
-
-    public string GetParameter(
-        string name);
-
-Gets the value of a parameter in this media type, such as "charset" or "format".
-
-<b>Parameters:</b>
-
- * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
-
-<b>Return Value:</b>
-
-The value of the parameter as a string, or null if the parameter doesn't exist.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter <i>name</i>
- is null.
-
- * System.ArgumentException:
-Name is empty.
-
-<a id="Parse_string"></a>
 ### Parse
 
     public static PeterO.Mail.MediaType Parse(
@@ -241,12 +85,9 @@ A MediaType object.
 The parameter <i>str</i>
 is null.
 
+
 <a id="ToSingleLineString"></a>
-### ToSingleLineString
 
-    public string ToSingleLineString();
-
-Converts this media type to a text string form suitable for inserting in HTTP headers. Notably, the string contains the value of a Content-Type header field (without the text necessarily starting with "Content-Type" followed by a space), and consists of a single line.
 
 <b>Return Value:</b>
 
@@ -263,7 +104,9 @@ Converts this media type to a text string form suitable for inserting in email h
 
 A text string form of this media type.
 
+
 <a id="ToUriSafeString"></a>
+
 ### ToUriSafeString
 
     public string ToUriSafeString();

@@ -6,6 +6,8 @@ Contains methods that implement Internationalized Domain Names in Applications (
 
 The following summarizes the rules for domain names in IDNA2008; see RFC5890 for more information and additional terminology.
 
+
+
 A domain name is divided into one or more strings separated by dots ("."), called<b>labels</b>. For IDNA2008's purposes, a valid label can be an<b>NR-LDH label</b>, an<b>A-label</b>, or a<b>U-label</b>.
 
 An LDH label contains only basic letters, basic digits, and/or "-", and neither begins nor ends with "-". For example, "exa-mple" and "1example" are LDH labels, but not "-example".

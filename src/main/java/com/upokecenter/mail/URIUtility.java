@@ -1,5 +1,7 @@
 package com.upokecenter.mail;
 
+
+
     final class URIUtility {
 private URIUtility() {
 }
@@ -887,11 +889,13 @@ totalParts += 2;
  }
  if (doubleColon) {
   int resid = 8 - totalParts;
+
             if (resid == 0) {
               // Purported IPv6 address contains
               // 8 parts and a double colon
               return -1;
             }
+
   int[] newAddressParts = new int[8];
   System.arraycopy(addressParts, 0, newAddressParts, 0, doubleColonPos);
   System.arraycopy(

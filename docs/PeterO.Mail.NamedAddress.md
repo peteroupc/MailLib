@@ -202,23 +202,9 @@ Gets the display name for this email address, or the email address's value if th
 
 The name for this email address.
 
+
 <a id="AddressesEqual_PeterO_Mail_NamedAddress"></a>
-### AddressesEqual
 
-    public bool AddressesEqual(
-        PeterO.Mail.NamedAddress na);
-
-Not documented yet.
-
-<b>Parameters:</b>
-
- * <i>na</i>: A named address object to compare with this one. Can be null.
-
-<b>Return Value:</b>
-
-Either `true` or `false` .
-
-<a id="Equals_object"></a>
 ### Equals
 
     public override bool Equals(
@@ -235,18 +221,9 @@ is an arbitrary object.
 
  `true` if this object and another object are equal; otherwise,  `false` .
 
+
 <a id="GetHashCode"></a>
-### GetHashCode
 
-    public override int GetHashCode();
-
-Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
-
-<b>Return Value:</b>
-
-A 32-bit hash code.
-
-<a id="ParseAddresses_string"></a>
 ### ParseAddresses
 
     public static System.Collections.Generic.IList ParseAddresses(
@@ -263,7 +240,9 @@ Generates a list of NamedAddress objects from a comma-separated list of addresse
 A list of addresses generated from the  <i>addressValue</i>
  parameter.
 
+
 <a id="ToString"></a>
+
 ### ToString
 
     public override string ToString();

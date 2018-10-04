@@ -22,6 +22,7 @@ Content-Disposition header fields like the following have appeared in practice:
 
 In this implementation, the first and second of these are syntactically invalid, so they trigger parse errors, while the third of these is syntactically valid, but the "filename" parameter is treated as "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047 encoded words are not decoded at the moment a content disposition is parsed (using the Parse method).
 
+
 ### Member Summary
 * <code>[public static readonly PeterO.Mail.ContentDisposition Attachment;](#Attachment)</code> - The content disposition value "attachment".
 * <code>[DispositionType](#DispositionType)</code> - Gets a string containing this object's disposition type, such as "inline" or "attachment".
@@ -43,86 +44,13 @@ In this implementation, the first and second of these are syntactically invalid,
 * <code>[ToString()](#ToString)</code> - Converts this content disposition to a text string form suitable for inserting in email headers.
 
 <a id="Attachment"></a>
-### Attachment
 
-    public static readonly PeterO.Mail.ContentDisposition Attachment;
-
-The content disposition value "attachment".
-
-<a id="Inline"></a>
-### Inline
-
-    public static readonly PeterO.Mail.ContentDisposition Inline;
-
-The content disposition value "inline".
-
-<a id="DispositionType"></a>
-### DispositionType
-
-    public string DispositionType { get; }
-
-Gets a string containing this object's disposition type, such as "inline" or "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec. 2.8, unrecognized disposition types should be treated as "attachment".
-
-<b>Returns:</b>
-
-A string containing this object's disposition type, such as "inline" or "attachment".
-
-<a id="IsAttachment"></a>
-### IsAttachment
-
-    public bool IsAttachment { get; }
-
-Gets a value indicating whether the disposition type is attachment.
-
-<b>Returns:</b>
-
- `true`  If the disposition type is attachment; otherwise, .  `false` .
-
-<a id="IsInline"></a>
-### IsInline
-
-    public bool IsInline { get; }
-
-Gets a value indicating whether the disposition type is inline.
-
-<b>Returns:</b>
-
- `true`  If the disposition type is inline; otherwise, . `false` .
-
-<a id="Parameters"></a>
-### Parameters
-
-    public System.Collections.Generic.IDictionary Parameters { get; }
-
-Gets a list of parameter names associated with this object and their values.For the "filename" parameter, the value of that parameter is not adapted with the ContentDisposition.MakeFilename method; see the documentation for the ContentDisposition class.
-
-<b>Returns:</b>
-
-A read-only list of parameter names associated with this object and their values. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
-
-<a id="Equals_object"></a>
-### Equals
-
-    public override bool Equals(
-        object obj);
-
-Determines whether this object and another object are equal.
-
-<b>Parameters:</b>
-
- * <i>obj</i>: The parameter <i>obj</i>
-is an arbitrary object.
-
-<b>Return Value:</b>
-
- `true` if the objects are equal; otherwise,  `false` .
-
-<a id="GetCreationDate"></a>
 ### GetCreationDate
 
     public int[] GetCreationDate();
 
 Gets the date and time extracted from this content disposition's "creation-date" parameter, which specifies the date of creation of a file (RFC 2183 sec. 2.4). See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this method's return value.
+
 
 <b>Return Value:</b>
 
@@ -137,6 +65,7 @@ Gets an adapted version of the "filename" parameter in this content disposition 
 
 <b>Return Value:</b>
 
+
 The adapted file name in the form of a string. Returns the empty string if there is no "filename" parameter or that parameter is empty.
 
 <a id="GetHashCode"></a>
@@ -150,18 +79,9 @@ Calculates the hash code of this object. No application or process IDs are used 
 
 A 32-bit hash code.
 
+
 <a id="GetModificationDate"></a>
-### GetModificationDate
 
-    public int[] GetModificationDate();
-
-Gets the date and time extracted from this content disposition's "modification-date" parameter, which specifies the date of last modification of a file (RFC 2183 sec. 2.5). See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this method's return value.
-
-<b>Return Value:</b>
-
-The extracted date and time as an 8-element array, or `null` if the "modification-date" parameter doesn't exist, is an empty string, r is syntactically invalid, or if the parameter's year would overflow a 2-bit signed integer.
-
-<a id="GetParameter_string"></a>
 ### GetParameter
 
     public string GetParameter(
@@ -187,18 +107,9 @@ The parameter <i>name</i>
 The parameter <i>name</i>
  is empty.
 
+
 <a id="GetReadDate"></a>
-### GetReadDate
 
-    public int[] GetReadDate();
-
-Gets the date and time extracted from this content disposition's "read-date" parameter, which specifies the date at which a file was last read (RFC 2183 sec. 2.6). See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this method's return value.
-
-<b>Return Value:</b>
-
-The extracted date and time as an 8-element array, or `null` if the "read-date" parameter doesn't exist, is an empty string, or is yntactically invalid, or if the parameter's year would overflow a 32-bit igned integer.
-
-<a id="MakeFilename_string"></a>
 ### MakeFilename
 
     public static string MakeFilename(
@@ -296,18 +207,9 @@ A content disposition object, or ContentDisposition.Attachment" if  <i>dispoValu
 The parameter <i>dispoValue</i>
  is null.
 
+
 <a id="ToSingleLineString"></a>
-### ToSingleLineString
 
-    public string ToSingleLineString();
-
-Converts this content disposition to a text string form suitable for inserting in HTTP headers. Notably, the string contains the value of a Content-Disposition header field (without the text necessarily starting with "Content-Disposition" followed by a space), and consists of a single line.
-
-<b>Return Value:</b>
-
-A text string form of this content disposition.
-
-<a id="ToString"></a>
 ### ToString
 
     public override string ToString();

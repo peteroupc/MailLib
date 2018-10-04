@@ -8673,7 +8673,9 @@ Assert.AreEqual(
 
     private static void assertIdempotency(string s) {
       bool cond = URIUtility.isValidIRI(s);
+
       Assert.IsTrue(cond, s);
+
       {
         var stringTemp = (string)URIUtility.escapeURI(
   s,
@@ -8712,11 +8714,13 @@ Assert.AreEqual(
       }
     }
 
+
     private static void AssertIdempotencyNeg(
   string s) { Assert.IsTrue(!(
   (bool)URIUtility.isValidIRI(
     s)),
  s);
+
       {
         var stringTemp = (string)URIUtility.escapeURI(
           s,
@@ -8829,6 +8833,7 @@ Assert.AreEqual(
       assertIdempotency("a://x#x");
       assertIdempotency("a://x?x");
       assertIdempotency("a://x:#x");
+
       AssertIdempotencyNeg("e://^//y");
       AssertIdempotencyNeg("e^");
       AssertIdempotencyNeg("e://x:a");
@@ -8839,10 +8844,12 @@ Assert.AreEqual(
       AssertIdempotencyNeg("e://x:%30/");
       AssertIdempotencyNeg("a://xxx@[");
       AssertIdempotencyNeg("a://[");
+
       assertIdempotency("a://[va.a]");
       assertIdempotency("a://[v0.0]");
       assertIdempotency("a://x:/");
       assertIdempotency("a://[va.a]:/");
+
       AssertIdempotencyNeg("a://x%/");
       AssertIdempotencyNeg("a://x%xy/");
       AssertIdempotencyNeg("a://x%x%/");
@@ -8854,6 +8861,7 @@ Assert.AreEqual(
       AssertIdempotencyNeg("a://[va.a/");
       AssertIdempotencyNeg("a://[v.a]");
       AssertIdempotencyNeg("a://[va.]");
+
       assertIPv6("a:a:a:a:a:a:100.100.100.100");
       assertIPv6("::a:a:a:a:a:100.100.100.100");
       assertIPv6("::a:a:a:a:a:99.255.240.10");
@@ -8892,6 +8900,7 @@ Assert.AreEqual(
       assertIPv6Neg("a:a");
       assertIdempotency("e://[va.a]");
       assertIdempotency("e://[v0.0]");
+
       AssertIdempotencyNeg("e://[wa.a]");
       AssertIdempotencyNeg("e://[va.^]");
       AssertIdempotencyNeg("e://[va.]");
@@ -8908,10 +8917,12 @@ Assert.AreEqual(
       AssertIdempotencyNeg("e://[" + str + "%25NA<>NA]");
       AssertIdempotencyNeg("e://[" + str + "%25NA%E2NA]");
       AssertIdempotencyNeg("e://[" + str + "%25NA%2ENA]");
+
     }
 
     private static void assertIPv6(string str) {
       assertIdempotency("e://[" + str + "]");
+
       AssertIdempotencyNeg("e://[" + str + "NANA]");
       AssertIdempotencyNeg("e://[" + str + "%25]");
       AssertIdempotencyNeg("e://[" + str + "%NANA]");
@@ -8923,6 +8934,7 @@ Assert.AreEqual(
       // assertIdempotency("e://[" + str + "%25NANA]");
       // assertIdempotency("e://[" + str + "%25NA%E2NA]");
       // assertIdempotency("e://[" + str + "%25NA%2ENA]");
+
     }
   }
 }

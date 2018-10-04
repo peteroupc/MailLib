@@ -459,6 +459,7 @@ String tag = tagSub[tagIndex];
     }
 
     /**
+
      * Finds the language tags that match a priority list of language ranges.
      * @param ranges A list of language ranges (see documentation for the
      * "IsLanguageRange" method), which should be given in order of
@@ -478,6 +479,7 @@ String tag = tagSub[tagIndex];
      * value that is not a basic or extended language range, or {@code
      * languages} contains a value that is not a potentially valid language
      * tag.
+
      */
     public static List<String> LanguageTagFilter(
            List<String> ranges,
@@ -575,6 +577,7 @@ String tag = tagSub[tagIndex];
     }
 
     /**
+
      * Does a language tag lookup (under RFC 4647) for a matching language tag.
      * @param range A basic language range (see the documentation for
      * "IsLanguageRange").
@@ -589,6 +592,7 @@ String tag = tagSub[tagIndex];
      * @throws IllegalArgumentException The parameter {@code range} is not a basic
      * language range, or {@code languages} contains a value that is not a
      * potentially valid language tag.
+
      */
     public static String LanguageTagLookup(
   String range,
@@ -598,6 +602,7 @@ String tag = tagSub[tagIndex];
     }
 
     /**
+
      * Does a language tag lookup (under RFC 4647) for a matching language tag.
      * @param ranges A list of basic language ranges (see documentation for the
      * "IsLanguageRange" method), which should be given in order of
@@ -613,6 +618,7 @@ String tag = tagSub[tagIndex];
      * @throws IllegalArgumentException The parameter {@code ranges} contains a
      * value that is not a basic language range, or {@code languages}
      * contains a value that is not a potentially valid language tag.
+
      */
     public static String LanguageTagLookup(
   List<String> ranges,
@@ -622,6 +628,7 @@ String tag = tagSub[tagIndex];
     }
 
     /**
+
      * Finds the language tags that match a priority list of basic language ranges.
      * @param ranges A list of basic language ranges (see documentation for the
      * "IsLanguageRange" method), which should be given in order of
@@ -635,6 +642,7 @@ String tag = tagSub[tagIndex];
      * @throws IllegalArgumentException The parameter {@code ranges} contains a
      * value that is not a basic language range, or {@code languages}
      * contains a value that is not a potentially valid language tag.
+
      */
     public static List<String> LanguageTagFilter(
   List<String> ranges,
@@ -643,6 +651,7 @@ String tag = tagSub[tagIndex];
     }
 
     /**
+
      * Does a language tag lookup (under RFC 4647) for a matching language tag.
      * @param range A language range (see the documentation for "IsLanguageRange").
      * @param languages A list of language tags, which should be given in order of
@@ -658,6 +667,7 @@ String tag = tagSub[tagIndex];
      * @throws IllegalArgumentException The parameter {@code range} is not a basic
      * or extended language range, or {@code languages} contains a value
      * that is not a potentially valid language tag.
+
      */
     public static String LanguageTagLookup(
   String range,
@@ -672,6 +682,7 @@ String tag = tagSub[tagIndex];
     }
 
     /**
+
      * Does a language tag lookup (under RFC 4647) for a matching language tag.
      * @param ranges A list of language ranges (see documentation for the
      * "IsLanguageRange" method), which should be given in order of
@@ -690,6 +701,7 @@ String tag = tagSub[tagIndex];
      * value that is not a basic or extended language range, or {@code
      * languages} contains a value that is not a potentially valid language
      * tag.
+
      */
     public static String LanguageTagLookup(
          List<String> ranges,

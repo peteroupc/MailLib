@@ -15,7 +15,9 @@ private DataUris() {
     /**
      * Extracts the media type from a Data URI (uniform resource identifier).
      * @param uri The parameter {@code uri} is a text string.
+
      * @return The media type. Returns null if {@code uri} is null, is
+
      * syntactically invalid, or is not a Data URI.
      */
     public static MediaType DataUriMediaType(String uri) {
@@ -92,7 +94,9 @@ private DataUris() {
      * Extracts the data from a Data URI (uniform resource identifier) in the form
      * of a byte array.
      * @param uri The parameter {@code uri} is a text string.
+
      * @return The data as a byte array. Returns null if {@code uri} is null, is
+
      * syntactically invalid, or is not a data URI.
      */
     public static byte[] DataUriBytes(String uri) {

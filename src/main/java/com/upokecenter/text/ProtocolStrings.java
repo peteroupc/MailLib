@@ -1,6 +1,7 @@
 package com.upokecenter.text;
 
     /**
+
      * <p>Contains methods for preparing user-facing protocol strings (such as user
      * identifiers) for equality comparison and validity checking. Such
      * strings can be _internationalized_, that is, contain characters
@@ -25,6 +26,7 @@ package com.upokecenter.text;
      * purposes, or to avoid creating multiple items that use the same
      * string, rather than, say, to comparisons of names or parts of names
      * for the purpose of showing matching records.</li></ul></p>
+
      */
   public final class ProtocolStrings {
 private ProtocolStrings() {
