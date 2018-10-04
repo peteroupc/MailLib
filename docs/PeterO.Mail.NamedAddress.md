@@ -4,6 +4,19 @@
 
 Represents an email address and a name for that address. Can represent a group of email addresses instead.
 
+### Member Summary
+* <code>[Address](#Address)</code> - Gets the email address associated with this object.
+* <code>[AddressesEqual(PeterO.Mail.NamedAddress)](#AddressesEqual_PeterO_Mail_NamedAddress)</code> - Not documented yet.
+* <code>[DisplayName](#DisplayName)</code> - Gets the display name for this email address.
+* <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
+* <code>[GetHashCode()](#GetHashCode)</code> - Calculates the hash code of this object.
+* <code>[GroupAddresses](#GroupAddresses)</code> - Gets a read-only list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
+* <code>[IsGroup](#IsGroup)</code> - Gets a value indicating whether this represents a group of addresses rather than a single address.
+* <code>[Name](#Name)</code> - Gets the display name for this email address, or the email address's value if the display name is null.
+* <code>[ParseAddresses(string)](#ParseAddresses_string)</code> - Generates a list of NamedAddress objects from a comma-separated list of addresses.
+* <code>[ToString()](#ToString)</code> - Converts this object to a text string.
+
+<a id="Void_ctor_String"></a>
 ### NamedAddress Constructor
 
     public NamedAddress(
@@ -38,6 +51,7 @@ The parameter <i>address</i>
  * System.ArgumentException:
 The named address has an invalid syntax.
 
+<a id="Void_ctor_String_Address"></a>
 ### NamedAddress Constructor
 
     public NamedAddress(
@@ -58,6 +72,7 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 The parameter <i>address</i>
  is null.
 
+<a id="Void_ctor_String_String"></a>
 ### NamedAddress Constructor
 
     public NamedAddress(
@@ -81,6 +96,7 @@ The parameter <i>address</i>
  * System.ArgumentException:
 The display name or address has an invalid syntax.
 
+<a id="Void_ctor_String_String_String"></a>
 ### NamedAddress Constructor
 
     public NamedAddress(
@@ -105,6 +121,7 @@ The parameter <i>localPart</i>
  or  <i>domain</i>
  is null.
 
+<a id="Void_ctor_String_IList_1"></a>
 ### NamedAddress Constructor
 
     public NamedAddress(
@@ -130,6 +147,7 @@ The parameter <i>groupName</i>
 The parameter <i>groupName</i>
  is empty, or an item in the list is itself a group.
 
+<a id="Address"></a>
 ### Address
 
     public PeterO.Mail.Address Address { get; }
@@ -140,6 +158,7 @@ Gets the email address associated with this object.
 
 The email address associated with this object. This value is null if this object represents a group of addresses instead.
 
+<a id="DisplayName"></a>
 ### DisplayName
 
     public string DisplayName { get; }
@@ -150,6 +169,7 @@ Gets the display name for this email address. Returns null if the display name i
 
 The display name for this email address.
 
+<a id="GroupAddresses"></a>
 ### GroupAddresses
 
     public System.Collections.Generic.IList GroupAddresses { get; }
@@ -160,6 +180,7 @@ Gets a read-only list of addresses that make up the group, if this object repres
 
 A list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
+<a id="IsGroup"></a>
 ### IsGroup
 
     public bool IsGroup { get; }
@@ -170,6 +191,7 @@ Gets a value indicating whether this represents a group of addresses rather than
 
  `true`  If this represents a group of addresses; otherwise, .  `false` .
 
+<a id="Name"></a>
 ### Name
 
     public string Name { get; }
@@ -180,6 +202,7 @@ Gets the display name for this email address, or the email address's value if th
 
 The name for this email address.
 
+<a id="AddressesEqual_PeterO_Mail_NamedAddress"></a>
 ### AddressesEqual
 
     public bool AddressesEqual(
@@ -195,6 +218,7 @@ Not documented yet.
 
 Either `true` or `false` .
 
+<a id="Equals_object"></a>
 ### Equals
 
     public override bool Equals(
@@ -211,6 +235,7 @@ is an arbitrary object.
 
  `true` if this object and another object are equal; otherwise,  `false` .
 
+<a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
@@ -221,6 +246,7 @@ Calculates the hash code of this object. No application or process IDs are used 
 
 A 32-bit hash code.
 
+<a id="ParseAddresses_string"></a>
 ### ParseAddresses
 
     public static System.Collections.Generic.IList ParseAddresses(
@@ -237,6 +263,7 @@ Generates a list of NamedAddress objects from a comma-separated list of addresse
 A list of addresses generated from the  <i>addressValue</i>
  parameter.
 
+<a id="ToString"></a>
 ### ToString
 
     public override string ToString();

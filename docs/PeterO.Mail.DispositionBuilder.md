@@ -4,6 +4,17 @@
 
 A mutable data type that allows a content disposition to be built.
 
+### Member Summary
+* <code>[DispositionType](#DispositionType)</code> - Gets or sets this value's disposition type, such as "inline" or "attachment".
+* <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
+* <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type.
+* <code>[RemoveParameter(string)](#RemoveParameter_string)</code> - Removes a parameter from this content disposition.
+* <code>[SetDispositionType(string)](#SetDispositionType_string)</code> - Sets the disposition type, such as "inline".
+* <code>[SetParameter(string, string)](#SetParameter_string_string)</code> - Sets a parameter of this content disposition.
+* <code>[ToDisposition()](#ToDisposition)</code> - Converts this object to an immutable ContentDisposition object.
+* <code>[ToString()](#ToString)</code> - Converts this object to a text string.
+
+<a id="Void_ctor_ContentDisposition"></a>
 ### DispositionBuilder Constructor
 
     public DispositionBuilder(
@@ -22,6 +33,7 @@ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.D
 The parameter <i>mt</i>
  is null.
 
+<a id="Void_ctor_String"></a>
 ### DispositionBuilder Constructor
 
     public DispositionBuilder(
@@ -40,15 +52,17 @@ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.D
 The parameter <i>type</i>
  is null.
 
+<a id="Void_ctor"></a>
 ### DispositionBuilder Constructor
 
     public DispositionBuilder();
 
 Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the disposition type "attachment".
 
+<a id="DispositionType"></a>
 ### DispositionType
 
-    public string DispositionType { get; set;}
+    public string DispositionType { get; set; }
 
 Gets or sets this value's disposition type, such as "inline" or "attachment".
 
@@ -56,6 +70,7 @@ Gets or sets this value's disposition type, such as "inline" or "attachment".
 
 This value's disposition type, such as "inline" or "attachment".
 
+<a id="IsMultipart"></a>
 ### IsMultipart
 
     public bool IsMultipart { get; }
@@ -68,6 +83,7 @@ Gets a value indicating whether this is a multipart media type.
 
  `true`  If this is a multipart media type; otherwise, . `false` .
 
+<a id="IsText"></a>
 ### IsText
 
     public bool IsText { get; }
@@ -80,6 +96,7 @@ Gets a value indicating whether this is a text media type.
 
  `true`  If this is a text media type; otherwise, . `false` .
 
+<a id="RemoveParameter_string"></a>
 ### RemoveParameter
 
     public PeterO.Mail.DispositionBuilder RemoveParameter(
@@ -101,6 +118,7 @@ This instance.
 The parameter <i>name</i>
  is null.
 
+<a id="SetDispositionType_string"></a>
 ### SetDispositionType
 
     public PeterO.Mail.DispositionBuilder SetDispositionType(
@@ -126,6 +144,7 @@ The parameter <i>str</i>
  * System.ArgumentException:
 Str is empty.
 
+<a id="SetParameter_string_string"></a>
 ### SetParameter
 
     public PeterO.Mail.DispositionBuilder SetParameter(
@@ -155,6 +174,7 @@ Either  <i>value</i>
 The parameter <i>name</i>
  is empty, or it isn't a well-formed parameter name.
 
+<a id="ToDisposition"></a>
 ### ToDisposition
 
     public PeterO.Mail.ContentDisposition ToDisposition();
@@ -165,6 +185,7 @@ Converts this object to an immutable ContentDisposition object.
 
 A MediaType object.
 
+<a id="ToString"></a>
 ### ToString
 
     public override string ToString();

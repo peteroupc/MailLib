@@ -305,7 +305,15 @@ import java.util.*;
     }
 
     /**
-     *
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class. Takes a group name and several named email addresses as
+     * parameters, and forms a group with them.
+     * @param groupName The group's name.
+     * @param mailboxes A list of named addresses that make up the group.
+     * @throws java.lang.NullPointerException The parameter {@code groupName} or
+     * {@code mailboxes} is null.
+     * @throws IllegalArgumentException The parameter {@code groupName} is empty,
+     * or an item in the list is itself a group.
      */
     public NamedAddress(String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {

@@ -29,8 +29,11 @@ namespace PeterO.Mail {
         throw new ArgumentException("Invalid date and time");
       }
       if (gmt && dateTime[7] != 0) {
-        throw new NotSupportedException(
-  "Time zone offsets other than 0 are currently not supported for gmt=true.");
+        // Use time offset to convert local time to UTC/GMT
+        var newDateTime = new int[8];
+        Array.Copy(dateTime, 0, newDateTime, 0, 7);
+        DateTimeUtilities.AddMinutes(newDateTime, -dateTime[7]);
+        dateTime = newDateTime;
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
       if (dow < 0) {

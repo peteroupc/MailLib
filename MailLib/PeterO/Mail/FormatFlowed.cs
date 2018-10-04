@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PeterO;
 
 namespace PeterO.Mail {
   internal static class FormatFlowed {
@@ -363,8 +364,8 @@ namespace PeterO.Mail {
       }
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
 
-          str[2] == ' ' && str[3] == ' ') ? (true) : false; } private
-            static string ReplaceTwoOrMoreSpacesWithBR(string str) {
+          str[2] == ' ' && str[3] == ' ') ? true : false; } private static
+            string ReplaceTwoOrMoreSpacesWithBR(string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
       }
@@ -391,7 +392,8 @@ namespace PeterO.Mail {
       }
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
 
-          str[2] == ' ' && str[3] == ' ') ? (str.Substring(4)) : str; }
+          str[2] == ' ' && str[3] == ' ') ? str.Substring(4) : str; }
+
             private static string HtmlEscapeStrong(string str) {
       var i = 0;
       var sb = new StringBuilder();
@@ -910,7 +912,6 @@ namespace PeterO.Mail {
       string str,
       IDictionary<string,
       string[]> links) {
-      // TODO: Reference-style link/image syntax
       str = CodeSpansAndEscapes(str);
       str = ReplaceAutomaticLinks(str);
       str = ReplaceImageLinks(str, links);

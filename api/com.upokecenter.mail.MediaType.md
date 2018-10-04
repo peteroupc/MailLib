@@ -47,10 +47,10 @@
 * `Map<String,String> getParameters()`<br>
  Gets a list of the parameters contained in this media type object.
 * `String getSubType()`<br>
- Gets this media type's subtype.
+ Gets this media type's subtype (for example, "plain" in "text/plain").
 * `String getTopLevelType()`<br>
- Gets the name of this media type's top-level type (such as "text" or
- "audio").
+ Gets the name of this media type's top-level type (such as "text" in
+ "text/plain", or "audio" in "audio/basic").
 * `String getTypeAndSubType()`<br>
  Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain".
@@ -97,8 +97,9 @@ Specifies the media type "application/octet-stream", used for arbitrary
 
 ### getTopLevelType
     public final String getTopLevelType()
-Gets the name of this media type's top-level type (such as "text" or
- "audio").
+Gets the name of this media type's top-level type (such as "text" in
+ "text/plain", or "audio" in "audio/basic"). The resulting string will
+ be in lowercase letters.
 
 **Returns:**
 
@@ -137,7 +138,8 @@ Calculates the hash code of this object. No application or process IDs are
 
 ### getSubType
     public final String getSubType()
-Gets this media type's subtype.
+Gets this media type's subtype (for example, "plain" in "text/plain"). The
+ resulting string will be in lowercase letters.
 
 **Returns:**
 
@@ -255,7 +257,8 @@ Gets the value of a parameter in this media type, such as "charset" or
 ### getTypeAndSubType
     public final String getTypeAndSubType()
 Gets the top level type and subtype of this media type, separated by a
- slash; for example, "text/plain".
+ slash; for example, "text/plain". The resulting string will be in
+ lowercase letters.
 
 **Returns:**
 

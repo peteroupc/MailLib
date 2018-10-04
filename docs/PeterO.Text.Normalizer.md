@@ -8,6 +8,13 @@ Implements the Unicode normalization algorithm and contains methods and function
 
 NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 
+### Member Summary
+* <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Returns whether this string is normalized.
+* <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
+* <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
+* <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
+
+<a id="Void_ctor_String_Normalization"></a>
 ### Normalizer Constructor
 
     public Normalizer(
@@ -24,6 +31,7 @@ is a text string.
  * <i>form</i>: The parameter <i>form</i>
 is a Normalization object.
 
+<a id="IsNormalized_string_PeterO_Text_Normalization"></a>
 ### IsNormalized
 
     public static bool IsNormalized(
@@ -43,6 +51,7 @@ is a Normalization object.
 
  `true` if this string is normalized; otherwise,  `false` . Returns `false` if the string contains an unpaired surrogate code point.
 
+<a id="Normalize_string_PeterO_Text_Normalization"></a>
 ### Normalize
 
     public static string Normalize(
@@ -68,6 +77,7 @@ converted to the given normalization form.
 The parameter <i>str</i>
 is null.
 
+<a id="Read_int_int_int"></a>
 ### Read
 
     public int Read(
@@ -104,6 +114,7 @@ is less than <i>length</i>
 The parameter <i>chars</i>
 is null.
 
+<a id="ReadChar"></a>
 ### ReadChar
 
     public int ReadChar();

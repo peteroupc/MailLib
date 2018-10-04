@@ -207,15 +207,23 @@ Use GetAddresses(\To\) instead.
  Use GetAddresses(\To\) instead.
 * `static Message MakeMultilingualMessage​(List<Message> messages,
                        List<String> languages)`<br>
+ Generates a multilingual message (see RFC 8255) from a list of messages and
+ a list of language strings.
 * `static Message NewBodyPart()`<br>
  Creates a message object with no header fields.
 * `Message RemoveHeader​(int index)`<br>
  Removes a header field by index.
 * `Message RemoveHeader​(String name)`<br>
  Removes all instances of the given header field from this message.
-* `Message SelectLanguageMessage​(List<String> languages)`<br>
+* `Message SelectLanguageMessage​(List<String> languages) multipart/multilingual`<br>
+ Selects a body part for a multiple-language message (
+ multipart/multilingual) according to the given language
+ priority list.
 * `Message SelectLanguageMessage​(List<String> languages,
-                     boolean preferOriginals)`<br>
+                     boolean preferOriginals) multipart/multilingual`<br>
+ Selects a body part for a multiple-language message (
+ multipart/multilingual) according to the given language
+ priority list and original-language preference.
 * `Message SetBody​(byte[] bytes)`<br>
  Sets the body of this message to the given byte array.
 * `void setContentDisposition​(ContentDisposition value)`<br>
@@ -1257,10 +1265,97 @@ Adds an inline body part to this message in the form of data from the given
 
 ### SelectLanguageMessage
     public Message SelectLanguageMessage​(List<String> languages)
+Selects a body part for a multiple-language message (
+ <code>multipart/multilingual</code>) according to the given language
+ priority list.
+
+**Parameters:**
+
+* <code>languages</code> - A list of basic language ranges, sorted in descending order
+ of priority (see the LanguageTags.LanguageTagFilter method).
+
+**Returns:**
+
+* The best matching body part for the given languages. If the body
+ part has no subject, then the top-level subject is used. If this
+ message is not a multipart/multilingual message or has fewer than two
+ body parts, returns this object. If no body part matches the given
+ languages, returns the last body part if its language is "zxx", or
+ the second body part otherwise.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>languages</code> is
+ null.
+
 ### SelectLanguageMessage
     public Message SelectLanguageMessage​(List<String> languages, boolean preferOriginals)
+Selects a body part for a multiple-language message (
+ <code>multipart/multilingual</code>) according to the given language
+ priority list and original-language preference.
+
+**Parameters:**
+
+* <code>languages</code> - A list of basic language ranges, sorted in descending order
+ of priority (see the LanguageTags.LanguageTagFilter method).
+
+* <code>preferOriginals</code> - If true, a body part marked as the original language
+ version is chosen if it matches one of the given language ranges,
+ even if the original language has a lower priority than another
+ language with a matching body part.
+
+**Returns:**
+
+* The best matching body part for the given languages. If the body
+ part has no subject, then the top-level subject is used. If this
+ message is not a multipart/multilingual message or has fewer than two
+ body parts, returns this object. If no body part matches the given
+ languages, returns the last body part if its language is "zxx", or
+ the second body part otherwise.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>languages</code> is
+ null.
+
 ### MakeMultilingualMessage
     public static Message MakeMultilingualMessage​(List<Message> messages, List<String> languages)
+Generates a multilingual message (see RFC 8255) from a list of messages and
+ a list of language strings.
+
+**Parameters:**
+
+* <code>messages</code> - A list of messages forming the parts of the multilingual
+ message object. Each message should have the same content, but be in
+ a different language. Each message must have a From header field and
+ use the same email address in that field as the other messages. The
+ messages should be ordered in descending preference of language.
+
+* <code>languages</code> - A list of language strings corresponding to the messages
+ given in the "messages" parameter. A language string at a given index
+ corresponds to the message at the same index. Each language string
+ must follow the syntax of the Content-Language header field (see
+ LanguageTags.GetLanguageList).
+
+**Returns:**
+
+* A Message object with the content type "multipart/multilingual". It
+ will begin with an explanatory body part and be followed by the
+ messages given in the <code>messages</code> parameter in the order given.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>messages</code> or
+ <code>languages</code> is null.
+
+* <code>IllegalArgumentException</code> - The parameter <code>messages</code> or <code>
+ languages</code> is empty, their lengths don't match, at least one message
+ is "null", each message doesn't contain the same email addresses in
+ their From header fields, <code>languages</code> contains a syntactically
+ invalid language tag list, <code>languages</code> contains the language
+ tag "zzx" not appearing alone or at the end of the language tag list,
+ or the first message contains no From header field.
+
 ### FromMailtoUrl
     @Deprecated public static Message FromMailtoUrl​(String url)
 Deprecated.

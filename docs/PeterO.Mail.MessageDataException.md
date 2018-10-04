@@ -7,6 +7,9 @@
 
 Exception thrown when a message has invalid syntax.
 
+### Member Summary
+
+<a id="Void_ctor_String"></a>
 ### MessageDataException Constructor
 
     public MessageDataException(
@@ -18,6 +21,7 @@ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail
 
  * <i>message</i>: A string to use as the exception message.
 
+<a id="Void_ctor_String_Exception"></a>
 ### MessageDataException Constructor
 
     public MessageDataException(
@@ -33,6 +37,7 @@ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail
  * <i>innerException</i>: The parameter <i>innerException</i>
 is an Exception object.
 
+<a id="Void_ctor"></a>
 ### MessageDataException Constructor
 
     public MessageDataException();

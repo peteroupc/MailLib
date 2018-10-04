@@ -25,7 +25,9 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes)`<br>
+            List<NamedAddress> mailboxes) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 * `boolean AddressesEqual​(NamedAddress na)`<br>
  Not documented yet.
 * `boolean equals​(Object obj)`<br>
@@ -71,7 +73,9 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes)`<br>
+            List<NamedAddress> mailboxes) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 
 ## Method Details
 
@@ -165,6 +169,24 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
+Initializes a new instance of the <code>NamedAddress</code>
+ class. Takes a group name and several named email addresses as
+ parameters, and forms a group with them.
+
+**Parameters:**
+
+* <code>groupName</code> - The group's name.
+
+* <code>mailboxes</code> - A list of named addresses that make up the group.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>groupName</code> or
+ <code>mailboxes</code> is null.
+
+* <code>IllegalArgumentException</code> - The parameter <code>groupName</code> is empty,
+ or an item in the list is itself a group.
+
 ### ParseAddresses
     public static List<NamedAddress> ParseAddresses​(String addressValue)
 Generates a list of NamedAddress objects from a comma-separated list of

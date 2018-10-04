@@ -33,7 +33,13 @@ private static bool IsTokenAsciiIgnoreCase(
     }
 
     private static string ParseColor(string str, int index, int endIndex) {
-    string[] colorNames = {"yellow" ,"red" ,"green" ,"blue" ,"black" ,"white",
+    string[] colorNames = {
+"yellow",
+  "red",
+  "green",
+  "blue",
+  "black",
+  "white",
   "cyan",
    "magenta"};
       foreach (string name in colorNames) {

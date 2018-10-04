@@ -20,6 +20,12 @@ An XN-label is an LDH label beginning with "xn--" in any combination of case.
 
 NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called `NormalizationData` and `IdnaData` , that include data derived from the Unicode Character Database. See he documentation for the NormalizerInput class for the permission otice for the Unicode Character Database.
 
+### Member Summary
+* <code>[DecodeDomainName(string)](#DecodeDomainName_string)</code> - Tries to encode each XN-label of the given domain name into Unicode.
+* <code>[EncodeDomainName(string)](#EncodeDomainName_string)</code> - Tries to encode each label of a domain name with code points outside the Basic Latin range (U+0000 to U+007F) into an XN-label.
+* <code>[IsValidDomainName(string, bool)](#IsValidDomainName_string_bool)</code> - Determines whether the given string is a domain name containing only U-labels, A-labels, NR-LDH labels, or any combination of these, separated by dots (".
+
+<a id="DecodeDomainName_string"></a>
 ### DecodeDomainName
 
     public static string DecodeDomainName(
@@ -41,6 +47,7 @@ The domain name where each XN-label is encoded into Unicode. Labels where this i
 The parameter <i>value</i>
  is null.
 
+<a id="EncodeDomainName_string"></a>
 ### EncodeDomainName
 
     public static string EncodeDomainName(
@@ -62,6 +69,7 @@ The domain name where each label with code points outside the Basic Latin range 
 The parameter <i>value</i>
  is null.
 
+<a id="IsValidDomainName_string_bool"></a>
 ### IsValidDomainName
 
     public static bool IsValidDomainName(

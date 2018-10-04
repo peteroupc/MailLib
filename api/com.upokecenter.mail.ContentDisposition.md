@@ -212,43 +212,46 @@ Converts a file name from the Content-Disposition header to a suitable name
  2231 encoding)</p> <p><code>"nul.txt" -&gt; "_nul.txt"</code> (Reserved
  name)</p> <p><code>"dir1/dir2/file" -&gt; "dir1_dir2_file"</code>
  (Directory separators)</p><p> <p><b>Remarks:</b></p> <ul> <li>The
- string returned by this method is normalized using Unicode
- normalization form C (NFC) (see the <code>NormalizerInput</code> class for details). Although
- most file systems preserve the normalization of file names, there is
- one notable exception: The HFS Plus file system (on macOS before High
- Sierra) stores file names using a modified version of normalization
- form D (NFD) in which certain code points are not decomposed,
- including all base + slash code points, which are the only composed
- code points in Unicode that are decomposed in NFD but not in HFS
- Plus's version of NFD. If the filename will be used to save a file to
- an HFS Plus storage device, it is enough to normalize the return
- value with NFD for this purpose (because all base + slash code points
- were converted beforehand by MakeFilename to an alternate form). See
- also Apple's Technical Q&amp;A "Text Encodings in VFS" and Technical
- Note TN1150, "HFS Plus Volume Format".</li> <li><p>Email and HTTP
- headers may specify suggested filenames using the Content-Disposition
- header field's <code>filename</code> parameter or, in practice, the
- Content-Type header field's <code>name</code> parameter.</p> <p>Although
- RFC 2047 encoded words appearing in both parameters are written out
- by some implementations, this practice is discouraged by some
- (especially since the RFC itself says that encoded words "MUST NOT
- appear within a 'quoted-string'"). Nevertheless, the MakeFilename
- method has a basis in the RFCs to decode RFC 2047 encoded words (and
- RFC 2231 encoding) in file names passed to this method.</p> <p>RFC
- 2046 sec. 4.5.1 (<code>application/octet-stream</code> subtype in
- Content-Type header field) cites an earlier RFC 1341, which "defined
- the use of a 'NAME' parameter which gave a <i>suggested</i> file name
- to be used if the data were written to a file". Also, RFC 2183 sec.
- 2.3 (<code>filename</code> parameter in Content-Disposition) confirms that
- the " <i>suggested</i> filename" in the <code>filename</code> parameter
- "should be <i>used as a basis</i> for the actual filename, where
- possible", and that that file name should "not [be] blindly use[d]".
- See also RFC 6266, section 4.3, which discusses the use of that
- parameter in Hypertext Transfer Protocol (HTTP).</p> <p>To the extent
- that the "name" parameter is not allowed in message bodies other than
- those with the media type "application/octet-stream" or treated as
- that media-type, this is a deviation of RFC 2045 and 2046 (see also
- RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful
+ exact file name conversion used by this method is not guaranteed to
+ remain the same between versions of this library.</li> <li>The string
+ returned by this method is normalized using Unicode normalization
+ form C (NFC) (see the <code>NormalizerInput</code>
+ class for details). Although most file systems preserve the
+ normalization of file names, there is one notable exception: The HFS
+ Plus file system (on macOS before High Sierra) stores file names
+ using a modified version of normalization form D (NFD) in which
+ certain code points are not decomposed, including all base + slash code
+ points, which are the only composed code points in Unicode that are
+ decomposed in NFD but not in HFS Plus's version of NFD. If the
+ filename will be used to save a file to an HFS Plus storage device,
+ it is enough to normalize the return value with NFD for this purpose
+ (because all base + slash code points were converted beforehand by
+ MakeFilename to an alternate form). See also Apple's Technical
+ Q&amp;A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus
+ Volume Format".</li> <li><p>Email and HTTP headers may specify
+ suggested filenames using the Content-Disposition header field's
+ <code>filename</code> parameter or, in practice, the Content-Type header
+ field's <code>name</code> parameter.</p> <p>Although RFC 2047 encoded words
+ appearing in both parameters are written out by some implementations,
+ this practice is discouraged by some (especially since the RFC itself
+ says that encoded words "MUST NOT appear within a 'quoted-string'").
+ Nevertheless, the MakeFilename method has a basis in the RFCs to
+ decode RFC 2047 encoded words (and RFC 2231 encoding) in file names
+ passed to this method.</p> <p>RFC 2046 sec. 4.5.1 (
+ <code>application/octet-stream</code> subtype in Content-Type header field)
+ cites an earlier RFC 1341, which "defined the use of a 'NAME'
+ parameter which gave a <i>suggested</i> file name to be used if the
+ data were written to a file". Also, RFC 2183 sec. 2.3 (
+ <code>filename</code> parameter in Content-Disposition) confirms that the "
+ <i>suggested</i> filename" in the <code>filename</code> parameter "should
+ be <i>used as a basis</i> for the actual filename, where possible",
+ and that that file name should "not [be] blindly use[d]". See also
+ RFC 6266, section 4.3, which discusses the use of that parameter in
+ Hypertext Transfer Protocol (HTTP).</p> <p>To the extent that the
+ "name" parameter is not allowed in message bodies other than those
+ with the media type "application/octet-stream" or treated as that
+ media-type, this is a deviation of RFC 2045 and 2046 (see also RFC
+ 2045 sec. 5, which says that "[t]here are NO globally meaningful
  parameters that apply to all media types"). (Some email
  implementations may still write out the "name" parameter, even for
  media types other than <code>application/octet-stream</code> and even

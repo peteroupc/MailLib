@@ -12,6 +12,13 @@ Contains methods for parsing and generating Data URIs (uniform resource identifi
 
     data:application/octet-stream;base64,AAAAAA==
 
+### Member Summary
+* <code>[DataUrlBytes(string)](#DataUrlBytes_string)</code> - Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
+* <code>[DataUrlMediaType(string)](#DataUrlMediaType_string)</code> - Extracts the media type from a Data URI (uniform resource identifier).
+* <code>[MakeDataUrl(byte[], PeterO.Mail.MediaType)](#MakeDataUrl_byte_PeterO_Mail_MediaType)</code> - Encodes data with the given media type in a Data URI (uniform resource identifier).
+* <code>[MakeDataUrl(string)](#MakeDataUrl_string)</code> - Encodes text as a Data URI (uniform resource identifier).
+
+<a id="DataUrlBytes_string"></a>
 ### DataUrlBytes
 
     public static byte[] DataUrlBytes(
@@ -31,6 +38,7 @@ Extracts the data from a Data URI (uniform resource identifier) in the form of a
 The data as a byte array. Returns null if  <i>uri</i>
  is null, is syntactically invalid, or is not a data URI.
 
+<a id="DataUrlMediaType_string"></a>
 ### DataUrlMediaType
 
     public static PeterO.Mail.MediaType DataUrlMediaType(
@@ -50,6 +58,7 @@ Extracts the media type from a Data URI (uniform resource identifier).
 The media type. Returns null if  <i>uri</i>
  is null, is syntactically invalid, or is not a Data URI.
 
+<a id="MakeDataUrl_byte_PeterO_Mail_MediaType"></a>
 ### MakeDataUrl
 
     public static string MakeDataUrl(
@@ -77,6 +86,7 @@ The parameter  <i>bytes</i>
  or  <i>mediaType</i>
  is null.
 
+<a id="MakeDataUrl_string"></a>
 ### MakeDataUrl
 
     public static string MakeDataUrl(

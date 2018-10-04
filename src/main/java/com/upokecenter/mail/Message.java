@@ -1457,7 +1457,19 @@ private static String GetContentTranslationType(String ctt) {
     }
 
     /**
-     *
+     * Selects a body part for a multiple-language message (
+     * <code>multipart/multilingual</code>) according to the given language
+     * priority list.
+     * @param languages A list of basic language ranges, sorted in descending order
+     * of priority (see the LanguageTags.LanguageTagFilter method).
+     * @return The best matching body part for the given languages. If the body
+     * part has no subject, then the top-level subject is used. If this
+     * message is not a multipart/multilingual message or has fewer than two
+     * body parts, returns this object. If no body part matches the given
+     * languages, returns the last body part if its language is "zxx", or
+     * the second body part otherwise.
+     * @throws java.lang.NullPointerException The parameter {@code languages} is
+     * null.
      */
     public Message SelectLanguageMessage(
        List<String> languages) {
@@ -1465,7 +1477,23 @@ private static String GetContentTranslationType(String ctt) {
     }
 
     /**
-     *
+     * Selects a body part for a multiple-language message (
+     * <code>multipart/multilingual</code>) according to the given language
+     * priority list and original-language preference.
+     * @param languages A list of basic language ranges, sorted in descending order
+     * of priority (see the LanguageTags.LanguageTagFilter method).
+     * @param preferOriginals If true, a body part marked as the original language
+     * version is chosen if it matches one of the given language ranges,
+     * even if the original language has a lower priority than another
+     * language with a matching body part.
+     * @return The best matching body part for the given languages. If the body
+     * part has no subject, then the top-level subject is used. If this
+     * message is not a multipart/multilingual message or has fewer than two
+     * body parts, returns this object. If no body part matches the given
+     * languages, returns the last body part if its language is "zxx", or
+     * the second body part otherwise.
+     * @throws java.lang.NullPointerException The parameter {@code languages} is
+     * null.
      */
     public Message SelectLanguageMessage(
        List<String> languages,
@@ -1526,7 +1554,30 @@ private static String GetContentTranslationType(String ctt) {
     }
 
     /**
-     *
+     * Generates a multilingual message (see RFC 8255) from a list of messages and
+     * a list of language strings.
+     * @param messages A list of messages forming the parts of the multilingual
+     * message object. Each message should have the same content, but be in
+     * a different language. Each message must have a From header field and
+     * use the same email address in that field as the other messages. The
+     * messages should be ordered in descending preference of language.
+     * @param languages A list of language strings corresponding to the messages
+     * given in the "messages" parameter. A language string at a given index
+     * corresponds to the message at the same index. Each language string
+     * must follow the syntax of the Content-Language header field (see
+     * LanguageTags.GetLanguageList).
+     * @return A Message object with the content type "multipart/multilingual". It
+     * will begin with an explanatory body part and be followed by the
+     * messages given in the {@code messages} parameter in the order given.
+     * @throws java.lang.NullPointerException The parameter {@code messages} or
+     * {@code languages} is null.
+     * @throws IllegalArgumentException The parameter {@code messages} or {@code
+     * languages} is empty, their lengths don't match, at least one message
+     * is "null", each message doesn't contain the same email addresses in
+     * their From header fields, {@code languages} contains a syntactically
+     * invalid language tag list, {@code languages} contains the language
+     * tag "zzx" not appearing alone or at the end of the language tag list,
+     * or the first message contains no From header field.
      */
     public static Message MakeMultilingualMessage(
   List<Message> messages,

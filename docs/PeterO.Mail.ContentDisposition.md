@@ -22,18 +22,41 @@ Content-Disposition header fields like the following have appeared in practice:
 
 In this implementation, the first and second of these are syntactically invalid, so they trigger parse errors, while the third of these is syntactically valid, but the "filename" parameter is treated as "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047 encoded words are not decoded at the moment a content disposition is parsed (using the Parse method).
 
+### Member Summary
+* <code>[public static readonly PeterO.Mail.ContentDisposition Attachment;](#Attachment)</code> - The content disposition value "attachment".
+* <code>[DispositionType](#DispositionType)</code> - Gets a string containing this object's disposition type, such as "inline" or "attachment".
+* <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
+* <code>[GetCreationDate()](#GetCreationDate)</code> - Gets the date and time extracted from this content disposition's "creation-date" parameter, which specifies the date of creation of a file (RFC 2183 sec.
+* <code>[GetFilename()](#GetFilename)</code> - Gets an adapted version of the "filename" parameter in this content disposition object by using the "MakeFilename" method.
+* <code>[GetHashCode()](#GetHashCode)</code> - Calculates the hash code of this object.
+* <code>[GetModificationDate()](#GetModificationDate)</code> - Gets the date and time extracted from this content disposition's "modification-date" parameter, which specifies the date of last modification of a file (RFC 2183 sec.
+* <code>[GetParameter(string)](#GetParameter_string)</code> - Gets a parameter from this disposition object.
+* <code>[GetReadDate()](#GetReadDate)</code> - Gets the date and time extracted from this content disposition's "read-date" parameter, which specifies the date at which a file was last read (RFC 2183 sec.
+* <code>[public static readonly PeterO.Mail.ContentDisposition Inline;](#Inline)</code> - The content disposition value "inline".
+* <code>[IsAttachment](#IsAttachment)</code> - Gets a value indicating whether the disposition type is attachment.
+* <code>[IsInline](#IsInline)</code> - Gets a value indicating whether the disposition type is inline.
+* <code>[MakeFilename(string)](#MakeFilename_string)</code> - Converts a file name from the Content-Disposition header to a suitable name for saving data to a file.
+* <code>[Parameters](#Parameters)</code> - Gets a list of parameter names associated with this object and their values.
+* <code>[Parse(string)](#Parse_string)</code> - Creates a new content disposition object from the value of a Content-Disposition header field.
+* <code>[Parse(string, PeterO.Mail.ContentDisposition)](#Parse_string_PeterO_Mail_ContentDisposition)</code> - Parses a content disposition string and returns a content disposition object, or the default value if the string is invalid.
+* <code>[ToSingleLineString()](#ToSingleLineString)</code> - Converts this content disposition to a text string form suitable for inserting in HTTP headers.
+* <code>[ToString()](#ToString)</code> - Converts this content disposition to a text string form suitable for inserting in email headers.
+
+<a id="Attachment"></a>
 ### Attachment
 
     public static readonly PeterO.Mail.ContentDisposition Attachment;
 
 The content disposition value "attachment".
 
+<a id="Inline"></a>
 ### Inline
 
     public static readonly PeterO.Mail.ContentDisposition Inline;
 
 The content disposition value "inline".
 
+<a id="DispositionType"></a>
 ### DispositionType
 
     public string DispositionType { get; }
@@ -44,6 +67,7 @@ Gets a string containing this object's disposition type, such as "inline" or "at
 
 A string containing this object's disposition type, such as "inline" or "attachment".
 
+<a id="IsAttachment"></a>
 ### IsAttachment
 
     public bool IsAttachment { get; }
@@ -54,6 +78,7 @@ Gets a value indicating whether the disposition type is attachment.
 
  `true`  If the disposition type is attachment; otherwise, .  `false` .
 
+<a id="IsInline"></a>
 ### IsInline
 
     public bool IsInline { get; }
@@ -64,6 +89,7 @@ Gets a value indicating whether the disposition type is inline.
 
  `true`  If the disposition type is inline; otherwise, . `false` .
 
+<a id="Parameters"></a>
 ### Parameters
 
     public System.Collections.Generic.IDictionary Parameters { get; }
@@ -74,6 +100,7 @@ Gets a list of parameter names associated with this object and their values.For 
 
 A read-only list of parameter names associated with this object and their values. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
+<a id="Equals_object"></a>
 ### Equals
 
     public override bool Equals(
@@ -90,6 +117,7 @@ is an arbitrary object.
 
  `true` if the objects are equal; otherwise,  `false` .
 
+<a id="GetCreationDate"></a>
 ### GetCreationDate
 
     public int[] GetCreationDate();
@@ -100,6 +128,7 @@ Gets the date and time extracted from this content disposition's "creation-date"
 
 The extracted date and time as an 8-element array, or `null` if the "creation-date" parameter doesn't exist, is an empty string, or is yntactically invalid, or if the parameter's year would overflow a 32-bit igned integer.
 
+<a id="GetFilename"></a>
 ### GetFilename
 
     public string GetFilename();
@@ -110,6 +139,7 @@ Gets an adapted version of the "filename" parameter in this content disposition 
 
 The adapted file name in the form of a string. Returns the empty string if there is no "filename" parameter or that parameter is empty.
 
+<a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
@@ -120,6 +150,7 @@ Calculates the hash code of this object. No application or process IDs are used 
 
 A 32-bit hash code.
 
+<a id="GetModificationDate"></a>
 ### GetModificationDate
 
     public int[] GetModificationDate();
@@ -130,6 +161,7 @@ Gets the date and time extracted from this content disposition's "modification-d
 
 The extracted date and time as an 8-element array, or `null` if the "modification-date" parameter doesn't exist, is an empty string, r is syntactically invalid, or if the parameter's year would overflow a 2-bit signed integer.
 
+<a id="GetParameter_string"></a>
 ### GetParameter
 
     public string GetParameter(
@@ -155,6 +187,7 @@ The parameter <i>name</i>
 The parameter <i>name</i>
  is empty.
 
+<a id="GetReadDate"></a>
 ### GetReadDate
 
     public int[] GetReadDate();
@@ -165,6 +198,7 @@ Gets the date and time extracted from this content disposition's "read-date" par
 
 The extracted date and time as an 8-element array, or `null` if the "read-date" parameter doesn't exist, is an empty string, or is yntactically invalid, or if the parameter's year would overflow a 32-bit igned integer.
 
+<a id="MakeFilename_string"></a>
 ### MakeFilename
 
     public static string MakeFilename(
@@ -205,6 +239,7 @@ To the extent that the "name" parameter is not allowed in message bodies other t
 A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; spaces and tabs are collapsed to a single space; leading and trailing spaces and tabs are removed; and the filename is truncated if it would otherwise be too long. Also, for reasons stated in the remarks, a character that is the combined form of a base character and a combining slash is replaced with "!" followed by the base character. The returned string will be in normalization form C. Returns the empty string if  <i>str</i>
  is null or empty.
 
+<a id="Parse_string_PeterO_Mail_ContentDisposition"></a>
 ### Parse
 
     public static PeterO.Mail.ContentDisposition Parse(
@@ -237,6 +272,7 @@ A ContentDisposition object.
 The parameter <i>dispositionValue</i>
 is null.
 
+<a id="Parse_string"></a>
 ### Parse
 
     public static PeterO.Mail.ContentDisposition Parse(
@@ -260,6 +296,7 @@ A content disposition object, or ContentDisposition.Attachment" if  <i>dispoValu
 The parameter <i>dispoValue</i>
  is null.
 
+<a id="ToSingleLineString"></a>
 ### ToSingleLineString
 
     public string ToSingleLineString();
@@ -270,6 +307,7 @@ Converts this content disposition to a text string form suitable for inserting i
 
 A text string form of this content disposition.
 
+<a id="ToString"></a>
 ### ToString
 
     public override string ToString();

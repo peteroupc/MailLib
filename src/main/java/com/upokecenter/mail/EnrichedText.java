@@ -35,7 +35,13 @@ private static boolean IsTokenAsciiIgnoreCase(
     }
 
     private static String ParseColor(String str, int index, int endIndex) {
-    String[] colorNames = {"yellow" ,"red" ,"green" ,"blue" ,"black" ,"white",
+    String[] colorNames = {
+"yellow",
+  "red",
+  "green",
+  "blue",
+  "black",
+  "white",
   "cyan",
    "magenta"};
       for (String name : colorNames) {

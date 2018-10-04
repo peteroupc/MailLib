@@ -459,7 +459,25 @@ String tag = tagSub[tagIndex];
     }
 
     /**
-     *
+     * Finds the language tags that match a priority list of language ranges.
+     * @param ranges A list of language ranges (see documentation for the
+     * "IsLanguageRange" method), which should be given in order of
+     * descending preference.
+     * @param languages A list of language tags, which should be given in order of
+     * descending preference.
+     * @param extended If true, the ranges in "ranges" are extended language
+     * ranges; otherwise, they are basic language ranges.
+     * @param matchStarAtEnd If true, treats any range equaling "&#x2a;" as
+     * appearing at the end of the language priority list, no matter where
+     * it appears on that list.
+     * @return A list of language tags that match the given range, in descending
+     * order of preference.
+     * @throws java.lang.NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic or extended language range, or {@code
+     * languages} contains a value that is not a potentially valid language
+     * tag.
      */
     public static List<String> LanguageTagFilter(
            List<String> ranges,
@@ -557,7 +575,20 @@ String tag = tagSub[tagIndex];
     }
 
     /**
-     *
+     * Does a language tag lookup (under RFC 4647) for a matching language tag.
+     * @param range A basic language range (see the documentation for
+     * "IsLanguageRange").
+     * @param languages A list of language tags, which should be given in order of
+     * descending preference.
+     * @param defaultValue The value to return if no matching language tag was
+     * found.
+     * @return The matching language tag, or the parameter {@code defaultValue} if
+     * there is no matching language tag.
+     * @throws java.lang.NullPointerException The parameter {@code languages} is
+     * null.
+     * @throws IllegalArgumentException The parameter {@code range} is not a basic
+     * language range, or {@code languages} contains a value that is not a
+     * potentially valid language tag.
      */
     public static String LanguageTagLookup(
   String range,
@@ -567,7 +598,21 @@ String tag = tagSub[tagIndex];
     }
 
     /**
-     *
+     * Does a language tag lookup (under RFC 4647) for a matching language tag.
+     * @param ranges A list of basic language ranges (see documentation for the
+     * "IsLanguageRange" method), which should be given in order of
+     * descending preference.
+     * @param languages A list of language tags, which should be given in order of
+     * descending preference.
+     * @param defaultValue The value to return if no matching language tag was
+     * found.
+     * @return The matching language tag, or the parameter {@code defaultValue} if
+     * there is no matching language tag.
+     * @throws java.lang.NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic language range, or {@code languages}
+     * contains a value that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
   List<String> ranges,
@@ -577,7 +622,19 @@ String tag = tagSub[tagIndex];
     }
 
     /**
-     *
+     * Finds the language tags that match a priority list of basic language ranges.
+     * @param ranges A list of basic language ranges (see documentation for the
+     * "IsLanguageRange" method), which should be given in order of
+     * descending preference.
+     * @param languages A list of language tags, which should be given in order of
+     * descending preference.
+     * @return A list of language tags that match the given range, in descending
+     * order of preference.
+     * @throws java.lang.NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic language range, or {@code languages}
+     * contains a value that is not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
   List<String> ranges,
@@ -586,7 +643,21 @@ String tag = tagSub[tagIndex];
     }
 
     /**
-     *
+     * Does a language tag lookup (under RFC 4647) for a matching language tag.
+     * @param range A language range (see the documentation for "IsLanguageRange").
+     * @param languages A list of language tags, which should be given in order of
+     * descending preference.
+     * @param defaultValue The value to return if no matching language tag was
+     * found.
+     * @param extended If true, "range" is an extended language range; otherwise,
+     * it's a are basic language range.
+     * @return The matching language tag, or the parameter {@code defaultValue} if
+     * there is no matching language tag.
+     * @throws java.lang.NullPointerException The parameter {@code languages} is
+     * null.
+     * @throws IllegalArgumentException The parameter {@code range} is not a basic
+     * or extended language range, or {@code languages} contains a value
+     * that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
   String range,
@@ -601,7 +672,24 @@ String tag = tagSub[tagIndex];
     }
 
     /**
-     *
+     * Does a language tag lookup (under RFC 4647) for a matching language tag.
+     * @param ranges A list of language ranges (see documentation for the
+     * "IsLanguageRange" method), which should be given in order of
+     * descending preference.
+     * @param languages A list of language tags, which should be given in order of
+     * descending preference.
+     * @param defaultValue The value to return if no matching language tag was
+     * found.
+     * @param extended If true, the ranges in "ranges" are extended language
+     * ranges; otherwise, they are basic language ranges.
+     * @return The matching language tag, or the parameter {@code defaultValue} if
+     * there is no matching language tag.
+     * @throws java.lang.NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic or extended language range, or {@code
+     * languages} contains a value that is not a potentially valid language
+     * tag.
      */
     public static String LanguageTagLookup(
          List<String> ranges,

@@ -2,6 +2,8 @@ package com.upokecenter.mail;
 
 import java.util.*;
 
+import com.upokecenter.util.*;
+
   final class FormatFlowed {
 private FormatFlowed() {
 }
@@ -364,8 +366,7 @@ private FormatFlowed() {
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (true) : false; } private
-            static String ReplaceTwoOrMoreSpacesWithBR(String str) {
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? true : false; } private static String ReplaceTwoOrMoreSpacesWithBR(String str) {
       if (((str) == null || (str).length() == 0)) {
         return "";
       }
@@ -392,7 +393,8 @@ private FormatFlowed() {
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? (str.substring(4)) : str; }
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? str.substring(4) : str; }
+
             private static String HtmlEscapeStrong(String str) {
       int i = 0;
       StringBuilder sb = new StringBuilder();
@@ -911,7 +913,6 @@ private FormatFlowed() {
       String str,
       Map<String,
       String[]> links) {
-      // TODO: Reference-style link/image syntax
       str = CodeSpansAndEscapes(str);
       str = ReplaceAutomaticLinks(str);
       str = ReplaceImageLinks(str, links);

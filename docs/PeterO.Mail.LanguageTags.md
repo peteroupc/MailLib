@@ -4,6 +4,22 @@
 
 Contains methods for parsing and matching language tags.
 
+### Member Summary
+* <code>[GetLanguageList(string)](#GetLanguageList_string)</code> - Parses a language list from a Content-Language header field.
+* <code>[GetRangeListWithQuality(string)](#GetRangeListWithQuality_string)</code> - Parses a language range list from an Accept-Language header field.
+* <code>[IsLanguageRange(string)](#IsLanguageRange_string)</code> - Returns whether the given string is a basic language range under RFC 4647.
+* <code>[IsLanguageRange(string, bool)](#IsLanguageRange_string_bool)</code> - Returns whether the given string is a basic or extended language range under RFC 4647.
+* <code>[IsPotentiallyValidLanguageTag(string)](#IsPotentiallyValidLanguageTag_string)</code> - Returns true if (1) the given string is a well-formed language tag under RFC 5646 (that is, the string follows the syntax given in section 2.
+* <code>[LanguageTagCase(string)](#LanguageTagCase_string)</code> - Sets the given language tag to the case combination recommended by RFC 5646.
+* <code>[LanguageTagFilter(System.Collections.Generic.IList, System.Collections.Generic.IList)](#LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList)</code> - Finds the language tags that match a priority list of basic language ranges.
+* <code>[LanguageTagFilter(System.Collections.Generic.IList, System.Collections.Generic.IList, bool, bool)](#LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList_bool_bool)</code> - Finds the language tags that match a priority list of language ranges.
+* <code>[LanguageTagLookup(System.Collections.Generic.IList, System.Collections.Generic.IList, string)](#LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
+* <code>[LanguageTagLookup(System.Collections.Generic.IList, System.Collections.Generic.IList, string, bool)](#LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string_bool)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
+* <code>[LanguageTagLookup(string, System.Collections.Generic.IList, string)](#LanguageTagLookup_string_System_Collections_Generic_IList_string)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
+* <code>[LanguageTagLookup(string, System.Collections.Generic.IList, string, bool)](#LanguageTagLookup_string_System_Collections_Generic_IList_string_bool)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
+* <code>[MatchesLanguageTag(string, string)](#MatchesLanguageTag_string_string)</code> - Determines whether the given language tag matches the given language range.
+
+<a id="GetLanguageList_string"></a>
 ### GetLanguageList
 
     public static System.Collections.Generic.IList GetLanguageList(
@@ -21,6 +37,7 @@ A list of language tags. Returns an empty list if <i>str</i>
  is null or the empty string, or null if <i>str</i>
  syntactically invalid.
 
+<a id="GetRangeListWithQuality_string"></a>
 ### GetRangeListWithQuality
 
     public static System.Collections.Generic.IList GetRangeListWithQuality(
@@ -37,6 +54,7 @@ Parses a language range list from an Accept-Language header field.
 A list of language ranges with their associated qualities. The list will be sorted in descending order by quality; if two or more language ranges have the same quality, they will be sorted in the order in which they appeared in the given string. Returns null if  <i>str</i>
  is null or syntactically invalid.
 
+<a id="IsLanguageRange_string"></a>
 ### IsLanguageRange
 
     public static bool IsLanguageRange(
@@ -52,6 +70,7 @@ Returns whether the given string is a basic language range under RFC 4647. Examp
 
  `true` if the given string is a basic language range; otherwise,  `false` .
 
+<a id="IsLanguageRange_string_bool"></a>
 ### IsLanguageRange
 
     public static bool IsLanguageRange(
@@ -71,6 +90,7 @@ Returns whether the given string is a basic or extended language range under RFC
  `true` if the given string is a basic language range (depending on the <i>extended</i>
 parameter); otherwise,  `false` .
 
+<a id="IsPotentiallyValidLanguageTag_string"></a>
 ### IsPotentiallyValidLanguageTag
 
     public static bool IsPotentiallyValidLanguageTag(
@@ -86,6 +106,7 @@ Returns true if (1) the given string is a well-formed language tag under RFC 564
 
  `true` , if the string meets the conditions given in the summary, `false` otherwise.
 
+<a id="LanguageTagCase_string"></a>
 ### LanguageTagCase
 
     public static string LanguageTagCase(
@@ -102,6 +123,7 @@ Sets the given language tag to the case combination recommended by RFC 5646. For
 A text string in the recommended case combination, or null if  <i>str</i>
  is null.
 
+<a id="LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList"></a>
 ### LanguageTagFilter
 
     public static System.Collections.Generic.IList LanguageTagFilter(
@@ -132,6 +154,7 @@ The parameter <i>ranges</i>
  contains a value that is not a basic language range, or  <i>languages</i>
  contains a value that is not a potentially valid language tag.
 
+<a id="LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList_bool_bool"></a>
 ### LanguageTagFilter
 
     public static System.Collections.Generic.IList LanguageTagFilter(
@@ -168,6 +191,7 @@ The parameter <i>ranges</i>
 contains a value that is not a basic or extended language range, or <i>languages</i>
 contains a value that is not a potentially valid language tag.
 
+<a id="LanguageTagLookup_string_System_Collections_Generic_IList_string"></a>
 ### LanguageTagLookup
 
     public static string LanguageTagLookup(
@@ -201,6 +225,7 @@ The parameter <i>range</i>
  is not a basic language range, or <i>languages</i>
  contains a value that is not a potentially valid language tag.
 
+<a id="LanguageTagLookup_string_System_Collections_Generic_IList_string_bool"></a>
 ### LanguageTagLookup
 
     public static string LanguageTagLookup(
@@ -237,6 +262,7 @@ The parameter <i>range</i>
  is not a basic or extended language range, or  <i>languages</i>
  contains a value that is not a potentially valid language tag.
 
+<a id="LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string"></a>
 ### LanguageTagLookup
 
     public static string LanguageTagLookup(
@@ -271,6 +297,7 @@ The parameter <i>ranges</i>
  contains a value that is not a basic language range, or  <i>languages</i>
  contains a value that is not a potentially valid language tag.
 
+<a id="LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string_bool"></a>
 ### LanguageTagLookup
 
     public static string LanguageTagLookup(
@@ -308,6 +335,7 @@ The parameter <i>ranges</i>
  contains a value that is not a basic or extended language range, or  <i>languages</i>
  contains a value that is not a potentially valid language tag.
 
+<a id="MatchesLanguageTag_string_string"></a>
 ### MatchesLanguageTag
 
     public static bool MatchesLanguageTag(

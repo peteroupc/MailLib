@@ -29,6 +29,14 @@ THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
 
 Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
 
+### Member Summary
+* <code>[IsNormalized(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Determines whether the text provided by a character input is normalized.
+* <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Determines whether the given string is in the given Unicode normalization form.
+* <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
+* <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
+* <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
+
+<a id="Void_ctor_ICharacterInput"></a>
 ### NormalizerInput Constructor
 
     public NormalizerInput(
@@ -41,6 +49,7 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
  * <i>input</i>: The parameter <i>input</i>
 is an ICharacterInput object.
 
+<a id="Void_ctor_ICharacterInput_Normalization"></a>
 ### NormalizerInput Constructor
 
     public NormalizerInput(
@@ -62,6 +71,7 @@ is an ICharacterInput object.
 The parameter <i>stream</i>
 is null.
 
+<a id="Void_ctor_String"></a>
 ### NormalizerInput Constructor
 
     public NormalizerInput(
@@ -73,6 +83,7 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
  * <i>str</i>: A string specifying the text to normalize.
 
+<a id="Void_ctor_String_Int32_Int32_Normalization"></a>
 ### NormalizerInput Constructor
 
     public NormalizerInput(
@@ -97,6 +108,7 @@ begins.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
+<a id="Void_ctor_String_Normalization"></a>
 ### NormalizerInput Constructor
 
     public NormalizerInput(
@@ -112,6 +124,7 @@ is a text string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
+<a id="IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>
 ### IsNormalized
 
     public static bool IsNormalized(
@@ -136,6 +149,7 @@ Determines whether the text provided by a character input is normalized.
 The parameter <i>chars</i>
 is null.
 
+<a id="IsNormalized_string_PeterO_Text_Normalization"></a>
 ### IsNormalized
 
     public static bool IsNormalized(
@@ -160,6 +174,7 @@ Determines whether the given string is in the given Unicode normalization form.
 The parameter <i>str</i>
 is null.
 
+<a id="Normalize_string_PeterO_Text_Normalization"></a>
 ### Normalize
 
     public static string Normalize(
@@ -189,6 +204,7 @@ contains an unpaired surrogate code point.
 The parameter <i>str</i>
 is null.
 
+<a id="Read_int_int_int"></a>
 ### Read
 
     public sealed int Read(
@@ -228,6 +244,7 @@ is less than 0 or greater than <i>chars</i>
 is less than <i>length</i>
 .
 
+<a id="ReadChar"></a>
 ### ReadChar
 
     public sealed int ReadChar();

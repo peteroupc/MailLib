@@ -22,11 +22,11 @@ Deprecated.
 * `NormalizingCharacterInput​(String str,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(List<Integer> characterList)`<br>
- Deprecated.
+* `NormalizingCharacterInput​(List<Integer> characterList) NormalizingCharacterInput`<br>
+ Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput​(List<Integer> characterList,
-                         Normalization form)`<br>
- Deprecated.
+                         Normalization form) NormalizingCharacterInput`<br>
+ Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 * `static List<Integer> GetChars​(com.upokecenter.text.ICharacterInput chars,
         Normalization form)`<br>
  Deprecated.
@@ -89,11 +89,11 @@ Either convert the list to a String or wrap it in an ICharacterInput and
 * `NormalizingCharacterInput​(String str,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(List<Integer> characterList)`<br>
- Deprecated.
+* `NormalizingCharacterInput​(List<Integer> characterList) NormalizingCharacterInput`<br>
+ Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput​(List<Integer> characterList,
-                         Normalization form)`<br>
- Deprecated.
+                         Normalization form) NormalizingCharacterInput`<br>
+ Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 
 ## Method Details
 
@@ -116,9 +116,21 @@ Deprecated.
 ### NormalizingCharacterInput
     public NormalizingCharacterInput​(List<Integer> characterList)
 Deprecated.
+
+**Parameters:**
+
+* <code>characterList</code> - The parameter <code>characterList</code> is an IList object.
+
 ### NormalizingCharacterInput
     public NormalizingCharacterInput​(List<Integer> characterList, Normalization form)
 Deprecated.
+
+**Parameters:**
+
+* <code>characterList</code> - The parameter <code>characterList</code> is a public object.
+
+* <code>form</code> - The parameter <code>form</code> is a Normalization object.
+
 ### NormalizingCharacterInput
     public NormalizingCharacterInput​(String str, int index, int length, Normalization form)
 Deprecated.
@@ -287,6 +299,22 @@ Deprecated.
 Deprecated.
 <div class='deprecationComment'>Either convert the list to a String or wrap it in an ICharacterInput and
  call the corresponding overload instead.</div>
+
+**Parameters:**
+
+* <code>charList</code> - A list of Unicode code points.
+
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
+
+**Returns:**
+
+* <code>true</code> if the given list of characters is in the given Unicode
+ normalization form; otherwise, <code>false</code> .
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>charList</code> is null.
 
 ### ReadChar
     public int ReadChar()

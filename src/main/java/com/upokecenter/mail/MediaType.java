@@ -44,8 +44,9 @@ import com.upokecenter.text.*;
       Encodings.GetEncoding("us-ascii", true);
 
     /**
-     * Gets the name of this media type's top-level type (such as "text" or
-     * "audio").
+     * Gets the name of this media type's top-level type (such as "text" in
+     * "text/plain", or "audio" in "audio/basic"). The resulting string will
+     * be in lowercase letters.
      * @return The name of this media type's top-level type (such as "text" or
      * "audio".
      */
@@ -97,7 +98,8 @@ import com.upokecenter.text.*;
     private final String subType;
 
     /**
-     * Gets this media type's subtype.
+     * Gets this media type's subtype (for example, "plain" in "text/plain"). The
+     * resulting string will be in lowercase letters.
      * @return This media type's subtype.
      */
     public final String getSubType() {
@@ -1111,7 +1113,8 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
 
     /**
      * Gets the top level type and subtype of this media type, separated by a
-     * slash; for example, "text/plain".
+     * slash; for example, "text/plain". The resulting string will be in
+     * lowercase letters.
      * @return The top level type and subtype of this media type, separated by a
      * slash; for example, "text/plain".
      */

@@ -12,30 +12,56 @@ This type is immutable, meaning its values can't be changed once it' s created. 
 
 <b>Note:</b>According to RFC 2049, unrecognized subtypes of the top-level type `multipart` must be treated as `multipart/mixed` and unrecognized media types as the media type `application/octet-stream` .
 
+### Member Summary
+* <code>[public static readonly PeterO.Mail.MediaType ApplicationOctetStream;](#ApplicationOctetStream)</code> - Specifies the media type "application/octet-stream", used for arbitrary binary data.
+* <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
+* <code>[GetCharset()](#GetCharset)</code> - Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
+* <code>[GetHashCode()](#GetHashCode)</code> - Calculates the hash code of this object.
+* <code>[GetParameter(string)](#GetParameter_string)</code> - Gets the value of a parameter in this media type, such as "charset" or "format".
+* <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
+* <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type ("text/*").
+* <code>[public static readonly PeterO.Mail.MediaType MessageRfc822;](#MessageRfc822)</code> - Specifies the media type "message/rfc822", used for Internet mail messages.
+* <code>[Parameters](#Parameters)</code> - Gets a list of the parameters contained in this media type object.
+* <code>[Parse(string)](#Parse_string)</code> - Parses a media type string and returns a media type object.
+* <code>[Parse(string, PeterO.Mail.MediaType)](#Parse_string_PeterO_Mail_MediaType)</code> - Parses a media type string and returns a media type object, or the default value if the string is invalid.
+* <code>[SubType](#SubType)</code> - Gets this media type's subtype (for example, "plain" in "text/plain").
+* <code>[public static readonly PeterO.Mail.MediaType TextPlainAscii;](#TextPlainAscii)</code> - Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
+* <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
+* <code>[ToSingleLineString()](#ToSingleLineString)</code> - Converts this media type to a text string form suitable for inserting in HTTP headers.
+* <code>[ToString()](#ToString)</code> - Converts this media type to a text string form suitable for inserting in email headers.
+* <code>[ToUriSafeString()](#ToUriSafeString)</code> - Converts this media type to a text string form suitable for data URIs.
+* <code>[TopLevelType](#TopLevelType)</code> - Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic").
+* <code>[TypeAndSubType](#TypeAndSubType)</code> - Gets the top level type and subtype of this media type, separated by a slash; for example, "text/plain".
+
+<a id="ApplicationOctetStream"></a>
 ### ApplicationOctetStream
 
     public static readonly PeterO.Mail.MediaType ApplicationOctetStream;
 
 Specifies the media type "application/octet-stream", used for arbitrary binary data.
 
+<a id="MessageRfc822"></a>
 ### MessageRfc822
 
     public static readonly PeterO.Mail.MediaType MessageRfc822;
 
 Specifies the media type "message/rfc822", used for Internet mail messages.
 
+<a id="TextPlainAscii"></a>
 ### TextPlainAscii
 
     public static readonly PeterO.Mail.MediaType TextPlainAscii;
 
 Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
 
+<a id="TextPlainUtf8"></a>
 ### TextPlainUtf8
 
     public static readonly PeterO.Mail.MediaType TextPlainUtf8;
 
 Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
 
+<a id="IsMultipart"></a>
 ### IsMultipart
 
     public bool IsMultipart { get; }
@@ -46,6 +72,7 @@ Gets a value indicating whether this is a multipart media type.
 
  `true`  If this is a multipart media type; otherwise, . `false` .
 
+<a id="IsText"></a>
 ### IsText
 
     public bool IsText { get; }
@@ -56,6 +83,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
  `true` If this is a text media type; otherwise, . `false` .
 
+<a id="Parameters"></a>
 ### Parameters
 
     public System.Collections.Generic.IDictionary Parameters { get; }
@@ -66,6 +94,7 @@ Gets a list of the parameters contained in this media type object.
 
 A list of the parameters contained in this media type object; the names of each parameter appear in an undefined order. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
+<a id="SubType"></a>
 ### SubType
 
     public string SubType { get; }
@@ -76,6 +105,7 @@ Gets this media type's subtype (for example, "plain" in "text/plain"). The resul
 
 This media type's subtype.
 
+<a id="TopLevelType"></a>
 ### TopLevelType
 
     public string TopLevelType { get; }
@@ -86,6 +116,7 @@ Gets the name of this media type's top-level type (such as "text" in "text/plain
 
 The name of this media type's top-level type (such as "text" or "audio".
 
+<a id="TypeAndSubType"></a>
 ### TypeAndSubType
 
     public string TypeAndSubType { get; }
@@ -96,6 +127,7 @@ Gets the top level type and subtype of this media type, separated by a slash; fo
 
 The top level type and subtype of this media type, separated by a slash; for example, "text/plain".
 
+<a id="Equals_object"></a>
 ### Equals
 
     public override bool Equals(
@@ -112,6 +144,7 @@ is an arbitrary object.
 
  `true` if this object and another object are equal; otherwise,  `false` .
 
+<a id="GetCharset"></a>
 ### GetCharset
 
     public string GetCharset();
@@ -122,6 +155,7 @@ Gets this media type's "charset" parameter, naming a character encoding used to 
 
 If the "charset" parameter is present and non-empty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that result's basic upper-case letters A to Z (U+0041 to U+005A) are converted to lower case. If the "charset" parameter is absent or empty, returns the default value, if any, for that parameter given the media type (e.g., "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
 
+<a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
@@ -132,6 +166,7 @@ Calculates the hash code of this object. No application or process IDs are used 
 
 A 32-bit signed integer.
 
+<a id="GetParameter_string"></a>
 ### GetParameter
 
     public string GetParameter(
@@ -156,6 +191,7 @@ The parameter <i>name</i>
  * System.ArgumentException:
 Name is empty.
 
+<a id="Parse_string"></a>
 ### Parse
 
     public static PeterO.Mail.MediaType Parse(
@@ -172,6 +208,7 @@ Parses a media type string and returns a media type object. For further informat
 A media type object, or MediaType.TextPlainAscii if <i>mediaTypeValue</i>
 is empty or syntactically invalid.
 
+<a id="Parse_string_PeterO_Mail_MediaType"></a>
 ### Parse
 
     public static PeterO.Mail.MediaType Parse(
@@ -204,6 +241,7 @@ A MediaType object.
 The parameter <i>str</i>
 is null.
 
+<a id="ToSingleLineString"></a>
 ### ToSingleLineString
 
     public string ToSingleLineString();
@@ -214,6 +252,7 @@ Converts this media type to a text string form suitable for inserting in HTTP he
 
 A text string form of this media type.
 
+<a id="ToString"></a>
 ### ToString
 
     public override string ToString();
@@ -224,6 +263,7 @@ Converts this media type to a text string form suitable for inserting in email h
 
 A text string form of this media type.
 
+<a id="ToUriSafeString"></a>
 ### ToUriSafeString
 
     public string ToUriSafeString();

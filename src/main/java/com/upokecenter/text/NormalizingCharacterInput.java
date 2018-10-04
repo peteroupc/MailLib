@@ -94,14 +94,19 @@ import java.util.*;
       }
 
     /**
-     *
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param characterList The parameter {@code characterList} is an IList object.
      */
         public NormalizingCharacterInput(List<Integer> characterList) {
  this(characterList, Normalization.NFC);
       }
 
     /**
-     *
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param characterList The parameter {@code characterList} is a public object.
+     * @param form The parameter {@code form} is a Normalization object.
      */
         public NormalizingCharacterInput(
     List<Integer> characterList,
@@ -264,7 +269,14 @@ import java.util.*;
    }
 
     /**
-     *
+     * Determines whether the given list of characters is in the given Unicode
+     * normalization form.
+     * @param charList A list of Unicode code points.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
+     * @return {@code true} if the given list of characters is in the given Unicode
+     * normalization form; otherwise, {@code false} .
+     * @throws java.lang.NullPointerException The parameter {@code charList} is null.
      * @deprecated Either convert the list to a String or wrap it in an ICharacterInput and
 * call the corresponding overload instead.
  */

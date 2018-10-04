@@ -17,13 +17,7 @@ namespace PeterO {
       if (dateTime[1] < 1 || dateTime[1] > 12 || dateTime[2] < 1) {
         return false;
       }
-      int yr = dateTime[0];
-      yr %= 400;
-      if (yr < 0) {
-        yr += 400;
-      }
-      bool leap = yr % 4 == 0 && (yr % 100 != 0 ||
-           yr % 400 == 0);
+      bool leap = IsLeapYear(dateTime[0]);
       if (dateTime[1] == 4 || dateTime[1] == 6 || dateTime[1] == 9 ||
         dateTime[1] == 11) {
         if (dateTime[2] > 30) {
@@ -43,6 +37,81 @@ dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||
 dateTime[6] < 0 ||
 dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         dateTime[7] >= 1440);
+    }
+
+    private static bool IsLeapYear(int yr) {
+      yr %= 400;
+      if (yr < 0) {
+        yr += 400;
+      }
+      return (((yr % 4) == 0) && ((yr % 100) != 0)) || ((yr % 400) == 0);
+    }
+
+    public static void AddMinutes(int[] dateTime, int minutes) {
+      if (minutes < -1439) {
+  throw new ArgumentException("minutes (" + minutes +
+    ") is not greater or equal to " + (-1439));
+}
+if (minutes > 1439) {
+  throw new ArgumentException("minutes (" + minutes +
+    ") is not less or equal to 1439");
+}
+      int homi = (dateTime[3] * 60) + dateTime[4];
+      homi += minutes;
+      if (homi >= 0 && homi < 1440) {
+        dateTime[3] = (homi / 60) % 24;
+        dateTime[4] = homi % 60;
+      } else if (homi < 0) {
+        homi += 1440;
+        dateTime[3] = (homi / 60) % 24;
+        dateTime[4] = homi % 60;
+        DecrementDay(dateTime);
+      } else {
+        homi -= 1440;
+        dateTime[3] = (homi / 60) % 24;
+        dateTime[4] = homi % 60;
+        IncrementDay(dateTime);
+      }
+    }
+
+    public static void DecrementDay(int[] dateTime) {
+      int da = dateTime[2] - 1;
+      if (da >= 1) {
+        dateTime[2] = da;
+        return;
+      }
+      int days = numdays[dateTime[1] - 1];
+      if (dateTime[1] == 2) {
+        days = IsLeapYear(dateTime[0]) ? 29 : 28;
+      }
+      dateTime[2] = days;
+      dateTime[1] = dateTime[1] - 1;
+      if (dateTime[1] <= 0) {
+       dateTime[0] = dateTime[0] - 1;
+       dateTime[1] = 12;
+      }
+    }
+
+    public static void IncrementDay(int[] dateTime) {
+      int da = dateTime[2] + 1;
+      if (da <= 28) {
+        dateTime[2] = da;
+        return;
+      }
+      int days = numdays[dateTime[1] - 1];
+      if (dateTime[1] == 2) {
+        days = IsLeapYear(dateTime[0]) ? 29 : 28;
+      }
+      if (da <= days) {
+        dateTime[2] = da;
+        return;
+      }
+      dateTime[2] = 1;
+      dateTime[1] = dateTime[1] + 1;
+      if (dateTime[1] >= 13) {
+       dateTime[0] = dateTime[0] + 1;
+       dateTime[1] = 1;
+      }
     }
 
     public static int GetDayOfWeek(int[] dateTime) {
