@@ -1,9 +1,371 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using PeterO;
 
+namespace PeterO.Mail {
+  internal static class FormatFlowed {
+    private static string HtmlEscape(string str) {
+      var i = 0;
+      for (; i < str.Length; ++i) {
+        if (str[i] == '&' || str[i] == '<' || str[i] == '>') {
+          break;
+        }
+      }
+      if (i == str.Length) {
+        return str;
+      }
+      var sb = new StringBuilder();
+      sb.Append(str.Substring(0, i));
+      for (; i < str.Length; ++i) {
+        switch (str[i]) {
+          case '&':
+            sb.Append("&amp;");
+            break;
+          case '<':
+            sb.Append("&lt;");
+            break;
+          case '>':
+            sb.Append("&gt;");
+            break;
+          default:
+            sb.Append(str[i]);
+            break;
+        }
+      }
+      return sb.ToString();
+    }
+
+    public static string NonFormatFlowedText(string str) {
+      var sb = new StringBuilder();
+      sb.Append("<pre>");
+      sb.Append(HtmlEscape(str));
+      sb.Append("</pre>");
+      return sb.ToString();
+    }
+
+    public static string FormatFlowedText(string str, bool delSp) {
+      var i = 0;
+      int lineStart = i;
+      var lastQuotes = 0;
+      var paragraph = new StringBuilder();
+      var formatted = new StringBuilder();
+      var haveParagraph = false;
+      while (i <= str.Length) {
+        if (i == str.Length || (str[i] == 0x0d && i + 1 < str.Length &&
+          str[i + 1] == 0x0a)) {
+          bool lastLine = i == str.Length;
+          int lineEnd = i;
+          int index = lineStart;
+          var quotes = 0;
+          var flowed = false;
+          var signature = false;
+          while (index < lineEnd && str[index] == '>') {
+            ++quotes;
+            ++index;
+          }
+          if (index < lineEnd && str[index] == ' ') {
+            // Space stuffing
+            ++index;
+          }
+          if (index + 3 == lineEnd && str[index] == '-' &&
+             str[index + 1] == '-' && str[index + 2] == ' ') {
+            signature = true;
+          } else if (index < lineEnd && str[lineEnd - 1] == ' ') {
+            flowed = true;
+            if (delSp) {
+              --lineEnd;
+            }
+          }
+          var endedParagraph = false;
+          if (signature || lastQuotes != quotes) {
+            // Signature line reached, or
+            // change in quote depth, or fixed after flowed
+            if (haveParagraph) {
+              formatted.Append("<p>")
+                    .Append(HtmlEscape(paragraph.ToString()))
+                    .Append("</p>");
+              haveParagraph = false;
+              endedParagraph = true;
+              paragraph.Remove(0, paragraph.Length);
+            }
+          } else if (haveParagraph && (!flowed || lastLine)) {
+            formatted.Append("<p>").Append(HtmlEscape(paragraph.ToString()));
+            haveParagraph = false;
+            endedParagraph = true;
+            paragraph.Remove(0, paragraph.Length);
+            formatted.Append(
+                HtmlEscape(str.Substring(index, lineEnd - index)))
+                    .Append("</p>");
+          }
+          if (lastQuotes < quotes) {
+            for (var k = lastQuotes; k < quotes; ++k) {
+              formatted.Append("<blockquote>");
+            }
+          } else if (quotes < lastQuotes) {
+            for (var k = quotes; k < lastQuotes; ++k) {
+              formatted.Append("</blockquote>");
+            }
+          }
+          if (!endedParagraph) {
+            if (flowed) {
+              haveParagraph = true;
+              paragraph.Append(str.Substring(index, lineEnd - index));
+            } else {
+              // Line is fixed, or is a signature line
+              if (signature) {
+                formatted.Append("<hr/>");
+              } else {
+                if (index < lineEnd) {
+                  formatted.Append("<tt>");
+                  formatted.Append(
+                    HtmlEscape(str.Substring(index, lineEnd - index)));
+                  formatted.Append("</tt>");
+                }
+                if (!lastLine) {
+                  formatted.Append("<br/>\r\n");
+                }
+              }
+            }
+          }
+          if (i == str.Length && quotes > 0) {
+            for (var k = 0; k < quotes; ++k) {
+              formatted.Append("</blockquote>");
+            }
+          }
+          lineStart = i + 2;
+          lastQuotes = quotes;
+          if (i == str.Length) {
+            break;
+          }
+        }
+        ++i;
+      }
+      return formatted.ToString();
+    }
+
+    private static bool IsQuoteLine(string str) {
+      return !String.IsNullOrEmpty(str) && str[0] == '>';
+    }
+
+    private static bool IsBarLine(string str) {
+      if (str == null || str.Length < 3) {
+        return false;
+      }
+      if (str[0] != '-' && str[0] != '*' && str[0] != '_') {
+        return false;
+      }
+      var count = 0;
+      for (var i = 0; i < str.Length; ++i) {
+        if (str[i] == str[0]) {
+          if (count < 3) {
+            ++count;
+          }
+        } else if (str[i] != ' ') {
+          return false;
+        }
+      }
+      return count >= 3;
+    }
+
+    private static bool IsEqualsLine(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return false;
+      }
+      for (var i = 0; i < str.Length; ++i) {
+        if (str[i] != '=') {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static bool IsDashLine(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return false;
+      }
+      for (var i = 0; i < str.Length; ++i) {
+        if (str[i] != '-') {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static bool IsBlankishLine(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return true;
+      }
+      for (var i = 0; i < str.Length; ++i) {
+        if (str[i] != '\t' && str[i] != ' ') {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static bool IsHeadingLine(string str) {
+      return !String.IsNullOrEmpty(str) && str[0] == '#';
+    }
+
+    private static int HeadingLevel(string str) {
+      if (str == null) {
+        return 0;
+      }
+      for (var i = 0; i < str.Length; ++i) {
+        if (str[i] != '#') {
+          return Math.Min(i, 6);
+        }
+      }
+      return Math.Min(str.Length, 6);
+    }
+
+    private static string GetLinkTitle(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return null;
+      }
+      var index = 0;
+      while (index < str.Length && (str[index] == ' ' ||
+          str[index] == '\t')) {
+        ++index;
+      }
+      if (index == 0 || index == str.Length) {
+        return null;
+      }
+      if (str[index] == '"' || str[index] == '\'' || str[index] == '\u0028') {
+        int titleStart = index + 1;
+        char endDelim = '"';
+        if (str[index] == '\'') {
+          endDelim = '\'';
+        }
+        if (str[index] == '\u0028') {
+          endDelim = '\u0029';
+        }
+        ++index;
+        while (index < str.Length && str[index] != endDelim) {
+          ++index;
+        }
+        if (index == str.Length) {
+          return null;
+        }
+        int titleEnd = index;
+        ++index;
+        while (index < str.Length && (str[index] == ' ' ||
+            str[index] == '\t')) {
+          ++index;
+        }
+        return (
+  index != str.Length) ? null : str.Substring(
+  titleStart,
+  titleEnd - titleStart);
+      }
+      return null;
+    }
+
+    private static string[] GetLinkLine(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return null;
+      }
+      str = TrimShortSpaces(str);
+      if (str.Length > 0 && str[0] == '[') {
+        var index = 1;
+        int labelStart = index;
+        while (index < str.Length && str[index] != ']') {
+          ++index;
+        }
+        if (index == str.Length) {
+          return null;
+        }
+        int labelEnd = index;
+        ++index;
+        if (index >= str.Length || str[index] != ':') {
+          return null;
+        }
+        ++index;
+        int tmp = index;
+        while (index < str.Length && (str[index] == ' ' ||
+            str[index] == '\t')) {
+          ++index;
+        }
+        if (tmp == index) {
+          return null;
+        }
+        int urlStart = index;
+        string label = DataUtilities.ToLowerCaseAscii(
+          str.Substring(labelStart, labelEnd - labelStart));
+        string url = str.Substring(urlStart, str.Length - urlStart);
+        string[] urltitle = SplitUrl(url, true);
+        url = urltitle[0];
+        if (url.Length > 0 && url[0] == '<' && url[url.Length - 1] == '>') {
+          url = url.Substring(1, url.Length - 2);
+        }
+        return new string[] { label, url, urltitle[1] };
+      }
+      return null;
+    }
+
+    private static string TrimShortSpaces(string str) {
+      if (str != null) {
+        var i = 0;
+        while (i < str.Length) {
+          if (str[i] == ' ') {
+            if (i >= 4) {
+              return str;
+            }
+          } else if (i <= 3) {
+            return str.Substring(i);
+          }
+          ++i;
+        }
+      }
+      return str;
+    }
+
+    private static bool IsUnorderedListLine(string str) {
+      str = TrimShortSpaces(str);
+      return str != null && str.Length >= 2 &&
+          (str[0] == '-' || str[0] == '*' || str[0] == '+') &&
+          (str[1] == ' ' || str[1] == '\t');
+    }
+
+    private static bool IsOrderedListLine(string str) {
+      return IsOrderedListLine(str, true);
+    }
+
+    private static bool IsOrderedListLine(string str, bool trim) {
+      if (trim) {
+        str = TrimShortSpaces(str);
+      }
+      if (str == null) {
+        return false;
+      }
+      var digit = false;
+      var i = 0;
+      while (i < str.Length) {
+        if (str[i] >= '0' && str[i] <= '9') {
+          digit = true;
+        } else if (str[i] == '.' && i + 1 < str.Length &&
+          (str[i + 1] == ' ' || str[i + 1] == '\t')) {
+          return digit;
+        } else {
+          return false;
+        }
+        ++i;
+      }
+      return false;
+    }
+
+    private static bool IsCodeBlockLine(string str) {
+      if (String.IsNullOrEmpty(str)) {
+        return false;
+      }
+      if (str.Length >= 1 && str[0] == '\t') {
+        return true;
+      }
+      return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
+
+          str[2] == ' ' && str[3] == ' ') ? true : false; } private static
+            string ReplaceTwoOrMoreSpacesWithBR(string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
       }
@@ -30,9 +392,7 @@ using PeterO;
       }
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
 
-
           str[2] == ' ' && str[3] == ' ') ? str.Substring(4) : str; }
-
 
             private static string HtmlEscapeStrong(string str) {
       var i = 0;
@@ -552,8 +912,6 @@ using PeterO;
       string str,
       IDictionary<string,
       string[]> links) {
-
-
       str = CodeSpansAndEscapes(str);
       str = ReplaceAutomaticLinks(str);
       str = ReplaceImageLinks(str, links);

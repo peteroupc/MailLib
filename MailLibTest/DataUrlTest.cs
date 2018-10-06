@@ -8714,7 +8714,6 @@ Assert.AreEqual(
       }
     }
 
-
     private static void AssertIdempotencyNeg(
   string s) { Assert.IsTrue(!(
   (bool)URIUtility.isValidIRI(
@@ -8917,7 +8916,6 @@ Assert.AreEqual(
       AssertIdempotencyNeg("e://[" + str + "%25NA<>NA]");
       AssertIdempotencyNeg("e://[" + str + "%25NA%E2NA]");
       AssertIdempotencyNeg("e://[" + str + "%25NA%2ENA]");
-
     }
 
     private static void assertIPv6(string str) {
@@ -8934,7 +8932,6 @@ Assert.AreEqual(
       // assertIdempotency("e://[" + str + "%25NANA]");
       // assertIdempotency("e://[" + str + "%25NA%E2NA]");
       // assertIdempotency("e://[" + str + "%25NA%2ENA]");
-
     }
   }
 }

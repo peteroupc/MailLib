@@ -43,7 +43,6 @@ Stores an arbitrary string and a "quality value" for that string.
 * [com.upokecenter.mail.MessageDataException](com.upokecenter.mail.MessageDataException.md) -
 Exception thrown when a message has invalid syntax.
 
-
 * [com.upokecenter.mail.transforms.Base64Transform](com.upokecenter.mail.transforms.Base64Transform.md) - &amp;nbsp;
 
 * [com.upokecenter.mail.transforms.BEncodingStringTransform](com.upokecenter.mail.transforms.BEncodingStringTransform.md) - &amp;nbsp;
@@ -63,8 +62,6 @@ Exception thrown when a message has invalid syntax.
 * [com.upokecenter.mail.transforms.SevenBitTransform](com.upokecenter.mail.transforms.SevenBitTransform.md) - &amp;nbsp;
 
 * [com.upokecenter.mail.transforms.TransformWithUnget](com.upokecenter.mail.transforms.TransformWithUnget.md) - &amp;nbsp;
-
-
 
 * [com.upokecenter.text.Normalization](com.upokecenter.text.Normalization.md) -
 Represents a Unicode normalization form.

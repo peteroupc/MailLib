@@ -1,9 +1,7 @@
-
 using System;
 using System.Text;
 
 namespace Test {
-
     internal static class URIUtility {
     internal enum ParseMode {
     IRIStrict,
@@ -890,13 +888,11 @@ totalParts += 2;
  }
  if (doubleColon) {
   int resid = 8 - totalParts;
-
             if (resid == 0) {
               // Purported IPv6 address contains
               // 8 parts and a double colon
               return -1;
             }
-
   var newAddressParts = new int[8];
   Array.Copy(addressParts, newAddressParts, doubleColonPos);
   Array.Copy(

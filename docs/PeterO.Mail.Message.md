@@ -52,7 +52,6 @@ Note that this implementation can decode an RFC 2047 encoded word that uses ISO-
 
 Note that this library (the MailLib library) has no facilities for sending and receiving email messages, since that's outside this library's scope.
 
-
 ### Member Summary
 * <code>[AddAttachment(PeterO.Mail.MediaType)](#AddAttachment_PeterO_Mail_MediaType)</code> - Adds an attachment with an empty body and with the given media type to this message.
 * <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given media type.
@@ -110,7 +109,183 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[ToMailtoUrl()](#ToMailtoUrl)</code> - Generates a MailTo URI (uniform resource identifier) corresponding to this message.
 
 <a id="Void_ctor_Byte"></a>
+### Message Constructor
 
+    public Message(
+        byte[] bytes);
+
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given byte array to initialize the message.
+
+<b>Parameters:</b>
+
+ * <i>bytes</i>: A readable data stream.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>bytes</i>
+ is null.
+
+<a id="Void_ctor_Stream"></a>
+### Message Constructor
+
+    public Message(
+        System.IO.Stream stream);
+
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given Stream object to initialize the message.
+
+<b>Parameters:</b>
+
+ * <i>stream</i>: A readable data stream.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>stream</i>
+ is null.
+
+<a id="BccAddresses"></a>
+### BccAddresses
+
+    public System.Collections.Generic.IList BccAddresses { get; }
+
+<b>Deprecated.</b> Use GetAddresses("Bcc") instead.
+
+Gets a list of addresses found in the BCC header field or fields.
+
+<b>Returns:</b>
+
+A list of addresses found in the BCC header field or fields.
+
+<a id="BodyString"></a>
+### BodyString
+
+    public string BodyString { get; }
+
+Gets the body of this message as a text string.
+
+<b>Returns:</b>
+
+The body of this message as a text string.
+
+<b>Exceptions:</b>
+
+ * System.NotSupportedException:
+Either this message is a multipart message, so it doesn't have its own body text, or this message has no character encoding declared or assumed for it (which is usually the case for non-text messages), or the character encoding is not supported.
+
+<a id="CCAddresses"></a>
+### CCAddresses
+
+    public System.Collections.Generic.IList CCAddresses { get; }
+
+<b>Deprecated.</b> Use GetAddresses("Cc") instead.
+
+Gets a list of addresses found in the CC header field or fields.
+
+<b>Returns:</b>
+
+A list of addresses found in the CC header field or fields.
+
+<a id="ContentDisposition"></a>
+### ContentDisposition
+
+    public PeterO.Mail.ContentDisposition ContentDisposition { get; set; }
+
+Gets or sets this message's content disposition. The content disposition specifies how a user agent should display or otherwise handle this message. Can be set to null. If set to a disposition or to null, updates the Content-Disposition header field as appropriate.
+
+<b>Returns:</b>
+
+This message's content disposition, or null if none is specified.
+
+<a id="ContentType"></a>
+### ContentType
+
+    public PeterO.Mail.MediaType ContentType { get; set; }
+
+Gets or sets this message's media type. When getting, the media type may differ in certain cases from the value of the Content-Type header field, if any, and may have a value even if the Content-Type header field is absent from this message. If set to a media type, updates the Content-Type header field as appropriate. Cannot be set to null.
+
+<b>Returns:</b>
+
+This message's media type.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+This value is being set and "value" is null.
+
+<a id="FileName"></a>
+### FileName
+
+    public string FileName { get; }
+
+Gets a file name suggested by this message for saving the message's body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.
+
+This method generates a file name based on the `filename` parameter of the Content-Disposition header field, if it exists, or on he `name` parameter of the Content-Type header field, otherwise.
+
+<b>Returns:</b>
+
+A suggested name for the file. Returns the empty string if there is no filename suggested by the content type or content disposition, or if that filename is an empty string.
+
+<a id="FromAddresses"></a>
+### FromAddresses
+
+    public System.Collections.Generic.IList FromAddresses { get; }
+
+<b>Deprecated.</b> Use GetAddresses("From") instead.
+
+Gets a list of addresses found in the From header field or fields.
+
+<b>Returns:</b>
+
+A list of addresses found in the From header field or fields.
+
+<a id="HeaderFields"></a>
+### HeaderFields
+
+    public System.Collections.Generic.IList HeaderFields { get; }
+
+Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U+005A] are converted to lower case) and the value is the header field's value.
+
+<b>Returns:</b>
+
+A snapshot of the header fields of this message.
+
+<a id="Parts"></a>
+### Parts
+
+    public System.Collections.Generic.IList Parts { get; }
+
+Gets a list of all the parts of this message. This list is editable. This will only be used if the message is a multipart message.
+
+<b>Returns:</b>
+
+A list of all the parts of this message. This list is editable. This will only be used if the message is a multipart message.
+
+<a id="Subject"></a>
+### Subject
+
+    public string Subject { get; set; }
+
+Gets or sets this message's subject.
+
+<b>Returns:</b>
+
+This message's subject.
+
+<a id="ToAddresses"></a>
+### ToAddresses
+
+    public System.Collections.Generic.IList ToAddresses { get; }
+
+<b>Deprecated.</b> Use GetAddresses("To") instead.
+
+Gets a list of addresses found in the To header field or fields.
+
+<b>Returns:</b>
+
+A list of addresses found in the To header field or fields.
+
+<a id="AddAttachment_PeterO_Mail_MediaType"></a>
 ### AddAttachment
 
     public PeterO.Mail.Message AddAttachment(
@@ -126,9 +301,43 @@ Adds an attachment with an empty body and with the given media type to this mess
 
 A Message object for the generated attachment.
 
-
 <a id="AddAttachment_System_IO_Stream_PeterO_Mail_MediaType"></a>
+### AddAttachment
 
+    public PeterO.Mail.Message AddAttachment(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType);
+
+Adds an attachment to this message in the form of data from the given readable stream, and with the given media type. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+The following example (written in C# for the .NET version) is an extension method that adds an attachment from a byte array to a message.
+
+    public static Message AddAttachmentFromBytes(this Message msg,
+                 byte[]
+                 bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
+                 return msg.AddAttachment(fs, mediaType); } }
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: A readable data stream.
+
+ * <i>mediaType</i>: A media type to assign to the attachment.
+
+<b>Return Value:</b>
+
+A Message object for the generated attachment.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>inputStream</i>
+ or  <i>mediaType</i>
+ is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
+
+<a id="AddAttachment_System_IO_Stream_PeterO_Mail_MediaType_string"></a>
 ### AddAttachment
 
     public PeterO.Mail.Message AddAttachment(
@@ -160,9 +369,35 @@ The parameter <i>inputStream</i>
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
 
-
 <a id="AddAttachment_System_IO_Stream_string"></a>
+### AddAttachment
 
+    public PeterO.Mail.Message AddAttachment(
+        System.IO.Stream inputStream,
+        string filename);
+
+Adds an attachment to this message in the form of data from the given readable stream, and with the given file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: A readable data stream.
+
+ * <i>filename</i>: A file name to assign to the attachment. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise An appropriate media type (or "application/octet-stream") will be assigned to the attachment based on this file name's extension. If the file name has an extension .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type will have a "charset" of "utf-8".
+
+<b>Return Value:</b>
+
+A Message object for the generated attachment.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>inputStream</i>
+ is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
+
+<a id="AddHeader_string_string"></a>
 ### AddHeader
 
     public PeterO.Mail.Message AddHeader(
@@ -216,9 +451,23 @@ The key or value of  <i>header</i>
  * System.ArgumentException:
 The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
-
 <a id="AddInline_PeterO_Mail_MediaType"></a>
+### AddInline
 
+    public PeterO.Mail.Message AddInline(
+        PeterO.Mail.MediaType mediaType);
+
+Adds an inline body part with an empty body and with the given media type to this message. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+<b>Parameters:</b>
+
+ * <i>mediaType</i>: A media type to assign to the body part.
+
+<b>Return Value:</b>
+
+A Message object for the generated body part.
+
+<a id="AddInline_System_IO_Stream_PeterO_Mail_MediaType"></a>
 ### AddInline
 
     public PeterO.Mail.Message AddInline(
@@ -253,9 +502,39 @@ The parameter <i>inputStream</i>
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
 
-
 <a id="AddInline_System_IO_Stream_PeterO_Mail_MediaType_string"></a>
+### AddInline
 
+    public PeterO.Mail.Message AddInline(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType,
+        string filename);
+
+Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: A readable data stream.
+
+ * <i>mediaType</i>: A media type to assign to the body part.
+
+ * <i>filename</i>: A file name to assign to the body part.
+
+<b>Return Value:</b>
+
+A Message object for the generated body part.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>inputStream</i>
+ or  <i>mediaType</i>
+ is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
+
+<a id="AddInline_System_IO_Stream_string"></a>
 ### AddInline
 
     public PeterO.Mail.Message AddInline(
@@ -283,9 +562,18 @@ The parameter <i>inputStream</i>
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
 
-
 <a id="ClearHeaders"></a>
+### ClearHeaders
 
+    public PeterO.Mail.Message ClearHeaders();
+
+Deletes all header fields in this message. Also clears this message's content disposition and resets its content type to MediaType.TextPlainAscii.
+
+<b>Return Value:</b>
+
+This object.
+
+<a id="DecodeHeaderValue_string_string"></a>
 ### DecodeHeaderValue
 
     public static string DecodeHeaderValue(
@@ -310,9 +598,25 @@ The header field value with valid encoded words decoded.
 The parameter <i>name</i>
  is null.
 
-
 <a id="FromMailtoUri_string"></a>
+### FromMailtoUri
 
+    public static PeterO.Mail.Message FromMailtoUri(
+        string uri);
+
+Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored.
+
+<b>Parameters:</b>
+
+ * <i>uri</i>: The parameter  <i>uri</i>
+ is a text string.
+
+<b>Return Value:</b>
+
+A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
+ is null, is syntactically invalid, or is not a MailTo URI.
+
+<a id="FromMailtoUrl_string"></a>
 ### FromMailtoUrl
 
     public static PeterO.Mail.Message FromMailtoUrl(
@@ -332,9 +636,29 @@ Creates a message object from a MailTo URI (uniform resource identifier). The Ma
 A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
  is null, is syntactically invalid, or is not a MailTo URI.
 
-
 <a id="Generate"></a>
+### Generate
 
+    public string Generate();
+
+Generates this message's data in text form.The generated message will have only Basic Latin code points (U+0000 to U+007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
+
+The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid` as the address (a `.invalid` address is a reserved address that can never belong to anyone). (An xception is that the Resent-* header fields may appear more than nce.) The generated message should always have a From header field.
+
+If a Date and/or Message-ID header field doesn't exist, a field with that name will be generated (using the current local time for the Date field).
+
+When encoding the message's body, if the message has a text content type ("text/*"), the line breaks are a CR byte (carriage return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has any other content type, only CR followed by LF is considered a line break.
+
+<b>Return Value:</b>
+
+The generated message.
+
+<b>Exceptions:</b>
+
+ * PeterO.Mail.MessageDataException:
+The message can't be generated.
+
+<a id="GenerateBytes"></a>
 ### GenerateBytes
 
     public byte[] GenerateBytes();
@@ -345,9 +669,37 @@ Generates this message's data as a byte array, using the same algorithm as the G
 
 The generated message as a byte array.
 
-
 <a id="GetAddresses_string"></a>
+### GetAddresses
 
+    public System.Collections.Generic.IList GetAddresses(
+        string headerName);
+
+Gets a list of addresses contained in the header fields with the given name in this message.
+
+<b>Parameters:</b>
+
+ * <i>headerName</i>: The name of the header fields to retrieve.
+
+<b>Return Value:</b>
+
+A list of addresses, in the order in which they appear in this message's header fields of the given name.
+
+<b>Exceptions:</b>
+
+ * System.NotSupportedException:
+The parameter <i>headerName</i>
+ is not supported for this method. Currently, the only header fields supported are To, Cc, Bcc, Reply-To, Sender, and From.
+
+ * System.ArgumentNullException:
+The parameter <i>headerName</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter <i>headerName</i>
+ is empty.
+
+<a id="GetBody"></a>
 ### GetBody
 
     public byte[] GetBody();
@@ -380,9 +732,95 @@ Gets the date and time extracted from this message's Date header field (the valu
 
 An array containing eight elements. Returns null if the Date header doesn't exist, if the Date field is syntactically or semantically invalid, or if the field's year would overflow a 32-bit signed integer.
 
-
 <a id="GetFormattedBodyString"></a>
+### GetFormattedBodyString
 
+    public string GetFormattedBodyString();
+
+Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports text/plain, text/plain with format = flowed, text/enriched, and text/markdown (original Markdown).
+
+REMARK: The Markdown implementation currently supports all features of original Markdown, except that the implementation--
+
+ * does not strictly check the placement of "block-level HTML elements",
+
+ * does not prevent Markdown content from being interpreted as such merely because it's contained in a "block-level HTML element", and
+
+ * does not deliberately use HTML escapes to obfuscate email addresses wrapped in angle-brackets.
+
+<b>Return Value:</b>
+
+An HTML rendering of this message's text.
+
+<b>Exceptions:</b>
+
+ * System.NotSupportedException:
+Either this message is a multipart message, so it doesn't have its own body text, or this message has no character encoding declared or assumed for it (which is usually the case for non-text messages), or the character encoding is not supported.
+
+<a id="GetHeader_string"></a>
+### GetHeader
+
+    public string GetHeader(
+        string name);
+
+Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+
+<b>Parameters:</b>
+
+ * <i>name</i>: The name of a header field.
+
+<b>Return Value:</b>
+
+The value of the first header field with that name, or null if there is none.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+Name is null.
+
+<a id="GetHeader_int"></a>
+### GetHeader
+
+    public System.Collections.Generic.KeyValuePair GetHeader(
+        int index);
+
+Gets the name and value of a header field by index.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: Zero-based index of the header field to get.
+
+<b>Return Value:</b>
+
+A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter <i>index</i>
+ is 0 or at least as high as the number of header fields.
+
+<a id="GetHeaderArray_string"></a>
+### GetHeaderArray
+
+    public string[] GetHeaderArray(
+        string name);
+
+Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+
+<b>Parameters:</b>
+
+ * <i>name</i>: The name of a header field.
+
+<b>Return Value:</b>
+
+An array containing the values of all header fields with the given name, in the order they appear in the message. The array will be empty if no header field has that name.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+Name is null.
+
+<a id="MakeMultilingualMessage_System_Collections_Generic_IList_System_Collections_Generic_IList"></a>
 ### MakeMultilingualMessage
 
     public static PeterO.Mail.Message MakeMultilingualMessage(
@@ -416,9 +854,18 @@ The parameter <i>messages</i>
  contains a syntactically invalid language tag list,  <i>languages</i>
  contains the language tag "zzx" not appearing alone or at the end of the language tag list, or the first message contains no From header field.
 
-
 <a id="NewBodyPart"></a>
+### NewBodyPart
 
+    public static PeterO.Mail.Message NewBodyPart();
+
+Creates a message object with no header fields.
+
+<b>Return Value:</b>
+
+A message object with no header fields.
+
+<a id="RemoveHeader_int"></a>
 ### RemoveHeader
 
     public PeterO.Mail.Message RemoveHeader(
@@ -462,9 +909,29 @@ This instance.
 The parameter <i>name</i>
  is null.
 
-
 <a id="SelectLanguageMessage_System_Collections_Generic_IList"></a>
+### SelectLanguageMessage
 
+    public PeterO.Mail.Message SelectLanguageMessage(
+        System.Collections.Generic.IList languages);
+
+Selects a body part for a multiple-language message ( `multipart/multilingual`  ) according to the given language priority list.
+
+<b>Parameters:</b>
+
+ * <i>languages</i>: A list of basic language ranges, sorted in descending order of priority (see the LanguageTags.LanguageTagFilter method).
+
+<b>Return Value:</b>
+
+The best matching body part for the given languages. If the body part has no subject, then the top-level subject is used. If this message is not a multipart/multilingual message or has fewer than two body parts, returns this object. If no body part matches the given languages, returns the last body part if its language is "zxx", or the second body part otherwise.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>languages</i>
+ is null.
+
+<a id="SelectLanguageMessage_System_Collections_Generic_IList_bool"></a>
 ### SelectLanguageMessage
 
     public PeterO.Mail.Message SelectLanguageMessage(
@@ -489,9 +956,252 @@ The best matching body part for the given languages. If the body part has no sub
 The parameter <i>languages</i>
  is null.
 
-
 <a id="SetBody_byte"></a>
+### SetBody
 
+    public PeterO.Mail.Message SetBody(
+        byte[] bytes);
+
+Sets the body of this message to the given byte array. This method doesn't make a copy of that byte array.
+
+<b>Parameters:</b>
+
+ * <i>bytes</i>: A byte array.
+
+<b>Return Value:</b>
+
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>bytes</i>
+ is null.
+
+<a id="SetCurrentDate"></a>
+### SetCurrentDate
+
+    public PeterO.Mail.Message SetCurrentDate();
+
+Sets this message's Date header field to the current time as its value.This method can be used when the message is considered complete and ready to be generated, for example, using the "Generate()" method.
+
+<b>Return Value:</b>
+
+This object.
+
+<a id="SetDate_int"></a>
+### SetDate
+
+    public PeterO.Mail.Message SetDate(
+        int[] dateTime);
+
+Sets this message's Date header field to the given date and time.
+
+<b>Parameters:</b>
+
+ * <i>dateTime</i>: An array containing eight elements. Each element of the array (starting from 0) is as follows:
+
+ * 0 - The year. For example, the value 2000 means 2000 C.E.
+
+ * 1 - Month of the year, from 1 (January) through 12 (December).
+
+ * 2 - Day of the month, from 1 through 31.
+
+ * 3 - Hour of the day, from 0 through 23.
+
+ * 4 - Minute of the hour, from 0 through 59.
+
+ * 5 - Second of the minute, from 0 through 60 (this value can go up to 60 to accommodate leap seconds). (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
+
+ * 6 - Milliseconds of the second, from 0 through 999. This value is not used to generate the date string, but must still be valid.
+
+ * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative.
+
+.
+
+<b>Return Value:</b>
+
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter <i>dateTime</i>
+ contains fewer than eight elements, contains invalid values, or contains a year less than 0.
+
+ * System.ArgumentNullException:
+The parameter <i>dateTime</i>
+ is null.
+
+<a id="SetHeader_int_string_string"></a>
+### SetHeader
+
+    public PeterO.Mail.Message SetHeader(
+        int index,
+        string name,
+        string value);
+
+Sets the name and value of a header field by index.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: Zero-based index of the header field to set.
+
+ * <i>name</i>: Name of a header field, such as "From" or "Content-ID".
+
+ * <i>value</i>: Value of the header field.
+
+<b>Return Value:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter <i>index</i>
+ is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
+ * System.ArgumentNullException:
+The parameter <i>name</i>
+ or  <i>value</i>
+ is null.
+
+<a id="SetHeader_int_string"></a>
+### SetHeader
+
+    public PeterO.Mail.Message SetHeader(
+        int index,
+        string value);
+
+Sets the value of a header field by index without changing its name.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: Zero-based index of the header field to set.
+
+ * <i>value</i>: Value of the header field.
+
+<b>Return Value:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter <i>index</i>
+ is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
+ * System.ArgumentNullException:
+The parameter <i>value</i>
+ is null.
+
+<a id="SetHeader_int_System_Collections_Generic_KeyValuePair"></a>
+### SetHeader
+
+    public PeterO.Mail.Message SetHeader(
+        int index,
+        System.Collections.Generic.KeyValuePair header);
+
+Sets the name and value of a header field by index.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: Zero-based index of the header field to set.
+
+ * <i>header</i>: A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
+
+<b>Return Value:</b>
+
+A Message object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter <i>index</i>
+ is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
+ * System.ArgumentNullException:
+The key or value of  <i>header</i>
+ is null.
+
+<a id="SetHeader_string_string"></a>
+### SetHeader
+
+    public PeterO.Mail.Message SetHeader(
+        string name,
+        string value);
+
+Sets the value of this message's header field. If a header field with the same name exists, its value is replaced. If the header field's name occurs more than once, only the first instance of the header field is replaced.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+
+<b>Parameters:</b>
+
+ * <i>name</i>: The name of a header field, such as "from" or "subject".
+
+ * <i>value</i>: The header field's value.
+
+<b>Return Value:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
+ * System.ArgumentNullException:
+The parameter <i>name</i>
+ or  <i>value</i>
+ is null.
+
+<a id="SetHtmlBody_string"></a>
+### SetHtmlBody
+
+    public PeterO.Mail.Message SetHtmlBody(
+        string str);
+
+Sets the body of this message to the specified string in Hypertext Markup Language (HTML) format. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: A string consisting of the message in HTML format.
+
+<b>Return Value:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>str</i>
+ is null.
+
+<a id="SetTextAndHtml_string_string"></a>
+### SetTextAndHtml
+
+    public PeterO.Mail.Message SetTextAndHtml(
+        string text,
+        string html);
+
+Sets the body of this message to a multipart body with plain text and Hypertext Markup Language (HTML) versions of the same message. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+
+<b>Parameters:</b>
+
+ * <i>text</i>: A string consisting of the plain text version of the message.
+
+ * <i>html</i>: A string consisting of the HTML version of the message.
+
+<b>Return Value:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>text</i>
+ or  <i>html</i>
+ is null.
+
+<a id="SetTextAndMarkdown_string_string"></a>
 ### SetTextAndMarkdown
 
     public PeterO.Mail.Message SetTextAndMarkdown(
@@ -516,9 +1226,29 @@ This instance.
 The parameter <i>markdown</i>
  is null.
 
-
 <a id="SetTextBody_string"></a>
+### SetTextBody
 
+    public PeterO.Mail.Message SetTextBody(
+        string str);
+
+Sets the body of this message to the specified plain text string. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters. This method changes this message's media type to plain text.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: A string consisting of the message in plain text format.
+
+<b>Return Value:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>str</i>
+ is null.
+
+<a id="ToMailtoUri"></a>
 ### ToMailtoUri
 
     public string ToMailtoUri();
@@ -529,9 +1259,7 @@ Generates a MailTo URI (uniform resource identifier) corresponding to this messa
 
 A MailTo URI corresponding to this message.
 
-
 <a id="ToMailtoUrl"></a>
-
 ### ToMailtoUrl
 
     public string ToMailtoUrl();

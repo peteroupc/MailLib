@@ -1344,7 +1344,6 @@ Generates a multilingual message (see RFC 8255) from a list of messages and
  tag "zzx" not appearing alone or at the end of the language tag list,
  or the first message contains no From header field.
 
-
 ### FromMailtoUrl
     @Deprecated public static Message FromMailtoUrl​(String url)
 Deprecated.

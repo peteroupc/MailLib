@@ -1,10 +1,8 @@
-package com.upokecenter.mail;
+package com.upokecenter.util;
 
 import java.util.*;
 
-
 import com.upokecenter.util.*;
-
 
       if (((str) == null || (str).length() == 0)) {
         return "";
@@ -32,9 +30,7 @@ import com.upokecenter.util.*;
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-
           str.charAt(2) == ' ' && str.charAt(3) == ' ') ? str.substring(4) : str; }
-
 
             private static String HtmlEscapeStrong(String str) {
       int i = 0;
@@ -554,8 +550,6 @@ import com.upokecenter.util.*;
       String str,
       Map<String,
       String[]> links) {
-
-
       str = CodeSpansAndEscapes(str);
       str = ReplaceAutomaticLinks(str);
       str = ReplaceImageLinks(str, links);

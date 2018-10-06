@@ -188,7 +188,6 @@ Generates a text string from a portion of a UTF-8 byte array.
  text strings in an unspecified character encoding. Both behaviors can
  be undesirable.</p>
 
-
 **Parameters:**
 
 * <code>str</code> - The parameter <code>str</code> is a text string.
@@ -219,7 +218,6 @@ Generates a text string from a portion of a UTF-8 byte array.
  method in Java to do this. For instance, <code>getBytes()</code> encodes
  text strings in an unspecified character encoding. Both behaviors can
  be undesirable.</p>
-
 
 **Parameters:**
 

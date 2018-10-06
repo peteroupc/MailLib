@@ -80,7 +80,6 @@ Represents an email address and a name for that address. Can represent a
  Initializes a new instance of the NamedAddress
  class.
 
-
 ## Method Details
 
 ### NamedAddress
@@ -191,7 +190,6 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 * <code>IllegalArgumentException</code> - The parameter <code>groupName</code> is empty,
  or an item in the list is itself a group.
-
 
 ### ParseAddresses
     public static List<NamedAddress> ParseAddresses​(String addressValue)

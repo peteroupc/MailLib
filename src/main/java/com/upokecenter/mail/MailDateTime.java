@@ -54,13 +54,11 @@ private MailDateTime() {
         throw new IllegalArgumentException("Invalid date and time");
       }
       if (gmt && dateTime[7] != 0) {
-
         // Use time offset to convert local time to UTC/GMT
         int[] newDateTime = new int[8];
         System.arraycopy(dateTime, 0, newDateTime, 0, 7);
         DateTimeUtilities.AddMinutes(newDateTime, -dateTime[7]);
         dateTime = newDateTime;
-
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
       if (dow < 0) {

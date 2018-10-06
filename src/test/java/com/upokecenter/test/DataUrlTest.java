@@ -8679,11 +8679,11 @@ Assert.assertEquals(
 
     private static void assertIdempotency(String s) {
       boolean cond = URIUtility.isValidIRI(s);
+
       if (!(cond)) {
-
  Assert.fail(s);
-
  }
+
       {
         String stringTemp = (String)URIUtility.escapeURI(
   s,
@@ -8721,7 +8721,6 @@ Assert.assertEquals(
         Assert.assertEquals(stringTemp, stringTemp2);
       }
     }
-
 
     private static void AssertIdempotencyNeg(
   String s) { if (!(!(
@@ -8923,7 +8922,6 @@ Assert.assertEquals(
       AssertIdempotencyNeg("e://[" + str + "%25NA<>NA]");
       AssertIdempotencyNeg("e://[" + str + "%25NA%E2NA]");
       AssertIdempotencyNeg("e://[" + str + "%25NA%2ENA]");
-
     }
 
     private static void assertIPv6(String str) {
@@ -8940,6 +8938,5 @@ Assert.assertEquals(
       // assertIdempotency("e://[" + str + "%25NANA]");
       // assertIdempotency("e://[" + str + "%25NA%E2NA]");
       // assertIdempotency("e://[" + str + "%25NA%2ENA]");
-
     }
   }

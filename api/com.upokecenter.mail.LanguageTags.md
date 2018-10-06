@@ -221,7 +221,6 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
  languages</code> contains a value that is not a potentially valid language
  tag.
 
-
 ### IsPotentiallyValidLanguageTag
     public static boolean IsPotentiallyValidLanguageTag​(String str)
 Returns true if (1) the given string is a well-formed language tag under RFC

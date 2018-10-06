@@ -125,8 +125,6 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
  * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
-
-
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:

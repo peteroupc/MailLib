@@ -1062,7 +1062,6 @@ return this.GetAddresses("to");
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.setContentType(IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8);
-
       return this;
     }
 
@@ -1579,7 +1578,6 @@ private static String GetContentTranslationType(String ctt) {
      * invalid language tag list, {@code languages} contains the language
      * tag "zzx" not appearing alone or at the end of the language tag list,
      * or the first message contains no From header field.
-
      */
     public static Message MakeMultilingualMessage(
   List<Message> messages,
