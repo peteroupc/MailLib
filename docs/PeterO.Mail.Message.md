@@ -93,7 +93,7 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[SelectLanguageMessage(System.Collections.Generic.IList)](#SelectLanguageMessage_System_Collections_Generic_IList)</code> - Selects a body part for a multiple-language message (multipart/multilingual ) according to the given language priority list.
 * <code>[SelectLanguageMessage(System.Collections.Generic.IList, bool)](#SelectLanguageMessage_System_Collections_Generic_IList_bool)</code> - Selects a body part for a multiple-language message (multipart/multilingual ) according to the given language priority list and original-language preference.
 * <code>[SetBody(byte[])](#SetBody_byte)</code> - Sets the body of this message to the given byte array.
-* <code>[SetCurrentDate()](#SetCurrentDate)</code> - Sets this message's Date header field to the current time as its value.
+* <code>[SetCurrentDate()](#SetCurrentDate)</code> - Sets this message's Date header field to the current time as its value, with an unspecified time zone offset.
 * <code>[SetDate(int[])](#SetDate_int)</code> - Sets this message's Date header field to the given date and time.
 * <code>[SetHeader(int, System.Collections.Generic.KeyValuePair)](#SetHeader_int_System_Collections_Generic_KeyValuePair)</code> - Sets the name and value of a header field by index.
 * <code>[SetHeader(int, string)](#SetHeader_int_string)</code> - Sets the value of a header field by index without changing its name.
@@ -628,12 +628,11 @@ Creates a message object from a MailTo URI (uniform resource identifier). The Ma
 
 <b>Parameters:</b>
 
- * <i>url</i>: The parameter  <i>url</i>
- is not documented yet.
+ * <i>url</i>: A MailTo URI.
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
+A Message object created from the given MailTo URI. Returs null if  <i>url</i>
  is null, is syntactically invalid, or is not a MailTo URI.
 
 <a id="Generate"></a>
@@ -983,7 +982,7 @@ The parameter <i>bytes</i>
 
     public PeterO.Mail.Message SetCurrentDate();
 
-Sets this message's Date header field to the current time as its value.This method can be used when the message is considered complete and ready to be generated, for example, using the "Generate()" method.
+Sets this message's Date header field to the current time as its value, with an unspecified time zone offset.This method can be used when the message is considered complete and ready to be generated, for example, using the "Generate()" method.
 
 <b>Return Value:</b>
 

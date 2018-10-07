@@ -30,12 +30,11 @@ Extracts the data from a Data URI (uniform resource identifier) in the form of a
 
 <b>Parameters:</b>
 
- * <i>url</i>: The parameter  <i>url</i>
- is not documented yet.
+ * <i>url</i>: A data URI.
 
 <b>Return Value:</b>
 
-The data as a byte array. Returns null if  <i>uri</i>
+The data as a byte array. Returns null if  <i>url</i>
  is null, is syntactically invalid, or is not a data URI.
 
 <a id="DataUrlMediaType_string"></a>
@@ -50,12 +49,11 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 <b>Parameters:</b>
 
- * <i>url</i>: The parameter  <i>url</i>
- is not documented yet.
+ * <i>url</i>: A data URI.
 
 <b>Return Value:</b>
 
-The media type. Returns null if  <i>uri</i>
+The media type. Returns null if  <i>url</i>
  is null, is syntactically invalid, or is not a Data URI.
 
 <a id="MakeDataUrl_byte_PeterO_Mail_MediaType"></a>

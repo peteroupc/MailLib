@@ -1247,16 +1247,14 @@ ns me
 <doc name="M:PeterO.Mail.DataUrls.DataUrlBytes(System.String)">
 
             <summary>Extracts the data from a Data URI (uniform resource
-            identifier) in the form of a byte array.</summary><param name='url'>The parameter <paramref name='url'/> is not
-            documented yet.</param><returns>The data as a byte array. Returns null if <paramref name='uri'/> is null, is syntactically invalid, or is not a data
+            identifier) in the form of a byte array.</summary><param name='url'>A data URI.</param><returns>The data as a byte array. Returns null if <paramref name='url'/> is null, is syntactically invalid, or is not a data
             URI.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlMediaType(System.String)">
 
             <summary>Extracts the media type from a Data URI (uniform resource
-            identifier).</summary><param name='url'>The parameter <paramref name='url'/> is not
-            documented yet.</param><returns>The media type. Returns null if <paramref name='uri'/> is
+            identifier).</summary><param name='url'>A data URI.</param><returns>The media type. Returns null if <paramref name='url'/> is
             null, is syntactically invalid, or is not a Data URI.</returns>
 
 </doc>
@@ -1389,7 +1387,7 @@ ns me
 </doc>
 <doc name="T:PeterO.Mail.EnrichedText">
 
-            <summary>Not documented yet.</summary>
+            <summary>This is an internal API.</summary>
 
 </doc>
 <doc name="T:PeterO.Mail.IdentityEncoder">
@@ -2484,9 +2482,8 @@ ns me
             field names that will be used to set the returned message's
             corresponding header fields. The last, "body", sets the body of the
             message to the given text. Keys other than these eight will be
-            ignored.</summary><param name='url'>The parameter <paramref name='url'/> is not
-            documented yet.</param><returns>A Message object created from the given MailTo URI. Returs
-            null if <paramref name='uri'/> is null, is syntactically invalid,
+            ignored.</summary><param name='url'>A MailTo URI.</param><returns>A Message object created from the given MailTo URI. Returs
+            null if <paramref name='url'/> is null, is syntactically invalid,
             or is not a MailTo URI.</returns>
 
 </doc>
@@ -2768,7 +2765,7 @@ ns me
 </doc>
 <doc name="M:PeterO.Mail.Message.SetCurrentDate">
 
-            <summary>Sets this message's Date header field to the current time as its value.
+            <summary>Sets this message's Date header field to the current time as its value, with an unspecified time zone offset.
       <para>This method can be used when the message is considered complete and
         ready to be generated, for example, using the "Generate()" method.
       </para>

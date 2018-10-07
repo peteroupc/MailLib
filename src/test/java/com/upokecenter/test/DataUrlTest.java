@@ -8560,7 +8560,7 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     private Message TestMailToOne(String s) {
       System.out.println(s);
-      Message msg = Message.FromMailtoUrl(s);
+      Message msg = Message.FromMailtoUri(s);
       System.out.println(msg);
       if (msg == null) {
  Assert.fail();
@@ -8570,16 +8570,16 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     static void TestDataUrlRoundTrip(String data) {
       MediaType mt = DataUris.DataUriMediaType(data);
-      byte[] bytes = DataUrls.DataUrlBytes(data);
+      byte[] bytes = DataUris.DataUriBytes(data);
       if ((mt) == null) {
  Assert.fail(data);
  }
       if ((bytes) == null) {
  Assert.fail(data);
  }
-      String data2 = DataUrls.MakeDataUrl(bytes, mt);
-      MediaType mt2 = DataUrls.DataUrlMediaType(data2);
-      byte[] bytes2 = DataUrls.DataUrlBytes(data2);
+      String data2 = DataUris.MakeDataUri(bytes, mt);
+      MediaType mt2 = DataUris.DataUriMediaType(data2);
+      byte[] bytes2 = DataUris.DataUriBytes(data2);
       TestCommon.AssertByteArraysEqual(bytes, bytes2);
       Assert.assertEquals(data, mt, mt2);
     }

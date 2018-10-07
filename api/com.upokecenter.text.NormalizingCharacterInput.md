@@ -20,7 +20,6 @@ Deprecated.
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput​(String str,
-
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput​(List<Integer> characterList) NormalizingCharacterInput`<br>
@@ -28,7 +27,6 @@ Deprecated.
 * `NormalizingCharacterInput​(List<Integer> characterList,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-
 * `static List<Integer> GetChars​(com.upokecenter.text.ICharacterInput chars,
         Normalization form)`<br>
  Deprecated.
@@ -89,7 +87,6 @@ Either convert the list to a String or wrap it in an ICharacterInput and
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput​(String str,
-
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput​(List<Integer> characterList) NormalizingCharacterInput`<br>

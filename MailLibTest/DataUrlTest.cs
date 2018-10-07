@@ -8559,7 +8559,7 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     private Message TestMailToOne(string s) {
       Console.WriteLine(s);
-      Message msg = Message.FromMailtoUrl(s);
+      Message msg = Message.FromMailtoUri(s);
       Console.WriteLine(msg);
       if (msg == null) {
  Assert.Fail();
@@ -8569,12 +8569,12 @@ if (URIUtility.splitIRI("http://[06fff04:3:1:6414.218.292.296]/") != null) {
 
     internal static void TestDataUrlRoundTrip(string data) {
       MediaType mt = DataUris.DataUriMediaType(data);
-      byte[] bytes = DataUrls.DataUrlBytes(data);
+      byte[] bytes = DataUris.DataUriBytes(data);
       Assert.NotNull(mt, data);
       Assert.NotNull(bytes, data);
-      string data2 = DataUrls.MakeDataUrl(bytes, mt);
-      MediaType mt2 = DataUrls.DataUrlMediaType(data2);
-      byte[] bytes2 = DataUrls.DataUrlBytes(data2);
+      string data2 = DataUris.MakeDataUri(bytes, mt);
+      MediaType mt2 = DataUris.DataUriMediaType(data2);
+      byte[] bytes2 = DataUris.DataUriBytes(data2);
       TestCommon.AssertByteArraysEqual(bytes, bytes2);
       Assert.AreEqual(mt, mt2, data);
     }

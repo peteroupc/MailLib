@@ -203,14 +203,16 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Sets this message's Date header field to the current time as its value.
-     * <p>This method can be used when the message is considered complete
-     * and ready to be generated, for example, using the "Generate()"
-     * method. </p>
+     * Sets this message's Date header field to the current time as its value, with
+     * an unspecified time zone offset. <p>This method can be used when the
+     * message is considered complete and ready to be generated, for
+     * example, using the "Generate()" method. </p>
      * @return This object.
      */
     public Message SetCurrentDate() {
-      return this.SetDate(DateTimeUtilities.GetCurrentLocalTime());
+      // NOTE: Use global rather than local time; there are overriding
+      // reasons not to use local time, despite the SHOULD in RFC 5322
+      return this.SetDate(DateTimeUtilities.GetCurrentGlobalTime());
     }
 
     private static void ReverseChars(char[] chars, int offset, int length) {
@@ -624,7 +626,7 @@ return this.GetAddresses("to");
       if (dateTime == null) {
         throw new NullPointerException("dateTime");
       }
-      if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
+      if (!MailDateTime.IsValidDateTime(dateTime)) {
         throw new IllegalArgumentException("Invalid date and time");
       }
       if (dateTime[0] < 0) {
@@ -3004,9 +3006,12 @@ private static String GetContentTranslationType(String ctt) {
       }
       if (!haveDate && depth == 0) {
         AppendAscii(output, "Date: ");
+        // NOTE: Use global rather than local time; there are overriding
+        // reasons not to use local time, despite the SHOULD in RFC 5322
         AppendAscii(
           output,
-  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentLocalTime()));
+
+  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
@@ -3167,9 +3172,9 @@ private static String GetContentTranslationType(String ctt) {
      * names that will be used to set the returned message's corresponding
      * header fields. The last, "body", sets the body of the message to the
      * given text. Keys other than these eight will be ignored.
-     * @param url The parameter {@code url} is not documented yet.
+     * @param url A MailTo URI.
      * @return A Message object created from the given MailTo URI. Returs null if
-     * {@code uri} is null, is syntactically invalid, or is not a MailTo
+     * {@code url} is null, is syntactically invalid, or is not a MailTo
      * URI.
      * @deprecated Renamed to FromMailtoUri.
  */

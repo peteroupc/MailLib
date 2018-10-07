@@ -35,7 +35,6 @@ Extracts the media type from a Data URI (uniform resource identifier).
 **Returns:**
 
 * The media type. Returns null if <code>uri</code> is null, is
-
  syntactically invalid, or is not a Data URI.
 
 ### DataUriBytes
@@ -50,7 +49,6 @@ Extracts the data from a Data URI (uniform resource identifier) in the form
 **Returns:**
 
 * The data as a byte array. Returns null if <code>uri</code> is null, is
-
  syntactically invalid, or is not a data URI.
 
 ### MakeDataUri

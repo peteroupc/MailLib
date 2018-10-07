@@ -43,25 +43,25 @@ Stores an arbitrary string and a "quality value" for that string.
 * [com.upokecenter.mail.MessageDataException](com.upokecenter.mail.MessageDataException.md) -
 Exception thrown when a message has invalid syntax.
 
-* [com.upokecenter.mail.transforms.Base64Transform](com.upokecenter.mail.transforms.Base64Transform.md) - &amp;nbsp;
+* [com.upokecenter.text.Idna](com.upokecenter.text.Idna.md) -
+Contains methods that implement Internationalized Domain Names in
+ Applications (IDNA).
 
-* [com.upokecenter.mail.transforms.BEncodingStringTransform](com.upokecenter.mail.transforms.BEncodingStringTransform.md) - &amp;nbsp;
+* [com.upokecenter.text.Normalizer](com.upokecenter.text.Normalizer.md) - Deprecated.
+Use NormalizerInput instead; that class is much more flexible than
+ Normalizer.
 
-* [com.upokecenter.mail.transforms.BoundaryCheckerTransform](com.upokecenter.mail.transforms.BoundaryCheckerTransform.md) - &amp;nbsp;
+* [com.upokecenter.text.NormalizerInput](com.upokecenter.text.NormalizerInput.md) -
+A character input class that implements the Unicode normalization
+ algorithm and contains methods and functionality to test and convert
+ text strings for normalization.
 
-* [com.upokecenter.mail.transforms.EightBitTransform](com.upokecenter.mail.transforms.EightBitTransform.md) - &amp;nbsp;
+* [com.upokecenter.text.NormalizingCharacterInput](com.upokecenter.text.NormalizingCharacterInput.md) - Deprecated.
+Renamed to NormalizerInput.
 
-* [com.upokecenter.mail.transforms.LiberalSevenBitTransform](com.upokecenter.mail.transforms.LiberalSevenBitTransform.md) - &amp;nbsp;
-
-* [com.upokecenter.mail.transforms.PercentEncodingStringTransform](com.upokecenter.mail.transforms.PercentEncodingStringTransform.md) - &amp;nbsp;
-
-* [com.upokecenter.mail.transforms.QEncodingStringTransform](com.upokecenter.mail.transforms.QEncodingStringTransform.md) - &amp;nbsp;
-
-* [com.upokecenter.mail.transforms.QuotedPrintableTransform](com.upokecenter.mail.transforms.QuotedPrintableTransform.md) - &amp;nbsp;
-
-* [com.upokecenter.mail.transforms.SevenBitTransform](com.upokecenter.mail.transforms.SevenBitTransform.md) - &amp;nbsp;
-
-* [com.upokecenter.mail.transforms.TransformWithUnget](com.upokecenter.mail.transforms.TransformWithUnget.md) - &amp;nbsp;
+* [com.upokecenter.text.ProtocolStrings](com.upokecenter.text.ProtocolStrings.md) -
+Contains methods for preparing user-facing protocol strings (such as user
+ identifiers) for equality comparison and validity checking.
 
 * [com.upokecenter.text.Normalization](com.upokecenter.text.Normalization.md) -
 Represents a Unicode normalization form.

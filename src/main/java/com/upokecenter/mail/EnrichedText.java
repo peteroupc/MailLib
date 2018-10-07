@@ -2,8 +2,10 @@ package com.upokecenter.mail;
 
 import java.util.*;
 
+import com.upokecenter.util.*;
+
     /**
-     * Not documented yet.
+     * This is an internal API.
      */
   final class EnrichedText {
 private EnrichedText() {

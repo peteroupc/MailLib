@@ -25,11 +25,9 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-
             List<NamedAddress> mailboxes) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
-
 * `boolean AddressesEqual​(NamedAddress na)`<br>
  Not documented yet.
 * `boolean equals​(Object obj)`<br>
@@ -75,7 +73,6 @@ Represents an email address and a name for that address. Can represent a
  class using the given name and an email address made up of its local
  part and domain.
 * `NamedAddress​(String groupName,
-
             List<NamedAddress> mailboxes) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
@@ -172,7 +169,6 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
-
 Initializes a new instance of the <code>NamedAddress</code>
  class. Takes a group name and several named email addresses as
  parameters, and forms a group with them.

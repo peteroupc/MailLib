@@ -207,16 +207,30 @@ Use GetAddresses(\To\) instead.
  Use GetAddresses(\To\) instead.
 * `static Message MakeMultilingualMessage​(List<Message> messages,
                        List<String> languages)`<br>
-
  Generates a multilingual message (see RFC 8255) from a list of messages and
  a list of language strings.
-
+* `static Message NewBodyPart()`<br>
+ Creates a message object with no header fields.
+* `Message RemoveHeader​(int index)`<br>
+ Removes a header field by index.
+* `Message RemoveHeader​(String name)`<br>
+ Removes all instances of the given header field from this message.
+* `Message SelectLanguageMessage​(List<String> languages) multipart/multilingual`<br>
+ Selects a body part for a multiple-language message (
+ multipart/multilingual) according to the given language
+ priority list.
+* `Message SelectLanguageMessage​(List<String> languages,
+                     boolean preferOriginals) multipart/multilingual`<br>
+ Selects a body part for a multiple-language message (
+ multipart/multilingual) according to the given language
+ priority list and original-language preference.
 * `Message SetBody​(byte[] bytes)`<br>
  Sets the body of this message to the given byte array.
 * `void setContentDisposition​(ContentDisposition value)`<br>
 * `void setContentType​(MediaType value)`<br>
 * `Message SetCurrentDate()`<br>
- Sets this message's Date header field to the current time as its value.
+ Sets this message's Date header field to the current time as its value, with
+ an unspecified time zone offset.
 * `Message SetDate​(int[] dateTime)`<br>
  Sets this message's Date header field to the given date and time.
 * `Message SetHeader​(int index,
@@ -309,10 +323,10 @@ Creates a message object with no header fields.
 
 ### SetCurrentDate
     public Message SetCurrentDate()
-Sets this message's Date header field to the current time as its value.
- <p>This method can be used when the message is considered complete
- and ready to be generated, for example, using the "Generate()"
- method. </p>
+Sets this message's Date header field to the current time as its value, with
+ an unspecified time zone offset. <p>This method can be used when the
+ message is considered complete and ready to be generated, for
+ example, using the "Generate()" method. </p>
 
 **Returns:**
 
@@ -1252,7 +1266,6 @@ Adds an inline body part to this message in the form of data from the given
 
 ### SelectLanguageMessage
     public Message SelectLanguageMessage​(List<String> languages)
-
 Selects a body part for a multiple-language message (
  <code>multipart/multilingual</code>) according to the given language
  priority list.
@@ -1351,12 +1364,12 @@ Deprecated.
 
 **Parameters:**
 
-* <code>url</code> - The parameter <code>url</code> is not documented yet.
+* <code>url</code> - A MailTo URI.
 
 **Returns:**
 
 * A Message object created from the given MailTo URI. Returs null if
- <code>uri</code> is null, is syntactically invalid, or is not a MailTo
+ <code>url</code> is null, is syntactically invalid, or is not a MailTo
  URI.
 
 ### ToMailtoUrl

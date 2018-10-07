@@ -212,7 +212,6 @@ Converts a file name from the Content-Disposition header to a suitable name
  2231 encoding)</p> <p><code>"nul.txt" -&gt; "_nul.txt"</code> (Reserved
  name)</p> <p><code>"dir1/dir2/file" -&gt; "dir1_dir2_file"</code>
  (Directory separators)</p><p> <p><b>Remarks:</b></p> <ul> <li>The
-
  exact file name conversion used by this method is not guaranteed to
  remain the same between versions of this library.</li> <li>The string
  returned by this method is normalized using Unicode normalization
@@ -253,7 +252,6 @@ Converts a file name from the Content-Disposition header to a suitable name
  with the media type "application/octet-stream" or treated as that
  media-type, this is a deviation of RFC 2045 and 2046 (see also RFC
  2045 sec. 5, which says that "[t]here are NO globally meaningful
-
  parameters that apply to all media types"). (Some email
  implementations may still write out the "name" parameter, even for
  media types other than <code>application/octet-stream</code> and even

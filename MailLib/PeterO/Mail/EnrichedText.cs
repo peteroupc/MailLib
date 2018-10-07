@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PeterO;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'

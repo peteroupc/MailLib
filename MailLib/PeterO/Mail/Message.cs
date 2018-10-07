@@ -108,7 +108,9 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetCurrentDate"]/*'/>
     public Message SetCurrentDate() {
-      return this.SetDate(DateTimeUtilities.GetCurrentLocalTime());
+      // NOTE: Use global rather than local time; there are overriding
+      // reasons not to use local time, despite the SHOULD in RFC 5322
+      return this.SetDate(DateTimeUtilities.GetCurrentGlobalTime());
     }
 
     private static void ReverseChars(char[] chars, int offset, int length) {
@@ -381,7 +383,7 @@ return this.GetAddresses("to");
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
       }
-      if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
+      if (!MailDateTime.IsValidDateTime(dateTime)) {
         throw new ArgumentException("Invalid date and time");
       }
       if (dateTime[0] < 0) {
@@ -2436,9 +2438,12 @@ if (ungetState[1] < 0x80) {
       }
       if (!haveDate && depth == 0) {
         AppendAscii(output, "Date: ");
+        // NOTE: Use global rather than local time; there are overriding
+        // reasons not to use local time, despite the SHOULD in RFC 5322
         AppendAscii(
           output,
-  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentLocalTime()));
+
+  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {

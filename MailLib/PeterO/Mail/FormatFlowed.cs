@@ -99,11 +99,13 @@ namespace PeterO.Mail {
                     .Append("</p>");
           }
           if (lastQuotes < quotes) {
-            for (var k = lastQuotes; k < quotes; ++k) {
+            var k = 0;
+            for (k = lastQuotes; k < quotes; ++k) {
               formatted.Append("<blockquote>");
             }
           } else if (quotes < lastQuotes) {
-            for (var k = quotes; k < lastQuotes; ++k) {
+            var k = 0;
+            for (k = quotes; k < lastQuotes; ++k) {
               formatted.Append("</blockquote>");
             }
           }
