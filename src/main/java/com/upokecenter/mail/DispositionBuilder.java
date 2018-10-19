@@ -19,7 +19,7 @@ import com.upokecenter.util.*;
 
     /**
      * Gets this value's disposition type, such as "inline" or "attachment".
-     * @return This value's disposition type, such as "inline" or "attachment".
+     * @return This value's disposition type, such as "inline" or "attachment" .
      */
     public final String getDispositionType() {
         return this.type;
@@ -31,7 +31,7 @@ public final void setDispositionType(String value) {
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.DispositionBuilder} class using the disposition
-     * type "attachment".
+     * type "attachment" .
      */
     public DispositionBuilder() {
       this.parameters = new HashMap<String, String>();

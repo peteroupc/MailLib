@@ -18,87 +18,86 @@ import com.upokecenter.text.*;
      * <p>Represents an email message, and contains methods and properties for
      * accessing and modifying email message data. This class implements the
      * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
-     * Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
+     * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
      * Therefore, access to objects from this class must be synchronized if
-     * multiple threads can access them at the same time. </p> <p>The
+     * multiple threads can access them at the same time.</p> <p>The
      * following lists known deviations from the mail specifications
-     * (Internet Message Format and MIME): </p> <ul> <li>The
+     * (Internet Message Format and MIME):</p> <ul> <li>The
      * content-transfer-encodings "quoted-printable" and "base64" are
      * treated as 7bit instead if they occur in a message or body part with
      * content type "multipart/&#x2a;" or "message/&#x2a;" (other than
      * "message/global", "message/global-headers",
      * "message/global-disposition-notification", or
-     * "message/global-delivery-status"). </li> <li>If a message has two or
+     * "message/global-delivery-status").</li> <li>If a message has two or
      * more Content-Type header fields, it is treated as having a content
      * type of "application/octet-stream", unless one or more of the header
-     * fields is syntactically invalid. </li> <li>Illegal UTF-8 byte
+     * fields is syntactically invalid.</li> <li>Illegal UTF-8 byte
      * sequences appearing in header field values are replaced with
      * replacement characters. Moreover, UTF-8 is parsed everywhere in
      * header field values, even in those parts of some structured header
      * fields where this appears not to be allowed. (UTF-8 is a character
-     * encoding for the Unicode character set.) </li> <li>This
-     * implementation can parse a message even if that message is without a
-     * From header field, without a Date header field, or without both.
-     * </li> <li>The To and Cc header fields are allowed to contain only
-     * comments and whitespace, but these "empty" header fields will be
-     * omitted when generating. </li> <li>There is no line length limit
-     * imposed when parsing header fields, except header field names. </li>
-     * <li>There is no line length limit imposed when parsing
-     * quoted-printable or base64 encoded bodies. </li> <li>If the transfer
-     * encoding is absent and the content type is "message/rfc822", bytes
-     * with values greater than 127 (called "8-bit bytes" in the rest of
-     * this summary) are still allowed, despite the default value of "7bit"
-     * for "Content-Transfer-Encoding". </li> <li>In the following cases, if
-     * the transfer encoding is absent, declared as 7bit, or treated as
-     * 7bit, 8-bit bytes are still allowed: </li> <li>(a) The preamble and
-     * epilogue of multipart messages, which will be ignored. </li> <li>(b)
-     * If the charset is declared to be <code>utf-8</code> . </li> <li>(c) If the
-     * content type is "text/html" and the charset is declared to be
-     * <code>us-ascii</code> , "windows-1252", "windows-1251", or
-     * "iso-8859-&#x2a;" (all single byte encodings). </li> <li>(d) In
-     * non-MIME message bodies and in text/plain message bodies. Any 8-bit
-     * bytes are replaced with the substitute character byte (0x1a). </li>
-     * <li>If the message starts with the word "From" (and no other case
-     * variations of that word) followed by one or more space (U + 0020) not
-     * followed by colon, that text and the rest of the text is skipped up
-     * to and including a line feed (U + 000A). (See also RFC 4155, which
-     * describes the so-called "mbox" convention with "From" lines of this
-     * kind.) </li> <li>The name <code>ascii</code> is treated as a synonym for
-     * <code>us-ascii</code> , despite being a reserved name under RFC 2046. The
-     * name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
-     * <code>windows-1252</code> and <code>utf-8</code> , respectively, even though they
-     * are not IANA registered aliases. </li> <li>The following deviations
-     * involve encoded words under RFC 2047: </li> <li>(a) If a sequence of
-     * encoded words decodes to a string with a CTL character (U + 007F, or a
-     * character less than U + 0020 and not TAB) after being converted to
-     * Unicode, the encoded words are left un-decoded. </li> <li>(b) This
-     * implementation can decode encoded words regardless of the character
-     * length of the line in which they appear. This implementation can
-     * generate a header field line with one or more encoded words even if
-     * that line is more than 76 characters long. (This implementation
-     * follows the recommendation in RFC 5322 to limit header field lines to
-     * no more than 78 characters, where possible.) </li> </ul> <p>It would
-     * be appreciated if users of this library contact the author if they
-     * find other ways in which this implementation deviates from the mail
-     * specifications or other applicable specifications. </p> <p>Note that
-     * this class currently doesn't support the "padding" parameter for
-     * message bodies with the media type "application/octet-stream" or
-     * treated as that media type (see RFC 2046 sec. 4.5.1). </p> <p>Note
-     * that this implementation can decode an RFC 2047 encoded word that
-     * uses ISO-2022-JP (the only supported encoding that uses code
-     * switching) even if the encoded word's payload ends in a different
-     * mode from "ASCII mode". (Each encoded word still starts in "ASCII
-     * mode", though.) This, however, is not a deviation to RFC 2047 because
-     * the relevant rule only concerns bringing the output device back to
-     * "ASCII mode" after the decoded text is displayed (see last paragraph
-     * of sec. 6.2) -- since the decoded text is converted to Unicode rather
-     * than kept as ISO-2022-JP, this is not applicable since there is no
-     * such thing as "ASCII mode" in the Unicode Standard. </p> <p>Note that
-     * this library (the MailLib library) has no facilities for sending and
-     * receiving email messages, since that's outside this library's scope.
-     * </p>
+     * encoding for the Unicode character set.)</li> <li>This implementation
+     * can parse a message even if that message is without a From header
+     * field, without a Date header field, or without both.</li> <li>The To
+     * and Cc header fields are allowed to contain only comments and
+     * whitespace, but these "empty" header fields will be omitted when
+     * generating.</li> <li>There is no line length limit imposed when
+     * parsing header fields, except header field names.</li> <li>There is
+     * no line length limit imposed when parsing quoted-printable or base64
+     * encoded bodies.</li> <li>If the transfer encoding is absent and the
+     * content type is "message/rfc822", bytes with values greater than 127
+     * (called "8-bit bytes" in the rest of this summary) are still allowed,
+     * despite the default value of "7bit" for
+     * "Content-Transfer-Encoding".</li> <li>In the following cases, if the
+     * transfer encoding is absent, declared as 7bit, or treated as 7bit,
+     * 8-bit bytes are still allowed:</li> <li>(a) The preamble and epilogue
+     * of multipart messages, which will be ignored.</li> <li>(b) If the
+     * charset is declared to be <code>utf-8</code>.</li> <li>(c) If the content
+     * type is "text/html" and the charset is declared to be
+     * <code>us-ascii</code>, "windows-1252", "windows-1251", or "iso-8859-&#x2a;"
+     * (all single byte encodings).</li> <li>(d) In non-MIME message bodies
+     * and in text/plain message bodies. Any 8-bit bytes are replaced with
+     * the substitute character byte (0x1a).</li> <li>If the message starts
+     * with the word "From" (and no other case variations of that word)
+     * followed by one or more space (U + 0020) not followed by colon, that
+     * text and the rest of the text is skipped up to and including a line
+     * feed (U + 000A). (See also RFC 4155, which describes the so-called
+     * "mbox" convention with "From" lines of this kind.)</li> <li>The name
+     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>, despite
+     * being a reserved name under RFC 2046. The name <code>cp1252</code> and
+     * <code>utf8</code> are treated as synonyms for <code>windows-1252</code> and
+     * <code>utf-8</code>, respectively, even though they are not IANA registered
+     * aliases.</li> <li>The following deviations involve encoded words
+     * under RFC 2047:</li> <li>(a) If a sequence of encoded words decodes
+     * to a string with a CTL character (U + 007F, or a character less than
+     * U + 0020 and not TAB) after being converted to Unicode, the encoded
+     * words are left un-decoded.</li> <li>(b) This implementation can
+     * decode encoded words regardless of the character length of the line
+     * in which they appear. This implementation can generate a header field
+     * line with one or more encoded words even if that line is more than 76
+     * characters long. (This implementation follows the recommendation in
+     * RFC 5322 to limit header field lines to no more than 78 characters,
+     * where possible.)</li></ul> <p>It would be appreciated if users of
+     * this library contact the author if they find other ways in which this
+     * implementation deviates from the mail specifications or other
+     * applicable specifications.</p> <p>Note that this class currently
+     * doesn't support the "padding" parameter for message bodies with the
+     * media type "application/octet-stream" or treated as that media type
+     * (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
+     * decode an RFC 2047 encoded word that uses ISO-2022-JP (the only
+     * supported encoding that uses code switching) even if the encoded
+     * word's payload ends in a different mode from "ASCII mode". (Each
+     * encoded word still starts in "ASCII mode", though.) This, however, is
+     * not a deviation to RFC 2047 because the relevant rule only concerns
+     * bringing the output device back to "ASCII mode" after the decoded
+     * text is displayed (see last paragraph of sec. 6.2) -- since the
+     * decoded text is converted to Unicode rather than kept as ISO-2022-JP,
+     * this is not applicable since there is no such thing as "ASCII mode"
+     * in the Unicode Standard.</p> <p>Note that this library (the MailLib
+     * library) has no facilities for sending and receiving email messages,
+     * since that's outside this library's scope.</p>
      */
   public final class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
@@ -206,7 +205,7 @@ import com.upokecenter.text.*;
      * Sets this message's Date header field to the current time as its value, with
      * an unspecified time zone offset. <p>This method can be used when the
      * message is considered complete and ready to be generated, for
-     * example, using the "Generate()" method. </p>
+     * example, using the "Generate()" method.</p>
      * @return This object.
      */
     public Message SetCurrentDate() {
@@ -385,10 +384,10 @@ public final void setContentType(MediaType value) {
     /**
      * <p>Gets a file name suggested by this message for saving the message's body
      * to a file. For more information on the algorithm, see
-     * ContentDisposition.MakeFilename. </p> <p>This method generates a file
+     * ContentDisposition.MakeFilename.</p> <p>This method generates a file
      * name based on the <code>filename</code> parameter of the
      * Content-Disposition header field, if it exists, or on the <code>name</code>
-     * parameter of the Content-Type header field, otherwise. </p>
+     * parameter of the Content-Type header field, otherwise.</p>
      * @return A suggested name for the file. Returns the empty string if there is
      * no filename suggested by the content type or content disposition, or
      * if that filename is an empty string.
@@ -443,8 +442,8 @@ return this.GetAddresses("from");
     /**
      * Gets a snapshot of the header fields of this message, in the order in which
      * they appear in the message. For each item in the list, the key is the
-     * header field's name (where any basic upper-case letters [U+0041 to
-     * U + 005A] are converted to lower case) and the value is the header
+     * header field's name (where any basic upper-case letters.get(U+0041 to
+     * U + 005A) are converted to lower case) and the value is the header
      * field's value.
      * @return A snapshot of the header fields of this message.
      */
@@ -512,7 +511,7 @@ return this.GetAddresses("to");
      * Adds a header field to the end of the message's header. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method.</p>
-     * @param name Name of a header field, such as "From" or "Content-ID".
+     * @param name Name of a header field, such as "From" or "Content-ID" .
      * @param value Value of the header field.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code name} or {@code
@@ -533,25 +532,26 @@ return this.GetAddresses("to");
      * Generates this message's data in text form. <p>The generated message will
      * have only Basic Latin code points (U + 0000 to U + 007F), and the
      * transfer encoding will always be 7bit, quoted-printable, or base64
-     * (the declared transfer encoding for this message will be ignored).
-     * </p> <p>The following applies to the following header fields: From,
-     * To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
-     * Resent-Bcc, and Resent-Sender. If the header field exists, but has an
-     * invalid syntax, has no addresses, or appears more than once, this
-     * method will generate a synthetic header field with the display-name
-     * set to the contents of all of the header fields with the same name,
-     * and the address set to <code>me@[header-name]-address.invalid</code> as the
-     * address (a <code>.invalid</code> address is a reserved address that can
-     * never belong to anyone). (An exception is that the Resent-&#x2a;
-     * header fields may appear more than once.) The generated message
-     * should always have a From header field. </p> <p>If a Date and/or
-     * Message-ID header field doesn't exist, a field with that name will be
-     * generated (using the current local time for the Date field). </p>
-     * <p>When encoding the message's body, if the message has a text
-     * content type ("text/&#x2a;"), the line breaks are a CR byte (carriage
-     * return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or
-     * LF alone. If the message has any other content type, only CR followed
-     * by LF is considered a line break. </p>
+     * (the declared transfer encoding for this message will be
+     * ignored).</p> <p>The following applies to the following header
+     * fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From,
+     * Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists,
+     * but has an invalid syntax, has no addresses, or appears more than
+     * once, this method will generate a synthetic header field with the
+     * display-name set to the contents of all of the header fields with the
+     * same name, and the address set to
+     * <code>me@[header-name]-address.invalid</code> as the address (a
+     * <code>.invalid</code> address is a reserved address that can never belong
+     * to anyone). (An exception is that the Resent-&#x2a; header fields may
+     * appear more than once.) The generated message should always have a
+     * From header field.</p> <p>If a Date and/or Message-ID header field
+     * doesn't exist, a field with that name will be generated (using the
+     * current local time for the Date field).</p> <p>When encoding the
+     * message's body, if the message has a text content type
+     * ("text/&#x2a;"), the line breaks are a CR byte (carriage return,
+     * 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or LF
+     * alone. If the message has any other content type, only CR followed by
+     * LF is considered a line break.</p>
      * @return The generated message.
      * @throws com.upokecenter.mail.MessageDataException The message can't be
      * generated.
@@ -574,8 +574,8 @@ return this.GetAddresses("to");
     }
 
     /**
-     * Gets the byte array for this message's body. This method doesn't make a copy
-     * of that byte array.
+     * Gets the byte array for this message's body. This method doesn' t make a
+     * copy of that byte array.
      * @return A byte array.
      */
     public byte[] GetBody() {
@@ -842,7 +842,7 @@ return this.GetAddresses("to");
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
-     * @param name Name of a header field, such as "From" or "Content-ID".
+     * @param name Name of a header field, such as "From" or "Content-ID" .
      * @param value Value of the header field.
      * @return This instance.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at
@@ -923,7 +923,7 @@ return this.GetAddresses("to");
      * replaced. <p>Updates the ContentType and ContentDisposition
      * properties if those header fields have been modified by this
      * method.</p>
-     * @param name The name of a header field, such as "from" or "subject".
+     * @param name The name of a header field, such as "from" or "subject" .
      * @param value The header field's value.
      * @return This instance.
      * @throws IllegalArgumentException The header field name is too long or
@@ -976,7 +976,7 @@ return this.GetAddresses("to");
     /**
      * Sets the body of this message to a multipart body with plain text and
      * Hypertext Markup Language (HTML) versions of the same message. The
-     * character sequences CR (carriage return, "&#x5c;r" , U+000D), LF (line
+     * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
      * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters.
@@ -1010,7 +1010,7 @@ return this.GetAddresses("to");
     /**
      * Sets the body of this message to a multipart body with plain text, Markdown,
      * and Hypertext Markup Language (HTML) versions of the same message.
-     * The character sequences CR (carriage return, "&#x5c;r" , U+000D), LF (line
+     * The character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
      * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters.
@@ -1261,23 +1261,13 @@ try { if (ms != null) {
      * readable stream, and with the given media type. Before the new
      * attachment is added, if this message isn't already a multipart
      * message, it becomes a "multipart/mixed" message with the current body
-     * converted to an inline body part.<p>The following example (written in
-     * C# for the .NET version) is an extension method that adds an
+     * converted to an inline body part.<p> The following example (written
+     * in C# for the .NET version) is an extension method that adds an
      * attachment from a byte array to a message. <pre>public static
      * Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
-     * MediaType mediaType) { {
-java.io.ByteArrayInputStream fs = null;
-try {
-fs = new java.io.ByteArrayInputStream(bytes);
-
-     * return msg.AddAttachment(fs, mediaType);
-}
-finally {
-try { if (fs != null) {
- fs.close();
- } } catch (java.io.IOException ex) {}
-}
-} } </pre> </p>
+     * MediaType mediaType) { using(MemoryStream fs = new
+     * MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); } }
+     * </pre> </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
@@ -1353,7 +1343,7 @@ try { if (fs != null) {
      * readable stream, and with the given media type. Before the new body
      * part is added, if this message isn't already a multipart message, it
      * becomes a "multipart/mixed" message with the current body converted
-     * to an inline body part.<p>The following example (written in C# for
+     * to an inline body part.<p> The following example (written in C# for
      * the .NET version) is an extension method that adds an inline body
      * part from a byte array to a message. <pre>public static Message
      * AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
@@ -1568,7 +1558,7 @@ private static String GetContentTranslationType(String ctt) {
      * corresponds to the message at the same index. Each language string
      * must follow the syntax of the Content-Language header field (see
      * LanguageTags.GetLanguageList).
-     * @return A Message object with the content type "multipart/multilingual". It
+     * @return A Message object with the content type "multipart/multilingual" . It
      * will begin with an explanatory body part and be followed by the
      * messages given in the {@code messages} parameter in the order given.
      * @throws java.lang.NullPointerException The parameter {@code messages} or

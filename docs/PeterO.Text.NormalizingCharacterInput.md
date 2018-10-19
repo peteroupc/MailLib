@@ -7,7 +7,7 @@
 
 A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
- * <b>NFD</b>(Normalization Form D) decomposes combined forms to their constituent haracters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
+ * <b>NFD</b>(Normalization Form D) decomposes combined forms to their constituent haracters (E plus acute, for example), then reorders combining marks o a standardized order. This is called canonical decomposition.
 
  * <b>NFC</b>does canonical decomposition, then combines certain constituent haracters to their composites (E-acute, for example). This is called anonical composition.
 
@@ -119,17 +119,17 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- or "input" or "charArray" is null.
+or "input" or "charArray" is null.
 
 <a id="Void_ctor_IList_1"></a>
 ### NormalizingCharacterInput Constructor
@@ -186,7 +186,7 @@ A list of the normalized Unicode characters.
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
- is null.
+is null.
 
 <a id="GetChars_string_PeterO_Text_Normalization"></a>
 ### GetChars
@@ -201,8 +201,8 @@ Gets a list of normalized code points after reading from a string.
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
@@ -214,7 +214,7 @@ A list of the normalized Unicode characters.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="IsNormalized_int_PeterO_Text_Normalization"></a>
 ### IsNormalized
@@ -235,7 +235,7 @@ Determines whether the given array of characters is in the given Unicode normali
 
 <b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
+ `true` if the given list of characters is in the given Unicode normalization orm; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -259,13 +259,13 @@ Determines whether the text provided by a character input is normalized.
 
 <b>Return Value:</b>
 
- `true`  if the text is normalized; otherwise,  `false` .
+ `true` if the text is normalized; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
- is null.
+is null.
 
 <a id="IsNormalized_string_PeterO_Text_Normalization"></a>
 ### IsNormalized
@@ -284,13 +284,13 @@ Determines whether the given string is in the given Unicode normalization form.
 
 <b>Return Value:</b>
 
- `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns  `false` if the string contains an unpaired surrogate code point.
+ `true` if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns `false` if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="IsNormalized_System_Collections_Generic_IList_PeterO_Text_Normalization"></a>
 ### IsNormalized
@@ -311,13 +311,13 @@ Determines whether the given list of characters is in the given Unicode normaliz
 
 <b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
+ `true` if the given list of characters is in the given Unicode normalization orm; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>charList</i>
- is null.
+is null.
 
 <a id="Normalize_string_PeterO_Text_Normalization"></a>
 ### Normalize
@@ -336,18 +336,18 @@ Converts a string to the given Unicode normalization form.
 
 <b>Return Value:</b>
 
-The parameter  <i>str</i>
- converted to the given normalization form.
+The parameter <i>str</i>
+converted to the given normalization form.
 
 <b>Exceptions:</b>
 
  * System.ArgumentException:
 The parameter <i>str</i>
- contains an unpaired surrogate code point.
+contains an unpaired surrogate code point.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="Read_int_int_int"></a>
 ### Read
@@ -363,12 +363,12 @@ Reads a sequence of Unicode code points from a data source.
 
  * <i>chars</i>: Output buffer.
 
- * <i>index</i>: A zero-based index showing where the desired portion of  <i>chars</i>
- begins.
+ * <i>index</i>: A zero-based index showing where the desired portion of <i>chars</i>
+begins.
 
- * <i>length</i>: The number of elements in the desired portion of  <i>chars</i>
- (but not more than  <i>chars</i>
- 's length).
+ * <i>length</i>: The number of elements in the desired portion of <i>chars</i>
+(but not more than <i>chars</i>
+'s length).
 
 <b>Return Value:</b>
 
@@ -378,15 +378,15 @@ The number of Unicode code points read, or 0 if the end of the source is reached
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
- is null.
+is null.
 
  * System.ArgumentException:
-Either  <i>index</i>
- or  <i>length</i>
- is less than 0 or greater than  <i>chars</i>
- 's length, or  <i>chars</i>
- ' s length minus  <i>index</i>
- is less than  <i>length</i>
+Either <i>index</i>
+or <i>length</i>
+is less than 0 or greater than <i>chars</i>
+'s length, or <i>chars</i>
+' s length minus <i>index</i>
+is less than <i>length</i>
 .
 
 <a id="ReadChar"></a>

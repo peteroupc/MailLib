@@ -43,7 +43,7 @@ public final void setSubType(String value) {
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.MediaTypeBuilder} class, using the type
-     * "application/octet-stream".
+     * "application/octet-stream" .
      */
     public MediaTypeBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -107,7 +107,8 @@ public final void setSubType(String value) {
 
     /**
      * Sets this media type's top-level type.
-     * @param str A text string naming a top-level type, such as "text" or "audio".
+     * @param str A text string naming a top-level type, such as "text" or "audio"
+     * .
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code str} is syntactically
@@ -148,7 +149,7 @@ public final void setSubType(String value) {
 
     /**
      * Sets a parameter's name and value for this media type.
-     * @param name Name of the parameter to set, such as "charset". The name is
+     * @param name Name of the parameter to set, such as "charset" . The name is
      * compared using a basic case-insensitive comparison. (Two strings are
      * equal in such a comparison, if they match after converting the basic
      * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower

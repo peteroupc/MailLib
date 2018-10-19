@@ -3,7 +3,7 @@
  * [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing strings.
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) -
-Specifies how a message body should be displayed or handled by a mail       user agent.
+Specifies how a message body should be displayed or handled by a mail         user agent.
  * [PeterO.Mail.DataUris](PeterO.Mail.DataUris.md) - Contains methods for parsing and generating Data URIs (uniform resource       identifiers).
  * [PeterO.Mail.DataUrls](PeterO.Mail.DataUrls.md) - Contains methods for parsing and generating Data URIs (uniform resource       identifiers).
  * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - A mutable data type that allows a content disposition to be built.
@@ -27,4 +27,4 @@ A character input class that implements the Unicode normalization         algori
  * [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) -
 A character input class that implements the Unicode normalization         algorithm and contains methods and functionality to test and convert         text strings for normalization.
  * [PeterO.Text.ProtocolStrings](PeterO.Text.ProtocolStrings.md) -
-Contains methods for preparing user-facing protocol             strings (such as user identifiers) for equality comparison and validity             checking.
+Contains methods for preparing user-facing protocol strings (such as         user identifiers) for equality comparison and validity checking.

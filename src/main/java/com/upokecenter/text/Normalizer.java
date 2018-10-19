@@ -10,12 +10,12 @@ at: http://peteroupc.github.io/
     /**
      * <p>Implements the Unicode normalization algorithm and contains methods and
      * functionality to test and convert Unicode strings for Unicode
-     * normalization. </p> <p>NOTICE: While this class's source code is in
+     * normalization.</p> <p>NOTICE: While this class's source code is in
      * the public domain, the class uses an class, called
      * NormalizationData, that includes data derived from the Unicode
      * Character Database. See the documentation for the NormalizerInput
-     * class for the permission notice for the Unicode Character Database.
-     * </p>
+     * class for the permission notice for the Unicode Character
+     * Database.</p>
      * @deprecated Use NormalizerInput instead; that class is much more flexible than
 * Normalizer.
  */
@@ -48,8 +48,8 @@ at: http://peteroupc.github.io/
      * Returns whether this string is normalized.
      * @param str The string to check.
      * @param form The parameter {@code form} is a Normalization object.
-     * @return {@code true} if this string is normalized; otherwise, {@code false}
-     * . Returns {@code false} if the string contains an unpaired surrogate
+     * @return {@code true} if this string is normalized; otherwise, {@code false}.
+     * Returns {@code false} if the string contains an unpaired surrogate
      * code point.
      */
     public static boolean IsNormalized(String str, Normalization form) {
@@ -74,7 +74,7 @@ at: http://peteroupc.github.io/
      * source is reached.
      * @throws IllegalArgumentException Either {@code index} or {@code length} is
      * less than 0 or greater than {@code chars} 's length, or {@code chars}
-     * ' s length minus {@code index} is less than {@code length} .
+     * ' s length minus {@code index} is less than {@code length}.
      * @throws java.lang.NullPointerException The parameter {@code chars} is null.
      */
     public int Read(int[] chars, int index, int length) {

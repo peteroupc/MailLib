@@ -34,8 +34,8 @@ Extracts the data from a Data URI (uniform resource identifier) in the form of a
 
 <b>Return Value:</b>
 
-The data as a byte array. Returns null if  <i>url</i>
- is null, is syntactically invalid, or is not a data URI.
+The data as a byte array. Returns null if <i>url</i>
+is null, is syntactically invalid, or is not a data URI.
 
 <a id="DataUrlMediaType_string"></a>
 ### DataUrlMediaType
@@ -53,8 +53,8 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 <b>Return Value:</b>
 
-The media type. Returns null if  <i>url</i>
- is null, is syntactically invalid, or is not a Data URI.
+The media type. Returns null if <i>url</i>
+is null, is syntactically invalid, or is not a Data URI.
 
 <a id="MakeDataUrl_byte_PeterO_Mail_MediaType"></a>
 ### MakeDataUrl
@@ -80,9 +80,9 @@ A Data URI that encodes the given data and media type.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>bytes</i>
- or  <i>mediaType</i>
- is null.
+The parameter <i>bytes</i>
+or <i>mediaType</i>
+is null.
 
 <a id="MakeDataUrl_string"></a>
 ### MakeDataUrl
@@ -105,5 +105,5 @@ A Data URI that encodes the given text.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>textString</i>
- is null.
+The parameter <i>textString</i>
+is null.

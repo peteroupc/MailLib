@@ -50,8 +50,6 @@ Content-Type header value is still available.)
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType></DebugType>
     <DocumentationFile>bin\Release\netstandard1.0\MailLib.xml</DocumentationFile>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>PeterO.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="PeterO.Text.Encoders.AppResources.resx">

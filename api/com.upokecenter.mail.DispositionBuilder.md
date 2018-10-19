@@ -8,7 +8,7 @@ A mutable data type that allows a content disposition to be built.
 
 * `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the disposition
- type "attachment".
+ type "attachment" .
 * `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
@@ -42,7 +42,7 @@ Irrelevant for content dispositions; will be removed in the future.
 
 * `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the disposition
- type "attachment".
+ type "attachment" .
 * `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
@@ -55,7 +55,7 @@ Irrelevant for content dispositions; will be removed in the future.
 ### DispositionBuilder
     public DispositionBuilder()
 Initializes a new instance of the <code>DispositionBuilder</code> class using the disposition
- type "attachment".
+ type "attachment" .
 ### DispositionBuilder
     public DispositionBuilder​(ContentDisposition mt)
 Initializes a new instance of the <code>DispositionBuilder</code> class using the data from
@@ -88,7 +88,7 @@ Gets this value's disposition type, such as "inline" or "attachment".
 
 **Returns:**
 
-* This value's disposition type, such as "inline" or "attachment".
+* This value's disposition type, such as "inline" or "attachment" .
 
 ### setDispositionType
     public final void setDispositionType​(String value)

@@ -81,7 +81,7 @@ Determines whether this object and another object are equal.
 **Returns:**
 
 * <code>true</code> if this object and another object are equal; otherwise,
- <code>false</code> .
+ <code>false</code>.
 
 ### getLocalPart
     public final String getLocalPart()

@@ -231,7 +231,7 @@ Determines whether this object and another object are equal.
 **Returns:**
 
 * <code>true</code> if this object and another object are equal; otherwise,
- <code>false</code> .
+ <code>false</code>.
 
 ### AddressesEqual
     public boolean AddressesEqual​(NamedAddress na)
@@ -243,7 +243,7 @@ Not documented yet.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code> .
+* Either <code>true</code> or <code>false</code>.
 
 ### getName
     public final String getName()

@@ -45,7 +45,7 @@ The domain name where each XN-label is encoded into Unicode. Labels where this i
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
- is null.
+is null.
 
 <a id="EncodeDomainName_string"></a>
 ### EncodeDomainName
@@ -67,7 +67,7 @@ The domain name where each label with code points outside the Basic Latin range 
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
- is null.
+is null.
 
 <a id="IsValidDomainName_string_bool"></a>
 ### IsValidDomainName

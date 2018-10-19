@@ -9,7 +9,7 @@ using System;
 
 namespace PeterO.Text {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.NormalizerInput"]/*'/>
+  /// path='docs/doc[@name="T:PeterO.Text.NormalizerInput"]/*'/>
   public sealed class NormalizerInput : ICharacterInput {
     internal static int DecompToBufferInternal(
   int ch,
@@ -190,7 +190,7 @@ namespace PeterO.Text {
     private readonly ICharacterInput iterator;
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String)"]/*'/>
     public NormalizerInput(
   string str) : this(
   str,
@@ -198,7 +198,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput)"]/*'/>
     public NormalizerInput(
   ICharacterInput input) : this(
   input,
@@ -206,7 +206,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]/*'/>
     public NormalizerInput(
   string str,
   int index,
@@ -217,13 +217,13 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
     public NormalizerInput(string str, Normalization form) :
       this(new StringCharacterInput2(str), form) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public NormalizerInput(
    ICharacterInput stream,
    Normalization form) {
@@ -240,7 +240,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(
   ICharacterInput chars,
   Normalization form) {
@@ -320,7 +320,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -333,7 +333,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -435,7 +435,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     private readonly int[] readbuffer;
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.ReadChar"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.ReadChar"]/*'/>
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;
@@ -503,7 +503,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     */
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException(nameof(chars));

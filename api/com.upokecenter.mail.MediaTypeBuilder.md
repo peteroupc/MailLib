@@ -8,7 +8,7 @@ A mutable media type object.
 
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
- "application/octet-stream".
+ "application/octet-stream" .
 * `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
@@ -44,7 +44,7 @@ A mutable media type object.
 
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
- "application/octet-stream".
+ "application/octet-stream" .
 * `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
@@ -57,7 +57,7 @@ A mutable media type object.
 ### MediaTypeBuilder
     public MediaTypeBuilder()
 Initializes a new instance of the <code>MediaTypeBuilder</code> class, using the type
- "application/octet-stream".
+ "application/octet-stream" .
 ### MediaTypeBuilder
     public MediaTypeBuilder​(MediaType mt)
 Initializes a new instance of the <code>MediaTypeBuilder</code> class using the data from
@@ -133,7 +133,8 @@ Sets this media type's top-level type.
 
 **Parameters:**
 
-* <code>str</code> - A text string naming a top-level type, such as "text" or "audio".
+* <code>str</code> - A text string naming a top-level type, such as "text" or "audio"
+ .
 
 **Returns:**
 
@@ -172,7 +173,7 @@ Sets a parameter's name and value for this media type.
 
 **Parameters:**
 
-* <code>name</code> - Name of the parameter to set, such as "charset". The name is
+* <code>name</code> - Name of the parameter to set, such as "charset" . The name is
  compared using a basic case-insensitive comparison. (Two strings are
  equal in such a comparison, if they match after converting the basic
  upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower

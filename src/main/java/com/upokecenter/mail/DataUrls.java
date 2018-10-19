@@ -5,9 +5,9 @@ import com.upokecenter.util.*;
     /**
      * Contains methods for parsing and generating Data URIs (uniform resource
      * identifiers). Data URIs are described in RFC 2397. Examples for Data
-     * URIs follow. <pre>data:, hello%20world </pre>
-     * <pre>data:text/markdown, hello%20world </pre>
-     * <pre>data:application/octet-stream;base64, AAAAAA== </pre>
+     * URIs follow. <pre> data:, hello%20world </pre> <pre>
+     * data:text/markdown, hello%20world </pre> <pre>
+     * data:application/octet-stream;base64, AAAAAA== </pre>
      * @deprecated Renamed to DataUris.
  */
 @Deprecated
@@ -16,8 +16,8 @@ private DataUrls() {
 }
     /**
      * Extracts the media type from a Data URI (uniform resource identifier).
-     * @param url The parameter {@code url} is not documented yet.
-     * @return The media type. Returns null if {@code uri} is null, is
+     * @param url A data URI.
+     * @return The media type. Returns null if {@code url} is null, is
      * syntactically invalid, or is not a Data URI.
      * @deprecated Renamed to DataUriMediaType.
  */
@@ -29,8 +29,8 @@ return DataUris.DataUriMediaType(url);
     /**
      * Extracts the data from a Data URI (uniform resource identifier) in the form
      * of a byte array.
-     * @param url The parameter {@code url} is not documented yet.
-     * @return The data as a byte array. Returns null if {@code uri} is null, is
+     * @param url A data URI.
+     * @return The data as a byte array. Returns null if {@code url} is null, is
      * syntactically invalid, or is not a data URI.
      * @deprecated Renamed to DataUriBytes.
  */

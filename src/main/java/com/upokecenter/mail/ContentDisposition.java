@@ -17,7 +17,7 @@ import com.upokecenter.text.*;
      * user agent. This type is immutable; its contents can't be changed
      * after it's created. To create a changeable disposition object, use
      * the DispositionBuilder class.</p> <p><b>About the "filename"
-     * parameter</b> </p> <p>The "filename" parameter of a content
+     * parameter</b></p> <p>The "filename" parameter of a content
      * disposition suggests a name to use when saving data to a file. For
      * the "filename" parameter, the GetParameter method and Parameters
      * property (<code>getParameters</code>) method in Java) do not adapt that
@@ -28,20 +28,20 @@ import com.upokecenter.text.*;
      * to write out in headers, even though that RFC says encoded words
      * "MUST NOT appear within a 'quoted-string'"; see
      * ContentDisposition.MakeFilename), or not be usable as is as a file
-     * name. </p> <p><b>Example:</b> An example of RFC 2047 encoded words
-     * is: </p> <p><b>=?UTF-8?Q?test?=</b> </p> <p>Content-Disposition
-     * header fields like the following have appeared in practice: </p>
+     * name.</p> <p><b>Example:</b> An example of RFC 2047 encoded words
+     * is:</p> <p><b>=?UTF-8?Q?test?=</b></p> <p>Content-Disposition header
+     * fields like the following have appeared in practice:</p>
      * <p><b>Content-Disposition: attachment;
-     * filename==?UTF-8?Q?example?=</b> </p> <p><b>Content-Disposition:
-     * attachment; filename==?UTF-8?Q?test.png?=</b> </p>
+     * filename==?UTF-8?Q?example?=</b></p> <p><b>Content-Disposition:
+     * attachment; filename==?UTF-8?Q?test.png?=</b></p>
      * <p><b>Content-Disposition: attachment;
-     * filename="=?UTF-8?Q?test.png?="</b> </p> <p>In this implementation,
+     * filename="=?UTF-8?Q?test.png?="</b></p> <p>In this implementation,
      * the first and second of these are syntactically invalid, so they
      * trigger parse errors, while the third of these is syntactically
      * valid, but the "filename" parameter is treated as
      * "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047
      * encoded words are not decoded at the moment a content disposition is
-     * parsed (using the Parse method). </p>
+     * parsed (using the Parse method).</p>
      */
   public class ContentDisposition {
     private final String dispositionType;
@@ -61,7 +61,7 @@ import com.upokecenter.text.*;
     /**
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return {@code true} if the objects are equal; otherwise, {@code false} .
+     * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
       ContentDisposition other = ((obj instanceof ContentDisposition) ? (ContentDisposition)obj : null);
@@ -195,15 +195,15 @@ import com.upokecenter.text.*;
      * normalization of file names, there is one notable exception: The HFS
      * Plus file system (on macOS before High Sierra) stores file names
      * using a modified version of normalization form D (NFD) in which
-     * certain code points are not decomposed, including all base + slash code
-     * points, which are the only composed code points in Unicode that are
-     * decomposed in NFD but not in HFS Plus's version of NFD. If the
+     * certain code points are not decomposed, including all base + slash
+     * code points, which are the only composed code points in Unicode that
+     * are decomposed in NFD but not in HFS Plus's version of NFD. If the
      * filename will be used to save a file to an HFS Plus storage device,
      * it is enough to normalize the return value with NFD for this purpose
      * (because all base + slash code points were converted beforehand by
      * MakeFilename to an alternate form). See also Apple's Technical
      * Q&amp;A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus
-     * Volume Format".</li> <li><p>Email and HTTP headers may specify
+     * Volume Format".</li> <li> <p>Email and HTTP headers may specify
      * suggested filenames using the Content-Disposition header field's
      * <code>filename</code> parameter or, in practice, the Content-Type header
      * field's <code>name</code> parameter.</p> <p>Although RFC 2047 encoded words
@@ -220,9 +220,9 @@ import com.upokecenter.text.*;
      * <code>filename</code> parameter in Content-Disposition) confirms that the "
      * <i>suggested</i> filename" in the <code>filename</code> parameter "should
      * be <i>used as a basis</i> for the actual filename, where possible",
-     * and that that file name should "not [be] blindly use[d]". See also
-     * RFC 6266, section 4.3, which discusses the use of that parameter in
-     * Hypertext Transfer Protocol (HTTP).</p> <p>To the extent that the
+     * and that that file name should "not.get(be) blindly use.get(d)". See
+     * also RFC 6266, section 4.3, which discusses the use of that parameter
+     * in Hypertext Transfer Protocol (HTTP).</p> <p>To the extent that the
      * "name" parameter is not allowed in message bodies other than those
      * with the media type "application/octet-stream" or treated as that
      * media-type, this is a deviation of RFC 2045 and 2046 (see also RFC
@@ -230,7 +230,7 @@ import com.upokecenter.text.*;
      * parameters that apply to all media types"). (Some email
      * implementations may still write out the "name" parameter, even for
      * media types other than <code>application/octet-stream</code> and even
-     * though RFC 2046 has deprecated that parameter.)</p></li></ul> </p>
+     * though RFC 2046 has deprecated that parameter.)</p></li></ul></p>
      * @param str A string representing a file name. Can be null.
      * @return A string with the converted version of the file name. Among other
      * things, encoded words under RFC 2047 are decoded (since they occur so
@@ -424,22 +424,22 @@ import com.upokecenter.text.*;
      * from the Content-Disposition header field (as defined for email
      * messages) and follows the syntax given in RFC 2183. Accordingly,
      * among other things, the content disposition string can contain
-     * comments (delimited by parentheses). </p> <p>RFC 2231 extensions
-     * allow each content disposition parameter to be associated with a
-     * character encoding and/or language, and support parameter values that
-     * span two or more key-value pairs. Parameters making use of RFC 2231
-     * extensions have names with an asterisk ("&#x2a;"). Such a parameter
-     * will be ignored if it is ill-formed because of RFC 2231's rules
-     * (except for illegal percent-decoding or undecodable sequences for the
-     * given character enoding). Examples of RFC 2231 extensions follow
-     * (both examples encode the same "filename" parameter): </p>
-     * <p><b>inline; filename&#x2a;=utf-8'en'filename.txt</b> </p>
-     * <p><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+     * comments (delimited by parentheses).</p> <p>RFC 2231 extensions allow
+     * each content disposition parameter to be associated with a character
+     * encoding and/or language, and support parameter values that span two
+     * or more key-value pairs. Parameters making use of RFC 2231 extensions
+     * have names with an asterisk ("&#x2a;"). Such a parameter will be
+     * ignored if it is ill-formed because of RFC 2231's rules (except for
+     * illegal percent-decoding or undecodable sequences for the given
+     * character enoding). Examples of RFC 2231 extensions follow (both
+     * examples encode the same "filename" parameter):</p> <p><b>inline;
+     * filename&#x2a;=utf-8'en'filename.txt</b></p> <p><b>inline;
+     * filename&#x2a;0&#x2a;=utf-8'en'file;
+     * filename&#x2a;1&#x2a;=name%2Etxt</b></p> <p>This implementation
      * ignores keys (in parameter key-value pairs) that appear more than
      * once in the content disposition. Nothing in RFCs 2045, 2183, 2231,
      * 6266, or 7231 explicitly disallows such keys, or otherwise specifies
-     * error-handling behavior for such keys. </p>
+     * error-handling behavior for such keys.</p>
      * @param dispositionValue A text string that should be the value of a
      * Content-Disposition header field.
      * @param defaultValue The value to return in case the disposition value is

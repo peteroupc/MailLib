@@ -51,7 +51,7 @@ private LanguageTags() {
      * Examples include "&#x2a;", "en-us", and "fr".
      * @param str The string to check. Can be null.
      * @return {@code true} if the given string is a basic language range;
-     * otherwise, {@code false} .
+     * otherwise, {@code false}.
      */
     public static boolean IsLanguageRange(String str) {
       return IsLanguageRange(str, false);
@@ -67,7 +67,7 @@ private LanguageTags() {
      * "false", or an extended language range if "true".
      * @return {@code true} if the given string is a basic language range
      * (depending on the {@code extended} parameter); otherwise, {@code
-     * false} .
+     * false}.
      */
     public static boolean IsLanguageRange(String str, boolean extended) {
       if (((str) == null || (str).length() == 0)) {
@@ -745,7 +745,7 @@ String tag = tagSub[tagIndex];
      * language subtag, no variant subtags with the same value, and no
      * extension singleton subtags with the same value.
      * @param str The string to check.
-     * @return {@code true} , if the string meets the conditions given in the
+     * @return {@code true}, if the string meets the conditions given in the
      * summary, {@code false} otherwise.
      */
     public static boolean IsPotentiallyValidLanguageTag(String str) {

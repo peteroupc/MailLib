@@ -1,21 +1,21 @@
 namespace PeterO.Text {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.Normalization"]/*'/>
+  /// path='docs/doc[@name="T:PeterO.Text.Normalization"]/*'/>
   public enum Normalization {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFC"]/*'/>
+  /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFC"]/*'/>
     NFC,
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFD"]/*'/>
+  /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFD"]/*'/>
     NFD,
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFKC"]/*'/>
+  /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFKC"]/*'/>
     NFKC,
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFKD"]/*'/>
+  /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFKD"]/*'/>
     NFKD
   }
 }

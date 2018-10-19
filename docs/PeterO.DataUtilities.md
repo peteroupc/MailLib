@@ -173,8 +173,8 @@ Finds the number of Unicode code points in the given text string. Unpaired surro
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
 <b>Return Value:</b>
 
@@ -184,7 +184,7 @@ The number of Unicode code points in the given string.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="GetUtf8Bytes_string_bool"></a>
 ### GetUtf8Bytes

@@ -4,10 +4,10 @@ using PeterO;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.DataUrls"]/*'/>
+  /// path='docs/doc[@name="T:PeterO.Mail.DataUris"]/*'/>
   public static class DataUris {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
     public static MediaType DataUriMediaType(string uri) {
   string url = uri;
       string[] parts = URIUtility.splitIRIToStrings(
@@ -79,7 +79,7 @@ namespace PeterO.Mail {
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
     public static byte[] DataUriBytes(string uri) {
   string url = uri;
       string[] parts = URIUtility.splitIRIToStrings(
@@ -215,7 +215,7 @@ var i = 0;
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.String)"]/*'/>
     public static string MakeDataUri(string textString) {
 if (textString == null) {
   throw new ArgumentNullException(nameof(textString));
@@ -226,7 +226,7 @@ if (textString == null) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUrls.MakeDataUrl(System.Byte[],PeterO.Mail.MediaType)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.Byte[],PeterO.Mail.MediaType)"]/*'/>
     public static string MakeDataUri(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));

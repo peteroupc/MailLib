@@ -7,7 +7,7 @@ A character input class that implements the Unicode normalization algorithm and 
 
 The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines four<i>normalization forms</i>that convert strings to a single equivalent form:
 
- * <b>NFD</b>(Normalization Form D) decomposes combined forms to their constituent haracters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
+ * <b>NFD</b>(Normalization Form D) decomposes combined forms to their constituent haracters (E plus acute, for example), then reorders combining marks o a standardized order. This is called canonical decomposition.
 
  * <b>NFC</b>does canonical decomposition, then combines certain constituent haracters to their composites (E-acute, for example). This is called anonical composition.
 

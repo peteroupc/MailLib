@@ -5,7 +5,7 @@ using PeterO;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
+  /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
   public static class LanguageTags {
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
@@ -44,13 +44,13 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)"]/*'/>
     public static bool IsLanguageRange(string str) {
       return IsLanguageRange(str, false);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)"]/*'/>
     public static bool IsLanguageRange(string str, bool extended) {
       if (String.IsNullOrEmpty(str)) {
  return false;
@@ -174,7 +174,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)"]/*'/>
     public static string LanguageTagCase(string str) {
       if (String.IsNullOrEmpty(str)) {
  return str;
@@ -228,7 +228,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)"]/*'/>
     public static IList<string> GetLanguageList(
       string str) {
       string tag = null;
@@ -284,7 +284,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)"]/*'/>
     public static IList<StringAndQuality> GetRangeListWithQuality(
       string str) {
       string tag = null;
@@ -416,7 +416,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)"]/*'/>
     public static IList<string> LanguageTagFilter(
            IList<string> ranges,
            IList<string> languages,
@@ -493,7 +493,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.MatchesLanguageTag(System.String,System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.MatchesLanguageTag(System.String,System.String)"]/*'/>
     public static bool MatchesLanguageTag(string range, string tag) {
       IList<string> tags = LanguageTagFilter(
         new List<string>(new string[] { range }),
@@ -504,7 +504,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String)"]/*'/>
     public static string LanguageTagLookup(
   string range,
   IList<string> languages,
@@ -513,7 +513,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)"]/*'/>
     public static string LanguageTagLookup(
   IList<string> ranges,
   IList<string> languages,
@@ -522,7 +522,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})"]/*'/>
     public static IList<string> LanguageTagFilter(
   IList<string> ranges,
   IList<string> languages) {
@@ -530,7 +530,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
     public static string LanguageTagLookup(
   string range,
   IList<string> languages,
@@ -544,7 +544,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
     public static string LanguageTagLookup(
          IList<string> ranges,
          IList<string> languages,
@@ -593,7 +593,7 @@ string tag = tagSub[tagIndex];
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)"]/*'/>
+  /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)"]/*'/>
     public static bool IsPotentiallyValidLanguageTag(string str) {
       if (String.IsNullOrEmpty(str)) {
         return false;

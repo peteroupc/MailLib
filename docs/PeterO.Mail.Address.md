@@ -27,7 +27,7 @@ Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) 
 
  * System.ArgumentNullException:
 The parameter <i>addressValue</i>
- is null.
+is null.
 
  * System.ArgumentException:
 The email address contains invalid syntax. For example, it doesn't contain an '@' sign or either side of the '@' contains invalid characters, the address is too long, or the address contains comments (text within parentheses).

@@ -70,7 +70,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise, . `false` .
+ `true` If this is a multipart media type; otherwise, . `false` .
 
 <a id="IsText"></a>
 ### IsText
@@ -186,7 +186,7 @@ The value of the parameter as a string, or null if the parameter doesn't exist.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
  * System.ArgumentException:
 Name is empty.

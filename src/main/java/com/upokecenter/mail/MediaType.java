@@ -14,22 +14,22 @@ import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
     /**
-     * <p>Specifies what kind of data a message body is. </p> <p>A media type
+     * <p>Specifies what kind of data a message body is.</p> <p>A media type
      * consists of a top-level type (the general category of the data), a
      * subtype (the specific type), and an optional list of parameters. For
      * example, the media type <code>text/plain; charset = utf-8</code> is a text
      * media type ("text"), namely, a plain text type ("plain"), and the
      * parameters say that the data uses UTF-8, a Unicode character encoding
      * ("charset = utf-8"). Other top-level types include "audio", "video",
-     * and "application". </p> <p>A media type is sometimes known as a "MIME
+     * and "application".</p> <p>A media type is sometimes known as a "MIME
      * type", for Multipurpose Internet Mail Extensions, the standard that
-     * introduced media types. </p> <p>This type is immutable, meaning its
+     * introduced media types.</p> <p>This type is immutable, meaning its
      * values can't be changed once it' s created. To create a changeable
-     * media type object, use the MediaTypeBuilder class. </p>
+     * media type object, use the MediaTypeBuilder class.</p>
      * <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
      * top-level type <code>multipart</code> must be treated as
      * <code>multipart/mixed</code> and unrecognized media types as the media type
-     * <code>application/octet-stream</code> . </p>
+     * <code>application/octet-stream</code>.</p>
      */
   public final class MediaType {
     // Printable ASCII characters that cannot appear in a
@@ -48,7 +48,7 @@ import com.upokecenter.text.*;
      * "text/plain", or "audio" in "audio/basic"). The resulting string will
      * be in lowercase letters.
      * @return The name of this media type's top-level type (such as "text" or
-     * "audio".
+     * "audio" .
      */
     public final String getTopLevelType() {
         return this.topLevelType;
@@ -58,7 +58,7 @@ import com.upokecenter.text.*;
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false} .
+     * {@code false}.
      */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
@@ -109,7 +109,7 @@ import com.upokecenter.text.*;
     /**
      * Gets a value indicating whether this is a text media type ("text/&#x2a;").
      * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false} .
+     * false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -1364,7 +1364,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
      * media type string was directly extracted from the Content-Type header
      * field (as defined for email messages) and follows the syntax given in
      * RFC 2045. Accordingly, among other things, the media type string can
-     * contain comments (delimited by parentheses). </p> <p>RFC 2231
+     * contain comments (delimited by parentheses).</p> <p>RFC 2231
      * extensions allow each media type parameter to be associated with a
      * character encoding and/or language, and support parameter values that
      * span two or more key-value pairs. Parameters making use of RFC 2231
@@ -1372,14 +1372,14 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
      * will be ignored if it is ill-formed because of RFC 2231's rules
      * (except for illegal percent-decoding or undecodable sequences for the
      * given character enoding). Examples of RFC 2231 extensions follow
-     * (both examples encode the same "filename" parameter): </p>
-     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
+     * (both examples encode the same "filename" parameter):</p>
+     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b></p>
      * <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+     * filename&#x2a;1&#x2a;=name%2Etxt</b></p> <p>This implementation
      * ignores keys (in parameter key-value pairs) that appear more than
      * once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
      * 7231 explicitly disallows such keys, or otherwise specifies
-     * error-handling behavior for such keys. </p>
+     * error-handling behavior for such keys.</p>
      * @param str A text string representing a media type. This media type can
      * include parameters.
      * @param defaultValue The media type to return if the string is syntactically

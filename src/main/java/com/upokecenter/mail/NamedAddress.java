@@ -74,7 +74,7 @@ import java.util.*;
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false} .
+     * {@code false}.
      */
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
@@ -91,7 +91,7 @@ import java.util.*;
     /**
      * Not documented yet.
      * @param na A named address object to compare with this one. Can be null.
-     * @return Either {@code true} or {@code false} .
+     * @return Either {@code true} or {@code false}.
      */
     public boolean AddressesEqual(NamedAddress na) {
       if (na == null || this.isGroup != na.isGroup) {

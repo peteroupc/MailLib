@@ -34,11 +34,11 @@ Deprecated.
 
 **Parameters:**
 
-* <code>url</code> - The parameter <code>url</code> is not documented yet.
+* <code>url</code> - A data URI.
 
 **Returns:**
 
-* The media type. Returns null if <code>uri</code> is null, is
+* The media type. Returns null if <code>url</code> is null, is
  syntactically invalid, or is not a Data URI.
 
 ### DataUrlBytes
@@ -48,11 +48,11 @@ Deprecated.
 
 **Parameters:**
 
-* <code>url</code> - The parameter <code>url</code> is not documented yet.
+* <code>url</code> - A data URI.
 
 **Returns:**
 
-* The data as a byte array. Returns null if <code>uri</code> is null, is
+* The data as a byte array. Returns null if <code>url</code> is null, is
  syntactically invalid, or is not a data URI.
 
 ### MakeDataUrl
