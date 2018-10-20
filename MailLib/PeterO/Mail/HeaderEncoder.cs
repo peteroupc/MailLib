@@ -170,11 +170,10 @@ namespace PeterO.Mail {
             // May begin quoted-string or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
-            int si = symbol[i] == '"' ? HeaderParser.ParseQuotedStringCore(
+            int si = symbol[i] == '"' ? HeaderParserUtility.ParseQuotedStringCore(
   symbol,
   i,
-  endIndex,
-  null) : HeaderParser.ParseDomainLiteralCore(
+  endIndex) : HeaderParser.ParseDomainLiteralCore(
   symbol,
   i,
   endIndex,

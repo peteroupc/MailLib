@@ -20,6 +20,41 @@ namespace PeterO.Mail {
     internal const int TokenLocalPart = 7;
     internal const int TokenDomain = 8;
 
+    public static int ParseQuotedStringCore(string str, int index, int endIndex) {
+      int indexStart, indexStart2, indexTemp2, tx3;
+      indexStart = index;
+      if (index < endIndex && (str[index] == 34)) {
+        index += 1;
+      } else {
+        { return indexStart; }
+      }
+      while (true) {
+        indexTemp2 = index;
+        do {
+          indexStart2 = index;
+          index = HeaderParser.ParseFWS(str, index, endIndex, null);
+          tx3 = HeaderParser.ParseQcontent(str, index, endIndex, null);
+          if (tx3 == index) {
+            index = indexStart2; break;
+          }
+          index = tx3;
+          indexTemp2 = index;
+          index = indexStart2;
+        } while (false);
+        if (indexTemp2 != index) {
+          index = indexTemp2;
+        } else break;
+      }
+      index = HeaderParser.ParseFWS(str, index, endIndex,null);
+      if (index < endIndex && (str[index] == 34)) {
+        index += 1;
+      } else {
+        { return indexStart; }
+      }
+      return index;
+    }
+
+
     public static bool HasComments(string str, int startIndex, int endIndex) {
        // Determines whether the string portion has comments.
        // Assumes the portion of the string is a syntactically valid
@@ -36,7 +71,7 @@ namespace PeterO.Mail {
            } else if (c == 0x22) {
                 // quoted string found, skip it
                 int
-  si = HeaderParser.ParseQuotedStringCore(str, index, endIndex, null);
+  si = HeaderParserUtility.ParseQuotedStringCore(str, index, endIndex);
                     if (si == index) {
  throw new InvalidOperationException("Internal error: " + str);
 }

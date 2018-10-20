@@ -1479,7 +1479,7 @@
             8-element array. See
             <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
             for information on the format of this parameter.</param><returns>A date-time string.</returns><exception cref='T:System.ArgumentException'>The parameter
-            <paramref name='dateTime'/> is null or invalid.</exception>
+            <paramref name='dateTime'/> is null or invalid, including if the year (<c>dateTime[0]</c>) is less than 0.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)">
@@ -1491,7 +1491,7 @@
             <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
             for information on the format of this parameter.</param><param name='gmt'>If true, uses the string "GMT" as the time zone
             offset.</param><returns>A date-time string.</returns><exception cref='T:System.ArgumentException'>The parameter
-            <paramref name='dateTime'/> is null or invalid.</exception><exception cref='T:System.NotSupportedException'>The time zone
+            <paramref name='dateTime'/> is null or invalid, including if the year (<c>dateTime[0]</c>) is less than 0.</exception><exception cref='T:System.NotSupportedException'>The time zone
             offset is other than 0 and <paramref name='gmt'/> is
             true.</exception>
 

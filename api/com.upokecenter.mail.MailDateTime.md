@@ -23,6 +23,8 @@ Contains methods for parsing and generating date-time strings following the
  Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322), with an option to allow obsolete
  time zone strings to appear in the date-time string.
+* `static int[] ParseDateStringHttp​(String v)`<br>
+ Parses a date string in one of the three formats allowed by HTTP/1.1.
 
 ## Method Details
 
@@ -44,7 +46,7 @@ Generates a date-time string following the Internet Message Format (RFC
 **Throws:**
 
 * <code>IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or
- invalid.
+ invalid, including if the year (<code>dateTime[0]</code>) is less than 0.
 
 ### GenerateDateString
     public static String GenerateDateString​(int[] dateTime, boolean gmt)
@@ -67,7 +69,7 @@ Generates a date-time string following the Internet Message Format (RFC
 **Throws:**
 
 * <code>IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or
- invalid.
+ invalid, including if the year (<code>dateTime[0]</code>) is less than 0.
 
 * <code>UnsupportedOperationException</code> - The time zone offset is other than 0
  and <code>gmt</code> is true.
@@ -123,3 +125,15 @@ Gets the date and time extracted from a date-time string following the
 * An 8-element array containing the date and time, or <code>null</code> if
  <code>str</code> is null, empty, or syntactically invalid, or if the
  string's year would overflow the range of a 32-bit signed integer.
+
+### ParseDateStringHttp
+    public static int[] ParseDateStringHttp​(String v)
+Parses a date string in one of the three formats allowed by HTTP/1.1.
+
+**Parameters:**
+
+* <code>v</code> - The parameter <code>v</code> is not documented yet.
+
+**Returns:**
+
+* A 64-bit signed integer.
