@@ -14,7 +14,7 @@ using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -28,7 +28,7 @@ namespace PeterO.Mail {
       Encodings.GetEncoding("us-ascii", true);
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TopLevelType"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TopLevelType"]/*'/>
     public string TopLevelType {
       get {
         return this.topLevelType;
@@ -37,7 +37,7 @@ namespace PeterO.Mail {
 
     #region Equals and GetHashCode implementation
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Equals(System.Object)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
       if (other == null) {
@@ -49,7 +49,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetHashCode"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = 632580499;
       if (this.topLevelType != null) {
@@ -74,7 +74,7 @@ namespace PeterO.Mail {
     private readonly string subType;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.MediaType.SubType"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.SubType"]/*'/>
     public string SubType {
       get {
         return this.subType;
@@ -82,7 +82,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsText"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsText"]/*'/>
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text");
@@ -90,7 +90,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsMultipart"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsMultipart"]/*'/>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");
@@ -109,7 +109,7 @@ namespace PeterO.Mail {
     private readonly Dictionary<string, string> parameters;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.MediaType.Parameters"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.Parameters"]/*'/>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -118,11 +118,11 @@ namespace PeterO.Mail {
 
     internal enum QuotedStringRule {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]/*'/>
       Http,
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]/*'/>
       Rfc5322
     }
 
@@ -521,7 +521,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]/*'/>
     public override string ToString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing
       // space).
@@ -532,7 +532,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToSingleLineString"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToSingleLineString"]/*'/>
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -542,7 +542,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToUriSafeString"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToUriSafeString"]/*'/>
     public string ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -735,7 +735,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetCharset"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetCharset"]/*'/>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
@@ -881,7 +881,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetParameter(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -1061,7 +1061,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TypeAndSubType"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TypeAndSubType"]/*'/>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -1254,7 +1254,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       Justification="This instance is immutable")]
 #endif
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainAscii"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainAscii"]/*'/>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
   "text",
@@ -1269,7 +1269,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       Justification="This instance is immutable")]
 #endif
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainUtf8"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainUtf8"]/*'/>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
   "text",
@@ -1284,7 +1284,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       Justification="This instance is immutable")]
 #endif
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.MediaType.MessageRfc822"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.MessageRfc822"]/*'/>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
@@ -1295,7 +1295,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       Justification="This instance is immutable")]
 #endif
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.MediaType.ApplicationOctetStream"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.ApplicationOctetStream"]/*'/>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
@@ -1306,13 +1306,13 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String)"]/*'/>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)"]/*'/>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));

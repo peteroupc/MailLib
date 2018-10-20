@@ -4,7 +4,7 @@ using PeterO;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
   public static class MailDateTime {
     private static string[] valueDaysOfWeek = {
       "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
@@ -16,7 +16,7 @@ namespace PeterO.Mail {
     };
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])"]/*'/>
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
     }
@@ -186,7 +186,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)"]/*'/>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (!IsValidDateTime(dateTime) || dateTime[0] < 0) {
         throw new ArgumentException("Invalid date and time");
@@ -246,7 +246,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)"]/*'/>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
       if (String.IsNullOrEmpty(str)) {
  return null;
@@ -266,7 +266,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)"]/*'/>
     public static int[] ParseDateString(string str) {
       return ParseDateString(str, false);
     }

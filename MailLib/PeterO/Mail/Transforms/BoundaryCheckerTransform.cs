@@ -315,7 +315,7 @@ if (this.innerBufferCount < this.innerBufferIndex) {
     }
 
     /// <include file='../../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]/*'/>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

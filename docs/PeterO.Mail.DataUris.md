@@ -4,11 +4,11 @@
 
 Contains methods for parsing and generating Data URIs (uniform resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
 
-    data:,hello%20world
+    data:, hello%20world
 
-    data:text/markdown,hello%20world
+    data:text/markdown, hello%20world
 
-    data:application/octet-stream;base64,AAAAAA==
+    data:application/octet-stream;base64, AAAAAA==
 
 ### Member Summary
 * <code>[DataUriBytes(string)](#DataUriBytes_string)</code> - Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
@@ -26,13 +26,13 @@ Extracts the data from a Data URI (uniform resource identifier) in the form of a
 
 <b>Parameters:</b>
 
- * <i>uri</i>: The parameter <i>uri</i>
-is a text string.
+ * <i>uri</i>: The parameter  <i>uri</i>
+ is a text string.
 
 <b>Return Value:</b>
 
-The data as a byte array. Returns null if <i>uri</i>
-is null, is syntactically invalid, or is not a data URI.
+The data as a byte array. Returns null if  <i>uri</i>
+ is null, is syntactically invalid, or is not a data URI.
 
 <a id="DataUriMediaType_string"></a>
 ### DataUriMediaType
@@ -44,13 +44,13 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 <b>Parameters:</b>
 
- * <i>uri</i>: The parameter <i>uri</i>
-is a text string.
+ * <i>uri</i>: The parameter  <i>uri</i>
+ is a text string.
 
 <b>Return Value:</b>
 
-The media type. Returns null if <i>uri</i>
-is null, is syntactically invalid, or is not a Data URI.
+The media type. Returns null if  <i>uri</i>
+ is null, is syntactically invalid, or is not a Data URI.
 
 <a id="MakeDataUri_byte_PeterO_Mail_MediaType"></a>
 ### MakeDataUri
@@ -75,8 +75,8 @@ A Data URI that encodes the given data and media type.
 
  * System.ArgumentNullException:
 The parameter <i>bytes</i>
-or <i>mediaType</i>
-is null.
+ or  <i>mediaType</i>
+ is null.
 
 <a id="MakeDataUri_string"></a>
 ### MakeDataUri
@@ -98,4 +98,4 @@ A Data URI that encodes the given text.
 
  * System.ArgumentNullException:
 The parameter <i>textString</i>
-is null.
+ is null.

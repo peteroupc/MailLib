@@ -119,7 +119,7 @@ Deprecated.
 
 **Parameters:**
 
-* <code>characterList</code> - The parameter <code>characterList</code> is an List object.
+* <code>characterList</code> - The parameter <code>characterList</code> is an IList object.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput​(List<Integer> characterList, Normalization form)

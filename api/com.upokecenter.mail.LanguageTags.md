@@ -68,7 +68,7 @@ Returns whether the given string is a basic language range under RFC 4647.
 **Returns:**
 
 * <code>true</code> if the given string is a basic language range;
- otherwise, <code>false</code>.
+ otherwise, <code>false</code> .
 
 ### IsLanguageRange
     public static boolean IsLanguageRange​(String str, boolean extended)
@@ -88,7 +88,7 @@ Returns whether the given string is a basic or extended language range under
 
 * <code>true</code> if the given string is a basic language range
  (depending on the <code>extended</code> parameter); otherwise, <code>
- false</code>.
+ false</code> .
 
 ### LanguageTagCase
     public static String LanguageTagCase​(String str)

@@ -45,7 +45,7 @@ The domain name where each XN-label is encoded into Unicode. Labels where this i
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
-is null.
+ is null.
 
 <a id="EncodeDomainName_string"></a>
 ### EncodeDomainName
@@ -67,7 +67,7 @@ The domain name where each label with code points outside the Basic Latin range 
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
-is null.
+ is null.
 
 <a id="IsValidDomainName_string_bool"></a>
 ### IsValidDomainName
@@ -80,11 +80,11 @@ Determines whether the given string is a domain name containing only U-labels, A
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter <i>str</i>
-is a text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
  * <i>lookupRules</i>: If true, uses rules to apply when looking up the string as a domain name. If false, uses rules to apply when registering the string as a domain name.
 
 <b>Return Value:</b>
 
- `true` if the given string is a syntactically valid domain name; otherwise; alse.
+ `true`  if the given string is a syntactically valid domain name; otherwise; false.

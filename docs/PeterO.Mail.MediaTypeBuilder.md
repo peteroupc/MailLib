@@ -13,7 +13,7 @@ A mutable media type object.
 * <code>[SetTopLevelType(string)](#SetTopLevelType_string)</code> - Sets this media type's top-level type.
 * <code>[SubType](#SubType)</code> - Gets or sets this value's subtype.
 * <code>[ToMediaType()](#ToMediaType)</code> - Converts this builder to an immutable media type object.
-* <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form asMediaType.
+* <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form as MediaType.
 * <code>[TopLevelType](#TopLevelType)</code> - Gets or sets this value's top-level type.
 
 <a id="Void_ctor_MediaType"></a>
@@ -26,14 +26,14 @@ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.Med
 
 <b>Parameters:</b>
 
- * <i>mt</i>: The parameter <i>mt</i>
-is a MediaType object.
+ * <i>mt</i>: The parameter  <i>mt</i>
+ is a MediaType object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>mt</i>
-is null.
+ is null.
 
 <a id="Void_ctor_String_String"></a>
 ### MediaTypeBuilder Constructor
@@ -55,7 +55,7 @@ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.Med
 
     public MediaTypeBuilder();
 
-Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class, using the type "application/octet-stream".
+Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class, using the type "application/octet-stream" .
 
 <a id="IsMultipart"></a>
 ### IsMultipart
@@ -66,7 +66,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true` If this is a multipart media type; otherwise, . `false` .
+ `true`  If this is a multipart media type; otherwise, . `false` .
 
 <a id="IsText"></a>
 ### IsText
@@ -77,7 +77,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true` If this is a text media type; otherwise, . `false` .
+ `true`  If this is a text media type; otherwise, . `false` .
 
 <a id="SubType"></a>
 ### SubType
@@ -121,7 +121,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
-is null.
+ is null.
 
 <a id="SetParameter_string_string"></a>
 ### SetParameter
@@ -134,7 +134,7 @@ Sets a parameter's name and value for this media type.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set, such as "charset". The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
  * <i>value</i>: A text string giving the parameter's value.
 
@@ -146,12 +146,12 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
-or <i>name</i>
-is null.
+ or  <i>name</i>
+ is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
-is empty or syntactically invalid.
+ is empty or syntactically invalid.
 
 <a id="SetSubType_string"></a>
 ### SetSubType
@@ -173,11 +173,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
-is empty or syntactically invalid.
+ is empty or syntactically invalid.
 
 <a id="SetTopLevelType_string"></a>
 ### SetTopLevelType
@@ -189,7 +189,7 @@ Sets this media type's top-level type.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A text string naming a top-level type, such as "text" or "audio".
+ * <i>str</i>: A text string naming a top-level type, such as "text" or "audio" .
 
 <b>Return Value:</b>
 
@@ -199,11 +199,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
-is syntactically invalid for a top-level type.
+ is syntactically invalid for a top-level type.
 
 <a id="ToMediaType"></a>
 ### ToMediaType
@@ -221,7 +221,7 @@ A MediaType object.
 
     public override string ToString();
 
-Converts this object to a text string of the media type it represents, in the same form as `MediaType.ToString`
+Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString`
 
 <b>Return Value:</b>
 

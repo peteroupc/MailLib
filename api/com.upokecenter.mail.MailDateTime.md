@@ -116,7 +116,7 @@ Gets the date and time extracted from a date-time string following the
 
 **Parameters:**
 
-* <code>str</code> - string.
+* <code>str</code> - String.
 
 **Returns:**
 

@@ -203,7 +203,7 @@ import com.upokecenter.text.*;
      * (because all base + slash code points were converted beforehand by
      * MakeFilename to an alternate form). See also Apple's Technical
      * Q&amp;A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus
-     * Volume Format".</li> <li> <p>Email and HTTP headers may specify
+     * Volume Format".</li> <li><p>Email and HTTP headers may specify
      * suggested filenames using the Content-Disposition header field's
      * <code>filename</code> parameter or, in practice, the Content-Type header
      * field's <code>name</code> parameter.</p> <p>Although RFC 2047 encoded words
@@ -220,9 +220,9 @@ import com.upokecenter.text.*;
      * <code>filename</code> parameter in Content-Disposition) confirms that the "
      * <i>suggested</i> filename" in the <code>filename</code> parameter "should
      * be <i>used as a basis</i> for the actual filename, where possible",
-     * and that that file name should "not.get(be) blindly use.get(d)". See
-     * also RFC 6266, section 4.3, which discusses the use of that parameter
-     * in Hypertext Transfer Protocol (HTTP).</p> <p>To the extent that the
+     * and that that file name should "not [be] blindly use[d]". See also
+     * RFC 6266, section 4.3, which discusses the use of that parameter in
+     * Hypertext Transfer Protocol (HTTP).</p> <p>To the extent that the
      * "name" parameter is not allowed in message bodies other than those
      * with the media type "application/octet-stream" or treated as that
      * media-type, this is a deviation of RFC 2045 and 2046 (see also RFC
@@ -424,22 +424,22 @@ import com.upokecenter.text.*;
      * from the Content-Disposition header field (as defined for email
      * messages) and follows the syntax given in RFC 2183. Accordingly,
      * among other things, the content disposition string can contain
-     * comments (delimited by parentheses).</p> <p>RFC 2231 extensions allow
-     * each content disposition parameter to be associated with a character
-     * encoding and/or language, and support parameter values that span two
-     * or more key-value pairs. Parameters making use of RFC 2231 extensions
-     * have names with an asterisk ("&#x2a;"). Such a parameter will be
-     * ignored if it is ill-formed because of RFC 2231's rules (except for
-     * illegal percent-decoding or undecodable sequences for the given
-     * character enoding). Examples of RFC 2231 extensions follow (both
-     * examples encode the same "filename" parameter):</p> <p><b>inline;
-     * filename&#x2a;=utf-8'en'filename.txt</b></p> <p><b>inline;
-     * filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt</b></p> <p>This implementation
+     * comments (delimited by parentheses). </p> <p>RFC 2231 extensions
+     * allow each content disposition parameter to be associated with a
+     * character encoding and/or language, and support parameter values that
+     * span two or more key-value pairs. Parameters making use of RFC 2231
+     * extensions have names with an asterisk ("&#x2a;"). Such a parameter
+     * will be ignored if it is ill-formed because of RFC 2231's rules
+     * (except for illegal percent-decoding or undecodable sequences for the
+     * given character enoding). Examples of RFC 2231 extensions follow
+     * (both examples encode the same "filename" parameter): </p>
+     * <p><b>inline; filename&#x2a;=utf-8'en'filename.txt</b> </p>
+     * <p><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
+     * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
      * ignores keys (in parameter key-value pairs) that appear more than
      * once in the content disposition. Nothing in RFCs 2045, 2183, 2231,
      * 6266, or 7231 explicitly disallows such keys, or otherwise specifies
-     * error-handling behavior for such keys.</p>
+     * error-handling behavior for such keys. </p>
      * @param dispositionValue A text string that should be the value of a
      * Content-Disposition header field.
      * @param defaultValue The value to return in case the disposition value is

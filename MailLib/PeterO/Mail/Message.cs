@@ -15,7 +15,7 @@ using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -55,7 +55,7 @@ namespace PeterO.Mail {
     private int transferEncoding;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]/*'/>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -68,7 +68,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]/*'/>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -81,7 +81,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor"]/*'/>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -96,7 +96,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.NewBodyPart"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.NewBodyPart"]/*'/>
     public static Message NewBodyPart() {
       var msg = new Message();
       msg.contentType = MediaType.TextPlainAscii;
@@ -106,7 +106,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetCurrentDate"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetCurrentDate"]/*'/>
     public Message SetCurrentDate() {
       // NOTE: Use global rather than local time; there are overriding
       // reasons not to use local time, despite the SHOULD in RFC 5322
@@ -124,7 +124,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
     [Obsolete("Use GetAddresses(\"Bcc\") instead.")]
     public IList<NamedAddress> BccAddresses {
       get {
@@ -133,7 +133,7 @@ return this.GetAddresses("bcc");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.BodyString"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.BodyString"]/*'/>
     public string BodyString {
       get {
         if (this.ContentType.IsMultipart) {
@@ -155,7 +155,7 @@ return this.GetAddresses("bcc");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.CCAddresses"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.CCAddresses"]/*'/>
     [Obsolete("Use GetAddresses(\"Cc\") instead.")]
     public IList<NamedAddress> CCAddresses {
       get {
@@ -164,7 +164,7 @@ return this.GetAddresses("cc");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetFormattedBodyString"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetFormattedBodyString"]/*'/>
     public string GetFormattedBodyString() {
       string text = this.BodyString;
       if (text == null) {
@@ -207,7 +207,7 @@ MediaType previewType = MediaType.Parse("text/html");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
     public ContentDisposition ContentDisposition {
       get {
         return this.contentDisposition;
@@ -227,7 +227,7 @@ MediaType previewType = MediaType.Parse("text/html");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentType"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentType"]/*'/>
     public MediaType ContentType {
       get {
         return this.contentType;
@@ -250,7 +250,7 @@ MediaType previewType = MediaType.Parse("text/html");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.FileName"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.FileName"]/*'/>
     public string FileName {
       get {
         ContentDisposition disp = this.contentDisposition;
@@ -262,7 +262,7 @@ MediaType previewType = MediaType.Parse("text/html");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
     public IList<NamedAddress> GetAddresses(string headerName) {
       if (headerName == null) {
         throw new ArgumentNullException(nameof(headerName));
@@ -280,7 +280,7 @@ MediaType previewType = MediaType.Parse("text/html");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.FromAddresses"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.FromAddresses"]/*'/>
     [Obsolete("Use GetAddresses(\"From\") instead.")]
     public IList<NamedAddress> FromAddresses {
       get {
@@ -289,7 +289,7 @@ return this.GetAddresses("from");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.HeaderFields"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.HeaderFields"]/*'/>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
         var list = new List<KeyValuePair<string, string>>();
@@ -304,7 +304,7 @@ return this.GetAddresses("from");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.Parts"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.Parts"]/*'/>
     public IList<Message> Parts {
       get {
         return this.parts;
@@ -312,7 +312,7 @@ return this.GetAddresses("from");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.Subject"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.Subject"]/*'/>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -324,7 +324,7 @@ return this.GetAddresses("from");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.ToAddresses"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.ToAddresses"]/*'/>
     [Obsolete("Use GetAddresses(\"To\") instead.")]
     public IList<NamedAddress> ToAddresses {
       get {
@@ -333,13 +333,13 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
     public Message AddHeader(KeyValuePair<string, string> header) {
       return this.AddHeader(header.Key, header.Value);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)"]/*'/>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       int index = this.headers.Count / 2;
@@ -349,7 +349,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.Generate"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.Generate"]/*'/>
     public string Generate() {
       var aw = new ArrayWriter();
       this.Generate(aw, 0);
@@ -357,7 +357,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GenerateBytes"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GenerateBytes"]/*'/>
     public byte[] GenerateBytes() {
       var aw = new ArrayWriter();
       this.Generate(aw, 0);
@@ -365,20 +365,20 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBody"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBody"]/*'/>
     public byte[] GetBody() {
       return this.body;
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]/*'/>
     public int[] GetDate() {
       string field = this.GetHeader("date");
  return (field == null) ? null : MailDateTime.ParseDateString(field, true);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetDate(System.Int32[])"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetDate(System.Int32[])"]/*'/>
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
@@ -396,7 +396,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBodyMessage"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBodyMessage"]/*'/>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
@@ -412,7 +412,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.Int32)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.Int32)"]/*'/>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -429,7 +429,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]/*'/>
     public string GetHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -445,7 +445,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]/*'/>
     public string[] GetHeaderArray(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -461,7 +461,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.ClearHeaders"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.ClearHeaders"]/*'/>
     public Message ClearHeaders() {
       this.headers.Clear();
       this.contentType = MediaType.TextPlainAscii;
@@ -470,7 +470,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
     public Message RemoveHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -493,7 +493,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]/*'/>
     public Message RemoveHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -516,7 +516,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetBody(System.Byte[])"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetBody(System.Byte[])"]/*'/>
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -526,13 +526,13 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)"]/*'/>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -555,7 +555,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)"]/*'/>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -570,13 +570,13 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)"]/*'/>
     public static string DecodeHeaderValue(string name, string value) {
       return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)"]/*'/>
     public Message SetHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
@@ -599,7 +599,7 @@ return this.GetAddresses("to");
       MediaType.Parse("text/html; charset=utf-8");
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -611,7 +611,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]/*'/>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
         throw new ArgumentNullException(nameof(text));
@@ -634,7 +634,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)"]/*'/>
     public Message SetTextAndMarkdown(string text, string markdown) {
       if (markdown == null) {
         throw new ArgumentNullException(nameof(markdown));
@@ -659,7 +659,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -684,13 +684,13 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)"]/*'/>
     public Message AddInline(MediaType mediaType) {
       return this.AddBodyPart(null, mediaType, null, "inline", true);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)"]/*'/>
     public Message AddAttachment(MediaType mediaType) {
       return this.AddBodyPart(null, mediaType, null, "attachment", true);
     }
@@ -840,13 +840,13 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
     public Message AddAttachment(Stream inputStream, string filename) {
       return
   this.AddBodyPart(
@@ -857,7 +857,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddAttachment(
   Stream inputStream,
   MediaType mediaType,
@@ -870,13 +870,13 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, string filename) {
       return this.AddBodyPart(
   inputStream,
@@ -886,7 +886,7 @@ return this.GetAddresses("to");
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddInline(
   Stream inputStream,
   MediaType mediaType,
@@ -922,14 +922,14 @@ private static string GetContentTranslationType(string ctt) {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})"]/*'/>
     public Message SelectLanguageMessage(
        IList<string> languages) {
       return this.SelectLanguageMessage(languages, false);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)"]/*'/>
     public Message SelectLanguageMessage(
        IList<string> languages,
        bool preferOriginals) {
@@ -989,7 +989,7 @@ private static string GetContentTranslationType(string ctt) {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
     public static Message MakeMultilingualMessage(
   IList<Message> messages,
   IList<string> languages) {
@@ -2594,27 +2594,27 @@ if (ungetState[1] < 0x80) {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
     [Obsolete("Renamed to FromMailtoUri.")]
     public static Message FromMailtoUrl(string url) {
       return MailtoUris.MailtoUriMessage(url);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
     [Obsolete("Renamed to ToMailtoUri.")]
     public string ToMailtoUrl() {
       return MailtoUris.MessageToMailtoUri(this);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUri(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUri(System.String)"]/*'/>
     public static Message FromMailtoUri(string uri) {
       return MailtoUris.MailtoUriMessage(uri);
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUri"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUri"]/*'/>
     public string ToMailtoUri() {
       return MailtoUris.MessageToMailtoUri(this);
     }
@@ -2986,11 +2986,11 @@ if (ungetState[1] < 0x80) {
 
     private class MessageStackEntry {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message { get; private set; }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

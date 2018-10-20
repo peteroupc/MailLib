@@ -5,7 +5,7 @@ using PeterO;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
   internal static class EnrichedText {
 private static bool IsTokenAsciiIgnoreCase(
   string str,

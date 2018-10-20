@@ -28,7 +28,8 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 
  *  `"John Doe" <john@example.com>`
 
- *  `=?utf-8?q?John`  `=`  `27s_Office?= <john@example.com>`
+ *  `=?utf-8?q?John`  `=`  `27s_Office?=
+            <john@example.com>`
 
  *  `John <john@example.com>`
 
@@ -37,7 +38,7 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 
 <b>Parameters:</b>
 
- * <i>address</i>: A text string identifying a single email address or a group of email addresses. Comments, or text within parentheses, can appear. Multiple email addresses are not allowed unless they appear in the group syntax given above. Encoded words under RFC 2047 that appear within comments or display names will be decoded.An RFC 2047 encoded word consists of "=?", a character encoding name, such as `utf-8` , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in the character encoding, further encoded using B or Q encoding, and finally "?=". B encoding uses Base64, while in Q encoding, spaces are changed to "_", equals are changed to "=3D", and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their 2-digit hexadecimal form. An encoded word's maximum length is 75 characters. See the third example.
+ * <i>address</i>: A text string identifying a single email address or a group of email addresses. Comments, or text within parentheses, can appear. Multiple email addresses are not allowed unless they appear in the group syntax given above. Encoded words under RFC 2047 that appear within comments or display names will be decoded.An RFC 2047 encoded word consists of "=?", a character encoding name, such as  `utf-8` , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in the character encoding, further encoded using B or Q encoding, and finally "?=". B encoding uses Base64, while in Q encoding, spaces are changed to "_", equals are changed to "=3D", and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their 2-digit hexadecimal form. An encoded word's maximum length is 75 characters. See the third example.
 
 .
 
@@ -45,7 +46,7 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 
  * System.ArgumentNullException:
 The parameter <i>address</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The named address has an invalid syntax.
@@ -69,7 +70,7 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 
  * System.ArgumentNullException:
 The parameter <i>address</i>
-is null.
+ is null.
 
 <a id="Void_ctor_String_String"></a>
 ### NamedAddress Constructor
@@ -90,7 +91,7 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 
  * System.ArgumentNullException:
 The parameter <i>address</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The display name or address has an invalid syntax.
@@ -117,8 +118,8 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 
  * System.ArgumentNullException:
 The parameter <i>localPart</i>
-or <i>domain</i>
-is null.
+ or  <i>domain</i>
+ is null.
 
 <a id="Void_ctor_String_IList_1"></a>
 ### NamedAddress Constructor
@@ -139,12 +140,12 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
 
  * System.ArgumentNullException:
 The parameter <i>groupName</i>
-or <i>mailboxes</i>
-is null.
+ or  <i>mailboxes</i>
+ is null.
 
  * System.ArgumentException:
 The parameter <i>groupName</i>
-is empty, or an item in the list is itself a group.
+ is empty, or an item in the list is itself a group.
 
 <a id="Address"></a>
 ### Address
@@ -188,7 +189,7 @@ Gets a value indicating whether this represents a group of addresses rather than
 
 <b>Returns:</b>
 
- `true` If this represents a group of addresses; otherwise, . `false` .
+ `true`  If this represents a group of addresses; otherwise, .  `false` .
 
 <a id="Name"></a>
 ### Name
@@ -215,7 +216,7 @@ Not documented yet.
 
 <b>Return Value:</b>
 
-Either `true` or `false` .
+Either  `true`  or  `false` .
 
 <a id="Equals_object"></a>
 ### Equals
@@ -227,12 +228,12 @@ Determines whether this object and another object are equal.
 
 <b>Parameters:</b>
 
- * <i>obj</i>: The parameter <i>obj</i>
-is an arbitrary object.
+ * <i>obj</i>: The parameter  <i>obj</i>
+ is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true` if this object and another object are equal; otherwise,  `false` .
+ `true`  if this object and another object are equal; otherwise,  `false` .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
@@ -259,8 +260,8 @@ Generates a list of NamedAddress objects from a comma-separated list of addresse
 
 <b>Return Value:</b>
 
-A list of addresses generated from the <i>addressValue</i>
-parameter.
+A list of addresses generated from the  <i>addressValue</i>
+ parameter.
 
 <a id="ToString"></a>
 ### ToString

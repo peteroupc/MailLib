@@ -11,12 +11,12 @@ using System.Text;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
   public class NamedAddress {
     private readonly string displayName;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)"]/*'/>
     public static IList<NamedAddress> ParseAddresses(string addressValue) {
       var list = new List<NamedAddress>();
       if (String.IsNullOrEmpty(addressValue)) {
@@ -42,7 +42,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.GetHashCode"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
       if (this.displayName != null) {
@@ -60,7 +60,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.Equals(System.Object)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as NamedAddress;
       return other != null &&
@@ -74,7 +74,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)"]/*'/>
     public bool AddressesEqual(NamedAddress na) {
       if (na == null || this.isGroup != na.isGroup) {
         return false;
@@ -97,7 +97,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Name"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Name"]/*'/>
     public string Name {
       get {
         return (this.displayName == null) ? ((this.address == null) ?
@@ -106,7 +106,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.DisplayName"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.DisplayName"]/*'/>
     public string DisplayName {
       get {
         return this.displayName;
@@ -116,7 +116,7 @@ namespace PeterO.Mail {
     private readonly Address address;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Address"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Address"]/*'/>
     public Address Address {
       get {
         return this.address;
@@ -126,7 +126,7 @@ namespace PeterO.Mail {
     private readonly bool isGroup;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.IsGroup"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.IsGroup"]/*'/>
     public bool IsGroup {
       get {
         return this.isGroup;
@@ -160,7 +160,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
     public override string ToString() {
       var enc = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
       this.AppendThisAddress(enc);
@@ -168,7 +168,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String)"]/*'/>
     public NamedAddress(string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -193,7 +193,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)"]/*'/>
     public NamedAddress(string displayName, string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -205,7 +205,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)"]/*'/>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -217,7 +217,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)"]/*'/>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
         throw new ArgumentNullException(nameof(localPart));
@@ -232,7 +232,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})"]/*'/>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new ArgumentNullException(nameof(groupName));
@@ -260,7 +260,7 @@ namespace PeterO.Mail {
     private readonly IList<NamedAddress> groupAddresses;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.GroupAddresses"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.GroupAddresses"]/*'/>
     public IList<NamedAddress> GroupAddresses {
       get {
         return new

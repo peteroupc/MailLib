@@ -10,7 +10,7 @@ using System.Text;
 
 namespace PeterO.Text {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Text.Idna"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Text.Idna"]/*'/>
   public static class Idna {
     private const int Unassigned = 0;
     // PValid = 1;
@@ -276,7 +276,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String)"]/*'/>
     public static string DecodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -316,7 +316,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -356,7 +356,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)"]/*'/>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;

@@ -13,19 +13,19 @@ using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
   public class Address {
     private readonly string localPart;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Address.Equals(System.Object)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as Address;
       return other != null && this.localPart.Equals(other.localPart) &&
         this.domain.Equals(other.domain); }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Address.LocalPart"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Address.LocalPart"]/*'/>
     public string LocalPart {
       get {
         return this.localPart;
@@ -84,7 +84,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
 }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]/*'/>
     public override string ToString() {
      var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
      this.AppendThisAddress(sa);
@@ -111,7 +111,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = -1524613162;
       if (this.domain != null) {
@@ -130,7 +130,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
     private readonly string domain;
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="P:PeterO.Mail.Address.Domain"]/*'/>
+    /// path='docs/doc[@name="P:PeterO.Mail.Address.Domain"]/*'/>
     public string Domain {
       get {
         return this.domain;
@@ -138,7 +138,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]/*'/>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException(nameof(addressValue));

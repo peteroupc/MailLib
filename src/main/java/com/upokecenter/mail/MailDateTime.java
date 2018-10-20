@@ -321,7 +321,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * See <see
   * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
      * for information on the format of this method's return value.
-     * @param str string.
+     * @param str String.
      * @return An 8-element array containing the date and time, or {@code null} if
      * {@code str} is null, empty, or syntactically invalid, or if the
      * string's year would overflow the range of a 32-bit signed integer.

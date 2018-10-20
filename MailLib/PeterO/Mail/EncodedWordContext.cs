@@ -9,18 +9,18 @@ using System;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.EncodedWordContext"]/*'/>
+    /// path='docs/doc[@name="T:PeterO.Mail.EncodedWordContext"]/*'/>
   internal enum EncodedWordContext {
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Unstructured"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Unstructured"]/*'/>
     Unstructured,
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Phrase"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Phrase"]/*'/>
     Phrase,
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Comment"]/*'/>
+    /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Comment"]/*'/>
     Comment
   }
 }

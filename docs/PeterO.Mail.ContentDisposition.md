@@ -6,9 +6,9 @@ Specifies how a message body should be displayed or handled by a mail user agent
 
 <b>About the "filename" parameter</b>
 
-The "filename" parameter of a content disposition suggests a name to use when saving data to a file. For the "filename" parameter, the GetParameter method and Parameters property ( `getParameters` ) method in Java) do not adapt that parameter's value using the ContentDisposition.MakeFilename method. Thus, for example, the "filename" parameter, if any, returned by this method could have an arbitrary length, be encoded using RFC 2047 encoded words (which some email and HTTP implementations still like to write out in headers, even though that RFC says encoded words "MUST NOT appear within a 'quoted-string'"; see ContentDisposition.MakeFilename), or not be usable as is as a file name.
+The "filename" parameter of a content disposition suggests a name to use when saving data to a file. For the "filename" parameter, the GetParameter method and Parameters property ( `getParameters`  ) method in Java) do not adapt that parameter's value using the ContentDisposition.MakeFilename method. Thus, for example, the "filename" parameter, if any, returned by this method could have an arbitrary length, be encoded using RFC 2047 encoded words (which some email and HTTP implementations still like to write out in headers, even though that RFC says encoded words "MUST NOT appear within a 'quoted-string'"; see ContentDisposition.MakeFilename), or not be usable as is as a file name.
 
-<b>Example:</b>An example of RFC 2047 encoded words is:
+<b>Example:</b> An example of RFC 2047 encoded words is:
 
 <b>=?UTF-8?Q?test?=</b>
 
@@ -76,7 +76,7 @@ Gets a value indicating whether the disposition type is attachment.
 
 <b>Returns:</b>
 
- `true` If the disposition type is attachment; otherwise, . `false` .
+ `true`  If the disposition type is attachment; otherwise, .  `false` .
 
 <a id="IsInline"></a>
 ### IsInline
@@ -87,7 +87,7 @@ Gets a value indicating whether the disposition type is inline.
 
 <b>Returns:</b>
 
- `true` If the disposition type is inline; otherwise, . `false` .
+ `true`  If the disposition type is inline; otherwise, . `false` .
 
 <a id="Parameters"></a>
 ### Parameters
@@ -110,12 +110,12 @@ Determines whether this object and another object are equal.
 
 <b>Parameters:</b>
 
- * <i>obj</i>: The parameter <i>obj</i>
-is an arbitrary object.
+ * <i>obj</i>: The parameter  <i>obj</i>
+ is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true` if the objects are equal; otherwise,  `false` .
+ `true`  if the objects are equal; otherwise,  `false` .
 
 <a id="GetCreationDate"></a>
 ### GetCreationDate
@@ -126,7 +126,7 @@ Gets the date and time extracted from this content disposition's "creation-date"
 
 <b>Return Value:</b>
 
-The extracted date and time as an 8-element array, or `null` if the "creation-date" parameter doesn't exist, is an empty string, or is yntactically invalid, or if the parameter's year would overflow a 32-bit igned integer.
+The extracted date and time as an 8-element array, or `null`  if the "creation-date" parameter doesn't exist, is an empty string, or is syntactically invalid, or if the parameter's year would overflow a 32-bit signed integer.
 
 <a id="GetFilename"></a>
 ### GetFilename
@@ -159,7 +159,7 @@ Gets the date and time extracted from this content disposition's "modification-d
 
 <b>Return Value:</b>
 
-The extracted date and time as an 8-element array, or `null` if the "modification-date" parameter doesn't exist, is an empty string, r is syntactically invalid, or if the parameter's year would overflow a 2-bit signed integer.
+The extracted date and time as an 8-element array, or `null`  if the "modification-date" parameter doesn't exist, is an empty string, or is syntactically invalid, or if the parameter's year would overflow a 32-bit signed integer.
 
 <a id="GetParameter_string"></a>
 ### GetParameter
@@ -181,11 +181,11 @@ The value of the parameter, or null if the parameter does not exist.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
-is null.
+ is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
-is empty.
+ is empty.
 
 <a id="GetReadDate"></a>
 ### GetReadDate
@@ -196,7 +196,7 @@ Gets the date and time extracted from this content disposition's "read-date" par
 
 <b>Return Value:</b>
 
-The extracted date and time as an 8-element array, or `null` if the "read-date" parameter doesn't exist, is an empty string, or is yntactically invalid, or if the parameter's year would overflow a 32-bit igned integer.
+The extracted date and time as an 8-element array, or `null`  if the "read-date" parameter doesn't exist, is an empty string, or is syntactically invalid, or if the parameter's year would overflow a 32-bit signed integer.
 
 <a id="MakeFilename_string"></a>
 ### MakeFilename
@@ -206,29 +206,29 @@ The extracted date and time as an 8-element array, or `null` if the "read-date" 
 
 Converts a file name from the Content-Disposition header to a suitable name for saving data to a file. This method is idempotent; that is, calling the method again on the result doesn't change that result.Examples:
 
- `"=?utf-8?q?hello=2Etxt?=" -> "hello.txt"` (RFC 2047 encoding)
+ `"=?utf-8?q?hello=2Etxt?=" -> "hello.txt"`  (RFC 2047 encoding)
 
- `"=?utf-8?q?long_filename?=" -> "long filename"` (RFC 2047 encoding)
+ `"=?utf-8?q?long_filename?=" -> "long filename"`  (RFC 2047 encoding)
 
- `"utf-8'en'hello%2Etxt" -> "hello.txt"` (RFC 2231 encoding)
+ `"utf-8'en'hello%2Etxt" -> "hello.txt"`  (RFC 2231 encoding)
 
- `"nul.txt" -> "_nul.txt"` (Reserved name)
+ `"nul.txt" -> "_nul.txt"`  (Reserved name)
 
- `"dir1/dir2/file" -> "dir1_dir2_file"` (Directory separators)
+ `"dir1/dir2/file" -> "dir1_dir2_file"`  (Directory separators)
 
 <b>Remarks:</b>
 
  * The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library.
 
- * The string returned by this method is normalized using Unicode normalization form C (NFC) (see the[PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base+slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base+slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
+ * The string returned by this method is normalized using Unicode normalization form C (NFC) (see the[PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base + slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base + slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
 
- * Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's `filename` parameter or, in practice, the Content-Type header field's `name` parameter.
+ * Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's  `filename`  parameter or, in practice, the Content-Type header field's  `name` parameter.
 
 Although RFC 2047 encoded words appearing in both parameters are written out by some implementations, this practice is discouraged by some (especially since the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'"). Nevertheless, the MakeFilename method has a basis in the RFCs to decode RFC 2047 encoded words (and RFC 2231 encoding) in file names passed to this method.
 
-RFC 2046 sec. 4.5.1 ( `application/octet-stream` subtype in Content-Type header field) cites an earlier RFC 1341, hich "defined the use of a 'NAME' parameter which gave a<i>suggested</i>file name to be used if the data were written to a file". Also, RFC 183 sec. 2.3 ( `filename` parameter in Content-Disposition) confirms that the "<i>suggested</i>filename" in the `filename` parameter "should be<i>used as a basis</i>for the actual filename, where possible", and that that file name hould "not [be] blindly use[d]". See also RFC 6266, section 4.3, hich discusses the use of that parameter in Hypertext Transfer rotocol (HTTP).
+RFC 2046 sec. 4.5.1 (  `application/octet-stream`  subtype in Content-Type header field) cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave a<i>suggested</i> file name to be used if the data were written to a file". Also, RFC 2183 sec. 2.3 (  `filename`  parameter in Content-Disposition) confirms that the "<i>suggested</i> filename" in the  `filename`  parameter "should be<i>used as a basis</i> for the actual filename, where possible", and that that file name should "not [be] blindly use[d]". See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext Transfer Protocol (HTTP).
 
-To the extent that the "name" parameter is not allowed in message bodies other than those with the media type "application/octet-stream" or treated as that media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types"). (Some email implementations may still write out the "name" parameter, even for media types other than `application/octet-stream` and even though RFC 2046 has deprecated that parameter.)
+To the extent that the "name" parameter is not allowed in message bodies other than those with the media type "application/octet-stream" or treated as that media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types"). (Some email implementations may still write out the "name" parameter, even for media types other than `application/octet-stream`  and even though RFC 2046 has deprecated that parameter.)
 
 <b>Parameters:</b>
 
@@ -237,7 +237,7 @@ To the extent that the "name" parameter is not allowed in message bodies other t
 <b>Return Value:</b>
 
 A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; spaces and tabs are collapsed to a single space; leading and trailing spaces and tabs are removed; and the filename is truncated if it would otherwise be too long. Also, for reasons stated in the remarks, a character that is the combined form of a base character and a combining slash is replaced with "!" followed by the base character. The returned string will be in normalization form C. Returns the empty string if <i>str</i>
-is null or empty.
+ is null or empty.
 
 <a id="Parse_string_PeterO_Mail_ContentDisposition"></a>
 ### Parse
@@ -282,19 +282,19 @@ Creates a new content disposition object from the value of a Content-Disposition
 
 <b>Parameters:</b>
 
- * <i>dispoValue</i>: The parameter <i>dispoValue</i>
-is a text string.
+ * <i>dispoValue</i>: The parameter  <i>dispoValue</i>
+ is a text string.
 
 <b>Return Value:</b>
 
-A content disposition object, or ContentDisposition.Attachment" if <i>dispoValue</i>
-is empty or syntactically invalid.
+A content disposition object, or ContentDisposition.Attachment" if  <i>dispoValue</i>
+ is empty or syntactically invalid.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>dispoValue</i>
-is null.
+ is null.
 
 <a id="ToSingleLineString"></a>
 ### ToSingleLineString

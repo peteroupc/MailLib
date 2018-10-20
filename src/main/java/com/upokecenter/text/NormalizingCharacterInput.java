@@ -97,7 +97,7 @@ import java.util.*;
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizingCharacterInput} class.
-     * @param characterList The parameter {@code characterList} is an List object.
+     * @param characterList The parameter {@code characterList} is an IList object.
      */
         public NormalizingCharacterInput(List<Integer> characterList) {
  this(characterList, Normalization.NFC);
