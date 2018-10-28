@@ -68,58 +68,58 @@
 
 ## Methods
 
-* `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
-               Normalization form) NormalizerInput`<br>
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
+               Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput​(String str) NormalizerInput`<br>
+* `NormalizerInput​(String str) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput​(String str,
-               int index,
-               int length,
-               Normalization form) NormalizerInput`<br>
+* `NormalizerInput​(String str,
+               int index,
+               int length,
+               Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput​(String str,
-               Normalization form) NormalizerInput`<br>
+* `NormalizerInput​(String str,
+               Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `static boolean IsNormalized​(com.upokecenter.text.ICharacterInput chars,
-            Normalization form)`<br>
+* `static boolean IsNormalized​(com.upokecenter.text.ICharacterInput chars,
+            Normalization form)`<br>
  Determines whether the text provided by a character input is normalized.
-* `static boolean IsNormalized​(String str,
-            Normalization form)`<br>
+* `static boolean IsNormalized​(String str,
+            Normalization form)`<br>
  Determines whether the given string is in the given Unicode normalization
  form.
-* `static String Normalize​(String str,
-         Normalization form)`<br>
+* `static String Normalize​(String str,
+         Normalization form)`<br>
  Converts a string to the given Unicode normalization form.
-* `int Read​(int[] chars,
-    int index,
-    int length)`<br>
+* `int Read​(int[] chars,
+    int index,
+    int length)`<br>
  Reads a sequence of Unicode code points from a data source.
 * `int ReadChar()`<br>
  Reads a Unicode character from a data source.
 
 ## Constructors
 
-* `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
-               Normalization form) NormalizerInput`<br>
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
+               Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput​(String str) NormalizerInput`<br>
+* `NormalizerInput​(String str) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput​(String str,
-               int index,
-               int length,
-               Normalization form) NormalizerInput`<br>
+* `NormalizerInput​(String str,
+               int index,
+               int length,
+               Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput​(String str,
-               Normalization form) NormalizerInput`<br>
+* `NormalizerInput​(String str,
+               Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
 
 ## Method Details
@@ -253,7 +253,7 @@ Reads a Unicode character from a data source.
 
 **Specified by:**
 
-* <code>ReadChar</code>&nbsp;in interface&nbsp;<code>com.upokecenter.text.ICharacterInput</code>
+* <code>ReadChar</code> in interface <code>com.upokecenter.text.ICharacterInput</code>
 
 **Returns:**
 
@@ -266,7 +266,7 @@ Reads a sequence of Unicode code points from a data source.
 
 **Specified by:**
 
-* <code>Read</code>&nbsp;in interface&nbsp;<code>com.upokecenter.text.ICharacterInput</code>
+* <code>Read</code> in interface <code>com.upokecenter.text.ICharacterInput</code>
 
 **Parameters:**
 

@@ -9,11 +9,11 @@ A mutable media type object.
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
  "application/octet-stream" .
-* `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
+* `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
-* `MediaTypeBuilder​(String type,
-                String subtype) MediaTypeBuilder`<br>
+* `MediaTypeBuilder​(String type,
+                String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
 * `String getSubType()`<br>
  Gets this value's subtype.
@@ -23,16 +23,16 @@ A mutable media type object.
  Gets a value indicating whether this is a multipart media type.
 * `boolean isText()`<br>
  Gets a value indicating whether this is a text media type.
-* `MediaTypeBuilder RemoveParameter​(String name)`<br>
+* `MediaTypeBuilder RemoveParameter​(String name)`<br>
  Removes a parameter from this builder object.
-* `MediaTypeBuilder SetParameter​(String name,
-            String value)`<br>
+* `MediaTypeBuilder SetParameter​(String name,
+            String value)`<br>
  Sets a parameter's name and value for this media type.
-* `void setSubType​(String value)`<br>
-* `MediaTypeBuilder SetSubType​(String str)`<br>
+* `void setSubType​(String value)`<br>
+* `MediaTypeBuilder SetSubType​(String str)`<br>
  Sets this media type's subtype, such as "plain" or "xml" .
-* `void setTopLevelType​(String value)`<br>
-* `MediaTypeBuilder SetTopLevelType​(String str)`<br>
+* `void setTopLevelType​(String value)`<br>
+* `MediaTypeBuilder SetTopLevelType​(String str)`<br>
  Sets this media type's top-level type.
 * `MediaType ToMediaType()`<br>
  Converts this builder to an immutable media type object.
@@ -45,11 +45,11 @@ A mutable media type object.
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
  "application/octet-stream" .
-* `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
+* `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
-* `MediaTypeBuilder​(String type,
-                String subtype) MediaTypeBuilder`<br>
+* `MediaTypeBuilder​(String type,
+                String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
 
 ## Method Details
@@ -219,7 +219,7 @@ Converts this object to a text string of the media type it represents, in
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 

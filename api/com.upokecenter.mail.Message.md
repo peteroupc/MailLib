@@ -14,7 +14,7 @@
  (Internet Message Format and MIME): </p> <ul> <li>The
  content-transfer-encodings "quoted-printable" and "base64" are
  treated as 7bit instead if they occur in a message or body part with
- content type "multipart/&#x2a;" or "message/&#x2a;" (other than
+ content type "multipart/*" or "message/*" (other than
  "message/global", "message/global-headers",
  "message/global-disposition-notification", or
  "message/global-delivery-status"). </li> <li>If a message has two or
@@ -44,7 +44,7 @@
  If the charset is declared to be <code>utf-8</code> . </li> <li>(c) If the
  content type is "text/html" and the charset is declared to be
  <code>us-ascii</code> , "windows-1252", "windows-1251", or
- "iso-8859-&#x2a;" (all single byte encodings). </li> <li>(d) In
+ "iso-8859-*" (all single byte encodings). </li> <li>(d) In
  non-MIME message bodies and in text/plain message bodies. Any 8-bit
  bytes are replaced with the substitute character byte (0x1a). </li>
  <li>If the message starts with the word "From" (and no other case
@@ -92,58 +92,58 @@
 * `Message() Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message​(byte[] bytes) Message`<br>
+* `Message​(byte[] bytes) Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message​(InputStream stream) Message`<br>
+* `Message​(InputStream stream) Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message AddAttachment​(MediaType mediaType)`<br>
+* `Message AddAttachment​(MediaType mediaType)`<br>
  Adds an attachment with an empty body and with the given media type to this
  message.
-* `Message AddAttachment​(InputStream inputStream,
-             MediaType mediaType)`<br>
+* `Message AddAttachment​(InputStream inputStream,
+             MediaType mediaType)`<br>
  Adds an attachment to this message in the form of data from the given
  readable stream, and with the given media type.
-* `Message AddAttachment​(InputStream inputStream,
-             MediaType mediaType,
-             String filename)`<br>
+* `Message AddAttachment​(InputStream inputStream,
+             MediaType mediaType,
+             String filename)`<br>
  Adds an attachment to this message in the form of data from the given
  readable stream, and with the given media type and file name.
-* `Message AddAttachment​(InputStream inputStream,
-             String filename)`<br>
+* `Message AddAttachment​(InputStream inputStream,
+             String filename)`<br>
  Adds an attachment to this message in the form of data from the given
  readable stream, and with the given file name.
-* `Message AddHeader​(String name,
-         String value)`<br>
+* `Message AddHeader​(String name,
+         String value)`<br>
  Adds a header field to the end of the message's header.
-* `Message AddHeader​(Map.Entry<String,String> header)`<br>
+* `Message AddHeader​(Map.Entry<String,String> header)`<br>
  Adds a header field to the end of the message's header.
-* `Message AddInline​(MediaType mediaType)`<br>
+* `Message AddInline​(MediaType mediaType)`<br>
  Adds an inline body part with an empty body and with the given media type to
  this message.
-* `Message AddInline​(InputStream inputStream,
-         MediaType mediaType)`<br>
+* `Message AddInline​(InputStream inputStream,
+         MediaType mediaType)`<br>
  Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given media type.
-* `Message AddInline​(InputStream inputStream,
-         MediaType mediaType,
-         String filename)`<br>
+* `Message AddInline​(InputStream inputStream,
+         MediaType mediaType,
+         String filename)`<br>
  Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given media type and file name.
-* `Message AddInline​(InputStream inputStream,
-         String filename)`<br>
+* `Message AddInline​(InputStream inputStream,
+         String filename)`<br>
  Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given file name.
 * `Message ClearHeaders()`<br>
  Deletes all header fields in this message.
-* `static String DecodeHeaderValue​(String name,
-                 String value)`<br>
+* `static String DecodeHeaderValue​(String name,
+                 String value)`<br>
  Decodes RFC 2047 encoded words from the given header field value and returns
  a string with those words decoded.
-* `static Message FromMailtoUri​(String uri)`<br>
+* `static Message FromMailtoUri​(String uri)`<br>
  Creates a message object from a MailTo URI (uniform resource identifier).
-* `static Message FromMailtoUrl​(String url)`<br>
+* `static Message FromMailtoUrl​(String url)`<br>
  Deprecated.
 Renamed to FromMailtoUri.
  Renamed to FromMailtoUri.
@@ -152,7 +152,7 @@ Renamed to FromMailtoUri.
 * `byte[] GenerateBytes()`<br>
  Generates this message's data as a byte array, using the same algorithm as
  the Generate method.
-* `List<NamedAddress> GetAddresses​(String headerName)`<br>
+* `List<NamedAddress> GetAddresses​(String headerName)`<br>
  Gets a list of addresses contained in the header fields with the given name
  in this message.
 * `List<NamedAddress> getBccAddresses()`<br>
@@ -186,12 +186,12 @@ Use GetAddresses(\Cc\) instead.
  Deprecated.
 Use GetAddresses(\From\) instead.
  Use GetAddresses(\From\) instead.
-* `Map.Entry<String,String> GetHeader​(int index)`<br>
+* `Map.Entry<String,String> GetHeader​(int index)`<br>
  Gets the name and value of a header field by index.
-* `String GetHeader​(String name)`<br>
+* `String GetHeader​(String name)`<br>
  Gets the first instance of the header field with the specified name, using a
  basic case-insensitive comparison.
-* `String[] GetHeaderArray​(String name)`<br>
+* `String[] GetHeaderArray​(String name)`<br>
  Gets an array with the values of all header fields with the specified name,
  using a basic case-insensitive comparison.
 * `List<Map.Entry<String,String>> getHeaderFields()`<br>
@@ -205,60 +205,60 @@ Use GetAddresses(\From\) instead.
  Deprecated.
 Use GetAddresses(\To\) instead.
  Use GetAddresses(\To\) instead.
-* `static Message MakeMultilingualMessage​(List<Message> messages,
-                       List<String> languages)`<br>
+* `static Message MakeMultilingualMessage​(List<Message> messages,
+                       List<String> languages)`<br>
  Generates a multilingual message (see RFC 8255) from a list of messages and
  a list of language strings.
 * `static Message NewBodyPart()`<br>
  Creates a message object with no header fields.
-* `Message RemoveHeader​(int index)`<br>
+* `Message RemoveHeader​(int index)`<br>
  Removes a header field by index.
-* `Message RemoveHeader​(String name)`<br>
+* `Message RemoveHeader​(String name)`<br>
  Removes all instances of the given header field from this message.
-* `Message SelectLanguageMessage​(List<String> languages) multipart/multilingual`<br>
+* `Message SelectLanguageMessage​(List<String> languages) multipart/multilingual`<br>
  Selects a body part for a multiple-language message (
  multipart/multilingual) according to the given language
  priority list.
-* `Message SelectLanguageMessage​(List<String> languages,
-                     boolean preferOriginals) multipart/multilingual`<br>
+* `Message SelectLanguageMessage​(List<String> languages,
+                     boolean preferOriginals) multipart/multilingual`<br>
  Selects a body part for a multiple-language message (
  multipart/multilingual) according to the given language
  priority list and original-language preference.
-* `Message SetBody​(byte[] bytes)`<br>
+* `Message SetBody​(byte[] bytes)`<br>
  Sets the body of this message to the given byte array.
-* `void setContentDisposition​(ContentDisposition value)`<br>
-* `void setContentType​(MediaType value)`<br>
+* `void setContentDisposition​(ContentDisposition value)`<br>
+* `void setContentType​(MediaType value)`<br>
 * `Message SetCurrentDate()`<br>
  Sets this message's Date header field to the current time as its value, with
  an unspecified time zone offset.
-* `Message SetDate​(int[] dateTime)`<br>
+* `Message SetDate​(int[] dateTime)`<br>
  Sets this message's Date header field to the given date and time.
-* `Message SetHeader​(int index,
-         String value)`<br>
+* `Message SetHeader​(int index,
+         String value)`<br>
  Sets the value of a header field by index without changing its name.
-* `Message SetHeader​(int index,
-         String name,
-         String value)`<br>
+* `Message SetHeader​(int index,
+         String name,
+         String value)`<br>
  Sets the name and value of a header field by index.
-* `Message SetHeader​(int index,
-         Map.Entry<String,String> header)`<br>
+* `Message SetHeader​(int index,
+         Map.Entry<String,String> header)`<br>
  Sets the name and value of a header field by index.
-* `Message SetHeader​(String name,
-         String value)`<br>
+* `Message SetHeader​(String name,
+         String value)`<br>
  Sets the value of this message's header field.
-* `Message SetHtmlBody​(String str)`<br>
+* `Message SetHtmlBody​(String str)`<br>
  Sets the body of this message to the specified string in Hypertext Markup
  Language (HTML) format.
-* `void setSubject​(String value)`<br>
-* `Message SetTextAndHtml​(String text,
-              String html)`<br>
+* `void setSubject​(String value)`<br>
+* `Message SetTextAndHtml​(String text,
+              String html)`<br>
  Sets the body of this message to a multipart body with plain text and
  Hypertext Markup Language (HTML) versions of the same message.
-* `Message SetTextAndMarkdown​(String text,
-                  String markdown)`<br>
+* `Message SetTextAndMarkdown​(String text,
+                  String markdown)`<br>
  Sets the body of this message to a multipart body with plain text, Markdown,
  and Hypertext Markup Language (HTML) versions of the same message.
-* `Message SetTextBody​(String str)`<br>
+* `Message SetTextBody​(String str)`<br>
  Sets the body of this message to the specified plain text string.
 * `String ToMailtoUri()`<br>
  Generates a MailTo URI (uniform resource identifier) corresponding to this
@@ -273,10 +273,10 @@ Renamed to ToMailtoUri.
 * `Message() Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message​(byte[] bytes) Message`<br>
+* `Message​(byte[] bytes) Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message​(InputStream stream) Message`<br>
+* `Message​(InputStream stream) Message`<br>
  Initializes a new instance of the Message
  class.
 
@@ -371,14 +371,14 @@ Deprecated.
 <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
  body. This method currently supports text/plain, text/plain with
  format = flowed, text/enriched, and text/markdown (original
- Markdown).</p><p> <p>REMARK: The Markdown implementation currently
+ Markdown).</p><p> </p><p>REMARK: The Markdown implementation currently
  supports all features of original Markdown, except that the
  implementation--</p> <ul> <li>does not strictly check the placement
  of "block-level HTML elements",</li> <li>does not prevent Markdown
  content from being interpreted as such merely because it's contained
  in a "block-level HTML element", and</li> <li>does not deliberately
  use HTML escapes to obfuscate email addresses wrapped in
- angle-brackets.</li></ul></p>
+ angle-brackets.</li></ul>
 
 **Returns:**
 
@@ -578,13 +578,13 @@ Generates this message's data in text form. <p>The generated message will
  set to the contents of all of the header fields with the same name,
  and the address set to <code>me@[header-name]-address.invalid</code> as the
  address (a <code>.invalid</code> address is a reserved address that can
- never belong to anyone). (An exception is that the Resent-&#x2a;
+ never belong to anyone). (An exception is that the Resent-*
  header fields may appear more than once.) The generated message
  should always have a From header field. </p> <p>If a Date and/or
  Message-ID header field doesn't exist, a field with that name will be
  generated (using the current local time for the Date field). </p>
  <p>When encoding the message's body, if the message has a text
- content type ("text/&#x2a;"), the line breaks are a CR byte (carriage
+ content type ("text/*"), the line breaks are a CR byte (carriage
  return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or
  LF alone. If the message has any other content type, only CR followed
  by LF is considered a line break. </p>
@@ -940,7 +940,7 @@ Sets the value of this message's header field. If a header field with the
     public Message SetHtmlBody​(String str)
 Sets the body of this message to the specified string in Hypertext Markup
  Language (HTML) format. The character sequences CR (carriage return,
- "&#x5c;r", U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will be
+ "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be
  converted to CR/LF line breaks. Unpaired surrogate code points will
  be replaced with replacement characters.
 
@@ -960,8 +960,8 @@ Sets the body of this message to the specified string in Hypertext Markup
     public Message SetTextAndHtml​(String text, String html)
 Sets the body of this message to a multipart body with plain text and
  Hypertext Markup Language (HTML) versions of the same message. The
- character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
- feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+ character sequences CR (carriage return, "\r", U+000D), LF (line
+ feed, "\n", U+000A), and CR/LF will be converted to CR/LF line
  breaks. Unpaired surrogate code points will be replaced with
  replacement characters.
 
@@ -984,8 +984,8 @@ Sets the body of this message to a multipart body with plain text and
     public Message SetTextAndMarkdown​(String text, String markdown)
 Sets the body of this message to a multipart body with plain text, Markdown,
  and Hypertext Markup Language (HTML) versions of the same message.
- The character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
- feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+ The character sequences CR (carriage return, "\r", U+000D), LF (line
+ feed, "\n", U+000A), and CR/LF will be converted to CR/LF line
  breaks. Unpaired surrogate code points will be replaced with
  replacement characters.
 
@@ -1010,8 +1010,8 @@ Sets the body of this message to a multipart body with plain text, Markdown,
 ### SetTextBody
     public Message SetTextBody​(String str)
 Sets the body of this message to the specified plain text string. The
- character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
- feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+ character sequences CR (carriage return, "\r", U+000D), LF (line
+ feed, "\n", U+000A), and CR/LF will be converted to CR/LF line
  breaks. Unpaired surrogate code points will be replaced with
  replacement characters. This method changes this message's media type
  to plain text.
@@ -1066,7 +1066,7 @@ Adds an attachment to this message in the form of data from the given
  message, it becomes a "multipart/mixed" message with the current body
  converted to an inline body part.<p>The following example (written in
  C# for the .NET version) is an extension method that adds an
- attachment from a byte array to a message. <pre>public static
+ attachment from a byte array to a message. </p><pre>public static
  Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
  MediaType mediaType) { {
 java.io.ByteArrayInputStream fs = null;
@@ -1080,7 +1080,7 @@ try { if (fs != null) {
  fs.close();
  } } catch (java.io.IOException ex) {}
 }
-} } </pre> </p>
+} } </pre>
 
 **Parameters:**
 
@@ -1114,7 +1114,7 @@ Adds an attachment to this message in the form of data from the given
 * <code>filename</code> - A file name to assign to the attachment. Can be null or
  empty, in which case no file name is assigned. Only the file name
  portion of this parameter is used, which in this case means the
- portion of the string after the last "/" or "&#x5c;", if either character
+ portion of the string after the last "/" or "\", if either character
  exists, or the entire string otherwise An appropriate media type (or
  "application/octet-stream") will be assigned to the attachment based
  on this file name's extension. If the file name has an extension
@@ -1149,7 +1149,7 @@ Adds an attachment to this message in the form of data from the given
 * <code>filename</code> - A file name to assign to the attachment. Can be null or
  empty, in which case no file name is assigned. Only the file name
  portion of this parameter is used, which in this case means the
- portion of the string after the last "/" or "&#x5c;", if either character
+ portion of the string after the last "/" or "\", if either character
  exists, or the entire string otherwise.
 
 **Returns:**
@@ -1171,7 +1171,7 @@ Adds an inline body part to this message in the form of data from the given
  becomes a "multipart/mixed" message with the current body converted
  to an inline body part.<p>The following example (written in C# for
  the .NET version) is an extension method that adds an inline body
- part from a byte array to a message. <pre>public static Message
+ part from a byte array to a message. </p><pre>public static Message
  AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
  mediaType) { {
 java.io.ByteArrayInputStream fs = null;
@@ -1185,7 +1185,7 @@ try { if (fs != null) {
  fs.close();
  } } catch (java.io.IOException ex) {}
 }
-} } </pre> </p>
+} } </pre>
 
 **Parameters:**
 
@@ -1219,7 +1219,7 @@ Adds an inline body part to this message in the form of data from the given
 * <code>filename</code> - A file name to assign to the inline body part. Can be null
  or empty, in which case no file name is assigned. Only the file name
  portion of this parameter is used, which in this case means the
- portion of the string after the last "/" or "&#x5c;", if either character
+ portion of the string after the last "/" or "\", if either character
  exists, or the entire string otherwise An appropriate media type (or
  "application/octet-stream") will be assigned to the body part based
  on this file name's extension. If the file name has an extension

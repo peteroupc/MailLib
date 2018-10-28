@@ -9,10 +9,10 @@ A mutable data type that allows a content disposition to be built.
 * `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the disposition
  type "attachment" .
-* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
+* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
-* `DispositionBuilder​(String type) DispositionBuilder`<br>
+* `DispositionBuilder​(String type) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the given
  disposition type.
 * `String getDispositionType()`<br>
@@ -25,13 +25,13 @@ Irrelevant for content dispositions; will be removed in the future.
  Deprecated.
 Irrelevant for content dispositions; will be removed in the future.
  Irrelevant for content dispositions; will be removed in the future.
-* `DispositionBuilder RemoveParameter​(String name)`<br>
+* `DispositionBuilder RemoveParameter​(String name)`<br>
  Removes a parameter from this content disposition.
-* `void setDispositionType​(String value)`<br>
-* `DispositionBuilder SetDispositionType​(String str)`<br>
+* `void setDispositionType​(String value)`<br>
+* `DispositionBuilder SetDispositionType​(String str)`<br>
  Sets the disposition type, such as "inline".
-* `DispositionBuilder SetParameter​(String name,
-            String value)`<br>
+* `DispositionBuilder SetParameter​(String name,
+            String value)`<br>
  Sets a parameter of this content disposition.
 * `ContentDisposition ToDisposition()`<br>
  Converts this object to an immutable ContentDisposition object.
@@ -43,10 +43,10 @@ Irrelevant for content dispositions; will be removed in the future.
 * `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the disposition
  type "attachment" .
-* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
+* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
-* `DispositionBuilder​(String type) DispositionBuilder`<br>
+* `DispositionBuilder​(String type) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the given
  disposition type.
 
@@ -190,7 +190,7 @@ Converts this object to a text string.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 

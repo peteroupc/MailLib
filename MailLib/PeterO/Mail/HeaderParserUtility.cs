@@ -20,13 +20,18 @@ namespace PeterO.Mail {
     internal const int TokenLocalPart = 7;
     internal const int TokenDomain = 8;
 
-    public static int ParseQuotedStringCore(string str, int index, int endIndex) {
+ public static int ParseQuotedStringCore(
+  string str,
+  int index,
+  int endIndex) {
       int indexStart, indexStart2, indexTemp2, tx3;
       indexStart = index;
       if (index < endIndex && (str[index] == 34)) {
-        index += 1;
+        ++index;
       } else {
-        { return indexStart; }
+        {
+ return indexStart;
+}
       }
       while (true) {
         indexTemp2 = index;
@@ -43,17 +48,20 @@ namespace PeterO.Mail {
         } while (false);
         if (indexTemp2 != index) {
           index = indexTemp2;
-        } else break;
+        } else {
+ break;
+}
       }
-      index = HeaderParser.ParseFWS(str, index, endIndex,null);
+      index = HeaderParser.ParseFWS(str, index, endIndex, null);
       if (index < endIndex && (str[index] == 34)) {
-        index += 1;
+        ++index;
       } else {
-        { return indexStart; }
+        {
+ return indexStart;
+}
       }
       return index;
     }
-
 
     public static bool HasComments(string str, int startIndex, int endIndex) {
        // Determines whether the string portion has comments.

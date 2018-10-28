@@ -10,16 +10,16 @@ Contains methods for parsing and generating Data URIs (uniform resource
 
 ## Methods
 
-* `static byte[] DataUriBytes​(String uri)`<br>
+* `static byte[] DataUriBytes​(String uri)`<br>
  Extracts the data from a Data URI (uniform resource identifier) in the form
  of a byte array.
-* `static MediaType DataUriMediaType​(String uri)`<br>
+* `static MediaType DataUriMediaType​(String uri)`<br>
  Extracts the media type from a Data URI (uniform resource identifier).
-* `static String MakeDataUri​(byte[] bytes,
-           MediaType mediaType)`<br>
+* `static String MakeDataUri​(byte[] bytes,
+           MediaType mediaType)`<br>
  Encodes data with the given media type in a Data URI (uniform resource
  identifier).
-* `static String MakeDataUri​(String textString)`<br>
+* `static String MakeDataUri​(String textString)`<br>
  Encodes text as a Data URI (uniform resource identifier).
 
 ## Method Details

@@ -202,7 +202,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       if (dow < 0) {
         throw new ArgumentException("Invalid date and time");
       }
-      if (dateTime[0]< 0) {
+      if (dateTime[0] < 0) {
         throw new ArgumentException("Invalid year");
       }
       string dayString = valueDaysOfWeek[dow];
@@ -736,11 +736,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       return indexTemp;
     }
 
-    /// <summary>Parses a date string in one of the three formats allowed
-    /// by HTTP/1.1.</summary>
-    /// <param name='v'>The parameter <paramref name='v'/> is not
-    /// documented yet.</param>
-    /// <returns>A 64-bit signed integer.</returns>
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)"]/*'/>
     public static int[] ParseDateStringHttp(string v) {
       if (v == null) {
         return null;
@@ -753,12 +750,12 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         44 && v[index + 4] == 32) && ((v[index + 5] >= 48 && v[index + 5] <=
         57) && (v[index + 6] >= 48 && v[index + 6] <= 57)) && (v[index + 7]
         == 32) && ((v[index + 8] >= 33 && v[index + 8] <= 126) && (v[index +
-        9] >= 33 && v[index + 9] <= 126) && (v[index + 10] >= 33 && v[index+
+        9] >= 33 && v[index + 9] <= 126) && (v[index + 10] >= 33 && v[index +
         10] <= 126)) && (v[index + 11] == 32) && ((v[index + 12] >= 48 &&
-        v[index + 12] <= 57) && (v[index + 13] >= 48 && v[index + 13] <= 57)&&
+        v[index + 12] <= 57) && (v[index + 13] >= 48 && v[index + 13] <= 57) &&
         (v[index + 14] >= 48 && v[index + 14] <= 57) && (v[index + 15] >=
         48 && v[index + 15] <= 57)) && (v[index + 16] == 32) && ((v[index +
-        17] >= 48 && v[index + 17] <= 57) && (v[index + 18] >= 48 && v[index+
+        17] >= 48 && v[index + 17] <= 57) && (v[index + 18] >= 48 && v[index +
         18] <= 57)) && (v[index + 19] == 58) && ((v[index + 20] >= 48 &&
         v[index + 20] <= 57) && (v[index + 21] >= 48 && v[index + 21] <=
         57)) && (v[index + 22] == 58) && ((v[index + 23] >= 48 && v[index +
@@ -770,14 +767,17 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
  return null;
 }
         int dow = parseDOW(v, index, endIndex);
-        int day = (v[index + 5] - '0') * 10 + (v[index + 6] - '0');
+        int day = ((v[index + 5] - '0') * 10) + (v[index + 6] - '0');
         int month = parseMonth(v, index + 8, endIndex);
-        int year = (v[index + 12] - '0') * 1000 + (v[index + 13] - '0') * 100 +
-          (v[index + 14] - '0') * 10 + (v[index + 15] - '0');
-        int hour = (v[index + 17] - '0') * 10 + (v[index + 18] - '0');
-        int minute = (v[index + 20] - '0') * 10 + (v[index + 21] - '0');
-        int second = (v[index + 23] - '0') * 10 + (v[index + 24] - '0');
-int[] ret={year, month, day, hour, minute, second, 0, 0 };
+        if (dow < 0 || month < 0) {
+ return null;
+}
+    int year = ((v[index + 12] - '0') * 1000) + ((v[index + 13] - '0') *
+          100) + (v[index + 14] - '0') * 10 + (v[index + 15] - '0');
+        int hour = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
+        int minute = ((v[index + 20] - '0') * 10) + (v[index + 21] - '0');
+        int second = ((v[index + 23] - '0') * 10) + (v[index + 24] - '0');
+int[] ret = {year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // ASCTIME
@@ -785,11 +785,11 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         (v[index + 1] >= 33 && v[index + 1] <= 126) && (v[index + 2] >= 33 &&
         v[index + 2] <= 126)) && (v[index + 3] == 32) && ((v[index + 4]
         >= 33 && v[index + 4] <= 126) && (v[index + 5] >= 33 && v[index + 5]
-        <= 126) && (v[index + 6] >= 33 && v[index + 6] <= 126)) && (v[index+
+        <= 126) && (v[index + 6] >= 33 && v[index + 6] <= 126)) && (v[index +
         7] == 32) && ((v[index + 8] >= 48 && v[index + 8] <= 57) ||
-        (v[index + 8] == 32)) && (v[index + 9] >= 48 && v[index + 9] <= 57)&&
+        (v[index + 8] == 32)) && (v[index + 9] >= 48 && v[index + 9] <= 57) &&
         (v[index + 10] == 32) && ((v[index + 11] >= 48 && v[index + 11]
-        <= 57) && (v[index + 12] >= 48 && v[index + 12] <= 57)) && (v[index+
+        <= 57) && (v[index + 12] >= 48 && v[index + 12] <= 57)) && (v[index +
         13] == 58) && ((v[index + 14] >= 48 && v[index + 14] <= 57) &&
         (v[index + 15] >= 48 && v[index + 15] <= 57)) && (v[index + 16] ==
         58) && ((v[index + 17] >= 48 && v[index + 17] <= 57) && (v[index +
@@ -803,14 +803,17 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
 }
         int dow = parseDOW(v, index, endIndex);
         int month = parseMonth(v, index + 4, endIndex);
+        if (dow < 0 || month < 0) {
+ return null;
+}
         int day = (v[index + 8] == 32 ? 0 : (v[index + 8] - '0') * 10) +
           (v[index + 9] - '0');
-        int year = (v[index + 20] - '0') * 1000 + (v[index + 21] - '0') * 100 +
-          (v[index + 22] - '0') * 10 + (v[index + 23] - '0');
-        int hour = (v[index + 11] - '0') * 10 + (v[index + 12] - '0');
-        int minute = (v[index + 14] - '0') * 10 + (v[index + 15] - '0');
-        int second = (v[index + 17] - '0') * 10 + (v[index + 18] - '0');
-int[] ret={year, month, day, hour, minute, second, 0, 0 };
+    int year = ((v[index + 20] - '0') * 1000) + ((v[index + 21] - '0') *
+          100) + (v[index + 22] - '0') * 10 + (v[index + 23] - '0');
+        int hour = ((v[index + 11] - '0') * 10) + (v[index + 12] - '0');
+        int minute = ((v[index + 14] - '0') * 10) + (v[index + 15] - '0');
+        int second = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
+int[] ret = {year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // RFC 850
@@ -822,9 +825,9 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         == 45) && ((v[index + 5] >= 33 && v[index + 5] <= 126) && (v[index +
         6] >= 33 && v[index + 6] <= 126) && (v[index + 7] >= 33 && v[index +
         7] <= 126)) && (v[index + 8] == 45) && ((v[index + 9] >= 48 &&
-        v[index + 9] <= 57) && (v[index + 10] >= 48 && v[index + 10] <= 57))&&
+        v[index + 9] <= 57) && (v[index + 10] >= 48 && v[index + 10] <= 57)) &&
         (v[index + 11] == 32) && ((v[index + 12] >= 48 && v[index + 12]
-        <= 57) && (v[index + 13] >= 48 && v[index + 13] <= 57)) && (v[index+
+        <= 57) && (v[index + 13] >= 48 && v[index + 13] <= 57)) && (v[index +
         14] == 58) && ((v[index + 15] >= 48 && v[index + 15] <= 57) &&
         (v[index + 16] >= 48 && v[index + 16] <= 57)) && (v[index + 17] ==
         58) && ((v[index + 18] >= 48 && v[index + 18] <= 57) && (v[index +
@@ -837,11 +840,14 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
  return null;
 }
         int month = parseMonth(v, index + 3, endIndex);
+        if (dowLong < 0 || month < 0) {
+ return null;
+}
         int day = ((v[index] - '0') * 10) + (v[index + 1] - '0');
-        int year = (v[index + 7] - '0') * 10 + (v[index + 8] - '0');
-        int hour = (v[index + 10] - '0') * 10 + (v[index + 11] - '0');
-        int minute = (v[index + 13] - '0') * 10 + (v[index + 14] - '0');
-        int second = (v[index + 16] - '0') * 10 + (v[index + 17] - '0');
+        int year = ((v[index + 7] - '0') * 10) + (v[index + 8] - '0');
+        int hour = ((v[index + 10] - '0') * 10) + (v[index + 11] - '0');
+        int minute = ((v[index + 13] - '0') * 10) + (v[index + 14] - '0');
+        int second = ((v[index + 16] - '0') * 10) + (v[index + 17] - '0');
         DateTime dt = DateTime.UtcNow;
         int thisyear = dt.Year;
         int this2digityear = thisyear % 100;
@@ -849,23 +855,24 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
-int[] ret={year, month, day, hour, minute, second, 0, 0 };
+int[] ret = {year, month, day, hour, minute, second, 0, 0 };
 return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       }
       return null;
     }
 
     private static string[] monthNames = {
-      "Jan","Feb","Mar","Apr","May","Jun",
-      "Jul","Aug","Sep","Oct","Nov","Dec"
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     };
 
     private static string[] dowNames = {
-      "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
     };
 
     private static string[] dowNamesLong = {
-      "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
+   "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+        "Saturday"
     };
 
     private static int parseMonth(string v, int index, int endIndex) {
@@ -895,6 +902,7 @@ return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       }
       return -1;
     }
+
     private static int parseDOWLong(string v, int index, int endIndex) {
       if (endIndex - index <= 2) {
  return -1;

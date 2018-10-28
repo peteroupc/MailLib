@@ -7,23 +7,23 @@ Contains methods for parsing and generating date-time strings following the
 
 ## Methods
 
-* `static String GenerateDateString​(int[] dateTime)`<br>
+* `static String GenerateDateString​(int[] dateTime)`<br>
  Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
-* `static String GenerateDateString​(int[] dateTime,
-                  boolean gmt)`<br>
+* `static String GenerateDateString​(int[] dateTime,
+                  boolean gmt)`<br>
  Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array, optionally using a "GMT" time zone
  indicator.
-* `static int[] ParseDateString​(String str)`<br>
+* `static int[] ParseDateString​(String str)`<br>
  Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322).
-* `static int[] ParseDateString​(String str,
-               boolean parseObsoleteZones)`<br>
+* `static int[] ParseDateString​(String str,
+               boolean parseObsoleteZones)`<br>
  Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322), with an option to allow obsolete
  time zone strings to appear in the date-time string.
-* `static int[] ParseDateStringHttp​(String v)`<br>
+* `static int[] ParseDateStringHttp​(String v)`<br>
  Parses a date string in one of the three formats allowed by HTTP/1.1.
 
 ## Method Details

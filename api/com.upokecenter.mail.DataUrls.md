@@ -7,20 +7,20 @@ Deprecated.
 
 ## Methods
 
-* `static byte[] DataUrlBytes​(String url)`<br>
+* `static byte[] DataUrlBytes​(String url)`<br>
  Deprecated.
 Renamed to DataUriBytes.
  Renamed to DataUriBytes.
-* `static MediaType DataUrlMediaType​(String url)`<br>
+* `static MediaType DataUrlMediaType​(String url)`<br>
  Deprecated.
 Renamed to DataUriMediaType.
  Renamed to DataUriMediaType.
-* `static String MakeDataUrl​(byte[] bytes,
-           MediaType mediaType)`<br>
+* `static String MakeDataUrl​(byte[] bytes,
+           MediaType mediaType)`<br>
  Deprecated.
 Renamed to MakeDataUri.
  Renamed to MakeDataUri.
-* `static String MakeDataUrl​(String textString)`<br>
+* `static String MakeDataUrl​(String textString)`<br>
  Deprecated.
 Renamed to MakeDataUri.
  Renamed to MakeDataUri.

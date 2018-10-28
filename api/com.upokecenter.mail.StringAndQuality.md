@@ -8,8 +8,8 @@ Stores an arbitrary string and a "quality value" for that string. For
 
 ## Methods
 
-* `StringAndQuality​(String value,
-                int quality) StringAndQuality`<br>
+* `StringAndQuality​(String value,
+                int quality) StringAndQuality`<br>
  Initializes a new instance of the StringAndQuality class.
 * `int getQuality()`<br>
  Gets the quality value stored by this object.
@@ -18,8 +18,8 @@ Stores an arbitrary string and a "quality value" for that string. For
 
 ## Constructors
 
-* `StringAndQuality​(String value,
-                int quality) StringAndQuality`<br>
+* `StringAndQuality​(String value,
+                int quality) StringAndQuality`<br>
  Initializes a new instance of the StringAndQuality class.
 
 ## Method Details

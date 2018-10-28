@@ -1543,6 +1543,13 @@
             range of a 32-bit signed integer.</returns>
 
 </doc>
+<doc name="M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)">
+
+            <summary>Parses a date string in one of the three formats allowed
+             by HTTP/1.1.</summary><param name='v'>The parameter <paramref name='v'/> is not
+             documented yet.</param><returns>A 64-bit signed integer.</returns>
+
+</doc>
 <doc name="T:PeterO.Mail.MediaType">
 
             <summary><para>Specifies what kind of data a message body is.</para>

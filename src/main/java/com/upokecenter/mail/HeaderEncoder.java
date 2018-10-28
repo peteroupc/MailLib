@@ -170,11 +170,10 @@ import com.upokecenter.util.*;
             // May begin quoted-String or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
-            int si = symbol.charAt(i) == '"' ? HeaderParser.ParseQuotedStringCore(
+         int si = symbol.charAt(i) == '"' ? HeaderParserUtility.ParseQuotedStringCore(
   symbol,
   i,
-  endIndex,
-  null) : HeaderParser.ParseDomainLiteralCore(
+  endIndex) : HeaderParser.ParseDomainLiteralCore(
   symbol,
   i,
   endIndex,

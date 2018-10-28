@@ -6,52 +6,52 @@ Contains methods for parsing and matching language tags.
 
 ## Methods
 
-* `static List<String> GetLanguageList​(String str)`<br>
+* `static List<String> GetLanguageList​(String str)`<br>
  Parses a language list from a Content-Language header field.
-* `static List<StringAndQuality> GetRangeListWithQuality​(String str)`<br>
+* `static List<StringAndQuality> GetRangeListWithQuality​(String str)`<br>
  Parses a language range list from an Accept-Language header field.
-* `static boolean IsLanguageRange​(String str)`<br>
+* `static boolean IsLanguageRange​(String str)`<br>
  Returns whether the given string is a basic language range under RFC 4647.
-* `static boolean IsLanguageRange​(String str,
-               boolean extended)`<br>
+* `static boolean IsLanguageRange​(String str,
+               boolean extended)`<br>
  Returns whether the given string is a basic or extended language range under
  RFC 4647.
-* `static boolean IsPotentiallyValidLanguageTag​(String str)`<br>
+* `static boolean IsPotentiallyValidLanguageTag​(String str)`<br>
  Returns true if (1) the given string is a well-formed language tag under RFC
  5646 (that is, the string follows the syntax given in section 2.1 of
  that RFC), and (2) the language tag contains at most one extended
  language subtag, no variant subtags with the same value, and no
  extension singleton subtags with the same value.
-* `static String LanguageTagCase​(String str)`<br>
+* `static String LanguageTagCase​(String str)`<br>
  Sets the given language tag to the case combination recommended by RFC 5646.
-* `static List<String> LanguageTagFilter​(List<String> ranges,
-                 List<String> languages)`<br>
+* `static List<String> LanguageTagFilter​(List<String> ranges,
+                 List<String> languages)`<br>
  Finds the language tags that match a priority list of basic language ranges.
-* `static List<String> LanguageTagFilter​(List<String> ranges,
-                 List<String> languages,
-                 boolean extended,
-                 boolean matchStarAtEnd)`<br>
+* `static List<String> LanguageTagFilter​(List<String> ranges,
+                 List<String> languages,
+                 boolean extended,
+                 boolean matchStarAtEnd)`<br>
  Finds the language tags that match a priority list of language ranges.
-* `static String LanguageTagLookup​(String range,
-                 List<String> languages,
-                 String defaultValue)`<br>
+* `static String LanguageTagLookup​(String range,
+                 List<String> languages,
+                 String defaultValue)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static String LanguageTagLookup​(String range,
-                 List<String> languages,
-                 String defaultValue,
-                 boolean extended)`<br>
+* `static String LanguageTagLookup​(String range,
+                 List<String> languages,
+                 String defaultValue,
+                 boolean extended)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static String LanguageTagLookup​(List<String> ranges,
-                 List<String> languages,
-                 String defaultValue)`<br>
+* `static String LanguageTagLookup​(List<String> ranges,
+                 List<String> languages,
+                 String defaultValue)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static String LanguageTagLookup​(List<String> ranges,
-                 List<String> languages,
-                 String defaultValue,
-                 boolean extended)`<br>
+* `static String LanguageTagLookup​(List<String> ranges,
+                 List<String> languages,
+                 String defaultValue,
+                 boolean extended)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static boolean MatchesLanguageTag​(String range,
-                  String tag)`<br>
+* `static boolean MatchesLanguageTag​(String range,
+                  String tag)`<br>
  Determines whether the given language tag matches the given language range.
 
 ## Method Details
@@ -59,7 +59,7 @@ Contains methods for parsing and matching language tags.
 ### IsLanguageRange
     public static boolean IsLanguageRange​(String str)
 Returns whether the given string is a basic language range under RFC 4647.
- Examples include "&#x2a;", "en-us", and "fr".
+ Examples include "*", "en-us", and "fr".
 
 **Parameters:**
 
@@ -74,8 +74,8 @@ Returns whether the given string is a basic language range under RFC 4647.
     public static boolean IsLanguageRange​(String str, boolean extended)
 Returns whether the given string is a basic or extended language range under
  RFC 4647. Examples of basic (and extended) language ranges include
- "&#x2a;", "en-us", and "fr". Examples of extended language ranges
- include "&#x2a;-de" and "it-&#x2a;".
+ "*", "en-us", and "fr". Examples of extended language ranges
+ include "*-de" and "it-*".
 
 **Parameters:**
 
@@ -158,7 +158,7 @@ Finds the language tags that match a priority list of language ranges.
 * <code>extended</code> - If true, the ranges in "ranges" are extended language
  ranges; otherwise, they are basic language ranges.
 
-* <code>matchStarAtEnd</code> - If true, treats any range equaling "&#x2a;" as
+* <code>matchStarAtEnd</code> - If true, treats any range equaling "*" as
  appearing at the end of the language priority list, no matter where
  it appears on that list.
 

@@ -36,12 +36,12 @@
 
 ## Methods
 
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal.
 * `String GetCharset()`<br>
  Gets this media type's "charset" parameter, naming a character encoding used
  to represent text in the data that uses this media type.
-* `String GetParameter​(String name)`<br>
+* `String GetParameter​(String name)`<br>
  Gets the value of a parameter in this media type, such as "charset" or
  "format".
 * `Map<String,String> getParameters()`<br>
@@ -60,10 +60,10 @@
  Gets a value indicating whether this is a multipart media type.
 * `boolean isText()`<br>
  Gets a value indicating whether this is a text media type ("text/*").
-* `static MediaType Parse​(String mediaTypeValue)`<br>
+* `static MediaType Parse​(String mediaTypeValue)`<br>
  Parses a media type string and returns a media type object.
-* `static MediaType Parse​(String str,
-     MediaType defaultValue)`<br>
+* `static MediaType Parse​(String str,
+     MediaType defaultValue)`<br>
  Parses a media type string and returns a media type object, or the default
  value if the string is invalid.
 * `String ToSingleLineString()`<br>
@@ -112,7 +112,7 @@ Determines whether this object and another object are equal.
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -130,7 +130,7 @@ Calculates the hash code of this object. No application or process IDs are
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -147,7 +147,7 @@ Gets this media type's subtype (for example, "plain" in "text/plain"). The
 
 ### isText
     public final boolean isText()
-Gets a value indicating whether this is a text media type ("text/&#x2a;").
+Gets a value indicating whether this is a text media type ("text/*").
 
 **Returns:**
 
@@ -185,7 +185,7 @@ Converts this media type to a text string form suitable for inserting in
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -294,14 +294,14 @@ Parses a media type string and returns a media type object, or the default
  extensions allow each media type parameter to be associated with a
  character encoding and/or language, and support parameter values that
  span two or more key-value pairs. Parameters making use of RFC 2231
- extensions have names with an asterisk ("&#x2a;"). Such a parameter
+ extensions have names with an asterisk ("*"). Such a parameter
  will be ignored if it is ill-formed because of RFC 2231's rules
  (except for illegal percent-decoding or undecodable sequences for the
  given character enoding). Examples of RFC 2231 extensions follow
  (both examples encode the same "filename" parameter): </p>
- <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
- <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
- filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+ <p><b>text/example; filename*=utf-8'en'filename.txt</b> </p>
+ <p><b>text/example; filename*0*=utf-8'en'file;
+ filename*1*=name%2Etxt</b> </p> <p>This implementation
  ignores keys (in parameter key-value pairs) that appear more than
  once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
  7231 explicitly disallows such keys, or otherwise specifies

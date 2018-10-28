@@ -8,27 +8,27 @@ Deprecated.
 
 ## Methods
 
-* `Normalizer​(String str,
-          Normalization form) Normalizer`<br>
+* `Normalizer​(String str,
+          Normalization form) Normalizer`<br>
  Deprecated. Initializes a new instance of the Normalizer
  class.
-* `static boolean IsNormalized​(String str,
-            Normalization form)`<br>
+* `static boolean IsNormalized​(String str,
+            Normalization form)`<br>
  Deprecated. Returns whether this string is normalized.
-* `static String Normalize​(String str,
-         Normalization form)`<br>
+* `static String Normalize​(String str,
+         Normalization form)`<br>
  Deprecated. Converts a string to the given Unicode normalization form.
-* `int Read​(int[] chars,
-    int index,
-    int length)`<br>
+* `int Read​(int[] chars,
+    int index,
+    int length)`<br>
  Deprecated. Reads a sequence of Unicode code points from a data source.
 * `int ReadChar()`<br>
  Deprecated. Reads a Unicode character from a data source.
 
 ## Constructors
 
-* `Normalizer​(String str,
-          Normalization form) Normalizer`<br>
+* `Normalizer​(String str,
+          Normalization form) Normalizer`<br>
  Deprecated. Initializes a new instance of the Normalizer
  class.
 

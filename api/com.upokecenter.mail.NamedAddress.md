@@ -7,30 +7,30 @@ Represents an email address and a name for that address. Can represent a
 
 ## Methods
 
-* `NamedAddress​(String address) NamedAddress`<br>
+* `NamedAddress​(String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
-* `NamedAddress​(String displayName,
-            Address address) NamedAddress`<br>
+* `NamedAddress​(String displayName,
+            Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress​(String displayName,
-            String address) NamedAddress`<br>
+* `NamedAddress​(String displayName,
+            String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress​(String displayName,
-            String localPart,
-            String domain) NamedAddress`<br>
+* `NamedAddress​(String displayName,
+            String localPart,
+            String domain) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given name and an email address made up of its local
  part and domain.
-* `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes) NamedAddress`<br>
+* `NamedAddress​(String groupName,
+            List<NamedAddress> mailboxes) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
-* `boolean AddressesEqual​(NamedAddress na)`<br>
+* `boolean AddressesEqual​(NamedAddress na)`<br>
  Not documented yet.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal.
 * `Address getAddress()`<br>
  Gets the email address associated with this object.
@@ -47,7 +47,7 @@ Represents an email address and a name for that address. Can represent a
 * `boolean isGroup()`<br>
  Gets a value indicating whether this represents a group of addresses rather
  than a single address.
-* `static List<NamedAddress> ParseAddresses​(String addressValue)`<br>
+* `static List<NamedAddress> ParseAddresses​(String addressValue)`<br>
  Generates a list of NamedAddress objects from a comma-separated list of
  addresses.
 * `String toString()`<br>
@@ -55,25 +55,25 @@ Represents an email address and a name for that address. Can represent a
 
 ## Constructors
 
-* `NamedAddress​(String address) NamedAddress`<br>
+* `NamedAddress​(String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
-* `NamedAddress​(String displayName,
-            Address address) NamedAddress`<br>
+* `NamedAddress​(String displayName,
+            Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress​(String displayName,
-            String address) NamedAddress`<br>
+* `NamedAddress​(String displayName,
+            String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress​(String displayName,
-            String localPart,
-            String domain) NamedAddress`<br>
+* `NamedAddress​(String displayName,
+            String localPart,
+            String domain) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given name and an email address made up of its local
  part and domain.
-* `NamedAddress​(String groupName,
-            List<NamedAddress> mailboxes) NamedAddress`<br>
+* `NamedAddress​(String groupName,
+            List<NamedAddress> mailboxes) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
 
@@ -210,7 +210,7 @@ Calculates the hash code of this object. No application or process IDs are
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -222,7 +222,7 @@ Determines whether this object and another object are equal.
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -290,7 +290,7 @@ Converts this object to a text string. This will generally be the form of
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 

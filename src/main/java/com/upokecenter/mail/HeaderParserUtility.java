@@ -21,6 +21,49 @@ private HeaderParserUtility() {
     static final int TokenLocalPart = 7;
     static final int TokenDomain = 8;
 
+ public static int ParseQuotedStringCore(
+  String str,
+  int index,
+  int endIndex) {
+      int indexStart, indexStart2, indexTemp2, tx3;
+      indexStart = index;
+      if (index < endIndex && (str.charAt(index) == 34)) {
+        ++index;
+      } else {
+        {
+ return indexStart;
+}
+      }
+      while (true) {
+        indexTemp2 = index;
+        do {
+          indexStart2 = index;
+          index = HeaderParser.ParseFWS(str, index, endIndex, null);
+          tx3 = HeaderParser.ParseQcontent(str, index, endIndex, null);
+          if (tx3 == index) {
+            index = indexStart2; break;
+          }
+          index = tx3;
+          indexTemp2 = index;
+          index = indexStart2;
+        } while (false);
+        if (indexTemp2 != index) {
+          index = indexTemp2;
+        } else {
+ break;
+}
+      }
+      index = HeaderParser.ParseFWS(str, index, endIndex, null);
+      if (index < endIndex && (str.charAt(index) == 34)) {
+        ++index;
+      } else {
+        {
+ return indexStart;
+}
+      }
+      return index;
+    }
+
     public static boolean HasComments(String str, int startIndex, int endIndex) {
        // Determines whether the String portion has comments.
        // Assumes the portion of the String is a syntactically valid
@@ -37,7 +80,7 @@ private HeaderParserUtility() {
            } else if (c == 0x22) {
                 // quoted String found, skip it
                 int
-  si = HeaderParser.ParseQuotedStringCore(str, index, endIndex, null);
+  si = HeaderParserUtility.ParseQuotedStringCore(str, index, endIndex);
                     if (si == index) {
  throw new IllegalStateException("Internal error: " + str);
 }

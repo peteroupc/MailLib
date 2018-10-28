@@ -6,10 +6,10 @@ Represents an email address.
 
 ## Methods
 
-* `Address​(String addressValue) Address`<br>
+* `Address​(String addressValue) Address`<br>
  Initializes a new instance of the Address
  class.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal.
 * `String getDomain()`<br>
  Gets the domain of this email address (the part after the "@" sign).
@@ -22,7 +22,7 @@ Represents an email address.
 
 ## Constructors
 
-* `Address​(String addressValue) Address`<br>
+* `Address​(String addressValue) Address`<br>
  Initializes a new instance of the Address
  class.
 
@@ -72,7 +72,7 @@ Determines whether this object and another object are equal.
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -97,7 +97,7 @@ Converts this address object to a text string.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -110,7 +110,7 @@ Returns a hash code for this address object. No application or process
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 

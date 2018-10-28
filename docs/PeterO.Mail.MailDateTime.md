@@ -7,6 +7,7 @@ Contains methods for parsing and generating date-time strings following the Inte
 ### Member Summary
 * <code>[GenerateDateString(int[])](#GenerateDateString_int)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 * <code>[GenerateDateString(int[], bool)](#GenerateDateString_int_bool)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array, optionally using a "GMT" time zone indicator.
+* <code>[ParseDateStringHttp(string)](#ParseDateStringHttp_string)</code> - Parses a date string in one of the three formats allowed by HTTP/1.
 * <code>[ParseDateString(string)](#ParseDateString_string)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322).
 * <code>[ParseDateString(string, bool)](#ParseDateString_string_bool)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string.
 
@@ -30,7 +31,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter <i>dateTime</i>
- is null or invalid.
+ is null or invalid, including if the year ( `dateTime[0]` ) is less than 0.
 
 <a id="GenerateDateString_int_bool"></a>
 ### GenerateDateString
@@ -55,7 +56,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter <i>dateTime</i>
- is null or invalid.
+ is null or invalid, including if the year ( `dateTime[0]` ) is less than 0.
 
  * System.NotSupportedException:
 The time zone offset is other than 0 and  <i>gmt</i>
@@ -113,3 +114,20 @@ Gets the date and time extracted from a date-time string following the Internet 
 
 An 8-element array containing the date and time, or `null`  if  <i>str</i>
  is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
+
+<a id="ParseDateStringHttp_string"></a>
+### ParseDateStringHttp
+
+    public static int[] ParseDateStringHttp(
+        string v);
+
+Parses a date string in one of the three formats allowed by HTTP/1.1.
+
+<b>Parameters:</b>
+
+ * <i>v</i>: The parameter  <i>v</i>
+ is not documented yet.
+
+<b>Return Value:</b>
+
+A 64-bit signed integer.

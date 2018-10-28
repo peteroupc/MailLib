@@ -227,7 +227,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       if (dow < 0) {
         throw new IllegalArgumentException("Invalid date and time");
       }
-      if (year< 0) {
+      if (dateTime[0] < 0) {
         throw new IllegalArgumentException("Invalid year");
       }
       String dayString = valueDaysOfWeek[dow];
@@ -812,12 +812,12 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         44 && v.charAt(index + 4) == 32) && ((v.charAt(index + 5) >= 48 && v.charAt(index + 5) <=
         57) && (v.charAt(index + 6) >= 48 && v.charAt(index + 6) <= 57)) && (v.charAt(index + 7)
         == 32) && ((v.charAt(index + 8) >= 33 && v.charAt(index + 8) <= 126) && (v.charAt(index +
-        9) >= 33 && v.charAt(index + 9) <= 126) && (v.charAt(index + 10) >= 33 && v.charAt(index+
+        9) >= 33 && v.charAt(index + 9) <= 126) && (v.charAt(index + 10) >= 33 && v.charAt(index +
         10) <= 126)) && (v.charAt(index + 11) == 32) && ((v.charAt(index + 12) >= 48 &&
-        v.charAt(index + 12) <= 57) && (v.charAt(index + 13) >= 48 && v.charAt(index + 13) <= 57)&&
+        v.charAt(index + 12) <= 57) && (v.charAt(index + 13) >= 48 && v.charAt(index + 13) <= 57) &&
         (v.charAt(index + 14) >= 48 && v.charAt(index + 14) <= 57) && (v.charAt(index + 15) >=
         48 && v.charAt(index + 15) <= 57)) && (v.charAt(index + 16) == 32) && ((v.charAt(index +
-        17) >= 48 && v.charAt(index + 17) <= 57) && (v.charAt(index + 18) >= 48 && v.charAt(index+
+        17) >= 48 && v.charAt(index + 17) <= 57) && (v.charAt(index + 18) >= 48 && v.charAt(index +
         18) <= 57)) && (v.charAt(index + 19) == 58) && ((v.charAt(index + 20) >= 48 &&
         v.charAt(index + 20) <= 57) && (v.charAt(index + 21) >= 48 && v.charAt(index + 21) <=
         57)) && (v.charAt(index + 22) == 58) && ((v.charAt(index + 23) >= 48 && v.charAt(index +
@@ -829,14 +829,17 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
  return null;
 }
         int dow = parseDOW(v, index, endIndex);
-        int day = (v.charAt(index + 5) - '0') * 10 + (v.charAt(index + 6) - '0');
+        int day = ((v.charAt(index + 5) - '0') * 10) + (v.charAt(index + 6) - '0');
         int month = parseMonth(v, index + 8, endIndex);
-        int year = (v.charAt(index + 12) - '0') * 1000 + (v.charAt(index + 13) - '0') * 100 +
-          (v.charAt(index + 14) - '0') * 10 + (v.charAt(index + 15) - '0');
-        int hour = (v.charAt(index + 17) - '0') * 10 + (v.charAt(index + 18) - '0');
-        int minute = (v.charAt(index + 20) - '0') * 10 + (v.charAt(index + 21) - '0');
-        int second = (v.charAt(index + 23) - '0') * 10 + (v.charAt(index + 24) - '0');
-int[] ret={year, month, day, hour, minute, second, 0, 0 };
+        if (dow < 0 || month < 0) {
+ return null;
+}
+    int year = ((v.charAt(index + 12) - '0') * 1000) + ((v.charAt(index + 13) - '0') *
+          100) + (v.charAt(index + 14) - '0') * 10 + (v.charAt(index + 15) - '0');
+        int hour = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
+        int minute = ((v.charAt(index + 20) - '0') * 10) + (v.charAt(index + 21) - '0');
+        int second = ((v.charAt(index + 23) - '0') * 10) + (v.charAt(index + 24) - '0');
+int[] ret = {year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // ASCTIME
@@ -844,11 +847,11 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         (v.charAt(index + 1) >= 33 && v.charAt(index + 1) <= 126) && (v.charAt(index + 2) >= 33 &&
         v.charAt(index + 2) <= 126)) && (v.charAt(index + 3) == 32) && ((v.charAt(index + 4)
         >= 33 && v.charAt(index + 4) <= 126) && (v.charAt(index + 5) >= 33 && v.charAt(index + 5)
-        <= 126) && (v.charAt(index + 6) >= 33 && v.charAt(index + 6) <= 126)) && (v.charAt(index+
+        <= 126) && (v.charAt(index + 6) >= 33 && v.charAt(index + 6) <= 126)) && (v.charAt(index +
         7) == 32) && ((v.charAt(index + 8) >= 48 && v.charAt(index + 8) <= 57) ||
-        (v.charAt(index + 8) == 32)) && (v.charAt(index + 9) >= 48 && v.charAt(index + 9) <= 57)&&
+        (v.charAt(index + 8) == 32)) && (v.charAt(index + 9) >= 48 && v.charAt(index + 9) <= 57) &&
         (v.charAt(index + 10) == 32) && ((v.charAt(index + 11) >= 48 && v.charAt(index + 11)
-        <= 57) && (v.charAt(index + 12) >= 48 && v.charAt(index + 12) <= 57)) && (v.charAt(index+
+        <= 57) && (v.charAt(index + 12) >= 48 && v.charAt(index + 12) <= 57)) && (v.charAt(index +
         13) == 58) && ((v.charAt(index + 14) >= 48 && v.charAt(index + 14) <= 57) &&
         (v.charAt(index + 15) >= 48 && v.charAt(index + 15) <= 57)) && (v.charAt(index + 16) ==
         58) && ((v.charAt(index + 17) >= 48 && v.charAt(index + 17) <= 57) && (v.charAt(index +
@@ -862,14 +865,17 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
 }
         int dow = parseDOW(v, index, endIndex);
         int month = parseMonth(v, index + 4, endIndex);
+        if (dow < 0 || month < 0) {
+ return null;
+}
         int day = (v.charAt(index + 8) == 32 ? 0 : (v.charAt(index + 8) - '0') * 10) +
           (v.charAt(index + 9) - '0');
-        int year = (v.charAt(index + 20) - '0') * 1000 + (v.charAt(index + 21) - '0') * 100 +
-          (v.charAt(index + 22) - '0') * 10 + (v.charAt(index + 23) - '0');
-        int hour = (v.charAt(index + 11) - '0') * 10 + (v.charAt(index + 12) - '0');
-        int minute = (v.charAt(index + 14) - '0') * 10 + (v.charAt(index + 15) - '0');
-        int second = (v.charAt(index + 17) - '0') * 10 + (v.charAt(index + 18) - '0');
-int[] ret={year, month, day, hour, minute, second, 0, 0 };
+    int year = ((v.charAt(index + 20) - '0') * 1000) + ((v.charAt(index + 21) - '0') *
+          100) + (v.charAt(index + 22) - '0') * 10 + (v.charAt(index + 23) - '0');
+        int hour = ((v.charAt(index + 11) - '0') * 10) + (v.charAt(index + 12) - '0');
+        int minute = ((v.charAt(index + 14) - '0') * 10) + (v.charAt(index + 15) - '0');
+        int second = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
+int[] ret = {year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // RFC 850
@@ -881,9 +887,9 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         == 45) && ((v.charAt(index + 5) >= 33 && v.charAt(index + 5) <= 126) && (v.charAt(index +
         6) >= 33 && v.charAt(index + 6) <= 126) && (v.charAt(index + 7) >= 33 && v.charAt(index +
         7) <= 126)) && (v.charAt(index + 8) == 45) && ((v.charAt(index + 9) >= 48 &&
-        v.charAt(index + 9) <= 57) && (v.charAt(index + 10) >= 48 && v.charAt(index + 10) <= 57))&&
+        v.charAt(index + 9) <= 57) && (v.charAt(index + 10) >= 48 && v.charAt(index + 10) <= 57)) &&
         (v.charAt(index + 11) == 32) && ((v.charAt(index + 12) >= 48 && v.charAt(index + 12)
-        <= 57) && (v.charAt(index + 13) >= 48 && v.charAt(index + 13) <= 57)) && (v.charAt(index+
+        <= 57) && (v.charAt(index + 13) >= 48 && v.charAt(index + 13) <= 57)) && (v.charAt(index +
         14) == 58) && ((v.charAt(index + 15) >= 48 && v.charAt(index + 15) <= 57) &&
         (v.charAt(index + 16) >= 48 && v.charAt(index + 16) <= 57)) && (v.charAt(index + 17) ==
         58) && ((v.charAt(index + 18) >= 48 && v.charAt(index + 18) <= 57) && (v.charAt(index +
@@ -896,11 +902,14 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
  return null;
 }
         int month = parseMonth(v, index + 3, endIndex);
+        if (dowLong < 0 || month < 0) {
+ return null;
+}
         int day = ((v.charAt(index) - '0') * 10) + (v.charAt(index + 1) - '0');
-        int year = (v.charAt(index + 7) - '0') * 10 + (v.charAt(index + 8) - '0');
-        int hour = (v.charAt(index + 10) - '0') * 10 + (v.charAt(index + 11) - '0');
-        int minute = (v.charAt(index + 13) - '0') * 10 + (v.charAt(index + 14) - '0');
-        int second = (v.charAt(index + 16) - '0') * 10 + (v.charAt(index + 17) - '0');
+        int year = ((v.charAt(index + 7) - '0') * 10) + (v.charAt(index + 8) - '0');
+        int hour = ((v.charAt(index + 10) - '0') * 10) + (v.charAt(index + 11) - '0');
+        int minute = ((v.charAt(index + 13) - '0') * 10) + (v.charAt(index + 14) - '0');
+        int second = ((v.charAt(index + 16) - '0') * 10) + (v.charAt(index + 17) - '0');
         java.util.Date dt = java.util.Date.UtcNow;
         int thisyear = dt.getYear();
         int this2digityear = thisyear % 100;
@@ -908,23 +917,24 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
-int[] ret={year, month, day, hour, minute, second, 0, 0 };
-return (dow == GetDayOfWeek(ret)) ? ret : null;
+int[] ret = {year, month, day, hour, minute, second, 0, 0 };
+return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       }
       return null;
     }
 
     private static String[] monthNames = {
-      "Jan","Feb","Mar","Apr","May","Jun",
-      "Jul","Aug","Sep","Oct","Nov","Dec"
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     };
 
     private static String[] dowNames = {
-      "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
     };
 
     private static String[] dowNamesLong = {
-      "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
+   "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+        "Saturday"
     };
 
     private static int parseMonth(String v, int index, int endIndex) {
@@ -954,13 +964,13 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       return -1;
     }
+
     private static int parseDOWLong(String v, int index, int endIndex) {
       if (endIndex - index <= 2) {
  return -1;
 }
       for (int i = 0; i < 7; ++i) {
         String dowName = dowNamesLong[i];
-        boolean match = true;
         if (endIndex - index >= dowName.length() &&
            v.substring(index, (index)+(dowName.length())).equals(dowName)) {
           return i;
