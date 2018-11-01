@@ -1375,5 +1375,38 @@ if (s.Length - offset < length) {
     public static int[] splitIRI(string s, ParseMode parseMode) {
       return (s == null) ? null : splitIRI(s, 0, s.Length, parseMode);
     }
-  }
+
+ public static string directoryPath(string uri) {
+ return directoryPath(uri, ParseMode.IRIStrict);
 }
+
+ public static string directoryPath(string uri, ParseMode parseMode) {
+ int[] indexes = splitIRI(uri, parseMode);
+ if (indexes == null) {
+  return null;
+ }
+ string schemeAndAuthority = uri.Substring(0, indexes[4]);
+ string path = uri.Substring(indexes[4], indexes[5] - indexes[4]);
+ if (path.Length > 0) {
+  for (int i = path.Length - 1; i >= 0; --i) {
+    if (path[i] == '/') {
+       return schemeAndAuthority + path.Substring(0, i + 1);
+    }
+  }
+  return schemeAndAuthority + path;
+ } else {
+  return schemeAndAuthority;
+ }
+}
+
+ public static string relativeResolveWithinBaseURI(
+  string refValue,
+  string absoluteBaseURI) {
+  string rel = relativeResolve(refValue, absoluteBaseURI);
+  if (rel == null) {
+ return null;
+}
+  string absuri = directoryPath(absoluteBaseURI);
+  string reluri = directoryPath(rel);
+  return (absuri == null || reluri == null ||
+     !absuri.Equals(reluri)) ? null : rel; } } }
