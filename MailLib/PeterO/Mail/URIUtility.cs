@@ -630,6 +630,15 @@ public static string BuildIRI(
   ParseMode.IRIStrict)) != null;
     }
 
+    public static bool isValidIRI(string s, ParseMode mode) {
+      return ((s == null) ?
+  null : splitIRI(
+  s,
+  0,
+  s.Length,
+  mode)) != null;
+    }
+
     private const string ValueDotSlash = "." + "/";
     private const string ValueSlashDot = "/" + ".";
 
@@ -1375,5 +1384,114 @@ if (s.Length - offset < length) {
     public static int[] splitIRI(string s, ParseMode parseMode) {
       return (s == null) ? null : splitIRI(s, 0, s.Length, parseMode);
     }
-  }
+
+ private static string pathHasDotComponent(string path) {
+  if (path == null || path.Length == 0) {
+ return false;
 }
+  path = PercentDecode(path);
+  if (path.Equals("..")) {
+ return true;
+}
+  if (path.Equals(".")) {
+ return true;
+}
+  if (path.IndexOf(ValueSlashDot, StringComparison.Ordinal) < 0 &&
+          path.IndexOf(
+  ValueDotSlash,
+  StringComparison.Ordinal) < 0) {
+        return false;
+      }
+      var index = 0;
+      while (index < len) {
+        char c = path[index];
+        if ((index + 3 <= len && c == '/' && path[index + 1] == '.' &&
+             path[index + 2] == '/') || (index + 2 == len && c == '.' &&
+             path[index + 1] == '.')) {
+          // begins with "/./" or is "..";
+          return true;
+        }
+        if (index + 3 <= len && c == '.' &&
+            path[index + 1] == '.' && path[index + 2] == '/') {
+          // begins with "../";
+          return true;
+        }
+        if ((index + 2 <= len && c == '.' &&
+             path[index + 1] == '/') || (index + 1 == len && c == '.')) {
+          // begins with "./" or is ".";
+          return true;
+        }
+        if (index + 2 == len && c == '/' && path[index + 1] == '.') {
+          // is "/."
+          return true;
+        }
+        if (index + 3 == len && c == '/' &&
+            path[index + 1] == '.' && path[index + 2] == '.') {
+          // is "/.."
+          return true;
+        }
+        if (index + 4 <= len && c == '/' && path[index + 1] == '.' &&
+            path[index + 2] == '.' && path[index + 3] == '/') {
+          // begins with "/../"
+          return true;
+        }
+        ++index;
+        while (index < len) {
+          // Move the rest of the
+          // path segment until the next '/'
+          c = path[index];
+          if (c == '/') {
+            break;
+          }
+          ++index;
+        }
+      }
+      return false;
+ }
+
+ private static string uriPath(string uri, ParseMode parseMode) {
+ int[] indexes = splitIRI(uri, parseMode);
+ return (indexes == null) ? (null) : (uri.Substring(indexes[4], indexes[5] -
+   indexes[4]));
+ }
+
+ public static string directoryPath(string uri) {
+ return directoryPath(uri, ParseMode.IRIStrict);
+}
+
+ public static string directoryPath(string uri, ParseMode parseMode) {
+ int[] indexes = splitIRI(uri, parseMode);
+ if (indexes == null) {
+  return null;
+ }
+ string schemeAndAuthority = uri.Substring(0, indexes[4]);
+ string path = uri.Substring(indexes[4], indexes[5] - indexes[4]);
+ if (path.Length > 0) {
+  for (int i = path.Length - 1; i >= 0; --i) {
+    if (path[i] == '/') {
+       return schemeAndAuthority + path.Substring(0, i + 1);
+    }
+  }
+  return schemeAndAuthority + path;
+ } else {
+  return schemeAndAuthority;
+ }
+}
+
+ public static string relativeResolveWithinBaseURI(
+  string refValue,
+  string absoluteBaseURI) {
+  string rel = relativeResolve(refValue, absoluteBaseURI);
+  if (rel == null) {
+ return null;
+}
+ string relpath = uriPath(refValue, ParseMode.IRIStrict);
+ if (pathHasDotComponent(relPath)) {
+  // Resolved path has a dot component in it (usually
+  // because that component is percent-encoded)
+  return null;
+ }
+  string absuri = directoryPath(absoluteBaseURI);
+  string reluri = directoryPath(rel);
+  return (absuri == null || reluri == null ||
+     !absuri.Equals(reluri)) ? null : rel; } } }

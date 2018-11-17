@@ -737,7 +737,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)"]/*'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)"]/*'/>
     public static int[] ParseDateStringHttp(string v) {
       if (v == null) {
         return null;
