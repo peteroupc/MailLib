@@ -471,6 +471,8 @@ private MakeFilenameMethod() {
       return str;
     }
 
+    private static final int MaxFileNameCodeUnitLength = 247;
+
     public static String MakeFilename(String str) {
       if (((str) == null || (str).length() == 0)) {
         return "";
@@ -509,7 +511,8 @@ private MakeFilenameMethod() {
         StringBuilder builder = new StringBuilder();
         // Replace unsuitable characters for filenames
         // and make sure the filename's
-        // length doesn't exceed 254. (A few additional characters
+        // length doesn't exceed MaxFileNameCodeUnitLength.
+        // (A few additional characters
         // may be added later on.)
         // NOTE: Even if there are directory separators (backslash
         // and forward slash), the filename is not treated as a
@@ -518,7 +521,7 @@ private MakeFilenameMethod() {
         // will be treated as unsuitable characters for filenames
         // and are handled below.
         i = 0;
-        while (i < str.length() && builder.length() < 254) {
+        while (i < str.length() && builder.length() < MaxFileNameCodeUnitLength) {
           int c = DataUtilities.CodePointAt(str, i, 0);
           // NOTE: Unpaired surrogates are replaced with U + FFFD
           if (c >= 0x10000) {
@@ -575,7 +578,7 @@ private MakeFilenameMethod() {
             // in environment variable placeholders
             builder.append('_');
           } else {
-            if (builder.length() < 254 || c < 0x10000) {
+            if (builder.length() < MaxFileNameCodeUnitLength || c < 0x10000) {
               if (c <= 0xffff) {
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
@@ -583,7 +586,7 @@ private MakeFilenameMethod() {
                     0xd800));
                 builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
-            } else if (builder.length() >= 253) {
+            } else if (builder.length() >= MaxFileNameCodeUnitLength - 1) {
               break;
             }
           }

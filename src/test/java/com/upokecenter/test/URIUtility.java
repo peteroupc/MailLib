@@ -630,6 +630,15 @@ public static String BuildIRI(
   ParseMode.IRIStrict)) != null;
     }
 
+    public static boolean isValidIRI(String s, ParseMode mode) {
+      return ((s == null) ?
+  null : splitIRI(
+  s,
+  0,
+  s.length(),
+  mode)) != null;
+    }
+
     private static final String ValueDotSlash = "." + "/";
     private static final String ValueSlashDot = "/" + ".";
 
@@ -1375,6 +1384,75 @@ if (s.length() - offset < length) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), parseMode);
     }
 
+ private static String pathHasDotComponent(String path) {
+  if (path == null || path.length() == 0) {
+ return false;
+}
+  path = PercentDecode(path);
+  if (path.equals("..")) {
+ return true;
+}
+  if (path.equals(".")) {
+ return true;
+}
+  if (path.indexOf(ValueSlashDot) < 0 &&
+          path.indexOf(
+  ValueDotSlash) < 0) {
+        return false;
+      }
+      int index = 0;
+      while (index < len) {
+        char c = path.charAt(index);
+        if ((index + 3 <= len && c == '/' && path.charAt(index + 1) == '.' &&
+             path.charAt(index + 2) == '/') || (index + 2 == len && c == '.' &&
+             path.charAt(index + 1) == '.')) {
+          // begins with "/./" or is "..";
+          return true;
+        }
+        if (index + 3 <= len && c == '.' &&
+            path.charAt(index + 1) == '.' && path.charAt(index + 2) == '/') {
+          // begins with "../";
+          return true;
+        }
+        if ((index + 2 <= len && c == '.' &&
+             path.charAt(index + 1) == '/') || (index + 1 == len && c == '.')) {
+          // begins with "./" or is ".";
+          return true;
+        }
+        if (index + 2 == len && c == '/' && path.charAt(index + 1) == '.') {
+          // is "/."
+          return true;
+        }
+        if (index + 3 == len && c == '/' &&
+            path.charAt(index + 1) == '.' && path.charAt(index + 2) == '.') {
+          // is "/.."
+          return true;
+        }
+        if (index + 4 <= len && c == '/' && path.charAt(index + 1) == '.' &&
+            path.charAt(index + 2) == '.' && path.charAt(index + 3) == '/') {
+          // begins with "/../"
+          return true;
+        }
+        ++index;
+        while (index < len) {
+          // Move the rest of the
+          // path segment until the next '/'
+          c = path.charAt(index);
+          if (c == '/') {
+            break;
+          }
+          ++index;
+        }
+      }
+      return false;
+ }
+
+ private static String uriPath(String uri, ParseMode parseMode) {
+ int[] indexes = splitIRI(uri, parseMode);
+ return (indexes == null) ? (null) : (uri.substring(indexes[4], (indexes[4])+(indexes[5] -
+   indexes[4])));
+ }
+
  public static String directoryPath(String uri) {
  return directoryPath(uri, ParseMode.IRIStrict);
 }
@@ -1405,6 +1483,12 @@ if (s.length() - offset < length) {
   if (rel == null) {
  return null;
 }
+ String relpath = uriPath(refValue, ParseMode.IRIStrict);
+ if (pathHasDotComponent(relPath)) {
+  // Resolved path has a dot component in it (usually
+  // because that component is percent-encoded)
+  return null;
+ }
   String absuri = directoryPath(absoluteBaseURI);
   String reluri = directoryPath(rel);
   return (absuri == null || reluri == null ||

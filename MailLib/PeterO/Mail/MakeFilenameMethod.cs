@@ -470,6 +470,8 @@ namespace PeterO.Mail {
       return str;
     }
 
+    private const int MaxFileNameCodeUnitLength = 247;
+
     public static string MakeFilename(string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
@@ -508,7 +510,8 @@ namespace PeterO.Mail {
         var builder = new StringBuilder();
         // Replace unsuitable characters for filenames
         // and make sure the filename's
-        // length doesn't exceed 254. (A few additional characters
+        // length doesn't exceed MaxFileNameCodeUnitLength.
+        // (A few additional characters
         // may be added later on.)
         // NOTE: Even if there are directory separators (backslash
         // and forward slash), the filename is not treated as a
@@ -517,7 +520,7 @@ namespace PeterO.Mail {
         // will be treated as unsuitable characters for filenames
         // and are handled below.
         i = 0;
-        while (i < str.Length && builder.Length < 254) {
+        while (i < str.Length && builder.Length < MaxFileNameCodeUnitLength) {
           int c = DataUtilities.CodePointAt(str, i, 0);
           // NOTE: Unpaired surrogates are replaced with U + FFFD
           if (c >= 0x10000) {
@@ -574,7 +577,7 @@ namespace PeterO.Mail {
             // in environment variable placeholders
             builder.Append('_');
           } else {
-            if (builder.Length < 254 || c < 0x10000) {
+            if (builder.Length < MaxFileNameCodeUnitLength || c < 0x10000) {
               if (c <= 0xffff) {
                 builder.Append((char)c);
               } else if (c <= 0x10ffff) {
@@ -582,7 +585,7 @@ namespace PeterO.Mail {
                     0xd800));
                 builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
-            } else if (builder.Length >= 253) {
+            } else if (builder.Length >= MaxFileNameCodeUnitLength - 1) {
               break;
             }
           }
