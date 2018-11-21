@@ -910,7 +910,7 @@
             <list>
             <item>The exact file name conversion used by this method is not
             guaranteed to remain the same between versions of this
-            library.</item>
+            library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if <paramref name='str'/> is null or empty.</item>
             <item>The string returned by this method is normalized using
             Unicode normalization form C (NFC) (see the
             <see cref='T:PeterO.Text.NormalizerInput'/> class for details).
@@ -933,7 +933,7 @@
             parameter.</para>
             <para>Although RFC 2047 encoded words appearing in both parameters
             are written out by some implementations, this practice is
-            discouraged by some (especially since the RFC itself says that
+            often discouraged (especially since the RFC itself says that
             encoded words "MUST NOT appear within a 'quoted-string'").
             Nevertheless, the MakeFilename method has a basis in the RFCs to
             decode RFC 2047 encoded words (and RFC 2231 encoding) in file names
@@ -1002,7 +1002,7 @@
         making use of RFC 2231 extensions have names with an asterisk
         ("&#x2a;"). Such a parameter will be ignored if it is ill-formed because
         of RFC 2231's rules (except for illegal percent-decoding or undecodable
-        sequences for the given character enoding). Examples of RFC 2231
+        sequences for the given character encoding). Examples of RFC 2231
         extensions follow (both examples encode the same "filename" parameter):
       </para>
       <para><b>inline; filename&#x2a;=utf-8'en'filename.txt</b>
@@ -1680,7 +1680,7 @@
         extensions have names with an asterisk ("&#x2a;"). Such a parameter will
         be ignored if it is ill-formed because of RFC 2231's rules (except for
         illegal percent-decoding or undecodable sequences for the given
-        character enoding). Examples of RFC 2231 extensions follow (both
+        character encoding). Examples of RFC 2231 extensions follow (both
         examples encode the same "filename" parameter):
       </para>
       <para><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b>
