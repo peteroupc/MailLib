@@ -750,7 +750,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Jul. 11, 2018, are listed below:
+      // Nov. 21, 2018, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -781,7 +781,8 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       //
       // These media types don't define a charset parameter (after
       // RFC6657):
-      // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9)
+      // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9),
+      // vnd.senx.warpscript*(9)
       //
       // Uses charset parameter, but no default charset specified (after
       // RFC6657):

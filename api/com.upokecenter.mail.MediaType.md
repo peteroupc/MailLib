@@ -297,7 +297,7 @@ Parses a media type string and returns a media type object, or the default
  extensions have names with an asterisk ("*"). Such a parameter
  will be ignored if it is ill-formed because of RFC 2231's rules
  (except for illegal percent-decoding or undecodable sequences for the
- given character enoding). Examples of RFC 2231 extensions follow
+ given character encoding). Examples of RFC 2231 extensions follow
  (both examples encode the same "filename" parameter): </p>
  <p><b>text/example; filename*=utf-8'en'filename.txt</b> </p>
  <p><b>text/example; filename*0*=utf-8'en'file;

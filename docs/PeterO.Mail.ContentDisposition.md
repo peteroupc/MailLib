@@ -218,13 +218,14 @@ Converts a file name from the Content-Disposition header to a suitable name for 
 
 <b>Remarks:</b>
 
- * The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library.
+ * The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if  <i>str</i>
+ is null or empty.
 
  * The string returned by this method is normalized using Unicode normalization form C (NFC) (see the[PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base + slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base + slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
 
  * Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's  `filename`  parameter or, in practice, the Content-Type header field's  `name` parameter.
 
-Although RFC 2047 encoded words appearing in both parameters are written out by some implementations, this practice is discouraged by some (especially since the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'"). Nevertheless, the MakeFilename method has a basis in the RFCs to decode RFC 2047 encoded words (and RFC 2231 encoding) in file names passed to this method.
+Although RFC 2047 encoded words appearing in both parameters are written out by some implementations, this practice is often discouraged (especially since the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'"). Nevertheless, the MakeFilename method has a basis in the RFCs to decode RFC 2047 encoded words (and RFC 2231 encoding) in file names passed to this method.
 
 RFC 2046 sec. 4.5.1 (  `application/octet-stream`  subtype in Content-Type header field) cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave a<i>suggested</i> file name to be used if the data were written to a file". Also, RFC 2183 sec. 2.3 (  `filename`  parameter in Content-Disposition) confirms that the "<i>suggested</i> filename" in the  `filename`  parameter "should be<i>used as a basis</i> for the actual filename, where possible", and that that file name should "not [be] blindly use[d]". See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext Transfer Protocol (HTTP).
 
@@ -248,7 +249,7 @@ A string with the converted version of the file name. Among other things, encode
 
 Parses a content disposition string and returns a content disposition object, or the default value if the string is invalid. This method checks the syntactic validity of the string, but not whether it has all parameters it's required to have or whether the parameters themselves are set to valid values for the parameter.This method assumes the given content disposition string was directly extracted from the Content-Disposition header field (as defined for email messages) and follows the syntax given in RFC 2183. Accordingly, among other things, the content disposition string can contain comments (delimited by parentheses).
 
-RFC 2231 extensions allow each content disposition parameter to be associated with a character encoding and/or language, and support parameter values that span two or more key-value pairs. Parameters making use of RFC 2231 extensions have names with an asterisk ("*"). Such a parameter will be ignored if it is ill-formed because of RFC 2231's rules (except for illegal percent-decoding or undecodable sequences for the given character enoding). Examples of RFC 2231 extensions follow (both examples encode the same "filename" parameter):
+RFC 2231 extensions allow each content disposition parameter to be associated with a character encoding and/or language, and support parameter values that span two or more key-value pairs. Parameters making use of RFC 2231 extensions have names with an asterisk ("*"). Such a parameter will be ignored if it is ill-formed because of RFC 2231's rules (except for illegal percent-decoding or undecodable sequences for the given character encoding). Examples of RFC 2231 extensions follow (both examples encode the same "filename" parameter):
 
 <b>inline; filename*=utf-8'en'filename.txt</b>
 

@@ -1385,7 +1385,7 @@ if (s.Length - offset < length) {
       return (s == null) ? null : splitIRI(s, 0, s.Length, parseMode);
     }
 
- private static string pathHasDotComponent(string path) {
+ private static bool pathHasDotComponent(string path) {
   if (path == null || path.Length == 0) {
  return false;
 }
@@ -1403,6 +1403,7 @@ if (s.Length - offset < length) {
         return false;
       }
       var index = 0;
+      var len = path.Length;
       while (index < len) {
         char c = path[index];
         if ((index + 3 <= len && c == '/' && path[index + 1] == '.' &&
@@ -1451,8 +1452,10 @@ if (s.Length - offset < length) {
 
  private static string uriPath(string uri, ParseMode parseMode) {
  int[] indexes = splitIRI(uri, parseMode);
- return (indexes == null) ? (null) : (uri.Substring(indexes[4], indexes[5] -
-   indexes[4]));
+ return (
+  indexes == null) ? null : uri.Substring(
+  indexes[4],
+  indexes[5] - indexes[4]);
  }
 
  public static string directoryPath(string uri) {
@@ -1486,7 +1489,7 @@ if (s.Length - offset < length) {
  return null;
 }
  string relpath = uriPath(refValue, ParseMode.IRIStrict);
- if (pathHasDotComponent(relPath)) {
+ if (pathHasDotComponent(relpath)) {
   // Resolved path has a dot component in it (usually
   // because that component is percent-encoded)
   return null;

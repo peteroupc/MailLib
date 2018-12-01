@@ -1384,7 +1384,7 @@ if (s.length() - offset < length) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), parseMode);
     }
 
- private static String pathHasDotComponent(String path) {
+ private static boolean pathHasDotComponent(String path) {
   if (path == null || path.length() == 0) {
  return false;
 }
@@ -1401,6 +1401,7 @@ if (s.length() - offset < length) {
         return false;
       }
       int index = 0;
+      int len = path.length();
       while (index < len) {
         char c = path.charAt(index);
         if ((index + 3 <= len && c == '/' && path.charAt(index + 1) == '.' &&
@@ -1449,8 +1450,10 @@ if (s.length() - offset < length) {
 
  private static String uriPath(String uri, ParseMode parseMode) {
  int[] indexes = splitIRI(uri, parseMode);
- return (indexes == null) ? (null) : (uri.substring(indexes[4], (indexes[4])+(indexes[5] -
-   indexes[4])));
+ return (
+  indexes == null) ? null : uri.substring(
+  indexes[4], (
+  indexes[4])+(indexes[5] - indexes[4]));
  }
 
  public static String directoryPath(String uri) {
@@ -1484,7 +1487,7 @@ if (s.length() - offset < length) {
  return null;
 }
  String relpath = uriPath(refValue, ParseMode.IRIStrict);
- if (pathHasDotComponent(relPath)) {
+ if (pathHasDotComponent(relpath)) {
   // Resolved path has a dot component in it (usually
   // because that component is percent-encoded)
   return null;

@@ -791,7 +791,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Jul. 11, 2018, are listed below:
+      // Nov. 21, 2018, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -822,7 +822,8 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       //
       // These media types don't define a charset parameter (after
       // RFC6657):
-      // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9)
+      // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9),
+      // vnd.senx.warpscript*(9)
       //
       // Uses charset parameter, but no default charset specified (after
       // RFC6657):
@@ -1371,7 +1372,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
      * extensions have names with an asterisk ("&#x2a;"). Such a parameter
      * will be ignored if it is ill-formed because of RFC 2231's rules
      * (except for illegal percent-decoding or undecodable sequences for the
-     * given character enoding). Examples of RFC 2231 extensions follow
+     * given character encoding). Examples of RFC 2231 extensions follow
      * (both examples encode the same "filename" parameter): </p>
      * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
      * <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
