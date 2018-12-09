@@ -2853,7 +2853,6 @@ namespace PeterO.Text {
       95, 15, 106, 26, 13, 15, 32, 10, 36, 15, 19, 10, 30, 15, 113,
       21, 118, 15, (byte)0xf1, 0, 77, 15, 113, 0, 94, 15, 112, 1, 10,
       16, 0 };
- public static readonly int[] LowerCaseMappings2 = new int[] { 304, 105, 775
-      };
+ public static readonly int[] LowerCaseMappings2 = new int[] { 304, 105, 775 };
   }
 }
