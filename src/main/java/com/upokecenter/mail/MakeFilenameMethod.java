@@ -508,6 +508,10 @@ private MakeFilenameMethod() {
         if (str.length() == 0) {
           return "_";
         }
+        int bracketedText=str.indexOf('[');
+        if (bracketedText >= 0) {
+ bracketedText=str.indexOf(']',bracketedText);
+}
         StringBuilder builder = new StringBuilder();
         // Replace unsuitable characters for filenames
         // and make sure the filename's
@@ -547,6 +551,12 @@ private MakeFilenameMethod() {
             // '![ ... ]' may be interpreted in BASH as an evaluator;
             // replace '!' with underscore
             builder.append('_');
+          } else if (bracketedText && str.charAt(i)=='[') {
+            // Avoid glob bracket pattern
+            builder.append('(');
+          } else if (bracketedText && str.charAt(i)==']') {
+            // Avoid glob bracket pattern
+            builder.append(')');
           } else if (c == '`') {
             // '`' starts a command in BASH and possibly other shells
             builder.append('_');
