@@ -550,10 +550,10 @@ namespace PeterO.Mail {
             // '![ ... ]' may be interpreted in BASH as an evaluator;
             // replace '!' with underscore
             builder.Append('_');
-          } else if (bracketedText && str[i]=='[') {
+          } else if (bracketedText>= 0 && str[i]=='[') {
             // Avoid glob bracket pattern
             builder.Append('(');
-          } else if (bracketedText && str[i]==']') {
+          } else if (bracketedText>= 0 && str[i]==']') {
             // Avoid glob bracket pattern
             builder.Append(')');
           } else if (c == '`') {

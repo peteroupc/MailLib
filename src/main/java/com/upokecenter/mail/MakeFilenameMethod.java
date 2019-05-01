@@ -551,10 +551,10 @@ private MakeFilenameMethod() {
             // '![ ... ]' may be interpreted in BASH as an evaluator;
             // replace '!' with underscore
             builder.append('_');
-          } else if (bracketedText && str.charAt(i)=='[') {
+          } else if (bracketedText>= 0 && str.charAt(i)=='[') {
             // Avoid glob bracket pattern
             builder.append('(');
-          } else if (bracketedText && str.charAt(i)==']') {
+          } else if (bracketedText>= 0 && str.charAt(i)==']') {
             // Avoid glob bracket pattern
             builder.append(')');
           } else if (c == '`') {

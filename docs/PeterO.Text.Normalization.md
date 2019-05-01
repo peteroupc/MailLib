@@ -2,9 +2,9 @@
 
     public sealed struct Normalization :
         System.Enum,
-        System.IConvertible,
         System.IFormattable,
-        System.IComparable
+        System.IComparable,
+        System.IConvertible
 
 Represents a Unicode normalization form.
 
