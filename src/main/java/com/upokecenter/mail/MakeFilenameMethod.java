@@ -508,9 +508,9 @@ private MakeFilenameMethod() {
         if (str.length() == 0) {
           return "_";
         }
-        int bracketedText=str.indexOf('[');
+        int bracketedText = str.indexOf('[');
         if (bracketedText >= 0) {
- bracketedText=str.indexOf(']',bracketedText);
+ bracketedText = str.indexOf(']',bracketedText);
 }
         StringBuilder builder = new StringBuilder();
         // Replace unsuitable characters for filenames
@@ -551,10 +551,10 @@ private MakeFilenameMethod() {
             // '![ ... ]' may be interpreted in BASH as an evaluator;
             // replace '!' with underscore
             builder.append('_');
-          } else if (bracketedText>= 0 && str.charAt(i)=='[') {
+          } else if (bracketedText >= 0 && str.charAt(i) == '[') {
             // Avoid glob bracket pattern
             builder.append('(');
-          } else if (bracketedText>= 0 && str.charAt(i)==']') {
+          } else if (bracketedText >= 0 && str.charAt(i) == ']') {
             // Avoid glob bracket pattern
             builder.append(')');
           } else if (c == '`') {

@@ -507,9 +507,9 @@ namespace PeterO.Mail {
         if (str.Length == 0) {
           return "_";
         }
-        int bracketedText=str.IndexOf('[');
+        int bracketedText = str.IndexOf('[');
         if (bracketedText >= 0) {
- bracketedText=str.IndexOf(']',bracketedText);
+ bracketedText = str.IndexOf(']', bracketedText);
 }
         var builder = new StringBuilder();
         // Replace unsuitable characters for filenames
@@ -550,10 +550,10 @@ namespace PeterO.Mail {
             // '![ ... ]' may be interpreted in BASH as an evaluator;
             // replace '!' with underscore
             builder.Append('_');
-          } else if (bracketedText>= 0 && str[i]=='[') {
+          } else if (bracketedText >= 0 && str[i] == '[') {
             // Avoid glob bracket pattern
             builder.Append('(');
-          } else if (bracketedText>= 0 && str[i]==']') {
+          } else if (bracketedText >= 0 && str[i] == ']') {
             // Avoid glob bracket pattern
             builder.Append(')');
           } else if (c == '`') {
