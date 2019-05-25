@@ -2265,8 +2265,7 @@ namespace PeterO.Mail {
     private static IDictionary<string, IHeaderFieldParser>
       CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
-      fieldMap = new Dictionary<string,
-        IHeaderFieldParser>();
+      fieldMap = new Dictionary<string, IHeaderFieldParser>();
       fieldMap["content-disposition"] = new HeaderContentDisposition();
       fieldMap["content-type"] = new HeaderContentType();
       fieldMap["auto-submitted"] = new HeaderAutoSubmitted();

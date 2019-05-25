@@ -22,7 +22,7 @@ import com.upokecenter.text.*;
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
     @Override public boolean equals(Object obj) {
       Address other = ((obj instanceof Address) ? (Address)obj : null);
@@ -148,15 +148,12 @@ void AppendThisAddress(HeaderEncoder encoder) {
       }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.Address}
-     * class.
-     * @param addressValue An email address.
-     * @throws java.lang.NullPointerException The parameter {@code addressValue} is
-     * null.
-     * @throws IllegalArgumentException The email address contains invalid syntax.
-     * For example, it doesn't contain an '@' sign or either side of the '@'
-     * contains invalid characters, the address is too long, or the address
-     * contains comments (text within parentheses).
+     * Initializes a new instance of the {@link Address} class.
+     * @param addressValue A string object.
+     * @throws NullPointerException The parameter {@code addressValue} is null.
+     * @throws IllegalArgumentException AddressValue is empty.; Address doesn't contain a
+     * '@' sign; Invalid local part; Expected '@' sign after local part;
+     * Expected domain after '@'; Invalid domain; Address too long.
      */
     public Address(String addressValue) {
       if (addressValue == null) {

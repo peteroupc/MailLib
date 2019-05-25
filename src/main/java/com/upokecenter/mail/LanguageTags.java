@@ -745,7 +745,7 @@ String tag = tagSub[tagIndex];
      * language subtag, no variant subtags with the same value, and no
      * extension singleton subtags with the same value.
      * @param str The string to check.
-     * @return {@code true}, if the string meets the conditions given in the
+     * @return {@code true} , if the string meets the conditions given in the
      * summary, {@code false} otherwise.
      */
     public static boolean IsPotentiallyValidLanguageTag(String str) {
@@ -793,9 +793,11 @@ String tag = tagSub[tagIndex];
           // match grandfathered language tags (the last
           // is necessary because it would otherwise be rejected
           // by the code that checks extended language subtags)
-          if (str.equals("sgn-be-fr") || str.equals("sgn-be-nl") ||
-            str.equals("sgn-ch-de") || str.equals("en-gb-oed") ||
-              str.equals("zh-min-nan")) {
+          if (str.equals("sgn-be-fr") ||
+str.equals("sgn-be-nl") ||
+str.equals("sgn-ch-de") ||
+str.equals("en-gb-oed") ||
+str.equals("zh-min-nan")) {
             return true;
           }
           // More complex cases

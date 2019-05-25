@@ -74,7 +74,7 @@ import java.util.*;
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
@@ -91,7 +91,7 @@ import java.util.*;
     /**
      * Not documented yet.
      * @param na A named address object to compare with this one. Can be null.
-     * @return Either {@code true} or {@code false}.
+     * @return Either {@code true} or {@code false} .
      */
     public boolean AddressesEqual(NamedAddress na) {
       if (na == null || this.isGroup != na.isGroup) {
@@ -151,7 +151,7 @@ import java.util.*;
      * Gets a value indicating whether this represents a group of addresses rather
      * than a single address.
      * @return {@code true} If this represents a group of addresses; otherwise, .
-     * {@code false}.
+     * {@code false} .
      */
     public final boolean isGroup() {
         return this.isGroup;
@@ -195,29 +195,11 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
-     * Doe" &lt;john@example.com&gt;</code></li>
-     * <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
-     * &lt;john@example.com&gt;</code></li> <li><code>John
-     * &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
-     * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code></li></ul>
-     * @param address A text string identifying a single email address or a group
-     * of email addresses. Comments, or text within parentheses, can appear.
-     * Multiple email addresses are not allowed unless they appear in the
-     * group syntax given above. Encoded words under RFC 2047 that appear
-     * within comments or display names will be decoded. <p>An RFC 2047
-     * encoded word consists of "=?", a character encoding name, such as
-     * {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
-     * series of bytes in the character encoding, further encoded using B or
-     * Q encoding, and finally "?=". B encoding uses Base64, while in Q
-     * encoding, spaces are changed to "_", equals are changed to "=3D", and
-     * most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
-     * basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
-     * "=" followed by their 2-digit hexadecimal form. An encoded word's
-     * maximum length is 75 characters. See the third example.</p>.
-     * @throws java.lang.NullPointerException The parameter {@code address} is null.
-     * @throws IllegalArgumentException The named address has an invalid syntax.
+     * Initializes a new instance of the {@link NamedAddress} class.
+     * @param address A string object.
+     * @throws NullPointerException The parameter {@code address} is null.
+     * @throws IllegalArgumentException Address has an invalid syntax.; Address has an
+     * invalid syntax.
      */
     public NamedAddress(String address) {
       if (address == null) {
@@ -243,14 +225,10 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class using the given display name and email address.
-     * @param displayName The display name of the email address. Can be null or
-     * empty. Encoded words under RFC 2047 will not be decoded.
-     * @param address An email address.
-     * @throws java.lang.NullPointerException The parameter {@code address} is null.
-     * @throws IllegalArgumentException The display name or address has an invalid
-     * syntax.
+     * Initializes a new instance of the {@link NamedAddress} class.
+     * @param displayName A string object.
+     * @param address Another string object.
+     * @throws NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress(String displayName, String address) {
       if (address == null) {
@@ -263,12 +241,10 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class using the given display name and email address.
-     * @param displayName The display name of the email address. Can be null or
-     * empty. Encoded words under RFC 2047 will not be decoded.
-     * @param address An email address.
-     * @throws java.lang.NullPointerException The parameter {@code address} is null.
+     * Initializes a new instance of the {@link NamedAddress} class.
+     * @param displayName A string object.
+     * @param address An Address object.
+     * @throws NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress(String displayName, Address address) {
       if (address == null) {
@@ -281,15 +257,12 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class using the given name and an email address made up of its local
-     * part and domain.
-     * @param displayName The display name of the email address. Can be null or
-     * empty.
-     * @param localPart The local part of the email address (before the "@").
-     * @param domain The domain of the email address (before the "@").
-     * @throws java.lang.NullPointerException The parameter {@code localPart} or
-     * {@code domain} is null.
+     * Initializes a new instance of the {@link NamedAddress} class.
+     * @param displayName A string object.
+     * @param localPart Another string object.
+     * @param domain A string object. (3).
+     * @throws NullPointerException The parameter {@code localPart} or {@code
+     * domain} is null.
      */
     public NamedAddress(String displayName, String localPart, String domain) {
       if (localPart == null) {
@@ -305,15 +278,13 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class. Takes a group name and several named email addresses as
-     * parameters, and forms a group with them.
-     * @param groupName The group's name.
-     * @param mailboxes A list of named addresses that make up the group.
-     * @throws java.lang.NullPointerException The parameter {@code groupName} or
-     * {@code mailboxes} is null.
-     * @throws IllegalArgumentException The parameter {@code groupName} is empty,
-     * or an item in the list is itself a group.
+     * Initializes a new instance of the {@link NamedAddress} class.
+     * @param groupName A string object.
+     * @param mailboxes An List object.
+     * @throws NullPointerException The parameter {@code groupName} or {@code
+     * mailboxes} is null.
+     * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list is a
+     * group.
      */
     public NamedAddress(String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {

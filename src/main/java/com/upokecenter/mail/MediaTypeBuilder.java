@@ -41,9 +41,7 @@ public final void setSubType(String value) {
       }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.MediaTypeBuilder} class, using the type
-     * "application/octet-stream" .
+     * Initializes a new instance of the MediaTypeBuilder class.
      */
     public MediaTypeBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -52,11 +50,9 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.MediaTypeBuilder} class using the data from
-     * another media type.
-     * @param mt The parameter {@code mt} is a MediaType object.
-     * @throws java.lang.NullPointerException The parameter {@code mt} is null.
+     * Initializes a new instance of the {@link MediaTypeBuilder} class.
+     * @param mt A MediaType object.
+     * @throws NullPointerException The parameter {@code mt} is null.
      */
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
@@ -68,10 +64,9 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.MediaTypeBuilder} class.
-     * @param type The media type's top-level type.
-     * @param subtype The media type's subtype.
+     * Initializes a new instance of the {@link MediaTypeBuilder} class.
+     * @param type A string object.
+     * @param subtype Another string object.
      */
     public MediaTypeBuilder(String type, String subtype) {
       this.parameters = new HashMap<String, String>();
@@ -82,7 +77,7 @@ public final void setSubType(String value) {
     /**
      * Gets a value indicating whether this is a text media type.
      * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false}.
+     * false} .
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -91,7 +86,7 @@ public final void setSubType(String value) {
     /**
      * Gets a value indicating whether this is a multipart media type.
      * @return {@code true} If this is a multipart media type; otherwise, . {@code
-     * false}.
+     * false} .
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
@@ -205,7 +200,7 @@ if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
 
     /**
      * Converts this object to a text string of the media type it represents, in
-     * the same form as <code>MediaType.toString</code>
+     * the same form as <code>MediaType.toString </code>
      * @return A string representation of this object.
      */
     @Override public String toString() {

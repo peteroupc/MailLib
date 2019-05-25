@@ -29,9 +29,7 @@ public final void setDispositionType(String value) {
       }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the disposition
-     * type "attachment" .
+     * Initializes a new instance of the DispositionBuilder class.
      */
     public DispositionBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -39,11 +37,9 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the data from
-     * the given content disposition.
-     * @param mt The parameter {@code mt} is a ContentDisposition object.
-     * @throws java.lang.NullPointerException The parameter {@code mt} is null.
+     * Initializes a new instance of the {@link DispositionBuilder} class.
+     * @param mt A ContentDisposition object.
+     * @throws NullPointerException The parameter {@code mt} is null.
      */
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
@@ -54,11 +50,9 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the given
-     * disposition type.
-     * @param type The parameter {@code type} is a text string.
-     * @throws java.lang.NullPointerException The parameter {@code type} is null.
+     * Initializes a new instance of the {@link DispositionBuilder} class.
+     * @param type A string object.
+     * @throws NullPointerException The parameter {@code type} is null.
      */
     public DispositionBuilder(String type) {
       if (type == null) {
@@ -74,7 +68,7 @@ if (type.length() == 0) {
     /**
      * Gets a value indicating whether this is a text media type.
      * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false}.
+     * false} .
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated
@@ -85,7 +79,7 @@ if (type.length() == 0) {
     /**
      * Gets a value indicating whether this is a multipart media type.
      * @return {@code true} If this is a multipart media type; otherwise, . {@code
-     * false}.
+     * false} .
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated

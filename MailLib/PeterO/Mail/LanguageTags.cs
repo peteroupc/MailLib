@@ -639,9 +639,11 @@ string tag = tagSub[tagIndex];
           // match grandfathered language tags (the last
           // is necessary because it would otherwise be rejected
           // by the code that checks extended language subtags)
-          if (str.Equals("sgn-be-fr") || str.Equals("sgn-be-nl") ||
-            str.Equals("sgn-ch-de") || str.Equals("en-gb-oed") ||
-              str.Equals("zh-min-nan")) {
+          if (str.Equals("sgn-be-fr") ||
+str.Equals("sgn-be-nl") ||
+str.Equals("sgn-ch-de") ||
+str.Equals("en-gb-oed") ||
+str.Equals("zh-min-nan")) {
             return true;
           }
           // More complex cases

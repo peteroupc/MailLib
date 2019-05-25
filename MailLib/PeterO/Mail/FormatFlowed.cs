@@ -548,8 +548,7 @@ namespace PeterO.Mail {
 
     private static string ReplaceImageLinks(
         string str,
-        IDictionary<string,
-        string[]> links) {
+        IDictionary<string, string[]> links) {
       if (str.IndexOf('!') < 0) {
         return str;
       }
@@ -626,8 +625,7 @@ namespace PeterO.Mail {
 
     private static string ReplaceInlineLinks(
       string str,
-      IDictionary<string,
-      string[]> links) {
+      IDictionary<string, string[]> links) {
       if (str.IndexOf('[') < 0) {
         return str;
       }
@@ -912,8 +910,7 @@ namespace PeterO.Mail {
 
     private static string FormatParagraph(
       string str,
-      IDictionary<string,
-      string[]> links) {
+      IDictionary<string, string[]> links) {
       str = CodeSpansAndEscapes(str);
       str = ReplaceAutomaticLinks(str);
       str = ReplaceImageLinks(str, links);

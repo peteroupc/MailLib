@@ -54,8 +54,11 @@ namespace PeterO.Mail {
 
     private int transferEncoding;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='Message'/> class.</summary>
+    /// <param name='stream'>A Stream object.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='stream'/> is null.</exception>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -67,8 +70,11 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='Message'/> class.</summary>
+    /// <param name='bytes'>A byte array.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -80,8 +86,7 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor"]/*'/>
+    /// <summary>Initializes a new instance of the Message class.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -803,14 +808,19 @@ return this.GetAddresses("to");
         if (ext.Equals(".zip")) {
           return MediaType.Parse("application/zip");
         }
-        if (ext.Equals(".m4a") || ext.Equals(".mp2") || ext.Equals(".mp3") ||
-          ext.Equals(".mpega") || ext.Equals(".mpga")) {
+        if (ext.Equals(".m4a") ||
+ext.Equals(".mp2") ||
+ext.Equals(".mp3") ||
+ext.Equals(".mpega") ||
+ext.Equals(".mpga")) {
           return MediaType.Parse("audio/mpeg");
         }
         if (ext.Equals(".gif")) {
           return MediaType.Parse("image/gif");
         }
-        if (ext.Equals(".jpe") || ext.Equals(".jpeg") || ext.Equals(".jpg")) {
+        if (ext.Equals(".jpe") ||
+ext.Equals(".jpeg") ||
+ext.Equals(".jpg")) {
           return MediaType.Parse("image/jpeg");
         }
         if (ext.Equals(".png")) {
@@ -825,14 +835,20 @@ return this.GetAddresses("to");
         if (ext.Equals(".rst")) {
           return MediaType.Parse("text/prs.fallenstein.rst\u003bcharset=utf-8");
         }
-        if (ext.Equals(".htm") || ext.Equals(".html") || ext.Equals(".shtml")) {
+        if (ext.Equals(".htm") ||
+ext.Equals(".html") ||
+ext.Equals(".shtml")) {
           return MediaType.Parse("text/html\u003bcharset=utf-8");
         }
         if (ext.Equals(".md") || ext.Equals(".markdown")) {
           return MediaType.Parse("text/markdown\u003bcharset=utf-8");
         }
-        if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
-          ext.Equals(".srt") || ext.Equals(".text") || ext.Equals(".txt")) {
+        if (ext.Equals(".asc") ||
+ext.Equals(".brf") ||
+ext.Equals(".pot") ||
+ext.Equals(".srt") ||
+ext.Equals(".text") ||
+ext.Equals(".txt")) {
           return MediaType.Parse("text/plain\u003bcharset=utf-8");
         }
       }
@@ -2236,9 +2252,9 @@ if (ungetState[1] < 0x80) {
       if (!isMultipart) {
         if (builder.TopLevelType.Equals("message")) {
           if (builder.SubType.Equals("delivery-status") ||
-              builder.SubType.Equals("global-delivery-status") ||
-              builder.SubType.Equals("disposition-notification") ||
-              builder.SubType.Equals("global-disposition-notification")) {
+builder.SubType.Equals("global-delivery-status") ||
+builder.SubType.Equals("disposition-notification") ||
+builder.SubType.Equals("global-disposition-notification")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           bool msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
@@ -2404,9 +2420,13 @@ if (ungetState[1] < 0x80) {
               0,
               downgraded.Length)) {
             if (name.Equals("message-id") ||
-                name.Equals("resent-message-id") || name.Equals(
-                "in-reply-to") || name.Equals("references") || name.Equals(
-                "original-recipient") || name.Equals("final-recipient")) {
+name.Equals("resent-message-id") ||
+name.Equals(
+                "in-reply-to") ||
+name.Equals("references") ||
+name.Equals(
+                "original-recipient") ||
+name.Equals("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field

@@ -549,8 +549,7 @@ private FormatFlowed() {
 
     private static String ReplaceImageLinks(
         String str,
-        Map<String,
-        String[]> links) {
+        Map<String, String[]> links) {
       if (str.indexOf('!') < 0) {
         return str;
       }
@@ -627,8 +626,7 @@ private FormatFlowed() {
 
     private static String ReplaceInlineLinks(
       String str,
-      Map<String,
-      String[]> links) {
+      Map<String, String[]> links) {
       if (str.indexOf('[') < 0) {
         return str;
       }
@@ -913,8 +911,7 @@ private FormatFlowed() {
 
     private static String FormatParagraph(
       String str,
-      Map<String,
-      String[]> links) {
+      Map<String, String[]> links) {
       str = CodeSpansAndEscapes(str);
       str = ReplaceAutomaticLinks(str);
       str = ReplaceImageLinks(str, links);

@@ -2248,8 +2248,7 @@ private HeaderFieldParsers() {
 
     private static Map<String, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
-      fieldMap = new HashMap<String,
-        IHeaderFieldParser>();
+      fieldMap = new HashMap<String, IHeaderFieldParser>();
       fieldMap.put("content-disposition",new HeaderContentDisposition());
       fieldMap.put("content-type",new HeaderContentType());
       fieldMap.put("auto-submitted",new HeaderAutoSubmitted());

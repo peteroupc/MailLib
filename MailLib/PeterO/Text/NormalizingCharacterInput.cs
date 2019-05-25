@@ -15,38 +15,47 @@ using System.Collections.Generic;
     public sealed class NormalizingCharacterInput : ICharacterInput {
       private readonly ICharacterInput nci;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='str'>A string object.</param>
       public NormalizingCharacterInput(
     string str) : this(
     str,
     Normalization.NFC) {
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='input'>An ICharacterInput object.</param>
       public NormalizingCharacterInput(
     ICharacterInput input) : this(
     input,
     Normalization.NFC) {
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='characterList'>An IList object.</param>
         public NormalizingCharacterInput(IList<int> characterList) :
         this(characterList, Normalization.NFC) {
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='characterList'>An IList object.</param>
+    /// <param name='form'>A Normalization object.</param>
         public NormalizingCharacterInput(
     IList<int> characterList,
     Normalization form) :
     this(new PartialListCharacterInput(characterList), form) {
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <param name='form'>A Normalization object.</param>
       public NormalizingCharacterInput(
     string str,
     int index,
@@ -55,8 +64,12 @@ using System.Collections.Generic;
        this.nci = new NormalizerInput(str, index, length, form);
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='form'>A Normalization object.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
       public NormalizingCharacterInput(string str, Normalization form) {
         if (str == null) {
   throw new ArgumentNullException(nameof(str));
@@ -64,8 +77,10 @@ using System.Collections.Generic;
         this.nci = new NormalizerInput(str, 0, str.Length, form);
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='stream'>An ICharacterInput object.</param>
+    /// <param name='form'>A Normalization object.</param>
       public NormalizingCharacterInput(
      ICharacterInput stream,
      Normalization form) {
