@@ -4,10 +4,8 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.StringAndQuality"]/*'/>
     public sealed class StringAndQuality {
-    /// <summary>Initializes a new instance of the
-    /// <see cref='StringAndQuality'/> class.</summary>
-    /// <param name='value'>A string object.</param>
-    /// <param name='quality'>A 32-bit signed integer.</param>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.StringAndQuality.#ctor(System.String,System.Int32)"]/*'/>
       public StringAndQuality(string value, int quality) {
         this.Value = value;
         this.Quality = quality;

@@ -295,7 +295,7 @@ import com.upokecenter.mail.*;
     /**
      * Gets a value indicating whether a new body part was detected.
      * @return {@code true} If a new body part was detected; otherwise, . {@code
-     * false}.
+     * false} .
      */
     public final boolean getHasNewBodyPart() {
         return this.hasNewBodyPart;

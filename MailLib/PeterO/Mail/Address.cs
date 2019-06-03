@@ -137,15 +137,8 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
       }
     }
 
-    /// <summary>Initializes a new instance of the
-    /// <see cref='Address'/> class.</summary>
-    /// <param name='addressValue'>A string object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='addressValue'/> is null.</exception>
-    /// <exception cref='ArgumentException'>AddressValue is empty.; Address
-    /// doesn't contain a '@' sign; Invalid local part; Expected '@' sign
-    /// after local part; Expected domain after '@'; Invalid domain;
-    /// Address too long.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]/*'/>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException(nameof(addressValue));

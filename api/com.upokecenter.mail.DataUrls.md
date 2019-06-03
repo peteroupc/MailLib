@@ -1,26 +1,26 @@
 # com.upokecenter.mail.DataUrls
 
-    @Deprecated public final class DataUrls extends Object
+    @Deprecated public final class DataUrls extends java.lang.Object
 
 Deprecated.
-<div class='deprecationComment'>Renamed to DataUris.</div>
+Renamed to DataUris.
 
 ## Methods
 
-* `static byte[] DataUrlBytes​(String url)`<br>
+* `static byte[] DataUrlBytes​(java.lang.String url)`<br>
  Deprecated.
 Renamed to DataUriBytes.
  Renamed to DataUriBytes.
-* `static MediaType DataUrlMediaType​(String url)`<br>
+* `static MediaType DataUrlMediaType​(java.lang.String url)`<br>
  Deprecated.
 Renamed to DataUriMediaType.
  Renamed to DataUriMediaType.
-* `static String MakeDataUrl​(byte[] bytes,
+* `static java.lang.String MakeDataUrl​(byte[] bytes,
            MediaType mediaType)`<br>
  Deprecated.
 Renamed to MakeDataUri.
  Renamed to MakeDataUri.
-* `static String MakeDataUrl​(String textString)`<br>
+* `static java.lang.String MakeDataUrl​(java.lang.String textString)`<br>
  Deprecated.
 Renamed to MakeDataUri.
  Renamed to MakeDataUri.
@@ -28,9 +28,9 @@ Renamed to MakeDataUri.
 ## Method Details
 
 ### DataUrlMediaType
-    @Deprecated public static MediaType DataUrlMediaType​(String url)
+    @Deprecated public static MediaType DataUrlMediaType​(java.lang.String url)
 Deprecated.
-<div class='deprecationComment'>Renamed to DataUriMediaType.</div>
+Renamed to DataUriMediaType.
 
 **Parameters:**
 
@@ -42,9 +42,9 @@ Deprecated.
  syntactically invalid, or is not a Data URI.
 
 ### DataUrlBytes
-    @Deprecated public static byte[] DataUrlBytes​(String url)
+    @Deprecated public static byte[] DataUrlBytes​(java.lang.String url)
 Deprecated.
-<div class='deprecationComment'>Renamed to DataUriBytes.</div>
+Renamed to DataUriBytes.
 
 **Parameters:**
 
@@ -56,9 +56,9 @@ Deprecated.
  syntactically invalid, or is not a data URI.
 
 ### MakeDataUrl
-    @Deprecated public static String MakeDataUrl​(String textString)
+    @Deprecated public static java.lang.String MakeDataUrl​(java.lang.String textString)
 Deprecated.
-<div class='deprecationComment'>Renamed to MakeDataUri.</div>
+Renamed to MakeDataUri.
 
 **Parameters:**
 
@@ -70,13 +70,13 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>textString</code> is
+* <code>java.lang.NullPointerException</code> - The parameter <code>textString</code> is
  null.
 
 ### MakeDataUrl
-    @Deprecated public static String MakeDataUrl​(byte[] bytes, MediaType mediaType)
+    @Deprecated public static java.lang.String MakeDataUrl​(byte[] bytes, MediaType mediaType)
 Deprecated.
-<div class='deprecationComment'>Renamed to MakeDataUri.</div>
+Renamed to MakeDataUri.
 
 **Parameters:**
 
@@ -90,5 +90,5 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bytes</code> or <code>
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> or <code>
  mediaType</code> is null.

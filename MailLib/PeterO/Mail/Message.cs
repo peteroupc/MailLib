@@ -54,11 +54,8 @@ namespace PeterO.Mail {
 
     private int transferEncoding;
 
-    /// <summary>Initializes a new instance of the
-    /// <see cref='Message'/> class.</summary>
-    /// <param name='stream'>A Stream object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='stream'/> is null.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]/*'/>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -70,11 +67,8 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <summary>Initializes a new instance of the
-    /// <see cref='Message'/> class.</summary>
-    /// <param name='bytes'>A byte array.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='bytes'/> is null.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]/*'/>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -86,7 +80,8 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <summary>Initializes a new instance of the Message class.</summary>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor"]/*'/>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();

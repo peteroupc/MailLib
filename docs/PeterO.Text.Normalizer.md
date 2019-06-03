@@ -25,11 +25,11 @@ Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalize
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 <a id="IsNormalized_string_PeterO_Text_Normalization"></a>
 ### IsNormalized
@@ -44,12 +44,12 @@ Returns whether this string is normalized.
 
  * <i>str</i>: The string to check.
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 <b>Return Value:</b>
 
- `true`  if this string is normalized; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
+ `true`  if this string is normalized; otherwise, `false`  . Returns `false`  if the string contains an unpaired surrogate code point.
 
 <a id="Normalize_string_PeterO_Text_Normalization"></a>
 ### Normalize
@@ -68,14 +68,14 @@ Converts a string to the given Unicode normalization form.
 
 <b>Return Value:</b>
 
-The parameter  <i>str</i>
- converted to the given normalization form.
+The parameter <i>str</i>
+converted to the given normalization form.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="Read_int_int_int"></a>
 ### Read
@@ -102,17 +102,17 @@ The number of Unicode code points read, or 0 if the end of the source is reached
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-Either  <i>index</i>
- or  <i>length</i>
- is less than 0 or greater than  <i>chars</i>
- 's length, or  <i>chars</i>
- ' s length minus  <i>index</i>
- is less than  <i>length</i>
+Either <i>index</i>
+or <i>length</i>
+is less than 0 or greater than <i>chars</i>
+'s length, or <i>chars</i>
+' s length minus <i>index</i>
+is less than <i>length</i>
 .
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
- is null.
+is null.
 
 <a id="ReadChar"></a>
 ### ReadChar

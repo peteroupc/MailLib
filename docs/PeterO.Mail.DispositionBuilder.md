@@ -20,18 +20,18 @@ A mutable data type that allows a content disposition to be built.
     public DispositionBuilder(
         PeterO.Mail.ContentDisposition mt);
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the data from the given content disposition.
+Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.
 
 <b>Parameters:</b>
 
- * <i>mt</i>: The parameter  <i>mt</i>
- is a ContentDisposition object.
+ * <i>mt</i>: The parameter <i>mt</i>
+is a ContentDisposition object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>mt</i>
- is null.
+is null.
 
 <a id="Void_ctor_String"></a>
 ### DispositionBuilder Constructor
@@ -39,25 +39,25 @@ The parameter <i>mt</i>
     public DispositionBuilder(
         string type);
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the given disposition type.
+Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.
 
 <b>Parameters:</b>
 
- * <i>type</i>: The parameter  <i>type</i>
- is a text string.
+ * <i>type</i>: The parameter <i>type</i>
+is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>type</i>
- is null.
+is null.
 
 <a id="Void_ctor"></a>
 ### DispositionBuilder Constructor
 
     public DispositionBuilder();
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the disposition type "attachment" .
+Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.
 
 <a id="DispositionType"></a>
 ### DispositionType
@@ -81,7 +81,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise, . `false` .
+ `true`  If this is a multipart media type; otherwise, . `false`  .
 
 <a id="IsText"></a>
 ### IsText
@@ -94,7 +94,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise, . `false` .
+ `true`  If this is a text media type; otherwise, . `false`  .
 
 <a id="RemoveParameter_string"></a>
 ### RemoveParameter
@@ -116,7 +116,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
 <a id="SetDispositionType_string"></a>
 ### SetDispositionType
@@ -128,8 +128,8 @@ Sets the disposition type, such as "inline".
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
 <b>Return Value:</b>
 
@@ -139,7 +139,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
  * System.ArgumentException:
 Str is empty.
@@ -166,13 +166,13 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-Either  <i>value</i>
- or  <i>name</i>
- is null.
+Either <i>value</i>
+or <i>name</i>
+is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
- is empty, or it isn't a well-formed parameter name.
+is empty, or it isn't a well-formed parameter name.
 
 <a id="ToDisposition"></a>
 ### ToDisposition

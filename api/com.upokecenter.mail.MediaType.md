@@ -1,23 +1,23 @@
 # com.upokecenter.mail.MediaType
 
-    public final class MediaType extends Object
+    public final class MediaType extends java.lang.Object
 
-<p>Specifies what kind of data a message body is.</p> <p>A media type
+<p>Specifies what kind of data a message body is. </p> <p>A media type
  consists of a top-level type (the general category of the data), a
  subtype (the specific type), and an optional list of parameters. For
- example, the media type <code>text/plain; charset = utf-8</code> is a text
+ example, the media type <code>text/plain; charset = utf-8 </code> is a text
  media type ("text"), namely, a plain text type ("plain"), and the
  parameters say that the data uses UTF-8, a Unicode character encoding
  ("charset = utf-8"). Other top-level types include "audio", "video",
- and "application".</p> <p>A media type is sometimes known as a "MIME
+ and "application". </p> <p>A media type is sometimes known as a "MIME
  type", for Multipurpose Internet Mail Extensions, the standard that
- introduced media types.</p> <p>This type is immutable, meaning its
+ introduced media types. </p> <p>This type is immutable, meaning its
  values can't be changed once it' s created. To create a changeable
- media type object, use the MediaTypeBuilder class.</p>
- <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
- top-level type <code>multipart</code> must be treated as
- <code>multipart/mixed</code> and unrecognized media types as the media type
- <code>application/octet-stream</code>.</p>
+ media type object, use the MediaTypeBuilder class. </p> <p><b>Note:
+ </b> According to RFC 2049, unrecognized subtypes of the top-level
+ type <code>multipart </code> must be treated as <code>multipart/mixed </code> and
+ unrecognized media types as the media type
+ <code>application/octet-stream </code> . </p>
 
 ## Fields
 
@@ -36,22 +36,22 @@
 
 ## Methods
 
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(java.lang.Object obj)`<br>
  Determines whether this object and another object are equal.
-* `String GetCharset()`<br>
+* `java.lang.String GetCharset()`<br>
  Gets this media type's "charset" parameter, naming a character encoding used
  to represent text in the data that uses this media type.
-* `String GetParameter​(String name)`<br>
+* `java.lang.String GetParameter​(java.lang.String name)`<br>
  Gets the value of a parameter in this media type, such as "charset" or
  "format".
-* `Map<String,String> getParameters()`<br>
+* `java.util.Map<java.lang.String,​java.lang.String> getParameters()`<br>
  Gets a list of the parameters contained in this media type object.
-* `String getSubType()`<br>
+* `java.lang.String getSubType()`<br>
  Gets this media type's subtype (for example, "plain" in "text/plain").
-* `String getTopLevelType()`<br>
+* `java.lang.String getTopLevelType()`<br>
  Gets the name of this media type's top-level type (such as "text" in
  "text/plain", or "audio" in "audio/basic").
-* `String getTypeAndSubType()`<br>
+* `java.lang.String getTypeAndSubType()`<br>
  Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain".
 * `int hashCode()`<br>
@@ -60,19 +60,19 @@
  Gets a value indicating whether this is a multipart media type.
 * `boolean isText()`<br>
  Gets a value indicating whether this is a text media type ("text/*").
-* `static MediaType Parse​(String mediaTypeValue)`<br>
+* `static MediaType Parse​(java.lang.String mediaTypeValue)`<br>
  Parses a media type string and returns a media type object.
-* `static MediaType Parse​(String str,
+* `static MediaType Parse​(java.lang.String str,
      MediaType defaultValue)`<br>
  Parses a media type string and returns a media type object, or the default
  value if the string is invalid.
-* `String ToSingleLineString()`<br>
+* `java.lang.String ToSingleLineString()`<br>
  Converts this media type to a text string form suitable for inserting in
  HTTP headers.
-* `String toString()`<br>
+* `java.lang.String toString()`<br>
  Converts this media type to a text string form suitable for inserting in
  email headers.
-* `String ToUriSafeString()`<br>
+* `java.lang.String ToUriSafeString()`<br>
  Converts this media type to a text string form suitable for data URIs.
 
 ## Field Details
@@ -96,7 +96,7 @@ Specifies the media type "application/octet-stream", used for arbitrary
 ## Method Details
 
 ### getTopLevelType
-    public final String getTopLevelType()
+    public final java.lang.String getTopLevelType()
 Gets the name of this media type's top-level type (such as "text" in
  "text/plain", or "audio" in "audio/basic"). The resulting string will
  be in lowercase letters.
@@ -107,12 +107,12 @@ Gets the name of this media type's top-level type (such as "text" in
  "audio" .
 
 ### equals
-    public boolean equals​(Object obj)
+    public boolean equals​(java.lang.Object obj)
 Determines whether this object and another object are equal.
 
 **Overrides:**
 
-* <code>equals</code> in class <code>Object</code>
+* <code>equals</code> in class <code>java.lang.Object</code>
 
 **Parameters:**
 
@@ -121,7 +121,7 @@ Determines whether this object and another object are equal.
 **Returns:**
 
 * <code>true</code> if this object and another object are equal; otherwise,
- <code>false</code>.
+ <code>false</code> .
 
 ### hashCode
     public int hashCode()
@@ -130,14 +130,14 @@ Calculates the hash code of this object. No application or process IDs are
 
 **Overrides:**
 
-* <code>hashCode</code> in class <code>Object</code>
+* <code>hashCode</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
 * A 32-bit signed integer.
 
 ### getSubType
-    public final String getSubType()
+    public final java.lang.String getSubType()
 Gets this media type's subtype (for example, "plain" in "text/plain"). The
  resulting string will be in lowercase letters.
 
@@ -161,10 +161,10 @@ Gets a value indicating whether this is a multipart media type.
 **Returns:**
 
 * <code>true</code> If this is a multipart media type; otherwise, . <code>
- false</code>.
+ false</code> .
 
 ### getParameters
-    public final Map<String,String> getParameters()
+    public final java.util.Map<java.lang.String,​java.lang.String> getParameters()
 Gets a list of the parameters contained in this media type object.
 
 **Returns:**
@@ -176,7 +176,7 @@ Gets a list of the parameters contained in this media type object.
  order; this is at least the case in version 0.10.0.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Converts this media type to a text string form suitable for inserting in
  email headers. Notably, the string contains the value of a
  Content-Type header field (without the text necessarily starting with
@@ -185,14 +185,14 @@ Converts this media type to a text string form suitable for inserting in
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
 * A text string form of this media type.
 
 ### ToSingleLineString
-    public String ToSingleLineString()
+    public java.lang.String ToSingleLineString()
 Converts this media type to a text string form suitable for inserting in
  HTTP headers. Notably, the string contains the value of a
  Content-Type header field (without the text necessarily starting with
@@ -203,7 +203,7 @@ Converts this media type to a text string form suitable for inserting in
 * A text string form of this media type.
 
 ### ToUriSafeString
-    public String ToUriSafeString()
+    public java.lang.String ToUriSafeString()
 Converts this media type to a text string form suitable for data URIs.
  Notably, the string contains the value of a Content-Type header field
  (without the text necessarily starting with "Content-Type" followed
@@ -216,7 +216,7 @@ Converts this media type to a text string form suitable for data URIs.
 * A text string form of this media type.
 
 ### GetCharset
-    public String GetCharset()
+    public java.lang.String GetCharset()
 Gets this media type's "charset" parameter, naming a character encoding used
  to represent text in the data that uses this media type.
 
@@ -232,7 +232,7 @@ Gets this media type's "charset" parameter, naming a character encoding used
  none.
 
 ### GetParameter
-    public String GetParameter​(String name)
+    public java.lang.String GetParameter​(java.lang.String name)
 Gets the value of a parameter in this media type, such as "charset" or
  "format".
 
@@ -250,12 +250,12 @@ Gets the value of a parameter in this media type, such as "charset" or
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>name</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>name</code> is null.
 
-* <code>IllegalArgumentException</code> - Name is empty.
+* <code>java.lang.IllegalArgumentException</code> - Name is empty.
 
 ### getTypeAndSubType
-    public final String getTypeAndSubType()
+    public final java.lang.String getTypeAndSubType()
 Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain". The resulting string will be in
  lowercase letters.
@@ -266,7 +266,7 @@ Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain".
 
 ### Parse
-    public static MediaType Parse​(String mediaTypeValue)
+    public static MediaType Parse​(java.lang.String mediaTypeValue)
 Parses a media type string and returns a media type object. For further
  information, see the overload taking a MediaType parameter.
 
@@ -281,7 +281,7 @@ Parses a media type string and returns a media type object. For further
  mediaTypeValue</code> is empty or syntactically invalid.
 
 ### Parse
-    public static MediaType Parse​(String str, MediaType defaultValue)
+    public static MediaType Parse​(java.lang.String str, MediaType defaultValue)
 Parses a media type string and returns a media type object, or the default
  value if the string is invalid. This method checks the syntactic
  validity of the string, but not whether it has all parameters it's
@@ -299,9 +299,9 @@ Parses a media type string and returns a media type object, or the default
  (except for illegal percent-decoding or undecodable sequences for the
  given character encoding). Examples of RFC 2231 extensions follow
  (both examples encode the same "filename" parameter): </p>
- <p><b>text/example; filename*=utf-8'en'filename.txt</b> </p>
+ <p><b>text/example; filename*=utf-8'en'filename.txt </b> </p>
  <p><b>text/example; filename*0*=utf-8'en'file;
- filename*1*=name%2Etxt</b> </p> <p>This implementation
+ filename*1*=name%2Etxt </b> </p> <p>This implementation
  ignores keys (in parameter key-value pairs) that appear more than
  once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
  7231 explicitly disallows such keys, or otherwise specifies
@@ -321,4 +321,4 @@ Parses a media type string and returns a media type object, or the default
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.

@@ -72,37 +72,43 @@ import java.util.*;
       private final ICharacterInput nci;
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param str A string object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param str The parameter {@code str} is a text string.
      */
       public NormalizingCharacterInput(
     String str) {
  this(
-    str, Normalization.NFC);
+    str,
+    Normalization.NFC);
       }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param input An ICharacterInput object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param input The parameter {@code input} is an ICharacterInput object.
      */
       public NormalizingCharacterInput(
     ICharacterInput input) {
  this(
-    input, Normalization.NFC);
+    input,
+    Normalization.NFC);
       }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param characterList An List object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param characterList The parameter {@code characterList} is an IList object.
      */
         public NormalizingCharacterInput(List<Integer> characterList) {
  this(characterList, Normalization.NFC);
       }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param characterList An List object.
-     * @param form A Normalization object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param characterList The parameter {@code characterList} is an IList object.
+     * @param form The parameter {@code form} is a Normalization object.
      */
         public NormalizingCharacterInput(
     List<Integer> characterList,
@@ -111,11 +117,12 @@ import java.util.*;
       }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param str A string object.
-     * @param index A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
-     * @param form A Normalization object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param str The parameter {@code str} is a text string.
+     * @param index The parameter {@code index} is a 32-bit signed integer.
+     * @param length The parameter {@code length} is a 32-bit signed integer.
+     * @param form The parameter {@code form} is a Normalization object.
      */
       public NormalizingCharacterInput(
     String str,
@@ -126,10 +133,11 @@ import java.util.*;
       }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param str A string object.
-     * @param form A Normalization object.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param str The parameter {@code str} is a text string.
+     * @param form The parameter {@code form} is a Normalization object.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
       public NormalizingCharacterInput(String str, Normalization form) {
         if (str == null) {
@@ -139,9 +147,10 @@ import java.util.*;
       }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param stream An ICharacterInput object.
-     * @param form A Normalization object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * @param stream The parameter {@code stream} is an ICharacterInput object.
+     * @param form The parameter {@code form} is a Normalization object.
      */
       public NormalizingCharacterInput(
      ICharacterInput stream,

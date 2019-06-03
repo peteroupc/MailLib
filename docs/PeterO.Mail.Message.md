@@ -4,7 +4,7 @@
 
 Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049).
 
-<b>Thread safety:</b>This class is mutable; its properties can be changed. None of its nstance methods are designed to be thread safe. Therefore, access to bjects from this class must be synchronized if multiple threads can ccess them at the same time.
+<b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
 The following lists known deviations from the mail specifications (Internet Message Format and MIME):
 
@@ -28,15 +28,15 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (a) The preamble and epilogue of multipart messages, which will be ignored.
 
- * (b) If the charset is declared to be `utf-8` .
+ * (b) If the charset is declared to be `utf-8`  .
 
- * (c) If the content type is "text/html" and the charset is declared to be `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single yte encodings).
+ * (c) If the content type is "text/html" and the charset is declared to be `us-ascii`  , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
 
  * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
 
  * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U+000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
 
- * The name `ascii` is treated as a synonym for `us-ascii` , despite being a reserved name under RFC 2046. The name `cp1252` and `utf8` are treated as synonyms for `windows-1252` and `utf-8` , respectively, even though they are not IANA registered aliases.
+ * The name `ascii`  is treated as a synonym for `us-ascii`  , despite being a reserved name under RFC 2046. The name `cp1252`  and `utf8`  are treated as synonyms for `windows-1252`  and `utf-8`  , respectively, even though they are not IANA registered aliases.
 
  * The following deviations involve encoded words under RFC 2047:
 
@@ -114,17 +114,17 @@ Note that this library (the MailLib library) has no facilities for sending and r
     public Message(
         byte[] bytes);
 
-Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given byte array to initialize the message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.
 
 <b>Parameters:</b>
 
- * <i>bytes</i>: A readable data stream.
+ * <i>bytes</i>: A byte array.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>bytes</i>
- is null.
+is null.
 
 <a id="Void_ctor_Stream"></a>
 ### Message Constructor
@@ -132,17 +132,18 @@ The parameter <i>bytes</i>
     public Message(
         System.IO.Stream stream);
 
-Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given Stream object to initialize the message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.
 
 <b>Parameters:</b>
 
- * <i>stream</i>: A readable data stream.
+ * <i>stream</i>: The parameter <i>stream</i>
+is a Stream object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>stream</i>
- is null.
+is null.
 
 <a id="BccAddresses"></a>
 ### BccAddresses
@@ -220,7 +221,7 @@ This value is being set and "value" is null.
 
 Gets a file name suggested by this message for saving the message's body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.
 
-This method generates a file name based on the `filename`  parameter of the Content-Disposition header field, if it exists, or on the  `name`  parameter of the Content-Type header field, otherwise.
+This method generates a file name based on the `filename`  parameter of the Content-Disposition header field, if it exists, or on the `name`  parameter of the Content-Type header field, otherwise.
 
 <b>Returns:</b>
 
@@ -312,10 +313,9 @@ Adds an attachment to this message in the form of data from the given readable s
 
 The following example (written in C# for the .NET version) is an extension method that adds an attachment from a byte array to a message.
 
-    public static Message AddAttachmentFromBytes(this Message msg,
-                byte[]
-                bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
-                return msg.AddAttachment(fs, mediaType); } }
+    public static Message AddAttachmentFromBytes(this Message msg, byte[]
+            bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
+            return msg.AddAttachment(fs, mediaType); } }
 
 <b>Parameters:</b>
 
@@ -331,8 +331,8 @@ A Message object for the generated attachment.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
+or <i>mediaType</i>
+is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -363,8 +363,8 @@ A Message object for the generated attachment.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
+or <i>mediaType</i>
+is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -392,7 +392,7 @@ A Message object for the generated attachment.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- is null.
+is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -420,8 +420,8 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- or  <i>value</i>
- is null.
+or <i>value</i>
+is null.
 
  * System.ArgumentException:
 The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
@@ -445,8 +445,8 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The key or value of  <i>header</i>
- is null.
+The key or value of <i>header</i>
+is null.
 
  * System.ArgumentException:
 The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
@@ -478,10 +478,9 @@ Adds an inline body part to this message in the form of data from the given read
 
 The following example (written in C# for the .NET version) is an extension method that adds an inline body part from a byte array to a message.
 
-    public static Message AddInlineFromBytes(this Message msg,
-                byte[] bytes,
-                MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
-                { return msg.AddInline(fs, mediaType); } }
+    public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
+            MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
+            { return msg.AddInline(fs, mediaType); } }
 
 <b>Parameters:</b>
 
@@ -497,8 +496,8 @@ A Message object for the generated body part.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
+or <i>mediaType</i>
+is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -529,8 +528,8 @@ A Message object for the generated body part.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
+or <i>mediaType</i>
+is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -558,7 +557,7 @@ A Message object for the generated body part.
 
  * System.ArgumentNullException:
 The parameter <i>inputStream</i>
- or "mediaType" is null.
+or "mediaType" is null.
 
  * PeterO.Mail.MessageDataException:
 An I/O error occurred.
@@ -597,7 +596,7 @@ The header field value with valid encoded words decoded.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
 <a id="FromMailtoUri_string"></a>
 ### FromMailtoUri
@@ -609,13 +608,13 @@ Creates a message object from a MailTo URI (uniform resource identifier). The Ma
 
 <b>Parameters:</b>
 
- * <i>uri</i>: The parameter  <i>uri</i>
- is a text string.
+ * <i>uri</i>: The parameter <i>uri</i>
+is a text string.
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
- is null, is syntactically invalid, or is not a MailTo URI.
+A Message object created from the given MailTo URI. Returs null if <i>uri</i>
+is null, is syntactically invalid, or is not a MailTo URI.
 
 <a id="FromMailtoUrl_string"></a>
 ### FromMailtoUrl
@@ -633,8 +632,8 @@ Creates a message object from a MailTo URI (uniform resource identifier). The Ma
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>url</i>
- is null, is syntactically invalid, or is not a MailTo URI.
+A Message object created from the given MailTo URI. Returs null if <i>url</i>
+is null, is syntactically invalid, or is not a MailTo URI.
 
 <a id="Generate"></a>
 ### Generate
@@ -643,7 +642,7 @@ A Message object created from the given MailTo URI. Returs null if  <i>url</i>
 
 Generates this message's data in text form.The generated message will have only Basic Latin code points (U+0000 to U+007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
-The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid` as the address (a `.invalid` address is a reserved address that can never belong to anyone). (An xception is that the Resent-* header fields may appear more than nce.) The generated message should always have a From header field.
+The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). (An exception is that the Resent-* header fields may appear more than once.) The generated message should always have a From header field.
 
 If a Date and/or Message-ID header field doesn't exist, a field with that name will be generated (using the current local time for the Date field).
 
@@ -689,15 +688,15 @@ A list of addresses, in the order in which they appear in this message's header 
 
  * System.NotSupportedException:
 The parameter <i>headerName</i>
- is not supported for this method. Currently, the only header fields supported are To, Cc, Bcc, Reply-To, Sender, and From.
+is not supported for this method. Currently, the only header fields upported are To, Cc, Bcc, Reply-To, Sender, and From.
 
  * System.ArgumentNullException:
 The parameter <i>headerName</i>
- is null.
+is null.
 
  * System.ArgumentException:
 The parameter <i>headerName</i>
- is empty.
+is empty.
 
 <a id="GetBody"></a>
 ### GetBody
@@ -726,7 +725,7 @@ A message object if this object's content type is "message/rfc822", "message/new
 
     public int[] GetDate();
 
-Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called). See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for more information on the format of the date-time array returned by this method.
+Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called). See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for more information on the format of the date-time array returned by his method.
 
 <b>Return Value:</b>
 
@@ -797,7 +796,7 @@ A key/value pair. The key is the name of the header field, such as "From" or "Co
 
  * System.ArgumentException:
 The parameter <i>index</i>
- is 0 or at least as high as the number of header fields.
+is 0 or at least as high as the number of header fields.
 
 <a id="GetHeaderArray_string"></a>
 ### GetHeaderArray
@@ -837,22 +836,22 @@ Generates a multilingual message (see RFC 8255) from a list of messages and a li
 
 <b>Return Value:</b>
 
-A Message object with the content type "multipart/multilingual" . It will begin with an explanatory body part and be followed by the messages given in the  <i>messages</i>
- parameter in the order given.
+A Message object with the content type "multipart/multilingual" . It will begin with an explanatory body part and be followed by the messages given in the <i>messages</i>
+parameter in the order given.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>messages</i>
- or  <i>languages</i>
- is null.
+or <i>languages</i>
+is null.
 
  * System.ArgumentException:
 The parameter <i>messages</i>
- or  <i>languages</i>
- is empty, their lengths don't match, at least one message is "null", each message doesn't contain the same email addresses in their From header fields,  <i>languages</i>
- contains a syntactically invalid language tag list,  <i>languages</i>
- contains the language tag "zzx" not appearing alone or at the end of the language tag list, or the first message contains no From header field.
+or <i>languages</i>
+is empty, their lengths don't match, at least one message is "null", each essage doesn't contain the same email addresses in their From header ields, <i>languages</i>
+contains a syntactically invalid language tag list, <i>languages</i>
+contains the language tag "zzx" not appearing alone or at the end of the anguage tag list, or the first message contains no From header field.
 
 <a id="NewBodyPart"></a>
 ### NewBodyPart
@@ -885,7 +884,7 @@ This instance.
 
  * System.ArgumentException:
 The parameter <i>index</i>
- is 0 or at least as high as the number of header fields.
+is 0 or at least as high as the number of header fields.
 
 <a id="RemoveHeader_string"></a>
 ### RemoveHeader
@@ -907,7 +906,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
 <a id="SelectLanguageMessage_System_Collections_Generic_IList"></a>
 ### SelectLanguageMessage
@@ -929,7 +928,7 @@ The best matching body part for the given languages. If the body part has no sub
 
  * System.ArgumentNullException:
 The parameter <i>languages</i>
- is null.
+is null.
 
 <a id="SelectLanguageMessage_System_Collections_Generic_IList_bool"></a>
 ### SelectLanguageMessage
@@ -954,7 +953,7 @@ The best matching body part for the given languages. If the body part has no sub
 
  * System.ArgumentNullException:
 The parameter <i>languages</i>
- is null.
+is null.
 
 <a id="SetBody_byte"></a>
 ### SetBody
@@ -976,7 +975,7 @@ This object.
 
  * System.ArgumentNullException:
 The parameter <i>bytes</i>
- is null.
+is null.
 
 <a id="SetCurrentDate"></a>
 ### SetCurrentDate
@@ -1027,11 +1026,11 @@ This object.
 
  * System.ArgumentException:
 The parameter <i>dateTime</i>
- contains fewer than eight elements, contains invalid values, or contains a year less than 0.
+contains fewer than eight elements, contains invalid values, or contains year less than 0.
 
  * System.ArgumentNullException:
 The parameter <i>dateTime</i>
- is null.
+is null.
 
 <a id="SetHeader_int_string_string"></a>
 ### SetHeader
@@ -1059,12 +1058,12 @@ This instance.
 
  * System.ArgumentException:
 The parameter <i>index</i>
- is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+is 0 or at least as high as the number of header fields; or, the header ield name is too long or contains an invalid character, or the header ield's value is syntactically invalid.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- or  <i>value</i>
- is null.
+or <i>value</i>
+is null.
 
 <a id="SetHeader_int_string"></a>
 ### SetHeader
@@ -1089,11 +1088,11 @@ This instance.
 
  * System.ArgumentException:
 The parameter <i>index</i>
- is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+is 0 or at least as high as the number of header fields; or, the header ield name is too long or contains an invalid character, or the header ield's value is syntactically invalid.
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
- is null.
+is null.
 
 <a id="SetHeader_int_System_Collections_Generic_KeyValuePair"></a>
 ### SetHeader
@@ -1118,11 +1117,11 @@ A Message object.
 
  * System.ArgumentException:
 The parameter <i>index</i>
- is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+is 0 or at least as high as the number of header fields; or, the header ield name is too long or contains an invalid character, or the header ield's value is syntactically invalid.
 
  * System.ArgumentNullException:
-The key or value of  <i>header</i>
- is null.
+The key or value of <i>header</i>
+is null.
 
 <a id="SetHeader_string_string"></a>
 ### SetHeader
@@ -1150,8 +1149,8 @@ The header field name is too long or contains an invalid character, or the heade
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- or  <i>value</i>
- is null.
+or <i>value</i>
+is null.
 
 <a id="SetHtmlBody_string"></a>
 ### SetHtmlBody
@@ -1173,7 +1172,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="SetTextAndHtml_string_string"></a>
 ### SetTextAndHtml
@@ -1198,8 +1197,8 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>text</i>
- or  <i>html</i>
- is null.
+or <i>html</i>
+is null.
 
 <a id="SetTextAndMarkdown_string_string"></a>
 ### SetTextAndMarkdown
@@ -1224,7 +1223,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>markdown</i>
- is null.
+is null.
 
 <a id="SetTextBody_string"></a>
 ### SetTextBody
@@ -1246,7 +1245,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="ToMailtoUri"></a>
 ### ToMailtoUri

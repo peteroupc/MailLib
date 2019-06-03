@@ -271,7 +271,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             int indexStart2 = index;
             int lineBreakCount = 0;
             int i2 = 0;
-            for (; ; ++i2) {
+            for (; true; ++i2) {
               indexTemp3 = index;
               do {
                 if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
@@ -600,7 +600,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             }
             int indexStart2 = index;
             int lineBreakCount = 0;
-            for (int i2 = 0; ; ++i2) {
+            for (int i2 = 0; true; ++i2) {
               indexTemp3 = index;
               do {
                 if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)

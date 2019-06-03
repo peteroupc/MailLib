@@ -1,6 +1,6 @@
 # com.upokecenter.text.Normalization
 
-    public enum Normalization extends Enum<Normalization>
+    public enum Normalization extends java.lang.Enum<Normalization>
 
 Represents a Unicode normalization form.
 
@@ -19,7 +19,7 @@ Represents a Unicode normalization form.
 
 ## Methods
 
-* `static Normalization valueOf​(String name)`<br>
+* `static Normalization valueOf​(java.lang.String name)`<br>
  Returns the enum constant of this type with the specified name.
 * `static Normalization[] values()`<br>
  Returns an array containing the constants of this enum type, in
@@ -38,7 +38,7 @@ the order they are declared.
 ### values
     public static Normalization[] values()
 ### valueOf
-    public static Normalization valueOf​(String name)
+    public static Normalization valueOf​(java.lang.String name)
 ## Enum Constant Details
 
 ### NFC

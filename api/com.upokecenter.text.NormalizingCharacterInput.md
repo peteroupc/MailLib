@@ -1,9 +1,9 @@
 # com.upokecenter.text.NormalizingCharacterInput
 
-    @Deprecated public final class NormalizingCharacterInput extends Object implements com.upokecenter.text.ICharacterInput
+    @Deprecated public final class NormalizingCharacterInput extends java.lang.Object implements com.upokecenter.text.ICharacterInput
 
 Deprecated.
-<div class='deprecationComment'>Renamed to NormalizerInput.</div>
+Renamed to NormalizerInput.
 
 ## Methods
 
@@ -12,29 +12,29 @@ Deprecated.
 * `NormalizingCharacterInput​(com.upokecenter.text.ICharacterInput stream,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(String str) NormalizingCharacterInput`<br>
+* `NormalizingCharacterInput​(java.lang.String str) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(String str,
+* `NormalizingCharacterInput​(java.lang.String str,
                          int index,
                          int length,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(String str,
+* `NormalizingCharacterInput​(java.lang.String str,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(List<Integer> characterList) NormalizingCharacterInput`<br>
+* `NormalizingCharacterInput​(java.util.List<java.lang.Integer> characterList) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(List<Integer> characterList,
+* `NormalizingCharacterInput​(java.util.List<java.lang.Integer> characterList,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `static List<Integer> GetChars​(com.upokecenter.text.ICharacterInput chars,
+* `static java.util.List<java.lang.Integer> GetChars​(com.upokecenter.text.ICharacterInput chars,
         Normalization form)`<br>
  Deprecated.
 Instead of this method, create a NormalizerInput on the input and call
 ReadChar to get the normalized String's code points.
  Instead of this method, create a NormalizerInput on the input and call
 ReadChar to get the normalized String's code points.
-* `static List<Integer> GetChars​(String str,
+* `static java.util.List<java.lang.Integer> GetChars​(java.lang.String str,
         Normalization form)`<br>
  Deprecated.
 Instead of this method, create a NormalizerInput on the String and call
@@ -51,18 +51,18 @@ Either convert the array to a String or wrap it in an ICharacterInput and
 * `static boolean IsNormalized​(com.upokecenter.text.ICharacterInput chars,
             Normalization form)`<br>
  Deprecated. Determines whether the text provided by a character input is normalized.
-* `static boolean IsNormalized​(String str,
+* `static boolean IsNormalized​(java.lang.String str,
             Normalization form)`<br>
  Deprecated. Determines whether the given string is in the given Unicode normalization
  form.
-* `static boolean IsNormalized​(List<Integer> charList,
+* `static boolean IsNormalized​(java.util.List<java.lang.Integer> charList,
             Normalization form)`<br>
  Deprecated.
 Either convert the list to a String or wrap it in an ICharacterInput and
  call the corresponding overload instead.
  Either convert the list to a String or wrap it in an ICharacterInput and
  call the corresponding overload instead.
-* `static String Normalize​(String str,
+* `static java.lang.String Normalize​(java.lang.String str,
          Normalization form)`<br>
  Deprecated. Converts a string to the given Unicode normalization form.
 * `int Read​(int[] chars,
@@ -79,26 +79,26 @@ Either convert the list to a String or wrap it in an ICharacterInput and
 * `NormalizingCharacterInput​(com.upokecenter.text.ICharacterInput stream,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(String str) NormalizingCharacterInput`<br>
+* `NormalizingCharacterInput​(java.lang.String str) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(String str,
+* `NormalizingCharacterInput​(java.lang.String str,
                          int index,
                          int length,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(String str,
+* `NormalizingCharacterInput​(java.lang.String str,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(List<Integer> characterList) NormalizingCharacterInput`<br>
+* `NormalizingCharacterInput​(java.util.List<java.lang.Integer> characterList) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
-* `NormalizingCharacterInput​(List<Integer> characterList,
+* `NormalizingCharacterInput​(java.util.List<java.lang.Integer> characterList,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated. Initializes a new instance of the NormalizingCharacterInput class.
 
 ## Method Details
 
 ### NormalizingCharacterInput
-    public NormalizingCharacterInput​(String str)
+    public NormalizingCharacterInput​(java.lang.String str)
 Deprecated.
 
 **Parameters:**
@@ -111,10 +111,10 @@ Deprecated.
 
 **Parameters:**
 
-* <code>input</code> - The parameter <code>input</code> is a public object.
+* <code>input</code> - The parameter <code>input</code> is an ICharacterInput object.
 
 ### NormalizingCharacterInput
-    public NormalizingCharacterInput​(List<Integer> characterList)
+    public NormalizingCharacterInput​(java.util.List<java.lang.Integer> characterList)
 Deprecated.
 
 **Parameters:**
@@ -122,22 +122,22 @@ Deprecated.
 * <code>characterList</code> - The parameter <code>characterList</code> is an IList object.
 
 ### NormalizingCharacterInput
-    public NormalizingCharacterInput​(List<Integer> characterList, Normalization form)
+    public NormalizingCharacterInput​(java.util.List<java.lang.Integer> characterList, Normalization form)
 Deprecated.
 
 **Parameters:**
 
-* <code>characterList</code> - The parameter <code>characterList</code> is a public object.
+* <code>characterList</code> - The parameter <code>characterList</code> is an IList object.
 
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### NormalizingCharacterInput
-    public NormalizingCharacterInput​(String str, int index, int length, Normalization form)
+    public NormalizingCharacterInput​(java.lang.String str, int index, int length, Normalization form)
 Deprecated.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a public object.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>index</code> - The parameter <code>index</code> is a 32-bit signed integer.
 
@@ -146,7 +146,7 @@ Deprecated.
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### NormalizingCharacterInput
-    public NormalizingCharacterInput​(String str, Normalization form)
+    public NormalizingCharacterInput​(java.lang.String str, Normalization form)
 Deprecated.
 
 **Parameters:**
@@ -157,8 +157,7 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> or "input" or
- "charArray" is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput​(com.upokecenter.text.ICharacterInput stream, Normalization form)
@@ -166,7 +165,7 @@ Deprecated.
 
 **Parameters:**
 
-* <code>stream</code> - The parameter <code>stream</code> is a public object.
+* <code>stream</code> - The parameter <code>stream</code> is an ICharacterInput object.
 
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
@@ -182,14 +181,14 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> if the text is normalized; otherwise, <code>false</code>.
+* <code>true</code> if the text is normalized; otherwise, <code>false</code> .
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>chars</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
 ### Normalize
-    public static String Normalize​(String str, Normalization form)
+    public static java.lang.String Normalize​(java.lang.String str, Normalization form)
 Deprecated.
 
 **Parameters:**
@@ -204,13 +203,13 @@ Deprecated.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter <code>str</code> contains an
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> contains an
  unpaired surrogate code point.
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
-    public static boolean IsNormalized​(String str, Normalization form)
+    public static boolean IsNormalized​(java.lang.String str, Normalization form)
 Deprecated.
 
 **Parameters:**
@@ -223,18 +222,18 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if the given string is in the given Unicode
- normalization form; otherwise, <code>false</code>. Returns <code>false</code>
+ normalization form; otherwise, <code>false</code> . Returns <code>false</code>
  if the string contains an unpaired surrogate code point.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetChars
-    @Deprecated public static List<Integer> GetChars​(String str, Normalization form)
+    @Deprecated public static java.util.List<java.lang.Integer> GetChars​(java.lang.String str, Normalization form)
 Deprecated.
-<div class='deprecationComment'>Instead of this method, create a NormalizerInput on the String and call
-ReadChar to get the normalized String's code points.</div>
+Instead of this method, create a NormalizerInput on the String and call
+ReadChar to get the normalized String's code points.
 
 **Parameters:**
 
@@ -249,13 +248,13 @@ ReadChar to get the normalized String's code points.</div>
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetChars
-    @Deprecated public static List<Integer> GetChars​(com.upokecenter.text.ICharacterInput chars, Normalization form)
+    @Deprecated public static java.util.List<java.lang.Integer> GetChars​(com.upokecenter.text.ICharacterInput chars, Normalization form)
 Deprecated.
-<div class='deprecationComment'>Instead of this method, create a NormalizerInput on the input and call
-ReadChar to get the normalized String's code points.</div>
+Instead of this method, create a NormalizerInput on the input and call
+ReadChar to get the normalized String's code points.
 
 **Parameters:**
 
@@ -270,13 +269,13 @@ ReadChar to get the normalized String's code points.</div>
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>chars</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
 ### IsNormalized
     @Deprecated public static boolean IsNormalized​(int[] charArray, Normalization form)
 Deprecated.
-<div class='deprecationComment'>Either convert the array to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.</div>
+Either convert the array to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 
 **Parameters:**
 
@@ -292,13 +291,13 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter "charList" is null.
+* <code>java.lang.NullPointerException</code> - The parameter "charList" is null.
 
 ### IsNormalized
-    @Deprecated public static boolean IsNormalized​(List<Integer> charList, Normalization form)
+    @Deprecated public static boolean IsNormalized​(java.util.List<java.lang.Integer> charList, Normalization form)
 Deprecated.
-<div class='deprecationComment'>Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.</div>
+Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 
 **Parameters:**
 
@@ -314,7 +313,7 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>charList</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>charList</code> is null.
 
 ### ReadChar
     public int ReadChar()
@@ -354,8 +353,8 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>chars</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
-* <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
  less than 0 or greater than <code>chars</code> 's length, or <code>chars</code>
- ' s length minus <code>index</code> is less than <code>length</code>.
+ ' s length minus <code>index</code> is less than <code>length</code> .

@@ -268,7 +268,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             int indexStart2 = index;
             var lineBreakCount = 0;
             var i2 = 0;
-            for (; ; ++i2) {
+            for (; true; ++i2) {
               indexTemp3 = index;
               do {
                 if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
@@ -597,7 +597,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             }
             int indexStart2 = index;
             var lineBreakCount = 0;
-            for (int i2 = 0; ; ++i2) {
+            for (int i2 = 0; true; ++i2) {
               indexTemp3 = index;
               do {
                 if (index + 1 < endIndex && str[index] == 13 && str[index + 1]

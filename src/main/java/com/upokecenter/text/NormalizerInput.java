@@ -224,31 +224,36 @@ package com.upokecenter.text;
     private final ICharacterInput iterator;
 
     /**
-     * Initializes a new instance of the {@link NormalizerInput} class.
-     * @param str A string object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizerInput} class.
+     * @param str The parameter {@code str} is a text string.
      */
     public NormalizerInput(
   String str) {
  this(
-  str, Normalization.NFC);
+  str,
+  Normalization.NFC);
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizerInput} class.
-     * @param input An ICharacterInput object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizerInput} class.
+     * @param input The parameter {@code input} is an ICharacterInput object.
      */
     public NormalizerInput(
   ICharacterInput input) {
  this(
-  input, Normalization.NFC);
+  input,
+  Normalization.NFC);
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizerInput} class.
-     * @param str A string object.
-     * @param index A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
-     * @param form A Normalization object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizerInput} class.
+     * @param str The parameter {@code str} is a text string.
+     * @param index The parameter {@code index} is a 32-bit signed integer.
+     * @param length The parameter {@code length} is a 32-bit signed integer.
+     * @param form The parameter {@code form} is a Normalization object.
      */
     public NormalizerInput(
   String str,
@@ -256,23 +261,26 @@ package com.upokecenter.text;
   int length,
   Normalization form) {
  this(
-  new StringCharacterInput2(str, index, length), form);
+  new StringCharacterInput2(str, index, length),
+  form);
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizerInput} class.
-     * @param str A string object.
-     * @param form A Normalization object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizerInput} class.
+     * @param str The parameter {@code str} is a text string.
+     * @param form The parameter {@code form} is a Normalization object.
      */
     public NormalizerInput(String str, Normalization form) {
  this(new StringCharacterInput2(str), form);
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizerInput} class.
-     * @param stream An ICharacterInput object.
-     * @param form A Normalization object.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizerInput} class.
+     * @param stream The parameter {@code stream} is an ICharacterInput object.
+     * @param form The parameter {@code form} is a Normalization object.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public NormalizerInput(
    ICharacterInput stream,

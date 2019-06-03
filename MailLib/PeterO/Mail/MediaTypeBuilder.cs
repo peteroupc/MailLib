@@ -41,19 +41,16 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Initializes a new instance of the MediaTypeBuilder
-    /// class.</summary>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor"]/*'/>
     public MediaTypeBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "application";
       this.subtype = "octet-stream";
     }
 
-    /// <summary>Initializes a new instance of the
-    /// <see cref='MediaTypeBuilder'/> class.</summary>
-    /// <param name='mt'>A MediaType object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='mt'/> is null.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)"]/*'/>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
@@ -63,10 +60,8 @@ namespace PeterO.Mail {
       this.subtype = mt.SubType;
     }
 
-    /// <summary>Initializes a new instance of the
-    /// <see cref='MediaTypeBuilder'/> class.</summary>
-    /// <param name='type'>A string object.</param>
-    /// <param name='subtype'>Another string object.</param>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor(System.String,System.String)"]/*'/>
     public MediaTypeBuilder(string type, string subtype) {
       this.parameters = new Dictionary<string, string>();
       this.SetTopLevelType(type);

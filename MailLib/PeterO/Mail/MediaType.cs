@@ -750,7 +750,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Nov. 21, 2018, are listed below:
+      // May 30, 2019, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -758,7 +758,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // and don't permit a charset parameter, so a default charset is
       // irrelevant:
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
-      // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
+      // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback, flexfec
       //
       // Charset determined out-of-band:
       // -- vnd.motorola.reflex*(5)*(10)
@@ -848,32 +848,52 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       if (this.IsText) {
         string sub = this.SubType;
         // Media types that assume a default of US-ASCII
-        if (sub.Equals("plain") || sub.Equals("sgml") ||
-          sub.Equals("troff") || sub.Equals("dns") ||
-            sub.Equals("mizar") || sub.Equals("prs.prop.logic") ||
-            sub.Equals("vnd.ascii-art") || sub.Equals("vnd.dmclientscript") ||
-            sub.Equals("prs.lines.tag") || sub.Equals("vnd.latex-z") ||
-            sub.Equals("rfc822-headers") || sub.Equals("vnd.dvb.subtitle") ||
-            sub.Equals("vnd.fly") || sub.Equals("directory") ||
-          sub.Equals("css") || sub.Equals("richtext") ||
-              sub.Equals("enriched") || sub.Equals("tab-separated-values") ||
-              sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
-            sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") ||
-              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list") ||
-              sub.Equals("vnd.si.uricatalogue")) {
+        if (sub.Equals("plain") ||
+sub.Equals("sgml") ||
+sub.Equals("troff") ||
+sub.Equals("dns") ||
+sub.Equals("mizar") ||
+sub.Equals("prs.prop.logic") ||
+sub.Equals("vnd.ascii-art") ||
+sub.Equals("vnd.dmclientscript") ||
+sub.Equals("prs.lines.tag") ||
+sub.Equals("vnd.latex-z") ||
+sub.Equals("rfc822-headers") ||
+sub.Equals("vnd.dvb.subtitle") ||
+sub.Equals("vnd.fly") ||
+sub.Equals("directory") ||
+sub.Equals("css") ||
+sub.Equals("richtext") ||
+sub.Equals("enriched") ||
+sub.Equals("tab-separated-values") ||
+sub.Equals("vnd.in3d.spot") ||
+sub.Equals("vnd.abc") ||
+sub.Equals("vnd.wap.wmlscript") ||
+sub.Equals("vnd.curl") ||
+sub.Equals("vnd.fmi.flexstor") ||
+sub.Equals("uri-list") ||
+sub.Equals("vnd.si.uricatalogue")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
-        if (sub.Equals("vcard") || sub.Equals("jcr-cnd") ||
-          sub.Equals("n3") || sub.Equals("turtle") ||
-  sub.Equals("strings") || sub.Equals("vnd.debian.copyright") ||
-              sub.Equals("provenance-notation") || sub.Equals("csv") ||
-   sub.Equals("calendar") || sub.Equals("vnd.a") ||
-              sub.Equals("parameters") || sub.Equals("prs.fallenstein.rst") ||
-              sub.Equals("vnd.esmertec.theme.descriptor") ||
-            sub.Equals("vnd.trolltech.linguist") || sub.Equals("csv-schema") ||
-              sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest") ||
-              sub.Equals("vnd.sun.j2me.app-descriptor")) {
+        if (sub.Equals("vcard") ||
+sub.Equals("jcr-cnd") ||
+sub.Equals("n3") ||
+sub.Equals("turtle") ||
+sub.Equals("strings") ||
+sub.Equals("vnd.debian.copyright") ||
+sub.Equals("provenance-notation") ||
+sub.Equals("csv") ||
+sub.Equals("calendar") ||
+sub.Equals("vnd.a") ||
+sub.Equals("parameters") ||
+sub.Equals("prs.fallenstein.rst") ||
+sub.Equals("vnd.esmertec.theme.descriptor") ||
+sub.Equals("vnd.trolltech.linguist") ||
+sub.Equals("csv-schema") ||
+sub.Equals("vnd.graphviz") ||
+sub.Equals("cache-manifest") ||
+sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }

@@ -13,7 +13,7 @@ A mutable media type object.
 * <code>[SetTopLevelType(string)](#SetTopLevelType_string)</code> - Sets this media type's top-level type.
 * <code>[SubType](#SubType)</code> - Gets or sets this value's subtype.
 * <code>[ToMediaType()](#ToMediaType)</code> - Converts this builder to an immutable media type object.
-* <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form as MediaType.
+* <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form asMediaType.
 * <code>[TopLevelType](#TopLevelType)</code> - Gets or sets this value's top-level type.
 
 <a id="Void_ctor_MediaType"></a>
@@ -22,18 +22,18 @@ A mutable media type object.
     public MediaTypeBuilder(
         PeterO.Mail.MediaType mt);
 
-Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class using the data from another media type.
+Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.
 
 <b>Parameters:</b>
 
- * <i>mt</i>: The parameter  <i>mt</i>
- is a MediaType object.
+ * <i>mt</i>: The parameter <i>mt</i>
+is a MediaType object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>mt</i>
- is null.
+is null.
 
 <a id="Void_ctor_String_String"></a>
 ### MediaTypeBuilder Constructor
@@ -46,16 +46,18 @@ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.Med
 
 <b>Parameters:</b>
 
- * <i>type</i>: The media type's top-level type.
+ * <i>type</i>: The parameter <i>type</i>
+is a text string.
 
- * <i>subtype</i>: The media type's subtype.
+ * <i>subtype</i>: The parameter <i>subtype</i>
+is a text string.
 
 <a id="Void_ctor"></a>
 ### MediaTypeBuilder Constructor
 
     public MediaTypeBuilder();
 
-Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class, using the type "application/octet-stream" .
+Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.
 
 <a id="IsMultipart"></a>
 ### IsMultipart
@@ -66,7 +68,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise, . `false` .
+ `true`  If this is a multipart media type; otherwise, . `false`  .
 
 <a id="IsText"></a>
 ### IsText
@@ -77,7 +79,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise, . `false` .
+ `true`  If this is a text media type; otherwise, . `false`  .
 
 <a id="SubType"></a>
 ### SubType
@@ -121,7 +123,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
 <a id="SetParameter_string_string"></a>
 ### SetParameter
@@ -146,12 +148,12 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>value</i>
- or  <i>name</i>
- is null.
+or <i>name</i>
+is null.
 
  * System.ArgumentException:
 The parameter <i>name</i>
- is empty or syntactically invalid.
+is empty or syntactically invalid.
 
 <a id="SetSubType_string"></a>
 ### SetSubType
@@ -173,11 +175,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
- is empty or syntactically invalid.
+is empty or syntactically invalid.
 
 <a id="SetTopLevelType_string"></a>
 ### SetTopLevelType
@@ -199,11 +201,11 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
  * System.ArgumentException:
 The parameter <i>str</i>
- is syntactically invalid for a top-level type.
+is syntactically invalid for a top-level type.
 
 <a id="ToMediaType"></a>
 ### ToMediaType
@@ -221,7 +223,7 @@ A MediaType object.
 
     public override string ToString();
 
-Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString`
+Converts this object to a text string of the media type it represents, in the same form as `MediaType.ToString`
 
 <b>Return Value:</b>
 

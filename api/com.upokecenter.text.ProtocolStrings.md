@@ -1,6 +1,6 @@
 # com.upokecenter.text.ProtocolStrings
 
-    public final class ProtocolStrings extends Object
+    public final class ProtocolStrings extends java.lang.Object
 
 <p>Contains methods for preparing user-facing protocol strings (such as user
  identifiers) for equality comparison and validity checking. Such
@@ -9,57 +9,58 @@
  Standard. See RFC 8264. Currently there are four profiles for
  internationalized strings: two for strings serving as user
  identifiers, one for arbitrary single-line strings (such as
- passwords), and one for display names.</p><p> </p><ul> <li>Other
+ passwords), and one for display names. </p><p> </p><ul> <li>Other
  user-facing internationalized strings not expressly handled by this
  class include file and directory names, domain names, profile data
  voluntarily entered by users, and the text of article, post, and
  message bodies. The preparation and comparison of such strings is
- currently outside the scope of this class.</li> <li>The methods in
- this class are not well suited for <i>collation</i>, or lexicographic
- ordering, which is a comparison of text strings that is usually
- language-dependent and goes beyond equality comparison. Further
- discussion on collation can be found in Unicode Technical Standard 10
- (UTS 10), "Unicode Collation Algorithm".</li> <li>As explained in UTS
- 10 sec. 1.6, collation serves the purposes of searching and selection
- (e.g., searches by name or by title). However, this class is directed
- more to equality comparisons for authentication or authorization
- purposes, or to avoid creating multiple items that use the same
- string, rather than, say, to comparisons of names or parts of names
- for the purpose of showing matching records.</li></ul>
+ currently outside the scope of this class. </li> <li>The methods in
+ this class are not well suited for <i> collation </i> , or
+ lexicographic ordering, which is a comparison of text strings that is
+ usually language-dependent and goes beyond equality comparison.
+ Further discussion on collation can be found in Unicode Technical
+ Standard 10 (UTS 10), "Unicode Collation Algorithm". </li> <li>As
+ explained in UTS 10 sec. 1.6, collation serves the purposes of
+ searching and selection (e.g., searches by name or by title).
+ However, this class is directed more to equality comparisons for
+ authentication or authorization purposes, or to avoid creating
+ multiple items that use the same string, rather than, say, to
+ comparisons of names or parts of names for the purpose of showing
+ matching records. </li> </ul>
 
 ## Methods
 
-* `static boolean IsInFreeformClass​(String str)`<br>
+* `static boolean IsInFreeformClass​(java.lang.String str)`<br>
  Determines whether the given string belongs in RFC 8264's FreeformClass.
-* `static boolean IsInIdentifierClass​(String str)`<br>
+* `static boolean IsInIdentifierClass​(java.lang.String str)`<br>
  Determines whether the given string belongs in RFC 8264's IdentifierClass.
-* `static String NicknameEnforce​(String str)`<br>
+* `static java.lang.String NicknameEnforce​(java.lang.String str)`<br>
  Checks the validity of a string serving as a "memorable, human-friendly
  name" for something (see RFC 8266), as opposed to that thing's
  identity for authentication or authorization purposes (see sec.
-* `static String NicknameForComparison​(String str)`<br>
+* `static java.lang.String NicknameForComparison​(java.lang.String str)`<br>
  Prepares for comparison a string serving as a "memorable, human-friendly
  name" for something (see RFC 8266), as opposed to that thing's
  identity for authentication or authorization purposes (see sec.
-* `static String OpaqueStringEnforce​(String str)`<br>
+* `static java.lang.String OpaqueStringEnforce​(java.lang.String str)`<br>
  Checks the validity of a string serving as an arbitrary single-line sequence
  of characters, such as a passphrase.
-* `static String UsernameEnforce​(String str)`<br>
+* `static java.lang.String UsernameEnforce​(java.lang.String str)`<br>
  Checks the validity of a string that can serve to identify a user or account
  (a "username"), where the string is made of one or more parts called
  "userparts" separated by spaces (U+0020) and where the case of
  letters in the string is mapped to lowercase.
-* `static String UsernameEnforce​(String str,
+* `static java.lang.String UsernameEnforce​(java.lang.String str,
                boolean preserveCase)`<br>
  Checks the validity of a string that can serve to identify a user or account
  (a "username"), where the string is made of one or more parts called
  "userparts" separated by spaces (U+0020) and where the case of
  letters in the string is either mapped to lowercase or preserved.
-* `static String UserpartEnforce​(String str)`<br>
+* `static java.lang.String UserpartEnforce​(java.lang.String str)`<br>
  Checks the validity of a string without spaces that can serve to identify a
  user or account (a "userpart"), where the case of letters in the
  string is mapped to lowercase.
-* `static String UserpartEnforce​(String str,
+* `static java.lang.String UserpartEnforce​(java.lang.String str,
                boolean preserveCase)`<br>
  Checks the validity of a string without spaces that can serve to identify a
  user or account (a "userpart"), where the case of letters in the
@@ -68,7 +69,7 @@
 ## Method Details
 
 ### IsInIdentifierClass
-    public static boolean IsInIdentifierClass​(String str)
+    public static boolean IsInIdentifierClass​(java.lang.String str)
 Determines whether the given string belongs in RFC 8264's IdentifierClass.
  In general, the IdentifierClass contains all code points in the
  Freeform class, except certain uncommon letters and digits, spaces,
@@ -83,11 +84,11 @@ Determines whether the given string belongs in RFC 8264's IdentifierClass.
 
 * <code>true</code> if the given string is empty or contains only
  characters allowed in RFC 8264's FreeformClass (in the contexts
- required); otherwise, <code>false</code>. Returns <code>false</code> if <code>
+ required); otherwise, <code>false</code> . Returns <code>false</code> if <code>
  str</code> is null.
 
 ### IsInFreeformClass
-    public static boolean IsInFreeformClass​(String str)
+    public static boolean IsInFreeformClass​(java.lang.String str)
 Determines whether the given string belongs in RFC 8264's FreeformClass. In
  general, the FreeformClass contains most letters, digits, spaces,
  punctuation, and symbols in the Unicode standard, as well as all
@@ -102,11 +103,11 @@ Determines whether the given string belongs in RFC 8264's FreeformClass. In
 
 * <code>true</code> if the given string is empty or contains only
  characters allowed in RFC 8264's FreeformClass (in the contexts
- required); otherwise, <code>false</code>. Returns <code>false</code> if <code>
+ required); otherwise, <code>false</code> . Returns <code>false</code> if <code>
  str</code> is null.
 
 ### UserpartEnforce
-    public static String UserpartEnforce​(String str)
+    public static java.lang.String UserpartEnforce​(java.lang.String str)
 Checks the validity of a string without spaces that can serve to identify a
  user or account (a "userpart"), where the case of letters in the
  string is mapped to lowercase. This checking is done using the
@@ -126,7 +127,7 @@ Checks the validity of a string without spaces that can serve to identify a
  (see RFC 8265, sec. 3.3.4).
 
 ### UsernameEnforce
-    public static String UsernameEnforce​(String str)
+    public static java.lang.String UsernameEnforce​(java.lang.String str)
 Checks the validity of a string that can serve to identify a user or account
  (a "username"), where the string is made of one or more parts called
  "userparts" separated by spaces (U+0020) and where the case of
@@ -153,7 +154,7 @@ Checks the validity of a string that can serve to identify a user or account
  point (see RFC 8265, sec. 3.3.4).
 
 ### UserpartEnforce
-    public static String UserpartEnforce​(String str, boolean preserveCase)
+    public static java.lang.String UserpartEnforce​(java.lang.String str, boolean preserveCase)
 Checks the validity of a string without spaces that can serve to identify a
  user or account (a "userpart"), where the case of letters in the
  string is either mapped to lowercase or preserved. This checking is
@@ -177,7 +178,7 @@ Checks the validity of a string without spaces that can serve to identify a
  code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
 
 ### UsernameEnforce
-    public static String UsernameEnforce​(String str, boolean preserveCase)
+    public static java.lang.String UsernameEnforce​(java.lang.String str, boolean preserveCase)
 Checks the validity of a string that can serve to identify a user or account
  (a "username"), where the string is made of one or more parts called
  "userparts" separated by spaces (U+0020) and where the case of
@@ -209,7 +210,7 @@ Checks the validity of a string that can serve to identify a user or account
  point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
 
 ### OpaqueStringEnforce
-    public static String OpaqueStringEnforce​(String str)
+    public static java.lang.String OpaqueStringEnforce​(java.lang.String str)
 Checks the validity of a string serving as an arbitrary single-line sequence
  of characters, such as a passphrase. This checking is done using the
  OpaqueString profile in RFC 8265. (REMARK: Specifying a string as
@@ -233,7 +234,7 @@ Checks the validity of a string serving as an arbitrary single-line sequence
  (see RFC 8265, sec. 4.2.3).
 
 ### NicknameEnforce
-    public static String NicknameEnforce​(String str)
+    public static java.lang.String NicknameEnforce​(java.lang.String str)
 Checks the validity of a string serving as a "memorable, human-friendly
  name" for something (see RFC 8266), as opposed to that thing's
  identity for authentication or authorization purposes (see sec. 6.1
@@ -254,7 +255,7 @@ Checks the validity of a string serving as a "memorable, human-friendly
  instead.
 
 ### NicknameForComparison
-    public static String NicknameForComparison​(String str)
+    public static java.lang.String NicknameForComparison​(java.lang.String str)
 Prepares for comparison a string serving as a "memorable, human-friendly
  name" for something (see RFC 8266), as opposed to that thing's
  identity for authentication or authorization purposes (see sec. 6.1

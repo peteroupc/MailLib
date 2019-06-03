@@ -27,7 +27,8 @@ private MailDateTime() {
      * for information on the format of this parameter.
      * @return A date-time string.
      * @throws IllegalArgumentException The parameter {@code dateTime} is null or
-     * invalid, including if the year ({@code dateTime[0]}) is less than 0.
+     * invalid, including if the year ({@code dateTime[0]}) is less than
+     * 0.
      */
     public static String GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
@@ -208,7 +209,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * @param gmt If true, uses the string "GMT" as the time zone offset.
      * @return A date-time string.
      * @throws IllegalArgumentException The parameter {@code dateTime} is null or
-     * invalid, including if the year ({@code dateTime[0]}) is less than 0.
+     * invalid, including if the year ({@code dateTime[0]}) is less than
+     * 0.
      * @throws UnsupportedOperationException The time zone offset is other than 0
      * and {@code gmt} is true.
      */
@@ -279,20 +281,20 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * time zone strings to appear in the date-time string. If an array is
      * returned, the elements of that array (starting from 0) are as
      * follows: <ul> <li>0 - The year. For example, the value 2000 means
-     * 2000 C.E.</li> <li>1 - Month of the year, from 1 (January) through 12
-     * (December).</li> <li>2 - Day of the month, from 1 through 31.</li>
-     * <li>3 - Hour of the day, from 0 through 23.</li> <li>4 - Minute of
-     * the hour, from 0 through 59.</li> <li>5 - Second of the minute, from
-     * 0 through 60 (this value can go up to 60 to accommodate leap
-     * seconds). (Leap seconds are additional seconds added to adjust
+     * 2000 C.E. </li> <li>1 - Month of the year, from 1 (January) through
+     * 12 (December). </li> <li>2 - Day of the month, from 1 through 31.
+     * </li> <li>3 - Hour of the day, from 0 through 23. </li> <li>4 -
+     * Minute of the hour, from 0 through 59. </li> <li>5 - Second of the
+     * minute, from 0 through 60 (this value can go up to 60 to accommodate
+     * leap seconds). (Leap seconds are additional seconds added to adjust
      * international atomic time, or TAI, to an approximation of
-     * astronomical time known as coordinated universal time, or UTC.)</li>
+     * astronomical time known as coordinated universal time, or UTC.) </li>
      * <li>6 - Milliseconds of the second, from 0 through 999. Will always
-     * be 0.</li> <li>7 - Number of minutes to subtract from this date and
-     * time to get global time. This number can be positive or
-     * negative.</li></ul>
+     * be 0. </li> <li>7 - Number of minutes to subtract from this date and
+     * time to get global time. This number can be positive or negative.
+     * </li> </ul>
      * @param str A date-time string.
-     * @param parseObsoleteZones If set to {@code true}, this method allows
+     * @param parseObsoleteZones If set to {@code true } , this method allows
      * obsolete time zones (single-letter time zones, "GMT", "UT", and
      * certain three-letter combinations) to appear in the date-time string.
      * @return An 8-element array containing the date and time, or {@code null} if
@@ -324,7 +326,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * See <see
   * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
      * for information on the format of this method's return value.
-     * @param str String.
+     * @param str The parameter {@code str} is not documented yet.
      * @return An 8-element array containing the date and time, or {@code null} if
      * {@code str} is null, empty, or syntactically invalid, or if the
      * string's year would overflow the range of a 32-bit signed integer.
@@ -636,7 +638,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
             indexTemp3 = index;
             do {
               indexStart3 = index;
-              for (i3 = 0; ; ++i3) {
+              for (i3 = 0; true; ++i3) {
                 indexTemp4 = HeaderParser.ParseFWS(str, index, endIndex, null);
                 if (indexTemp4 != index) {
                   index = indexTemp4;
@@ -834,12 +836,13 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         if (dow < 0 || month < 0) {
  return null;
 }
-    int year = ((v.charAt(index + 12) - '0') * 1000) + ((v.charAt(index + 13) - '0') *
-          100) + (v.charAt(index + 14) - '0') * 10 + (v.charAt(index + 15) - '0');
+    int year = ((v.charAt(index + 12) - '0') * 1000) +
+      ((v.charAt(index + 13) - '0') * 100) + ((v.charAt(index + 14) - '0') * 10) +
+      (v.charAt(index + 15) - '0');
         int hour = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
         int minute = ((v.charAt(index + 20) - '0') * 10) + (v.charAt(index + 21) - '0');
         int second = ((v.charAt(index + 23) - '0') * 10) + (v.charAt(index + 24) - '0');
-int[] ret = {year, month, day, hour, minute, second, 0, 0 };
+int[] ret = { year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // ASCTIME
@@ -870,12 +873,13 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
 }
         int day = (v.charAt(index + 8) == 32 ? 0 : (v.charAt(index + 8) - '0') * 10) +
           (v.charAt(index + 9) - '0');
-    int year = ((v.charAt(index + 20) - '0') * 1000) + ((v.charAt(index + 21) - '0') *
-          100) + (v.charAt(index + 22) - '0') * 10 + (v.charAt(index + 23) - '0');
+    int year = ((v.charAt(index + 20) - '0') * 1000) +
+      ((v.charAt(index + 21) - '0') * 100) + ((v.charAt(index + 22) - '0') * 10) +
+      (v.charAt(index + 23) - '0');
         int hour = ((v.charAt(index + 11) - '0') * 10) + (v.charAt(index + 12) - '0');
         int minute = ((v.charAt(index + 14) - '0') * 10) + (v.charAt(index + 15) - '0');
         int second = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
-int[] ret = {year, month, day, hour, minute, second, 0, 0 };
+int[] ret = { year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // RFC 850
@@ -917,7 +921,7 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
-int[] ret = {year, month, day, hour, minute, second, 0, 0 };
+int[] ret = { year, month, day, hour, minute, second, 0, 0 };
 return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       }
       return null;

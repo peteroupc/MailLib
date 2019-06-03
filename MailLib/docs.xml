@@ -4,15 +4,11 @@
     </summary>
   </doc>
   <doc name='M:PeterO.ArrayWriter.#ctor'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.ArrayWriter'/>
-       class with a default buffer size.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.ArrayWriter'/> class with a default buffer size.
     </summary>
   </doc>
   <doc name='M:PeterO.ArrayWriter.#ctor(System.Int32)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.ArrayWriter'/>
-       class with the given initial buffer size.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.ArrayWriter'/> class with the given initial buffer size.
     </summary>
     <param name='initialSize'>The parameter
       <paramref name='initialSize'/>
@@ -209,40 +205,24 @@
       can be used to check for relative IRI references.
       <para>The following cases return true:
       </para>
-      <code>xx-x:mm example:/ww
-      </code>
-       The following cases return false:
-      <code>x@y:/z /x/y/z example.xyz
-      </code>
-    </summary>
+      <code>xx-x:mm example:/ww</code> The following cases return false:
+      <code>x@y:/z /x/y/z example.xyz</code> </summary>
     <param name='refValue'>A string representing an IRI to check.
     </param>
-    <returns><c>true
-      </c>
-       if the string is a valid IRI with a scheme component; otherwise,
-      <c>false
-      </c>
-       .
+    <returns><c>true</c> if the string is a valid IRI with a scheme component; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Cbor.URIUtility.hasSchemeForURI(System.String)'>
     <summary>Determines whether the string is a valid URI with a scheme component. This
       can be used to check for relative URI references. The following cases
       return true:
-      <code>http://example/z xx-x:mm example:/ww
-      </code>
-       The following cases return false:
-      <code>x@y:/z /x/y/z example.xyz
-      </code>
-    </summary>
+      <code>http://example/z xx-x:mm example:/ww</code> The following cases return false:
+      <code>x@y:/z /x/y/z example.xyz</code> </summary>
     <param name='refValue'>A string representing an IRI to check.
     </param>
-    <returns><c>true
-      </c>
-       if the string is a valid URI with a scheme component; otherwise,
-      <c>false
-      </c>
-       .
+    <returns><c>true</c> if the string is a valid URI with a scheme component; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Cbor.URIUtility.isValidCurieReference(System.String,System.Int32,System.Int32)'>
@@ -256,12 +236,8 @@
     <param name='length'>The number of elements in the desired portion of "s" (but not more than
       "s" 's length).
     </param>
-    <returns><c>true
-      </c>
-       if the substring is a valid CURIE reference under RDFA 1; otherwise,
-      <c>false
-      </c>
-       . Returns false if
+    <returns><c>true</c> if the substring is a valid CURIE reference under RDFA 1; otherwise,
+      <c>false</c> . Returns false if
       <paramref name='s'/>
        is null.
     </returns>
@@ -284,37 +260,27 @@
     <summary>Resolves a URI or IRI relative to another URI or IRI.
     </summary>
     <param name='refValue'>A string representing a URI or IRI reference. Example:
-      <c>dir/file.txt
-      </c>
-       .
+      <c>dir/file.txt</c> .
     </param>
     <param name='baseURI'>A string representing an absolute URI reference. Example:
-      <c>http://example.com/my/path/
-      </c>
-       .
+      <c>http://example.com/my/path/</c> .
     </param>
     <returns>The resolved IRI, or null if
       <paramref name='refValue'/>
        is null or is not a valid IRI. If
       <paramref name='baseURI'/>
        is null or is not a valid IRI, returns refValue. Example:
-      <c>http://example.com/my/path/dir/file.txt
-      </c>
-       .
+      <c>http://example.com/my/path/dir/file.txt</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Cbor.URIUtility.relativeResolve(System.String,System.String,PeterO.Cbor.URIUtility.ParseMode)'>
     <summary>Resolves a URI or IRI relative to another URI or IRI.
     </summary>
     <param name='refValue'>A string representing a URI or IRI reference. Example:
-      <c>dir/file.txt
-      </c>
-       . Can be null.
+      <c>dir/file.txt</c> . Can be null.
     </param>
     <param name='baseURI'>A string representing an absolute URI reference. Example:
-      <c>http://example.com/my/path/
-      </c>
-       .
+      <c>http://example.com/my/path/</c> .
     </param>
     <param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
@@ -417,15 +383,11 @@
         of the Unicode Standard which uses one byte to encode the most basic
         characters and two to four bytes to encode other characters. For
         example, the
-        <c>GetUtf8
-        </c>
-         method converts a text string to an array of bytes in UTF-8.
+        <c>GetUtf8</c> method converts a text string to an array of bytes in UTF-8.
       </para>
       <para>In C# and Java, text strings are represented as sequences of 16-bit
         values called
-        <c>char
-        </c>
-         s. These sequences are well-formed under UTF-16, a 16-bit encoding form
+        <c>char</c> s. These sequences are well-formed under UTF-16, a 16-bit encoding form
         of Unicode, except if they contain unpaired surrogate code points. (A
         surrogate code point is used to encode supplementary characters, those
         with code points U+10000 or higher, in UTF-16. A surrogate pair is a
@@ -560,15 +522,9 @@
         byte-order mark (U+FEFF) at the beginning of the encoded byte array.
       </para>
       <para>REMARK: It is not recommended to use
-        <c>Encoding.UTF8.GetBytes
-        </c>
-         in .NET, or the
-        <c>getBytes()
-        </c>
-         method in Java to do this. For instance,
-        <c>getBytes()
-        </c>
-         encodes text strings in a default (so not fixed) character encoding,
+        <c>Encoding.UTF8.GetBytes</c> in .NET, or the
+        <c>getBytes()</c> method in Java to do this. For instance,
+        <c>getBytes()</c> encodes text strings in a default (so not fixed) character encoding,
         which can be undesirable.
       </para>
     </summary>
@@ -596,15 +552,9 @@
         byte-order mark (U+FEFF) at the beginning of the encoded byte array.
       </para>
       <para>REMARK: It is not recommended to use
-        <c>Encoding.UTF8.GetBytes
-        </c>
-         in .NET, or the
-        <c>getBytes()
-        </c>
-         method in Java to do this. For instance,
-        <c>getBytes()
-        </c>
-         encodes text strings in a default (so not fixed) character encoding,
+        <c>Encoding.UTF8.GetBytes</c> in .NET, or the
+        <c>getBytes()</c> method in Java to do this. For instance,
+        <c>getBytes()</c> encodes text strings in a default (so not fixed) character encoding,
         which can be undesirable.
       </para>
     </summary>
@@ -761,7 +711,7 @@
       <paramref name='bytesCount'/>
        is less than 0, or offset plus bytesCount is greater than the length of
       <paramref name='data'/>
-      .
+       .
     </exception>
   </doc>
   <doc name='M:PeterO.DataUtilities.ReadUtf8ToString(System.IO.Stream)'>
@@ -941,20 +891,19 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.Address.#ctor(System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.Address'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Address'/> class.
     </summary>
-    <param name='addressValue'>An email address.
+    <param name='addressValue'>The parameter
+      <paramref name='addressValue'/>
+       is a text string.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='addressValue'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The email address contains invalid syntax. For example, it doesn't contain
-      an '@' sign or either side of the '@' contains invalid characters, the
-      address is too long, or the address contains comments (text within
-      parentheses).
+    <exception cref='T:System.ArgumentException'>AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local
+      part; Expected '@' sign after local part; Expected domain after '@';
+      Invalid domain; Address too long.
     </exception>
   </doc>
   <doc name='P:PeterO.Mail.Address.Domain'>
@@ -970,12 +919,8 @@
       <paramref name='obj'/>
        is an arbitrary object.
     </param>
-    <returns><c>true
-      </c>
-       if this object and another object are equal; otherwise,
-      <c>false
-      </c>
-      .
+    <returns><c>true</c> if this object and another object are equal; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.Address.GetHashCode'>
@@ -1008,15 +953,11 @@
         it's created. To create a changeable disposition object, use the
         DispositionBuilder class.
       </para>
-      <para><b>About the "filename" parameter
-        </b>
-      </para>
+      <para><b>About the "filename" parameter</b> </para>
       <para>The "filename" parameter of a content disposition suggests a name to use
         when saving data to a file. For the "filename" parameter, the
         GetParameter method and Parameters property (
-        <c>getParameters
-        </c>
-         ) method in Java) do not adapt that parameter's value using the
+        <c>getParameters</c> ) method in Java) do not adapt that parameter's value using the
         ContentDisposition.MakeFilename method. Thus, for example, the
         "filename" parameter, if any, returned by this method could have an
         arbitrary length, be encoded using RFC 2047 encoded words (which some
@@ -1025,25 +966,15 @@
         'quoted-string'"; see ContentDisposition.MakeFilename), or not be usable
         as is as a file name.
       </para>
-      <para><b>Example:
-        </b>
-         An example of RFC 2047 encoded words is:
+      <para><b>Example:</b> An example of RFC 2047 encoded words is:
       </para>
-      <para><b>=?UTF-8?Q?test?=
-        </b>
-      </para>
+      <para><b>=?UTF-8?Q?test?=</b> </para>
       <para>Content-Disposition header fields like the following have appeared in
         practice:
       </para>
-      <para><b>Content-Disposition: attachment; filename==?UTF-8?Q?example?=
-        </b>
-      </para>
-      <para><b>Content-Disposition: attachment; filename==?UTF-8?Q?test.png?=
-        </b>
-      </para>
-      <para><b>Content-Disposition: attachment; filename="=?UTF-8?Q?test.png?="
-        </b>
-      </para>
+      <para><b>Content-Disposition: attachment; filename==?UTF-8?Q?example?=</b> </para>
+      <para><b>Content-Disposition: attachment; filename==?UTF-8?Q?test.png?=</b> </para>
+      <para><b>Content-Disposition: attachment; filename="=?UTF-8?Q?test.png?="</b> </para>
       <para>In this implementation, the first and second of these are syntactically
         invalid, so they trigger parse errors, while the third of these is
         syntactically valid, but the "filename" parameter is treated as
@@ -1073,12 +1004,8 @@
       <paramref name='obj'/>
        is an arbitrary object.
     </param>
-    <returns><c>true
-      </c>
-       if the objects are equal; otherwise,
-      <c>false
-      </c>
-      .
+    <returns><c>true</c> if the objects are equal; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.ContentDisposition.GetCreationDate'>
@@ -1089,9 +1016,7 @@
        for information on the format of this method's return value.
     </summary>
     <returns>The extracted date and time as an 8-element array, or
-      <c>null
-      </c>
-       if the "creation-date" parameter doesn't exist, is an empty string, or is
+      <c>null</c> if the "creation-date" parameter doesn't exist, is an empty string, or is
       syntactically invalid, or if the parameter's year would overflow a 32-bit
       signed integer.
     </returns>
@@ -1119,9 +1044,7 @@
        for information on the format of this method's return value.
     </summary>
     <returns>The extracted date and time as an 8-element array, or
-      <c>null
-      </c>
-       if the "modification-date" parameter doesn't exist, is an empty string,
+      <c>null</c> if the "modification-date" parameter doesn't exist, is an empty string,
       or is syntactically invalid, or if the parameter's year would overflow a
       32-bit signed integer.
     </returns>
@@ -1156,9 +1079,7 @@
        for information on the format of this method's return value.
     </summary>
     <returns>The extracted date and time as an 8-element array, or
-      <c>null
-      </c>
-       if the "read-date" parameter doesn't exist, is an empty string, or is
+      <c>null</c> if the "read-date" parameter doesn't exist, is an empty string, or is
       syntactically invalid, or if the parameter's year would overflow a 32-bit
       signed integer.
     </returns>
@@ -1170,23 +1091,15 @@
   <doc name='P:PeterO.Mail.ContentDisposition.IsAttachment'>
     <summary>Gets a value indicating whether the disposition type is attachment.
     </summary>
-    <value><c>true
-      </c>
-       If the disposition type is attachment; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If the disposition type is attachment; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.ContentDisposition.IsInline'>
     <summary>Gets a value indicating whether the disposition type is inline.
     </summary>
-    <value><c>true
-      </c>
-       If the disposition type is inline; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If the disposition type is inline; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)'>
@@ -1195,25 +1108,15 @@
       calling the method again on the result doesn't change that result.
       <para>Examples:
       </para>
-      <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"
-        </c>
-         (RFC 2047 encoding)
+      <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c> (RFC 2047 encoding)
       </para>
-      <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"
-        </c>
-         (RFC 2047 encoding)
+      <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"</c> (RFC 2047 encoding)
       </para>
-      <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"
-        </c>
-         (RFC 2231 encoding)
+      <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</c> (RFC 2231 encoding)
       </para>
-      <para><c>"nul.txt" -&gt; "_nul.txt"
-        </c>
-         (Reserved name)
+      <para><c>"nul.txt" -&gt; "_nul.txt"</c> (Reserved name)
       </para>
-      <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"
-        </c>
-         (Directory separators)
+      <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"</c> (Directory separators)
       </para>
     </summary>
     <param name='str'>A string representing a file name. Can be null.
@@ -1233,9 +1136,7 @@
        is null or empty.
     </returns>
     <remarks>
-      <para><b>Remarks:
-        </b>
-      </para>
+      <para><b>Remarks:</b> </para>
       <list>
         <item>The exact file name conversion used by this method is not guaranteed
           to remain the same between versions of this library, with the
@@ -1246,9 +1147,7 @@
            is null or empty.
         </item>
         <item>The string returned by this method is normalized using Unicode
-          normalization form C (NFC) (see the
-          <see cref='T:PeterO.Text.NormalizerInput'/>
-           class for details). Although most file systems preserve the
+          normalization form C (NFC) (see the <see cref='T:PeterO.Text.NormalizerInput'/> class for details). Although most file systems preserve the
           normalization of file names, there is one notable exception: The HFS
           Plus file system (on macOS before High Sierra) stores file names using
           a modified version of normalization form D (NFD) in which certain code
@@ -1263,12 +1162,8 @@
         </item>
         <item><para>Email and HTTP headers may specify suggested filenames using the
             Content-Disposition header field's
-            <c>filename
-            </c>
-             parameter or, in practice, the Content-Type header field's
-            <c>name
-            </c>
-             parameter.
+            <c>filename</c> parameter or, in practice, the Content-Type header field's
+            <c>name</c> parameter.
           </para>
           <para>Although RFC 2047 encoded words appearing in both parameters are
             written out by some implementations, this practice is often
@@ -1279,27 +1174,21 @@
             method.
           </para>
           <para>RFC 2046 sec. 4.5.1 (
-            <c>application/octet-stream
-            </c>
-             subtype in Content-Type header field) cites an earlier RFC 1341,
+            <c>application/octet-stream</c> subtype in Content-Type header field) cites an earlier RFC 1341,
             which "defined the use of a 'NAME' parameter which gave a
             <i>
-              suggested
+               suggested
             </i>
              file name to be used if the data were written to a file". Also, RFC
             2183 sec. 2.3 (
-            <c>filename
-            </c>
-             parameter in Content-Disposition) confirms that the "
+            <c>filename</c> parameter in Content-Disposition) confirms that the "
             <i>
-              suggested
+               suggested
             </i>
              filename" in the
-            <c>filename
-            </c>
-             parameter "should be
+            <c>filename</c> parameter "should be
             <i>
-              used as a basis
+               used as a basis
             </i>
              for the actual filename, where possible", and that that file name
             should "not [be] blindly use[d]". See also RFC 6266, section 4.3,
@@ -1313,9 +1202,7 @@
             that "[t]here are NO globally meaningful parameters that apply to
             all media types"). (Some email implementations may still write out
             the "name" parameter, even for media types other than
-            <c>application/octet-stream
-            </c>
-             and even though RFC 2046 has deprecated that parameter.)
+            <c>application/octet-stream</c> and even though RFC 2046 has deprecated that parameter.)
           </para>
         </item>
       </list>
@@ -1373,13 +1260,9 @@
         sequences for the given character encoding). Examples of RFC 2231
         extensions follow (both examples encode the same "filename" parameter):
       </para>
-      <para><b>inline; filename&#x2a;=utf-8'en'filename.txt
-        </b>
-      </para>
+      <para><b>inline; filename&#x2a;=utf-8'en'filename.txt</b> </para>
       <para><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
-          filename&#x2a;1&#x2a;=name%2Etxt
-        </b>
-      </para>
+          filename&#x2a;1&#x2a;=name%2Etxt</b> </para>
       <para>This implementation ignores keys (in parameter key-value pairs) that
         appear more than once in the content disposition. Nothing in RFCs 2045,
         2183, 2231, 6266, or 7231 explicitly disallows such keys, or otherwise
@@ -1423,13 +1306,7 @@
     <summary>Contains methods for parsing and generating Data URIs (uniform resource
       identifiers). Data URIs are described in RFC 2397. Examples for Data URIs
       follow.
-      <code>data:, hello%20world
-      </code>
-      <code>data:text/markdown, hello%20world
-      </code>
-      <code>data:application/octet-stream;base64, AAAAAA==
-      </code>
-    </summary>
+      <code>data:, hello%20world</code> <code>data:text/markdown, hello%20world</code> <code>data:application/octet-stream;base64, AAAAAA==</code> </summary>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.DataUriBytes(System.String)'>
     <summary>Extracts the data from a Data URI (uniform resource identifier) in the
@@ -1489,13 +1366,7 @@
     <summary>Contains methods for parsing and generating Data URIs (uniform resource
       identifiers). Data URIs are described in RFC 2397. Examples for Data URIs
       follow.
-      <code>data:, hello%20world
-      </code>
-      <code>data:text/markdown, hello%20world
-      </code>
-      <code>data:application/octet-stream;base64, AAAAAA==
-      </code>
-    </summary>
+      <code>data:, hello%20world</code> <code>data:text/markdown, hello%20world</code> <code>data:application/octet-stream;base64, AAAAAA==</code> </summary>
   </doc>
   <doc name='M:PeterO.Mail.DataUrls.DataUrlBytes(System.String)'>
     <summary>Extracts the data from a Data URI (uniform resource identifier) in the
@@ -1552,15 +1423,11 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.DispositionBuilder'/>
-       class using the disposition type "attachment" .
+    <summary>Initializes a new instance of the <see cref='DispositionBuilder'/> class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.DispositionBuilder'/>
-       class using the data from the given content disposition.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.
     </summary>
     <param name='mt'>The parameter
       <paramref name='mt'/>
@@ -1572,9 +1439,7 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor(System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.DispositionBuilder'/>
-       class using the given disposition type.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.
     </summary>
     <param name='type'>The parameter
       <paramref name='type'/>
@@ -1595,23 +1460,15 @@
   <doc name='P:PeterO.Mail.DispositionBuilder.IsMultipart'>
     <summary>Gets a value indicating whether this is a multipart media type.
     </summary>
-    <value><c>true
-      </c>
-       If this is a multipart media type; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If this is a multipart media type; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.DispositionBuilder.IsText'>
     <summary>Gets a value indicating whether this is a text media type.
     </summary>
-    <value><c>true
-      </c>
-       If this is a text media type; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If this is a text media type; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)'>
@@ -1747,12 +1604,8 @@
     </summary>
     <param name='str'>The string to check. Can be null.
     </param>
-    <returns><c>true
-      </c>
-       if the given string is a basic language range; otherwise,
-      <c>false
-      </c>
-       .
+    <returns><c>true</c> if the given string is a basic language range; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)'>
@@ -1766,14 +1619,10 @@
     <param name='extended'>Check whether the string is a basic language range if "false", or an
       extended language range if "true".
     </param>
-    <returns><c>true
-      </c>
-       if the given string is a basic language range (depending on the
+    <returns><c>true</c> if the given string is a basic language range (depending on the
       <paramref name='extended'/>
        parameter); otherwise,
-      <c>false
-      </c>
-       .
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)'>
@@ -1785,12 +1634,8 @@
     </summary>
     <param name='str'>The string to check.
     </param>
-    <returns><c>true
-      </c>
-      , if the string meets the conditions given in the summary,
-      <c>false
-      </c>
-       otherwise.
+    <returns><c>true</c> , if the string meets the conditions given in the summary,
+      <c>false</c> otherwise.
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)'>
@@ -1984,13 +1829,9 @@
     </param>
     <param name='tag'>A language tag.
     </param>
-    <returns><c>true
-      </c>
-       if the language tag matches the language range by the filtering method
+    <returns><c>true</c> if the language tag matches the language range by the filtering method
       under RFC 4647; otherwise,
-      <c>false
-      </c>
-       .
+      <c>false</c> .
     </returns>
     <exception cref='T:System.ArgumentException'>The parameter
       <paramref name='range'/>
@@ -2017,9 +1858,7 @@
     <exception cref='T:System.ArgumentException'>The parameter
       <paramref name='dateTime'/>
        is null or invalid, including if the year (
-      <c>dateTime[0]
-      </c>
-      ) is less than 0.
+      <c>dateTime[0]</c> ) is less than 0.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)'>
@@ -2038,9 +1877,7 @@
     <exception cref='T:System.ArgumentException'>The parameter
       <paramref name='dateTime'/>
        is null or invalid, including if the year (
-      <c>dateTime[0]
-      </c>
-      ) is less than 0.
+      <c>dateTime[0]</c> ) is less than 0.
     </exception>
     <exception cref='T:System.NotSupportedException'>The time zone offset is other than 0 and
       <paramref name='gmt'/>
@@ -2054,12 +1891,12 @@
       <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
        for information on the format of this method's return value.
     </summary>
-    <param name='str'>String.
+    <param name='str'>The parameter
+      <paramref name='str'/>
+       is not documented yet.
     </param>
     <returns>An 8-element array containing the date and time, or
-      <c>null
-      </c>
-       if
+      <c>null</c> if
       <paramref name='str'/>
        is null, empty, or syntactically invalid, or if the string's year would
       overflow the range of a 32-bit signed integer.
@@ -2096,16 +1933,12 @@
     <param name='str'>A date-time string.
     </param>
     <param name='parseObsoleteZones'>If set to
-      <c>true
-      </c>
-      , this method allows obsolete time zones (single-letter time zones, "GMT",
-      "UT", and certain three-letter combinations) to appear in the date-time
-      string.
+      <c>true</c> , this method allows obsolete time zones (single-letter time zones,
+      "GMT", "UT", and certain three-letter combinations) to appear in the
+      date-time string.
     </param>
     <returns>An 8-element array containing the date and time, or
-      <c>null
-      </c>
-       if
+      <c>null</c> if
       <paramref name='str'/>
        is null, empty, or syntactically invalid, or if the string's year would
       overflow the range of a 32-bit signed integer.
@@ -2127,9 +1960,7 @@
       <para>A media type consists of a top-level type (the general category of the
         data), a subtype (the specific type), and an optional list of
         parameters. For example, the media type
-        <c>text/plain; charset = utf-8
-        </c>
-         is a text media type ("text"), namely, a plain text type ("plain"), and
+        <c>text/plain; charset = utf-8</c> is a text media type ("text"), namely, a plain text type ("plain"), and
         the parameters say that the data uses UTF-8, a Unicode character
         encoding ("charset = utf-8"). Other top-level types include "audio",
         "video", and "application".
@@ -2141,18 +1972,10 @@
         created. To create a changeable media type object, use the
         MediaTypeBuilder class.
       </para>
-      <para><b>Note:
-        </b>
-         According to RFC 2049, unrecognized subtypes of the top-level type
-        <c>multipart
-        </c>
-         must be treated as
-        <c>multipart/mixed
-        </c>
-         and unrecognized media types as the media type
-        <c>application/octet-stream
-        </c>
-        .
+      <para><b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type
+        <c>multipart</c> must be treated as
+        <c>multipart/mixed</c> and unrecognized media types as the media type
+        <c>application/octet-stream</c> .
       </para>
     </summary>
   </doc>
@@ -2168,12 +1991,8 @@
       <paramref name='obj'/>
        is an arbitrary object.
     </param>
-    <returns><c>true
-      </c>
-       if this object and another object are equal; otherwise,
-      <c>false
-      </c>
-      .
+    <returns><c>true</c> if this object and another object are equal; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.MediaType.GetCharset'>
@@ -2218,24 +2037,16 @@
   <doc name='P:PeterO.Mail.MediaType.IsMultipart'>
     <summary>Gets a value indicating whether this is a multipart media type.
     </summary>
-    <value><c>true
-      </c>
-       If this is a multipart media type; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If this is a multipart media type; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.MediaType.IsText'>
     <summary>Gets a value indicating whether this is a text media type ("text/&#x2a;").
 
     </summary>
-    <value><c>true
-      </c>
-       If this is a text media type; otherwise, .
-      <c>false
-      </c>
-       .
+    <value><c>true</c> If this is a text media type; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='F:PeterO.Mail.MediaType.MessageRfc822'>
@@ -2285,13 +2096,9 @@
         character encoding). Examples of RFC 2231 extensions follow (both
         examples encode the same "filename" parameter):
       </para>
-      <para><b>text/example; filename&#x2a;=utf-8'en'filename.txt
-        </b>
-      </para>
+      <para><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </para>
       <para><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
-          filename&#x2a;1&#x2a;=name%2Etxt
-        </b>
-      </para>
+          filename&#x2a;1&#x2a;=name%2Etxt</b> </para>
       <para>This implementation ignores keys (in parameter key-value pairs) that
         appear more than once in the media type. Nothing in RFCs 2045, 2183,
         2231, 6266, or 7231 explicitly disallows such keys, or otherwise
@@ -2388,15 +2195,11 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.MediaTypeBuilder'/>
-       class, using the type "application/octet-stream" .
+    <summary>Initializes a new instance of the <see cref='MediaTypeBuilder'/> class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.MediaTypeBuilder'/>
-       class using the data from another media type.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class.
     </summary>
     <param name='mt'>The parameter
       <paramref name='mt'/>
@@ -2408,35 +2211,29 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor(System.String,System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.MediaTypeBuilder'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class.
     </summary>
-    <param name='type'>The media type's top-level type.
+    <param name='type'>The parameter
+      <paramref name='type'/>
+       is a text string.
     </param>
-    <param name='subtype'>The media type's subtype.
+    <param name='subtype'>The parameter
+      <paramref name='subtype'/>
+       is a text string.
     </param>
   </doc>
   <doc name='P:PeterO.Mail.MediaTypeBuilder.IsMultipart'>
     <summary>Gets a value indicating whether this is a multipart media type.
     </summary>
-    <value><c>true
-      </c>
-       If this is a multipart media type; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If this is a multipart media type; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.MediaTypeBuilder.IsText'>
     <summary>Gets a value indicating whether this is a text media type.
     </summary>
-    <value><c>true
-      </c>
-       If this is a text media type; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If this is a text media type; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)'>
@@ -2525,9 +2322,7 @@
   <doc name='M:PeterO.Mail.MediaTypeBuilder.ToString'>
     <summary>Converts this object to a text string of the media type it represents, in
       the same form as
-      <c>MediaType.ToString
-      </c>
-    </summary>
+      <c>MediaType.ToString</c> </summary>
     <returns>A string representation of this object.
     </returns>
   </doc>
@@ -2543,9 +2338,7 @@
         Internet Message Format (RFC 5322) and Multipurpose Internet Mail
         Extensions (MIME; RFC 2045-2047, RFC 2049).
       </para>
-      <para><b>Thread safety:
-        </b>
-         This class is mutable; its properties can be changed. None of its
+      <para><b>Thread safety:</b> This class is mutable; its properties can be changed. None of its
         instance methods are designed to be thread safe. Therefore, access to
         objects from this class must be synchronized if multiple threads can
         access them at the same time.
@@ -2597,15 +2390,11 @@
           ignored.
         </item>
         <item>(b) If the charset is declared to be
-          <c>utf-8
-          </c>
-           .
+          <c>utf-8</c> .
         </item>
         <item>(c) If the content type is "text/html" and the charset is declared to
           be
-          <c>us-ascii
-          </c>
-           , "windows-1252", "windows-1251", or "iso-8859-&#x2a;" (all single
+          <c>us-ascii</c> , "windows-1252", "windows-1251", or "iso-8859-&#x2a;" (all single
           byte encodings).
         </item>
         <item>(d) In non-MIME message bodies and in text/plain message bodies. Any
@@ -2619,24 +2408,12 @@
           kind.)
         </item>
         <item>The name
-          <c>ascii
-          </c>
-           is treated as a synonym for
-          <c>us-ascii
-          </c>
-           , despite being a reserved name under RFC 2046. The name
-          <c>cp1252
-          </c>
-           and
-          <c>utf8
-          </c>
-           are treated as synonyms for
-          <c>windows-1252
-          </c>
-           and
-          <c>utf-8
-          </c>
-           , respectively, even though they are not IANA registered aliases.
+          <c>ascii</c> is treated as a synonym for
+          <c>us-ascii</c> , despite being a reserved name under RFC 2046. The name
+          <c>cp1252</c> and
+          <c>utf8</c> are treated as synonyms for
+          <c>windows-1252</c> and
+          <c>utf-8</c> , respectively, even though they are not IANA registered aliases.
         </item>
         <item>The following deviations involve encoded words under RFC 2047:
         </item>
@@ -2678,18 +2455,13 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.Message'/>
-       class. The message will be plain text and have an artificial From
-      address.
+    <summary>Initializes a new instance of the <see cref='Message'/> class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor(System.Byte[])'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.Message'/>
-       class. Reads from the given byte array to initialize the message.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class.
     </summary>
-    <param name='bytes'>A readable data stream.
+    <param name='bytes'>A byte array.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='bytes'/>
@@ -2697,11 +2469,11 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor(System.IO.Stream)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.Message'/>
-       class. Reads from the given Stream object to initialize the message.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class.
     </summary>
-    <param name='stream'>A readable data stream.
+    <param name='stream'>The parameter
+      <paramref name='stream'/>
+       is a Stream object.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='stream'/>
@@ -2744,9 +2516,7 @@
       method that adds an attachment from a byte array to a message.
       <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
         bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
-        return msg.AddAttachment(fs, mediaType); } }
-      </code>
-    </example>
+        return msg.AddAttachment(fs, mediaType); } }</code> </example>
   </doc>
   <doc name='M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)'>
     <summary>Adds an attachment to this message in the form of data from the given
@@ -2881,9 +2651,7 @@
       method that adds an inline body part from a byte array to a message.
       <code>public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
         MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
-        { return msg.AddInline(fs, mediaType); } }
-      </code>
-    </example>
+        { return msg.AddInline(fs, mediaType); } }</code> </example>
   </doc>
   <doc name='M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)'>
     <summary>Adds an inline body part to this message in the form of data from the
@@ -3015,13 +2783,9 @@
         ContentDisposition.MakeFilename.
       </para>
       <para>This method generates a file name based on the
-        <c>filename
-        </c>
-         parameter of the Content-Disposition header field, if it exists, or on
+        <c>filename</c> parameter of the Content-Disposition header field, if it exists, or on
         the
-        <c>name
-        </c>
-         parameter of the Content-Type header field, otherwise.
+        <c>name</c> parameter of the Content-Type header field, otherwise.
       </para>
     </summary>
     <value>A suggested name for the file. Returns the empty string if there is no
@@ -3086,12 +2850,8 @@
         has no addresses, or appears more than once, this method will generate a
         synthetic header field with the display-name set to the contents of all
         of the header fields with the same name, and the address set to
-        <c>me@[header-name]-address.invalid
-        </c>
-         as the address (a
-        <c>.invalid
-        </c>
-         address is a reserved address that can never belong to anyone). (An
+        <c>me@[header-name]-address.invalid</c> as the address (a
+        <c>.invalid</c> address is a reserved address that can never belong to anyone). (An
         exception is that the Resent-&#x2a; header fields may appear more than
         once.) The generated message should always have a From header field.
       </para>
@@ -3353,9 +3113,7 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})'>
     <summary>Selects a body part for a multiple-language message (
-      <c>multipart/multilingual
-      </c>
-       ) according to the given language priority list.
+      <c>multipart/multilingual</c> ) according to the given language priority list.
     </summary>
     <param name='languages'>A list of basic language ranges, sorted in descending order of priority
       (see the LanguageTags.LanguageTagFilter method).
@@ -3373,9 +3131,7 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)'>
     <summary>Selects a body part for a multiple-language message (
-      <c>multipart/multilingual
-      </c>
-       ) according to the given language priority list and original-language
+      <c>multipart/multilingual</c> ) according to the given language priority list and original-language
       preference.
     </summary>
     <param name='languages'>A list of basic language ranges, sorted in descending order of priority
@@ -3447,7 +3203,7 @@
           global time. This number can be positive or negative.
         </item>
       </list>
-      .
+       .
     </param>
     <returns>This object.
     </returns>
@@ -3674,25 +3430,23 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.MessageDataException'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='MessageDataException'/> class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor(System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.MessageDataException'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MessageDataException'/> class.
     </summary>
-    <param name='message'>A string to use as the exception message.
+    <param name='message'>The parameter
+      <paramref name='message'/>
+       is a text string.
     </param>
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor(System.String,System.Exception)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.MessageDataException'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MessageDataException'/> class.
     </summary>
-    <param name='message'>A string to use as the exception message.
+    <param name='message'>The parameter
+      <paramref name='message'/>
+       is a text string.
     </param>
     <param name='innerException'>The parameter
       <paramref name='innerException'/>
@@ -3705,68 +3459,29 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.NamedAddress'/>
-       class. Examples:
-      <list>
-        <item><c>john@example.com
-          </c>
-        </item>
-        <item><c>"John Doe" &lt;john@example.com&gt;
-          </c>
-        </item>
-        <item><c>=?utf-8?q?John
-          </c>
-          <c>=
-          </c>
-          <c>27s_Office?= &lt;john@example.com&gt;
-          </c>
-        </item>
-        <item><c>John &lt;john@example.com&gt;
-          </c>
-        </item>
-        <item><c>"Group" : Tom &lt;tom@example.com&gt;, Jane
-            &lt;jane@example.com&gt;;
-          </c>
-        </item>
-      </list>
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.
     </summary>
-    <param name='address'>A text string identifying a single email address or a group of email
-      addresses. Comments, or text within parentheses, can appear. Multiple
-      email addresses are not allowed unless they appear in the group syntax
-      given above. Encoded words under RFC 2047 that appear within comments or
-      display names will be decoded.
-      <para>An RFC 2047 encoded word consists of "=?", a character encoding name,
-        such as
-        <c>utf-8
-        </c>
-        , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in
-        the character encoding, further encoded using B or Q encoding, and
-        finally "?=". B encoding uses Base64, while in Q encoding, spaces are
-        changed to "_", equals are changed to "=3D", and most bytes other than
-        the basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z
-        (0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their
-        2-digit hexadecimal form. An encoded word's maximum length is 75
-        characters. See the third example.
-      </para>
-      .
+    <param name='address'>The parameter
+      <paramref name='address'/>
+       is a text string.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='address'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The named address has an invalid syntax.
+    <exception cref='T:System.ArgumentException'>Address has an invalid syntax.; Address has an invalid syntax.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.NamedAddress'/>
-       class using the given display name and email address.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.
     </summary>
-    <param name='displayName'>The display name of the email address. Can be null or empty. Encoded words
-      under RFC 2047 will not be decoded.
+    <param name='displayName'>The parameter
+      <paramref name='displayName'/>
+       is a text string.
     </param>
-    <param name='address'>An email address.
+    <param name='address'>The parameter
+      <paramref name='address'/>
+       is an Address object.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='address'/>
@@ -3774,14 +3489,15 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.NamedAddress'/>
-       class. Takes a group name and several named email addresses as
-      parameters, and forms a group with them.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.
     </summary>
-    <param name='groupName'>The group's name.
+    <param name='groupName'>The parameter
+      <paramref name='groupName'/>
+       is a text string.
     </param>
-    <param name='mailboxes'>A list of named addresses that make up the group.
+    <param name='mailboxes'>The parameter
+      <paramref name='mailboxes'/>
+       is an IList object.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='groupName'/>
@@ -3789,39 +3505,39 @@
       <paramref name='mailboxes'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
-      <paramref name='groupName'/>
-       is empty, or an item in the list is itself a group.
+    <exception cref='T:System.ArgumentException'>GroupName is empty.; A mailbox in the list is a group.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.NamedAddress'/>
-       class using the given display name and email address.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.
     </summary>
-    <param name='displayName'>The display name of the email address. Can be null or empty. Encoded words
-      under RFC 2047 will not be decoded.
+    <param name='displayName'>The parameter
+      <paramref name='displayName'/>
+       is a text string.
     </param>
-    <param name='address'>An email address.
+    <param name='address'>The parameter
+      <paramref name='address'/>
+       is a text string.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='address'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The display name or address has an invalid syntax.
-    </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.NamedAddress'/>
-       class using the given name and an email address made up of its local part
-      and domain.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.
     </summary>
-    <param name='displayName'>The display name of the email address. Can be null or empty.
+    <param name='displayName'>The parameter
+      <paramref name='displayName'/>
+       is a text string.
     </param>
-    <param name='localPart'>The local part of the email address (before the "@").
+    <param name='localPart'>The parameter
+      <paramref name='localPart'/>
+       is a text string.
     </param>
-    <param name='domain'>The domain of the email address (before the "@").
+    <param name='domain'>The parameter
+      <paramref name='domain'/>
+       is a text string.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='localPart'/>
@@ -3843,12 +3559,8 @@
     <param name='na'>A named address object to compare with this one. Can be null.
     </param>
     <returns>Either
-      <c>true
-      </c>
-       or
-      <c>false
-      </c>
-      .
+      <c>true</c> or
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='P:PeterO.Mail.NamedAddress.DisplayName'>
@@ -3865,12 +3577,8 @@
       <paramref name='obj'/>
        is an arbitrary object.
     </param>
-    <returns><c>true
-      </c>
-       if this object and another object are equal; otherwise,
-      <c>false
-      </c>
-      .
+    <returns><c>true</c> if this object and another object are equal; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.GetHashCode'>
@@ -3892,12 +3600,8 @@
     <summary>Gets a value indicating whether this represents a group of addresses
       rather than a single address.
     </summary>
-    <value><c>true
-      </c>
-       If this represents a group of addresses; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If this represents a group of addresses; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.NamedAddress.Name'>
@@ -3938,13 +3642,15 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.StringAndQuality.#ctor(System.String,System.Int32)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Mail.StringAndQuality'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.StringAndQuality'/> class.
     </summary>
-    <param name='value'>An arbitrary text string.
+    <param name='value'>The parameter
+      <paramref name='value'/>
+       is a text string.
     </param>
-    <param name='quality'>A 32-bit signed integer serving as the "quality" value.
+    <param name='quality'>The parameter
+      <paramref name='quality'/>
+       is a 32-bit signed integer.
     </param>
   </doc>
   <doc name='P:PeterO.Mail.StringAndQuality.Quality'>
@@ -3970,11 +3676,11 @@
       <paramref name='x'/>
        is less than
       <paramref name='y'/>
-      , or a positive number if
+       , or a positive number if
       <paramref name='x'/>
        is greater than
       <paramref name='y'/>
-      .
+       .
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='x'/>
@@ -3986,12 +3692,8 @@
   <doc name='P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart'>
     <summary>Gets a value indicating whether a new body part was detected.
     </summary>
-    <value><c>true
-      </c>
-       If a new body part was detected; otherwise, .
-      <c>false
-      </c>
-      .
+    <value><c>true</c> If a new body part was detected; otherwise, .
+      <c>false</c> .
     </value>
   </doc>
   <doc name='T:PeterO.Mail.URIUtility'>
@@ -4089,40 +3791,24 @@
       can be used to check for relative IRI references.
       <para>The following cases return true:
       </para>
-      <code>xx-x:mm example:/ww
-      </code>
-       The following cases return false:
-      <code>x@y:/z /x/y/z example.xyz
-      </code>
-    </summary>
+      <code>xx-x:mm example:/ww</code> The following cases return false:
+      <code>x@y:/z /x/y/z example.xyz</code> </summary>
     <param name='refValue'>A string representing an IRI to check.
     </param>
-    <returns><c>true
-      </c>
-       if the string is a valid IRI with a scheme component; otherwise,
-      <c>false
-      </c>
-       .
+    <returns><c>true</c> if the string is a valid IRI with a scheme component; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.URIUtility.hasSchemeForURI(System.String)'>
     <summary>Determines whether the string is a valid URI with a scheme component. This
       can be used to check for relative URI references. The following cases
       return true:
-      <code>http://example/z xx-x:mm example:/ww
-      </code>
-       The following cases return false:
-      <code>x@y:/z /x/y/z example.xyz
-      </code>
-    </summary>
+      <code>http://example/z xx-x:mm example:/ww</code> The following cases return false:
+      <code>x@y:/z /x/y/z example.xyz</code> </summary>
     <param name='refValue'>A string representing an IRI to check.
     </param>
-    <returns><c>true
-      </c>
-       if the string is a valid URI with a scheme component; otherwise,
-      <c>false
-      </c>
-       .
+    <returns><c>true</c> if the string is a valid URI with a scheme component; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.URIUtility.isValidCurieReference(System.String,System.Int32,System.Int32)'>
@@ -4136,12 +3822,8 @@
     <param name='length'>The number of elements in the desired portion of "s" (but not more than
       "s" 's length).
     </param>
-    <returns><c>true
-      </c>
-       if the substring is a valid CURIE reference under RDFA 1; otherwise,
-      <c>false
-      </c>
-       . Returns false if
+    <returns><c>true</c> if the substring is a valid CURIE reference under RDFA 1; otherwise,
+      <c>false</c> . Returns false if
       <paramref name='s'/>
        is null.
     </returns>
@@ -4164,37 +3846,27 @@
     <summary>Resolves a URI or IRI relative to another URI or IRI.
     </summary>
     <param name='refValue'>A string representing a URI or IRI reference. Example:
-      <c>dir/file.txt
-      </c>
-       .
+      <c>dir/file.txt</c> .
     </param>
     <param name='baseURI'>A string representing an absolute URI reference. Example:
-      <c>http://example.com/my/path/
-      </c>
-       .
+      <c>http://example.com/my/path/</c> .
     </param>
     <returns>The resolved IRI, or null if
       <paramref name='refValue'/>
        is null or is not a valid IRI. If
       <paramref name='baseURI'/>
        is null or is not a valid IRI, returns refValue. Example:
-      <c>http://example.com/my/path/dir/file.txt
-      </c>
-       .
+      <c>http://example.com/my/path/dir/file.txt</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.URIUtility.relativeResolve(System.String,System.String,PeterO.Mail.URIUtility.ParseMode)'>
     <summary>Resolves a URI or IRI relative to another URI or IRI.
     </summary>
     <param name='refValue'>A string representing a URI or IRI reference. Example:
-      <c>dir/file.txt
-      </c>
-       . Can be null.
+      <c>dir/file.txt</c> . Can be null.
     </param>
     <param name='baseURI'>A string representing an absolute URI reference. Example:
-      <c>http://example.com/my/path/
-      </c>
-       .
+      <c>http://example.com/my/path/</c> .
     </param>
     <param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
@@ -4354,40 +4026,24 @@
       can be used to check for relative IRI references.
       <para>The following cases return true:
       </para>
-      <code>xx-x:mm example:/ww
-      </code>
-       The following cases return false:
-      <code>x@y:/z /x/y/z example.xyz
-      </code>
-    </summary>
+      <code>xx-x:mm example:/ww</code> The following cases return false:
+      <code>x@y:/z /x/y/z example.xyz</code> </summary>
     <param name='refValue'>A string representing an IRI to check.
     </param>
-    <returns><c>true
-      </c>
-       if the string is a valid IRI with a scheme component; otherwise,
-      <c>false
-      </c>
-       .
+    <returns><c>true</c> if the string is a valid IRI with a scheme component; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Rdf.URIUtility.hasSchemeForURI(System.String)'>
     <summary>Determines whether the string is a valid URI with a scheme component. This
       can be used to check for relative URI references. The following cases
       return true:
-      <code>http://example/z xx-x:mm example:/ww
-      </code>
-       The following cases return false:
-      <code>x@y:/z /x/y/z example.xyz
-      </code>
-    </summary>
+      <code>http://example/z xx-x:mm example:/ww</code> The following cases return false:
+      <code>x@y:/z /x/y/z example.xyz</code> </summary>
     <param name='refValue'>A string representing an IRI to check.
     </param>
-    <returns><c>true
-      </c>
-       if the string is a valid URI with a scheme component; otherwise,
-      <c>false
-      </c>
-       .
+    <returns><c>true</c> if the string is a valid URI with a scheme component; otherwise,
+      <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Rdf.URIUtility.isValidCurieReference(System.String,System.Int32,System.Int32)'>
@@ -4401,12 +4057,8 @@
     <param name='length'>The number of elements in the desired portion of "s" (but not more than
       "s" 's length).
     </param>
-    <returns><c>true
-      </c>
-       if the substring is a valid CURIE reference under RDFA 1; otherwise,
-      <c>false
-      </c>
-       . Returns false if
+    <returns><c>true</c> if the substring is a valid CURIE reference under RDFA 1; otherwise,
+      <c>false</c> . Returns false if
       <paramref name='s'/>
        is null.
     </returns>
@@ -4429,14 +4081,10 @@
     <summary>Resolves a URI or IRI relative to another URI or IRI.
     </summary>
     <param name='refValue'>A string representing a URI or IRI reference. Example:
-      <c>dir/file.txt
-      </c>
-       .
+      <c>dir/file.txt</c> .
     </param>
     <param name='baseURI'>A string representing an absolute URI reference. Example:
-      <c>http://example.com/my/path/
-      </c>
-       .
+      <c>http://example.com/my/path/</c> .
     </param>
     <returns>The resolved IRI, or null if
       <paramref name='refValue'/>
@@ -4448,14 +4096,10 @@
     <summary>Resolves a URI or IRI relative to another URI or IRI.
     </summary>
     <param name='refValue'>A string representing a URI or IRI reference. Example:
-      <c>dir/file.txt
-      </c>
-       .
+      <c>dir/file.txt</c> .
     </param>
     <param name='baseURI'>A string representing an absolute URI reference. Example:
-      <c>http://example.com/my/path/
-      </c>
-       .
+      <c>http://example.com/my/path/</c> .
     </param>
     <param name='parseMode'>Parse mode that specifies whether certain characters are allowed when
       parsing IRIs and URIs.
@@ -4607,18 +4251,10 @@
       </para>
       <para>A domain name is divided into one or more strings separated by dots
         ("."), called
-        <b>labels
-        </b>
-         . For IDNA2008's purposes, a valid label can be an
-        <b>NR-LDH label
-        </b>
-         , an
-        <b>A-label
-        </b>
-         , or a
-        <b>U-label
-        </b>
-         .
+        <b>labels</b> . For IDNA2008's purposes, a valid label can be an
+        <b>NR-LDH label</b> , an
+        <b>A-label</b> , or a
+        <b>U-label</b> .
       </para>
       <para>An LDH label contains only basic letters, basic digits, and/or "-", and
         neither begins nor ends with "-". For example, "exa-mple" and "1example"
@@ -4639,12 +4275,8 @@
       </para>
       <para>NOTICE: While this class's source code is in the public domain, the
         class uses two internal classes, called
-        <c>NormalizationData
-        </c>
-         and
-        <c>IdnaData
-        </c>
-         , that include data derived from the Unicode Character Database. See
+        <c>NormalizationData</c> and
+        <c>IdnaData</c> , that include data derived from the Unicode Character Database. See
         the documentation for the NormalizerInput class for the permission
         notice for the Unicode Character Database.
       </para>
@@ -4707,9 +4339,7 @@
       If false, uses rules to apply when registering the string as a domain
       name.
     </param>
-    <returns><c>true
-      </c>
-       if the given string is a syntactically valid domain name; otherwise;
+    <returns><c>true</c> if the given string is a syntactically valid domain name; otherwise;
       false.
     </returns>
   </doc>
@@ -4749,9 +4379,7 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Text.Normalizer.#ctor(System.String,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.Normalizer'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.Normalizer'/> class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -4771,15 +4399,9 @@
       <paramref name='form'/>
        is a Normalization object.
     </param>
-    <returns><c>true
-      </c>
-       if this string is normalized; otherwise,
-      <c>false
-      </c>
-      . Returns
-      <c>false
-      </c>
-       if the string contains an unpaired surrogate code point.
+    <returns><c>true</c> if this string is normalized; otherwise,
+      <c>false</c> . Returns
+      <c>false</c> if the string contains an unpaired surrogate code point.
     </returns>
   </doc>
   <doc name='M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)'>
@@ -4822,7 +4444,7 @@
       <paramref name='index'/>
        is less than
       <paramref name='length'/>
-      .
+       .
     </exception>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
@@ -4849,43 +4471,31 @@
         equivalent to the uncombined form (E plus acute). For this reason, the
         standard defines four
         <i>
-          normalization forms
+           normalization forms
         </i>
          that convert strings to a single equivalent form:
       </para>
       <list>
-        <item><b>NFD
-          </b>
-           (Normalization Form D) decomposes combined forms to their constituent
+        <item><b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent
           characters (E plus acute, for example), then reorders combining marks
           to a standardized order. This is called canonical decomposition.
         </item>
-        <item><b>NFC
-          </b>
-           does canonical decomposition, then combines certain constituent
+        <item><b>NFC</b> does canonical decomposition, then combines certain constituent
           characters to their composites (E-acute, for example). This is called
           canonical composition.
         </item>
         <item>Two normalization forms,
-          <b>NFKC
-          </b>
-           and
-          <b>NFKD
-          </b>
-          , are similar to NFC and NFD, except they also "decompose" certain
+          <b>NFKC</b> and
+          <b>NFKD</b> , are similar to NFC and NFD, except they also "decompose" certain
           characters, such as ligatures, font or positional variants, and
           subscripts, whose visual distinction can matter in some contexts. This
           is called compatibility decomposition.
         </item>
       </list>
       <para>For more information, see Standard Annex 15 at
-        <c>http://www.unicode.org/reports/tr15/
-        </c>
-        .
+        <c>http://www.unicode.org/reports/tr15/</c> .
       </para>
-      <para><b>Thread safety:
-        </b>
-         This class is mutable; its properties can be changed. None of its
+      <para><b>Thread safety:</b> This class is mutable; its properties can be changed. None of its
         instance methods are designed to be thread safe. Therefore, access to
         objects from this class must be synchronized if multiple threads can
         access them at the same time.
@@ -4933,9 +4543,7 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizerInput'/>
-       class using Normalization Form C.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class.
     </summary>
     <param name='input'>The parameter
       <paramref name='input'/>
@@ -4943,15 +4551,15 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizerInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class.
     </summary>
     <param name='stream'>The parameter
       <paramref name='stream'/>
        is an ICharacterInput object.
     </param>
-    <param name='form'>Specifies the normalization form to use when normalizing the text.
+    <param name='form'>The parameter
+      <paramref name='form'/>
+       is a Normalization object.
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='stream'/>
@@ -4959,45 +4567,43 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizerInput'/>
-       class using Normalization Form C.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class.
     </summary>
-    <param name='str'>A string specifying the text to normalize.
+    <param name='str'>The parameter
+      <paramref name='str'/>
+       is a text string.
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizerInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
        is a text string.
     </param>
-    <param name='form'>Specifies the normalization form to use when normalizing the text.
+    <param name='form'>The parameter
+      <paramref name='form'/>
+       is a Normalization object.
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizerInput'/>
-       class. Uses a portion of a string as the input.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
        is a text string.
     </param>
-    <param name='index'>A zero-based index showing where the desired portion of
-      <paramref name='str'/>
-       begins.
+    <param name='index'>The parameter
+      <paramref name='index'/>
+       is a 32-bit signed integer.
     </param>
-    <param name='length'>The number of elements in the desired portion of
-      <paramref name='str'/>
-       (but not more than
-      <paramref name='str'/>
-       's length).
+    <param name='length'>The parameter
+      <paramref name='length'/>
+       is a 32-bit signed integer.
     </param>
-    <param name='form'>Specifies the normalization form to use when normalizing the text.
+    <param name='form'>The parameter
+      <paramref name='form'/>
+       is a Normalization object.
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)'>
@@ -5007,12 +4613,8 @@
     </param>
     <param name='form'>Specifies the normalization form to check.
     </param>
-    <returns><c>true
-      </c>
-       if the text is normalized; otherwise,
-      <c>false
-      </c>
-      .
+    <returns><c>true</c> if the text is normalized; otherwise,
+      <c>false</c> .
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
@@ -5027,16 +4629,10 @@
     </param>
     <param name='form'>Specifies the normalization form to use when normalizing the text.
     </param>
-    <returns><c>true
-      </c>
-       if the given string is in the given Unicode normalization form;
+    <returns><c>true</c> if the given string is in the given Unicode normalization form;
       otherwise,
-      <c>false
-      </c>
-      . Returns
-      <c>false
-      </c>
-       if the string contains an unpaired surrogate code point.
+      <c>false</c> . Returns
+      <c>false</c> if the string contains an unpaired surrogate code point.
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='str'/>
@@ -5097,7 +4693,7 @@
       <paramref name='index'/>
        is less than
       <paramref name='length'/>
-      .
+       .
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.ReadChar'>
@@ -5114,38 +4710,26 @@
         Normalizer class, except it implements the ICharacterInput interface.
       </para>
       <list>
-        <item><b>NFD
-          </b>
-           (Normalization Form D) decomposes combined forms to their constituent
+        <item><b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent
           characters (E plus acute, for example), then reorders combining marks
           to a standardized order. This is called canonical decomposition.
         </item>
-        <item><b>NFC
-          </b>
-           does canonical decomposition, then combines certain constituent
+        <item><b>NFC</b> does canonical decomposition, then combines certain constituent
           characters to their composites (E-acute, for example). This is called
           canonical composition.
         </item>
         <item>Two normalization forms,
-          <b>NFKC
-          </b>
-           and
-          <b>NFKD
-          </b>
-          , are similar to NFC and NFD, except they also "decompose" certain
+          <b>NFKC</b> and
+          <b>NFKD</b> , are similar to NFC and NFD, except they also "decompose" certain
           characters, such as ligatures, font or positional variants, and
           subscripts, whose visual distinction can matter in some contexts. This
           is called compatibility decomposition.
         </item>
       </list>
       <para>For more information, see Standard Annex 15 at
-        <c>http://www.unicode.org/reports/tr15/
-        </c>
-        .
+        <c>http://www.unicode.org/reports/tr15/</c> .
       </para>
-      <para><b>Thread safety:
-        </b>
-         This class is mutable; its properties can be changed. None of its
+      <para><b>Thread safety:</b> This class is mutable; its properties can be changed. None of its
         instance methods are designed to be thread safe. Therefore, access to
         objects from this class must be synchronized if multiple threads can
         access them at the same time.
@@ -5193,23 +4777,19 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizingCharacterInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.
     </summary>
     <param name='input'>The parameter
       <paramref name='input'/>
-       is a public object.
+       is an ICharacterInput object.
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizingCharacterInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.
     </summary>
     <param name='stream'>The parameter
       <paramref name='stream'/>
-       is a public object.
+       is an ICharacterInput object.
     </param>
     <param name='form'>The parameter
       <paramref name='form'/>
@@ -5217,9 +4797,7 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizingCharacterInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.
     </summary>
     <param name='characterList'>The parameter
       <paramref name='characterList'/>
@@ -5227,13 +4805,11 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizingCharacterInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.
     </summary>
     <param name='characterList'>The parameter
       <paramref name='characterList'/>
-       is a public object.
+       is an IList object.
     </param>
     <param name='form'>The parameter
       <paramref name='form'/>
@@ -5241,9 +4817,7 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizingCharacterInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -5251,9 +4825,7 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizingCharacterInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -5265,17 +4837,15 @@
     </param>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='str'/>
-       or "input" or "charArray" is null.
+       is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the
-      <see cref='T:PeterO.Text.NormalizingCharacterInput'/>
-       class.
+    <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
-       is a public object.
+       is a text string.
     </param>
     <param name='index'>The parameter
       <paramref name='index'/>
@@ -5328,12 +4898,8 @@
     </param>
     <param name='form'>Specifies the normalization form to check.
     </param>
-    <returns><c>true
-      </c>
-       if the text is normalized; otherwise,
-      <c>false
-      </c>
-      .
+    <returns><c>true</c> if the text is normalized; otherwise,
+      <c>false</c> .
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
@@ -5348,13 +4914,9 @@
     </param>
     <param name='form'>Specifies the normalization form to use when normalizing the text.
     </param>
-    <returns><c>true
-      </c>
-       if the given list of characters is in the given Unicode normalization
+    <returns><c>true</c> if the given list of characters is in the given Unicode normalization
       form; otherwise,
-      <c>false
-      </c>
-       .
+      <c>false</c> .
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='charList'/>
@@ -5369,13 +4931,9 @@
     </param>
     <param name='form'>Specifies the normalization form to use when normalizing the text.
     </param>
-    <returns><c>true
-      </c>
-       if the given list of characters is in the given Unicode normalization
+    <returns><c>true</c> if the given list of characters is in the given Unicode normalization
       form; otherwise,
-      <c>false
-      </c>
-       .
+      <c>false</c> .
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter "charList" is null.
     </exception>
@@ -5388,16 +4946,10 @@
     </param>
     <param name='form'>Specifies the normalization form to use when normalizing the text.
     </param>
-    <returns><c>true
-      </c>
-       if the given string is in the given Unicode normalization form;
+    <returns><c>true</c> if the given string is in the given Unicode normalization form;
       otherwise,
-      <c>false
-      </c>
-      . Returns
-      <c>false
-      </c>
-       if the string contains an unpaired surrogate code point.
+      <c>false</c> . Returns
+      <c>false</c> if the string contains an unpaired surrogate code point.
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='str'/>
@@ -5458,7 +5010,7 @@
       <paramref name='index'/>
        is less than
       <paramref name='length'/>
-      .
+       .
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.ReadChar'>
@@ -5488,9 +5040,9 @@
         </item>
         <item>The methods in this class are not well suited for
           <i>
-            collation
+             collation
           </i>
-          , or lexicographic ordering, which is a comparison of text strings
+           , or lexicographic ordering, which is a comparison of text strings
           that is usually language-dependent and goes beyond equality
           comparison. Further discussion on collation can be found in Unicode
           Technical Standard 10 (UTS 10), "Unicode Collation Algorithm".
@@ -5514,16 +5066,10 @@
     </summary>
     <param name='str'>A string to check.
     </param>
-    <returns><c>true
-      </c>
-       if the given string is empty or contains only characters allowed in RFC
+    <returns><c>true</c> if the given string is empty or contains only characters allowed in RFC
       8264's FreeformClass (in the contexts required); otherwise,
-      <c>false
-      </c>
-      . Returns
-      <c>false
-      </c>
-       if
+      <c>false</c> . Returns
+      <c>false</c> if
       <paramref name='str'/>
        is null.
     </returns>
@@ -5536,16 +5082,10 @@
     </summary>
     <param name='str'>A string to check.
     </param>
-    <returns><c>true
-      </c>
-       if the given string is empty or contains only characters allowed in RFC
+    <returns><c>true</c> if the given string is empty or contains only characters allowed in RFC
       8264's FreeformClass (in the contexts required); otherwise,
-      <c>false
-      </c>
-      . Returns
-      <c>false
-      </c>
-       if
+      <c>false</c> . Returns
+      <c>false</c> if
       <paramref name='str'/>
        is null.
     </returns>

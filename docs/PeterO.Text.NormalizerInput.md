@@ -5,15 +5,15 @@
 
 A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
-The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines four<i>normalization forms</i> that convert strings to a single equivalent form:
+The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines four<i>normalization forms</i>that convert strings to a single equivalent form:
 
  * <b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent characters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
 
  * <b>NFC</b> does canonical decomposition, then combines certain constituent characters to their composites (E-acute, for example). This is called canonical composition.
 
- * Two normalization forms, <b>NFKC</b> and <b>NFKD</b>, are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
+ * Two normalization forms,<b>NFKC</b> and<b>NFKD</b> , are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
 
-For more information, see Standard Annex 15 at `http://www.unicode.org/reports/tr15/` .
+For more information, see Standard Annex 15 at `http://www.unicode.org/reports/tr15/`  .
 
 <b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
@@ -42,12 +42,12 @@ Except as contained in this notice, the name of a copyright holder shall not be 
     public NormalizerInput(
         PeterO.Text.ICharacterInput input);
 
-Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
 <b>Parameters:</b>
 
- * <i>input</i>: The parameter  <i>input</i>
- is an ICharacterInput object.
+ * <i>input</i>: The parameter <i>input</i>
+is an ICharacterInput object.
 
 <a id="Void_ctor_ICharacterInput_Normalization"></a>
 ### NormalizerInput Constructor
@@ -60,16 +60,17 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
 <b>Parameters:</b>
 
- * <i>stream</i>: The parameter  <i>stream</i>
- is an ICharacterInput object.
+ * <i>stream</i>: The parameter <i>stream</i>
+is an ICharacterInput object.
 
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>stream</i>
- is null.
+is null.
 
 <a id="Void_ctor_String"></a>
 ### NormalizerInput Constructor
@@ -77,11 +78,12 @@ The parameter <i>stream</i>
     public NormalizerInput(
         string str);
 
-Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string specifying the text to normalize.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
 <a id="Void_ctor_String_Int32_Int32_Normalization"></a>
 ### NormalizerInput Constructor
@@ -92,21 +94,21 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
         int length,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class. Uses a portion of a string as the input.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
- * <i>index</i>: A zero-based index showing where the desired portion of  <i>str</i>
- begins.
+ * <i>index</i>: The parameter <i>index</i>
+is a 32-bit signed integer.
 
- * <i>length</i>: The number of elements in the desired portion of  <i>str</i>
- (but not more than  <i>str</i>
-'s length).
+ * <i>length</i>: The parameter <i>length</i>
+is a 32-bit signed integer.
 
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 <a id="Void_ctor_String_Normalization"></a>
 ### NormalizerInput Constructor
@@ -119,10 +121,11 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
 <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: The parameter <i>str</i>
+is a text string.
 
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
+ * <i>form</i>: The parameter <i>form</i>
+is a Normalization object.
 
 <a id="IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>
 ### IsNormalized
@@ -141,13 +144,13 @@ Determines whether the text provided by a character input is normalized.
 
 <b>Return Value:</b>
 
- `true`  if the text is normalized; otherwise,  `false` .
+ `true`  if the text is normalized; otherwise, `false`  .
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
- is null.
+is null.
 
 <a id="IsNormalized_string_PeterO_Text_Normalization"></a>
 ### IsNormalized
@@ -166,13 +169,13 @@ Determines whether the given string is in the given Unicode normalization form.
 
 <b>Return Value:</b>
 
- `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns  `false` if the string contains an unpaired surrogate code point.
+ `true`  if the given string is in the given Unicode normalization form; otherwise, `false`  . Returns `false`  if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="Normalize_string_PeterO_Text_Normalization"></a>
 ### Normalize
@@ -191,18 +194,18 @@ Converts a string to the given Unicode normalization form.
 
 <b>Return Value:</b>
 
-The parameter  <i>str</i>
- converted to the given normalization form.
+The parameter <i>str</i>
+converted to the given normalization form.
 
 <b>Exceptions:</b>
 
  * System.ArgumentException:
 The parameter <i>str</i>
- contains an unpaired surrogate code point.
+contains an unpaired surrogate code point.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
+is null.
 
 <a id="Read_int_int_int"></a>
 ### Read
@@ -218,12 +221,12 @@ Reads a sequence of Unicode code points from a data source.
 
  * <i>chars</i>: Output buffer.
 
- * <i>index</i>: A zero-based index showing where the desired portion of  <i>chars</i>
- begins.
+ * <i>index</i>: A zero-based index showing where the desired portion of <i>chars</i>
+begins.
 
- * <i>length</i>: The number of elements in the desired portion of  <i>chars</i>
- (but not more than  <i>chars</i>
- 's length).
+ * <i>length</i>: The number of elements in the desired portion of <i>chars</i>
+(but not more than <i>chars</i>
+'s length).
 
 <b>Return Value:</b>
 
@@ -233,15 +236,15 @@ The number of Unicode code points read, or 0 if the end of the source is reached
 
  * System.ArgumentNullException:
 The parameter <i>chars</i>
- is null.
+is null.
 
  * System.ArgumentException:
-Either  <i>index</i>
- or  <i>length</i>
- is less than 0 or greater than  <i>chars</i>
- 's length, or  <i>chars</i>
- ' s length minus  <i>index</i>
- is less than  <i>length</i>
+Either <i>index</i>
+or <i>length</i>
+is less than 0 or greater than <i>chars</i>
+'s length, or <i>chars</i>
+' s length minus <i>index</i>
+is less than <i>length</i>
 .
 
 <a id="ReadChar"></a>

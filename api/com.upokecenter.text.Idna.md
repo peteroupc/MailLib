@@ -1,6 +1,6 @@
 # com.upokecenter.text.Idna
 
-    public final class Idna extends Object
+    public final class Idna extends java.lang.Object
 
 <p>Contains methods that implement Internationalized Domain Names in
  Applications (IDNA). IDNA enables using a wider range of letters,
@@ -9,9 +9,9 @@
  <p>The following summarizes the rules for domain names in IDNA2008;
  see RFC5890 for more information and additional terminology. </p>
  <p>A domain name is divided into one or more strings separated by
- dots ("."), called <b>labels</b> . For IDNA2008's purposes, a valid
- label can be an <b>NR-LDH label</b> , an <b>A-label</b> , or a
- <b>U-label</b> . </p> <p>An LDH label contains only basic letters,
+ dots ("."), called <b>labels </b> . For IDNA2008's purposes, a valid
+ label can be an <b>NR-LDH label </b> , an <b>A-label </b> , or a
+ <b>U-label </b> . </p> <p>An LDH label contains only basic letters,
  basic digits, and/or "-", and neither begins nor ends with "-". For
  example, "exa-mple" and "1example" are LDH labels, but not
  "-example". </p> <p>An NR-LDH label is an LDH label whose third and
@@ -24,19 +24,19 @@
  example is "xn--e-ufa". </p> <p>An XN-label is an LDH label beginning
  with "xn--" in any combination of case. </p> <p>NOTICE: While this
  class's source code is in the public domain, the class uses two
- internal classes, called <code>NormalizationData</code> and <code>IdnaData</code>
- , that include data derived from the Unicode Character Database. See
- the documentation for the NormalizerInput class for the permission
- notice for the Unicode Character Database. </p>
+ internal classes, called <code>NormalizationData </code> and <code>IdnaData
+ </code> , that include data derived from the Unicode Character Database.
+ See the documentation for the NormalizerInput class for the
+ permission notice for the Unicode Character Database. </p>
 
 ## Methods
 
-* `static String DecodeDomainName​(String value)`<br>
+* `static java.lang.String DecodeDomainName​(java.lang.String value)`<br>
  Tries to encode each XN-label of the given domain name into Unicode.
-* `static String EncodeDomainName​(String value)`<br>
+* `static java.lang.String EncodeDomainName​(java.lang.String value)`<br>
  Tries to encode each label of a domain name with code points outside the
  Basic Latin range (U + 0000 to U + 007F) into an XN-label.
-* `static boolean IsValidDomainName​(String str,
+* `static boolean IsValidDomainName​(java.lang.String str,
                  boolean lookupRules)`<br>
  Determines whether the given string is a domain name containing only
  U-labels, A-labels, NR-LDH labels, or any combination of these,
@@ -45,7 +45,7 @@
 ## Method Details
 
 ### DecodeDomainName
-    public static String DecodeDomainName​(String value)
+    public static java.lang.String DecodeDomainName​(java.lang.String value)
 Tries to encode each XN-label of the given domain name into Unicode. This
  method does not check the syntactic validity of the domain name
  before proceeding.
@@ -61,10 +61,10 @@ Tries to encode each XN-label of the given domain name into Unicode. This
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>value</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>value</code> is null.
 
 ### EncodeDomainName
-    public static String EncodeDomainName​(String value)
+    public static java.lang.String EncodeDomainName​(java.lang.String value)
 Tries to encode each label of a domain name with code points outside the
  Basic Latin range (U + 0000 to U + 007F) into an XN-label. This method
  does not check the syntactic validity of the domain name before
@@ -82,10 +82,10 @@ Tries to encode each label of a domain name with code points outside the
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>value</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>value</code> is null.
 
 ### IsValidDomainName
-    public static boolean IsValidDomainName​(String str, boolean lookupRules)
+    public static boolean IsValidDomainName​(java.lang.String str, boolean lookupRules)
 Determines whether the given string is a domain name containing only
  U-labels, A-labels, NR-LDH labels, or any combination of these,
  separated by dots (".").

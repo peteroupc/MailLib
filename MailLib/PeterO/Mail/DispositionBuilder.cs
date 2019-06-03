@@ -28,18 +28,15 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Initializes a new instance of the DispositionBuilder
-    /// class.</summary>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor"]/*'/>
     public DispositionBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "attachment";
     }
 
-    /// <summary>Initializes a new instance of the
-    /// <see cref='DispositionBuilder'/> class.</summary>
-    /// <param name='mt'>A ContentDisposition object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='mt'/> is null.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)"]/*'/>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
@@ -48,11 +45,8 @@ namespace PeterO.Mail {
       this.type = mt.DispositionType;
     }
 
-    /// <summary>Initializes a new instance of the
-    /// <see cref='DispositionBuilder'/> class.</summary>
-    /// <param name='type'>A string object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='type'/> is null.</exception>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(System.String)"]/*'/>
     public DispositionBuilder(string type) {
       if (type == null) {
   throw new ArgumentNullException(nameof(type));

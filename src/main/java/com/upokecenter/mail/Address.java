@@ -148,12 +148,14 @@ void AppendThisAddress(HeaderEncoder encoder) {
       }
 
     /**
-     * Initializes a new instance of the {@link Address} class.
-     * @param addressValue A string object.
-     * @throws NullPointerException The parameter {@code addressValue} is null.
-     * @throws IllegalArgumentException AddressValue is empty.; Address doesn't contain a
-     * '@' sign; Invalid local part; Expected '@' sign after local part;
-     * Expected domain after '@'; Invalid domain; Address too long.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Address}
+     * class.
+     * @param addressValue The parameter {@code addressValue} is a text string.
+     * @throws java.lang.NullPointerException The parameter {@code addressValue} is
+     * null.
+     * @throws IllegalArgumentException AddressValue is empty.; Address doesn't
+     * contain a '@' sign; Invalid local part; Expected '@' sign after local
+     * part; Expected domain after '@'; Invalid domain; Address too long.
      */
     public Address(String addressValue) {
       if (addressValue == null) {

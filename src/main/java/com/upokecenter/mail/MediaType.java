@@ -14,22 +14,22 @@ import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
     /**
-     * <p>Specifies what kind of data a message body is.</p> <p>A media type
+     * <p>Specifies what kind of data a message body is. </p> <p>A media type
      * consists of a top-level type (the general category of the data), a
      * subtype (the specific type), and an optional list of parameters. For
-     * example, the media type <code>text/plain; charset = utf-8</code> is a text
+     * example, the media type <code>text/plain; charset = utf-8 </code> is a text
      * media type ("text"), namely, a plain text type ("plain"), and the
      * parameters say that the data uses UTF-8, a Unicode character encoding
      * ("charset = utf-8"). Other top-level types include "audio", "video",
-     * and "application".</p> <p>A media type is sometimes known as a "MIME
+     * and "application". </p> <p>A media type is sometimes known as a "MIME
      * type", for Multipurpose Internet Mail Extensions, the standard that
-     * introduced media types.</p> <p>This type is immutable, meaning its
+     * introduced media types. </p> <p>This type is immutable, meaning its
      * values can't be changed once it' s created. To create a changeable
-     * media type object, use the MediaTypeBuilder class.</p>
-     * <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
-     * top-level type <code>multipart</code> must be treated as
-     * <code>multipart/mixed</code> and unrecognized media types as the media type
-     * <code>application/octet-stream</code>.</p>
+     * media type object, use the MediaTypeBuilder class. </p> <p><b>Note:
+     * </b> According to RFC 2049, unrecognized subtypes of the top-level
+     * type <code>multipart </code> must be treated as <code>multipart/mixed </code> and
+     * unrecognized media types as the media type
+     * <code>application/octet-stream </code> . </p>
      */
   public final class MediaType {
     // Printable ASCII characters that cannot appear in a
@@ -58,7 +58,7 @@ import com.upokecenter.text.*;
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
@@ -118,7 +118,7 @@ import com.upokecenter.text.*;
     /**
      * Gets a value indicating whether this is a multipart media type.
      * @return {@code true} If this is a multipart media type; otherwise, . {@code
-     * false}.
+     * false} .
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
@@ -791,7 +791,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Nov. 21, 2018, are listed below:
+      // May 30, 2019, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -799,7 +799,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // and don't permit a charset parameter, so a default charset is
       // irrelevant:
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
-      // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
+      // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback, flexfec
       //
       // Charset determined out-of-band:
       // -- vnd.motorola.reflex*(5)*(10)
@@ -889,32 +889,52 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       if (this.isText()) {
         String sub = this.getSubType();
         // Media types that assume a default of US-ASCII
-        if (sub.equals("plain") || sub.equals("sgml") ||
-          sub.equals("troff") || sub.equals("dns") ||
-            sub.equals("mizar") || sub.equals("prs.prop.logic") ||
-            sub.equals("vnd.ascii-art") || sub.equals("vnd.dmclientscript") ||
-            sub.equals("prs.lines.tag") || sub.equals("vnd.latex-z") ||
-            sub.equals("rfc822-headers") || sub.equals("vnd.dvb.subtitle") ||
-            sub.equals("vnd.fly") || sub.equals("directory") ||
-          sub.equals("css") || sub.equals("richtext") ||
-              sub.equals("enriched") || sub.equals("tab-separated-values") ||
-              sub.equals("vnd.in3d.spot") || sub.equals("vnd.abc") ||
-            sub.equals("vnd.wap.wmlscript") || sub.equals("vnd.curl") ||
-              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list") ||
-              sub.equals("vnd.si.uricatalogue")) {
+        if (sub.equals("plain") ||
+sub.equals("sgml") ||
+sub.equals("troff") ||
+sub.equals("dns") ||
+sub.equals("mizar") ||
+sub.equals("prs.prop.logic") ||
+sub.equals("vnd.ascii-art") ||
+sub.equals("vnd.dmclientscript") ||
+sub.equals("prs.lines.tag") ||
+sub.equals("vnd.latex-z") ||
+sub.equals("rfc822-headers") ||
+sub.equals("vnd.dvb.subtitle") ||
+sub.equals("vnd.fly") ||
+sub.equals("directory") ||
+sub.equals("css") ||
+sub.equals("richtext") ||
+sub.equals("enriched") ||
+sub.equals("tab-separated-values") ||
+sub.equals("vnd.in3d.spot") ||
+sub.equals("vnd.abc") ||
+sub.equals("vnd.wap.wmlscript") ||
+sub.equals("vnd.curl") ||
+sub.equals("vnd.fmi.flexstor") ||
+sub.equals("uri-list") ||
+sub.equals("vnd.si.uricatalogue")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
-        if (sub.equals("vcard") || sub.equals("jcr-cnd") ||
-          sub.equals("n3") || sub.equals("turtle") ||
-  sub.equals("strings") || sub.equals("vnd.debian.copyright") ||
-              sub.equals("provenance-notation") || sub.equals("csv") ||
-   sub.equals("calendar") || sub.equals("vnd.a") ||
-              sub.equals("parameters") || sub.equals("prs.fallenstein.rst") ||
-              sub.equals("vnd.esmertec.theme.descriptor") ||
-            sub.equals("vnd.trolltech.linguist") || sub.equals("csv-schema") ||
-              sub.equals("vnd.graphviz") || sub.equals("cache-manifest") ||
-              sub.equals("vnd.sun.j2me.app-descriptor")) {
+        if (sub.equals("vcard") ||
+sub.equals("jcr-cnd") ||
+sub.equals("n3") ||
+sub.equals("turtle") ||
+sub.equals("strings") ||
+sub.equals("vnd.debian.copyright") ||
+sub.equals("provenance-notation") ||
+sub.equals("csv") ||
+sub.equals("calendar") ||
+sub.equals("vnd.a") ||
+sub.equals("parameters") ||
+sub.equals("prs.fallenstein.rst") ||
+sub.equals("vnd.esmertec.theme.descriptor") ||
+sub.equals("vnd.trolltech.linguist") ||
+sub.equals("csv-schema") ||
+sub.equals("vnd.graphviz") ||
+sub.equals("cache-manifest") ||
+sub.equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
@@ -1374,9 +1394,9 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
      * (except for illegal percent-decoding or undecodable sequences for the
      * given character encoding). Examples of RFC 2231 extensions follow
      * (both examples encode the same "filename" parameter): </p>
-     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
+     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt </b> </p>
      * <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+     * filename&#x2a;1&#x2a;=name%2Etxt </b> </p> <p>This implementation
      * ignores keys (in parameter key-value pairs) that appear more than
      * once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
      * 7231 explicitly disallows such keys, or otherwise specifies

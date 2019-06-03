@@ -55,7 +55,10 @@ import com.upokecenter.mail.*;
   IByteReader input,
   boolean allowBareLfCr) {
  this(
-  input, allowBareLfCr, MaxLineLength, false);
+  input,
+  allowBareLfCr,
+  MaxLineLength,
+  false);
     }
 
     public QuotedPrintableTransform(
@@ -63,7 +66,10 @@ import com.upokecenter.mail.*;
   boolean allowBareLfCr,
   int maxLineLength) {
  this(
-  input, allowBareLfCr, maxLineLength, false);
+  input,
+  allowBareLfCr,
+  maxLineLength,
+  false);
     }
 
     private void ResizeBuffer(int size) {

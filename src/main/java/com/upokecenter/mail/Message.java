@@ -138,9 +138,10 @@ import com.upokecenter.text.*;
     private int transferEncoding;
 
     /**
-     * Initializes a new instance of the {@link Message} class.
-     * @param stream A InputStream object.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class.
+     * @param stream The parameter {@code stream} is a InputStream object.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public Message(InputStream stream) {
       if (stream == null) {
@@ -154,9 +155,10 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Initializes a new instance of the {@link Message} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class.
      * @param bytes A byte array.
-     * @throws NullPointerException The parameter {@code bytes} is null.
+     * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
      */
     public Message(byte[] bytes) {
       if (bytes == null) {
@@ -170,7 +172,7 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Initializes a new instance of the Message class.
+     * Initializes a new instance of the {@link Message} class.
      */
     public Message() {
       this.headers = new ArrayList<String>();

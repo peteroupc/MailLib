@@ -1,21 +1,21 @@
 # com.upokecenter.text.Normalizer
 
-    @Deprecated public final class Normalizer extends Object
+    @Deprecated public final class Normalizer extends java.lang.Object
 
 Deprecated.
-<div class='deprecationComment'>Use NormalizerInput instead; that class is much more flexible than
- Normalizer.</div>
+Use NormalizerInput instead; that class is much more flexible than
+ Normalizer.
 
 ## Methods
 
-* `Normalizer​(String str,
+* `Normalizer​(java.lang.String str,
           Normalization form) Normalizer`<br>
  Deprecated. Initializes a new instance of the Normalizer
  class.
-* `static boolean IsNormalized​(String str,
+* `static boolean IsNormalized​(java.lang.String str,
             Normalization form)`<br>
  Deprecated. Returns whether this string is normalized.
-* `static String Normalize​(String str,
+* `static java.lang.String Normalize​(java.lang.String str,
          Normalization form)`<br>
  Deprecated. Converts a string to the given Unicode normalization form.
 * `int Read​(int[] chars,
@@ -27,7 +27,7 @@ Deprecated.
 
 ## Constructors
 
-* `Normalizer​(String str,
+* `Normalizer​(java.lang.String str,
           Normalization form) Normalizer`<br>
  Deprecated. Initializes a new instance of the Normalizer
  class.
@@ -35,7 +35,7 @@ Deprecated.
 ## Method Details
 
 ### Normalizer
-    public Normalizer​(String str, Normalization form)
+    public Normalizer​(java.lang.String str, Normalization form)
 Deprecated.
 
 **Parameters:**
@@ -45,7 +45,7 @@ Deprecated.
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### Normalizer
-    public Normalizer​(String str, Normalization form)
+    public Normalizer​(java.lang.String str, Normalization form)
 Deprecated.
 
 **Parameters:**
@@ -55,7 +55,7 @@ Deprecated.
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### Normalize
-    public static String Normalize​(String str, Normalization form)
+    public static java.lang.String Normalize​(java.lang.String str, Normalization form)
 Deprecated.
 
 **Parameters:**
@@ -70,10 +70,10 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
-    public static boolean IsNormalized​(String str, Normalization form)
+    public static boolean IsNormalized​(java.lang.String str, Normalization form)
 Deprecated.
 
 **Parameters:**
@@ -84,8 +84,8 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> if this string is normalized; otherwise, <code>false</code>.
- Returns <code>false</code> if the string contains an unpaired surrogate
+* <code>true</code> if this string is normalized; otherwise, <code>false</code>
+ . Returns <code>false</code> if the string contains an unpaired surrogate
  code point.
 
 ### ReadChar
@@ -116,8 +116,8 @@ Deprecated.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
  less than 0 or greater than <code>chars</code> 's length, or <code>chars</code>
- ' s length minus <code>index</code> is less than <code>length</code>.
+ ' s length minus <code>index</code> is less than <code>length</code> .
 
-* <code>NullPointerException</code> - The parameter <code>chars</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.

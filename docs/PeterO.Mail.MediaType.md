@@ -10,7 +10,7 @@ A media type is sometimes known as a "MIME type", for Multipurpose Internet Mail
 
 This type is immutable, meaning its values can't be changed once it' s created. To create a changeable media type object, use the MediaTypeBuilder class.
 
-<b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type  `multipart`  must be treated as `multipart/mixed`  and unrecognized media types as the media type  `application/octet-stream` .
+<b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type `multipart`  must be treated as `multipart/mixed`  and unrecognized media types as the media type `application/octet-stream`  .
 
 ### Member Summary
 * <code>[public static readonly PeterO.Mail.MediaType ApplicationOctetStream;](#ApplicationOctetStream)</code> - Specifies the media type "application/octet-stream", used for arbitrary binary data.
@@ -70,7 +70,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise, . `false` .
+ `true`  If this is a multipart media type; otherwise, . `false`  .
 
 <a id="IsText"></a>
 ### IsText
@@ -81,7 +81,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 <b>Returns:</b>
 
- `true` If this is a text media type; otherwise, . `false` .
+ `true`  If this is a text media type; otherwise, . `false`  .
 
 <a id="Parameters"></a>
 ### Parameters
@@ -137,12 +137,12 @@ Determines whether this object and another object are equal.
 
 <b>Parameters:</b>
 
- * <i>obj</i>: The parameter  <i>obj</i>
- is an arbitrary object.
+ * <i>obj</i>: The parameter <i>obj</i>
+is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false` .
+ `true`  if this object and another object are equal; otherwise, `false`  .
 
 <a id="GetCharset"></a>
 ### GetCharset
@@ -186,7 +186,7 @@ The value of the parameter as a string, or null if the parameter doesn't exist.
 
  * System.ArgumentNullException:
 The parameter <i>name</i>
- is null.
+is null.
 
  * System.ArgumentException:
 Name is empty.
@@ -206,7 +206,7 @@ Parses a media type string and returns a media type object. For further informat
 <b>Return Value:</b>
 
 A media type object, or MediaType.TextPlainAscii if <i>mediaTypeValue</i>
- is empty or syntactically invalid.
+is empty or syntactically invalid.
 
 <a id="Parse_string_PeterO_Mail_MediaType"></a>
 ### Parse

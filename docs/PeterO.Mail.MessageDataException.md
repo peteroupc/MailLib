@@ -19,7 +19,8 @@ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail
 
 <b>Parameters:</b>
 
- * <i>message</i>: A string to use as the exception message.
+ * <i>message</i>: The parameter <i>message</i>
+is a text string.
 
 <a id="Void_ctor_String_Exception"></a>
 ### MessageDataException Constructor
@@ -32,10 +33,11 @@ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail
 
 <b>Parameters:</b>
 
- * <i>message</i>: A string to use as the exception message.
+ * <i>message</i>: The parameter <i>message</i>
+is a text string.
 
- * <i>innerException</i>: The parameter  <i>innerException</i>
- is an Exception object.
+ * <i>innerException</i>: The parameter <i>innerException</i>
+is an Exception object.
 
 <a id="Void_ctor"></a>
 ### MessageDataException Constructor

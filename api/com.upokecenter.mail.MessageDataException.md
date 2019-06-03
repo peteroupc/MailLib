@@ -1,6 +1,6 @@
 # com.upokecenter.mail.MessageDataException
 
-    public class MessageDataException extends RuntimeException
+    public class MessageDataException extends java.lang.RuntimeException
 
 Exception thrown when a message has invalid syntax.
 
@@ -8,18 +8,18 @@ Exception thrown when a message has invalid syntax.
 
 * `MessageDataException() MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException​(String message) MessageDataException`<br>
+* `MessageDataException​(java.lang.String message) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException​(String message,
-                    Throwable innerException) MessageDataException`<br>
+* `MessageDataException​(java.lang.String message,
+                    java.lang.Throwable innerException) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
 
 ## Constructors
 
 * `MessageDataException() MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException​(String message) MessageDataException`<br>
+* `MessageDataException​(java.lang.String message) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException​(String message,
-                    Throwable innerException) MessageDataException`<br>
+* `MessageDataException​(java.lang.String message,
+                    java.lang.Throwable innerException) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.

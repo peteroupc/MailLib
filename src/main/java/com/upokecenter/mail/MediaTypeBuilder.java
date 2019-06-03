@@ -41,7 +41,7 @@ public final void setSubType(String value) {
       }
 
     /**
-     * Initializes a new instance of the MediaTypeBuilder class.
+     * Initializes a new instance of the {@link MediaTypeBuilder} class.
      */
     public MediaTypeBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -50,9 +50,10 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link MediaTypeBuilder} class.
-     * @param mt A MediaType object.
-     * @throws NullPointerException The parameter {@code mt} is null.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class.
+     * @param mt The parameter {@code mt} is a MediaType object.
+     * @throws java.lang.NullPointerException The parameter {@code mt} is null.
      */
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
@@ -64,9 +65,10 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link MediaTypeBuilder} class.
-     * @param type A string object.
-     * @param subtype Another string object.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class.
+     * @param type The parameter {@code type} is a text string.
+     * @param subtype The parameter {@code subtype} is a text string.
      */
     public MediaTypeBuilder(String type, String subtype) {
       this.parameters = new HashMap<String, String>();

@@ -31,7 +31,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter <i>dateTime</i>
- is null or invalid, including if the year ( `dateTime[0]` ) is less than 0.
+is null or invalid, including if the year ( `dateTime[0]`  ) is less than 0.
 
 <a id="GenerateDateString_int_bool"></a>
 ### GenerateDateString
@@ -56,11 +56,11 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter <i>dateTime</i>
- is null or invalid, including if the year ( `dateTime[0]` ) is less than 0.
+is null or invalid, including if the year ( `dateTime[0]`  ) is less than 0.
 
  * System.NotSupportedException:
-The time zone offset is other than 0 and  <i>gmt</i>
- is true.
+The time zone offset is other than 0 and <i>gmt</i>
+is true.
 
 <a id="ParseDateString_string"></a>
 ### ParseDateString
@@ -72,12 +72,13 @@ Gets the date and time extracted from a date-time string following the Internet 
 
 <b>Parameters:</b>
 
- * <i>str</i>: String.
+ * <i>str</i>: The parameter <i>str</i>
+is not documented yet.
 
 <b>Return Value:</b>
 
-An 8-element array containing the date and time, or `null`  if  <i>str</i>
- is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
+An 8-element array containing the date and time, or `null`  if <i>str</i>
+is null, empty, or syntactically invalid, or if the string's year would verflow the range of a 32-bit signed integer.
 
 <a id="ParseDateString_string_bool"></a>
 ### ParseDateString
@@ -108,12 +109,12 @@ Gets the date and time extracted from a date-time string following the Internet 
 
  * <i>str</i>: A date-time string.
 
- * <i>parseObsoleteZones</i>: If set to  `true` , this method allows obsolete time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations) to appear in the date-time string.
+ * <i>parseObsoleteZones</i>: If set to `true`  , this method allows obsolete time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations) to appear in the date-time string.
 
 <b>Return Value:</b>
 
-An 8-element array containing the date and time, or `null`  if  <i>str</i>
- is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
+An 8-element array containing the date and time, or `null`  if <i>str</i>
+is null, empty, or syntactically invalid, or if the string's year would verflow the range of a 32-bit signed integer.
 
 <a id="ParseDateStringHttp_string"></a>
 ### ParseDateStringHttp
@@ -125,8 +126,8 @@ Parses a date string in one of the three formats allowed by HTTP/1.1.
 
 <b>Parameters:</b>
 
- * <i>v</i>: The parameter  <i>v</i>
- is not documented yet.
+ * <i>v</i>: The parameter <i>v</i>
+is not documented yet.
 
 <b>Return Value:</b>
 

@@ -577,7 +577,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
             indexTemp3 = index;
             do {
               indexStart3 = index;
-              for (i3 = 0; ; ++i3) {
+              for (i3 = 0; true; ++i3) {
                 indexTemp4 = HeaderParser.ParseFWS(str, index, endIndex, null);
                 if (indexTemp4 != index) {
                   index = indexTemp4;
@@ -772,12 +772,13 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         if (dow < 0 || month < 0) {
  return null;
 }
-    int year = ((v[index + 12] - '0') * 1000) + ((v[index + 13] - '0') *
-          100) + (v[index + 14] - '0') * 10 + (v[index + 15] - '0');
+    int year = ((v[index + 12] - '0') * 1000) +
+      ((v[index + 13] - '0') * 100) + ((v[index + 14] - '0') * 10) +
+      (v[index + 15] - '0');
         int hour = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
         int minute = ((v[index + 20] - '0') * 10) + (v[index + 21] - '0');
         int second = ((v[index + 23] - '0') * 10) + (v[index + 24] - '0');
-int[] ret = {year, month, day, hour, minute, second, 0, 0 };
+int[] ret = { year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // ASCTIME
@@ -808,12 +809,13 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
 }
         int day = (v[index + 8] == 32 ? 0 : (v[index + 8] - '0') * 10) +
           (v[index + 9] - '0');
-    int year = ((v[index + 20] - '0') * 1000) + ((v[index + 21] - '0') *
-          100) + (v[index + 22] - '0') * 10 + (v[index + 23] - '0');
+    int year = ((v[index + 20] - '0') * 1000) +
+      ((v[index + 21] - '0') * 100) + ((v[index + 22] - '0') * 10) +
+      (v[index + 23] - '0');
         int hour = ((v[index + 11] - '0') * 10) + (v[index + 12] - '0');
         int minute = ((v[index + 14] - '0') * 10) + (v[index + 15] - '0');
         int second = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
-int[] ret = {year, month, day, hour, minute, second, 0, 0 };
+int[] ret = { year, month, day, hour, minute, second, 0, 0 };
 return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // RFC 850
@@ -855,7 +857,7 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
-int[] ret = {year, month, day, hour, minute, second, 0, 0 };
+int[] ret = { year, month, day, hour, minute, second, 0, 0 };
 return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       }
       return null;

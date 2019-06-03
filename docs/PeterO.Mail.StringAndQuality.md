@@ -19,9 +19,11 @@ Initializes a new instance of the [PeterO.Mail.StringAndQuality](PeterO.Mail.Str
 
 <b>Parameters:</b>
 
- * <i>value</i>: An arbitrary text string.
+ * <i>value</i>: The parameter <i>value</i>
+is a text string.
 
- * <i>quality</i>: A 32-bit signed integer serving as the "quality" value.
+ * <i>quality</i>: The parameter <i>quality</i>
+is a 32-bit signed integer.
 
 <a id="Quality"></a>
 ### Quality

@@ -21,16 +21,17 @@ Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) 
 
 <b>Parameters:</b>
 
- * <i>addressValue</i>: An email address.
+ * <i>addressValue</i>: The parameter <i>addressValue</i>
+is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter <i>addressValue</i>
- is null.
+is null.
 
  * System.ArgumentException:
-The email address contains invalid syntax. For example, it doesn't contain an '@' sign or either side of the '@' contains invalid characters, the address is too long, or the address contains comments (text within parentheses).
+AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
 
 <a id="Domain"></a>
 ### Domain
@@ -64,12 +65,12 @@ Determines whether this object and another object are equal.
 
 <b>Parameters:</b>
 
- * <i>obj</i>: The parameter  <i>obj</i>
- is an arbitrary object.
+ * <i>obj</i>: The parameter <i>obj</i>
+is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false` .
+ `true`  if this object and another object are equal; otherwise, `false`  .
 
 <a id="GetHashCode"></a>
 ### GetHashCode

@@ -1,21 +1,18 @@
 # com.upokecenter.mail.DispositionBuilder
 
-    public class DispositionBuilder extends Object
+    public class DispositionBuilder extends java.lang.Object
 
 A mutable data type that allows a content disposition to be built.
 
 ## Methods
 
 * `DispositionBuilder() DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the disposition
- type "attachment" .
+ Initializes a new instance of the DispositionBuilder class.
 * `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the data from
- the given content disposition.
-* `DispositionBuilder​(String type) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the given
- disposition type.
-* `String getDispositionType()`<br>
+ Initializes a new instance of the DispositionBuilder class.
+* `DispositionBuilder​(java.lang.String type) DispositionBuilder`<br>
+ Initializes a new instance of the DispositionBuilder class.
+* `java.lang.String getDispositionType()`<br>
  Gets this value's disposition type, such as "inline" or "attachment".
 * `boolean isMultipart()`<br>
  Deprecated.
@@ -25,41 +22,36 @@ Irrelevant for content dispositions; will be removed in the future.
  Deprecated.
 Irrelevant for content dispositions; will be removed in the future.
  Irrelevant for content dispositions; will be removed in the future.
-* `DispositionBuilder RemoveParameter​(String name)`<br>
+* `DispositionBuilder RemoveParameter​(java.lang.String name)`<br>
  Removes a parameter from this content disposition.
-* `void setDispositionType​(String value)`<br>
-* `DispositionBuilder SetDispositionType​(String str)`<br>
+* `void setDispositionType​(java.lang.String value)`<br>
+* `DispositionBuilder SetDispositionType​(java.lang.String str)`<br>
  Sets the disposition type, such as "inline".
-* `DispositionBuilder SetParameter​(String name,
-            String value)`<br>
+* `DispositionBuilder SetParameter​(java.lang.String name,
+            java.lang.String value)`<br>
  Sets a parameter of this content disposition.
 * `ContentDisposition ToDisposition()`<br>
  Converts this object to an immutable ContentDisposition object.
-* `String toString()`<br>
+* `java.lang.String toString()`<br>
  Converts this object to a text string.
 
 ## Constructors
 
 * `DispositionBuilder() DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the disposition
- type "attachment" .
+ Initializes a new instance of the DispositionBuilder class.
 * `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the data from
- the given content disposition.
-* `DispositionBuilder​(String type) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the given
- disposition type.
+ Initializes a new instance of the DispositionBuilder class.
+* `DispositionBuilder​(java.lang.String type) DispositionBuilder`<br>
+ Initializes a new instance of the DispositionBuilder class.
 
 ## Method Details
 
 ### DispositionBuilder
     public DispositionBuilder()
-Initializes a new instance of the <code>DispositionBuilder</code> class using the disposition
- type "attachment" .
+Initializes a new instance of the <code>DispositionBuilder</code> class.
 ### DispositionBuilder
     public DispositionBuilder​(ContentDisposition mt)
-Initializes a new instance of the <code>DispositionBuilder</code> class using the data from
- the given content disposition.
+Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
 
@@ -67,12 +59,11 @@ Initializes a new instance of the <code>DispositionBuilder</code> class using th
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>mt</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>mt</code> is null.
 
 ### DispositionBuilder
-    public DispositionBuilder​(String type)
-Initializes a new instance of the <code>DispositionBuilder</code> class using the given
- disposition type.
+    public DispositionBuilder​(java.lang.String type)
+Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
 
@@ -80,10 +71,10 @@ Initializes a new instance of the <code>DispositionBuilder</code> class using th
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>type</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>type</code> is null.
 
 ### getDispositionType
-    public final String getDispositionType()
+    public final java.lang.String getDispositionType()
 Gets this value's disposition type, such as "inline" or "attachment".
 
 **Returns:**
@@ -91,26 +82,26 @@ Gets this value's disposition type, such as "inline" or "attachment".
 * This value's disposition type, such as "inline" or "attachment" .
 
 ### setDispositionType
-    public final void setDispositionType​(String value)
+    public final void setDispositionType​(java.lang.String value)
 ### isText
     @Deprecated public final boolean isText()
 Deprecated.
-<div class='deprecationComment'>Irrelevant for content dispositions; will be removed in the future.</div>
+Irrelevant for content dispositions; will be removed in the future.
 
 **Returns:**
 
 * <code>true</code> If this is a text media type; otherwise, . <code>
- false</code>.
+ false</code> .
 
 ### isMultipart
     @Deprecated public final boolean isMultipart()
 Deprecated.
-<div class='deprecationComment'>Irrelevant for content dispositions; will be removed in the future.</div>
+Irrelevant for content dispositions; will be removed in the future.
 
 **Returns:**
 
 * <code>true</code> If this is a multipart media type; otherwise, . <code>
- false</code>.
+ false</code> .
 
 ### ToDisposition
     public ContentDisposition ToDisposition()
@@ -121,7 +112,7 @@ Converts this object to an immutable ContentDisposition object.
 * A MediaType object.
 
 ### SetDispositionType
-    public DispositionBuilder SetDispositionType​(String str)
+    public DispositionBuilder SetDispositionType​(java.lang.String str)
 Sets the disposition type, such as "inline".
 
 **Parameters:**
@@ -134,12 +125,12 @@ Sets the disposition type, such as "inline".
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>IllegalArgumentException</code> - Str is empty.
+* <code>java.lang.IllegalArgumentException</code> - Str is empty.
 
 ### RemoveParameter
-    public DispositionBuilder RemoveParameter​(String name)
+    public DispositionBuilder RemoveParameter​(java.lang.String name)
 Removes a parameter from this content disposition. Does nothing if the
  parameter's name doesn't exist.
 
@@ -156,10 +147,10 @@ Removes a parameter from this content disposition. Does nothing if the
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>name</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetParameter
-    public DispositionBuilder SetParameter​(String name, String value)
+    public DispositionBuilder SetParameter​(java.lang.String name, java.lang.String value)
 Sets a parameter of this content disposition.
 
 **Parameters:**
@@ -178,19 +169,19 @@ Sets a parameter of this content disposition.
 
 **Throws:**
 
-* <code>NullPointerException</code> - Either <code>value</code> or <code>name</code> is
+* <code>java.lang.NullPointerException</code> - Either <code>value</code> or <code>name</code> is
  null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it
  isn't a well-formed parameter name.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Converts this object to a text string.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
