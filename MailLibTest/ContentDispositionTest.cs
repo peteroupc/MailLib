@@ -286,13 +286,13 @@ namespace MailLibTest {
           }
         }
       }
-        int bracketedText=str.IndexOf('[');
+        int bracketedText = str.IndexOf('[');
         if (bracketedText >= 0) {
- bracketedText=str.IndexOf(']',bracketedText);
-}
-   if (bracketedText) {
+ bracketedText = str.IndexOf(']',bracketedText);
+   if (bracketedText >= 0) {
             FailFilename(filename, str, strLower);
    }
+}
       int i;
       for (i = 0; i < str.Length; ++i) {
         char c = str[i];

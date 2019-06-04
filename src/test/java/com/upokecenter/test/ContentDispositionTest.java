@@ -293,13 +293,13 @@ import com.upokecenter.text.*;
           }
         }
       }
-        int bracketedText=str.indexOf('[');
+        int bracketedText = str.indexOf('[');
         if (bracketedText >= 0) {
- bracketedText=str.indexOf(']',bracketedText);
-}
-   if (bracketedText) {
+ bracketedText = str.indexOf(']',bracketedText);
+   if (bracketedText >= 0) {
             FailFilename(filename, str, strLower);
    }
+}
       int i;
       for (i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
