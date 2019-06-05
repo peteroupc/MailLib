@@ -288,7 +288,7 @@ namespace MailLibTest {
       }
         int bracketedText = str.IndexOf('[');
         if (bracketedText >= 0) {
- bracketedText = str.IndexOf(']',bracketedText);
+ bracketedText = str.IndexOf(']', bracketedText);
    if (bracketedText >= 0) {
             FailFilename(filename, str, strLower);
    }
