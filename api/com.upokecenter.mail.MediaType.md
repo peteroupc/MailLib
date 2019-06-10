@@ -5,7 +5,7 @@
 <p>Specifies what kind of data a message body is. </p> <p>A media type
  consists of a top-level type (the general category of the data), a
  subtype (the specific type), and an optional list of parameters. For
- example, the media type <code>text/plain; charset = utf-8 </code> is a text
+ example, the media type <code>text/plain; charset = utf-8</code> is a text
  media type ("text"), namely, a plain text type ("plain"), and the
  parameters say that the data uses UTF-8, a Unicode character encoding
  ("charset = utf-8"). Other top-level types include "audio", "video",
@@ -13,11 +13,11 @@
  type", for Multipurpose Internet Mail Extensions, the standard that
  introduced media types. </p> <p>This type is immutable, meaning its
  values can't be changed once it' s created. To create a changeable
- media type object, use the MediaTypeBuilder class. </p> <p><b>Note:
- </b> According to RFC 2049, unrecognized subtypes of the top-level
- type <code>multipart </code> must be treated as <code>multipart/mixed </code> and
- unrecognized media types as the media type
- <code>application/octet-stream </code> . </p>
+ media type object, use the MediaTypeBuilder class. </p>
+ <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
+ top-level type <code>multipart</code> must be treated as
+ <code>multipart/mixed</code> and unrecognized media types as the media type
+ <code>application/octet-stream</code> . </p>
 
 ## Fields
 
@@ -299,9 +299,9 @@ Parses a media type string and returns a media type object, or the default
  (except for illegal percent-decoding or undecodable sequences for the
  given character encoding). Examples of RFC 2231 extensions follow
  (both examples encode the same "filename" parameter): </p>
- <p><b>text/example; filename*=utf-8'en'filename.txt </b> </p>
+ <p><b>text/example; filename*=utf-8'en'filename.txt</b> </p>
  <p><b>text/example; filename*0*=utf-8'en'file;
- filename*1*=name%2Etxt </b> </p> <p>This implementation
+ filename*1*=name%2Etxt</b> </p> <p>This implementation
  ignores keys (in parameter key-value pairs) that appear more than
  once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
  7231 explicitly disallows such keys, or otherwise specifies

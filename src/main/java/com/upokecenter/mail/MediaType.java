@@ -17,7 +17,7 @@ import com.upokecenter.text.*;
      * <p>Specifies what kind of data a message body is. </p> <p>A media type
      * consists of a top-level type (the general category of the data), a
      * subtype (the specific type), and an optional list of parameters. For
-     * example, the media type <code>text/plain; charset = utf-8 </code> is a text
+     * example, the media type <code>text/plain; charset = utf-8</code> is a text
      * media type ("text"), namely, a plain text type ("plain"), and the
      * parameters say that the data uses UTF-8, a Unicode character encoding
      * ("charset = utf-8"). Other top-level types include "audio", "video",
@@ -25,11 +25,11 @@ import com.upokecenter.text.*;
      * type", for Multipurpose Internet Mail Extensions, the standard that
      * introduced media types. </p> <p>This type is immutable, meaning its
      * values can't be changed once it' s created. To create a changeable
-     * media type object, use the MediaTypeBuilder class. </p> <p><b>Note:
-     * </b> According to RFC 2049, unrecognized subtypes of the top-level
-     * type <code>multipart </code> must be treated as <code>multipart/mixed </code> and
-     * unrecognized media types as the media type
-     * <code>application/octet-stream </code> . </p>
+     * media type object, use the MediaTypeBuilder class. </p>
+     * <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
+     * top-level type <code>multipart</code> must be treated as
+     * <code>multipart/mixed</code> and unrecognized media types as the media type
+     * <code>application/octet-stream</code> . </p>
      */
   public final class MediaType {
     // Printable ASCII characters that cannot appear in a
@@ -791,7 +791,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // May 30, 2019, are listed below:
+      // Jun. 9, 2019, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -823,7 +823,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       // These media types don't define a charset parameter (after
       // RFC6657):
       // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9),
-      // vnd.senx.warpscript*(9)
+      // vnd.senx.warpscript*(9), vnd.sosi*(9)
       //
       // Uses charset parameter, but no default charset specified (after
       // RFC6657):
@@ -1394,9 +1394,9 @@ sub.equals("vnd.sun.j2me.app-descriptor")) {
      * (except for illegal percent-decoding or undecodable sequences for the
      * given character encoding). Examples of RFC 2231 extensions follow
      * (both examples encode the same "filename" parameter): </p>
-     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt </b> </p>
+     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
      * <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt </b> </p> <p>This implementation
+     * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
      * ignores keys (in parameter key-value pairs) that appear more than
      * once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
      * 7231 explicitly disallows such keys, or otherwise specifies
