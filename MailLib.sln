@@ -2,6 +2,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailLibTest40", "MailLibTest40\MailLibTest40.csproj", "{C36FB961-B647-4C7D-4369-46461B258478}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailLibTest20", "MailLibTest20\MailLibTest20.csproj", "{FD057A9A-5E0C-4CF7-F6E9-8F6690E03114}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailLib", "MailLib\MailLib.csproj", "{49EE222D-6E5D-4677-9E4D-1286B30E8BAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailLibTest", "MailLibTest\MailLibTest.csproj", "{6B66E90E-CB1A-4EAD-83B1-4FE2187FA90F}"

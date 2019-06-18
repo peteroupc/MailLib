@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Project DefaultTargets='Build' ToolsVersion='4.0' xmlns='http://schemas.microsoft.com/developer/msbuild/2003'><Import Condition='Exists(&apos;..\packages\NUnit.3.12.0\build\NUnit.props&apos;)' Project='..\packages\NUnit.3.12.0\build\NUnit.props'/>
+<PropertyGroup><Configuration Condition=' &apos;$(Configuration)&apos; == &apos;&apos; '>Debug</Configuration><Platform Condition=' &apos;$(Platform)&apos; == &apos;&apos; '>AnyCPU</Platform>
+    <ProjectGuid>{C36FB961-B647-4C7D-4369-46461B258478}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+
+    <AssemblyName>Test40</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Debug|AnyCPU&apos; '><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExternalConsole>true</ExternalConsole>
+  </PropertyGroup>
+  <PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Release|AnyCPU&apos; '><Optimize>true</Optimize><OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExternalConsole>true</ExternalConsole>
+  </PropertyGroup>
+  <ItemGroup><Reference Include='System'/><Reference Include='nunit.framework'><HintPath>..\packages\NUnit.3.12.0\lib\net40\nunit.framework.dll</HintPath>
+</Reference>
+<Compile Include='../MailLibTest/DataUtilitiesTest.cs'><Link>DataUtilitiesTest.cs</Link></Compile><Compile Include='../MailLibTest/URIUtility.cs'><Link>URIUtility.cs</Link></Compile><Compile Include='../MailLibTest/AddressTest.cs'><Link>AddressTest.cs</Link></Compile><Compile Include='../MailLibTest/XorShift128Plus.cs'><Link>XorShift128Plus.cs</Link></Compile><Compile Include='../MailLibTest/DataUrlTest.cs'><Link>DataUrlTest.cs</Link></Compile><Compile Include='../MailLibTest/NetHelper.cs'><Link>NetHelper.cs</Link></Compile><Compile Include='../MailLibTest/EncodingTest.cs'><Link>EncodingTest.cs</Link></Compile><Compile Include='../MailLibTest/TestCommon.cs'><Link>TestCommon.cs</Link></Compile><Compile Include='../MailLibTest/Program.cs'><Link>Program.cs</Link></Compile><Compile Include='../MailLibTest/DispositionBuilderTest.cs'><Link>DispositionBuilderTest.cs</Link></Compile><Compile Include='../MailLibTest/MediaTypeBuilderTest.cs'><Link>MediaTypeBuilderTest.cs</Link></Compile><Compile Include='../MailLibTest/ContentDispositionTest.cs'><Link>ContentDispositionTest.cs</Link></Compile><Compile Include='../MailLibTest/RandomGenerator.cs'><Link>RandomGenerator.cs</Link></Compile><Compile Include='../MailLibTest/IdnaTest.cs'><Link>IdnaTest.cs</Link></Compile><Compile Include='../MailLibTest/NormalizationTest.cs'><Link>NormalizationTest.cs</Link></Compile><Compile Include='../MailLibTest/MessageTest.cs'><Link>MessageTest.cs</Link></Compile><Compile Include='../MailLibTest/NamedAddressTest.cs'><Link>NamedAddressTest.cs</Link></Compile><Compile Include='../MailLibTest/MarkdownTest.cs'><Link>MarkdownTest.cs</Link></Compile><Compile Include='../MailLibTest/MediaTypeTest.cs'><Link>MediaTypeTest.cs</Link></Compile><Compile Include='../MailLibTest/IRandomGen.cs'><Link>IRandomGen.cs</Link></Compile><Compile Include='../MailLibTest/DictUtility.cs'><Link>DictUtility.cs</Link></Compile><Compile Include='../MailLibTest/NormalizerInputTest.cs'><Link>NormalizerInputTest.cs</Link></Compile><Compile Include='Properties/AssemblyInfo.cs'/></ItemGroup>
+  <ItemGroup></ItemGroup>
+  <ItemGroup><ProjectReference Include='..\MailLib40\MailLib40.csproj'><Project>{D7E09F55-3156-44B0-87D9-1BABCBB398D9}</Project><Name>MailLib40</Name>
+    </ProjectReference></ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project='$(MSBuildBinPath)\Microsoft.CSharp.targets'/>
+
+</Project>

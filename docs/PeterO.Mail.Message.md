@@ -57,8 +57,8 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given media type.
 * <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name.
 * <code>[AddAttachment(System.IO.Stream, string)](#AddAttachment_System_IO_Stream_string)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given file name.
-* <code>[AddHeader(System.Collections.Generic.KeyValuePair)](#AddHeader_System_Collections_Generic_KeyValuePair)</code> - Adds a header field to the end of the message's header.
 * <code>[AddHeader(string, string)](#AddHeader_string_string)</code> - Adds a header field to the end of the message's header.
+* <code>[AddHeader(System.Collections.Generic.KeyValuePair)](#AddHeader_System_Collections_Generic_KeyValuePair)</code> -
 * <code>[AddInline(PeterO.Mail.MediaType)](#AddInline_PeterO_Mail_MediaType)</code> - Adds an inline body part with an empty body and with the given media type to this message.
 * <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type.
 * <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name.
@@ -70,7 +70,7 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[ContentDisposition](#ContentDisposition)</code> - Gets or sets this message's content disposition.
 * <code>[ContentType](#ContentType)</code> - Gets or sets this message's media type.
 * <code>[DecodeHeaderValue(string, string)](#DecodeHeaderValue_string_string)</code> - Decodes RFC 2047 encoded words from the given header field value and returns a string with those words decoded.
-* <code>[FileName](#FileName)</code> -  Gets a file name suggested by this message for saving the message's body to a file.
+* <code>[FileName](#FileName)</code> - Gets a file name suggested by this message for saving the message's body to a file.
 * <code>[FromAddresses](#FromAddresses)</code> - Gets a list of addresses found in the From header field or fields.
 * <code>[FromMailtoUri(string)](#FromMailtoUri_string)</code> - Creates a message object from a MailTo URI (uniform resource identifier).
 * <code>[FromMailtoUrl(string)](#FromMailtoUrl_string)</code> - Creates a message object from a MailTo URI (uniform resource identifier).
@@ -80,24 +80,24 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[GetBody()](#GetBody)</code> - Gets the byte array for this message's body.
 * <code>[GetBodyMessage()](#GetBodyMessage)</code> - Returns the mail message contained in this message's body.
 * <code>[GetDate()](#GetDate)</code> - Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called).
-* <code>[GetFormattedBodyString()](#GetFormattedBodyString)</code> -  Gets a Hypertext Markup Language (HTML) rendering of this message's text body.
-* <code>[GetHeaderArray(string)](#GetHeaderArray_string)</code> - Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison.
+* <code>[GetFormattedBodyString()](#GetFormattedBodyString)</code> - Gets a Hypertext Markup Language (HTML) rendering of this message's text body.
 * <code>[GetHeader(int)](#GetHeader_int)</code> - Gets the name and value of a header field by index.
 * <code>[GetHeader(string)](#GetHeader_string)</code> - Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison.
+* <code>[GetHeaderArray(string)](#GetHeaderArray_string)</code> - Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison.
 * <code>[HeaderFields](#HeaderFields)</code> - Gets a snapshot of the header fields of this message, in the order in which they appear in the message.
-* <code>[MakeMultilingualMessage(System.Collections.Generic.IList, System.Collections.Generic.IList)](#MakeMultilingualMessage_System_Collections_Generic_IList_System_Collections_Generic_IList)</code> - Generates a multilingual message (see RFC 8255) from a list of messages and a list of language strings.
+* <code>[MakeMultilingualMessage(System.Collections.Generic.IList, System.Collections.Generic.IList)](#MakeMultilingualMessage_System_Collections_Generic_IList_System_Collections_Generic_IList)</code> -
 * <code>[NewBodyPart()](#NewBodyPart)</code> - Creates a message object with no header fields.
 * <code>[Parts](#Parts)</code> - Gets a list of all the parts of this message.
 * <code>[RemoveHeader(int)](#RemoveHeader_int)</code> - Removes a header field by index.
 * <code>[RemoveHeader(string)](#RemoveHeader_string)</code> - Removes all instances of the given header field from this message.
-* <code>[SelectLanguageMessage(System.Collections.Generic.IList)](#SelectLanguageMessage_System_Collections_Generic_IList)</code> - Selects a body part for a multiple-language message (multipart/multilingual ) according to the given language priority list.
-* <code>[SelectLanguageMessage(System.Collections.Generic.IList, bool)](#SelectLanguageMessage_System_Collections_Generic_IList_bool)</code> - Selects a body part for a multiple-language message (multipart/multilingual ) according to the given language priority list and original-language preference.
+* <code>[SelectLanguageMessage(System.Collections.Generic.IList)](#SelectLanguageMessage_System_Collections_Generic_IList)</code> -
+* <code>[SelectLanguageMessage(System.Collections.Generic.IList, bool)](#SelectLanguageMessage_System_Collections_Generic_IList_bool)</code> -
 * <code>[SetBody(byte[])](#SetBody_byte)</code> - Sets the body of this message to the given byte array.
 * <code>[SetCurrentDate()](#SetCurrentDate)</code> - Sets this message's Date header field to the current time as its value, with an unspecified time zone offset.
 * <code>[SetDate(int[])](#SetDate_int)</code> - Sets this message's Date header field to the given date and time.
-* <code>[SetHeader(int, System.Collections.Generic.KeyValuePair)](#SetHeader_int_System_Collections_Generic_KeyValuePair)</code> - Sets the name and value of a header field by index.
 * <code>[SetHeader(int, string)](#SetHeader_int_string)</code> - Sets the value of a header field by index without changing its name.
 * <code>[SetHeader(int, string, string)](#SetHeader_int_string_string)</code> - Sets the name and value of a header field by index.
+* <code>[SetHeader(int, System.Collections.Generic.KeyValuePair)](#SetHeader_int_System_Collections_Generic_KeyValuePair)</code> -
 * <code>[SetHeader(string, string)](#SetHeader_string_string)</code> - Sets the value of this message's header field.
 * <code>[SetHtmlBody(string)](#SetHtmlBody_string)</code> - Sets the body of this message to the specified string in Hypertext Markup Language (HTML) format.
 * <code>[SetTextAndHtml(string, string)](#SetTextAndHtml_string_string)</code> - Sets the body of this message to a multipart body with plain text and Hypertext Markup Language (HTML) versions of the same message.

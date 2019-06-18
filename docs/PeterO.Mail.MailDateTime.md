@@ -7,9 +7,9 @@ Contains methods for parsing and generating date-time strings following the Inte
 ### Member Summary
 * <code>[GenerateDateString(int[])](#GenerateDateString_int)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 * <code>[GenerateDateString(int[], bool)](#GenerateDateString_int_bool)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array, optionally using a "GMT" time zone indicator.
-* <code>[ParseDateStringHttp(string)](#ParseDateStringHttp_string)</code> - Parses a date string in one of the three formats allowed by HTTP/1.
 * <code>[ParseDateString(string)](#ParseDateString_string)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322).
 * <code>[ParseDateString(string, bool)](#ParseDateString_string_bool)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string.
+* <code>[ParseDateStringHttp(string)](#ParseDateStringHttp_string)</code> - Parses a date string in one of the three formats allowed by HTTP/1.
 
 <a id="GenerateDateString_int"></a>
 ### GenerateDateString

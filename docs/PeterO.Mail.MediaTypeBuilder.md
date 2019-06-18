@@ -13,8 +13,8 @@ A mutable media type object.
 * <code>[SetTopLevelType(string)](#SetTopLevelType_string)</code> - Sets this media type's top-level type.
 * <code>[SubType](#SubType)</code> - Gets or sets this value's subtype.
 * <code>[ToMediaType()](#ToMediaType)</code> - Converts this builder to an immutable media type object.
-* <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form asMediaType.
 * <code>[TopLevelType](#TopLevelType)</code> - Gets or sets this value's top-level type.
+* <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form as MediaType.
 
 <a id="Void_ctor_MediaType"></a>
 ### MediaTypeBuilder Constructor

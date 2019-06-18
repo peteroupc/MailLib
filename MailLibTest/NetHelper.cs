@@ -18,7 +18,12 @@ namespace MailLibTest {
         var response = request.GetResponse();
         using (var stream = response.GetResponseStream()) {
           using (var output = new FileStream(cachedPath, FileMode.Create)) {
-            stream.CopyTo(output);
+var buffer = new byte[8192];
+            while (true) {
+              var b = stream.Read(buffer, 0, buffer.Length);
+              if (b == 0) break;
+              output.Write(buffer, 0, b);
+            }
           }
         }
       }
