@@ -8715,10 +8715,10 @@ Assert.AreEqual(
     }
 
     private static void AssertIdempotencyNeg(
-  string s) { Assert.IsTrue(!(
-  (bool)URIUtility.isValidIRI(
-    s)),
- s);
+  string s) { 
+      if((bool)URIUtility.isValidIRI(s)){
+       Assert.Fail(s);
+      }
 
       {
         var stringTemp = (string)URIUtility.escapeURI(

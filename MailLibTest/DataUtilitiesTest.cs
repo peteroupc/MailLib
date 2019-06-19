@@ -730,7 +730,7 @@ namespace Test {
             Assert.AreEqual(expectedString, builder.ToString());
           }
           ms.Position = 0;
-          builder.Remove(0, builder.Length);
+          builder.Clear();
           ret = DataUtilities.ReadUtf8(ms, length, builder, false);
           Assert.AreEqual(noReplaceRet, ret);
           if (noReplaceRet == 0) {
@@ -738,7 +738,7 @@ namespace Test {
           }
         }
         if (bytes.Length >= length) {
-          builder.Remove(0, builder.Length);
+          builder.Clear();
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,
@@ -749,7 +749,7 @@ namespace Test {
           if (expectedRet == 0) {
             Assert.AreEqual(expectedString, builder.ToString());
           }
-          builder.Remove(0, builder.Length);
+          builder.Clear();
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,

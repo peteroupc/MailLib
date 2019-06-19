@@ -2,45 +2,19 @@
 
     public class Address
 
-Represents an email address.
-
-### Member Summary
+ Represents an email address.  ### Member Summary
 * <code>[Domain](#Domain)</code> - Gets the domain of this email address (the part after the "@" sign).
 * <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
 * <code>[GetHashCode()](#GetHashCode)</code> - Returns a hash code for this address object.
 * <code>[LocalPart](#LocalPart)</code> - Gets the local part of this email address (the part before the "@" sign).
 * <code>[ToString()](#ToString)</code> - Converts this address object to a text string.
 
-<a id="Void_ctor_String"></a>
-### Address Constructor
-
-    public Address(
-        string addressValue);
-
-Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.
-
-<b>Parameters:</b>
-
- * <i>addressValue</i>: The parameter <i>addressValue</i>
-is a text string.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter <i>addressValue</i>
-is null.
-
- * System.ArgumentException:
-AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
-
 <a id="Domain"></a>
 ### Domain
 
     public string Domain { get; }
 
-Gets the domain of this email address (the part after the "@" sign).
-
-<b>Returns:</b>
+ Gets the domain of this email address (the part after the "@" sign).  <b>Returns:</b>
 
 The domain of this email address (the part after the "@" sign).
 
@@ -49,9 +23,7 @@ The domain of this email address (the part after the "@" sign).
 
     public string LocalPart { get; }
 
-Gets the local part of this email address (the part before the "@" sign).
-
-<b>Returns:</b>
+ Gets the local part of this email address (the part before the "@" sign).  <b>Returns:</b>
 
 The local part of this email address (the part before the "@" sign).
 
@@ -61,25 +33,21 @@ The local part of this email address (the part before the "@" sign).
     public override bool Equals(
         object obj);
 
-Determines whether this object and another object are equal.
+ Determines whether this object and another object are equal.  <b>Parameters:</b>
 
-<b>Parameters:</b>
-
- * <i>obj</i>: The parameter <i>obj</i>
-is an arbitrary object.
+ * <i>obj</i>: The parameter  <i>obj</i>
+ is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise, `false`  .
+ `true` true if this object and another object are equal; otherwise,  `false` false .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
 
-Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.
-
-<b>Return Value:</b>
+ Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.  <b>Return Value:</b>
 
 A hash code for this instance.
 
@@ -88,8 +56,6 @@ A hash code for this instance.
 
     public override string ToString();
 
-Converts this address object to a text string.
-
-<b>Return Value:</b>
+ Converts this address object to a text string.  <b>Return Value:</b>
 
 A string representation of this object.
