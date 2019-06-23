@@ -2,20 +2,30 @@ namespace PeterO.Text {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Text.Normalization"]/*'/>
   public enum Normalization {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFC"]/*'/>
+    ///
+    /// <summary>Normalization form C: canonical decomposition followed by canonical
+    /// composition.
+    /// </summary>
+    ///
     NFC,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFD"]/*'/>
+    ///
+    /// <summary>Normalization form D: canonical decomposition.
+    /// </summary>
+    ///
     NFD,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFKC"]/*'/>
+    ///
+    /// <summary>Normalization form KC: compatibility decomposition followed by canonical
+    /// composition.
+    /// </summary>
+    ///
     NFKC,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Text.Normalization.NFKD"]/*'/>
-    NFKD
+    ///
+    /// <summary>Normalization form KD: compatibility decomposition.
+    /// </summary>
+    ///
+    NFKD,
   }
 }

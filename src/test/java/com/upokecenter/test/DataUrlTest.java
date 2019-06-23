@@ -8723,10 +8723,10 @@ Assert.assertEquals(
     }
 
     private static void AssertIdempotencyNeg(
-  String s) { if (!(!(
-  (boolean)URIUtility.isValidIRI(
-    s))))Assert.fail(
- s);
+  String s) {
+      if ((boolean)URIUtility.isValidIRI(s)) {
+       Assert.fail(s);
+      }
 
       {
         String stringTemp = (String)URIUtility.escapeURI(

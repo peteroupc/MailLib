@@ -30,8 +30,8 @@ import java.util.*;
       if (((addressValue) == null || (addressValue).length() == 0)) {
         return list;
       }
-        Tokener tokener = new Tokener();
-        if (
+      Tokener tokener = new Tokener();
+      if (
           HeaderParser.ParseHeaderTo(
             addressValue,
             0,

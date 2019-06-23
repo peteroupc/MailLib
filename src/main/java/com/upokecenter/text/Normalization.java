@@ -24,5 +24,5 @@ package com.upokecenter.text;
     /**
      * Normalization form KD: compatibility decomposition.
      */
-    NFKD
+    NFKD,
   }

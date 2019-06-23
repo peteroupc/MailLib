@@ -6,6 +6,7 @@ using PeterO.Text;
 
 namespace PeterO.Mail {
   internal static class MakeFilenameMethod {
+    private const int MaxFileNameCodeUnitLength = 247;
     private static string TrimAndCollapseSpaceAndTab(string str) {
       if (String.IsNullOrEmpty(str)) {
         return str;
@@ -388,7 +389,7 @@ namespace PeterO.Mail {
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     };
 
     private static readonly int[] ValueCharCheckInitial = {
@@ -399,7 +400,7 @@ namespace PeterO.Mail {
       0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
       2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
       0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
-      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
+      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     };
 
     private static bool SimplifiedFileCheck(string name) {
@@ -469,8 +470,6 @@ namespace PeterO.Mail {
       }
       return str;
     }
-
-    private const int MaxFileNameCodeUnitLength = 247;
 
     public static string MakeFilename(string str) {
       if (String.IsNullOrEmpty(str)) {
@@ -624,7 +623,7 @@ namespace PeterO.Mail {
           "con.",
           StringComparison.Ordinal) == 0;
         // LPTn, COMn
-     if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
+        if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
           strLower[4] == ' '))) {
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "lpt",

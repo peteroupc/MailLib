@@ -29,7 +29,7 @@ import com.upokecenter.mail.*;
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 
     private int lineCharCount;
     private byte[] buffer;
@@ -109,7 +109,7 @@ import com.upokecenter.mail.*;
           // End of stream
           return -1;
         }
-   if (!this.checkStrictEncoding && this.printable[c] == 1 &&
+        if (!this.checkStrictEncoding && this.printable[c] == 1 &&
        this.maxLineSize < 0) {
           return c;
         }

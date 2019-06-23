@@ -27,13 +27,13 @@ import com.upokecenter.mail.*;
 
     private void StartInnerBuffer() {
       if (this.innerBufferCount > 0) {
-        System.arraycopy(
+System.arraycopy(
   this.innerBuffer,
   this.innerBufferIndex,
   this.innerBuffer,
   0,
   this.innerBufferCount - this.innerBufferIndex);
-       this.innerBufferCount -= this.innerBufferIndex;
+  this.innerBufferCount -= this.innerBufferIndex;
       }
       this.innerBufferIndex = 0;
     }

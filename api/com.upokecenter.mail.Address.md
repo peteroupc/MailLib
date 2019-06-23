@@ -7,8 +7,7 @@ Represents an email address.
 ## Methods
 
 * `Address​(java.lang.String addressValue) Address`<br>
- Initializes a new instance of the Address
- class.
+ Initializes a new instance of the Address class.
 * `boolean equals​(java.lang.Object obj)`<br>
  Determines whether this object and another object are equal.
 * `java.lang.String getDomain()`<br>
@@ -23,15 +22,13 @@ Represents an email address.
 ## Constructors
 
 * `Address​(java.lang.String addressValue) Address`<br>
- Initializes a new instance of the Address
- class.
+ Initializes a new instance of the Address class.
 
 ## Method Details
 
 ### Address
     public Address​(java.lang.String addressValue)
-Initializes a new instance of the <code>Address</code>
- class.
+Initializes a new instance of the <code>Address</code> class.
 
 **Parameters:**
 
@@ -48,8 +45,7 @@ Initializes a new instance of the <code>Address</code>
 
 ### Address
     public Address​(java.lang.String addressValue)
-Initializes a new instance of the <code>Address</code>
- class.
+Initializes a new instance of the <code>Address</code> class.
 
 **Parameters:**
 

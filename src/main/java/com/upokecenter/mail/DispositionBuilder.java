@@ -111,7 +111,7 @@ if (type.length() == 0) {
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-   if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
+      if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed type: " + str);
       }
@@ -161,7 +161,7 @@ if (type.length() == 0) {
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
+      if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
         name.length()) {
       throw new IllegalArgumentException("Not a well-formed parameter name: " +
           name);

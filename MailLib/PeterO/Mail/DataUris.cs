@@ -10,9 +10,9 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
     public static MediaType DataUriMediaType(string uri) {
   string url = uri;
-      string[] parts = URIUtility.splitIRIToStrings(
+  string[] parts = URIUtility.SplitIRIToStrings(
         url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
+        if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       string path = parts[2];
@@ -70,21 +70,21 @@ namespace PeterO.Mail {
 
     internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
       52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, };
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
     public static byte[] DataUriBytes(string uri) {
   string url = uri;
-      string[] parts = URIUtility.splitIRIToStrings(
+  string[] parts = URIUtility.SplitIRIToStrings(
         url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
+        if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       string path = parts[2];
@@ -104,7 +104,7 @@ namespace PeterO.Mail {
         // since RFC 2397 doesn't state otherwise
         // (see RFC 4648).
         var aw = new ArrayWriter();
-var i = 0;
+        var i = 0;
         if (usesBase64) {
           int base64Length;
           int payloadIndex = mediaTypePart + 1;
@@ -121,7 +121,7 @@ var i = 0;
     path.Substring(mediaTypePart + 1, path.Length - (mediaTypePart + 1)));
   payloadIndex = 0;
           }
-      base64Length = payload.Length - payloadIndex;
+          base64Length = payload.Length - payloadIndex;
           if ((base64Length % 4) != 0) {
             return null;
           }
@@ -220,7 +220,7 @@ var i = 0;
 if (textString == null) {
   throw new ArgumentNullException(nameof(textString));
 }
-      return MakeDataUri(
+return MakeDataUri(
   DataUtilities.GetUtf8Bytes(textString, true),
   MediaType.Parse("text/plain;charset=utf-8"));
     }

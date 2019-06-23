@@ -12,7 +12,46 @@
 * <code>[ToDisposition()](#ToDisposition)</code> - Converts this object to an immutable ContentDisposition object.
 * <code>[ToString()](#ToString)</code> - Converts this object to a text string.
 
-<a id="DispositionType"></a>
+<a id="Void_ctor_ContentDisposition"></a>
+### DispositionBuilder Constructor
+
+    public DispositionBuilder(
+        PeterO.Mail.ContentDisposition mt);
+
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.  <b>Parameters:</b>
+
+ * <i>mt</i>: The parameter  <i>mt</i>
+ is a ContentDisposition object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>mt</i>
+ is null.
+
+<a id="Void_ctor_String"></a>
+### DispositionBuilder Constructor
+
+    public DispositionBuilder(
+        string type);
+
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.  <b>Parameters:</b>
+
+ * <i>type</i>: The parameter  <i>type</i>
+ is a text string.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>type</i>
+ is null.
+
+<a id="Void_ctor"></a>
+### DispositionBuilder Constructor
+
+    public DispositionBuilder();
+
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.  <a id="DispositionType"></a>
 ### DispositionType
 
     public string DispositionType { get; set; }
@@ -30,7 +69,7 @@ This value's disposition type, such as "inline" or "attachment" .
 
  Gets a value indicating whether this is a multipart media type.  <b>Returns:</b>
 
- `true` true If this is a multipart media type; otherwise, .  `false` false .
+ `true`  If this is a multipart media type; otherwise, .  `false`  .
 
 <a id="IsText"></a>
 ### IsText
@@ -41,7 +80,7 @@ This value's disposition type, such as "inline" or "attachment" .
 
  Gets a value indicating whether this is a text media type.  <b>Returns:</b>
 
- `true` true If this is a text media type; otherwise, .  `false` false .
+ `true`  If this is a text media type; otherwise, .  `false`  .
 
 <a id="RemoveParameter_string"></a>
 ### RemoveParameter

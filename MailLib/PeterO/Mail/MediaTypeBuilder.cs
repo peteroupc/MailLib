@@ -99,7 +99,7 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
       }
-   if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
+      if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
         str.Length) {
         throw new ArgumentException("Not a well-formed top level type: " + str);
       }
@@ -129,7 +129,7 @@ namespace PeterO.Mail {
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
       }
-if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
+      if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
         name.Length) {
       throw new ArgumentException("Not a well-formed parameter name: " +
           name);
@@ -147,7 +147,7 @@ if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
       }
-   if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
+      if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
         str.Length) {
         throw new ArgumentException("Not a well-formed subtype: " + str);
       }

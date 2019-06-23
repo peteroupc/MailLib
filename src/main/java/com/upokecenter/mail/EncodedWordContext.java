@@ -24,5 +24,5 @@ at: http://peteroupc.github.io/
     /**
      * Contains methods for parsing and matching language tags.
      */
-    Comment
+    Comment,
   }

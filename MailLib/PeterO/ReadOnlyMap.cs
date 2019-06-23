@@ -89,8 +89,7 @@ namespace PeterO {
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
       return this.wrapped.GetEnumerator();
     }
-
-System.Collections.IEnumerator
+    System.Collections.IEnumerator
       System.Collections.IEnumerable.GetEnumerator() {
       return this.wrapped.GetEnumerator();
     }

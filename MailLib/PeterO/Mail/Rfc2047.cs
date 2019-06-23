@@ -226,7 +226,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
             for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.Substring(k, 1));
             }
-          break;
+            break;
         }
         for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.Substring(k, 1));
@@ -257,10 +257,10 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
     private static readonly int[] ValueSmallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, };
 
     // ASCII characters allowed in atoms
     private static readonly int[] ValueAsciiAtext = {
@@ -269,7 +269,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, };
 
     private static int SkipEncodedText(
   string str,
@@ -406,7 +406,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
   afterLast,
   context,
   encodingChar);
-if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
+  if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
                 i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
@@ -428,7 +428,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
             asterisk + 1,
             charset.Length - (asterisk + 1));
                 charset = charset.Substring(0, asterisk);
-  acceptedEncodedWord &= LanguageTags.IsPotentiallyValidLanguageTag(language);
+                acceptedEncodedWord &= LanguageTags.IsPotentiallyValidLanguageTag(language);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -500,7 +500,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
           char c = str[index];
           if (c == 0x0d && index + 2 < endIndex && str[index + 1] == 0x0a &&
                    (str[index + 2] == 0x09 || str[index + 2] == 0x20)) {
-            index += 2;  // skip the CRLF break;
+            index += 2; // skip the CRLF break;
           }
           if (c == 0x09 || c == 0x20) {
             break;
@@ -617,10 +617,10 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
 
     public static string DecodePhraseText(
   string str,
-      int index,
- int endIndex,
-      IList<int[]> tokens,
- bool withComments) {
+  int index,
+  int endIndex,
+  IList<int[]> tokens,
+  bool withComments) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all CFWS
       // found after the phrase.
@@ -637,7 +637,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
       // Get each relevant token sorted by starting index
       foreach (int[] token in tokens) {
         var hasCFWS = false;
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
+        if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
           token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
@@ -745,7 +745,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
       // Assumes the value matches the production "phrase"
       // and that there are no comments in the value
       if (index == endIndex) {
-        return;  // Empty, so nothing to do
+        return; // Empty, so nothing to do
       }
       int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (index2 == endIndex) {

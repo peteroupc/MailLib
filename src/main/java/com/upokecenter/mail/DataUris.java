@@ -5,9 +5,9 @@ import com.upokecenter.util.*;
     /**
      * Contains methods for parsing and generating Data URIs (uniform resource
      * identifiers). Data URIs are described in RFC 2397. Examples for Data
-     * URIs follow. <pre>data:, hello%20world </pre>
-     * <pre>data:text/markdown, hello%20world </pre>
-     * <pre>data:application/octet-stream;base64, AAAAAA== </pre>
+     * URIs follow. <pre>data:, hello%20world</pre>
+     * <pre>data:text/markdown, hello%20world</pre>
+     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>
      */
   public final class DataUris {
 private DataUris() {
@@ -20,9 +20,9 @@ private DataUris() {
      */
     public static MediaType DataUriMediaType(String uri) {
   String url = uri;
-      String[] parts = URIUtility.splitIRIToStrings(
+  String[] parts = URIUtility.SplitIRIToStrings(
         url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
+        if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       String path = parts[2];
@@ -80,13 +80,13 @@ private DataUris() {
 
     static final int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
       52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, };
 
     /**
      * Extracts the data from a Data URI (uniform resource identifier) in the form
@@ -97,9 +97,9 @@ private DataUris() {
      */
     public static byte[] DataUriBytes(String uri) {
   String url = uri;
-      String[] parts = URIUtility.splitIRIToStrings(
+  String[] parts = URIUtility.SplitIRIToStrings(
         url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
+        if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       String path = parts[2];
@@ -119,7 +119,7 @@ private DataUris() {
         // since RFC 2397 doesn't state otherwise
         // (see RFC 4648).
         ArrayWriter aw = new ArrayWriter();
-int i = 0;
+        int i = 0;
         if (usesBase64) {
           int base64Length;
           int payloadIndex = mediaTypePart + 1;
@@ -136,7 +136,7 @@ int i = 0;
     path.substring(mediaTypePart + 1, (mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
   payloadIndex = 0;
           }
-      base64Length = payload.length() - payloadIndex;
+          base64Length = payload.length() - payloadIndex;
           if ((base64Length % 4) != 0) {
             return null;
           }
@@ -240,7 +240,7 @@ int i = 0;
 if (textString == null) {
   throw new NullPointerException("textString");
 }
-      return MakeDataUri(
+return MakeDataUri(
   DataUtilities.GetUtf8Bytes(textString, true),
   MediaType.Parse("text/plain;charset=utf-8"));
     }

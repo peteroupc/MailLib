@@ -10,7 +10,7 @@
 
   * As explained in UTS 10 sec. 1.6, collation serves the purposes of searching and selection (e.g., searches by name or by title). However, this class is directed more to equality comparisons for authentication or authorization purposes, or to avoid creating multiple items that use the same string, rather than, say, to comparisons of names or parts of names for the purpose of showing matching records.
 
-   ### Member Summary
+ ### Member Summary
 * <code>[IsInFreeformClass(string)](#IsInFreeformClass_string)</code> - Determines whether the given string belongs in RFC 8264's FreeformClass.
 * <code>[IsInIdentifierClass(string)](#IsInIdentifierClass_string)</code> - Determines whether the given string belongs in RFC 8264's IdentifierClass.
 * <code>[NicknameEnforce(string)](#NicknameEnforce_string)</code> - Checks the validity of a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec.
@@ -33,7 +33,7 @@
 
 <b>Return Value:</b>
 
- `true` true if the given string is empty or contains only characters allowed in RFC 8264's FreeformClass (in the contexts required); otherwise,  `false` false . Returns  `false` false if  <i>str</i>
+ `true`  if the given string is empty or contains only characters allowed in RFC 8264's FreeformClass (in the contexts required); otherwise,  `false`  . Returns  `false`  if  <i>str</i>
  is null.
 
 <a id="IsInIdentifierClass_string"></a>
@@ -48,7 +48,7 @@
 
 <b>Return Value:</b>
 
- `true` true if the given string is empty or contains only characters allowed in RFC 8264's FreeformClass (in the contexts required); otherwise,  `false` false . Returns  `false` false if  <i>str</i>
+ `true`  if the given string is empty or contains only characters allowed in RFC 8264's FreeformClass (in the contexts required); otherwise,  `false`  . Returns  `false`  if  <i>str</i>
  is null.
 
 <a id="NicknameEnforce_string"></a>

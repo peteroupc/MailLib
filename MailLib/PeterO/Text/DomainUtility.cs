@@ -11,22 +11,24 @@ using PeterO;
 
 // NOTE: Implements Punycode defined in RFC 3492
 namespace PeterO.Text {
-   internal static class DomainUtility {
+  internal static class DomainUtility {
+    private const string PunycodeAlphabet =
+      "abcdefghijklmnopqrstuvwxyz0123456789";
     internal static int ALabelLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
-      throw new ArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new ArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > str.Length) {
         throw new ArgumentException("index (" + index + ") is more than " +
           str.Length);
       }
       if (endIndex < 0) {
-throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
-          "0");
+        throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
+                  "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +
@@ -170,33 +172,32 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       }
       return outputLength;
     }
-
- private static readonly int[] ValueDigitValues = { -1, -1, -1, -1, -1, -1,
+    private static readonly int[] ValueDigitValues = { -1, -1, -1, -1, -1, -1,
       -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
+      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, };
 
     internal static string PunycodeDecode(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
-      throw new ArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new ArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > str.Length) {
         throw new ArgumentException("index (" + index + ") is more than " +
           str.Length);
       }
       if (endIndex < 0) {
-throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
-          "0");
+        throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
+                  "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +
@@ -220,7 +221,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       if (lastHyphen >= index) {
         for (i = index; i < lastHyphen; ++i) {
           if (str[i] >= 0x80) {
-            return null;  // Non-basic character found
+            return null; // Non-basic character found
           }
         }
       }
@@ -230,7 +231,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       for (int k = index; k < lastHyphen; ++k) {
         int c = str[k];
         if (c >= 0x41 && c <= 0x5a) {
-           // convert to lowercase
+          // convert to lowercase
           c += 0x20;
         }
         builder.Append((char)c);
@@ -316,9 +317,6 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       return builder.ToString();
     }
 
-private const string PunycodeAlphabet =
-      "abcdefghijklmnopqrstuvwxyz0123456789";
-
     internal static string ALabelEncode(string str) {
       return ALabelEncodePortion(str, 0, str.Length);
     }
@@ -331,16 +329,16 @@ private const string PunycodeAlphabet =
         throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
-      throw new ArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new ArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > str.Length) {
         throw new ArgumentException("index (" + index + ") is more than " +
           str.Length);
       }
       if (endIndex < 0) {
-throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
-          "0");
+        throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
+                  "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +

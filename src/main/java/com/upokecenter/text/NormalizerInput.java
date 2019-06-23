@@ -19,20 +19,20 @@ package com.upokecenter.text;
      * should be treated as equivalent to the uncombined form (E plus
      * acute). For this reason, the standard defines four <i> normalization
      * forms </i> that convert strings to a single equivalent form: </p>
-     * <ul> <li><b>NFD </b> (Normalization Form D) decomposes combined forms
+     * <ul> <li><b>NFD</b> (Normalization Form D) decomposes combined forms
      * to their constituent characters (E plus acute, for example), then
      * reorders combining marks to a standardized order. This is called
-     * canonical decomposition. </li> <li><b>NFC </b> does canonical
+     * canonical decomposition. </li> <li><b>NFC</b> does canonical
      * decomposition, then combines certain constituent characters to their
      * composites (E-acute, for example). This is called canonical
-     * composition. </li> <li>Two normalization forms, <b>NFKC </b> and
-     * <b>NFKD </b> , are similar to NFC and NFD, except they also
+     * composition. </li> <li>Two normalization forms, <b>NFKC</b> and
+     * <b>NFKD</b> , are similar to NFC and NFD, except they also
      * "decompose" certain characters, such as ligatures, font or positional
      * variants, and subscripts, whose visual distinction can matter in some
      * contexts. This is called compatibility decomposition. </li> </ul>
      * <p>For more information, see Standard Annex 15 at
-     * <code>http://www.unicode.org/reports/tr15/ </code> . </p> <p><b>Thread
-     * safety: </b> This class is mutable; its properties can be changed.
+     * <code>http://www.unicode.org/reports/tr15/</code> . </p> <p><b>Thread
+     * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
      * Therefore, access to objects from this class must be synchronized if
      * multiple threads can access them at the same time. </p> <p>NOTICE:
@@ -92,8 +92,7 @@ package com.upokecenter.text;
       }
       return offset;
     }
-
-   private static boolean IsDecompositionForm(Normalization form) {
+    private static boolean IsDecompositionForm(Normalization form) {
       return form == Normalization.NFD || form == Normalization.NFKD;
    }
 
@@ -224,8 +223,7 @@ package com.upokecenter.text;
     private final ICharacterInput iterator;
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * Initializes a new instance of the {@link NormalizerInput} class.
      * @param str The parameter {@code str} is a text string.
      */
     public NormalizerInput(
@@ -236,8 +234,7 @@ package com.upokecenter.text;
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * Initializes a new instance of the {@link NormalizerInput} class.
      * @param input The parameter {@code input} is an ICharacterInput object.
      */
     public NormalizerInput(
@@ -248,8 +245,7 @@ package com.upokecenter.text;
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * Initializes a new instance of the {@link NormalizerInput} class.
      * @param str The parameter {@code str} is a text string.
      * @param index The parameter {@code index} is a 32-bit signed integer.
      * @param length The parameter {@code length} is a 32-bit signed integer.
@@ -266,8 +262,7 @@ package com.upokecenter.text;
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * Initializes a new instance of the {@link NormalizerInput} class.
      * @param str The parameter {@code str} is a text string.
      * @param form The parameter {@code form} is a Normalization object.
      */
@@ -276,8 +271,7 @@ package com.upokecenter.text;
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * Initializes a new instance of the {@link NormalizerInput} class.
      * @param stream The parameter {@code stream} is an ICharacterInput object.
      * @param form The parameter {@code form} is a Normalization object.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.

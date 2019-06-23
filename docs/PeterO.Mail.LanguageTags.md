@@ -9,12 +9,12 @@
 * <code>[IsLanguageRange(string, bool)](#IsLanguageRange_string_bool)</code> - Returns whether the given string is a basic or extended language range under RFC 4647.
 * <code>[IsPotentiallyValidLanguageTag(string)](#IsPotentiallyValidLanguageTag_string)</code> - Returns true if (1) the given string is a well-formed language tag under RFC 5646 (that is, the string follows the syntax given in section 2.
 * <code>[LanguageTagCase(string)](#LanguageTagCase_string)</code> - Sets the given language tag to the case combination recommended by RFC 5646.
-* <code>[LanguageTagFilter(System.Collections.Generic.IList, System.Collections.Generic.IList)](#LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList)</code> -
-* <code>[LanguageTagFilter(System.Collections.Generic.IList, System.Collections.Generic.IList, bool, bool)](#LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList_bool_bool)</code> -
-* <code>[LanguageTagLookup(string, System.Collections.Generic.IList, string)](#LanguageTagLookup_string_System_Collections_Generic_IList_string)</code> -
-* <code>[LanguageTagLookup(string, System.Collections.Generic.IList, string, bool)](#LanguageTagLookup_string_System_Collections_Generic_IList_string_bool)</code> -
-* <code>[LanguageTagLookup(System.Collections.Generic.IList, System.Collections.Generic.IList, string)](#LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string)</code> -
-* <code>[LanguageTagLookup(System.Collections.Generic.IList, System.Collections.Generic.IList, string, bool)](#LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string_bool)</code> -
+* <code>[LanguageTagFilter(System.Collections.Generic.IList, System.Collections.Generic.IList)](#LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList)</code> - Finds the language tags that match a priority list of basic language ranges.
+* <code>[LanguageTagFilter(System.Collections.Generic.IList, System.Collections.Generic.IList, bool, bool)](#LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList_bool_bool)</code> - Finds the language tags that match a priority list of language ranges.
+* <code>[LanguageTagLookup(string, System.Collections.Generic.IList, string)](#LanguageTagLookup_string_System_Collections_Generic_IList_string)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
+* <code>[LanguageTagLookup(string, System.Collections.Generic.IList, string, bool)](#LanguageTagLookup_string_System_Collections_Generic_IList_string_bool)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
+* <code>[LanguageTagLookup(System.Collections.Generic.IList, System.Collections.Generic.IList, string)](#LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
+* <code>[LanguageTagLookup(System.Collections.Generic.IList, System.Collections.Generic.IList, string, bool)](#LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string_bool)</code> - Does a language tag lookup (under RFC 4647) for a matching language tag.
 * <code>[MatchesLanguageTag(string, string)](#MatchesLanguageTag_string_string)</code> - Determines whether the given language tag matches the given language range.
 
 <a id="GetLanguageList_string"></a>
@@ -60,7 +60,7 @@ A list of language ranges with their associated qualities. The list will be sort
 
 <b>Return Value:</b>
 
- `true` true if the given string is a basic language range; otherwise,  `false` false .
+ `true`  if the given string is a basic language range; otherwise,  `false`  .
 
 <a id="IsLanguageRange_string_bool"></a>
 ### IsLanguageRange
@@ -77,8 +77,8 @@ A list of language ranges with their associated qualities. The list will be sort
 
 <b>Return Value:</b>
 
- `true` true if the given string is a basic language range (depending on the  <i>extended</i>
- parameter); otherwise,  `false` false .
+ `true`  if the given string is a basic language range (depending on the  <i>extended</i>
+ parameter); otherwise,  `false`  .
 
 <a id="IsPotentiallyValidLanguageTag_string"></a>
 ### IsPotentiallyValidLanguageTag
@@ -92,7 +92,7 @@ A list of language ranges with their associated qualities. The list will be sort
 
 <b>Return Value:</b>
 
- `true` true , if the string meets the conditions given in the summary,  `false` false otherwise.
+ `true`  , if the string meets the conditions given in the summary,  `false`  otherwise.
 
 <a id="LanguageTagCase_string"></a>
 ### LanguageTagCase
@@ -109,6 +109,206 @@ A list of language ranges with their associated qualities. The list will be sort
 A text string in the recommended case combination, or null if  <i>str</i>
  is null.
 
+<a id="LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList"></a>
+### LanguageTagFilter
+
+    public static System.Collections.Generic.IList LanguageTagFilter(
+        System.Collections.Generic.IList ranges,
+        System.Collections.Generic.IList languages);
+
+ Finds the language tags that match a priority list of basic language ranges.  <b>Parameters:</b>
+
+ * <i>ranges</i>: A list of basic language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
+
+ * <i>languages</i>: A list of language tags, which should be given in order of descending preference.
+
+<b>Return Value:</b>
+
+A list of language tags that match the given range, in descending order of preference.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>languages</i>
+ or  <i>ranges</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter  <i>ranges</i>
+ contains a value that is not a basic language range, or  <i>languages</i>
+ contains a value that is not a potentially valid language tag.
+
+<a id="LanguageTagFilter_System_Collections_Generic_IList_System_Collections_Generic_IList_bool_bool"></a>
+### LanguageTagFilter
+
+    public static System.Collections.Generic.IList LanguageTagFilter(
+        System.Collections.Generic.IList ranges,
+        System.Collections.Generic.IList languages,
+        bool extended,
+        bool matchStarAtEnd);
+
+ Finds the language tags that match a priority list of language ranges.  <b>Parameters:</b>
+
+ * <i>ranges</i>: A list of language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
+
+ * <i>languages</i>: A list of language tags, which should be given in order of descending preference.
+
+ * <i>extended</i>: If true, the ranges in "ranges" are extended language ranges; otherwise, they are basic language ranges.
+
+ * <i>matchStarAtEnd</i>: If true, treats any range equaling "*" as appearing at the end of the language priority list, no matter where it appears on that list.
+
+<b>Return Value:</b>
+
+A list of language tags that match the given range, in descending order of preference.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>languages</i>
+ or  <i>ranges</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter  <i>ranges</i>
+ contains a value that is not a basic or extended language range, or  <i>languages</i>
+ contains a value that is not a potentially valid language tag.
+
+<a id="LanguageTagLookup_string_System_Collections_Generic_IList_string"></a>
+### LanguageTagLookup
+
+    public static string LanguageTagLookup(
+        string range,
+        System.Collections.Generic.IList languages,
+        string defaultValue);
+
+ Does a language tag lookup (under RFC 4647) for a matching language tag.  <b>Parameters:</b>
+
+ * <i>range</i>: A basic language range (see the documentation for "IsLanguageRange").
+
+ * <i>languages</i>: A list of language tags, which should be given in order of descending preference.
+
+ * <i>defaultValue</i>: The value to return if no matching language tag was found.
+
+<b>Return Value:</b>
+
+The matching language tag, or the parameter  <i>defaultValue</i>
+ if there is no matching language tag.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>languages</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter  <i>range</i>
+ is not a basic language range, or  <i>languages</i>
+ contains a value that is not a potentially valid language tag.
+
+<a id="LanguageTagLookup_string_System_Collections_Generic_IList_string_bool"></a>
+### LanguageTagLookup
+
+    public static string LanguageTagLookup(
+        string range,
+        System.Collections.Generic.IList languages,
+        string defaultValue,
+        bool extended);
+
+ Does a language tag lookup (under RFC 4647) for a matching language tag.  <b>Parameters:</b>
+
+ * <i>range</i>: A language range (see the documentation for "IsLanguageRange").
+
+ * <i>languages</i>: A list of language tags, which should be given in order of descending preference.
+
+ * <i>defaultValue</i>: The value to return if no matching language tag was found.
+
+ * <i>extended</i>: If true, "range" is an extended language range; otherwise, it's a are basic language range.
+
+<b>Return Value:</b>
+
+The matching language tag, or the parameter  <i>defaultValue</i>
+ if there is no matching language tag.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>languages</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter  <i>range</i>
+ is not a basic or extended language range, or  <i>languages</i>
+ contains a value that is not a potentially valid language tag.
+
+<a id="LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string"></a>
+### LanguageTagLookup
+
+    public static string LanguageTagLookup(
+        System.Collections.Generic.IList ranges,
+        System.Collections.Generic.IList languages,
+        string defaultValue);
+
+ Does a language tag lookup (under RFC 4647) for a matching language tag.  <b>Parameters:</b>
+
+ * <i>ranges</i>: A list of basic language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
+
+ * <i>languages</i>: A list of language tags, which should be given in order of descending preference.
+
+ * <i>defaultValue</i>: The value to return if no matching language tag was found.
+
+<b>Return Value:</b>
+
+The matching language tag, or the parameter  <i>defaultValue</i>
+ if there is no matching language tag.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>languages</i>
+ or  <i>ranges</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter  <i>ranges</i>
+ contains a value that is not a basic language range, or  <i>languages</i>
+ contains a value that is not a potentially valid language tag.
+
+<a id="LanguageTagLookup_System_Collections_Generic_IList_System_Collections_Generic_IList_string_bool"></a>
+### LanguageTagLookup
+
+    public static string LanguageTagLookup(
+        System.Collections.Generic.IList ranges,
+        System.Collections.Generic.IList languages,
+        string defaultValue,
+        bool extended);
+
+ Does a language tag lookup (under RFC 4647) for a matching language tag.  <b>Parameters:</b>
+
+ * <i>ranges</i>: A list of language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
+
+ * <i>languages</i>: A list of language tags, which should be given in order of descending preference.
+
+ * <i>defaultValue</i>: The value to return if no matching language tag was found.
+
+ * <i>extended</i>: If true, the ranges in "ranges" are extended language ranges; otherwise, they are basic language ranges.
+
+<b>Return Value:</b>
+
+The matching language tag, or the parameter  <i>defaultValue</i>
+ if there is no matching language tag.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>languages</i>
+ or  <i>ranges</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter  <i>ranges</i>
+ contains a value that is not a basic or extended language range, or  <i>languages</i>
+ contains a value that is not a potentially valid language tag.
+
 <a id="MatchesLanguageTag_string_string"></a>
 ### MatchesLanguageTag
 
@@ -124,7 +324,7 @@ A text string in the recommended case combination, or null if  <i>str</i>
 
 <b>Return Value:</b>
 
- `true` true if the language tag matches the language range by the filtering method under RFC 4647; otherwise,  `false` false .
+ `true`  if the language tag matches the language range by the filtering method under RFC 4647; otherwise,  `false`  .
 
 <b>Exceptions:</b>
 

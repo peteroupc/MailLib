@@ -147,11 +147,11 @@ namespace PeterO.Text {
       }
       int index = (cp >> 9) << 1;
       int x = this.array[index + 1];
-      if ((x & 0x80) != 0) {  // Indicates a default value.
+      if ((x & 0x80) != 0) { // Indicates a default value.
         return this.array[index];
       }
       // Indicates an array block.
-x = (x << 8) | (((int)this.array[index]) & 0xff);
+      x = (x << 8) | (((int)this.array[index]) & 0xff);
       index = 0x1100 + (x << 9) + (cp & 511);
       return this.array[index];
     }

@@ -22,8 +22,8 @@ namespace PeterO.Mail {
       if (String.IsNullOrEmpty(addressValue)) {
         return list;
       }
-        var tokener = new Tokener();
-        if (
+      var tokener = new Tokener();
+      if (
           HeaderParser.ParseHeaderTo(
             addressValue,
             0,

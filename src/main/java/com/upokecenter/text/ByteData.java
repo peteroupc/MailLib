@@ -156,7 +156,7 @@ package com.upokecenter.text;
         return this.array[index];
       }
       // Indicates an array block.
-x = (x << 8) | (((int)this.array[index]) & 0xff);
+      x = (x << 8) | (((int)this.array[index]) & 0xff);
       index = 0x1100 + (x << 9) + (cp & 511);
       return this.array[index];
     }

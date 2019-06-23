@@ -98,7 +98,7 @@ namespace PeterO.Mail {
           0x0a) {
  index += 2;
 }
-        if (str[index] == 0x09 || str[index] == 0x20) {
+if (str[index] == 0x09 || str[index] == 0x20) {
  ++index;
 } else {
  break;
@@ -291,7 +291,7 @@ namespace PeterO.Mail {
       var first = true;
       var index = 0;
       var ret = new List<StringAndQuality>();
-if (str == null) {
+      if (str == null) {
  return null;
 }
       while (index < str.Length) {
@@ -393,7 +393,7 @@ if (str == null) {
       var tagIndex = 1;
       while (rangeIndex < rangeSub.Length) {
      string range = rangeSub[rangeIndex];
-        if (range.Length == 0) {
+     if (range.Length == 0) {
           return false;
         }
         if (range.Equals("*")) {
@@ -402,7 +402,7 @@ if (str == null) {
         if (tagIndex >= tagSub.Length) {
           return false;
         }
-string tag = tagSub[tagIndex];
+        string tag = tagSub[tagIndex];
         if (range.Equals(tag)) {
           ++rangeIndex;
           ++tagIndex;
@@ -483,7 +483,7 @@ string tag = tagSub[tagIndex];
 
     private static string TruncateLangRange(string range) {
      var i = 0;
-      for (i = range.Length - 1; i >= 0; --i) {
+     for (i = range.Length - 1; i >= 0; --i) {
  if (range[i] == '-' && i >= 2 && range[i - 1] != '-' && range[i - 2] != '-'
 ) {
  return range.Substring(0, i);
@@ -499,7 +499,7 @@ string tag = tagSub[tagIndex];
         new List<string>(new string[] { range }),
         new List<string>(new string[] { tag }),
         false,
- false);
+        false);
       return tags.Count > 0;
     }
 
@@ -623,11 +623,11 @@ string tag = tagSub[tagIndex];
             if (index == endIndex) {
               return true;
             }
-            c1 = str[index];  // get the next character
+            c1 = str[index]; // get the next character
           }
-          if (c1 == '-') {  // case AA- or AAA-
+          if (c1 == '-') { // case AA- or AAA-
             ++index;
-            if (index + 2 == endIndex) {  // case AA-?? or AAA-??
+            if (index + 2 == endIndex) { // case AA-?? or AAA-??
               c1 = str[index];
               c2 = str[index];
               if ((c1 >= 'a' && c1 <= 'z') && (c2 >= 'a' && c2 <= 'z')) {

@@ -20,8 +20,7 @@ private HeaderParserUtility() {
     static final int TokenQuotedString = 6;
     static final int TokenLocalPart = 7;
     static final int TokenDomain = 8;
-
- public static int ParseQuotedStringCore(
+    public static int ParseQuotedStringCore(
   String str,
   int index,
   int endIndex) {
@@ -81,10 +80,10 @@ private HeaderParserUtility() {
                 // quoted String found, skip it
                 int
   si = HeaderParserUtility.ParseQuotedStringCore(str, index, endIndex);
-                    if (si == index) {
+  if (si == index) {
  throw new IllegalStateException("Internal error: " + str);
 }
-                    index = si;
+index = si;
            } else {
                ++index;
            }
@@ -115,19 +114,19 @@ private HeaderParserUtility() {
                 if (si < endIndex && str.charAt(si) == (char)0x22) {
                     // Note that quoted-String starts with optional CFWS
                     tokener.RestoreState(state);
-  si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+                    si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
                     if (si == index) {
  throw new IllegalStateException("Internal error: " + str);
 }
                 }
-            index = si;
+                index = si;
           } else if (c == 0x22) {
              int
   si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
-                if (si == index) {
+  if (si == index) {
  throw new IllegalStateException("Internal error: " + str);
 }
-                index = si;
+index = si;
            } else {
                 ++index;
            }
@@ -272,7 +271,7 @@ private HeaderParserUtility() {
 // throw new IllegalStateException(
   // "str=" + str + " index=" + index,  // ex);
   // }
-            lastIndex = tokenEnd;
+  lastIndex = tokenEnd;
           }
         }
       }
@@ -409,8 +408,8 @@ private HeaderParserUtility() {
       int state = (tokener != null) ? tokener.GetState() : 0;
       while (index < endIndex) {
         index = HeaderParser.ParseFWS(str, index, endIndex, null);
-  boolean backslash = index < endIndex && str.charAt(index) == '\\';
-  if (backslash) {
+        boolean backslash = index < endIndex && str.charAt(index) == '\\';
+        if (backslash) {
  ++index;
 }
 if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
@@ -455,7 +454,7 @@ if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
     }
 
     // Parses a comment without using the obsolete syntax.
-  static int ParseCommentStrict(
+    static int ParseCommentStrict(
   String str,
   int index,
   int endIndex) {
@@ -481,11 +480,11 @@ if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
                   indexTemp4 = index;
                   do {
                     int indexStart4 = index;
-        while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+                    while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
                     9))) {
                     ++index;
                     }
-        if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
+                    if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
                     10) {
                     index += 2;
                     } else {
@@ -499,10 +498,10 @@ if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
                   } else { break;
                   }
                 } while (false);
-           if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+                if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
                   9))) {
                   ++index;
-        while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+                  while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
                     9))) {
                     ++index;
                   }
@@ -553,7 +552,7 @@ if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
                     str.charAt(index + 1) <= 57343))) {
                     indexTemp5 += 2; break;
                     }
-             if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <=
+                    if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <=
                     126)) {
                     ++indexTemp5; break;
                     }
@@ -605,11 +604,11 @@ if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
               int indexTemp3 = index;
               do {
                 int indexStart3 = index;
-        while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+                while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
                   9))) {
                   ++index;
                 }
-        if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
+                if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
                   10) {
                   index += 2;
                 } else {
@@ -625,7 +624,7 @@ if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
             } while (false);
             if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
               ++index;
-        while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+              while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
                 9))) {
                 ++index;
               }

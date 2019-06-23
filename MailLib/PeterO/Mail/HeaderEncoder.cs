@@ -109,7 +109,7 @@ namespace PeterO.Mail {
   endIndex - startIndex));
         this.column = 1 + (endIndex - startIndex);
       }
-      return false;  // No need to write space anymore
+      return false; // No need to write space anymore
     }
 
     public HeaderEncoder AppendString(string symbol) {
@@ -178,7 +178,7 @@ namespace PeterO.Mail {
   i,
   endIndex,
   null);
-            if (si != i) {
+  if (si != i) {
               writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
@@ -301,7 +301,7 @@ namespace PeterO.Mail {
             ++i;
           }
         }
-     this.AppendSpaceAndSymbol(
+        this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   endIndex,
@@ -334,7 +334,7 @@ namespace PeterO.Mail {
   symbolBegin,
   i,
   writeSpace);
-     writeSpace = this.AppendSpaceAndSymbol(
+  writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   i,
   i + 1,
@@ -354,7 +354,7 @@ namespace PeterO.Mail {
           ++i;
         }
       }
-this.AppendSpaceAndSymbol(
+      this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   symbol.Length,
@@ -395,10 +395,10 @@ this.AppendSpaceAndSymbol(
         string ret = str;
         for (int i = str.Length - 1; i >= 0; --i) {
           switch ((int)str[i]) {
-            case 0x20:  // space
-            case 0x09:  // tab
+            case 0x20: // space
+            case 0x09: // tab
               break;
-            case 0x0a:  // LF
+            case 0x0a: // LF
               if (i > 0 && str[i - 1] == '\r') {
                 --i;
                 ret = str.Substring(0, i);
@@ -430,10 +430,10 @@ this.AppendSpaceAndSymbol(
     private static readonly int[] ValueSmallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, };
 
     public HeaderEncoder AppendAsEncodedWords(string symbol) {
       var i = 0;
@@ -443,7 +443,7 @@ this.AppendSpaceAndSymbol(
         if (ch >= 0x10000) {
           ++i;
         }
-   bool smallChar = ch <= 0x7e && ch > 0x20 && ValueSmallchars[ch - 0x20] ==
+        bool smallChar = ch <= 0x7e && ch > 0x20 && ValueSmallchars[ch - 0x20] ==
           1;
         var unitLength = 1;
         unitLength = (ch == 0x20 || smallChar) ? 1 : ((ch <= 0x7f) ? 3 :
@@ -629,7 +629,7 @@ this.AppendSpaceAndSymbol(
           ++i;
         }
       }
-this.AppendSpaceAndSymbol(
+      this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   symbol.Length,
@@ -643,7 +643,7 @@ this.AppendSpaceAndSymbol(
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, };
 
     private static bool IsSimplePhrase(string str) {
       if (str.Length == 0) {
@@ -907,7 +907,7 @@ this.AppendSpaceAndSymbol(
       if (colon < 0 || colon + 1 < s.Length || s[colon + 1] != ' ') {
         return false;
       }
-int i = colon + 1;
+      int i = colon + 1;
       for (; i < s.Length; ++i) {
         char c = s[i];
         if (c != 0x0d && c != 0x0a && c != 0x20 && c != 0x09) {
@@ -968,7 +968,7 @@ int i = colon + 1;
         return trialField;
       }
       var sa = new HeaderEncoder();
-sa.AppendFieldName(fieldName);
+      sa.AppendFieldName(fieldName);
       if (sa.SimpleAppendString(fieldValue, 0, fieldValue.Length)) {
         trialField = sa.ToString();
         if (CanOutputRaw(trialField)) {

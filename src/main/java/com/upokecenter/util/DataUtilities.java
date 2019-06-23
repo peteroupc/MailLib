@@ -9,27 +9,26 @@ at: http://peteroupc.github.io/
 
 import java.io.*;
 
-    /**
-     * Contains methods useful for reading and writing strings. It is designed to
-     * have no dependencies other than the basic runtime class library.
-     * <p>Many of these methods work with text encoded in UTF-8, an encoding
-     * form of the Unicode Standard which uses one byte to encode the most
-     * basic characters and two to four bytes to encode other characters.
-     * For example, the <code>GetUtf8 </code> method converts a text string to an
-     * array of bytes in UTF-8. </p> <p>In C# and Java, text strings are
-     * represented as sequences of 16-bit values called <code>char </code> s.
-     * These sequences are well-formed under UTF-16, a 16-bit encoding form
-     * of Unicode, except if they contain unpaired surrogate code points. (A
-     * surrogate code point is used to encode supplementary characters,
-     * those with code points U + 10000 or higher, in UTF-16. A surrogate pair
-     * is a high surrogate [U + D800 to U + DBFF] followed by a low surrogate
-     * [U + DC00 to U + DFFF]. An unpaired surrogate code point is a surrogate
-     * not appearing in a surrogate pair.) Many of the methods in this class
-     * allow setting the behavior to follow when unpaired surrogate code
-     * points are found in text strings, such as throwing an error or
-     * treating the unpaired surrogate as a replacement character (U + FFFD).
-     * </p>
-     */
+  /**
+   * Contains methods useful for reading and writing strings. It is designed to
+   * have no dependencies other than the basic runtime class library.
+   * <p>Many of these methods work with text encoded in UTF-8, an encoding
+   * form of the Unicode Standard which uses one byte to encode the most
+   * basic characters and two to four bytes to encode other characters. For
+   * example, the <code>GetUtf8</code> method converts a text string to an array
+   * of bytes in UTF-8. </p> <p>In C# and Java, text strings are represented
+   * as sequences of 16-bit values called <code>char</code> s. These sequences are
+   * well-formed under UTF-16, a 16-bit encoding form of Unicode, except if
+   * they contain unpaired surrogate code points. (A surrogate code point is
+   * used to encode supplementary characters, those with code points U + 10000
+   * or higher, in UTF-16. A surrogate pair is a high surrogate [U + D800 to
+   * U + DBFF] followed by a low surrogate [U + DC00 to U + DFFF]. An unpaired
+   * surrogate code point is a surrogate not appearing in a surrogate pair.)
+   * Many of the methods in this class allow setting the behavior to follow
+   * when unpaired surrogate code points are found in text strings, such as
+   * throwing an error or treating the unpaired surrogate as a replacement
+   * character (U + FFFD). </p>
+   */
   public final class DataUtilities {
 private DataUtilities() {
 }
@@ -71,13 +70,13 @@ private DataUtilities() {
       }
       int i = 0;
       int count = 0;
-     while (i < str.length()) {
-       int c = CodePointAt(str, i);
-       ++count;
-       i += (c >= 0x10000) ? 2 : 1;
-     }
-     return count;
-}
+      while (i < str.length()) {
+        int c = CodePointAt(str, i);
+        ++count;
+        i += (c >= 0x10000) ? 2 : 1;
+      }
+      return count;
+    }
 
     /**
      * Generates a text string from a portion of a UTF-8 byte array.
@@ -134,8 +133,8 @@ private DataUtilities() {
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
      * byte-order mark (U + FEFF) at the beginning of the encoded byte array.
      * </p> <p>REMARK: It is not recommended to use
-     * <code>Encoding.UTF8.GetBytes </code> in .NET, or the <code>getBytes() </code>
-     * method in Java to do this. For instance, <code>getBytes() </code> encodes
+     * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+     * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
      * can be undesirable. </p>
      * @param str The parameter {@code str} is a text string.
@@ -148,16 +147,16 @@ private DataUtilities() {
      * code point and {@code replace} is false, or an internal error
      * occurred.
      */
-        public static byte[] GetUtf8Bytes(String str, boolean replace) {
-          return GetUtf8Bytes(str, replace, false);
-        }
+    public static byte[] GetUtf8Bytes(String str, boolean replace) {
+      return GetUtf8Bytes(str, replace, false);
+    }
 
     /**
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
      * byte-order mark (U + FEFF) at the beginning of the encoded byte array.
      * </p> <p>REMARK: It is not recommended to use
-     * <code>Encoding.UTF8.GetBytes </code> in .NET, or the <code>getBytes() </code>
-     * method in Java to do this. For instance, <code>getBytes() </code> encodes
+     * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+     * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
      * can be undesirable. </p>
      * @param str The parameter {@code str} is a text string.
@@ -183,20 +182,20 @@ private DataUtilities() {
         int c = str.charAt(0);
         if ((c & 0xf800) == 0xd800) {
           if (replace) {
- c = 0xfffd;
-} else {
- throw new IllegalArgumentException("Unpaired surrogate code point");
-}
+            c = 0xfffd;
+          } else {
+            throw new IllegalArgumentException("Unpaired surrogate code point");
+          }
         }
         if (c <= 0x80) {
           return new byte[] { (byte)c };
         } else if (c <= 0x7ff) {
           return new byte[] { (byte)(0xc0 | ((c >> 6) & 0x1f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         } else {
           return new byte[] { (byte)(0xe0 | ((c >> 12) & 0x0f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         }
       } else if (str.length() == 2) {
         int c = str.charAt(0);
@@ -206,7 +205,7 @@ private DataUtilities() {
           return new byte[] { (byte)(0xf0 | ((c >> 18) & 0x07)),
             (byte)(0x80 | ((c >> 12) & 0x3f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         } else if (!lenientLineBreaks && c <= 0x80 && c2 <= 0x80) {
           return new byte[] { (byte)c, (byte)c2 };
         }
@@ -216,8 +215,8 @@ private DataUtilities() {
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-       if (WriteUtf8(str, 0, str.length(), ms, replace, lenientLineBreaks) !=
-            0) {
+          if (WriteUtf8(str, 0, str.length(), ms, replace, lenientLineBreaks) !=
+               0) {
             throw new IllegalArgumentException("Unpaired surrogate code point");
           }
           return ms.toByteArray();
@@ -342,7 +341,7 @@ try { if (ms != null) {
      * code point. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
      * codePoint = DataUtilities.CodePointAt(str, i);
      * Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
-     * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } } </pre> </p>
+     * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }</pre> </p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the given position. Returns -1 if {@code
@@ -363,8 +362,8 @@ try { if (ms != null) {
      * </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int codePoint =
      * DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break;
      * /* Unpaired surrogate &#x2a;&#x2f; } Console.WriteLine("codePoint:"+codePoint);
-     * if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }
-     * </pre> </p>
+     * if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; }
+     * }</pre> </p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
@@ -498,8 +497,8 @@ try { if (ms != null) {
       int len, ca, cb;
       len = Math.min(strA.length(), strB.length());
       for (int i = 0; i < len; ++i) {
-         ca = strA.charAt(i);
-         cb = strB.charAt(i);
+        ca = strA.charAt(i);
+        cb = strB.charAt(i);
         if (ca == cb) {
           // normal code units and illegal surrogates
           // are treated as single code points
@@ -627,9 +626,9 @@ try { if (ms != null) {
       int retval = 0;
       bytes = new byte[StreamedStringBufferLength];
       int byteIndex = 0;
-       endIndex = offset + length;
+      endIndex = offset + length;
       for (int index = offset; index < endIndex; ++index) {
-         c = str.charAt(index);
+        c = str.charAt(index);
         if (c <= 0x7f) {
           if (lenientLineBreaks) {
             if (c == 0x0d && (index + 1 >= endIndex || str.charAt(index + 1) !=
@@ -797,10 +796,10 @@ try { if (ms != null) {
       int lower = 0x80;
       int upper = 0xbf;
       int pointer, endpointer, b;
-       pointer = offset;
-       endpointer = offset + bytesCount;
+      pointer = offset;
+      endpointer = offset + bytesCount;
       while (pointer < endpointer) {
-         b = data[pointer] & (int)0xff;
+        b = data[pointer] & (int)0xff;
         ++pointer;
         if (bytesNeeded == 0) {
           if ((b & 0x7f) == b) {
@@ -846,16 +845,16 @@ try { if (ms != null) {
             continue;
           }
           int ret, ch, lead, trail;
-           ret = cp;
+          ret = cp;
           cp = 0;
           bytesSeen = 0;
           bytesNeeded = 0;
           if (ret <= 0xffff) {
             builder.append((char)ret);
           } else {
-             ch = ret - 0x10000;
-             lead = (ch >> 10) + 0xd800;
-             trail = (ch & 0x3ff) + 0xdc00;
+            ch = ret - 0x10000;
+            lead = (ch >> 10) + 0xd800;
+            trail = (ch & 0x3ff) + 0xdc00;
             builder.append((char)lead);
             builder.append((char)trail);
           }
@@ -1037,9 +1036,9 @@ try { if (ms != null) {
           if (ret <= 0xffff) {
             builder.append((char)ret);
           } else {
-             ch = ret - 0x10000;
-             lead = (ch >> 10) + 0xd800;
-             trail = (ch & 0x3ff) + 0xdc00;
+            ch = ret - 0x10000;
+            lead = (ch >> 10) + 0xd800;
+            trail = (ch & 0x3ff) + 0xdc00;
             builder.append((char)lead);
             builder.append((char)trail);
           }

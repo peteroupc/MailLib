@@ -132,7 +132,7 @@ namespace PeterO.Mail {
     }
 
     public static Message MailtoUriMessage(string uri) {
-      string[] parts = URIUtility.splitIRIToStrings(
+      string[] parts = URIUtility.SplitIRIToStrings(
         uri);
       if (parts == null || parts[0] == null) {
         return null;

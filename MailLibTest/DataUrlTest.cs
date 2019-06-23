@@ -8715,8 +8715,8 @@ Assert.AreEqual(
     }
 
     private static void AssertIdempotencyNeg(
-  string s) { 
-      if((bool)URIUtility.isValidIRI(s)){
+  string s) {
+      if ((bool)URIUtility.isValidIRI(s)) {
        Assert.Fail(s);
       }
 

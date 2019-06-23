@@ -11,16 +11,22 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.EncodedWordContext"]/*'/>
   internal enum EncodedWordContext {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Unstructured"]/*'/>
+    ///
+    /// <summary>In an unstructured header field's value.
+    /// </summary>
+    ///
     Unstructured,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Phrase"]/*'/>
+    ///
+    /// <summary>In a "word" element within a "phrase" of a structured header field.
+    /// </summary>
+    ///
     Phrase,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.EncodedWordContext.Comment"]/*'/>
-    Comment
+    ///
+    /// <summary>Contains methods for parsing and matching language tags.
+    /// </summary>
+    ///
+    Comment,
   }
 }

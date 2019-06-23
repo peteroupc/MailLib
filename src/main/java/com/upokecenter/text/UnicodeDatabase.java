@@ -29,7 +29,7 @@ private UnicodeDatabase() {
       if (cp < 0x300 || cp >= 0xe0000) {
  return 0;
 }
-  if (classes == null) {
+if (classes == null) {
 synchronized (ValueSyncRoot) {
 classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
 }
@@ -193,36 +193,36 @@ classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningCl
        if (cp < 0) {
  return 0;
 }
-        if (idnaCat == null) {
+if (idnaCat == null) {
 synchronized (ValueSyncRoot) {
 idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
 }
 }
-      return ((int)idnaCat.GetByte(cp)) & 0xff;
+return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
     public static int GetCasedProperty(int cp) {
        if (cp < 0) {
  return 0;
 }
-        if (casedprop == null) {
+if (casedprop == null) {
 synchronized (ValueSyncRoot) {
   casedprop = (casedprop == null) ? (ByteData.Decompress(NormalizationData.CaseProperty)) : casedprop;
 }
 }
-      return ((int)casedprop.GetByte(cp)) & 0xff;
+return ((int)casedprop.GetByte(cp)) & 0xff;
     }
 
     public static int GetPrecisCategory(int cp) {
        if (cp < 0) {
  return 0;
 }
-      if (precisCat == null) {
+if (precisCat == null) {
 synchronized (ValueSyncRoot) {
 precisCat = (precisCat == null) ? (ByteData.Decompress(IdnaData.PrecisCategories)) : precisCat;
 }
 }
-      return ((int)precisCat.GetByte(cp)) & 0xff;
+return ((int)precisCat.GetByte(cp)) & 0xff;
     }
 
     public static boolean IsCombiningMark(int cp) {
@@ -267,7 +267,7 @@ fhwidth = (fhwidth == null) ? (ByteData.Decompress(IdnaData.FullHalfWidth)) : fh
           NormalizationData.QCSNFKDMax)) {
         return true;
       }
-        if (form == Normalization.NFC) {
+      if (form == Normalization.NFC) {
           if (qcsnfc == null) {
 synchronized (ValueSyncRoot) {
 qcsnfc = (qcsnfc == null) ? (ByteData.Decompress(NormalizationData.QCSNFC)) : qcsnfc;

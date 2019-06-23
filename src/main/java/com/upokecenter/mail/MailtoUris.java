@@ -134,7 +134,7 @@ private MailtoUris() {
     }
 
     public static Message MailtoUriMessage(String uri) {
-      String[] parts = URIUtility.splitIRIToStrings(
+      String[] parts = URIUtility.SplitIRIToStrings(
         uri);
       if (parts == null || parts[0] == null) {
         return null;

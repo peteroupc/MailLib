@@ -29,7 +29,7 @@ namespace PeterO.Mail.Transforms {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 
     private int lineCharCount;
     private byte[] buffer;
@@ -107,7 +107,7 @@ namespace PeterO.Mail.Transforms {
           // End of stream
           return -1;
         }
-   if (!this.checkStrictEncoding && this.printable[c] == 1 &&
+        if (!this.checkStrictEncoding && this.printable[c] == 1 &&
        this.maxLineSize < 0) {
           return c;
         }
@@ -128,14 +128,14 @@ namespace PeterO.Mail.Transforms {
           // Ignore CR (part of suggested behavior by RFC 2045)
           continue;
         }
-        if (c == 0x0a) {  // LF
+        if (c == 0x0a) { // LF
           if (!this.allowBareLfCr) {
             throw new MessageDataException("Expected LF after CR");
           }
           // Ignore LF (part of suggested behavior by RFC 2045)
           continue;
         }
-        if (c == '=') {  // Equals
+        if (c == '=') { // Equals
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {

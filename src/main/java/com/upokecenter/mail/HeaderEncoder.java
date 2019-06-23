@@ -178,7 +178,7 @@ import com.upokecenter.util.*;
   i,
   endIndex,
   null);
-            if (si != i) {
+  if (si != i) {
               writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
@@ -299,7 +299,7 @@ import com.upokecenter.util.*;
             ++i;
           }
         }
-     this.AppendSpaceAndSymbol(
+        this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   endIndex,
@@ -332,7 +332,7 @@ import com.upokecenter.util.*;
   symbolBegin,
   i,
   writeSpace);
-     writeSpace = this.AppendSpaceAndSymbol(
+  writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   i,
   i + 1,
@@ -352,7 +352,7 @@ import com.upokecenter.util.*;
           ++i;
         }
       }
-this.AppendSpaceAndSymbol(
+      this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   symbol.length(),
@@ -428,10 +428,10 @@ this.AppendSpaceAndSymbol(
     private static final int[] ValueSmallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, };
 
     public HeaderEncoder AppendAsEncodedWords(String symbol) {
       int i = 0;
@@ -441,7 +441,7 @@ this.AppendSpaceAndSymbol(
         if (ch >= 0x10000) {
           ++i;
         }
-   boolean smallChar = ch <= 0x7e && ch > 0x20 && ValueSmallchars[ch - 0x20] ==
+        boolean smallChar = ch <= 0x7e && ch > 0x20 && ValueSmallchars[ch - 0x20] ==
           1;
         int unitLength = 1;
         unitLength = (ch == 0x20 || smallChar) ? 1 : ((ch <= 0x7f) ? 3 :
@@ -627,7 +627,7 @@ this.AppendSpaceAndSymbol(
           ++i;
         }
       }
-this.AppendSpaceAndSymbol(
+      this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   symbol.length(),
@@ -641,7 +641,7 @@ this.AppendSpaceAndSymbol(
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, };
 
     private static boolean IsSimplePhrase(String str) {
       if (str.length() == 0) {
@@ -905,7 +905,7 @@ this.AppendSpaceAndSymbol(
       if (colon < 0 || colon + 1 < s.length() || s.charAt(colon + 1) != ' ') {
         return false;
       }
-int i = colon + 1;
+      int i = colon + 1;
       for (; i < s.length(); ++i) {
         char c = s.charAt(i);
         if (c != 0x0d && c != 0x0a && c != 0x20 && c != 0x09) {
@@ -966,7 +966,7 @@ int i = colon + 1;
         return trialField;
       }
       HeaderEncoder sa = new HeaderEncoder();
-sa.AppendFieldName(fieldName);
+      sa.AppendFieldName(fieldName);
       if (sa.SimpleAppendString(fieldValue, 0, fieldValue.length())) {
         trialField = sa.toString();
         if (CanOutputRaw(trialField)) {

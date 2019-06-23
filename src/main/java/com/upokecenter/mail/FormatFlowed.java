@@ -396,8 +396,7 @@ private FormatFlowed() {
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
           str.charAt(2) == ' ' && str.charAt(3) == ' ') ? str.substring(4) : str; }
-
-            private static String HtmlEscapeStrong(String str) {
+          private static String HtmlEscapeStrong(String str) {
       int i = 0;
       StringBuilder sb = new StringBuilder();
       for (; i < str.length(); ++i) {
@@ -562,7 +561,7 @@ private FormatFlowed() {
           while (index < str.length()) {
             if (str.charAt(index) == ']') {
                 found = true;
-              break;
+                break;
             }
             ++index;
           }
@@ -1033,8 +1032,7 @@ private FormatFlowed() {
       String str,
       int depth,
       boolean alwaysUseParas,
-      Map<String, String[]> links
-) {
+      Map<String, String[]> links) {
       int i = 0;
       int lineStart = i;
       StringBuilder formatted = new StringBuilder();

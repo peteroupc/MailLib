@@ -36,6 +36,7 @@ namespace PeterO.Mail {
     }
 
     #region Equals and GetHashCode implementation
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
@@ -99,8 +100,8 @@ namespace PeterO.Mail {
 
     internal MediaType(
   string type,
- string subtype,
- IDictionary<string, string> parameters) {
+  string subtype,
+  IDictionary<string, string> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
       this.parameters = new Dictionary<string, string>(parameters);
@@ -117,13 +118,17 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]/*'/>
+    ///
+    /// <summary>Use HTTP rules for quoted strings.
+    /// </summary>
+    ///
       Http,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]/*'/>
-      Rfc5322
+    ///
+    /// <summary>Use Internet Message Format rules for quoted strings.
+    /// </summary>
+    ///
+      Rfc5322,
     }
 
     private static int SkipQtextOrQuotedPair(
@@ -247,7 +252,7 @@ namespace PeterO.Mail {
   string str,
   int index,
   int endIndex,
-  StringBuilder builder,  // receives the unescaped version of the string
+  StringBuilder builder, // receives the unescaped version of the string
   QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.Length;
@@ -257,7 +262,7 @@ namespace PeterO.Mail {
         if (builder != null) {
           builder.Length = valueBLength;
         }
-        return startIndex;  // not a valid quoted-string
+        return startIndex; // not a valid quoted-string
       }
       ++index;
       while (index < endIndex) {
@@ -276,7 +281,7 @@ namespace PeterO.Mail {
         }
         index = i2;
         char c = str[index];
-        if (c == '"') {  // end of quoted-string
+        if (c == '"') { // end of quoted-string
           ++index;
           // NOTE: Don't skip CFWS even if the rule is Rfc5322
           return index;
@@ -298,7 +303,7 @@ namespace PeterO.Mail {
       if (builder != null) {
         builder.Remove(valueBLength, builder.Length - valueBLength);
       }
-      return startIndex;  // not a valid quoted-string
+      return startIndex; // not a valid quoted-string
     }
 
     private static bool IsAttributeChar(int c) {
@@ -336,7 +341,7 @@ namespace PeterO.Mail {
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
       var sb = new StringBuilder();
- while (index < str.Length && (maxLineLength < 0 || column <=
+      while (index < str.Length && (maxLineLength < 0 || column <=
         maxLineLength)) {
         int c = str[index];
         bool first = index == 0;
@@ -347,7 +352,7 @@ namespace PeterO.Mail {
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-      if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) :
+        if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) :
           IsAttributeChar(c)) {
           ++contin;
         } else if (c <= 0x7f) {
@@ -381,7 +386,7 @@ namespace PeterO.Mail {
           PctAppend(sb, 0x80 | ((c >> 12) & 0x3f));
           PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
           PctAppend(sb, 0x80 | (c & 0x3f));
-          ++index;  // Because it uses 2 surrogates
+          ++index; // Because it uses 2 surrogates
         }
         ++index;
         column += contin;
@@ -461,7 +466,7 @@ namespace PeterO.Mail {
       var simple = true;
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
+        if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
           (!IsAttributeChar(c))) {
           simple = false;
         }
@@ -500,8 +505,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       HeaderEncoder sa) {
        AppendParameters(parameters, sa, false);
     }
-
-      internal static void AppendParameters(
+    internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa,
       bool uriSafe) {
@@ -897,7 +901,7 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
-        return String.Empty;
+      return String.Empty;
        }
     }
 
@@ -990,7 +994,7 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
 
     private static bool ExpandRfc2231Extensions(
   IDictionary<string, string> parameters,
- bool httpRules) {
+  bool httpRules) {
       if (parameters.Count == 0) {
         return true;
       }
@@ -1102,10 +1106,10 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
 
     internal static bool ParseParameters(
   string str,
-      int index,
- int endIndex,
-      bool httpRules,
- IDictionary<string, string> parameters) {
+  int index,
+  int endIndex,
+  bool httpRules,
+  IDictionary<string, string> parameters) {
       var duplicateAttributes = new Dictionary<string, string>();
       var hasDuplicateAttributes = false;
       while (true) {
@@ -1150,7 +1154,7 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
           endIndex,
           builder,
           httpRules);
-        if (afteratt == index) {  // ill-formed attribute
+        if (afteratt == index) { // ill-formed attribute
           return false;
         }
         string attribute = builder.ToString();
@@ -1196,7 +1200,7 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
             endIndex,
             builder,
             httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
-          if (!httpRules && qs != index) {
+            if (!httpRules && qs != index) {
             qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
           }
           if (qs != index) {
@@ -1274,8 +1278,12 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainAscii"]/*'/>
+
+    ///
+    /// <summary>Specifies the media type "text/plain" and the "charset" parameter
+    /// "US-ASCII", used for plain text data.
+    /// </summary>
+    ///
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
   "text",
@@ -1289,8 +1297,13 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainUtf8"]/*'/>
+
+    ///
+    /// <summary>Specifies the media type "text/plain" and the "charset" parameter "utf-8",
+    /// used for plain text data that may contain characters outside the basic
+    /// Latin range (U+0000 to U+007F).
+    /// </summary>
+    ///
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
   "text",
@@ -1304,8 +1317,12 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.MessageRfc822"]/*'/>
+
+    ///
+    /// <summary>Specifies the media type "message/rfc822", used for Internet mail
+    /// messages.
+    /// </summary>
+    ///
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
@@ -1315,8 +1332,12 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.ApplicationOctetStream"]/*'/>
+
+    ///
+    /// <summary>Specifies the media type "application/octet-stream", used for arbitrary
+    /// binary data.
+    /// </summary>
+    ///
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 

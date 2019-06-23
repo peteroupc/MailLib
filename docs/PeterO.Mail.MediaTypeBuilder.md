@@ -14,14 +14,51 @@
 * <code>[TopLevelType](#TopLevelType)</code> - Gets or sets this value's top-level type.
 * <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form as MediaType.
 
-<a id="IsMultipart"></a>
+<a id="Void_ctor_MediaType"></a>
+### MediaTypeBuilder Constructor
+
+    public MediaTypeBuilder(
+        PeterO.Mail.MediaType mt);
+
+ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.  <b>Parameters:</b>
+
+ * <i>mt</i>: The parameter  <i>mt</i>
+ is a MediaType object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>mt</i>
+ is null.
+
+<a id="Void_ctor_String_String"></a>
+### MediaTypeBuilder Constructor
+
+    public MediaTypeBuilder(
+        string type,
+        string subtype);
+
+ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.  <b>Parameters:</b>
+
+ * <i>type</i>: The parameter  <i>type</i>
+ is a text string.
+
+ * <i>subtype</i>: The parameter  <i>subtype</i>
+ is a text string.
+
+<a id="Void_ctor"></a>
+### MediaTypeBuilder Constructor
+
+    public MediaTypeBuilder();
+
+ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.  <a id="IsMultipart"></a>
 ### IsMultipart
 
     public bool IsMultipart { get; }
 
  Gets a value indicating whether this is a multipart media type.  <b>Returns:</b>
 
- `true` true If this is a multipart media type; otherwise, .  `false` false .
+ `true`  If this is a multipart media type; otherwise, .  `false`  .
 
 <a id="IsText"></a>
 ### IsText
@@ -30,7 +67,7 @@
 
  Gets a value indicating whether this is a text media type.  <b>Returns:</b>
 
- `true` true If this is a text media type; otherwise, .  `false` false .
+ `true`  If this is a text media type; otherwise, .  `false`  .
 
 <a id="SubType"></a>
 ### SubType
@@ -160,6 +197,6 @@ A MediaType object.
 
     public override string ToString();
 
- Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString` MediaType.ToString  <b>Return Value:</b>
+ Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString`   <b>Return Value:</b>
 
 A string representation of this object.

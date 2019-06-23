@@ -208,7 +208,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
             for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.substring(k, (k)+(1)));
             }
-          break;
+            break;
         }
         for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.substring(k, (k)+(1)));
@@ -239,10 +239,10 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
     private static final int[] ValueSmallchars = {
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, };
 
     // ASCII characters allowed in atoms
     private static final int[] ValueAsciiAtext = {
@@ -251,7 +251,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, };
 
     private static int SkipEncodedText(
   String str,
@@ -388,7 +388,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
   afterLast,
   context,
   encodingChar);
-if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
+  if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
                 i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
@@ -410,7 +410,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
             asterisk + 1, (
             asterisk + 1)+(charset.length() - (asterisk + 1)));
                 charset = charset.substring(0, asterisk);
-  acceptedEncodedWord &= LanguageTags.IsPotentiallyValidLanguageTag(language);
+                acceptedEncodedWord &= LanguageTags.IsPotentiallyValidLanguageTag(language);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -597,10 +597,10 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
 
     public static String DecodePhraseText(
   String str,
-      int index,
- int endIndex,
-      List<int[]> tokens,
- boolean withComments) {
+  int index,
+  int endIndex,
+  List<int[]> tokens,
+  boolean withComments) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all CFWS
       // found after the phrase.
@@ -617,7 +617,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
       // Get each relevant token sorted by starting index
       for (int[] token : tokens) {
         boolean hasCFWS = false;
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
+        if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
           token[2] >= index && token[2] <= endIndex)) {
           continue;
         }

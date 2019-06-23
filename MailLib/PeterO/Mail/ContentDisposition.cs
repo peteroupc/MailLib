@@ -26,6 +26,7 @@ namespace PeterO.Mail {
     }
 
     #region Equals and GetHashCode implementation
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
@@ -222,8 +223,11 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Attachment"]/*'/>
+
+    ///
+    /// <summary>The content disposition value "attachment".
+    /// </summary>
+    ///
     public static readonly ContentDisposition Attachment =
       Build("attachment");
 
@@ -233,8 +237,11 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]/*'/>
+
+    ///
+    /// <summary>The content disposition value "inline".
+    /// </summary>
+    ///
     public static readonly ContentDisposition Inline =
       Build("inline");
 

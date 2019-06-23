@@ -60,7 +60,7 @@ if (type.Length == 0) {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsText"]/*'/>
-[Obsolete(
+    [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsText {
       get {
@@ -70,7 +70,7 @@ if (type.Length == 0) {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsMultipart"]/*'/>
-[Obsolete(
+    [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsMultipart {
       get {
@@ -93,7 +93,7 @@ if (type.Length == 0) {
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
       }
-   if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
+      if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
         str.Length) {
         throw new ArgumentException("Not a well-formed type: " + str);
       }
@@ -123,7 +123,7 @@ if (type.Length == 0) {
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
       }
-if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
+      if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
         name.Length) {
       throw new ArgumentException("Not a well-formed parameter name: " +
           name);

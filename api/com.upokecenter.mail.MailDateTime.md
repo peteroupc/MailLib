@@ -100,7 +100,7 @@ Gets the date and time extracted from a date-time string following the
 
 * <code>str</code> - A date-time string.
 
-* <code>parseObsoleteZones</code> - If set to <code>true </code> , this method allows
+* <code>parseObsoleteZones</code> - If set to <code>true</code> , this method allows
  obsolete time zones (single-letter time zones, "GMT", "UT", and
  certain three-letter combinations) to appear in the date-time string.
 

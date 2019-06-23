@@ -44,8 +44,7 @@ namespace PeterO.Text {
       }
       return offset;
     }
-
-   private static bool IsDecompositionForm(Normalization form) {
+    private static bool IsDecompositionForm(Normalization form) {
       return form == Normalization.NFD || form == Normalization.NFKD;
    }
 
@@ -218,8 +217,8 @@ namespace PeterO.Text {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
-    public NormalizerInput(string str, Normalization form) :
-      this(new StringCharacterInput2(str), form) {
+    public NormalizerInput(string str, Normalization form)
+      : this(new StringCharacterInput2(str), form) {
     }
 
     /// <include file='../../docs.xml'
@@ -743,7 +742,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         return false;
       }
       this.flushIndex = 0;
-       // DebugUtility.Log ("reordering " +  // (EC (buffer, 0, lastQcsIndex)) +
+       // DebugUtility.Log ("reordering " + // (EC (buffer, 0, lastQcsIndex)) +
       // " [" + this.form + "]");
       // Canonical reordering
       ReorderBuffer(this.buffer, 0, this.lastQcsIndex);

@@ -18,7 +18,7 @@
 
  An XN-label is an LDH label beginning with "xn--" in any combination of case.
 
- NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called  `NormalizationData` NormalizationData and  `IdnaData` IdnaData , that include data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
+ NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called  `NormalizationData`  and  `IdnaData`  , that include data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 
   ### Member Summary
 * <code>[DecodeDomainName(string)](#DecodeDomainName_string)</code> - Tries to encode each XN-label of the given domain name into Unicode.
@@ -81,4 +81,4 @@ The parameter  <i>value</i>
 
 <b>Return Value:</b>
 
- `true` true if the given string is a syntactically valid domain name; otherwise; false.
+ `true`  if the given string is a syntactically valid domain name; otherwise; false.

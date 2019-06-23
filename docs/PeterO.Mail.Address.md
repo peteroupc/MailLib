@@ -9,6 +9,26 @@
 * <code>[LocalPart](#LocalPart)</code> - Gets the local part of this email address (the part before the "@" sign).
 * <code>[ToString()](#ToString)</code> - Converts this address object to a text string.
 
+<a id="Void_ctor_String"></a>
+### Address Constructor
+
+    public Address(
+        string addressValue);
+
+ Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.  <b>Parameters:</b>
+
+ * <i>addressValue</i>: The parameter  <i>addressValue</i>
+ is a text string.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>addressValue</i>
+ is null.
+
+ * System.ArgumentException:
+AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
+
 <a id="Domain"></a>
 ### Domain
 
@@ -40,7 +60,7 @@ The local part of this email address (the part before the "@" sign).
 
 <b>Return Value:</b>
 
- `true` true if this object and another object are equal; otherwise,  `false` false .
+ `true`  if this object and another object are equal; otherwise,  `false`  .
 
 <a id="GetHashCode"></a>
 ### GetHashCode

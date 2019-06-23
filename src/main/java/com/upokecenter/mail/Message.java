@@ -14,91 +14,89 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
-    /**
-     * <p>Represents an email message, and contains methods and properties for
-     * accessing and modifying email message data. This class implements the
-     * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
-     * Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread safety:
-     * </b> This class is mutable; its properties can be changed. None of
-     * its instance methods are designed to be thread safe. Therefore,
-     * access to objects from this class must be synchronized if multiple
-     * threads can access them at the same time. </p> <p>The following lists
-     * known deviations from the mail specifications (Internet Message
-     * Format and MIME): </p> <ul> <li>The content-transfer-encodings
-     * "quoted-printable" and "base64" are treated as 7bit instead if they
-     * occur in a message or body part with content type "multipart/&#x2a;"
-     * or "message/&#x2a;" (other than "message/global",
-     * "message/global-headers", "message/global-disposition-notification",
-     * or "message/global-delivery-status"). </li> <li>If a message has two
-     * or more Content-Type header fields, it is treated as having a content
-     * type of "application/octet-stream", unless one or more of the header
-     * fields is syntactically invalid. </li> <li>Illegal UTF-8 byte
-     * sequences appearing in header field values are replaced with
-     * replacement characters. Moreover, UTF-8 is parsed everywhere in
-     * header field values, even in those parts of some structured header
-     * fields where this appears not to be allowed. (UTF-8 is a character
-     * encoding for the Unicode character set.) </li> <li>This
-     * implementation can parse a message even if that message is without a
-     * From header field, without a Date header field, or without both.
-     * </li> <li>The To and Cc header fields are allowed to contain only
-     * comments and whitespace, but these "empty" header fields will be
-     * omitted when generating. </li> <li>There is no line length limit
-     * imposed when parsing header fields, except header field names. </li>
-     * <li>There is no line length limit imposed when parsing
-     * quoted-printable or base64 encoded bodies. </li> <li>If the transfer
-     * encoding is absent and the content type is "message/rfc822", bytes
-     * with values greater than 127 (called "8-bit bytes" in the rest of
-     * this summary) are still allowed, despite the default value of "7bit"
-     * for "Content-Transfer-Encoding". </li> <li>In the following cases, if
-     * the transfer encoding is absent, declared as 7bit, or treated as
-     * 7bit, 8-bit bytes are still allowed: </li> <li>(a) The preamble and
-     * epilogue of multipart messages, which will be ignored. </li> <li>(b)
-     * If the charset is declared to be <code>utf-8 </code> . </li> <li>(c) If the
-     * content type is "text/html" and the charset is declared to be
-     * <code>us-ascii </code> , "windows-1252", "windows-1251", or
-     * "iso-8859-&#x2a;" (all single byte encodings). </li> <li>(d) In
-     * non-MIME message bodies and in text/plain message bodies. Any 8-bit
-     * bytes are replaced with the substitute character byte (0x1a). </li>
-     * <li>If the message starts with the word "From" (and no other case
-     * variations of that word) followed by one or more space (U + 0020) not
-     * followed by colon, that text and the rest of the text is skipped up
-     * to and including a line feed (U + 000A). (See also RFC 4155, which
-     * describes the so-called "mbox" convention with "From" lines of this
-     * kind.) </li> <li>The name <code>ascii </code> is treated as a synonym for
-     * <code>us-ascii </code> , despite being a reserved name under RFC 2046. The
-     * name <code>cp1252 </code> and <code>utf8 </code> are treated as synonyms for
-     * <code>windows-1252 </code> and <code>utf-8 </code> , respectively, even though
-     * they are not IANA registered aliases. </li> <li>The following
-     * deviations involve encoded words under RFC 2047: </li> <li>(a) If a
-     * sequence of encoded words decodes to a string with a CTL character
-     * (U + 007F, or a character less than U + 0020 and not TAB) after being
-     * converted to Unicode, the encoded words are left un-decoded. </li>
-     * <li>(b) This implementation can decode encoded words regardless of
-     * the character length of the line in which they appear. This
-     * implementation can generate a header field line with one or more
-     * encoded words even if that line is more than 76 characters long.
-     * (This implementation follows the recommendation in RFC 5322 to limit
-     * header field lines to no more than 78 characters, where possible.)
-     * </li> </ul> <p>It would be appreciated if users of this library
-     * contact the author if they find other ways in which this
-     * implementation deviates from the mail specifications or other
-     * applicable specifications. </p> <p>Note that this class currently
-     * doesn't support the "padding" parameter for message bodies with the
-     * media type "application/octet-stream" or treated as that media type
-     * (see RFC 2046 sec. 4.5.1). </p> <p>Note that this implementation can
-     * decode an RFC 2047 encoded word that uses ISO-2022-JP (the only
-     * supported encoding that uses code switching) even if the encoded
-     * word's payload ends in a different mode from "ASCII mode". (Each
-     * encoded word still starts in "ASCII mode", though.) This, however, is
-     * not a deviation to RFC 2047 because the relevant rule only concerns
-     * bringing the output device back to "ASCII mode" after the decoded
-     * text is displayed (see last paragraph of sec. 6.2) -- since the
-     * decoded text is converted to Unicode rather than kept as ISO-2022-JP,
-     * this is not applicable since there is no such thing as "ASCII mode"
-     * in the Unicode Standard. </p> <p>Note that this library (the MailLib
-     * library) has no facilities for sending and receiving email messages,
-     * since that's outside this library's scope. </p>
-     */
+  /**
+   * <p>Represents an email message, and contains methods and properties for
+   * accessing and modifying email message data. This class implements the
+   * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
+   * Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
+   * safety:</b> This class is mutable; its properties can be changed. None
+   * of its instance methods are designed to be thread safe. Therefore,
+   * access to objects from this class must be synchronized if multiple
+   * threads can access them at the same time. </p> <p>The following lists
+   * known deviations from the mail specifications (Internet Message Format
+   * and MIME): </p> <ul> <li>The content-transfer-encodings
+   * "quoted-printable" and "base64" are treated as 7bit instead if they
+   * occur in a message or body part with content type "multipart/&#x2a;" or
+   * "message/&#x2a;" (other than "message/global",
+   * "message/global-headers", "message/global-disposition-notification", or
+   * "message/global-delivery-status"). </li> <li>If a message has two or
+   * more Content-Type header fields, it is treated as having a content type
+   * of "application/octet-stream", unless one or more of the header fields
+   * is syntactically invalid. </li> <li>Illegal UTF-8 byte sequences
+   * appearing in header field values are replaced with replacement
+   * characters. Moreover, UTF-8 is parsed everywhere in header field
+   * values, even in those parts of some structured header fields where this
+   * appears not to be allowed. (UTF-8 is a character encoding for the
+   * Unicode character set.) </li> <li>This implementation can parse a
+   * message even if that message is without a From header field, without a
+   * Date header field, or without both. </li> <li>The To and Cc header
+   * fields are allowed to contain only comments and whitespace, but these
+   * "empty" header fields will be omitted when generating. </li> <li>There
+   * is no line length limit imposed when parsing header fields, except
+   * header field names. </li> <li>There is no line length limit imposed
+   * when parsing quoted-printable or base64 encoded bodies. </li> <li>If
+   * the transfer encoding is absent and the content type is
+   * "message/rfc822", bytes with values greater than 127 (called "8-bit
+   * bytes" in the rest of this summary) are still allowed, despite the
+   * default value of "7bit" for "Content-Transfer-Encoding". </li> <li>In
+   * the following cases, if the transfer encoding is absent, declared as
+   * 7bit, or treated as 7bit, 8-bit bytes are still allowed: </li> <li>(a)
+   * The preamble and epilogue of multipart messages, which will be ignored.
+   * </li> <li>(b) If the charset is declared to be <code>utf-8</code> . </li>
+   * <li>(c) If the content type is "text/html" and the charset is declared
+   * to be <code>us-ascii</code> , "windows-1252", "windows-1251", or
+   * "iso-8859-&#x2a;" (all single byte encodings). </li> <li>(d) In
+   * non-MIME message bodies and in text/plain message bodies. Any 8-bit
+   * bytes are replaced with the substitute character byte (0x1a). </li>
+   * <li>If the message starts with the word "From" (and no other case
+   * variations of that word) followed by one or more space (U + 0020) not
+   * followed by colon, that text and the rest of the text is skipped up to
+   * and including a line feed (U + 000A). (See also RFC 4155, which describes
+   * the so-called "mbox" convention with "From" lines of this kind.) </li>
+   * <li>The name <code>ascii</code> is treated as a synonym for <code>us-ascii</code> ,
+   * despite being a reserved name under RFC 2046. The name <code>cp1252</code>
+   * and <code>utf8</code> are treated as synonyms for <code>windows-1252</code> and
+   * <code>utf-8</code> , respectively, even though they are not IANA registered
+   * aliases. </li> <li>The following deviations involve encoded words under
+   * RFC 2047: </li> <li>(a) If a sequence of encoded words decodes to a
+   * string with a CTL character (U + 007F, or a character less than U + 0020
+   * and not TAB) after being converted to Unicode, the encoded words are
+   * left un-decoded. </li> <li>(b) This implementation can decode encoded
+   * words regardless of the character length of the line in which they
+   * appear. This implementation can generate a header field line with one
+   * or more encoded words even if that line is more than 76 characters
+   * long. (This implementation follows the recommendation in RFC 5322 to
+   * limit header field lines to no more than 78 characters, where
+   * possible.) </li> </ul> <p>It would be appreciated if users of this
+   * library contact the author if they find other ways in which this
+   * implementation deviates from the mail specifications or other
+   * applicable specifications. </p> <p>Note that this class currently
+   * doesn't support the "padding" parameter for message bodies with the
+   * media type "application/octet-stream" or treated as that media type
+   * (see RFC 2046 sec. 4.5.1). </p> <p>Note that this implementation can
+   * decode an RFC 2047 encoded word that uses ISO-2022-JP (the only
+   * supported encoding that uses code switching) even if the encoded word's
+   * payload ends in a different mode from "ASCII mode". (Each encoded word
+   * still starts in "ASCII mode", though.) This, however, is not a
+   * deviation to RFC 2047 because the relevant rule only concerns bringing
+   * the output device back to "ASCII mode" after the decoded text is
+   * displayed (see last paragraph of sec. 6.2) -- since the decoded text is
+   * converted to Unicode rather than kept as ISO-2022-JP, this is not
+   * applicable since there is no such thing as "ASCII mode" in the Unicode
+   * Standard. </p> <p>Note that this library (the MailLib library) has no
+   * facilities for sending and receiving email messages, since that's
+   * outside this library's scope. </p>
+   */
   public final class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -138,8 +136,7 @@ import com.upokecenter.text.*;
     private int transferEncoding;
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
-     * class.
+     * Initializes a new instance of the {@link Message} class.
      * @param stream The parameter {@code stream} is a InputStream object.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
@@ -155,8 +152,7 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
-     * class.
+     * Initializes a new instance of the {@link Message} class.
      * @param bytes A byte array.
      * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
      */
@@ -229,7 +225,7 @@ import com.upokecenter.text.*;
  */
 @Deprecated
     public final List<NamedAddress> getBccAddresses() {
-return this.GetAddresses("bcc");
+        return this.GetAddresses("bcc");
       }
 
     /**
@@ -266,7 +262,7 @@ return this.GetAddresses("bcc");
  */
 @Deprecated
     public final List<NamedAddress> getCCAddresses() {
-return this.GetAddresses("cc");
+        return this.GetAddresses("cc");
       }
 
     /**
@@ -291,8 +287,8 @@ return this.GetAddresses("cc");
     public String GetFormattedBodyString() {
       String text = this.getBodyString();
       if (text == null) {
- return null;
-}
+        return null;
+      }
       MediaType mt = this.getContentType();
       String fmt = mt.GetParameter("format");
       String dsp = mt.GetParameter("delsp");
@@ -310,7 +306,7 @@ return this.GetAddresses("cc");
       } else if (mt.getTypeAndSubType().equals("text/html")) {
         return text;
       } else if (mt.getTypeAndSubType().equals("text/markdown")) {
-MediaType previewType = MediaType.Parse("text/html");
+        MediaType previewType = MediaType.Parse("text/html");
         if (this.getContentDisposition() != null) {
           String pt = this.getContentDisposition().GetParameter("preview-type");
           previewType = MediaType.Parse(
@@ -383,9 +379,9 @@ public final void setContentType(MediaType value) {
      * <p>Gets a file name suggested by this message for saving the message's body
      * to a file. For more information on the algorithm, see
      * ContentDisposition.MakeFilename. </p> <p>This method generates a file
-     * name based on the <code>filename </code> parameter of the
-     * Content-Disposition header field, if it exists, or on the <code>name
-     * </code> parameter of the Content-Type header field, otherwise. </p>
+     * name based on the <code>filename</code> parameter of the
+     * Content-Disposition header field, if it exists, or on the <code>name</code>
+     * parameter of the Content-Type header field, otherwise. </p>
      * @return A suggested name for the file. Returns the empty string if there is
      * no filename suggested by the content type or content disposition, or
      * if that filename is an empty string.
@@ -434,7 +430,7 @@ public final void setContentType(MediaType value) {
  */
 @Deprecated
     public final List<NamedAddress> getFromAddresses() {
-return this.GetAddresses("from");
+        return this.GetAddresses("from");
       }
 
     /**
@@ -484,7 +480,7 @@ public final void setSubject(String value) {
  */
 @Deprecated
     public final List<NamedAddress> getToAddresses() {
-return this.GetAddresses("to");
+        return this.GetAddresses("to");
       }
 
     /**
@@ -537,9 +533,9 @@ return this.GetAddresses("to");
      * invalid syntax, has no addresses, or appears more than once, this
      * method will generate a synthetic header field with the display-name
      * set to the contents of all of the header fields with the same name,
-     * and the address set to <code>me@[header-name]-address.invalid </code> as
-     * the address (a <code>.invalid </code> address is a reserved address that
-     * can never belong to anyone). (An exception is that the Resent-&#x2a;
+     * and the address set to <code>me@[header-name]-address.invalid</code> as the
+     * address (a <code>.invalid</code> address is a reserved address that can
+     * never belong to anyone). (An exception is that the Resent-&#x2a;
      * header fields may appear more than once.) The generated message
      * should always have a From header field. </p> <p>If a Date and/or
      * Message-ID header field doesn't exist, a field with that name will be
@@ -593,7 +589,7 @@ return this.GetAddresses("to");
      */
     public int[] GetDate() {
       String field = this.GetHeader("date");
- return (field == null) ? null : MailDateTime.ParseDateString(field, true);
+      return (field == null) ? null : MailDateTime.ParseDateString(field, true);
     }
 
     /**
@@ -995,7 +991,7 @@ return this.GetAddresses("to");
       // this case, the HTML version)
       Message textMessage = NewBodyPart().SetTextBody(text);
       Message htmlMessage = NewBodyPart().SetHtmlBody(html);
-    String mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      String mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
       messageParts.clear();
@@ -1027,13 +1023,13 @@ return this.GetAddresses("to");
       text = (text == null) ? (markdown) : text;
       Message textMessage = NewBodyPart().SetTextBody(text);
       Message markdownMessage = NewBodyPart().SetTextBody(markdown);
-    String mtypestr = "text/markdown; charset=utf-8";
+      String mtypestr = "text/markdown; charset=utf-8";
       markdownMessage.setContentType(MediaType.Parse(mtypestr));
-     // Take advantage of SetTextBody's line break conversion
-    String markdownText = markdownMessage.getBodyString();
+      // Take advantage of SetTextBody's line break conversion
+      String markdownText = markdownMessage.getBodyString();
       Message htmlMessage = NewBodyPart().SetHtmlBody(
          FormatFlowed.MarkdownText(markdownText, 0));
-    mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
       messageParts.clear();
@@ -1285,7 +1281,7 @@ try { if (fs != null) {
  fs.close();
  } } catch (java.io.IOException ex) {}
 }
-} } </pre> </p>
+} }</pre> </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
@@ -1349,11 +1345,11 @@ try { if (fs != null) {
   InputStream inputStream,
   MediaType mediaType,
   String filename) {
-  return this.AddBodyPart(
-  inputStream,
-  mediaType,
-  filename,
-  "attachment");
+      return this.AddBodyPart(
+      inputStream,
+      mediaType,
+      filename,
+      "attachment");
     }
 
     /**
@@ -1377,7 +1373,7 @@ try { if (fs != null) {
  fs.close();
  } } catch (java.io.IOException ex) {}
 }
-} } </pre> </p>
+} }</pre> </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @return A Message object for the generated body part.
@@ -1452,23 +1448,22 @@ try { if (fs != null) {
       }
       return true;
     }
-
-private static String GetContentTranslationType(String ctt) {
+    private static String GetContentTranslationType(String ctt) {
       if (((ctt) == null || (ctt).length() == 0)) {
- return "";
-}
+        return "";
+      }
       int index = HeaderParser.ParseFWS(ctt, 0, ctt.length(), null);
       int cttEnd = HeaderParser.ParsePhraseAtom(ctt, index, ctt.length(), null);
       if (cttEnd != ctt.length()) {
- return "";
-}
+        return "";
+      }
       return DataUtilities.ToLowerCaseAscii(
          ctt.substring(index, (index)+(cttEnd - index)));
     }
 
     /**
      * Selects a body part for a multiple-language message (
-     * <code>multipart/multilingual </code>) according to the given language
+     * <code>multipart/multilingual</code>) according to the given language
      * priority list.
      * @param languages A list of basic language ranges, sorted in descending order
      * of priority (see the LanguageTags.LanguageTagFilter method).
@@ -1488,7 +1483,7 @@ private static String GetContentTranslationType(String ctt) {
 
     /**
      * Selects a body part for a multiple-language message (
-     * <code>multipart/multilingual </code>) according to the given language
+     * <code>multipart/multilingual</code>) according to the given language
      * priority list and original-language preference.
      * @param languages A list of basic language ranges, sorted in descending order
      * of priority (see the LanguageTags.LanguageTagFilter method).
@@ -1515,13 +1510,13 @@ private static String GetContentTranslationType(String ctt) {
         List<String> clang;
         List<String> filt;
         for (int i = 0; i < passes; ++i) {
- for (Message part : this.getParts()) {
-      clang = LanguageTags.GetLanguageList(part.GetHeader(
-  "content-language"));
+          for (Message part : this.getParts()) {
+            clang = LanguageTags.GetLanguageList(part.GetHeader(
+        "content-language"));
             if (clang == null) {
- continue;
-}
-         if (preferOriginals && i == 0) {  // Allow originals only, on first
+              continue;
+            }
+            if (preferOriginals && i == 0) { // Allow originals only, on first
               String ctt =
   GetContentTranslationType(part.GetHeader("content-translation-type"));
               if (!ctt.equals("original")) {
@@ -1533,8 +1528,8 @@ private static String GetContentTranslationType(String ctt) {
               Message ret = part.GetBodyMessage();
               if (ret != null) {
                 if (subject != null && ret.GetHeader("subject") == null) {
- ret.SetHeader("subject", subject);
-}
+                  ret.SetHeader("subject", subject);
+                }
                 return ret;
               }
             }
@@ -1555,8 +1550,8 @@ private static String GetContentTranslationType(String ctt) {
         firstmsg = firstmsg.GetBodyMessage();
         if (firstmsg != null) {
           if (subject != null && firstmsg.GetHeader("subject") == null) {
- firstmsg.SetHeader("subject", subject);
-}
+            firstmsg.SetHeader("subject", subject);
+          }
           return firstmsg;
         }
       }
@@ -1604,27 +1599,29 @@ private static String GetContentTranslationType(String ctt) {
       }
       if (messages.size() != languages.size()) {
         throw new IllegalArgumentException("messages.size() (" + messages.size() +
-          ") is not equal to " + languages.size()); } StringBuilder
-            prefaceBody; for (int i = 0; i < messages.size(); ++i) {
+          ") is not equal to " + languages.size());
+      }
+      StringBuilder
+prefaceBody; for (int i = 0; i < messages.size(); ++i) {
         if (messages.get(i) == null) {
- throw new IllegalArgumentException("messages");
-}
+          throw new IllegalArgumentException("messages");
+        }
         if (i > 0 && !HasSameAddresses(messages.get(0), messages.get(i))) {
           throw new IllegalArgumentException(
             "Each message doesn't contain the same email addresses");
         }
       }
-        for (String lang : languages) {
+      for (String lang : languages) {
         List<String> langtags = LanguageTags.GetLanguageList(lang);
-          if (langtags == null) {
-            throw new IllegalArgumentException(
-            lang + " is an invalid list of language tags");
-          }
+        if (langtags == null) {
+          throw new IllegalArgumentException(
+          lang + " is an invalid list of language tags");
         }
-       prefaceBody = new StringBuilder().append("This is a multilingual " +
-        "message, a message that\r\ncan be read in one or more different " +
-        "languages. Each\r\npart of the message may appear inline, as an " +
-        "attachment, or both.\r\n\r\n");
+      }
+      prefaceBody = new StringBuilder().append("This is a multilingual " +
+      "message, a message that\r\ncan be read in one or more different " +
+      "languages. Each\r\npart of the message may appear inline, as an " +
+      "attachment, or both.\r\n\r\n");
       prefaceBody.append("Languages available:\r\n\r\n");
       for (String lang : languages) {
         prefaceBody.append("- ").append(lang).append("\r\n");
@@ -1651,14 +1648,14 @@ private static String GetContentTranslationType(String ctt) {
       }
       if (prefaceSubject.length() == 0) {
         prefaceSubject.append("Multilingual Message");
-      prefaceSubject.append(" (");
-      for (int i = 0; i < languages.size(); ++i) {
-        if (i > 0) {
-          prefaceSubject.append(", ");
+        prefaceSubject.append(" (");
+        for (int i = 0; i < languages.size(); ++i) {
+          if (i > 0) {
+            prefaceSubject.append(", ");
+          }
+          prefaceSubject.append(languages.get(i));
         }
-        prefaceSubject.append(languages.get(i));
-      }
-      prefaceSubject.append(")");
+        prefaceSubject.append(")");
       }
       String fromHeader = messages.get(0).GetHeader("from");
       if (fromHeader == null) {
@@ -1679,7 +1676,10 @@ private static String GetContentTranslationType(String ctt) {
       for (int i = 0; i < messages.size(); ++i) {
         MediaType mt = MediaType.Parse("message/rfc822");
         String msgstring = messages.get(i).Generate();
-        if (msgstring.indexOf("\r\n--") >= 0 || msgstring.indexOf("--") == 0) {
+        if (msgstring.indexOf("\r\n--") >= 0 || (
+          msgstring.length() >= 2 &&
+             msgstring.charAt(0)=='-' &&
+             msgstring.charAt(1)=='-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");
@@ -1865,12 +1865,12 @@ private static String GetContentTranslationType(String ctt) {
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                    // CRLF was read
-                    lineStart = true;
+                      // CRLF was read
+                      lineStart = true;
                     } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -1916,7 +1916,7 @@ private static String GetContentTranslationType(String ctt) {
             bytes,
             headerValueStart,
             headerValueEnd - headerValueStart,
-            false);  // throws on invalid UTF-8
+            false); // throws on invalid UTF-8
           } catch (IllegalArgumentException ex) {
             // Invalid UTF-8, so encapsulate
             headerValue = null;
@@ -1950,7 +1950,7 @@ private static String GetContentTranslationType(String ctt) {
                   bytes,
                   headerValueStart,
                   headerValueEnd - headerValueStart,
-                  true);  // replaces invalid UTF-8
+                  true); // replaces invalid UTF-8
               String newField = HeaderEncoder.EncodeFieldAsEncodedWords(
   field,
   headerValue);
@@ -1975,8 +1975,9 @@ private static String GetContentTranslationType(String ctt) {
   String str) {
       int i = 0;
       int begin = 0;
-      if (str.indexOf('(') < 0) { return enc.AppendString(str);
-}
+      if (str.indexOf('(') < 0) {
+        return enc.AppendString(str);
+      }
       StringBuilder sb = new StringBuilder();
       while (i < str.length()) {
         if (str.charAt(i) == '(') {
@@ -2114,7 +2115,7 @@ private static String GetContentTranslationType(String ctt) {
         return headerValue;
       }
       if (status != null) {
-        status[0] = 0;  // Unchanged
+        status[0] = 0; // Unchanged
       }
       return null;
     }
@@ -2533,12 +2534,12 @@ private static String GetContentTranslationType(String ctt) {
                   if (c == '\r') {
                     c = stream.read();
                     if (c == '\n') {
-                    // CRLF was read
-                    lineCount = 0;
+                      // CRLF was read
+                      lineCount = 0;
                     } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -2563,7 +2564,7 @@ private static String GetContentTranslationType(String ctt) {
                   lastByte = c2;
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-            haveFWS &= lineCount != 0;
+                  haveFWS &= lineCount != 0;
                   break;
                 }
               }
@@ -2578,7 +2579,7 @@ private static String GetContentTranslationType(String ctt) {
             sb.append('\r');
             ungetLast = true;
             lastByte = c;
-            ++lineCount;  // Increment for the CR
+            ++lineCount; // Increment for the CR
           }
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
@@ -2596,7 +2597,7 @@ private static String GetContentTranslationType(String ctt) {
             int[] state = { lineCount, c, 1 };
             c = ReadUtf8Char(stream, state);
             // DebugUtility.Log("c=" + c + "," + lineCount + "," +
-             // state[0]+ ","+state[1]+","+state[2]);
+            // state[0]+ ","+state[1]+","+state[2]);
             lineCount = state[0];
             ungetLast = state[2] == 1;
             lastByte = state[1];
@@ -2643,8 +2644,8 @@ private static String GetContentTranslationType(String ctt) {
         if (b < 0) {
           if (bytesNeeded != 0) {
             // Invalid multibyte character at end
-            ungetState[2] = 1;  // unget last
-            ungetState[1] = b;  // last byte
+            ungetState[2] = 1; // unget last
+            ungetState[1] = b; // last byte
             --read;
             ungetState[0] = read;
             return 0xfffd;
@@ -2679,8 +2680,8 @@ private static String GetContentTranslationType(String ctt) {
         }
         if (b < lower || b > upper) {
           // Invalid multibyte character
-          ungetState[2] = 1;  // unget last
-          ungetState[1] = b;  // last byte
+          ungetState[2] = 1; // unget last
+          ungetState[1] = b; // last byte
           --read;
           ungetState[0] = read;
           return 0xfffd;
@@ -2794,7 +2795,7 @@ private static String GetContentTranslationType(String ctt) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-       throw new IllegalArgumentException("Header field value contains invalid text");
+          throw new IllegalArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new
@@ -2908,7 +2909,9 @@ builder.getSubType().equals("global-disposition-notification")) {
           haveFrom = true;
         }
         if (
-          depth > 0 && name.indexOf("--") == 0) {
+          depth > 0 &&
+name.length() >= 2 &&
+          name.charAt(0) == '-' && name.charAt(1) == '-') {
           // don't generate header fields starting with "--"
           // in body parts
           continue;
@@ -3022,8 +3025,7 @@ name.equals("final-recipient")) {
         // reasons not to use local time, despite the SHOULD in RFC 5322
         AppendAscii(
           output,
-
-  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
+          MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
@@ -3076,8 +3078,8 @@ name.equals("final-recipient")) {
         boolean writeNewLine = depth > 0;
         for (Message part : this.getParts()) {
           if (writeNewLine) {
- AppendAscii(output, "\r\n");
-}
+            AppendAscii(output, "\r\n");
+          }
           writeNewLine = true;
           AppendAscii(output, "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
@@ -3554,7 +3556,7 @@ name.equals("final-recipient")) {
       HeaderEncoder encoder = new HeaderEncoder(76, 0);
       encoder.AppendSymbol(name + ":");
       encoder.AppendSpace();
- String fullField = ParserUtility.Implode(
+      String fullField = ParserUtility.Implode(
   this.GetMultipleHeaders(name),
   "\u002c ");
       String lcname = DataUtilities.ToLowerCaseAscii(name);
@@ -3569,17 +3571,17 @@ name.equals("final-recipient")) {
     }
 
     private static class MessageStackEntry {
-    /**
-     * Gets a value which is used in an internal API.
-     * @return This is an internal API.
-     */
+      /**
+       * Gets a value which is used in an internal API.
+       * @return This is an internal API.
+       */
       public final Message getMessage() { return propVarmessage; }
 private final Message propVarmessage;
 
-    /**
-     * Gets a value which is used in an internal API.
-     * @return This is an internal API.
-     */
+      /**
+       * Gets a value which is used in an internal API.
+       * @return This is an internal API.
+       */
       public final String getBoundary() { return propVarboundary; }
 private final String propVarboundary;
 

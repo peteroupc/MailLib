@@ -1,28 +1,28 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<Project DefaultTargets='Build' ToolsVersion='4.0' xmlns='http://schemas.microsoft.com/developer/msbuild/2003'><PropertyGroup><Configuration Condition=' &apos;$(Configuration)&apos; == &apos;&apos; '>Debug</Configuration><Platform Condition=' &apos;$(Platform)&apos; == &apos;&apos; '>AnyCPU</Platform><ProjectGuid>{FD057A9A-5E0C-4CF7-F6E9-8F6690E03114}</ProjectGuid>
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProjectGuid>{FD057A9A-5E0C-4CF7-F6E9-8F6690E03114}</ProjectGuid>
     <OutputType>Exe</OutputType>
 
     <AssemblyName>Test20</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup><PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Debug|AnyCPU&apos; '><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize>
+  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup><PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ExternalConsole>true</ExternalConsole>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
-  <PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Release|AnyCPU&apos; '><Optimize>true</Optimize><OutputPath>bin\Release</OutputPath><ErrorReport>prompt</ErrorReport>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' "><Optimize>true</Optimize><OutputPath>bin\Release</OutputPath><ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ExternalConsole>true</ExternalConsole>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
-  <ItemGroup><Reference Include='System'/><Reference Include='nunit.framework'><HintPath>..\packages\NUnit.2.7.0\lib\nunit.framework.dll</HintPath></Reference><Reference Include='Encoding'><HintPath>..\packages\PeterO.Encoding.0.5.1\lib\net20\Encoding.dll</HintPath>
+  <ItemGroup><Reference Include="System" /><Reference Include="nunit.framework"><HintPath>..\packages\NUnit.2.7.0\lib\nunit.framework.dll</HintPath></Reference><Reference Include="Encoding"><HintPath>..\packages\PeterO.Encoding.0.5.1\lib\net20\Encoding.dll</HintPath>
 </Reference>
-<Compile Include='../MailLibTest/DataUtilitiesTest.cs'><Link>DataUtilitiesTest.cs</Link></Compile><Compile Include='../MailLibTest/URIUtility.cs'><Link>URIUtility.cs</Link></Compile><Compile Include='../MailLibTest/AddressTest.cs'><Link>AddressTest.cs</Link></Compile><Compile Include='../MailLibTest/XorShift128Plus.cs'><Link>XorShift128Plus.cs</Link></Compile><Compile Include='../MailLibTest/DataUrlTest.cs'><Link>DataUrlTest.cs</Link></Compile><Compile Include='../MailLibTest/NetHelper.cs'><Link>NetHelper.cs</Link></Compile><Compile Include='../MailLibTest/EncodingTest.cs'><Link>EncodingTest.cs</Link></Compile><Compile Include='../MailLibTest/TestCommon.cs'><Link>TestCommon.cs</Link></Compile><Compile Include='../MailLibTest/Program.cs'><Link>Program.cs</Link></Compile><Compile Include='../MailLibTest/DispositionBuilderTest.cs'><Link>DispositionBuilderTest.cs</Link></Compile><Compile Include='../MailLibTest/MediaTypeBuilderTest.cs'><Link>MediaTypeBuilderTest.cs</Link></Compile><Compile Include='../MailLibTest/ContentDispositionTest.cs'><Link>ContentDispositionTest.cs</Link></Compile><Compile Include='../MailLibTest/RandomGenerator.cs'><Link>RandomGenerator.cs</Link></Compile><Compile Include='../MailLibTest/IdnaTest.cs'><Link>IdnaTest.cs</Link></Compile><Compile Include='../MailLibTest/NormalizationTest.cs'><Link>NormalizationTest.cs</Link></Compile><Compile Include='../MailLibTest/MessageTest.cs'><Link>MessageTest.cs</Link></Compile><Compile Include='../MailLibTest/NamedAddressTest.cs'><Link>NamedAddressTest.cs</Link></Compile><Compile Include='../MailLibTest/MarkdownTest.cs'><Link>MarkdownTest.cs</Link></Compile><Compile Include='../MailLibTest/MediaTypeTest.cs'><Link>MediaTypeTest.cs</Link></Compile><Compile Include='../MailLibTest/IRandomGen.cs'><Link>IRandomGen.cs</Link></Compile><Compile Include='../MailLibTest/DictUtility.cs'><Link>DictUtility.cs</Link></Compile><Compile Include='../MailLibTest/NormalizerInputTest.cs'><Link>NormalizerInputTest.cs</Link></Compile><Compile Include='Properties/AssemblyInfo.cs'/></ItemGroup>
-  <ItemGroup/>
-  <ItemGroup><ProjectReference Include='..\MailLib20\MailLib20.csproj'><Project>{D24612C0-BDB6-4E3B-66F3-2276412A0599}</Project><Name>MailLib20</Name></ProjectReference></ItemGroup>
-  <ItemGroup/>
+<Compile Include="../MailLibTest/DataUtilitiesTest.cs"><Link>DataUtilitiesTest.cs</Link></Compile><Compile Include="../MailLibTest/URIUtility.cs"><Link>URIUtility.cs</Link></Compile><Compile Include="../MailLibTest/AddressTest.cs"><Link>AddressTest.cs</Link></Compile><Compile Include="../MailLibTest/XorShift128Plus.cs"><Link>XorShift128Plus.cs</Link></Compile><Compile Include="../MailLibTest/DataUrlTest.cs"><Link>DataUrlTest.cs</Link></Compile><Compile Include="../MailLibTest/NetHelper.cs"><Link>NetHelper.cs</Link></Compile><Compile Include="../MailLibTest/EncodingTest.cs"><Link>EncodingTest.cs</Link></Compile><Compile Include="../MailLibTest/TestCommon.cs"><Link>TestCommon.cs</Link></Compile><Compile Include="../MailLibTest/Program.cs"><Link>Program.cs</Link></Compile><Compile Include="../MailLibTest/DispositionBuilderTest.cs"><Link>DispositionBuilderTest.cs</Link></Compile><Compile Include="../MailLibTest/MediaTypeBuilderTest.cs"><Link>MediaTypeBuilderTest.cs</Link></Compile><Compile Include="../MailLibTest/ContentDispositionTest.cs"><Link>ContentDispositionTest.cs</Link></Compile><Compile Include="../MailLibTest/RandomGenerator.cs"><Link>RandomGenerator.cs</Link></Compile><Compile Include="../MailLibTest/IdnaTest.cs"><Link>IdnaTest.cs</Link></Compile><Compile Include="../MailLibTest/NormalizationTest.cs"><Link>NormalizationTest.cs</Link></Compile><Compile Include="../MailLibTest/MessageTest.cs"><Link>MessageTest.cs</Link></Compile><Compile Include="../MailLibTest/NamedAddressTest.cs"><Link>NamedAddressTest.cs</Link></Compile><Compile Include="../MailLibTest/MarkdownTest.cs"><Link>MarkdownTest.cs</Link></Compile><Compile Include="../MailLibTest/MediaTypeTest.cs"><Link>MediaTypeTest.cs</Link></Compile><Compile Include="../MailLibTest/IRandomGen.cs"><Link>IRandomGen.cs</Link></Compile><Compile Include="../MailLibTest/DictUtility.cs"><Link>DictUtility.cs</Link></Compile><Compile Include="../MailLibTest/NormalizerInputTest.cs"><Link>NormalizerInputTest.cs</Link></Compile><Compile Include="Properties/AssemblyInfo.cs" /></ItemGroup>
+  <ItemGroup />
+  <ItemGroup><ProjectReference Include="..\MailLib20\MailLib20.csproj"><Project>{D24612C0-BDB6-4E3B-66F3-2276412A0599}</Project><Name>MailLib20</Name></ProjectReference></ItemGroup>
+  <ItemGroup />
   <ItemGroup>
   </ItemGroup>
-  <Import Project='$(MSBuildBinPath)\Microsoft.CSharp.targets'/>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 
 </Project>

@@ -7,6 +7,7 @@ import com.upokecenter.text.*;
   final class MakeFilenameMethod {
 private MakeFilenameMethod() {
 }
+    private static final int MaxFileNameCodeUnitLength = 247;
     private static String TrimAndCollapseSpaceAndTab(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;
@@ -389,7 +390,7 @@ private MakeFilenameMethod() {
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     };
 
     private static final int[] ValueCharCheckInitial = {
@@ -400,7 +401,7 @@ private MakeFilenameMethod() {
       0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
       2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
       0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
-      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
+      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     };
 
     private static boolean SimplifiedFileCheck(String name) {
@@ -470,8 +471,6 @@ private MakeFilenameMethod() {
       }
       return str;
     }
-
-    private static final int MaxFileNameCodeUnitLength = 247;
 
     public static String MakeFilename(String str) {
       if (((str) == null || (str).length() == 0)) {
@@ -620,7 +619,7 @@ private MakeFilenameMethod() {
           "con") || strLower.indexOf(
           "con.") == 0;
         // LPTn, COMn
-     if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
+        if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
           strLower.charAt(4) == ' '))) {
           reservedFilename = reservedFilename || (strLower.indexOf(
             "lpt") == 0 && strLower.charAt(3) >= '0' &&

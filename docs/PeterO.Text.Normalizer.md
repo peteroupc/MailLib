@@ -14,6 +14,21 @@
 * <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
 * <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
 
+<a id="Void_ctor_String_Normalization"></a>
+### Normalizer Constructor
+
+    public Normalizer(
+        string str,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.  <b>Parameters:</b>
+
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
+
 <a id="IsNormalized_string_PeterO_Text_Normalization"></a>
 ### IsNormalized
 
@@ -30,7 +45,7 @@
 
 <b>Return Value:</b>
 
- `true` true if this string is normalized; otherwise,  `false` false . Returns  `false` false if the string contains an unpaired surrogate code point.
+ `true`  if this string is normalized; otherwise,  `false`  . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <a id="Normalize_string_PeterO_Text_Normalization"></a>
 ### Normalize

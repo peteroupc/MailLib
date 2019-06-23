@@ -126,8 +126,8 @@ import com.upokecenter.text.*;
 
     MediaType(
   String type,
- String subtype,
- Map<String, String> parameters) {
+  String subtype,
+  Map<String, String> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
       this.parameters = new HashMap<String, String>(parameters);
@@ -156,7 +156,7 @@ import com.upokecenter.text.*;
     /**
      * Use Internet Message Format rules for quoted strings.
      */
-      Rfc5322
+      Rfc5322,
     }
 
     private static int SkipQtextOrQuotedPair(
@@ -369,7 +369,7 @@ import com.upokecenter.text.*;
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
       StringBuilder sb = new StringBuilder();
- while (index < str.length() && (maxLineLength < 0 || column <=
+      while (index < str.length() && (maxLineLength < 0 || column <=
         maxLineLength)) {
         int c = str.charAt(index);
         boolean first = index == 0;
@@ -380,7 +380,7 @@ import com.upokecenter.text.*;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-      if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) :
+        if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) :
           IsAttributeChar(c)) {
           ++contin;
         } else if (c <= 0x7f) {
@@ -479,7 +479,7 @@ import com.upokecenter.text.*;
       boolean simple = true;
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
-if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
+        if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
           (!IsAttributeChar(c))) {
           simple = false;
         }
@@ -518,8 +518,7 @@ if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
       HeaderEncoder sa) {
        AppendParameters(parameters, sa, false);
     }
-
-      static void AppendParameters(
+    static void AppendParameters(
       Map<String, String> parameters,
       HeaderEncoder sa,
       boolean uriSafe) {
@@ -938,7 +937,7 @@ sub.equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
-        return "";
+      return "";
        }
     }
 
@@ -1041,7 +1040,7 @@ sub.equals("vnd.sun.j2me.app-descriptor")) {
 
     private static boolean ExpandRfc2231Extensions(
   Map<String, String> parameters,
- boolean httpRules) {
+  boolean httpRules) {
       if (parameters.size() == 0) {
         return true;
       }
@@ -1156,10 +1155,10 @@ sub.equals("vnd.sun.j2me.app-descriptor")) {
 
     static boolean ParseParameters(
   String str,
-      int index,
- int endIndex,
-      boolean httpRules,
- Map<String, String> parameters) {
+  int index,
+  int endIndex,
+  boolean httpRules,
+  Map<String, String> parameters) {
       HashMap<String, String> duplicateAttributes = new HashMap<String, String>();
       boolean hasDuplicateAttributes = false;
       while (true) {
@@ -1250,7 +1249,7 @@ sub.equals("vnd.sun.j2me.app-descriptor")) {
             endIndex,
             builder,
             httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
-          if (!httpRules && qs != index) {
+            if (!httpRules && qs != index) {
             qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
           }
           if (qs != index) {

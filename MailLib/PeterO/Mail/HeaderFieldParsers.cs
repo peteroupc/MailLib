@@ -297,7 +297,7 @@ namespace PeterO.Mail {
           return str;
         }
         var tokener = new Tokener();
-       int endIndex = shf.Parse(str, 0, str.Length, tokener);
+        int endIndex = shf.Parse(str, 0, str.Length, tokener);
         if (endIndex != str.Length) {
           // The header field is syntactically invalid,
           // so downgrading is not possible
@@ -556,8 +556,7 @@ namespace PeterO.Mail {
   ITokener tokener) {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
-
-     private static string TrimFWSFromRight(string str) {
+      private static string TrimFWSFromRight(string str) {
       if (String.IsNullOrEmpty(str)) {
         return str;
       }
@@ -624,22 +623,22 @@ namespace PeterO.Mail {
           return str;
         }
         string header = str;
-       var index = 0;
-       var changed = false;
-       var sb = new StringBuilder();
-       int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.Length, null);
-       while (index < header.Length) {
+        var index = 0;
+        var changed = false;
+        var sb = new StringBuilder();
+        int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.Length, null);
+        while (index < header.Length) {
          int newindex = HeaderParser.ParseReceivedToken(
   header,
   index,
   header.Length,
   null);
          if (newindex == index) {
-         tokenEnd = HeaderParser.ParseCFWS(
-  header,
-  index,
-  header.Length,
-  null);
+           tokenEnd = HeaderParser.ParseCFWS(
+             header,
+             index,
+             header.Length,
+             null);
            sb.Append(header.Substring(index, tokenEnd - index));
            break;
          }
@@ -2270,7 +2269,7 @@ namespace PeterO.Mail {
       fieldMap["content-type"] = new HeaderContentType();
       fieldMap["auto-submitted"] = new HeaderAutoSubmitted();
       fieldMap["archive"] = new HeaderArchive();
-      fieldMap["autosubmitted"] = new HeaderAutoforwarded();  // same syntax
+      fieldMap["autosubmitted"] = new HeaderAutoforwarded(); // same syntax
       fieldMap["sio-label"] = new HeaderSioLabel();
       fieldMap["sio-label-history"] = new HeaderSioLabel();
       fieldMap["injection-info"] = new HeaderInjectionInfo();

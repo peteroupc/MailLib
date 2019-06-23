@@ -74,7 +74,7 @@ import com.upokecenter.text.*;
           count += 3;
         }
       }
-        output.write(0x3d);
+      output.write(0x3d);
       output.write((byte)b2);
       output.write((byte)b3);
       this.lineCount += 3;
@@ -90,7 +90,7 @@ import com.upokecenter.text.*;
           byte[] buf;
           if (ch == '.') {
             buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',
-            (byte)'2', (byte)'E' };
+            (byte)'2', (byte)'E', };
           } else {
             buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
           }

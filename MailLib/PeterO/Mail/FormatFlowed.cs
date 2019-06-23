@@ -395,8 +395,7 @@ namespace PeterO.Mail {
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
 
           str[2] == ' ' && str[3] == ' ') ? str.Substring(4) : str; }
-
-            private static string HtmlEscapeStrong(string str) {
+          private static string HtmlEscapeStrong(string str) {
       var i = 0;
       var sb = new StringBuilder();
       for (; i < str.Length; ++i) {
@@ -561,7 +560,7 @@ namespace PeterO.Mail {
           while (index < str.Length) {
             if (str[index] == ']') {
                 found = true;
-              break;
+                break;
             }
             ++index;
           }
@@ -1032,8 +1031,7 @@ namespace PeterO.Mail {
       string str,
       int depth,
       bool alwaysUseParas,
-      IDictionary<string, string[]> links
-) {
+      IDictionary<string, string[]> links) {
       var i = 0;
       int lineStart = i;
       var formatted = new StringBuilder();

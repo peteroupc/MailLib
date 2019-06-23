@@ -118,7 +118,7 @@ public final void setSubType(String value) {
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-   if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
+      if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed top level type: " + str);
       }
@@ -168,7 +168,7 @@ public final void setSubType(String value) {
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
+      if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
         name.length()) {
       throw new IllegalArgumentException("Not a well-formed parameter name: " +
           name);
@@ -192,7 +192,7 @@ if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-   if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
+      if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed subtype: " + str);
       }
@@ -202,7 +202,7 @@ if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
 
     /**
      * Converts this object to a text string of the media type it represents, in
-     * the same form as <code>MediaType.toString </code>
+     * the same form as <code>MediaType.toString</code>
      * @return A string representation of this object.
      */
     @Override public String toString() {

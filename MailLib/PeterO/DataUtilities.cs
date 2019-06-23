@@ -10,8 +10,8 @@ using System.IO;
 using System.Text;
 
 namespace PeterO {
-    /// <include file='../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.DataUtilities"]/*'/>
+  /// <include file='../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.DataUtilities"]/*'/>
   public static class DataUtilities {
     private const int StreamedStringBufferLength = 4096;
 
@@ -36,13 +36,13 @@ namespace PeterO {
       }
       var i = 0;
       var count = 0;
-     while (i < str.Length) {
-       int c = CodePointAt(str, i);
-       ++count;
-       i += (c >= 0x10000) ? 2 : 1;
-     }
-     return count;
-}
+      while (i < str.Length) {
+        int c = CodePointAt(str, i);
+        ++count;
+        i += (c >= 0x10000) ? 2 : 1;
+      }
+      return count;
+    }
 
     /// <include file='../docs.xml'
     /// path='docs/doc[@name="M:PeterO.DataUtilities.GetUtf8String(System.Byte[],System.Int32,System.Int32,System.Boolean)"]/*'/>
@@ -83,9 +83,9 @@ namespace PeterO {
 
     /// <include file='../docs.xml'
     /// path='docs/doc[@name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean)"]/*'/>
-        public static byte[] GetUtf8Bytes(string str, bool replace) {
-          return GetUtf8Bytes(str, replace, false);
-        }
+    public static byte[] GetUtf8Bytes(string str, bool replace) {
+      return GetUtf8Bytes(str, replace, false);
+    }
 
     /// <include file='../docs.xml'
     /// path='docs/doc[@name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean,System.Boolean)"]/*'/>
@@ -100,20 +100,20 @@ namespace PeterO {
         int c = str[0];
         if ((c & 0xf800) == 0xd800) {
           if (replace) {
- c = 0xfffd;
-} else {
- throw new ArgumentException("Unpaired surrogate code point");
-}
+            c = 0xfffd;
+          } else {
+            throw new ArgumentException("Unpaired surrogate code point");
+          }
         }
         if (c <= 0x80) {
           return new byte[] { (byte)c };
         } else if (c <= 0x7ff) {
           return new byte[] { (byte)(0xc0 | ((c >> 6) & 0x1f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         } else {
           return new byte[] { (byte)(0xe0 | ((c >> 12) & 0x0f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         }
       } else if (str.Length == 2) {
         int c = str[0];
@@ -123,15 +123,15 @@ namespace PeterO {
           return new byte[] { (byte)(0xf0 | ((c >> 18) & 0x07)),
             (byte)(0x80 | ((c >> 12) & 0x3f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         } else if (!lenientLineBreaks && c <= 0x80 && c2 <= 0x80) {
           return new byte[] { (byte)c, (byte)c2 };
         }
       }
       try {
         using (var ms = new MemoryStream()) {
-       if (WriteUtf8(str, 0, str.Length, ms, replace, lenientLineBreaks) !=
-            0) {
+          if (WriteUtf8(str, 0, str.Length, ms, replace, lenientLineBreaks) !=
+               0) {
             throw new ArgumentException("Unpaired surrogate code point");
           }
           return ms.ToArray();
@@ -156,7 +156,7 @@ namespace PeterO {
           size += 2;
         } else if (c <= 0xd7ff || c >= 0xe000) {
           size += 3;
-        } else if (c <= 0xdbff) {  // UTF-16 leading surrogate
+        } else if (c <= 0xdbff) { // UTF-16 leading surrogate
           ++i;
           if (i >= str.Length || str[i] < 0xdc00 || str[i] > 0xdfff) {
             if (replace) {
@@ -323,8 +323,8 @@ namespace PeterO {
       int len, ca, cb;
       len = Math.Min(strA.Length, strB.Length);
       for (var i = 0; i < len; ++i) {
-         ca = strA[i];
-         cb = strB[i];
+        ca = strA[i];
+        cb = strB[i];
         if (ca == cb) {
           // normal code units and illegal surrogates
           // are treated as single code points
@@ -416,9 +416,9 @@ namespace PeterO {
       var retval = 0;
       bytes = new byte[StreamedStringBufferLength];
       var byteIndex = 0;
-       endIndex = offset + length;
+      endIndex = offset + length;
       for (int index = offset; index < endIndex; ++index) {
-         c = str[index];
+        c = str[index];
         if (c <= 0x7f) {
           if (lenientLineBreaks) {
             if (c == 0x0d && (index + 1 >= endIndex || str[index + 1] !=
@@ -480,7 +480,7 @@ namespace PeterO {
             // unpaired surrogate
             if (!replace) {
               retval = -1;
-              break;  // write bytes read so far
+              break; // write bytes read so far
             }
             c = 0xfffd;
           }
@@ -559,10 +559,10 @@ namespace PeterO {
       var lower = 0x80;
       var upper = 0xbf;
       int pointer, endpointer, b;
-       pointer = offset;
-       endpointer = offset + bytesCount;
+      pointer = offset;
+      endpointer = offset + bytesCount;
       while (pointer < endpointer) {
-         b = data[pointer] & (int)0xff;
+        b = data[pointer] & (int)0xff;
         ++pointer;
         if (bytesNeeded == 0) {
           if ((b & 0x7f) == b) {
@@ -608,16 +608,16 @@ namespace PeterO {
             continue;
           }
           int ret, ch, lead, trail;
-           ret = cp;
+          ret = cp;
           cp = 0;
           bytesSeen = 0;
           bytesNeeded = 0;
           if (ret <= 0xffff) {
             builder.Append((char)ret);
           } else {
-             ch = ret - 0x10000;
-             lead = (ch >> 10) + 0xd800;
-             trail = (ch & 0x3ff) + 0xdc00;
+            ch = ret - 0x10000;
+            lead = (ch >> 10) + 0xd800;
+            trail = (ch & 0x3ff) + 0xdc00;
             builder.Append((char)lead);
             builder.Append((char)trail);
           }
@@ -684,14 +684,14 @@ namespace PeterO {
               if (bytesCount >= 0) {
                 return -2;
               }
-              break;  // end of stream
+              break; // end of stream
             }
             return -1;
           }
           if (bytesCount >= 0) {
             return -2;
           }
-          break;  // end of stream
+          break; // end of stream
         }
         if (bytesCount > 0) {
           ++pointer;
@@ -765,9 +765,9 @@ namespace PeterO {
           if (ret <= 0xffff) {
             builder.Append((char)ret);
           } else {
-             ch = ret - 0x10000;
-             lead = (ch >> 10) + 0xd800;
-             trail = (ch & 0x3ff) + 0xdc00;
+            ch = ret - 0x10000;
+            lead = (ch >> 10) + 0xd800;
+            trail = (ch & 0x3ff) + 0xdc00;
             builder.Append((char)lead);
             builder.Append((char)trail);
           }

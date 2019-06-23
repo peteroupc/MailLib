@@ -28,7 +28,7 @@ namespace PeterO.Text {
       if (cp < 0x300 || cp >= 0xe0000) {
  return 0;
 }
-  if (classes == null) {
+if (classes == null) {
 lock (ValueSyncRoot) {
 classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
 }
@@ -192,36 +192,36 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
        if (cp < 0) {
  return 0;
 }
-        if (idnaCat == null) {
+if (idnaCat == null) {
 lock (ValueSyncRoot) {
 idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
 }
 }
-      return ((int)idnaCat.GetByte(cp)) & 0xff;
+return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
     public static int GetCasedProperty(int cp) {
        if (cp < 0) {
  return 0;
 }
-        if (casedprop == null) {
+if (casedprop == null) {
 lock (ValueSyncRoot) {
   casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
 }
 }
-      return ((int)casedprop.GetByte(cp)) & 0xff;
+return ((int)casedprop.GetByte(cp)) & 0xff;
     }
 
     public static int GetPrecisCategory(int cp) {
        if (cp < 0) {
  return 0;
 }
-      if (precisCat == null) {
+if (precisCat == null) {
 lock (ValueSyncRoot) {
 precisCat = precisCat ?? ByteData.Decompress(IdnaData.PrecisCategories);
 }
 }
-      return ((int)precisCat.GetByte(cp)) & 0xff;
+return ((int)precisCat.GetByte(cp)) & 0xff;
     }
 
     public static bool IsCombiningMark(int cp) {
@@ -266,7 +266,7 @@ fhwidth = fhwidth ?? ByteData.Decompress(IdnaData.FullHalfWidth);
           NormalizationData.QCSNFKDMax)) {
         return true;
       }
-        if (form == Normalization.NFC) {
+      if (form == Normalization.NFC) {
           if (qcsnfc == null) {
 lock (ValueSyncRoot) {
 qcsnfc = qcsnfc ?? ByteData.Decompress(NormalizationData.QCSNFC);

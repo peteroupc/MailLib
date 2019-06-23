@@ -12,8 +12,8 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
   public class Address {
     private readonly string localPart;
 
@@ -22,7 +22,8 @@ namespace PeterO.Mail {
     public override bool Equals(object obj) {
       var other = obj as Address;
       return other != null && this.localPart.Equals(other.localPart) &&
-        this.domain.Equals(other.domain); }
+        this.domain.Equals(other.domain);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Address.LocalPart"]/*'/>
@@ -31,23 +32,21 @@ namespace PeterO.Mail {
         return this.localPart;
       }
     }
-
-private static string DomainToString(string domain, bool useALabelDomain) {
- string dom = domain;
- if (useALabelDomain && dom.Length > 0 && dom[0] != '[') {
-  dom = Idna.EncodeDomainName(domain);
- }
- return dom;
-}
-
-internal static string LocalPartToString(string localPart) {
-     if (localPart.Length > 0 && HeaderParser.ParseDotAtomText(
-  localPart,
-  0,
-  localPart.Length,
-  null) == localPart.Length) {
-  return localPart;
- } else {
+    private static string DomainToString(string domain, bool useALabelDomain) {
+      string dom = domain;
+      if (useALabelDomain && dom.Length > 0 && dom[0] != '[') {
+        dom = Idna.EncodeDomainName(domain);
+      }
+      return dom;
+    }
+    internal static string LocalPartToString(string localPart) {
+      if (localPart.Length > 0 && HeaderParser.ParseDotAtomText(
+   localPart,
+   0,
+   localPart.Length,
+   null) == localPart.Length) {
+        return localPart;
+      } else {
         var sb = new StringBuilder();
         sb.Append('"');
         for (int i = 0; i < localPart.Length; ++i) {
@@ -64,50 +63,50 @@ internal static string LocalPartToString(string localPart) {
         sb.Append('"');
         return sb.ToString();
       }
-}
+    }
 
-internal void AppendThisAddress(HeaderEncoder encoder) {
- string lp = LocalPartToString(this.localPart);
- string domainstr = DomainToString(this.domain, true);
- int length = DataUtilities.CodePointLength(lp);
- int length2 = DataUtilities.CodePointLength(domainstr);
- if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
-  // Avoid breaking email addresses if it can comfortably
-  // fit the recommended line length
+    internal void AppendThisAddress(HeaderEncoder encoder) {
+      string lp = LocalPartToString(this.localPart);
+      string domainstr = DomainToString(this.domain, true);
+      int length = DataUtilities.CodePointLength(lp);
+      int length2 = DataUtilities.CodePointLength(domainstr);
+      if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
+        // Avoid breaking email addresses if it can comfortably
+        // fit the recommended line length
         var tlength = (int)(length2 + length + 1);
-  encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
- } else {
+        encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
+      } else {
         encoder.AppendSymbolWithLength(lp, length);
-  encoder.AppendSymbol("@");
+        encoder.AppendSymbol("@");
         encoder.AppendSymbolWithLength(domainstr, length);
- }
-}
+      }
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]/*'/>
     public override string ToString() {
-     var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
-     this.AppendThisAddress(sa);
-  return sa.ToString();
+      var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
+      this.AppendThisAddress(sa);
+      return sa.ToString();
     }
 
     private bool IsTooLong() {
       string lp = LocalPartToString(this.localPart);
-     string domainstr = DomainToString(this.domain, true);
-     string domain2 = DomainToString(this.domain, false);
-        // Maximum OCTET length per line for an Internet message minus 1;
-        // we check if the length exceeds that number (thus excluding the space
-        // character of a folded line).
-     if (DataUtilities.GetUtf8Length(lp, true) >
-      Message.MaxHardHeaderLineLength - 1) {
-      return true;
-     }
-     if (DataUtilities.GetUtf8Length(domainstr, true) >
-       Message.MaxHardHeaderLineLength - 1) {
-      return true;
-     }
-     return (DataUtilities.GetUtf8Length(domain2, true) >
-       Message.MaxHardHeaderLineLength - 1) ? true : false;
+      string domainstr = DomainToString(this.domain, true);
+      string domain2 = DomainToString(this.domain, false);
+      // Maximum OCTET length per line for an Internet message minus 1;
+      // we check if the length exceeds that number (thus excluding the space
+      // character of a folded line).
+      if (DataUtilities.GetUtf8Length(lp, true) >
+    Message.MaxHardHeaderLineLength - 1) {
+        return true;
+      }
+      if (DataUtilities.GetUtf8Length(domainstr, true) >
+        Message.MaxHardHeaderLineLength - 1) {
+        return true;
+      }
+      return (DataUtilities.GetUtf8Length(domain2, true) >
+        Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 
     /// <include file='../../docs.xml'
@@ -157,7 +156,7 @@ internal void AppendThisAddress(HeaderEncoder encoder) {
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
-   if (localPartEnd >= addressValue.Length ||
+      if (localPartEnd >= addressValue.Length ||
      addressValue[localPartEnd] != '@') {
         throw new ArgumentException("Expected '@' sign after local part");
       }

@@ -14,8 +14,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -128,7 +128,7 @@ namespace PeterO.Mail {
     [Obsolete("Use GetAddresses(\"Bcc\") instead.")]
     public IList<NamedAddress> BccAddresses {
       get {
-return this.GetAddresses("bcc");
+        return this.GetAddresses("bcc");
       }
     }
 
@@ -159,7 +159,7 @@ return this.GetAddresses("bcc");
     [Obsolete("Use GetAddresses(\"Cc\") instead.")]
     public IList<NamedAddress> CCAddresses {
       get {
-return this.GetAddresses("cc");
+        return this.GetAddresses("cc");
       }
     }
 
@@ -168,8 +168,8 @@ return this.GetAddresses("cc");
     public string GetFormattedBodyString() {
       string text = this.BodyString;
       if (text == null) {
- return null;
-}
+        return null;
+      }
       MediaType mt = this.ContentType;
       string fmt = mt.GetParameter("format");
       string dsp = mt.GetParameter("delsp");
@@ -187,7 +187,7 @@ return this.GetAddresses("cc");
       } else if (mt.TypeAndSubType.Equals("text/html")) {
         return text;
       } else if (mt.TypeAndSubType.Equals("text/markdown")) {
-MediaType previewType = MediaType.Parse("text/html");
+        MediaType previewType = MediaType.Parse("text/html");
         if (this.ContentDisposition != null) {
           string pt = this.ContentDisposition.GetParameter("preview-type");
           previewType = MediaType.Parse(
@@ -284,7 +284,7 @@ MediaType previewType = MediaType.Parse("text/html");
     [Obsolete("Use GetAddresses(\"From\") instead.")]
     public IList<NamedAddress> FromAddresses {
       get {
-return this.GetAddresses("from");
+        return this.GetAddresses("from");
       }
     }
 
@@ -328,7 +328,7 @@ return this.GetAddresses("from");
     [Obsolete("Use GetAddresses(\"To\") instead.")]
     public IList<NamedAddress> ToAddresses {
       get {
-return this.GetAddresses("to");
+        return this.GetAddresses("to");
       }
     }
 
@@ -374,7 +374,7 @@ return this.GetAddresses("to");
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]/*'/>
     public int[] GetDate() {
       string field = this.GetHeader("date");
- return (field == null) ? null : MailDateTime.ParseDateString(field, true);
+      return (field == null) ? null : MailDateTime.ParseDateString(field, true);
     }
 
     /// <include file='../../docs.xml'
@@ -624,7 +624,7 @@ return this.GetAddresses("to");
       // this case, the HTML version)
       Message textMessage = NewBodyPart().SetTextBody(text);
       Message htmlMessage = NewBodyPart().SetHtmlBody(html);
-    string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
@@ -642,13 +642,13 @@ return this.GetAddresses("to");
       text = text ?? markdown;
       Message textMessage = NewBodyPart().SetTextBody(text);
       Message markdownMessage = NewBodyPart().SetTextBody(markdown);
-    string mtypestr = "text/markdown; charset=utf-8";
+      string mtypestr = "text/markdown; charset=utf-8";
       markdownMessage.ContentType = MediaType.Parse(mtypestr);
-     // Take advantage of SetTextBody's line break conversion
-    string markdownText = markdownMessage.BodyString;
+      // Take advantage of SetTextBody's line break conversion
+      string markdownText = markdownMessage.BodyString;
       Message htmlMessage = NewBodyPart().SetHtmlBody(
          FormatFlowed.MarkdownText(markdownText, 0));
-    mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
@@ -873,11 +873,11 @@ ext.Equals(".txt")) {
   Stream inputStream,
   MediaType mediaType,
   string filename) {
-  return this.AddBodyPart(
-  inputStream,
-  mediaType,
-  filename,
-  "attachment");
+      return this.AddBodyPart(
+      inputStream,
+      mediaType,
+      filename,
+      "attachment");
     }
 
     /// <include file='../../docs.xml'
@@ -918,16 +918,15 @@ ext.Equals(".txt")) {
       }
       return true;
     }
-
-private static string GetContentTranslationType(string ctt) {
+    private static string GetContentTranslationType(string ctt) {
       if (String.IsNullOrEmpty(ctt)) {
- return String.Empty;
-}
+        return String.Empty;
+      }
       int index = HeaderParser.ParseFWS(ctt, 0, ctt.Length, null);
       int cttEnd = HeaderParser.ParsePhraseAtom(ctt, index, ctt.Length, null);
       if (cttEnd != ctt.Length) {
- return String.Empty;
-}
+        return String.Empty;
+      }
       return DataUtilities.ToLowerCaseAscii(
          ctt.Substring(index, cttEnd - index));
     }
@@ -951,13 +950,13 @@ private static string GetContentTranslationType(string ctt) {
         IList<string> clang;
         IList<string> filt;
         for (var i = 0; i < passes; ++i) {
- foreach (Message part in this.Parts) {
-      clang = LanguageTags.GetLanguageList(part.GetHeader(
-  "content-language"));
+          foreach (Message part in this.Parts) {
+            clang = LanguageTags.GetLanguageList(part.GetHeader(
+        "content-language"));
             if (clang == null) {
- continue;
-}
-         if (preferOriginals && i == 0) {  // Allow originals only, on first
+              continue;
+            }
+            if (preferOriginals && i == 0) { // Allow originals only, on first
               string ctt =
   GetContentTranslationType(part.GetHeader("content-translation-type"));
               if (!ctt.Equals("original")) {
@@ -969,8 +968,8 @@ private static string GetContentTranslationType(string ctt) {
               Message ret = part.GetBodyMessage();
               if (ret != null) {
                 if (subject != null && ret.GetHeader("subject") == null) {
- ret.SetHeader("subject", subject);
-}
+                  ret.SetHeader("subject", subject);
+                }
                 return ret;
               }
             }
@@ -991,8 +990,8 @@ private static string GetContentTranslationType(string ctt) {
         firstmsg = firstmsg.GetBodyMessage();
         if (firstmsg != null) {
           if (subject != null && firstmsg.GetHeader("subject") == null) {
- firstmsg.SetHeader("subject", subject);
-}
+            firstmsg.SetHeader("subject", subject);
+          }
           return firstmsg;
         }
       }
@@ -1016,27 +1015,29 @@ private static string GetContentTranslationType(string ctt) {
       }
       if (messages.Count != languages.Count) {
         throw new ArgumentException("messages.Count (" + messages.Count +
-          ") is not equal to " + languages.Count); } StringBuilder
-            prefaceBody; for (var i = 0; i < messages.Count; ++i) {
+          ") is not equal to " + languages.Count);
+      }
+      StringBuilder
+prefaceBody; for (var i = 0; i < messages.Count; ++i) {
         if (messages[i] == null) {
- throw new ArgumentException("messages");
-}
+          throw new ArgumentException("messages");
+        }
         if (i > 0 && !HasSameAddresses(messages[0], messages[i])) {
           throw new ArgumentException(
             "Each message doesn't contain the same email addresses");
         }
       }
-        foreach (string lang in languages) {
+      foreach (string lang in languages) {
         IList<string> langtags = LanguageTags.GetLanguageList(lang);
-          if (langtags == null) {
-            throw new ArgumentException(
-            lang + " is an invalid list of language tags");
-          }
+        if (langtags == null) {
+          throw new ArgumentException(
+          lang + " is an invalid list of language tags");
         }
-       prefaceBody = new StringBuilder().Append("This is a multilingual " +
-        "message, a message that\r\ncan be read in one or more different " +
-        "languages. Each\r\npart of the message may appear inline, as an " +
-        "attachment, or both.\r\n\r\n");
+      }
+      prefaceBody = new StringBuilder().Append("This is a multilingual " +
+      "message, a message that\r\ncan be read in one or more different " +
+      "languages. Each\r\npart of the message may appear inline, as an " +
+      "attachment, or both.\r\n\r\n");
       prefaceBody.Append("Languages available:\r\n\r\n");
       foreach (string lang in languages) {
         prefaceBody.Append("- ").Append(lang).Append("\r\n");
@@ -1063,14 +1064,14 @@ private static string GetContentTranslationType(string ctt) {
       }
       if (prefaceSubject.Length == 0) {
         prefaceSubject.Append("Multilingual Message");
-      prefaceSubject.Append(" (");
-      for (var i = 0; i < languages.Count; ++i) {
-        if (i > 0) {
-          prefaceSubject.Append(", ");
+        prefaceSubject.Append(" (");
+        for (var i = 0; i < languages.Count; ++i) {
+          if (i > 0) {
+            prefaceSubject.Append(", ");
+          }
+          prefaceSubject.Append(languages[i]);
         }
-        prefaceSubject.Append(languages[i]);
-      }
-      prefaceSubject.Append(")");
+        prefaceSubject.Append(")");
       }
       string fromHeader = messages[0].GetHeader("from");
       if (fromHeader == null) {
@@ -1091,7 +1092,10 @@ private static string GetContentTranslationType(string ctt) {
       for (var i = 0; i < messages.Count; ++i) {
         MediaType mt = MediaType.Parse("message/rfc822");
         string msgstring = messages[i].Generate();
-        if (msgstring.IndexOf("\r\n--") >= 0 || msgstring.IndexOf("--") == 0) {
+        if (msgstring.IndexOf("\r\n--", StringComparison.Ordinal) >= 0 || (
+          msgstring.Length>=2 &&
+             msgstring[0]=='-' &&
+             msgstring[1]=='-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");
@@ -1278,12 +1282,12 @@ private static string GetContentTranslationType(string ctt) {
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                    // CRLF was read
-                    lineStart = true;
+                      // CRLF was read
+                      lineStart = true;
                     } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -1329,7 +1333,7 @@ private static string GetContentTranslationType(string ctt) {
             bytes,
             headerValueStart,
             headerValueEnd - headerValueStart,
-            false);  // throws on invalid UTF-8
+            false); // throws on invalid UTF-8
           } catch (ArgumentException) {
             // Invalid UTF-8, so encapsulate
             headerValue = null;
@@ -1363,7 +1367,7 @@ private static string GetContentTranslationType(string ctt) {
                   bytes,
                   headerValueStart,
                   headerValueEnd - headerValueStart,
-                  true);  // replaces invalid UTF-8
+                  true); // replaces invalid UTF-8
               string newField = HeaderEncoder.EncodeFieldAsEncodedWords(
   field,
   headerValue);
@@ -1388,8 +1392,9 @@ private static string GetContentTranslationType(string ctt) {
   string str) {
       var i = 0;
       var begin = 0;
-      if (str.IndexOf('(') < 0) { return enc.AppendString(str);
-}
+      if (str.IndexOf('(') < 0) {
+        return enc.AppendString(str);
+      }
       var sb = new StringBuilder();
       while (i < str.Length) {
         if (str[i] == '(') {
@@ -1527,7 +1532,7 @@ private static string GetContentTranslationType(string ctt) {
         return headerValue;
       }
       if (status != null) {
-        status[0] = 0;  // Unchanged
+        status[0] = 0; // Unchanged
       }
       return null;
     }
@@ -1946,12 +1951,12 @@ private static string GetContentTranslationType(string ctt) {
                   if (c == '\r') {
                     c = stream.ReadByte();
                     if (c == '\n') {
-                    // CRLF was read
-                    lineCount = 0;
+                      // CRLF was read
+                      lineCount = 0;
                     } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -1976,7 +1981,7 @@ private static string GetContentTranslationType(string ctt) {
                   lastByte = c2;
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-            haveFWS &= lineCount != 0;
+                  haveFWS &= lineCount != 0;
                   break;
                 }
               }
@@ -1991,7 +1996,7 @@ private static string GetContentTranslationType(string ctt) {
             sb.Append('\r');
             ungetLast = true;
             lastByte = c;
-            ++lineCount;  // Increment for the CR
+            ++lineCount; // Increment for the CR
           }
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
@@ -2009,7 +2014,7 @@ private static string GetContentTranslationType(string ctt) {
             int[] state = { lineCount, c, 1 };
             c = ReadUtf8Char(stream, state);
             // DebugUtility.Log("c=" + c + "," + lineCount + "," +
-             // state[0]+ ","+state[1]+","+state[2]);
+            // state[0]+ ","+state[1]+","+state[2]);
             lineCount = state[0];
             ungetLast = state[2] == 1;
             lastByte = state[1];
@@ -2041,11 +2046,11 @@ private static string GetContentTranslationType(string ctt) {
       // is 0x80 or greater (non-ASCII). This excludes
       // CR, which complicates a bit how line count in ungetState
       // is handled
-      #if DEBUG
-if (ungetState[1] < 0x80) {
-  throw new ArgumentException("ungetState[1] (" + ungetState[1] +
-    ") is less than " + 0x80);
-}
+#if DEBUG
+      if (ungetState[1] < 0x80) {
+        throw new ArgumentException("ungetState[1] (" + ungetState[1] +
+          ") is less than " + 0x80);
+      }
 #endif
 
       var cp = 0;
@@ -2062,8 +2067,8 @@ if (ungetState[1] < 0x80) {
         if (b < 0) {
           if (bytesNeeded != 0) {
             // Invalid multibyte character at end
-            ungetState[2] = 1;  // unget last
-            ungetState[1] = b;  // last byte
+            ungetState[2] = 1; // unget last
+            ungetState[1] = b; // last byte
             --read;
             ungetState[0] = read;
             return 0xfffd;
@@ -2098,8 +2103,8 @@ if (ungetState[1] < 0x80) {
         }
         if (b < lower || b > upper) {
           // Invalid multibyte character
-          ungetState[2] = 1;  // unget last
-          ungetState[1] = b;  // last byte
+          ungetState[2] = 1; // unget last
+          ungetState[1] = b; // last byte
           --read;
           ungetState[0] = read;
           return 0xfffd;
@@ -2213,7 +2218,7 @@ if (ungetState[1] < 0x80) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-       throw new ArgumentException("Header field value contains invalid text");
+          throw new ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -2335,7 +2340,9 @@ builder.SubType.Equals("global-disposition-notification")) {
           haveFrom = true;
         }
         if (
-          depth > 0 && name.IndexOf("--") == 0) {
+          depth > 0 &&
+name.Length >= 2 &&
+          name[0] == '-' && name[1] == '-') {
           // don't generate header fields starting with "--"
           // in body parts
           continue;
@@ -2457,8 +2464,7 @@ name.Equals("final-recipient")) {
         // reasons not to use local time, despite the SHOULD in RFC 5322
         AppendAscii(
           output,
-
-  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
+          MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
@@ -2511,8 +2517,8 @@ name.Equals("final-recipient")) {
         bool writeNewLine = depth > 0;
         foreach (Message part in this.Parts) {
           if (writeNewLine) {
- AppendAscii(output, "\r\n");
-}
+            AppendAscii(output, "\r\n");
+          }
           writeNewLine = true;
           AppendAscii(output, "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
@@ -2985,7 +2991,7 @@ name.Equals("final-recipient")) {
       var encoder = new HeaderEncoder(76, 0);
       encoder.AppendSymbol(name + ":");
       encoder.AppendSpace();
- string fullField = ParserUtility.Implode(
+      string fullField = ParserUtility.Implode(
   this.GetMultipleHeaders(name),
   "\u002c ");
       string lcname = DataUtilities.ToLowerCaseAscii(name);
@@ -3000,12 +3006,12 @@ name.Equals("final-recipient")) {
     }
 
     private class MessageStackEntry {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
+      /// <include file='../../docs.xml'
+      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message { get; private set; }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
+      /// <include file='../../docs.xml'
+      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

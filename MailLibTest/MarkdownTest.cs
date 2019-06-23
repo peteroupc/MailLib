@@ -236,7 +236,8 @@ namespace MailLibTest {
       this.TestMarkdownOne(
   "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
   "[Linktext][TeSt]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
-      string sx = "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n(Not a title)";
+      string sx =
+  "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n(Not a title)";
       this.TestMarkdownOne(
   "<p><a href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>",
   sx);

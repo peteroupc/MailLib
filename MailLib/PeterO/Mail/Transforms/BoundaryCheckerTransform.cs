@@ -34,14 +34,13 @@ if (this.innerBufferCount < this.innerBufferIndex) {
     this.innerBufferIndex);
 }
 #endif
-
-        Array.Copy(
+Array.Copy(
   this.innerBuffer,
   this.innerBufferIndex,
   this.innerBuffer,
   0,
   this.innerBufferCount - this.innerBufferIndex);
-       this.innerBufferCount -= this.innerBufferIndex;
+  this.innerBufferCount -= this.innerBufferIndex;
       }
       this.innerBufferIndex = 0;
     }
@@ -311,7 +310,7 @@ if (this.innerBufferCount < this.innerBufferIndex) {
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
       this.boundaries.Add(boundary);
-      this.started = true;  // in case a boundary delimiter immediately starts
+      this.started = true; // in case a boundary delimiter immediately starts
     }
 
     /// <include file='../../../docs.xml'

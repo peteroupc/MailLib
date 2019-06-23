@@ -13,7 +13,7 @@
 
   * Two normalization forms, <b>NFKC</b> and <b>NFKD</b> , are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
 
-  For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/` http://www.unicode.org/reports/tr15/ .
+  For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/`  .
 
  <b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
@@ -35,10 +35,117 @@
 * <code>[IsNormalized(int[], PeterO.Text.Normalization)](#IsNormalized_int_PeterO_Text_Normalization)</code> - Determines whether the given array of characters is in the given Unicode normalization form.
 * <code>[IsNormalized(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Determines whether the text provided by a character input is normalized.
 * <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Determines whether the given string is in the given Unicode normalization form.
-* <code>[IsNormalized(System.Collections.Generic.IList, PeterO.Text.Normalization)](#IsNormalized_System_Collections_Generic_IList_PeterO_Text_Normalization)</code> -
+* <code>[IsNormalized(System.Collections.Generic.IList, PeterO.Text.Normalization)](#IsNormalized_System_Collections_Generic_IList_PeterO_Text_Normalization)</code> - Determines whether the given list of characters is in the given Unicode normalization form.
 * <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
 * <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
 * <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
+
+<a id="Void_ctor_ICharacterInput"></a>
+### NormalizingCharacterInput Constructor
+
+    public NormalizingCharacterInput(
+        PeterO.Text.ICharacterInput input);
+
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.  <b>Parameters:</b>
+
+ * <i>input</i>: The parameter  <i>input</i>
+ is an ICharacterInput object.
+
+<a id="Void_ctor_ICharacterInput_Normalization"></a>
+### NormalizingCharacterInput Constructor
+
+    public NormalizingCharacterInput(
+        PeterO.Text.ICharacterInput stream,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.  <b>Parameters:</b>
+
+ * <i>stream</i>: The parameter  <i>stream</i>
+ is an ICharacterInput object.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
+
+<a id="Void_ctor_String"></a>
+### NormalizingCharacterInput Constructor
+
+    public NormalizingCharacterInput(
+        string str);
+
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.  <b>Parameters:</b>
+
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
+
+<a id="Void_ctor_String_Int32_Int32_Normalization"></a>
+### NormalizingCharacterInput Constructor
+
+    public NormalizingCharacterInput(
+        string str,
+        int index,
+        int length,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.  <b>Parameters:</b>
+
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
+
+ * <i>index</i>: The parameter  <i>index</i>
+ is a 32-bit signed integer.
+
+ * <i>length</i>: The parameter  <i>length</i>
+ is a 32-bit signed integer.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
+
+<a id="Void_ctor_String_Normalization"></a>
+### NormalizingCharacterInput Constructor
+
+    public NormalizingCharacterInput(
+        string str,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.  <b>Parameters:</b>
+
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>str</i>
+ is null.
+
+<a id="Void_ctor_IList_1"></a>
+### NormalizingCharacterInput Constructor
+
+    public NormalizingCharacterInput(
+        System.Collections.Generic.IList characterList);
+
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.  <b>Parameters:</b>
+
+ * <i>characterList</i>: The parameter  <i>characterList</i>
+ is an IList object.
+
+<a id="Void_ctor_IList_1_Normalization"></a>
+### NormalizingCharacterInput Constructor
+
+    public NormalizingCharacterInput(
+        System.Collections.Generic.IList characterList,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.  <b>Parameters:</b>
+
+ * <i>characterList</i>: The parameter  <i>characterList</i>
+ is an IList object.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
 
 <a id="GetChars_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>
 ### GetChars
@@ -108,7 +215,7 @@ The parameter  <i>str</i>
 
 <b>Return Value:</b>
 
- `true` true if the given list of characters is in the given Unicode normalization form; otherwise,  `false` false .
+ `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false`  .
 
 <b>Exceptions:</b>
 
@@ -130,7 +237,7 @@ The parameter "charList" is null.
 
 <b>Return Value:</b>
 
- `true` true if the text is normalized; otherwise,  `false` false .
+ `true`  if the text is normalized; otherwise,  `false`  .
 
 <b>Exceptions:</b>
 
@@ -153,12 +260,37 @@ The parameter  <i>chars</i>
 
 <b>Return Value:</b>
 
- `true` true if the given string is in the given Unicode normalization form; otherwise,  `false` false . Returns  `false` false if the string contains an unpaired surrogate code point.
+ `true`  if the given string is in the given Unicode normalization form; otherwise,  `false`  . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter  <i>str</i>
+ is null.
+
+<a id="IsNormalized_System_Collections_Generic_IList_PeterO_Text_Normalization"></a>
+### IsNormalized
+
+    public static bool IsNormalized(
+        System.Collections.Generic.IList charList,
+        PeterO.Text.Normalization form);
+
+<b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
+
+ Determines whether the given list of characters is in the given Unicode normalization form.  <b>Parameters:</b>
+
+ * <i>charList</i>: A list of Unicode code points.
+
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
+
+<b>Return Value:</b>
+
+ `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false`  .
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>charList</i>
  is null.
 
 <a id="Normalize_string_PeterO_Text_Normalization"></a>

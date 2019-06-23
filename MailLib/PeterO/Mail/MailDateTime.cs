@@ -7,12 +7,12 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
   public static class MailDateTime {
     private static string[] valueDaysOfWeek = {
-      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
     };
 
     private static string[] valueMonths = {
       String.Empty, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-      "Aug", "Sep", "Oct", "Nov", "Dec"
+      "Aug", "Sep", "Oct", "Nov", "Dec",
     };
 
     /// <include file='../../docs.xml'
@@ -23,11 +23,11 @@ namespace PeterO.Mail {
 
     private static int[] totdays = {
       0, 31, 59, 90, 120, 151, 181, 212, 243,
-      273, 304, 334 };
+      273, 304, 334, };
 
     private static int[] numdays = {
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
-      30, 31 };
+      30, 31, };
 
     internal static bool IsValidDateTime(int[] dateTime) {
       if (dateTime == null || dateTime.Length < 8) {
@@ -139,8 +139,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       int yr = dateTime[0];
       int mo = dateTime[1];
       int da = dateTime[2];
-      var addon = 0;  // number of days that have advanced
-      bool leap;  // is this year a leap year?
+      var addon = 0; // number of days that have advanced
+      bool leap; // is this year a leap year?
       yr %= 400;
       if (yr < 0) {
         yr += 400;
@@ -152,10 +152,10 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         leap = false;
       }
       if ((mo < 1) || (mo > 12)) {
-        return -1;  // validate the month
+        return -1; // validate the month
       }
       if (da < 1) {
-        return -1;  // and day of month
+        return -1; // and day of month
       }
       if (leap && (mo == 2)) {
         if (da > (numdays[mo - 1] + 1)) {
@@ -164,9 +164,9 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       } else if (da > numdays[mo - 1]) {
         return -1;
       }
-      addon += yr;  // The day advances by one day every year
-      addon += yr / 4;  // An additional day if it is divisible bay 4
-      addon -= yr / 100;  // Unless it is divisible by 100
+      addon += yr; // The day advances by one day every year
+      addon += yr / 4; // An additional day if it is divisible bay 4
+      addon -= yr / 100; // Unless it is divisible by 100
       /* However, we should not count that
          extra day if the current year is a leap
          year and we haven't gone past 29th February */
@@ -175,7 +175,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       }
       addon += totdays[mo - 1]; /* The day of the week increases by
                 the number of days in all the months up till now */
-      addon += da;  // the day of week advances for each day
+      addon += da; // the day of week advances for each day
                     /* Now as we all know, 2000-01-01 is a Saturday. Using this
                     as our reference point, and the knowledge that we want to
                     return 0..6 for Sunday..Saturday,
@@ -766,20 +766,20 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         if (index != endIndex) {
  return null;
 }
-        int dow = parseDOW(v, index, endIndex);
+        int dow = ParseDOW(v, index, endIndex);
         int day = ((v[index + 5] - '0') * 10) + (v[index + 6] - '0');
-        int month = parseMonth(v, index + 8, endIndex);
+        int month = ParseMonth(v, index + 8, endIndex);
         if (dow < 0 || month < 0) {
  return null;
 }
-    int year = ((v[index + 12] - '0') * 1000) +
+int year = ((v[index + 12] - '0') * 1000) +
       ((v[index + 13] - '0') * 100) + ((v[index + 14] - '0') * 10) +
       (v[index + 15] - '0');
         int hour = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
         int minute = ((v[index + 20] - '0') * 10) + (v[index + 21] - '0');
         int second = ((v[index + 23] - '0') * 10) + (v[index + 24] - '0');
-int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-return (dow == GetDayOfWeek(ret)) ? ret : null;
+        int[] ret = { year, month, day, hour, minute, second, 0, 0 };
+        return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // ASCTIME
       if (endIndex - index > 23 && ((v[index] >= 33 && v[index] <= 126) &&
@@ -802,24 +802,24 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         if (index != endIndex) {
  return null;
 }
-        int dow = parseDOW(v, index, endIndex);
-        int month = parseMonth(v, index + 4, endIndex);
+        int dow = ParseDOW(v, index, endIndex);
+        int month = ParseMonth(v, index + 4, endIndex);
         if (dow < 0 || month < 0) {
  return null;
 }
         int day = (v[index + 8] == 32 ? 0 : (v[index + 8] - '0') * 10) +
           (v[index + 9] - '0');
-    int year = ((v[index + 20] - '0') * 1000) +
+          int year = ((v[index + 20] - '0') * 1000) +
       ((v[index + 21] - '0') * 100) + ((v[index + 22] - '0') * 10) +
       (v[index + 23] - '0');
         int hour = ((v[index + 11] - '0') * 10) + (v[index + 12] - '0');
         int minute = ((v[index + 14] - '0') * 10) + (v[index + 15] - '0');
         int second = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
-int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-return (dow == GetDayOfWeek(ret)) ? ret : null;
+        int[] ret = { year, month, day, hour, minute, second, 0, 0 };
+        return (dow == GetDayOfWeek(ret)) ? ret : null;
       }
       // RFC 850
-      int dowLong = parseDOWLong(v, index, endIndex);
+      int dowLong = ParseDOWLong(v, index, endIndex);
       index += dowNamesLong[dowLong].Length;
       if (endIndex - index > 23 && (endIndex - index > 1 && v[index] == 44 &&
         v[index + 1] == 32) && ((v[index + 2] >= 48 && v[index + 2] <=
@@ -837,47 +837,46 @@ return (dow == GetDayOfWeek(ret)) ? ret : null;
         (v[index + 21] == 71) && (v[index + 22] == 77) && (v[index + 23] ==
         84)) {
  index += 24;
-
-        if (index != endIndex) {
+ if (index != endIndex) {
  return null;
 }
-        int month = parseMonth(v, index + 3, endIndex);
-        if (dowLong < 0 || month < 0) {
+int month = ParseMonth(v, index + 3, endIndex);
+if (dowLong < 0 || month < 0) {
  return null;
 }
-        int day = ((v[index] - '0') * 10) + (v[index + 1] - '0');
-        int year = ((v[index + 7] - '0') * 10) + (v[index + 8] - '0');
-        int hour = ((v[index + 10] - '0') * 10) + (v[index + 11] - '0');
-        int minute = ((v[index + 13] - '0') * 10) + (v[index + 14] - '0');
-        int second = ((v[index + 16] - '0') * 10) + (v[index + 17] - '0');
-        DateTime dt = DateTime.UtcNow;
-        int thisyear = dt.Year;
-        int this2digityear = thisyear % 100;
-        int convertedYear = year + (thisyear - this2digityear);
-        if (year - this2digityear > 50) {
+int day = ((v[index] - '0') * 10) + (v[index + 1] - '0');
+int year = ((v[index + 7] - '0') * 10) + (v[index + 8] - '0');
+int hour = ((v[index + 10] - '0') * 10) + (v[index + 11] - '0');
+int minute = ((v[index + 13] - '0') * 10) + (v[index + 14] - '0');
+int second = ((v[index + 16] - '0') * 10) + (v[index + 17] - '0');
+DateTime dt = DateTime.UtcNow;
+int thisyear = dt.Year;
+int this2digityear = thisyear % 100;
+int convertedYear = year + (thisyear - this2digityear);
+if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
-int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-return (dowLong == GetDayOfWeek(ret)) ? ret : null;
+        int[] ret = { year, month, day, hour, minute, second, 0, 0 };
+        return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       }
       return null;
     }
 
     private static string[] monthNames = {
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
     };
 
     private static string[] dowNames = {
-      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
     };
 
     private static string[] dowNamesLong = {
    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
-        "Saturday"
+   "Saturday",
     };
 
-    private static int parseMonth(string v, int index, int endIndex) {
+    private static int ParseMonth(string v, int index, int endIndex) {
       if (endIndex - index <= 2) {
  return -1;
 }
@@ -891,7 +890,7 @@ return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       return -1;
     }
 
-    private static int parseDOW(string v, int index, int endIndex) {
+    private static int ParseDOW(string v, int index, int endIndex) {
       if (endIndex - index <= 2) {
  return -1;
 }
@@ -905,7 +904,7 @@ return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       return -1;
     }
 
-    private static int parseDOWLong(string v, int index, int endIndex) {
+    private static int ParseDOWLong(string v, int index, int endIndex) {
       if (endIndex - index <= 2) {
  return -1;
 }

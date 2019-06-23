@@ -299,7 +299,7 @@ private HeaderFieldParsers() {
           return str;
         }
         Tokener tokener = new Tokener();
-       int endIndex = shf.Parse(str, 0, str.length(), tokener);
+        int endIndex = shf.Parse(str, 0, str.length(), tokener);
         if (endIndex != str.length()) {
           // The header field is syntactically invalid,
           // so downgrading is not possible
@@ -552,8 +552,7 @@ private HeaderFieldParsers() {
   ITokener tokener) {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
-
-     private static String TrimFWSFromRight(String str) {
+      private static String TrimFWSFromRight(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;
       }
@@ -620,22 +619,22 @@ private HeaderFieldParsers() {
           return str;
         }
         String header = str;
-       int index = 0;
-       boolean changed = false;
-       StringBuilder sb = new StringBuilder();
-       int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.length(), null);
-       while (index < header.length()) {
+        int index = 0;
+        boolean changed = false;
+        StringBuilder sb = new StringBuilder();
+        int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.length(), null);
+        while (index < header.length()) {
          int newindex = HeaderParser.ParseReceivedToken(
   header,
   index,
   header.length(),
   null);
          if (newindex == index) {
-         tokenEnd = HeaderParser.ParseCFWS(
-  header,
-  index,
-  header.length(),
-  null);
+           tokenEnd = HeaderParser.ParseCFWS(
+             header,
+             index,
+             header.length(),
+             null);
            sb.append(header.substring(index, (index)+(tokenEnd - index)));
            break;
          }

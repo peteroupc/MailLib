@@ -11,24 +11,26 @@ import com.upokecenter.util.*;
 
 // NOTE: Implements Punycode defined in RFC 3492
 
-   final class DomainUtility {
+  final class DomainUtility {
 private DomainUtility() {
 }
+    private static final String PunycodeAlphabet =
+      "abcdefghijklmnopqrstuvwxyz0123456789";
     static int ALabelLength(String str, int index, int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-      throw new IllegalArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > str.length()) {
         throw new IllegalArgumentException("index (" + index + ") is more than " +
           str.length());
       }
       if (endIndex < 0) {
-throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
+                  "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -172,33 +174,32 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       }
       return outputLength;
     }
-
- private static final int[] ValueDigitValues = { -1, -1, -1, -1, -1, -1,
+    private static final int[] ValueDigitValues = { -1, -1, -1, -1, -1, -1,
       -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
+      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, };
 
     static String PunycodeDecode(String str, int index, int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-      throw new IllegalArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > str.length()) {
         throw new IllegalArgumentException("index (" + index + ") is more than " +
           str.length());
       }
       if (endIndex < 0) {
-throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
+                  "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -222,7 +223,7 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       if (lastHyphen >= index) {
         for (i = index; i < lastHyphen; ++i) {
           if (str.charAt(i) >= 0x80) {
-            return null;  // Non-basic character found
+            return null; // Non-basic character found
           }
         }
       }
@@ -232,7 +233,7 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       for (int k = index; k < lastHyphen; ++k) {
         int c = str.charAt(k);
         if (c >= 0x41 && c <= 0x5a) {
-           // convert to lowercase
+          // convert to lowercase
           c += 0x20;
         }
         builder.append((char)c);
@@ -318,9 +319,6 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       return builder.toString();
     }
 
-private static final String PunycodeAlphabet =
-      "abcdefghijklmnopqrstuvwxyz0123456789";
-
     static String ALabelEncode(String str) {
       return ALabelEncodePortion(str, 0, str.length());
     }
@@ -333,16 +331,16 @@ private static final String PunycodeAlphabet =
         throw new NullPointerException("str");
       }
       if (index < 0) {
-      throw new IllegalArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > str.length()) {
         throw new IllegalArgumentException("index (" + index + ") is more than " +
           str.length());
       }
       if (endIndex < 0) {
-throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
+                  "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +

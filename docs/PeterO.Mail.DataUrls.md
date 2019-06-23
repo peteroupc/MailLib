@@ -8,15 +8,11 @@
 
     data:, hello%20world
 
-data:, hello%20world
-
     data:text/markdown, hello%20world
-
-data:text/markdown, hello%20world
 
     data:application/octet-stream;base64, AAAAAA==
 
-data:application/octet-stream;base64, AAAAAA==  ### Member Summary
+  ### Member Summary
 * <code>[DataUrlBytes(string)](#DataUrlBytes_string)</code> - Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
 * <code>[DataUrlMediaType(string)](#DataUrlMediaType_string)</code> - Extracts the media type from a Data URI (uniform resource identifier).
 * <code>[MakeDataUrl(byte[], PeterO.Mail.MediaType)](#MakeDataUrl_byte_PeterO_Mail_MediaType)</code> - Encodes data with the given media type in a Data URI (uniform resource identifier).

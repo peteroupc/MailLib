@@ -4,13 +4,13 @@
 
  Specifies what kind of data a message body is.
 
- A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type  `text/plain; charset = utf-8` text/plain; charset = utf-8 is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that the data uses UTF-8, a Unicode character encoding ("charset = utf-8"). Other top-level types include "audio", "video", and "application".
+ A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type  `text/plain; charset = utf-8`  is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that the data uses UTF-8, a Unicode character encoding ("charset = utf-8"). Other top-level types include "audio", "video", and "application".
 
  A media type is sometimes known as a "MIME type", for Multipurpose Internet Mail Extensions, the standard that introduced media types.
 
  This type is immutable, meaning its values can't be changed once it' s created. To create a changeable media type object, use the MediaTypeBuilder class.
 
- <b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type  `multipart` multipart must be treated as  `multipart/mixed` multipart/mixed and unrecognized media types as the media type  `application/octet-stream` application/octet-stream .
+ <b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type  `multipart`  must be treated as  `multipart/mixed`  and unrecognized media types as the media type  `application/octet-stream`  .
 
   ### Member Summary
 * <code>[public static readonly PeterO.Mail.MediaType ApplicationOctetStream;](#ApplicationOctetStream)</code> - Specifies the media type "application/octet-stream", used for arbitrary binary data.
@@ -60,7 +60,7 @@
 
  Gets a value indicating whether this is a multipart media type.  <b>Returns:</b>
 
- `true` true If this is a multipart media type; otherwise, .  `false` false .
+ `true`  If this is a multipart media type; otherwise, .  `false`  .
 
 <a id="IsText"></a>
 ### IsText
@@ -69,7 +69,7 @@
 
  Gets a value indicating whether this is a text media type ("text/*").  <b>Returns:</b>
 
- `true` true If this is a text media type; otherwise, .  `false` false .
+ `true`  If this is a text media type; otherwise, .  `false`  .
 
 <a id="Parameters"></a>
 ### Parameters
@@ -120,7 +120,7 @@ The top level type and subtype of this media type, separated by a slash; for exa
 
 <b>Return Value:</b>
 
- `true` true if this object and another object are equal; otherwise,  `false` false .
+ `true`  if this object and another object are equal; otherwise,  `false`  .
 
 <a id="GetCharset"></a>
 ### GetCharset

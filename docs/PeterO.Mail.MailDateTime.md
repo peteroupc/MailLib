@@ -27,7 +27,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid, including if the year (  `dateTime[0]` dateTime[0] ) is less than 0.
+ is null or invalid, including if the year (  `dateTime[0]`  ) is less than 0.
 
 <a id="GenerateDateString_int_bool"></a>
 ### GenerateDateString
@@ -50,7 +50,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid, including if the year (  `dateTime[0]` dateTime[0] ) is less than 0.
+ is null or invalid, including if the year (  `dateTime[0]`  ) is less than 0.
 
  * System.NotSupportedException:
 The time zone offset is other than 0 and  <i>gmt</i>
@@ -69,7 +69,7 @@ The time zone offset is other than 0 and  <i>gmt</i>
 
 <b>Return Value:</b>
 
-An 8-element array containing the date and time, or  `null` null if  <i>str</i>
+An 8-element array containing the date and time, or  `null`  if  <i>str</i>
  is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
 
 <a id="ParseDateString_string_bool"></a>
@@ -101,11 +101,11 @@ An 8-element array containing the date and time, or  `null` null if  <i>str</i>
 
  * <i>str</i>: A date-time string.
 
- * <i>parseObsoleteZones</i>: If set to  `true` true , this method allows obsolete time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations) to appear in the date-time string.
+ * <i>parseObsoleteZones</i>: If set to  `true`  , this method allows obsolete time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations) to appear in the date-time string.
 
 <b>Return Value:</b>
 
-An 8-element array containing the date and time, or  `null` null if  <i>str</i>
+An 8-element array containing the date and time, or  `null`  if  <i>str</i>
  is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
 
 <a id="ParseDateStringHttp_string"></a>

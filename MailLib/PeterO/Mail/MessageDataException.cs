@@ -24,8 +24,8 @@ namespace PeterO.Mail {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.MessageDataException.#ctor(System.String,System.Exception)"]/*'/>
-    public MessageDataException(string message, Exception innerException) :
-      base(message, innerException) {
+    public MessageDataException(string message, Exception innerException)
+      : base(message, innerException) {
     }
   }
 }

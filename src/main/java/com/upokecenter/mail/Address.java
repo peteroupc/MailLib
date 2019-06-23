@@ -12,9 +12,9 @@ import java.util.*;
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
-    /**
-     * Represents an email address.
-     */
+  /**
+   * Represents an email address.
+   */
   public class Address {
     private final String localPart;
 
@@ -27,7 +27,8 @@ import com.upokecenter.text.*;
     @Override public boolean equals(Object obj) {
       Address other = ((obj instanceof Address) ? (Address)obj : null);
       return other != null && this.localPart.equals(other.localPart) &&
-        this.domain.equals(other.domain); }
+        this.domain.equals(other.domain);
+    }
 
     /**
      * Gets the local part of this email address (the part before the "@" sign).
@@ -36,23 +37,21 @@ import com.upokecenter.text.*;
     public final String getLocalPart() {
         return this.localPart;
       }
-
-private static String DomainToString(String domain, boolean useALabelDomain) {
- String dom = domain;
- if (useALabelDomain && dom.length() > 0 && dom.charAt(0) != '[') {
-  dom = Idna.EncodeDomainName(domain);
- }
- return dom;
-}
-
-static String LocalPartToString(String localPart) {
-     if (localPart.length() > 0 && HeaderParser.ParseDotAtomText(
-  localPart,
-  0,
-  localPart.length(),
-  null) == localPart.length()) {
-  return localPart;
- } else {
+    private static String DomainToString(String domain, boolean useALabelDomain) {
+      String dom = domain;
+      if (useALabelDomain && dom.length() > 0 && dom.charAt(0) != '[') {
+        dom = Idna.EncodeDomainName(domain);
+      }
+      return dom;
+    }
+    static String LocalPartToString(String localPart) {
+      if (localPart.length() > 0 && HeaderParser.ParseDotAtomText(
+   localPart,
+   0,
+   localPart.length(),
+   null) == localPart.length()) {
+        return localPart;
+      } else {
         StringBuilder sb = new StringBuilder();
         sb.append('"');
         for (int i = 0; i < localPart.length(); ++i) {
@@ -69,52 +68,52 @@ static String LocalPartToString(String localPart) {
         sb.append('"');
         return sb.toString();
       }
-}
+    }
 
-void AppendThisAddress(HeaderEncoder encoder) {
- String lp = LocalPartToString(this.localPart);
- String domainstr = DomainToString(this.domain, true);
- int length = DataUtilities.CodePointLength(lp);
- int length2 = DataUtilities.CodePointLength(domainstr);
- if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
-  // Avoid breaking email addresses if it can comfortably
-  // fit the recommended line length
+    void AppendThisAddress(HeaderEncoder encoder) {
+      String lp = LocalPartToString(this.localPart);
+      String domainstr = DomainToString(this.domain, true);
+      int length = DataUtilities.CodePointLength(lp);
+      int length2 = DataUtilities.CodePointLength(domainstr);
+      if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
+        // Avoid breaking email addresses if it can comfortably
+        // fit the recommended line length
         int tlength = (int)(length2 + length + 1);
-  encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
- } else {
+        encoder.AppendSymbolWithLength(lp + "@" + domainstr, tlength);
+      } else {
         encoder.AppendSymbolWithLength(lp, length);
-  encoder.AppendSymbol("@");
+        encoder.AppendSymbol("@");
         encoder.AppendSymbolWithLength(domainstr, length);
- }
-}
+      }
+    }
 
     /**
      * Converts this address object to a text string.
      * @return A string representation of this object.
      */
     @Override public String toString() {
-     HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
-     this.AppendThisAddress(sa);
-  return sa.toString();
+      HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
+      this.AppendThisAddress(sa);
+      return sa.toString();
     }
 
     private boolean IsTooLong() {
       String lp = LocalPartToString(this.localPart);
-     String domainstr = DomainToString(this.domain, true);
-     String domain2 = DomainToString(this.domain, false);
-        // Maximum OCTET length per line for an Internet message minus 1;
-        // we check if the length exceeds that number (thus excluding the space
-        // character of a folded line).
-     if (DataUtilities.GetUtf8Length(lp, true) >
-      Message.MaxHardHeaderLineLength - 1) {
-      return true;
-     }
-     if (DataUtilities.GetUtf8Length(domainstr, true) >
-       Message.MaxHardHeaderLineLength - 1) {
-      return true;
-     }
-     return (DataUtilities.GetUtf8Length(domain2, true) >
-       Message.MaxHardHeaderLineLength - 1) ? true : false;
+      String domainstr = DomainToString(this.domain, true);
+      String domain2 = DomainToString(this.domain, false);
+      // Maximum OCTET length per line for an Internet message minus 1;
+      // we check if the length exceeds that number (thus excluding the space
+      // character of a folded line).
+      if (DataUtilities.GetUtf8Length(lp, true) >
+    Message.MaxHardHeaderLineLength - 1) {
+        return true;
+      }
+      if (DataUtilities.GetUtf8Length(domainstr, true) >
+        Message.MaxHardHeaderLineLength - 1) {
+        return true;
+      }
+      return (DataUtilities.GetUtf8Length(domain2, true) >
+        Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 
     /**
@@ -148,8 +147,7 @@ void AppendThisAddress(HeaderEncoder encoder) {
       }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.Address}
-     * class.
+     * Initializes a new instance of the {@link Address} class.
      * @param addressValue The parameter {@code addressValue} is a text string.
      * @throws java.lang.NullPointerException The parameter {@code addressValue} is
      * null.
@@ -175,7 +173,7 @@ void AppendThisAddress(HeaderEncoder encoder) {
       if (localPartEnd == 0) {
         throw new IllegalArgumentException("Invalid local part");
       }
-   if (localPartEnd >= addressValue.length() ||
+      if (localPartEnd >= addressValue.length() ||
      addressValue.charAt(localPartEnd) != '@') {
         throw new IllegalArgumentException("Expected '@' sign after local part");
       }

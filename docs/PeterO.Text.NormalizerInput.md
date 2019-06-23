@@ -13,7 +13,7 @@
 
   * Two normalization forms, <b>NFKC</b> and <b>NFKD</b> , are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
 
-  For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/` http://www.unicode.org/reports/tr15/ .
+  For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/`  .
 
  <b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
@@ -36,6 +36,87 @@
 * <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
 * <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
 
+<a id="Void_ctor_ICharacterInput"></a>
+### NormalizerInput Constructor
+
+    public NormalizerInput(
+        PeterO.Text.ICharacterInput input);
+
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+
+ * <i>input</i>: The parameter  <i>input</i>
+ is an ICharacterInput object.
+
+<a id="Void_ctor_ICharacterInput_Normalization"></a>
+### NormalizerInput Constructor
+
+    public NormalizerInput(
+        PeterO.Text.ICharacterInput stream,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+
+ * <i>stream</i>: The parameter  <i>stream</i>
+ is an ICharacterInput object.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>stream</i>
+ is null.
+
+<a id="Void_ctor_String"></a>
+### NormalizerInput Constructor
+
+    public NormalizerInput(
+        string str);
+
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
+
+<a id="Void_ctor_String_Int32_Int32_Normalization"></a>
+### NormalizerInput Constructor
+
+    public NormalizerInput(
+        string str,
+        int index,
+        int length,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
+
+ * <i>index</i>: The parameter  <i>index</i>
+ is a 32-bit signed integer.
+
+ * <i>length</i>: The parameter  <i>length</i>
+ is a 32-bit signed integer.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
+
+<a id="Void_ctor_String_Normalization"></a>
+### NormalizerInput Constructor
+
+    public NormalizerInput(
+        string str,
+        PeterO.Text.Normalization form);
+
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
+
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
+
 <a id="IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>
 ### IsNormalized
 
@@ -51,7 +132,7 @@
 
 <b>Return Value:</b>
 
- `true` true if the text is normalized; otherwise,  `false` false .
+ `true`  if the text is normalized; otherwise,  `false`  .
 
 <b>Exceptions:</b>
 
@@ -74,7 +155,7 @@ The parameter  <i>chars</i>
 
 <b>Return Value:</b>
 
- `true` true if the given string is in the given Unicode normalization form; otherwise,  `false` false . Returns  `false` false if the string contains an unpaired surrogate code point.
+ `true`  if the given string is in the given Unicode normalization form; otherwise,  `false`  . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 

@@ -4,61 +4,66 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
   internal static class EnrichedText {
-private static bool IsTokenAsciiIgnoreCase(
-  string str,
-  int index,
-  int endIndex,
-  string strToMatch) {
+    private static bool IsTokenAsciiIgnoreCase(
+      string str,
+      int index,
+      int endIndex,
+      string strToMatch) {
       for (var i = 0; i < strToMatch.Length; ++i) {
         int idx = index + i;
         if (idx >= endIndex) {
- return false;
-}
+          return false;
+        }
         char c1 = (str[idx] >= 0x41 && str[idx] <= 0x5a) ?
             (char)(str[idx] + 0x20) : str[idx];
         char c2 = (strToMatch[i] >= 0x41 && strToMatch[i] <= 0x5a) ?
             (char)(strToMatch[i] + 0x20) : strToMatch[i];
         if (c1 != c2) {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }
-
     private static bool IsHexChar(char c) {
       return (c >= 'a' && c <= 'f') ||
         (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9');
     }
-
     private static string ParseColor(string str, int index, int endIndex) {
-    string[] colorNames = {
+      string[] colorNames = {
 "yellow",
-  "red",
-  "green",
-  "blue",
-  "black",
-  "white",
-  "cyan",
-   "magenta"};
+"red",
+"green",
+"blue",
+"black",
+"white",
+"cyan",
+"magenta"
+      };
       foreach (string name in colorNames) {
         if (IsTokenAsciiIgnoreCase(str, index, endIndex, name)) {
- return name;
-}
+          return name;
+        }
       }
       if (index + 13 >= endIndex) {
- return null;
-}
+        return null;
+      }
       for (var i = 0; i < 14; ++i) {
         if (i == 4 || i == 8) {
-{ if (str[index + i] != ',') {
-{ return null;
-} }
-} } else { if (!IsHexChar(str[index + i])) {
- return null;
-} }
+          {
+            if (str[index + i] != ',') {
+              {
+                return null;
+              }
+            }
+          }
+        } else {
+          if (!IsHexChar(str[index + i])) {
+            return null;
+          }
+        }
       }
       string ret = "#";
       return
@@ -67,7 +72,6 @@ ret + str.Substring(index, 2) + str.Substring(index + 5, 2) +
   index,
   10);
     }
-
     private static int SkipFont(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
@@ -109,7 +113,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       } while (false);
       return indexTemp;
     }
-
     private static int SkipLang(string str, int index, int endIndex) {
       while (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
             (str[index] == 45) || (str[index] >= 97 && str[index] <= 122) ||
@@ -118,7 +121,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       }
       return index;
     }
-
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException(nameof(delimiter));
@@ -184,7 +186,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       }
       return String.Empty;
     }
-
     public static string EnrichedToPlain(
   string str,
   int index,
@@ -306,7 +307,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                   } else {
                     var j = 0;
                     for (j = 1; j < lineBreakCount; ++j) {
-                    currentBuilder.Append("\r\n");
+                      currentBuilder.Append("\r\n");
                     }
                   }
                 } else {
@@ -365,7 +366,6 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       } while (false);
       return originalBuilder.ToString();
     }
-
     public static string EnrichedToHtml(
   string str,
   int index,
@@ -376,7 +376,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       var withinParam = false;
       var nofillDepth = 0;
       originalBuilder.Append("<!DOCTYPE html><html><title>Untitled</title>");
-  originalBuilder.Append("<style>p { margin-bottom: 0em; margin-top: 0em; }");
+      originalBuilder.Append("<style>p { margin-bottom: 0em; margin-top: 0em; }");
       originalBuilder.Append("</style><body>");
       string lastCommand = String.Empty;
       do {
@@ -428,85 +428,85 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                   if (command.Equals("bold")) {
                     currentBuilder.Append('<');
                     if (isEndTag) {
-                    currentBuilder.Append('/');
+                      currentBuilder.Append('/');
                     }
                     currentBuilder.Append("b>");
                   } else if (command.Equals("italic")) {
                     currentBuilder.Append('<');
                     if (isEndTag) {
-                    currentBuilder.Append('/');
+                      currentBuilder.Append('/');
                     }
                     currentBuilder.Append("i>");
                   } else if (command.Equals("fixed")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</span>");
+                      currentBuilder.Append("</span>");
                     } else {
-                    currentBuilder.Append("<span style='font-family:");
-                    currentBuilder.Append("monospaced'>");
+                      currentBuilder.Append("<span style='font-family:");
+                      currentBuilder.Append("monospaced'>");
                     }
                   } else if (command.Equals("center")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</div>");
+                      currentBuilder.Append("</div>");
                     } else {
-                    currentBuilder.Append("<div style='text-align:center'>");
+                      currentBuilder.Append("<div style='text-align:center'>");
                     }
                   } else if (command.Equals("flushleft")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</div>");
+                      currentBuilder.Append("</div>");
                     } else {
-                    currentBuilder.Append("<div style='text-align:left'>");
+                      currentBuilder.Append("<div style='text-align:left'>");
                     }
                   } else if (command.Equals("flushright")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</div>");
+                      currentBuilder.Append("</div>");
                     } else {
-                    currentBuilder.Append("<div style='text-align:right'>");
+                      currentBuilder.Append("<div style='text-align:right'>");
                     }
                   } else if (command.Equals("flushboth")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</div>");
+                      currentBuilder.Append("</div>");
                     } else {
-                    currentBuilder.Append("<div style='text-align:justify'>");
+                      currentBuilder.Append("<div style='text-align:justify'>");
                     }
                   } else if (command.Equals("fontfamily")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</span>");
+                      currentBuilder.Append("</span>");
                     }
                   } else if (command.Equals("color")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</span>");
+                      currentBuilder.Append("</span>");
                     }
                   } else if (command.Equals("paraindent")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</div>");
+                      currentBuilder.Append("</div>");
                     }
                   } else if (command.Equals("smaller")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</span>");
+                      currentBuilder.Append("</span>");
                     } else {
-                    currentBuilder.Append("<span style='font-size:85%'>");
+                      currentBuilder.Append("<span style='font-size:85%'>");
                     }
                   } else if (command.Equals("nofill")) {
                     if (isEndTag && nofillDepth > 0) {
-                    --nofillDepth;
+                      --nofillDepth;
                     } else if (!isEndTag) {
-                    ++nofillDepth;
+                      ++nofillDepth;
                     }
                   } else if (command.Equals("bigger")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</span>");
+                      currentBuilder.Append("</span>");
                     } else {
-                    currentBuilder.Append("<span style='font-size:110%'>");
+                      currentBuilder.Append("<span style='font-size:110%'>");
                     }
                   } else if (command.Equals("lang")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</span>");
+                      currentBuilder.Append("</span>");
                     }
                   } else if (command.Equals("excerpt")) {
                     if (isEndTag) {
-                    currentBuilder.Append("</blockquote>");
+                      currentBuilder.Append("</blockquote>");
                     } else {
-                    currentBuilder.Append("<blockquote>");
+                      currentBuilder.Append("<blockquote>");
                     }
                   }
                   if (!command.Equals("param")) {
@@ -520,56 +520,56 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                     currentBuilder = originalBuilder;
                     string p = TrimSpaces(paramBuilder.ToString());
                     if (lastCommand.Equals("fontfamily")) {
-                    if (SkipFont(p, 0, p.Length) == p.Length) {
-                    currentBuilder.Append("<span style='font-family: " + p +
-                    "'> ");
-                    } else {
-                    currentBuilder.Append("<span>");
-                    }
+                      if (SkipFont(p, 0, p.Length) == p.Length) {
+                        currentBuilder.Append("<span style='font-family: " + p +
+                        "'> ");
+                      } else {
+                        currentBuilder.Append("<span>");
+                      }
                     } else if (lastCommand.Equals("color")) {
-                    p = ParseColor(
-          DataUtilities.ToLowerCaseAscii(p),
-          0,
-          p.Length);
-                    if (p != null) {
-                    currentBuilder.Append("<span style='color: " + p + "'>");
-                    } else {
-                    currentBuilder.Append("<span>");
-                    }
+                      p = ParseColor(
+            DataUtilities.ToLowerCaseAscii(p),
+            0,
+            p.Length);
+                      if (p != null) {
+                        currentBuilder.Append("<span style='color: " + p + "'>");
+                      } else {
+                        currentBuilder.Append("<span>");
+                      }
                     } else if (lastCommand.Equals("lang")) {
-                    if (SkipLang(p, 0, p.Length) == p.Length) {
-    currentBuilder.Append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
-                    "'> ");
-                    } else {
-                    currentBuilder.Append("<span>");
-                    }
+                      if (SkipLang(p, 0, p.Length) == p.Length) {
+                        currentBuilder.Append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
+                                        "'> ");
+                      } else {
+                        currentBuilder.Append("<span>");
+                      }
                     } else if (lastCommand.Equals("paraindent")) {
-                    p = DataUtilities.ToLowerCaseAscii(p);
-                    string[] valuePList = SplitAt(p, ",");
-                    var leftFlag = false;
-                    var rightFlag = false;
-                    var inFlag = false;
-                    var outFlag = false;
-                    var styleBuilder = new StringBuilder();
-                    foreach (string valuePItem in valuePList) {
-                    string valuePItem2 = TrimSpaces(valuePItem);
-                    if (!leftFlag && valuePItem2.Equals("left")) {
-                    styleBuilder.Append("padding-left: 2em;");
-                    } else if (!rightFlag && valuePItem2.Equals("right")) {
-                    styleBuilder.Append("padding-right: 2em;");
-                    } else if (!inFlag && valuePItem2.Equals("in")) {
-                    styleBuilder.Append("text-indent: 2em;");
-                    } else if (!outFlag && valuePItem2.Equals("out")) {
-                    styleBuilder.Append("text-indent: -2em;");
-                    styleBuilder.Append("margin-left: 2em;");
-                    }
-                    }
-                    if (!inFlag && !outFlag) {
-                    styleBuilder.Append("padding-top:0;");
-                    styleBuilder.Append("padding-bottom: 0;");
-                    }
-                    currentBuilder.Append("<div style=' " +
-                    styleBuilder.ToString() + "'> ");
+                      p = DataUtilities.ToLowerCaseAscii(p);
+                      string[] valuePList = SplitAt(p, ",");
+                      var leftFlag = false;
+                      var rightFlag = false;
+                      var inFlag = false;
+                      var outFlag = false;
+                      var styleBuilder = new StringBuilder();
+                      foreach (string valuePItem in valuePList) {
+                        string valuePItem2 = TrimSpaces(valuePItem);
+                        if (!leftFlag && valuePItem2.Equals("left")) {
+                          styleBuilder.Append("padding-left: 2em;");
+                        } else if (!rightFlag && valuePItem2.Equals("right")) {
+                          styleBuilder.Append("padding-right: 2em;");
+                        } else if (!inFlag && valuePItem2.Equals("in")) {
+                          styleBuilder.Append("text-indent: 2em;");
+                        } else if (!outFlag && valuePItem2.Equals("out")) {
+                          styleBuilder.Append("text-indent: -2em;");
+                          styleBuilder.Append("margin-left: 2em;");
+                        }
+                      }
+                      if (!inFlag && !outFlag) {
+                        styleBuilder.Append("padding-top:0;");
+                        styleBuilder.Append("padding-bottom: 0;");
+                      }
+                      currentBuilder.Append("<div style=' " +
+                      styleBuilder.ToString() + "'> ");
                     }
                     lastCommand = String.Empty;
                   } else {
@@ -636,7 +636,7 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                     var j = 0;
                     currentBuilder.Append("<p>");
                     for (j = 2; j < lineBreakCount; ++j) {
-                    currentBuilder.Append("<br>");
+                      currentBuilder.Append("<br>");
                     }
                   }
                 } else {

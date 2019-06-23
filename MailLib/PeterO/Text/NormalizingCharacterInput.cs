@@ -5,72 +5,72 @@
   If you like this, you should donate to Peter O.
   at: http://peteroupc.github.io/
    */
-  using System;
+using System;
 using System.Collections.Generic;
 
-  namespace PeterO.Text {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.NormalizingCharacterInput"]/*'/>
-    [Obsolete("Renamed to NormalizerInput.")]
-    public sealed class NormalizingCharacterInput : ICharacterInput {
-      private readonly ICharacterInput nci;
+namespace PeterO.Text {
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Text.NormalizingCharacterInput"]/*'/>
+  [Obsolete("Renamed to NormalizerInput.")]
+  public sealed class NormalizingCharacterInput : ICharacterInput {
+    private readonly ICharacterInput nci;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)"]/*'/>
-      public NormalizingCharacterInput(
-    string str) : this(
-    str,
-    Normalization.NFC) {
-      }
+    public NormalizingCharacterInput(
+  string str) : this(
+  str,
+  Normalization.NFC) {
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)"]/*'/>
-      public NormalizingCharacterInput(
-    ICharacterInput input) : this(
-    input,
-    Normalization.NFC) {
-      }
+    public NormalizingCharacterInput(
+  ICharacterInput input) : this(
+  input,
+  Normalization.NFC) {
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})"]/*'/>
-        public NormalizingCharacterInput(IList<int> characterList) :
-        this(characterList, Normalization.NFC) {
-      }
+    public NormalizingCharacterInput(IList<int> characterList)
+        : this(characterList, Normalization.NFC) {
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
-        public NormalizingCharacterInput(
+    public NormalizingCharacterInput(
     IList<int> characterList,
-    Normalization form) :
-    this(new PartialListCharacterInput(characterList), form) {
-      }
+    Normalization form)
+    : this(new PartialListCharacterInput(characterList), form) {
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]/*'/>
-      public NormalizingCharacterInput(
-    string str,
-    int index,
-    int length,
-    Normalization form) {
-       this.nci = new NormalizerInput(str, index, length, form);
-      }
+    public NormalizingCharacterInput(
+  string str,
+  int index,
+  int length,
+  Normalization form) {
+      this.nci = new NormalizerInput(str, index, length, form);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
-      public NormalizingCharacterInput(string str, Normalization form) {
-        if (str == null) {
-  throw new ArgumentNullException(nameof(str));
-}
-        this.nci = new NormalizerInput(str, 0, str.Length, form);
+    public NormalizingCharacterInput(string str, Normalization form) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
       }
+      this.nci = new NormalizerInput(str, 0, str.Length, form);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-      public NormalizingCharacterInput(
-     ICharacterInput stream,
-     Normalization form) {
-       this.nci = new NormalizerInput(stream, form);
-      }
+    public NormalizingCharacterInput(
+   ICharacterInput stream,
+   Normalization form) {
+      this.nci = new NormalizerInput(stream, form);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
@@ -82,111 +82,111 @@ using System.Collections.Generic;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
-      public static string Normalize(string str, Normalization form) {
-       return NormalizerInput.Normalize(str, form);
-      }
+    public static string Normalize(string str, Normalization form) {
+      return NormalizerInput.Normalize(str, form);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
-      public static bool IsNormalized(string str, Normalization form) {
-        return NormalizerInput.IsNormalized(str, form);
-      }
+    public static bool IsNormalized(string str, Normalization form) {
+      return NormalizerInput.IsNormalized(str, form);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
-  [Obsolete("Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.")]
-      public static IList<int> GetChars(string str, Normalization form) {
-        if (str == null) {
-          throw new ArgumentNullException(nameof(str));
-        }
-        IList<int> ret = new List<int>();
-        int ch;
-        var input = new NormalizingCharacterInput(str, form);
-        while ((ch = input.ReadChar()) >= 0) {
-           ret.Add(ch);
-        }
-        return ret;
+    [Obsolete("Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.")]
+    public static IList<int> GetChars(string str, Normalization form) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
       }
+      IList<int> ret = new List<int>();
+      int ch;
+      var input = new NormalizingCharacterInput(str, form);
+      while ((ch = input.ReadChar()) >= 0) {
+        ret.Add(ch);
+      }
+      return ret;
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-  [Obsolete("Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.")]
-   public static IList<int> GetChars(
+    [Obsolete("Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.")]
+    public static IList<int> GetChars(
   ICharacterInput chars,
   Normalization form) {
-        if (chars == null) {
-          throw new ArgumentNullException(nameof(chars));
-        }
-        IList<int> ret = new List<int>();
-        int ch;
-        chars = new NormalizingCharacterInput(chars, form);
-        while ((ch = chars.ReadChar()) >= 0) {
-           ret.Add(ch);
-        }
-        return ret;
+      if (chars == null) {
+        throw new ArgumentNullException(nameof(chars));
       }
+      IList<int> ret = new List<int>();
+      int ch;
+      chars = new NormalizingCharacterInput(chars, form);
+      while ((ch = chars.ReadChar()) >= 0) {
+        ret.Add(ch);
+      }
+      return ret;
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
-  [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+    [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
     public static bool IsNormalized(int[] charArray, Normalization form) {
-     if (charArray == null) {
-      throw new ArgumentNullException(nameof(charArray));
-     }
-     return IsNormalized(new PartialArrayCharacterInput(charArray), form);
-   }
+      if (charArray == null) {
+        throw new ArgumentNullException(nameof(charArray));
+      }
+      return IsNormalized(new PartialArrayCharacterInput(charArray), form);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
-  [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
-      public static bool IsNormalized(IList<int> charList, Normalization form) {
-          return IsNormalized(
-  new PartialListCharacterInput(charList),
-  form);
-     }
+    [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+    public static bool IsNormalized(IList<int> charList, Normalization form) {
+      return IsNormalized(
+new PartialListCharacterInput(charList),
+form);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.ReadChar"]/*'/>
-      public int ReadChar() {
-        return this.nci.ReadChar();
-      }
+    public int ReadChar() {
+      return this.nci.ReadChar();
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
-      public int Read(int[] chars, int index, int length) {
-        return this.nci.Read(chars, index, length);
+    public int Read(int[] chars, int index, int length) {
+      return this.nci.Read(chars, index, length);
+    }
+
+    private sealed class PartialArrayCharacterInput : ICharacterInput {
+      private readonly int endPos;
+      private readonly int[] array;
+      private int pos;
+
+      public PartialArrayCharacterInput(int[] array, int start, int length) {
+        this.array = array;
+        this.pos = start;
+        this.endPos = start + length;
       }
 
-      private sealed class PartialArrayCharacterInput : ICharacterInput {
-        private readonly int endPos;
-        private readonly int[] array;
-        private int pos;
+      public PartialArrayCharacterInput(int[] array) {
+        this.array = array;
+        this.pos = 0;
+        this.endPos = array.Length;
+      }
 
-        public PartialArrayCharacterInput(int[] array, int start, int length) {
-          this.array = array;
-          this.pos = start;
-          this.endPos = start + length;
-        }
+      public int ReadChar() {
+        return (this.pos < this.endPos) ? this.array[this.pos++] : (-1);
+      }
 
-        public PartialArrayCharacterInput(int[] array) {
-          this.array = array;
-          this.pos = 0;
-          this.endPos = array.Length;
+      public int Read(int[] buf, int offset, int unitCount) {
+        if (unitCount == 0) {
+          return 0;
         }
-
-        public int ReadChar() {
-          return (this.pos < this.endPos) ? this.array[this.pos++] : (-1);
-        }
-
-        public int Read(int[] buf, int offset, int unitCount) {
-          if (unitCount == 0) {
-            return 0;
-          }
-          int maxsize = Math.Min(unitCount, this.endPos - this.pos);
-          Array.Copy(this.array, this.pos, buf, offset, maxsize);
-          this.pos += maxsize;
-          return maxsize == 0 ? -1 : maxsize;
-        }
+        int maxsize = Math.Min(unitCount, this.endPos - this.pos);
+        Array.Copy(this.array, this.pos, buf, offset, maxsize);
+        this.pos += maxsize;
+        return maxsize == 0 ? -1 : maxsize;
       }
     }
   }
+}

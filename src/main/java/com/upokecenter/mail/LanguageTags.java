@@ -116,7 +116,7 @@ private LanguageTags() {
           0x0a) {
  index += 2;
 }
-        if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
+if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
  ++index;
 } else {
  break;
@@ -334,7 +334,7 @@ private LanguageTags() {
       boolean first = true;
       int index = 0;
       ArrayList<StringAndQuality> ret = new ArrayList<StringAndQuality>();
-if (str == null) {
+      if (str == null) {
  return null;
 }
       while (index < str.length()) {
@@ -436,7 +436,7 @@ if (str == null) {
       int tagIndex = 1;
       while (rangeIndex < rangeSub.length) {
      String range = rangeSub[rangeIndex];
-        if (range.length() == 0) {
+     if (range.length() == 0) {
           return false;
         }
         if (range.equals("*")) {
@@ -445,7 +445,7 @@ if (str == null) {
         if (tagIndex >= tagSub.length) {
           return false;
         }
-String tag = tagSub[tagIndex];
+        String tag = tagSub[tagIndex];
         if (range.equals(tag)) {
           ++rangeIndex;
           ++tagIndex;
@@ -545,7 +545,7 @@ String tag = tagSub[tagIndex];
 
     private static String TruncateLangRange(String range) {
      int i = 0;
-      for (i = range.length() - 1; i >= 0; --i) {
+     for (i = range.length() - 1; i >= 0; --i) {
  if (range.charAt(i) == '-' && i >= 2 && range.charAt(i - 1) != '-' && range.charAt(i - 2) != '-'
 ) {
  return range.substring(0, i);
@@ -570,7 +570,7 @@ String tag = tagSub[tagIndex];
         Arrays.asList(new String[] { range }),
         Arrays.asList(new String[] { tag }),
         false,
- false);
+        false);
       return tags.size() > 0;
     }
 
