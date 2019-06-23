@@ -21,7 +21,7 @@ namespace PeterO.Mail {
     private int startColumn;
 
     public HeaderEncoder() : this(Message.MaxRecHeaderLineLength, 0) {
-}
+    }
 
     public HeaderEncoder(int maxLineLength, int startColumn) {
       // Minimum supported max line length is 15 to accommodate
@@ -170,15 +170,15 @@ namespace PeterO.Mail {
             // May begin quoted-string or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
-         int si = symbol[i] == '"' ? HeaderParserUtility.ParseQuotedStringCore(
-  symbol,
-  i,
-  endIndex) : HeaderParser.ParseDomainLiteralCore(
-  symbol,
-  i,
-  endIndex,
-  null);
-  if (si != i) {
+            int si = symbol[i] == '"' ? HeaderParserUtility.ParseQuotedStringCore(
+     symbol,
+     i,
+     endIndex) : HeaderParser.ParseDomainLiteralCore(
+     symbol,
+     i,
+     endIndex,
+     null);
+            if (si != i) {
               writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
@@ -213,8 +213,8 @@ namespace PeterO.Mail {
             } else {
               ++i;
             }
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t' &&
-            symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
+          } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t' &&
+                  symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -271,8 +271,8 @@ namespace PeterO.Mail {
               }
             }
             return false;
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t' &&
-            symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
+          } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t' &&
+                  symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
             // Single space followed by character other than CR/LF/Tab
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             // AppendSpace();
@@ -280,9 +280,10 @@ namespace PeterO.Mail {
             symbolBegin = i + 1;
             ++i;
           } else if (symbol[i] == ' ' || symbol[i] == '\t') {
-      /*DebugUtility.Log("Special whitespace|" + symbol.Substring(i,
-              endIndex - i));
-         */ this.AppendSpaceAndSymbol(
+            /*DebugUtility.Log("Special whitespace|" + symbol.Substring(i,
+                    endIndex - i));
+               */
+            this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   i,
@@ -314,8 +315,8 @@ namespace PeterO.Mail {
       // NOTE: Assumes 'symbol' is a syntactically valid 'comment'
       // and begins and ends with parentheses
       if (symbol.Length == 0 || symbol[0] != '(') {
- throw new ArgumentException();
-}
+        throw new ArgumentException();
+      }
       var i = 0;
       var symbolBegin = 0;
       while (i < symbol.Length) {
@@ -334,11 +335,11 @@ namespace PeterO.Mail {
   symbolBegin,
   i,
   writeSpace);
-  writeSpace = this.AppendSpaceAndSymbol(
-  symbol,
-  i,
-  i + 1,
-  writeSpace);
+          writeSpace = this.AppendSpaceAndSymbol(
+          symbol,
+          i,
+          i + 1,
+          writeSpace);
           symbolBegin = i + 1;
           ++i;
         } else if (symbol[i] == ' ' || symbol[i] == '\t') {
@@ -647,38 +648,38 @@ namespace PeterO.Mail {
 
     private static bool IsSimplePhrase(string str) {
       if (str.Length == 0) {
- return false;
-}
+        return false;
+      }
       var count = 0;
       if (str[0] == ' ' || str[str.Length - 1] == ' ') {
- return false;
-}
+        return false;
+      }
       for (var i = 0; i < str.Length; ++i) {
-   if (str[i] < 0x80 && str[i] > 0x20 && ValueAsciiAtext[(int)str[i] - 0x20] ==
-          1) {
+        if (str[i] < 0x80 && str[i] > 0x20 && ValueAsciiAtext[(int)str[i] - 0x20] ==
+               1) {
           // not simple if a word begins with "=?", an RFC
           // 2047 encoded word start
-  if (count == 0 && str[i] == '=' && i + 1 < str.Length && str[i + 1] == '?'
-) {
+          if (count == 0 && str[i] == '=' && i + 1 < str.Length && str[i + 1] == '?'
+        ) {
             return false;
           }
           ++count;
           if (count > Message.MaxRecHeaderLineLength - 1) {
- return false;
-}
+            return false;
+          }
         } else if (str[i] == ' ' && i + 1 < str.Length && str[i + 1] != ' ') {
           count = 0;
         } else {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }
 
     private static bool IsQuotablePhrase(string str) {
       if (str.Length == 0) {
- return true;
-}
+        return true;
+      }
       var count = 1;
       for (var i = 0; i < str.Length; ++i) {
         /*
@@ -703,11 +704,11 @@ namespace PeterO.Mail {
         }
         // For ending DQUOTE
         if (i == str.Length - 1) {
- ++count;
-}
+          ++count;
+        }
         if (count > Message.MaxRecHeaderLineLength - 1) {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }

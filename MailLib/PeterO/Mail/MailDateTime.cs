@@ -3,8 +3,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
   public static class MailDateTime {
     private static string[] valueDaysOfWeek = {
       "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
@@ -176,10 +176,10 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       addon += totdays[mo - 1]; /* The day of the week increases by
                 the number of days in all the months up till now */
       addon += da; // the day of week advances for each day
-                    /* Now as we all know, 2000-01-01 is a Saturday. Using this
-                    as our reference point, and the knowledge that we want to
-                    return 0..6 for Sunday..Saturday,
-                    we find out that we need to compensate by adding 6. */
+                   /* Now as we all know, 2000-01-01 is a Saturday. Using this
+                   as our reference point, and the knowledge that we want to
+                   return 0..6 for Sunday..Saturday,
+                   we find out that we need to compensate by adding 6. */
       addon += 6;
       return addon % 7; /* the remainder after dividing by 7
                     gives the day of week */
@@ -252,8 +252,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)"]/*'/>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
       if (String.IsNullOrEmpty(str)) {
- return null;
-}
+        return null;
+      }
       var ret = new int[8];
       if (
   ParseHeaderExpandedDate(
@@ -764,17 +764,17 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         77) && (v[index + 28] == 84)) {
         index += 29;
         if (index != endIndex) {
- return null;
-}
+          return null;
+        }
         int dow = ParseDOW(v, index, endIndex);
         int day = ((v[index + 5] - '0') * 10) + (v[index + 6] - '0');
         int month = ParseMonth(v, index + 8, endIndex);
         if (dow < 0 || month < 0) {
- return null;
-}
-int year = ((v[index + 12] - '0') * 1000) +
-      ((v[index + 13] - '0') * 100) + ((v[index + 14] - '0') * 10) +
-      (v[index + 15] - '0');
+          return null;
+        }
+        int year = ((v[index + 12] - '0') * 1000) +
+              ((v[index + 13] - '0') * 100) + ((v[index + 14] - '0') * 10) +
+              (v[index + 15] - '0');
         int hour = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
         int minute = ((v[index + 20] - '0') * 10) + (v[index + 21] - '0');
         int second = ((v[index + 23] - '0') * 10) + (v[index + 24] - '0');
@@ -800,18 +800,18 @@ int year = ((v[index + 12] - '0') * 1000) +
         <= 57) && (v[index + 23] >= 48 && v[index + 23] <= 57))) {
         index += 24;
         if (index != endIndex) {
- return null;
-}
+          return null;
+        }
         int dow = ParseDOW(v, index, endIndex);
         int month = ParseMonth(v, index + 4, endIndex);
         if (dow < 0 || month < 0) {
- return null;
-}
+          return null;
+        }
         int day = (v[index + 8] == 32 ? 0 : (v[index + 8] - '0') * 10) +
           (v[index + 9] - '0');
-          int year = ((v[index + 20] - '0') * 1000) +
-      ((v[index + 21] - '0') * 100) + ((v[index + 22] - '0') * 10) +
-      (v[index + 23] - '0');
+        int year = ((v[index + 20] - '0') * 1000) +
+    ((v[index + 21] - '0') * 100) + ((v[index + 22] - '0') * 10) +
+    (v[index + 23] - '0');
         int hour = ((v[index + 11] - '0') * 10) + (v[index + 12] - '0');
         int minute = ((v[index + 14] - '0') * 10) + (v[index + 15] - '0');
         int second = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
@@ -836,24 +836,24 @@ int year = ((v[index + 12] - '0') * 1000) +
         19] >= 48 && v[index + 19] <= 57)) && (v[index + 20] == 32) &&
         (v[index + 21] == 71) && (v[index + 22] == 77) && (v[index + 23] ==
         84)) {
- index += 24;
- if (index != endIndex) {
- return null;
-}
-int month = ParseMonth(v, index + 3, endIndex);
-if (dowLong < 0 || month < 0) {
- return null;
-}
-int day = ((v[index] - '0') * 10) + (v[index + 1] - '0');
-int year = ((v[index + 7] - '0') * 10) + (v[index + 8] - '0');
-int hour = ((v[index + 10] - '0') * 10) + (v[index + 11] - '0');
-int minute = ((v[index + 13] - '0') * 10) + (v[index + 14] - '0');
-int second = ((v[index + 16] - '0') * 10) + (v[index + 17] - '0');
-DateTime dt = DateTime.UtcNow;
-int thisyear = dt.Year;
-int this2digityear = thisyear % 100;
-int convertedYear = year + (thisyear - this2digityear);
-if (year - this2digityear > 50) {
+        index += 24;
+        if (index != endIndex) {
+          return null;
+        }
+        int month = ParseMonth(v, index + 3, endIndex);
+        if (dowLong < 0 || month < 0) {
+          return null;
+        }
+        int day = ((v[index] - '0') * 10) + (v[index + 1] - '0');
+        int year = ((v[index + 7] - '0') * 10) + (v[index + 8] - '0');
+        int hour = ((v[index + 10] - '0') * 10) + (v[index + 11] - '0');
+        int minute = ((v[index + 13] - '0') * 10) + (v[index + 14] - '0');
+        int second = ((v[index + 16] - '0') * 10) + (v[index + 17] - '0');
+        DateTime dt = DateTime.UtcNow;
+        int thisyear = dt.Year;
+        int this2digityear = thisyear % 100;
+        int convertedYear = year + (thisyear - this2digityear);
+        if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
@@ -878,8 +878,8 @@ if (year - this2digityear > 50) {
 
     private static int ParseMonth(string v, int index, int endIndex) {
       if (endIndex - index <= 2) {
- return -1;
-}
+        return -1;
+      }
       for (var i = 0; i < 12; ++i) {
         string monthName = monthNames[i];
         if (v[index] == monthName[0] &&
@@ -892,8 +892,8 @@ if (year - this2digityear > 50) {
 
     private static int ParseDOW(string v, int index, int endIndex) {
       if (endIndex - index <= 2) {
- return -1;
-}
+        return -1;
+      }
       for (var i = 0; i < 7; ++i) {
         string dowName = dowNames[i];
         if (v[index] == dowName[0] &&
@@ -906,8 +906,8 @@ if (year - this2digityear > 50) {
 
     private static int ParseDOWLong(string v, int index, int endIndex) {
       if (endIndex - index <= 2) {
- return -1;
-}
+        return -1;
+      }
       for (var i = 0; i < 7; ++i) {
         string dowName = dowNamesLong[i];
         if (endIndex - index >= dowName.Length &&

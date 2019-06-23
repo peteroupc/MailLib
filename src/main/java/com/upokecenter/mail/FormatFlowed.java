@@ -368,7 +368,9 @@ private FormatFlowed() {
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? true : false; } private static String ReplaceTwoOrMoreSpacesWithBR(String str) {
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? true : false;
+    }
+    private static String ReplaceTwoOrMoreSpacesWithBR(String str) {
       if (((str) == null || (str).length() == 0)) {
         return "";
       }
@@ -395,8 +397,9 @@ private FormatFlowed() {
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
 
-          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? str.substring(4) : str; }
-          private static String HtmlEscapeStrong(String str) {
+          str.charAt(2) == ' ' && str.charAt(3) == ' ') ? str.substring(4) : str;
+    }
+    private static String HtmlEscapeStrong(String str) {
       int i = 0;
       StringBuilder sb = new StringBuilder();
       for (; i < str.length(); ++i) {
@@ -515,8 +518,10 @@ private FormatFlowed() {
               endDelim = '\'';
             }
             if (startDelim == '\u0028') {
-  { endDelim = '\u0029';
-} }
+              {
+                endDelim = '\u0029';
+              }
+            }
             while (qi < urlText.length() && (urlText.charAt(qi) != endDelim)) {
               ++qi;
             }
@@ -538,8 +543,8 @@ private FormatFlowed() {
 
     private static int GetLinkRefStart(String str, int index) {
       if (index < str.length() && str.charAt(index) == '\u0028') {
- return index;
-}
+        return index;
+      }
       while (index < str.length() && (str.charAt(index) == ' ' || str.charAt(index) == '\t')) {
         ++index;
       }
@@ -560,8 +565,8 @@ private FormatFlowed() {
           int index = i + 2;
           while (index < str.length()) {
             if (str.charAt(index) == ']') {
-                found = true;
-                break;
+              found = true;
+              break;
             }
             ++index;
           }
@@ -807,7 +812,8 @@ private FormatFlowed() {
           while (qi < str.length()) {
             if (str.charAt(qi) == '`') {
               ++backTicks;
-            } else break;
+            } else { break;
+}
             ++qi;
           }
           while (qi < str.length()) {
@@ -821,7 +827,8 @@ private FormatFlowed() {
                     qi = qi2;
                     break;
                   }
-                } else break;
+                } else { break;
+}
                 ++qi2;
               }
               if (endBackTicks >= backTicks) {

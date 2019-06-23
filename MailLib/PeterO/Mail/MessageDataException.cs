@@ -8,10 +8,9 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MessageDataException"]/*'/>
-  public class MessageDataException : Exception
-  {
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.MessageDataException"]/*'/>
+  public class MessageDataException : Exception {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.MessageDataException.#ctor"]/*'/>
     public MessageDataException() {

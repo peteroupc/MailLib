@@ -4,9 +4,9 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Contains methods for parsing and matching language tags.
-     */
+  /**
+   * Contains methods for parsing and matching language tags.
+   */
   public final class LanguageTags {
 private LanguageTags() {
 }
@@ -71,11 +71,11 @@ private LanguageTags() {
      */
     public static boolean IsLanguageRange(String str, boolean extended) {
       if (((str) == null || (str).length() == 0)) {
- return false;
-}
+        return false;
+      }
       if (str.length() == 1 && str.charAt(0) == '*') {
- return true;
-}
+        return true;
+      }
       int count = 0;
       int i = 0;
       boolean first = true;
@@ -94,15 +94,15 @@ private LanguageTags() {
           continue;
         }
         if (first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
- return false;
-}
+          return false;
+        }
         if (!first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
           (c >= '0' && c <= '9'))) {
- return false;
-}
+          return false;
+        }
         if (count >= 8) {
- return false;
-}
+          return false;
+        }
         ++count;
         ++i;
       }
@@ -112,15 +112,15 @@ private LanguageTags() {
     private static int SkipFWS(String str, int index, int endIndex) {
       // NOTE: Includes obsolete syntax under RFC 5322 (with errata)
       while (index < endIndex) {
-    if (endIndex - index > 1 && str.charAt(index) == 0x0d && str.charAt(index + 1) ==
-          0x0a) {
- index += 2;
-}
-if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
- ++index;
-} else {
- break;
-}
+        if (endIndex - index > 1 && str.charAt(index) == 0x0d && str.charAt(index + 1) ==
+              0x0a) {
+          index += 2;
+        }
+        if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
+          ++index;
+        } else {
+          break;
+        }
       }
       return index;
     }
@@ -133,8 +133,8 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
         index = ParseCommentLax(str, index, endIndex);
         index = SkipFWS(str, index, endIndex);
         if (oldindex == index) {
- break;
-}
+          break;
+        }
       }
       return index;
     }
@@ -155,8 +155,8 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
         index = SkipFWS(str, index, endIndex);
         boolean backslash = index < endIndex && str.charAt(index) == '\\';
         if (backslash) {
- ++index;
-}
+          ++index;
+        }
         if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
           56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
           index += 2;
@@ -201,11 +201,11 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
      */
     public static String LanguageTagCase(String str) {
       if (((str) == null || (str).length() == 0)) {
- return str;
-}
+        return str;
+      }
       if (str.indexOf('-') == -1) {
- return DataUtilities.ToLowerCaseAscii(str);
-}
+        return DataUtilities.ToLowerCaseAscii(str);
+      }
       int count = 0;
       int i = 0;
       int lastSubtagLength = -1;
@@ -218,18 +218,18 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
           } else if (count == 2 && lastSubtagLength >= 2) {
             sb.append(DataUtilities.ToUpperCaseAscii(str.substring(i - 2, (i - 2)+(2))));
           } else {
-    sb.append(
-  DataUtilities.ToLowerCaseAscii(
-  str.substring(
-  i - count, (
-  i - count)+(count))));
+            sb.append(
+          DataUtilities.ToLowerCaseAscii(
+          str.substring(
+          i - count, (
+          i - count)+(count))));
           }
           lastSubtagLength = count;
           count = 0;
           ++i;
           if (i < str.length()) {
- sb.append('-');
-}
+            sb.append('-');
+          }
           continue;
         }
         ++count;
@@ -245,8 +245,8 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
           (str.charAt(index) == 45)) {
           ++index;
         } else {
- break;
-}
+          break;
+        }
       }
       return index;
     }
@@ -268,25 +268,26 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
       int index = 0;
       ArrayList<String> ret = new ArrayList<String>();
       if (((str) == null || (str).length() == 0)) {
- return ret;
-}
+        return ret;
+      }
       while (index < str.length()) {
         if (!first) {
-          if (index < str.length() && str.charAt(index) == ',') { index++;
-} else {
- return null;
-}
+          if (index < str.length() && str.charAt(index) == ',') {
+            ++index;
+          } else {
+            return null;
+          }
         }
         first = false;
         index = SkipCFWS(str, index, str.length());
         int newindex = SkipLDHSequence(str, index, str.length());
         if (newindex == index) {
- return null;
-}
+          return null;
+        }
         tag = str.substring(index, (index)+(newindex - index));
         if (!IsPotentiallyValidLanguageTag(tag)) {
- return null;
-}
+          return null;
+        }
         ret.add(tag);
         index = SkipCFWS(str, newindex, str.length());
       }
@@ -306,10 +307,10 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
         for (k = i - 1; k >= 0; --k) {
           boolean cmp = list.get(k).getQuality() < saq.getQuality();
           if (cmp) {
- list.set(k + 1, list.get(k));
-} else {
- break;
-}
+            list.set(k + 1, list.get(k));
+          } else {
+            break;
+          }
         }
         list.set(k, saq);
       }
@@ -335,14 +336,15 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
       int index = 0;
       ArrayList<StringAndQuality> ret = new ArrayList<StringAndQuality>();
       if (str == null) {
- return null;
-}
+        return null;
+      }
       while (index < str.length()) {
         if (!first) {
-          if (index < str.length() && str.charAt(index) == ',') { index++;
-} else {
- return null;
-}
+          if (index < str.length() && str.charAt(index) == ',') {
+            ++index;
+          } else {
+            return null;
+          }
         }
         first = false;
         index = SkipCFWS(str, index, str.length());
@@ -350,26 +352,26 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
         newindex = (index < str.length() && str.charAt(index) == '*') ? (index + 1) :
           SkipLDHSequence(str, index, str.length());
         if (newindex == index) {
- return null;
-}
+          return null;
+        }
         tag = str.substring(index, (index)+(newindex - index));
         if (!IsLanguageRange(tag)) {
- return null;
-}
+          return null;
+        }
         index = SkipCFWS(str, newindex, str.length());
         if (index < str.length() && str.charAt(index) == ';') {
           index = SkipCFWS(str, newindex, str.length());
           if (index < str.length() && str.charAt(index) == 'q') {
- ++index;
-} else {
- return null;
-}
+            ++index;
+          } else {
+            return null;
+          }
           index = SkipCFWS(str, newindex, str.length());
           if (index < str.length() && str.charAt(index) == '=') {
- ++index;
-} else {
- return null;
-}
+            ++index;
+          } else {
+            return null;
+          }
           if (index < str.length() && (str.charAt(index) == '0' || str.charAt(index) == '1')) {
             int qvalue = (str.charAt(index) == '0') ? 0 : 1000;
             ++index;
@@ -377,23 +379,23 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
               ++index;
               int[] mults = { 100, 10, 1 };
               for (int i = 0; i < 3; ++i) {
-          if (index < str.length() && (str.charAt(index) >= '0' || str.charAt(index) <= '9'
+                if (index < str.length() && (str.charAt(index) >= '0' || str.charAt(index) <= '9'
 )) {
                   qvalue += mults[i] * (str.charAt(index) - '0');
                   ++index;
                 } else {
- break;
-}
+                  break;
+                }
               }
             }
             if (qvalue < 0 || qvalue > 1000) {
- return null;
-}
+              return null;
+            }
             ret.add(new StringAndQuality(tag, qvalue));
             index = SkipCFWS(str, newindex, str.length());
           } else {
- return null;
-}
+            return null;
+          }
         } else {
           ret.add(new StringAndQuality(tag, 1000));
         }
@@ -406,8 +408,8 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
   String rangeLowerCased,
   String tagLowerCased) {
       if (rangeLowerCased.equals("*")) {
- return true;
-}
+        return true;
+      }
       if (rangeLowerCased.equals(tagLowerCased)) {
         return true;
       }
@@ -435,8 +437,8 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
       int rangeIndex = 1;
       int tagIndex = 1;
       while (rangeIndex < rangeSub.length) {
-     String range = rangeSub[rangeIndex];
-     if (range.length() == 0) {
+        String range = rangeSub[rangeIndex];
+        if (range.length() == 0) {
           return false;
         }
         if (range.equals("*")) {
@@ -485,29 +487,29 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
            boolean extended,
            boolean matchStarAtEnd) {
       if (ranges == null) {
-  throw new NullPointerException("ranges");
-}
+        throw new NullPointerException("ranges");
+      }
       if (languages == null) {
-  throw new NullPointerException("languages");
-}
+        throw new NullPointerException("languages");
+      }
       ArrayList<String> retlist = new ArrayList<String>();
       if (ranges.size() == 0) {
- return retlist;
-}
+        return retlist;
+      }
       if (languages.size() == 0) {
- return retlist;
-}
+        return retlist;
+      }
       boolean hasStar = false;
       boolean[] langsMatch = new boolean[languages.size()];
       for (String range : ranges) {
         if (!IsLanguageRange(range, extended)) {
- throw new IllegalArgumentException("ranges");
-}
+          throw new IllegalArgumentException("ranges");
+        }
       }
       for (String lang : languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
- throw new IllegalArgumentException("languages");
-}
+          throw new IllegalArgumentException("languages");
+        }
       }
       for (String range : ranges) {
         if (matchStarAtEnd && range.equals("*")) {
@@ -517,8 +519,8 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
         String lcrange = DataUtilities.ToLowerCaseAscii(range);
         for (int k = 0; k < languages.size(); ++k) {
           if (langsMatch[k]) {
- continue;
-}
+            continue;
+          }
           String lclang = DataUtilities.ToLowerCaseAscii(languages.get(k));
           if (extended) {
             if (MatchLangTagExtended(lcrange, lclang)) {
@@ -536,20 +538,20 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
       if (matchStarAtEnd && hasStar) {
         for (int k = 0; k < languages.size(); ++k) {
           if (!langsMatch[k]) {
- retlist.add(languages.get(k));
-}
+            retlist.add(languages.get(k));
+          }
         }
       }
       return retlist;
     }
 
     private static String TruncateLangRange(String range) {
-     int i = 0;
-     for (i = range.length() - 1; i >= 0; --i) {
- if (range.charAt(i) == '-' && i >= 2 && range.charAt(i - 1) != '-' && range.charAt(i - 2) != '-'
+      int i = 0;
+      for (i = range.length() - 1; i >= 0; --i) {
+        if (range.charAt(i) == '-' && i >= 2 && range.charAt(i - 1) != '-' && range.charAt(i - 2) != '-'
 ) {
- return range.substring(0, i);
-}
+          return range.substring(0, i);
+        }
       }
       return "";
     }
@@ -697,40 +699,40 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
          String defaultValue,
          boolean extended) {
       if (ranges == null) {
-  throw new NullPointerException("ranges");
-}
+        throw new NullPointerException("ranges");
+      }
       if (languages == null) {
-  throw new NullPointerException("languages");
-}
+        throw new NullPointerException("languages");
+      }
       if (ranges.size() == 0) {
- return defaultValue;
-}
+        return defaultValue;
+      }
       if (languages.size() == 0) {
- return defaultValue;
-}
+        return defaultValue;
+      }
       for (String range : ranges) {
         if (!IsLanguageRange(range, extended)) {
- throw new IllegalArgumentException("ranges");
-}
+          throw new IllegalArgumentException("ranges");
+        }
       }
       for (String lang : languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
- throw new IllegalArgumentException("languages");
-}
+          throw new IllegalArgumentException("languages");
+        }
       }
       for (String range : ranges) {
         if (range.equals("*")) {
- continue;
-}
+          continue;
+        }
         String lcrange = DataUtilities.ToLowerCaseAscii(range);
         while (lcrange.length() > 0) {
           for (String lang : languages) {
             String lclang = DataUtilities.ToLowerCaseAscii(lang);
             if (extended) if (MatchLangTagExtended(lcrange, lclang)) {
- return lang;
-  } else if (MatchLangTagBasic(lcrange, lclang)) {
- return lang;
-}
+                return lang;
+              } else if (MatchLangTagBasic(lcrange, lclang)) {
+                return lang;
+              }
           }
           lcrange = TruncateLangRange(lcrange);
         }
@@ -777,11 +779,11 @@ if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
             if (index == endIndex) {
               return true;
             }
-            c1 = str.charAt(index);  // get the next character
+            c1 = str.charAt(index); // get the next character
           }
-          if (c1 == '-') {  // case AA- or AAA-
+          if (c1 == '-') { // case AA- or AAA-
             ++index;
-            if (index + 2 == endIndex) {  // case AA-?? or AAA-??
+            if (index + 2 == endIndex) { // case AA-?? or AAA-??
               c1 = str.charAt(index);
               c2 = str.charAt(index);
               if ((c1 >= 'a' && c1 <= 'z') && (c2 >= 'a' && c2 <= 'z')) {

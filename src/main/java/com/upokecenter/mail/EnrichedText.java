@@ -43,7 +43,7 @@ private EnrichedText() {
 "black",
 "white",
 "cyan",
-"magenta"
+"magenta",
       };
       for (String name : colorNames) {
         if (IsTokenAsciiIgnoreCase(str, index, endIndex, name)) {

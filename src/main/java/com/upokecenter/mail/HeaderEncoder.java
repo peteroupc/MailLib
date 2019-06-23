@@ -21,7 +21,7 @@ import com.upokecenter.util.*;
 
     public HeaderEncoder() {
  this(Message.MaxRecHeaderLineLength, 0);
-}
+    }
 
     public HeaderEncoder(int maxLineLength, int startColumn) {
       // Minimum supported max line length is 15 to accommodate
@@ -109,7 +109,7 @@ import com.upokecenter.util.*;
   startIndex)+(endIndex - startIndex)));
         this.column = 1 + (endIndex - startIndex);
       }
-      return false;  // No need to write space anymore
+      return false; // No need to write space anymore
     }
 
     public HeaderEncoder AppendString(String symbol) {
@@ -170,15 +170,15 @@ import com.upokecenter.util.*;
             // May begin quoted-String or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
-         int si = symbol.charAt(i) == '"' ? HeaderParserUtility.ParseQuotedStringCore(
-  symbol,
-  i,
-  endIndex) : HeaderParser.ParseDomainLiteralCore(
-  symbol,
-  i,
-  endIndex,
-  null);
-  if (si != i) {
+            int si = symbol.charAt(i) == '"' ? HeaderParserUtility.ParseQuotedStringCore(
+     symbol,
+     i,
+     endIndex) : HeaderParser.ParseDomainLiteralCore(
+     symbol,
+     i,
+     endIndex,
+     null);
+            if (si != i) {
               writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
@@ -213,8 +213,8 @@ import com.upokecenter.util.*;
             } else {
               ++i;
             }
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t' &&
-            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+          } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t' &&
+                  symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -270,8 +270,8 @@ import com.upokecenter.util.*;
               }
             }
             return false;
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t' &&
-            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+          } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t' &&
+                  symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             // Single space followed by character other than CR/LF/Tab
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             // AppendSpace();
@@ -279,8 +279,9 @@ import com.upokecenter.util.*;
             symbolBegin = i + 1;
             ++i;
           } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
-      /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex - i)));
-         */ this.AppendSpaceAndSymbol(
+            /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex - i)));
+               */
+            this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
   i,
@@ -312,8 +313,8 @@ import com.upokecenter.util.*;
       // NOTE: Assumes 'symbol' is a syntactically valid 'comment'
       // and begins and ends with parentheses
       if (symbol.length() == 0 || symbol.charAt(0) != '(') {
- throw new IllegalArgumentException();
-}
+        throw new IllegalArgumentException();
+      }
       int i = 0;
       int symbolBegin = 0;
       while (i < symbol.length()) {
@@ -332,11 +333,11 @@ import com.upokecenter.util.*;
   symbolBegin,
   i,
   writeSpace);
-  writeSpace = this.AppendSpaceAndSymbol(
-  symbol,
-  i,
-  i + 1,
-  writeSpace);
+          writeSpace = this.AppendSpaceAndSymbol(
+          symbol,
+          i,
+          i + 1,
+          writeSpace);
           symbolBegin = i + 1;
           ++i;
         } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
@@ -393,10 +394,10 @@ import com.upokecenter.util.*;
         String ret = str;
         for (int i = str.length() - 1; i >= 0; --i) {
           switch ((int)str.charAt(i)) {
-            case 0x20:  // space
-            case 0x09:  // tab
+            case 0x20: // space
+            case 0x09: // tab
               break;
-            case 0x0a:  // LF
+            case 0x0a: // LF
               if (i > 0 && str.charAt(i - 1) == '\r') {
                 --i;
                 ret = str.substring(0, i);
@@ -645,38 +646,38 @@ import com.upokecenter.util.*;
 
     private static boolean IsSimplePhrase(String str) {
       if (str.length() == 0) {
- return false;
-}
+        return false;
+      }
       int count = 0;
       if (str.charAt(0) == ' ' || str.charAt(str.length() - 1) == ' ') {
- return false;
-}
+        return false;
+      }
       for (int i = 0; i < str.length(); ++i) {
-   if (str.charAt(i) < 0x80 && str.charAt(i) > 0x20 && ValueAsciiAtext[(int)str.charAt(i) - 0x20] ==
-          1) {
+        if (str.charAt(i) < 0x80 && str.charAt(i) > 0x20 && ValueAsciiAtext[(int)str.charAt(i) - 0x20] ==
+               1) {
           // not simple if a word begins with "=?", an RFC
           // 2047 encoded word start
-  if (count == 0 && str.charAt(i) == '=' && i + 1 < str.length() && str.charAt(i + 1) == '?'
+          if (count == 0 && str.charAt(i) == '=' && i + 1 < str.length() && str.charAt(i + 1) == '?'
 ) {
             return false;
           }
           ++count;
           if (count > Message.MaxRecHeaderLineLength - 1) {
- return false;
-}
+            return false;
+          }
         } else if (str.charAt(i) == ' ' && i + 1 < str.length() && str.charAt(i + 1) != ' ') {
           count = 0;
         } else {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }
 
     private static boolean IsQuotablePhrase(String str) {
       if (str.length() == 0) {
- return true;
-}
+        return true;
+      }
       int count = 1;
       for (int i = 0; i < str.length(); ++i) {
         /*
@@ -701,11 +702,11 @@ import com.upokecenter.util.*;
         }
         // For ending DQUOTE
         if (i == str.length() - 1) {
- ++count;
-}
+          ++count;
+        }
         if (count > Message.MaxRecHeaderLineLength - 1) {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }

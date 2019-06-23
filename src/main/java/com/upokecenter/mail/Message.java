@@ -1678,8 +1678,8 @@ prefaceBody; for (int i = 0; i < messages.size(); ++i) {
         String msgstring = messages.get(i).Generate();
         if (msgstring.indexOf("\r\n--") >= 0 || (
           msgstring.length() >= 2 &&
-             msgstring.charAt(0)=='-' &&
-             msgstring.charAt(1)=='-')) {
+             msgstring.charAt(0) =='-' &&
+             msgstring.charAt(1) =='-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");

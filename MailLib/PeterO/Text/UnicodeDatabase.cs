@@ -26,13 +26,13 @@ namespace PeterO.Text {
 
     public static int GetCombiningClass(int cp) {
       if (cp < 0x300 || cp >= 0xe0000) {
- return 0;
-}
-if (classes == null) {
-lock (ValueSyncRoot) {
-classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
-}
-}
+        return 0;
+      }
+      if (classes == null) {
+        lock (ValueSyncRoot) {
+          classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
+        }
+      }
       return ((int)classes.GetByte(cp)) & 0xff;
     }
 
@@ -99,15 +99,15 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
           }
           if ((data & (1 << 24)) > 0) {
             // Pair of two BMP code points
-           buffer[offset++] = data1 & 0xffff;
-           buffer[offset++] = (data1 >> 16) & 0xffff;
-           return offset;
+            buffer[offset++] = data1 & 0xffff;
+            buffer[offset++] = (data1 >> 16) & 0xffff;
+            return offset;
           }
           // Complex case
           int size = data1 >> 24;
           if (size <= 0) {
- throw new InvalidOperationException();
-}
+            throw new InvalidOperationException();
+          }
           realIndex = data1 & 0x1fffff;
           Array.Copy(
                 NormalizationData.ComplexDecompMappings,
@@ -144,102 +144,102 @@ classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
         }
       }
       if (cp >= 0x10000) {
-      decomps = NormalizationData.LowerCaseMappings32;
-      var left = 0;
-      int right = (decomps.Length >> 1) - 1;
-      while (left <= right) {
-        int index = (left + right) >> 1;
-        int realIndex = index << 1;
-        int dri = decomps[realIndex];
-        int dricp = dri;
-        if (dricp == cp) {
-          buffer[offset++] = decomps[realIndex + 1];
-          return offset;
+        decomps = NormalizationData.LowerCaseMappings32;
+        var left = 0;
+        int right = (decomps.Length >> 1) - 1;
+        while (left <= right) {
+          int index = (left + right) >> 1;
+          int realIndex = index << 1;
+          int dri = decomps[realIndex];
+          int dricp = dri;
+          if (dricp == cp) {
+            buffer[offset++] = decomps[realIndex + 1];
+            return offset;
+          }
+          if (dricp < cp) {
+            left = index + 1;
+          } else {
+            right = index - 1;
+          }
         }
-        if (dricp < cp) {
-          left = index + 1;
-        } else {
-          right = index - 1;
-        }
-      }
-      buffer[offset++] = cp;
-      return offset;
+        buffer[offset++] = cp;
+        return offset;
       } else {
-      decomps = NormalizationData.LowerCaseMappings;
-      var left = 0;
-      int right = decomps.Length - 1;
-      while (left <= right) {
-        int index = (left + right) >> 1;
-        int realIndex = index;
-        int dri = decomps[realIndex];
-        int dricp = (dri >> 16) & 0xffff;
-        if (dricp == cp) {
-          buffer[offset++] = dri & 0xffff;
-          return offset;
+        decomps = NormalizationData.LowerCaseMappings;
+        var left = 0;
+        int right = decomps.Length - 1;
+        while (left <= right) {
+          int index = (left + right) >> 1;
+          int realIndex = index;
+          int dri = decomps[realIndex];
+          int dricp = (dri >> 16) & 0xffff;
+          if (dricp == cp) {
+            buffer[offset++] = dri & 0xffff;
+            return offset;
+          }
+          if (dricp < cp) {
+            left = index + 1;
+          } else {
+            right = index - 1;
+          }
         }
-        if (dricp < cp) {
-          left = index + 1;
-        } else {
-          right = index - 1;
-        }
-      }
-      buffer[offset++] = cp;
-      return offset;
+        buffer[offset++] = cp;
+        return offset;
       }
     }
 
     public static int GetIdnaCategory(int cp) {
-       if (cp < 0) {
- return 0;
-}
-if (idnaCat == null) {
-lock (ValueSyncRoot) {
-idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
-}
-}
-return ((int)idnaCat.GetByte(cp)) & 0xff;
+      if (cp < 0) {
+        return 0;
+      }
+      if (idnaCat == null) {
+        lock (ValueSyncRoot) {
+          idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
+        }
+      }
+      return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
     public static int GetCasedProperty(int cp) {
-       if (cp < 0) {
- return 0;
-}
-if (casedprop == null) {
-lock (ValueSyncRoot) {
-  casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
-}
-}
-return ((int)casedprop.GetByte(cp)) & 0xff;
+      if (cp < 0) {
+        return 0;
+      }
+      if (casedprop == null) {
+        lock (ValueSyncRoot) {
+          casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
+        }
+      }
+      return ((int)casedprop.GetByte(cp)) & 0xff;
     }
 
     public static int GetPrecisCategory(int cp) {
-       if (cp < 0) {
- return 0;
-}
-if (precisCat == null) {
-lock (ValueSyncRoot) {
-precisCat = precisCat ?? ByteData.Decompress(IdnaData.PrecisCategories);
-}
-}
-return ((int)precisCat.GetByte(cp)) & 0xff;
+      if (cp < 0) {
+        return 0;
+      }
+      if (precisCat == null) {
+        lock (ValueSyncRoot) {
+          precisCat = precisCat ?? ByteData.Decompress(IdnaData.PrecisCategories);
+        }
+      }
+      return ((int)precisCat.GetByte(cp)) & 0xff;
     }
 
     public static bool IsCombiningMark(int cp) {
-        if (combmark == null) {
-lock (ValueSyncRoot) {
-combmark = combmark ?? ByteData.Decompress(IdnaData.CombiningMarks);
-}
-}
-        return combmark.GetBoolean(cp);
+      if (combmark == null) {
+        lock (ValueSyncRoot) {
+          combmark = combmark ?? ByteData.Decompress(IdnaData.CombiningMarks);
+        }
+      }
+      return combmark.GetBoolean(cp);
     }
 
     public static bool IsFullOrHalfWidth(int cp) {
-        if (fhwidth == null) {
-lock (ValueSyncRoot) {
-fhwidth = fhwidth ?? ByteData.Decompress(IdnaData.FullHalfWidth);
-}
-}
-        return fhwidth.GetBoolean(cp);
+      if (fhwidth == null) {
+        lock (ValueSyncRoot) {
+          fhwidth = fhwidth ?? ByteData.Decompress(IdnaData.FullHalfWidth);
+        }
+      }
+      return fhwidth.GetBoolean(cp);
     }
 
     public static bool IsQuickCheckStarter(int cp, Normalization form) {
@@ -267,37 +267,37 @@ fhwidth = fhwidth ?? ByteData.Decompress(IdnaData.FullHalfWidth);
         return true;
       }
       if (form == Normalization.NFC) {
-          if (qcsnfc == null) {
-lock (ValueSyncRoot) {
-qcsnfc = qcsnfc ?? ByteData.Decompress(NormalizationData.QCSNFC);
-}
-}
-bd = qcsnfc;
+        if (qcsnfc == null) {
+          lock (ValueSyncRoot) {
+            qcsnfc = qcsnfc ?? ByteData.Decompress(NormalizationData.QCSNFC);
+          }
         }
-        if (form == Normalization.NFD) {
-          if (qcsnfd == null) {
-lock (ValueSyncRoot) {
-qcsnfd = qcsnfd ?? ByteData.Decompress(NormalizationData.QCSNFD);
-}
-}
-bd = qcsnfd;
+        bd = qcsnfc;
+      }
+      if (form == Normalization.NFD) {
+        if (qcsnfd == null) {
+          lock (ValueSyncRoot) {
+            qcsnfd = qcsnfd ?? ByteData.Decompress(NormalizationData.QCSNFD);
+          }
         }
-        if (form == Normalization.NFKC) {
-      if (qcsnfkc == null) {
-lock (ValueSyncRoot) {
-qcsnfkc = qcsnfkc ?? ByteData.Decompress(NormalizationData.QCSNFKC);
-}
-}
-bd = qcsnfkc;
+        bd = qcsnfd;
+      }
+      if (form == Normalization.NFKC) {
+        if (qcsnfkc == null) {
+          lock (ValueSyncRoot) {
+            qcsnfkc = qcsnfkc ?? ByteData.Decompress(NormalizationData.QCSNFKC);
+          }
         }
-        if (form == Normalization.NFKD) {
-      if (qcsnfkd == null) {
-lock (ValueSyncRoot) {
-qcsnfkd = qcsnfkd ?? ByteData.Decompress(NormalizationData.QCSNFKD);
-}
-}
-bd = qcsnfkd;
+        bd = qcsnfkc;
+      }
+      if (form == Normalization.NFKD) {
+        if (qcsnfkd == null) {
+          lock (ValueSyncRoot) {
+            qcsnfkd = qcsnfkd ?? ByteData.Decompress(NormalizationData.QCSNFKD);
+          }
         }
+        bd = qcsnfkd;
+      }
       return bd != null && bd.GetBoolean(cp);
     }
   }

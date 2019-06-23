@@ -4,8 +4,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
   public static class LanguageTags {
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
@@ -53,11 +53,11 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)"]/*'/>
     public static bool IsLanguageRange(string str, bool extended) {
       if (String.IsNullOrEmpty(str)) {
- return false;
-}
+        return false;
+      }
       if (str.Length == 1 && str[0] == '*') {
- return true;
-}
+        return true;
+      }
       var count = 0;
       var i = 0;
       var first = true;
@@ -76,15 +76,15 @@ namespace PeterO.Mail {
           continue;
         }
         if (first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
- return false;
-}
+          return false;
+        }
         if (!first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
           (c >= '0' && c <= '9'))) {
- return false;
-}
+          return false;
+        }
         if (count >= 8) {
- return false;
-}
+          return false;
+        }
         ++count;
         ++i;
       }
@@ -94,15 +94,15 @@ namespace PeterO.Mail {
     private static int SkipFWS(string str, int index, int endIndex) {
       // NOTE: Includes obsolete syntax under RFC 5322 (with errata)
       while (index < endIndex) {
-    if (endIndex - index > 1 && str[index] == 0x0d && str[index + 1] ==
-          0x0a) {
- index += 2;
-}
-if (str[index] == 0x09 || str[index] == 0x20) {
- ++index;
-} else {
- break;
-}
+        if (endIndex - index > 1 && str[index] == 0x0d && str[index + 1] ==
+              0x0a) {
+          index += 2;
+        }
+        if (str[index] == 0x09 || str[index] == 0x20) {
+          ++index;
+        } else {
+          break;
+        }
       }
       return index;
     }
@@ -115,8 +115,8 @@ if (str[index] == 0x09 || str[index] == 0x20) {
         index = ParseCommentLax(str, index, endIndex);
         index = SkipFWS(str, index, endIndex);
         if (oldindex == index) {
- break;
-}
+          break;
+        }
       }
       return index;
     }
@@ -137,8 +137,8 @@ if (str[index] == 0x09 || str[index] == 0x20) {
         index = SkipFWS(str, index, endIndex);
         bool backslash = index < endIndex && str[index] == '\\';
         if (backslash) {
- ++index;
-}
+          ++index;
+        }
         if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
           56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           index += 2;
@@ -177,11 +177,11 @@ if (str[index] == 0x09 || str[index] == 0x20) {
     /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)"]/*'/>
     public static string LanguageTagCase(string str) {
       if (String.IsNullOrEmpty(str)) {
- return str;
-}
+        return str;
+      }
       if (str.IndexOf('-') == -1) {
- return DataUtilities.ToLowerCaseAscii(str);
-}
+        return DataUtilities.ToLowerCaseAscii(str);
+      }
       var count = 0;
       var i = 0;
       var lastSubtagLength = -1;
@@ -194,18 +194,18 @@ if (str[index] == 0x09 || str[index] == 0x20) {
           } else if (count == 2 && lastSubtagLength >= 2) {
             sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 2, 2)));
           } else {
-    sb.Append(
-  DataUtilities.ToLowerCaseAscii(
-  str.Substring(
-  i - count,
-  count)));
+            sb.Append(
+          DataUtilities.ToLowerCaseAscii(
+          str.Substring(
+          i - count,
+          count)));
           }
           lastSubtagLength = count;
           count = 0;
           ++i;
           if (i < str.Length) {
- sb.Append('-');
-}
+            sb.Append('-');
+          }
           continue;
         }
         ++count;
@@ -221,8 +221,8 @@ if (str[index] == 0x09 || str[index] == 0x20) {
           (str[index] == 45)) {
           ++index;
         } else {
- break;
-}
+          break;
+        }
       }
       return index;
     }
@@ -236,25 +236,26 @@ if (str[index] == 0x09 || str[index] == 0x20) {
       var index = 0;
       var ret = new List<string>();
       if (String.IsNullOrEmpty(str)) {
- return ret;
-}
+        return ret;
+      }
       while (index < str.Length) {
         if (!first) {
-          if (index < str.Length && str[index] == ',') { index++;
-} else {
- return null;
-}
+          if (index < str.Length && str[index] == ',') {
+            index++;
+          } else {
+            return null;
+          }
         }
         first = false;
         index = SkipCFWS(str, index, str.Length);
         int newindex = SkipLDHSequence(str, index, str.Length);
         if (newindex == index) {
- return null;
-}
+          return null;
+        }
         tag = str.Substring(index, newindex - index);
         if (!IsPotentiallyValidLanguageTag(tag)) {
- return null;
-}
+          return null;
+        }
         ret.Add(tag);
         index = SkipCFWS(str, newindex, str.Length);
       }
@@ -274,10 +275,10 @@ if (str[index] == 0x09 || str[index] == 0x20) {
         for (k = i - 1; k >= 0; --k) {
           bool cmp = list[k].Quality < saq.Quality;
           if (cmp) {
- list[k + 1] = list[k];
-} else {
- break;
-}
+            list[k + 1] = list[k];
+          } else {
+            break;
+          }
         }
         list[k] = saq;
       }
@@ -292,14 +293,15 @@ if (str[index] == 0x09 || str[index] == 0x20) {
       var index = 0;
       var ret = new List<StringAndQuality>();
       if (str == null) {
- return null;
-}
+        return null;
+      }
       while (index < str.Length) {
         if (!first) {
-          if (index < str.Length && str[index] == ',') { index++;
-} else {
- return null;
-}
+          if (index < str.Length && str[index] == ',') {
+            index++;
+          } else {
+            return null;
+          }
         }
         first = false;
         index = SkipCFWS(str, index, str.Length);
@@ -307,26 +309,26 @@ if (str[index] == 0x09 || str[index] == 0x20) {
         newindex = (index < str.Length && str[index] == '*') ? (index + 1) :
           SkipLDHSequence(str, index, str.Length);
         if (newindex == index) {
- return null;
-}
+          return null;
+        }
         tag = str.Substring(index, newindex - index);
         if (!IsLanguageRange(tag)) {
- return null;
-}
+          return null;
+        }
         index = SkipCFWS(str, newindex, str.Length);
         if (index < str.Length && str[index] == ';') {
           index = SkipCFWS(str, newindex, str.Length);
           if (index < str.Length && str[index] == 'q') {
- ++index;
-} else {
- return null;
-}
+            ++index;
+          } else {
+            return null;
+          }
           index = SkipCFWS(str, newindex, str.Length);
           if (index < str.Length && str[index] == '=') {
- ++index;
-} else {
- return null;
-}
+            ++index;
+          } else {
+            return null;
+          }
           if (index < str.Length && (str[index] == '0' || str[index] == '1')) {
             int qvalue = (str[index] == '0') ? 0 : 1000;
             ++index;
@@ -334,23 +336,23 @@ if (str[index] == 0x09 || str[index] == 0x20) {
               ++index;
               int[] mults = { 100, 10, 1 };
               for (var i = 0; i < 3; ++i) {
-          if (index < str.Length && (str[index] >= '0' || str[index] <= '9'
-)) {
+                if (index < str.Length && (str[index] >= '0' || str[index] <= '9'
+      )) {
                   qvalue += mults[i] * (str[index] - '0');
                   ++index;
                 } else {
- break;
-}
+                  break;
+                }
               }
             }
             if (qvalue < 0 || qvalue > 1000) {
- return null;
-}
+              return null;
+            }
             ret.Add(new StringAndQuality(tag, qvalue));
             index = SkipCFWS(str, newindex, str.Length);
           } else {
- return null;
-}
+            return null;
+          }
         } else {
           ret.Add(new StringAndQuality(tag, 1000));
         }
@@ -363,8 +365,8 @@ if (str[index] == 0x09 || str[index] == 0x20) {
   string rangeLowerCased,
   string tagLowerCased) {
       if (rangeLowerCased.Equals("*")) {
- return true;
-}
+        return true;
+      }
       if (rangeLowerCased.Equals(tagLowerCased)) {
         return true;
       }
@@ -392,8 +394,8 @@ if (str[index] == 0x09 || str[index] == 0x20) {
       var rangeIndex = 1;
       var tagIndex = 1;
       while (rangeIndex < rangeSub.Length) {
-     string range = rangeSub[rangeIndex];
-     if (range.Length == 0) {
+        string range = rangeSub[rangeIndex];
+        if (range.Length == 0) {
           return false;
         }
         if (range.Equals("*")) {
@@ -423,29 +425,29 @@ if (str[index] == 0x09 || str[index] == 0x20) {
            bool extended,
            bool matchStarAtEnd) {
       if (ranges == null) {
-  throw new ArgumentNullException(nameof(ranges));
-}
+        throw new ArgumentNullException(nameof(ranges));
+      }
       if (languages == null) {
-  throw new ArgumentNullException(nameof(languages));
-}
+        throw new ArgumentNullException(nameof(languages));
+      }
       var retlist = new List<string>();
       if (ranges.Count == 0) {
- return retlist;
-}
+        return retlist;
+      }
       if (languages.Count == 0) {
- return retlist;
-}
+        return retlist;
+      }
       var hasStar = false;
       var langsMatch = new bool[languages.Count];
       foreach (string range in ranges) {
         if (!IsLanguageRange(range, extended)) {
- throw new ArgumentException("ranges");
-}
+          throw new ArgumentException("ranges");
+        }
       }
       foreach (string lang in languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
- throw new ArgumentException("languages");
-}
+          throw new ArgumentException("languages");
+        }
       }
       foreach (string range in ranges) {
         if (matchStarAtEnd && range.Equals("*")) {
@@ -455,8 +457,8 @@ if (str[index] == 0x09 || str[index] == 0x20) {
         string lcrange = DataUtilities.ToLowerCaseAscii(range);
         for (var k = 0; k < languages.Count; ++k) {
           if (langsMatch[k]) {
- continue;
-}
+            continue;
+          }
           string lclang = DataUtilities.ToLowerCaseAscii(languages[k]);
           if (extended) {
             if (MatchLangTagExtended(lcrange, lclang)) {
@@ -474,20 +476,20 @@ if (str[index] == 0x09 || str[index] == 0x20) {
       if (matchStarAtEnd && hasStar) {
         for (var k = 0; k < languages.Count; ++k) {
           if (!langsMatch[k]) {
- retlist.Add(languages[k]);
-}
+            retlist.Add(languages[k]);
+          }
         }
       }
       return retlist;
     }
 
     private static string TruncateLangRange(string range) {
-     var i = 0;
-     for (i = range.Length - 1; i >= 0; --i) {
- if (range[i] == '-' && i >= 2 && range[i - 1] != '-' && range[i - 2] != '-'
-) {
- return range.Substring(0, i);
-}
+      var i = 0;
+      for (i = range.Length - 1; i >= 0; --i) {
+        if (range[i] == '-' && i >= 2 && range[i - 1] != '-' && range[i - 2] != '-'
+       ) {
+          return range.Substring(0, i);
+        }
       }
       return String.Empty;
     }
@@ -551,40 +553,40 @@ if (str[index] == 0x09 || str[index] == 0x20) {
          string defaultValue,
          bool extended) {
       if (ranges == null) {
-  throw new ArgumentNullException(nameof(ranges));
-}
+        throw new ArgumentNullException(nameof(ranges));
+      }
       if (languages == null) {
-  throw new ArgumentNullException(nameof(languages));
-}
+        throw new ArgumentNullException(nameof(languages));
+      }
       if (ranges.Count == 0) {
- return defaultValue;
-}
+        return defaultValue;
+      }
       if (languages.Count == 0) {
- return defaultValue;
-}
+        return defaultValue;
+      }
       foreach (string range in ranges) {
         if (!IsLanguageRange(range, extended)) {
- throw new ArgumentException("ranges");
-}
+          throw new ArgumentException("ranges");
+        }
       }
       foreach (string lang in languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
- throw new ArgumentException("languages");
-}
+          throw new ArgumentException("languages");
+        }
       }
       foreach (string range in ranges) {
         if (range.Equals("*")) {
- continue;
-}
+          continue;
+        }
         string lcrange = DataUtilities.ToLowerCaseAscii(range);
         while (lcrange.Length > 0) {
           foreach (string lang in languages) {
             string lclang = DataUtilities.ToLowerCaseAscii(lang);
             if (extended) if (MatchLangTagExtended(lcrange, lclang)) {
- return lang;
-  } else if (MatchLangTagBasic(lcrange, lclang)) {
- return lang;
-}
+                return lang;
+              } else if (MatchLangTagBasic(lcrange, lclang)) {
+                return lang;
+              }
           }
           lcrange = TruncateLangRange(lcrange);
         }

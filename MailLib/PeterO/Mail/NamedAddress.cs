@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
   public class NamedAddress {
     private readonly string displayName;
 
@@ -29,15 +29,15 @@ namespace PeterO.Mail {
             0,
             addressValue.Length,
             tokener) != addressValue.Length) {
-          // Invalid syntax
-          return list;
-        }
-        list.AddRange(
-          HeaderParserUtility.ParseAddressList(
-            addressValue,
-            0,
-            addressValue.Length,
-            tokener.GetTokens()));
+        // Invalid syntax
+        return list;
+      }
+      list.AddRange(
+        HeaderParserUtility.ParseAddressList(
+          addressValue,
+          0,
+          addressValue.Length,
+          tokener.GetTokens()));
       return list;
     }
 
@@ -253,7 +253,7 @@ namespace PeterO.Mail {
       this.address = null;
       this.groupAddresses = new List<NamedAddress>();
       foreach (NamedAddress mailbox in mailboxes) {
-         this.groupAddresses.Add(mailbox);
+        this.groupAddresses.Add(mailbox);
       }
     }
 

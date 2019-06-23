@@ -7,9 +7,9 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     * Exception thrown when a message has invalid syntax.
-     */
+  /**
+   * Exception thrown when a message has invalid syntax.
+   */
   public class MessageDataException extends RuntimeException {
 private static final long serialVersionUID = 1L;
     /**

@@ -8,25 +8,20 @@ Represents an email address and a name for that address. Can represent a
 ## Methods
 
 * `NamedAddress​(java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String displayName,
             Address address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String localPart,
             java.lang.String domain) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String groupName,
             java.util.List<NamedAddress> mailboxes) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `boolean AddressesEqual​(NamedAddress na)`<br>
  Not documented yet.
 * `boolean equals​(java.lang.Object obj)`<br>
@@ -55,32 +50,26 @@ Represents an email address and a name for that address. Can represent a
 ## Constructors
 
 * `NamedAddress​(java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String displayName,
             Address address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String localPart,
             java.lang.String domain) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 * `NamedAddress​(java.lang.String groupName,
             java.util.List<NamedAddress> mailboxes) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+ Initializes a new instance of the NamedAddress class.
 
 ## Method Details
 
 ### NamedAddress
     public NamedAddress​(java.lang.String address)
-Initializes a new instance of the <code>NamedAddress</code>
- class.
+Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Parameters:**
 
@@ -95,8 +84,7 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String address)
-Initializes a new instance of the <code>NamedAddress</code>
- class.
+Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Parameters:**
 
@@ -110,8 +98,7 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, Address address)
-Initializes a new instance of the <code>NamedAddress</code>
- class.
+Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Parameters:**
 
@@ -125,8 +112,7 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String localPart, java.lang.String domain)
-Initializes a new instance of the <code>NamedAddress</code>
- class.
+Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Parameters:**
 
@@ -143,8 +129,7 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 ### NamedAddress
     public NamedAddress​(java.lang.String groupName, java.util.List<NamedAddress> mailboxes)
-Initializes a new instance of the <code>NamedAddress</code>
- class.
+Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Parameters:**
 

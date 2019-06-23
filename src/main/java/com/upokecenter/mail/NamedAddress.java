@@ -9,10 +9,10 @@ at: http://peteroupc.github.io/
 
 import java.util.*;
 
-    /**
-     * Represents an email address and a name for that address. Can represent a
-     * group of email addresses instead.
-     */
+  /**
+   * Represents an email address and a name for that address. Can represent a
+   * group of email addresses instead.
+   */
   public class NamedAddress {
     private final String displayName;
 
@@ -37,15 +37,15 @@ import java.util.*;
             0,
             addressValue.length(),
             tokener) != addressValue.length()) {
-          // Invalid syntax
-          return list;
-        }
-        list.addAll(
-          HeaderParserUtility.ParseAddressList(
-            addressValue,
-            0,
-            addressValue.length(),
-            tokener.GetTokens()));
+        // Invalid syntax
+        return list;
+      }
+      list.addAll(
+        HeaderParserUtility.ParseAddressList(
+          addressValue,
+          0,
+          addressValue.length(),
+          tokener.GetTokens()));
       return list;
     }
 
@@ -195,8 +195,7 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
+     * Initializes a new instance of the {@link NamedAddress} class.
      * @param address The parameter {@code address} is a text string.
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException Address has an invalid syntax.; Address has
@@ -226,8 +225,7 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
+     * Initializes a new instance of the {@link NamedAddress} class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param address The parameter {@code address} is a text string.
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
@@ -243,8 +241,7 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
+     * Initializes a new instance of the {@link NamedAddress} class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param address The parameter {@code address} is an Address object.
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
@@ -260,8 +257,7 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
+     * Initializes a new instance of the {@link NamedAddress} class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param localPart The parameter {@code localPart} is a text string.
      * @param domain The parameter {@code domain} is a text string.
@@ -282,8 +278,7 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
+     * Initializes a new instance of the {@link NamedAddress} class.
      * @param groupName The parameter {@code groupName} is a text string.
      * @param mailboxes The parameter {@code mailboxes} is an IList object.
      * @throws java.lang.NullPointerException The parameter {@code groupName} or
@@ -311,7 +306,7 @@ import java.util.*;
       this.address = null;
       this.groupAddresses = new ArrayList<NamedAddress>();
       for (NamedAddress mailbox : mailboxes) {
-         this.groupAddresses.add(mailbox);
+        this.groupAddresses.add(mailbox);
       }
     }
 

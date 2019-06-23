@@ -2,10 +2,10 @@ package com.upokecenter.mail;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Contains methods for parsing and generating date-time strings following the
-     * Internet Message Format (RFC 5322).
-     */
+  /**
+   * Contains methods for parsing and generating date-time strings following the
+   * Internet Message Format (RFC 5322).
+   */
   public final class MailDateTime {
 private MailDateTime() {
 }
@@ -152,8 +152,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       int yr = dateTime[0];
       int mo = dateTime[1];
       int da = dateTime[2];
-      int addon = 0;  // number of days that have advanced
-      boolean leap;  // is this year a leap year?
+      int addon = 0; // number of days that have advanced
+      boolean leap; // is this year a leap year?
       yr %= 400;
       if (yr < 0) {
         yr += 400;
@@ -165,10 +165,10 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         leap = false;
       }
       if ((mo < 1) || (mo > 12)) {
-        return -1;  // validate the month
+        return -1; // validate the month
       }
       if (da < 1) {
-        return -1;  // and day of month
+        return -1; // and day of month
       }
       if (leap && (mo == 2)) {
         if (da > (numdays[mo - 1] + 1)) {
@@ -177,9 +177,9 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       } else if (da > numdays[mo - 1]) {
         return -1;
       }
-      addon += yr;  // The day advances by one day every year
-      addon += yr / 4;  // An additional day if it is divisible bay 4
-      addon -= yr / 100;  // Unless it is divisible by 100
+      addon += yr; // The day advances by one day every year
+      addon += yr / 4; // An additional day if it is divisible bay 4
+      addon -= yr / 100; // Unless it is divisible by 100
       /* However, we should not count that
          extra day if the current year is a leap
          year and we haven't gone past 29th February */
@@ -188,11 +188,11 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       }
       addon += totdays[mo - 1]; /* The day of the week increases by
                 the number of days in all the months up till now */
-      addon += da;  // the day of week advances for each day
-                    /* Now as we all know, 2000-01-01 is a Saturday. Using this
-                    as our reference point, and the knowledge that we want to
-                    return 0..6 for Sunday..Saturday,
-                    we find out that we need to compensate by adding 6. */
+      addon += da; // the day of week advances for each day
+                   /* Now as we all know, 2000-01-01 is a Saturday. Using this
+                   as our reference point, and the knowledge that we want to
+                   return 0..6 for Sunday..Saturday,
+                   we find out that we need to compensate by adding 6. */
       addon += 6;
       return addon % 7; /* the remainder after dividing by 7
                     gives the day of week */
@@ -303,8 +303,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      */
     public static int[] ParseDateString(String str, boolean parseObsoleteZones) {
       if (((str) == null || (str).length() == 0)) {
- return null;
-}
+        return null;
+      }
       int[] ret = new int[8];
       if (
   ParseHeaderExpandedDate(
@@ -828,17 +828,17 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         77) && (v.charAt(index + 28) == 84)) {
         index += 29;
         if (index != endIndex) {
- return null;
-}
+          return null;
+        }
         int dow = ParseDOW(v, index, endIndex);
         int day = ((v.charAt(index + 5) - '0') * 10) + (v.charAt(index + 6) - '0');
         int month = ParseMonth(v, index + 8, endIndex);
         if (dow < 0 || month < 0) {
- return null;
-}
-int year = ((v.charAt(index + 12) - '0') * 1000) +
-      ((v.charAt(index + 13) - '0') * 100) + ((v.charAt(index + 14) - '0') * 10) +
-      (v.charAt(index + 15) - '0');
+          return null;
+        }
+        int year = ((v.charAt(index + 12) - '0') * 1000) +
+              ((v.charAt(index + 13) - '0') * 100) + ((v.charAt(index + 14) - '0') * 10) +
+              (v.charAt(index + 15) - '0');
         int hour = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
         int minute = ((v.charAt(index + 20) - '0') * 10) + (v.charAt(index + 21) - '0');
         int second = ((v.charAt(index + 23) - '0') * 10) + (v.charAt(index + 24) - '0');
@@ -864,18 +864,18 @@ int year = ((v.charAt(index + 12) - '0') * 1000) +
         <= 57) && (v.charAt(index + 23) >= 48 && v.charAt(index + 23) <= 57))) {
         index += 24;
         if (index != endIndex) {
- return null;
-}
+          return null;
+        }
         int dow = ParseDOW(v, index, endIndex);
         int month = ParseMonth(v, index + 4, endIndex);
         if (dow < 0 || month < 0) {
- return null;
-}
+          return null;
+        }
         int day = (v.charAt(index + 8) == 32 ? 0 : (v.charAt(index + 8) - '0') * 10) +
           (v.charAt(index + 9) - '0');
-          int year = ((v.charAt(index + 20) - '0') * 1000) +
-      ((v.charAt(index + 21) - '0') * 100) + ((v.charAt(index + 22) - '0') * 10) +
-      (v.charAt(index + 23) - '0');
+        int year = ((v.charAt(index + 20) - '0') * 1000) +
+    ((v.charAt(index + 21) - '0') * 100) + ((v.charAt(index + 22) - '0') * 10) +
+    (v.charAt(index + 23) - '0');
         int hour = ((v.charAt(index + 11) - '0') * 10) + (v.charAt(index + 12) - '0');
         int minute = ((v.charAt(index + 14) - '0') * 10) + (v.charAt(index + 15) - '0');
         int second = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
@@ -900,24 +900,24 @@ int year = ((v.charAt(index + 12) - '0') * 1000) +
         19) >= 48 && v.charAt(index + 19) <= 57)) && (v.charAt(index + 20) == 32) &&
         (v.charAt(index + 21) == 71) && (v.charAt(index + 22) == 77) && (v.charAt(index + 23) ==
         84)) {
- index += 24;
- if (index != endIndex) {
- return null;
-}
-int month = ParseMonth(v, index + 3, endIndex);
-if (dowLong < 0 || month < 0) {
- return null;
-}
-int day = ((v.charAt(index) - '0') * 10) + (v.charAt(index + 1) - '0');
-int year = ((v.charAt(index + 7) - '0') * 10) + (v.charAt(index + 8) - '0');
-int hour = ((v.charAt(index + 10) - '0') * 10) + (v.charAt(index + 11) - '0');
-int minute = ((v.charAt(index + 13) - '0') * 10) + (v.charAt(index + 14) - '0');
-int second = ((v.charAt(index + 16) - '0') * 10) + (v.charAt(index + 17) - '0');
-java.util.Date dt = java.util.Date.UtcNow;
-int thisyear = dt.getYear();
-int this2digityear = thisyear % 100;
-int convertedYear = year + (thisyear - this2digityear);
-if (year - this2digityear > 50) {
+        index += 24;
+        if (index != endIndex) {
+          return null;
+        }
+        int month = ParseMonth(v, index + 3, endIndex);
+        if (dowLong < 0 || month < 0) {
+          return null;
+        }
+        int day = ((v.charAt(index) - '0') * 10) + (v.charAt(index + 1) - '0');
+        int year = ((v.charAt(index + 7) - '0') * 10) + (v.charAt(index + 8) - '0');
+        int hour = ((v.charAt(index + 10) - '0') * 10) + (v.charAt(index + 11) - '0');
+        int minute = ((v.charAt(index + 13) - '0') * 10) + (v.charAt(index + 14) - '0');
+        int second = ((v.charAt(index + 16) - '0') * 10) + (v.charAt(index + 17) - '0');
+        java.util.Date dt = java.util.Date.UtcNow;
+        int thisyear = dt.getYear();
+        int this2digityear = thisyear % 100;
+        int convertedYear = year + (thisyear - this2digityear);
+        if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
@@ -942,8 +942,8 @@ if (year - this2digityear > 50) {
 
     private static int ParseMonth(String v, int index, int endIndex) {
       if (endIndex - index <= 2) {
- return -1;
-}
+        return -1;
+      }
       for (int i = 0; i < 12; ++i) {
         String monthName = monthNames[i];
         if (v.charAt(index) == monthName.charAt(0) &&
@@ -956,8 +956,8 @@ if (year - this2digityear > 50) {
 
     private static int ParseDOW(String v, int index, int endIndex) {
       if (endIndex - index <= 2) {
- return -1;
-}
+        return -1;
+      }
       for (int i = 0; i < 7; ++i) {
         String dowName = dowNames[i];
         if (v.charAt(index) == dowName.charAt(0) &&
@@ -970,8 +970,8 @@ if (year - this2digityear > 50) {
 
     private static int ParseDOWLong(String v, int index, int endIndex) {
       if (endIndex - index <= 2) {
- return -1;
-}
+        return -1;
+      }
       for (int i = 0; i < 7; ++i) {
         String dowName = dowNamesLong[i];
         if (endIndex - index >= dowName.length() &&

@@ -40,7 +40,7 @@ namespace PeterO.Mail {
 "black",
 "white",
 "cyan",
-"magenta"
+"magenta",
       };
       foreach (string name in colorNames) {
         if (IsTokenAsciiIgnoreCase(str, index, endIndex, name)) {

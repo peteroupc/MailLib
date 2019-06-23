@@ -366,8 +366,10 @@ namespace PeterO.Mail {
       }
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
 
-          str[2] == ' ' && str[3] == ' ') ? true : false; } private static
-            string ReplaceTwoOrMoreSpacesWithBR(string str) {
+          str[2] == ' ' && str[3] == ' ') ? true : false;
+    }
+    private static
+string ReplaceTwoOrMoreSpacesWithBR(string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
       }
@@ -394,8 +396,9 @@ namespace PeterO.Mail {
       }
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
 
-          str[2] == ' ' && str[3] == ' ') ? str.Substring(4) : str; }
-          private static string HtmlEscapeStrong(string str) {
+          str[2] == ' ' && str[3] == ' ') ? str.Substring(4) : str;
+    }
+    private static string HtmlEscapeStrong(string str) {
       var i = 0;
       var sb = new StringBuilder();
       for (; i < str.Length; ++i) {
@@ -514,8 +517,10 @@ namespace PeterO.Mail {
               endDelim = '\'';
             }
             if (startDelim == '\u0028') {
-  { endDelim = '\u0029';
-} }
+              {
+                endDelim = '\u0029';
+              }
+            }
             while (qi < urlText.Length && (urlText[qi] != endDelim)) {
               ++qi;
             }
@@ -537,8 +542,8 @@ namespace PeterO.Mail {
 
     private static int GetLinkRefStart(string str, int index) {
       if (index < str.Length && str[index] == '\u0028') {
- return index;
-}
+        return index;
+      }
       while (index < str.Length && (str[index] == ' ' || str[index] == '\t')) {
         ++index;
       }
@@ -559,8 +564,8 @@ namespace PeterO.Mail {
           int index = i + 2;
           while (index < str.Length) {
             if (str[index] == ']') {
-                found = true;
-                break;
+              found = true;
+              break;
             }
             ++index;
           }
@@ -806,7 +811,9 @@ namespace PeterO.Mail {
           while (qi < str.Length) {
             if (str[qi] == '`') {
               ++backTicks;
-            } else break;
+            } else
+{ break;
+}
             ++qi;
           }
           while (qi < str.Length) {
@@ -820,7 +827,9 @@ namespace PeterO.Mail {
                     qi = qi2;
                     break;
                   }
-                } else break;
+                } else
+{ break;
+}
                 ++qi2;
               }
               if (endBackTicks >= backTicks) {

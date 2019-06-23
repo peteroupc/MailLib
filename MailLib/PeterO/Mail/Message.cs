@@ -1093,9 +1093,9 @@ prefaceBody; for (var i = 0; i < messages.Count; ++i) {
         MediaType mt = MediaType.Parse("message/rfc822");
         string msgstring = messages[i].Generate();
         if (msgstring.IndexOf("\r\n--", StringComparison.Ordinal) >= 0 || (
-          msgstring.Length>=2 &&
-             msgstring[0]=='-' &&
-             msgstring[1]=='-')) {
+          msgstring.Length >=2 &&
+             msgstring[0] =='-' &&
+             msgstring[1] =='-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");
