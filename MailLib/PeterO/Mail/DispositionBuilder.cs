@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.DispositionBuilder"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.DispositionBuilder"]/*'/>
   public class DispositionBuilder {
     private readonly IDictionary<string, string> parameters;
     private string type;
@@ -66,11 +66,11 @@ namespace PeterO.Mail {
     /// </exception>
     public DispositionBuilder(string type) {
       if (type == null) {
-  throw new ArgumentNullException(nameof(type));
-}
-if (type.Length == 0) {
-  throw new ArgumentException("type" + " is empty.");
-}
+        throw new ArgumentNullException(nameof(type));
+      }
+      if (type.Length == 0) {
+        throw new ArgumentException("type is empty.");
+      }
       this.parameters = new Dictionary<string, string>();
       this.SetDispositionType(type);
     }
@@ -142,8 +142,8 @@ if (type.Length == 0) {
       }
       if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
         name.Length) {
-      throw new ArgumentException("Not a well-formed parameter name: " +
-          name);
+        throw new ArgumentException("Not a well-formed parameter name: " +
+            name);
       }
       this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;
       return this;

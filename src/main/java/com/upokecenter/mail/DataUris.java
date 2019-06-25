@@ -2,13 +2,13 @@ package com.upokecenter.mail;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Contains methods for parsing and generating Data URIs (uniform resource
-     * identifiers). Data URIs are described in RFC 2397. Examples for Data
-     * URIs follow. <pre>data:, hello%20world</pre>
-     * <pre>data:text/markdown, hello%20world</pre>
-     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>
-     */
+  /**
+   * Contains methods for parsing and generating Data URIs (uniform resource
+   * identifiers). Data URIs are described in RFC 2397. Examples for Data
+   * URIs follow. <pre>data:, hello%20world</pre>
+   * <pre>data:text/markdown, hello%20world</pre>
+   * <pre>data:application/octet-stream;base64, AAAAAA==</pre>
+   */
   public final class DataUris {
 private DataUris() {
 }
@@ -19,10 +19,10 @@ private DataUris() {
      * syntactically invalid, or is not a Data URI.
      */
     public static MediaType DataUriMediaType(String uri) {
-  String url = uri;
-  String[] parts = URIUtility.SplitIRIToStrings(
-        url);
-        if (parts == null || parts[0] == null || parts[2] == null) {
+      String url = uri;
+      String[] parts = URIUtility.SplitIRIToStrings(
+            url);
+      if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       String path = parts[2];
@@ -96,10 +96,10 @@ private DataUris() {
      * syntactically invalid, or is not a data URI.
      */
     public static byte[] DataUriBytes(String uri) {
-  String url = uri;
-  String[] parts = URIUtility.SplitIRIToStrings(
-        url);
-        if (parts == null || parts[0] == null || parts[2] == null) {
+      String url = uri;
+      String[] parts = URIUtility.SplitIRIToStrings(
+            url);
+      if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       String path = parts[2];
@@ -132,9 +132,9 @@ private DataUris() {
             }
           }
           if (hasPercent) {
-  payload = URIUtility.PercentDecode(
-    path.substring(mediaTypePart + 1, (mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
-  payloadIndex = 0;
+            payload = URIUtility.PercentDecode(
+              path.substring(mediaTypePart + 1, (mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
+            payloadIndex = 0;
           }
           base64Length = payload.length() - payloadIndex;
           if ((base64Length % 4) != 0) {
@@ -237,12 +237,12 @@ private DataUris() {
      * null.
      */
     public static String MakeDataUri(String textString) {
-if (textString == null) {
-  throw new NullPointerException("textString");
-}
-return MakeDataUri(
-  DataUtilities.GetUtf8Bytes(textString, true),
-  MediaType.Parse("text/plain;charset=utf-8"));
+      if (textString == null) {
+        throw new NullPointerException("textString");
+      }
+      return MakeDataUri(
+        DataUtilities.GetUtf8Bytes(textString, true),
+        MediaType.Parse("text/plain;charset=utf-8"));
     }
 
     /**

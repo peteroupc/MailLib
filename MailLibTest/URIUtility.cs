@@ -1,3 +1,4 @@
+#pragma warning disable SA1602
 using System;
 using System.Text;
 

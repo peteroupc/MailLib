@@ -379,8 +379,9 @@ private LanguageTags() {
               ++index;
               int[] mults = { 100, 10, 1 };
               for (int i = 0; i < 3; ++i) {
-                if (index < str.length() && (str.charAt(index) >= '0' || str.charAt(index) <= '9'
-)) {
+                if (index < str.length() &&
+                    (str.charAt(index) >= '0' ||
+                     str.charAt(index) <= '9')) {
                   qvalue += mults[i] * (str.charAt(index) - '0');
                   ++index;
                 } else {
@@ -405,8 +406,8 @@ private LanguageTags() {
     }
 
     private static boolean MatchLangTagBasic(
-  String rangeLowerCased,
-  String tagLowerCased) {
+         String rangeLowerCased,
+         String tagLowerCased) {
       if (rangeLowerCased.equals("*")) {
         return true;
       }
@@ -548,8 +549,8 @@ private LanguageTags() {
     private static String TruncateLangRange(String range) {
       int i = 0;
       for (i = range.length() - 1; i >= 0; --i) {
-        if (range.charAt(i) == '-' && i >= 2 && range.charAt(i - 1) != '-' && range.charAt(i - 2) != '-'
-) {
+        if (range.charAt(i) == '-' && i >= 2 &&
+            range.charAt(i - 1) != '-' && range.charAt(i - 2) != '-') {
           return range.substring(0, i);
         }
       }
@@ -728,11 +729,11 @@ private LanguageTags() {
         while (lcrange.length() > 0) {
           for (String lang : languages) {
             String lclang = DataUtilities.ToLowerCaseAscii(lang);
-            if (extended) if (MatchLangTagExtended(lcrange, lclang)) {
-                return lang;
-              } else if (MatchLangTagBasic(lcrange, lclang)) {
-                return lang;
-              }
+            if (extended && MatchLangTagExtended(lcrange, lclang)) {
+              return lang;
+            } else if (MatchLangTagBasic(lcrange, lclang)) {
+              return lang;
+            }
           }
           lcrange = TruncateLangRange(lcrange);
         }

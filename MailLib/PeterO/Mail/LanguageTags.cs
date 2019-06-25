@@ -336,8 +336,9 @@ namespace PeterO.Mail {
               ++index;
               int[] mults = { 100, 10, 1 };
               for (var i = 0; i < 3; ++i) {
-                if (index < str.Length && (str[index] >= '0' || str[index] <= '9'
-      )) {
+                if (index < str.Length &&
+                    (str[index] >= '0' ||
+                     str[index] <= '9')) {
                   qvalue += mults[i] * (str[index] - '0');
                   ++index;
                 } else {
@@ -362,8 +363,8 @@ namespace PeterO.Mail {
     }
 
     private static bool MatchLangTagBasic(
-  string rangeLowerCased,
-  string tagLowerCased) {
+         string rangeLowerCased,
+         string tagLowerCased) {
       if (rangeLowerCased.Equals("*")) {
         return true;
       }
@@ -486,8 +487,8 @@ namespace PeterO.Mail {
     private static string TruncateLangRange(string range) {
       var i = 0;
       for (i = range.Length - 1; i >= 0; --i) {
-        if (range[i] == '-' && i >= 2 && range[i - 1] != '-' && range[i - 2] != '-'
-       ) {
+        if (range[i] == '-' && i >= 2 &&
+            range[i - 1] != '-' && range[i - 2] != '-') {
           return range.Substring(0, i);
         }
       }
@@ -582,11 +583,11 @@ namespace PeterO.Mail {
         while (lcrange.Length > 0) {
           foreach (string lang in languages) {
             string lclang = DataUtilities.ToLowerCaseAscii(lang);
-            if (extended) if (MatchLangTagExtended(lcrange, lclang)) {
-                return lang;
-              } else if (MatchLangTagBasic(lcrange, lclang)) {
-                return lang;
-              }
+            if (extended && MatchLangTagExtended(lcrange, lclang)) {
+              return lang;
+            } else if (MatchLangTagBasic(lcrange, lclang)) {
+              return lang;
+            }
           }
           lcrange = TruncateLangRange(lcrange);
         }

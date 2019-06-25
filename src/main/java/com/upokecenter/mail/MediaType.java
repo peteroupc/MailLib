@@ -13,24 +13,24 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
-    /**
-     * <p>Specifies what kind of data a message body is. </p> <p>A media type
-     * consists of a top-level type (the general category of the data), a
-     * subtype (the specific type), and an optional list of parameters. For
-     * example, the media type <code>text/plain; charset = utf-8</code> is a text
-     * media type ("text"), namely, a plain text type ("plain"), and the
-     * parameters say that the data uses UTF-8, a Unicode character encoding
-     * ("charset = utf-8"). Other top-level types include "audio", "video",
-     * and "application". </p> <p>A media type is sometimes known as a "MIME
-     * type", for Multipurpose Internet Mail Extensions, the standard that
-     * introduced media types. </p> <p>This type is immutable, meaning its
-     * values can't be changed once it' s created. To create a changeable
-     * media type object, use the MediaTypeBuilder class. </p>
-     * <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
-     * top-level type <code>multipart</code> must be treated as
-     * <code>multipart/mixed</code> and unrecognized media types as the media type
-     * <code>application/octet-stream</code> . </p>
-     */
+  /**
+   * <p>Specifies what kind of data a message body is. </p> <p>A media type
+   * consists of a top-level type (the general category of the data), a
+   * subtype (the specific type), and an optional list of parameters. For
+   * example, the media type <code>text/plain; charset = utf-8</code> is a text
+   * media type ("text"), namely, a plain text type ("plain"), and the
+   * parameters say that the data uses UTF-8, a Unicode character encoding
+   * ("charset = utf-8"). Other top-level types include "audio", "video",
+   * and "application". </p> <p>A media type is sometimes known as a "MIME
+   * type", for Multipurpose Internet Mail Extensions, the standard that
+   * introduced media types. </p> <p>This type is immutable, meaning its
+   * values can't be changed once it' s created. To create a changeable
+   * media type object, use the MediaTypeBuilder class. </p> <p><b>Note:</b>
+   * According to RFC 2049, unrecognized subtypes of the top-level type
+   * <code>multipart</code> must be treated as <code>multipart/mixed</code> and
+   * unrecognized media types as the media type
+   * <code>application/octet-stream</code> . </p>
+   */
   public final class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -79,15 +79,15 @@ import com.upokecenter.text.*;
       int valueHashCode = 632580499;
       if (this.topLevelType != null) {
         for (int i = 0; i < this.topLevelType.length(); ++i) {
- valueHashCode = (valueHashCode + (632580563 *
-             this.topLevelType.charAt(i)));
- }
+          valueHashCode = (valueHashCode + (632580563 *
+                      this.topLevelType.charAt(i)));
+        }
       }
       if (this.subType != null) {
         for (int i = 0; i < this.subType.length(); ++i) {
- valueHashCode = (valueHashCode + (632580563 *
-             this.subType.charAt(i)));
- }
+          valueHashCode = (valueHashCode + (632580563 *
+                      this.subType.charAt(i)));
+        }
       }
       if (this.parameters != null) {
         valueHashCode = (valueHashCode + (632580587 * this.parameters.size()));
@@ -148,14 +148,14 @@ import com.upokecenter.text.*;
       }
 
     enum QuotedStringRule {
-    /**
-     * Use HTTP rules for quoted strings.
-     */
+      /**
+       * Use HTTP rules for quoted strings.
+       */
       Http,
 
-    /**
-     * Use Internet Message Format rules for quoted strings.
-     */
+      /**
+       * Use Internet Message Format rules for quoted strings.
+       */
       Rfc5322,
     }
 
@@ -488,8 +488,8 @@ import com.upokecenter.text.*;
         return sa.TryAppendSymbol(str);
       }
       if (uriSafe) {
- return false;
-}
+        return false;
+      }
       StringBuilder sb = new StringBuilder();
       sb.append('"');
       for (int i = 0; i < str.length(); ++i) {
@@ -516,7 +516,7 @@ import com.upokecenter.text.*;
     static void AppendParameters(
       Map<String, String> parameters,
       HeaderEncoder sa) {
-       AppendParameters(parameters, sa, false);
+      AppendParameters(parameters, sa, false);
     }
     static void AppendParameters(
       Map<String, String> parameters,
@@ -714,59 +714,59 @@ import com.upokecenter.text.*;
     }
 
     boolean StoresCharsetInPayload() {
-       // Returns true if the media type is text and contains special
-       // procedures for determining the charset from the payload
-       // if no charset is given or supported in the charset
-       // parameter.
-       if (this.isText()) {
+      // Returns true if the media type is text and contains special
+      // procedures for determining the charset from the payload
+      // if no charset is given or supported in the charset
+      // parameter.
+      if (this.isText()) {
         String sub = this.getSubType();
         if (sub.equals("html")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("javascript")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("ecmascript")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("rtf")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("xml")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("xml-external-parsed-entity")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.in3d.3dml")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.iptc.newsml")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.iptc.nitf")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.ms-mediapackage")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.net2phone.commcenter.command")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.radisys.msml-basic-layout")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.wap.si")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.wap.sl")) {
- return true;
-}
+          return true;
+        }
         if (sub.equals("vnd.wap.wml")) {
- return true;
-}
-       }
-       return false;
+          return true;
+        }
+      }
+      return false;
     }
 
     /**
@@ -885,60 +885,60 @@ import com.upokecenter.text.*;
         return DataUtilities.ToLowerCaseAscii(param);
       } else {
         // Charset parameter is absent or empty
-      if (this.isText()) {
-        String sub = this.getSubType();
-        // Media types that assume a default of US-ASCII
-        if (sub.equals("plain") ||
-sub.equals("sgml") ||
-sub.equals("troff") ||
-sub.equals("dns") ||
-sub.equals("mizar") ||
-sub.equals("prs.prop.logic") ||
-sub.equals("vnd.ascii-art") ||
-sub.equals("vnd.dmclientscript") ||
-sub.equals("prs.lines.tag") ||
-sub.equals("vnd.latex-z") ||
-sub.equals("rfc822-headers") ||
-sub.equals("vnd.dvb.subtitle") ||
-sub.equals("vnd.fly") ||
-sub.equals("directory") ||
-sub.equals("css") ||
-sub.equals("richtext") ||
-sub.equals("enriched") ||
-sub.equals("tab-separated-values") ||
-sub.equals("vnd.in3d.spot") ||
-sub.equals("vnd.abc") ||
-sub.equals("vnd.wap.wmlscript") ||
-sub.equals("vnd.curl") ||
-sub.equals("vnd.fmi.flexstor") ||
-sub.equals("uri-list") ||
-sub.equals("vnd.si.uricatalogue")) {
-          return "us-ascii";
+        if (this.isText()) {
+          String sub = this.getSubType();
+          // Media types that assume a default of US-ASCII
+          if (sub.equals("plain") ||
+  sub.equals("sgml") ||
+  sub.equals("troff") ||
+  sub.equals("dns") ||
+  sub.equals("mizar") ||
+  sub.equals("prs.prop.logic") ||
+  sub.equals("vnd.ascii-art") ||
+  sub.equals("vnd.dmclientscript") ||
+  sub.equals("prs.lines.tag") ||
+  sub.equals("vnd.latex-z") ||
+  sub.equals("rfc822-headers") ||
+  sub.equals("vnd.dvb.subtitle") ||
+  sub.equals("vnd.fly") ||
+  sub.equals("directory") ||
+  sub.equals("css") ||
+  sub.equals("richtext") ||
+  sub.equals("enriched") ||
+  sub.equals("tab-separated-values") ||
+  sub.equals("vnd.in3d.spot") ||
+  sub.equals("vnd.abc") ||
+  sub.equals("vnd.wap.wmlscript") ||
+  sub.equals("vnd.curl") ||
+  sub.equals("vnd.fmi.flexstor") ||
+  sub.equals("uri-list") ||
+  sub.equals("vnd.si.uricatalogue")) {
+            return "us-ascii";
+          }
+          // Media types that assume a default of UTF-8
+          if (sub.equals("vcard") ||
+  sub.equals("jcr-cnd") ||
+  sub.equals("n3") ||
+  sub.equals("turtle") ||
+  sub.equals("strings") ||
+  sub.equals("vnd.debian.copyright") ||
+  sub.equals("provenance-notation") ||
+  sub.equals("csv") ||
+  sub.equals("calendar") ||
+  sub.equals("vnd.a") ||
+  sub.equals("parameters") ||
+  sub.equals("prs.fallenstein.rst") ||
+  sub.equals("vnd.esmertec.theme.descriptor") ||
+  sub.equals("vnd.trolltech.linguist") ||
+  sub.equals("csv-schema") ||
+  sub.equals("vnd.graphviz") ||
+  sub.equals("cache-manifest") ||
+  sub.equals("vnd.sun.j2me.app-descriptor")) {
+            return "utf-8";
+          }
         }
-        // Media types that assume a default of UTF-8
-        if (sub.equals("vcard") ||
-sub.equals("jcr-cnd") ||
-sub.equals("n3") ||
-sub.equals("turtle") ||
-sub.equals("strings") ||
-sub.equals("vnd.debian.copyright") ||
-sub.equals("provenance-notation") ||
-sub.equals("csv") ||
-sub.equals("calendar") ||
-sub.equals("vnd.a") ||
-sub.equals("parameters") ||
-sub.equals("prs.fallenstein.rst") ||
-sub.equals("vnd.esmertec.theme.descriptor") ||
-sub.equals("vnd.trolltech.linguist") ||
-sub.equals("csv-schema") ||
-sub.equals("vnd.graphviz") ||
-sub.equals("cache-manifest") ||
-sub.equals("vnd.sun.j2me.app-descriptor")) {
-          return "utf-8";
-        }
+        return "";
       }
-      return "";
-       }
     }
 
     /**
@@ -1242,34 +1242,34 @@ sub.equals("vnd.sun.j2me.app-descriptor")) {
         }
         builder.delete(0, (0)+(builder.length()));
         int qs;
-          // try getting the value quoted
-          qs = SkipQuotedString(
-            str,
-            index,
-            endIndex,
-            builder,
-            httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
-            if (!httpRules && qs != index) {
-            qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
+        // try getting the value quoted
+        qs = SkipQuotedString(
+          str,
+          index,
+          endIndex,
+          builder,
+          httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
+        if (!httpRules && qs != index) {
+          qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
+        }
+        if (qs != index) {
+          // If the attribute name ends with '*' the value may not be a quoted
+          // String because of RFC2231; if this happens, ignore the attribute
+          if (attribute.charAt(attribute.length() - 1) != '*' &&
+   (!hasDuplicateAttributes || !duplicateAttributes.containsKey(attribute))) {
+            parameters.put(attribute, builder.toString());
           }
-          if (qs != index) {
-            // If the attribute name ends with '*' the value may not be a quoted
-            // String because of RFC2231; if this happens, ignore the attribute
-            if (attribute.charAt(attribute.length() - 1) != '*' &&
-     (!hasDuplicateAttributes || !duplicateAttributes.containsKey(attribute))) {
-             parameters.put(attribute, builder.toString());
-            }
-            index = qs;
-            continue;
-          }
-          builder.delete(0, (0)+(builder.length()));
+          index = qs;
+          continue;
+        }
+        builder.delete(0, (0)+(builder.length()));
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);
         if (qs != index) {
-    if (!hasDuplicateAttributes ||
-            !duplicateAttributes.containsKey(attribute)) {
-             parameters.put(attribute, builder.toString());
+          if (!hasDuplicateAttributes ||
+                  !duplicateAttributes.containsKey(attribute)) {
+            parameters.put(attribute, builder.toString());
           }
           index = qs;
           continue;

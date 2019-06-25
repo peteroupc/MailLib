@@ -320,8 +320,9 @@ namespace PeterO.Mail {
       var i = 0;
       var symbolBegin = 0;
       while (i < symbol.Length) {
-        if (symbol[i] == '\r' && i + 1 < symbol.Length && symbol[i + 1] == '\n'
-) {
+        if (symbol[i] == '\r' &&
+            i + 1 < symbol.Length &&
+            symbol[i + 1] == '\n') {
           writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
@@ -659,8 +660,10 @@ namespace PeterO.Mail {
                1) {
           // not simple if a word begins with "=?", an RFC
           // 2047 encoded word start
-          if (count == 0 && str[i] == '=' && i + 1 < str.Length && str[i + 1] == '?'
-        ) {
+          if (count == 0 &&
+              str[i] == '=' &&
+              i + 1 < str.Length &&
+              str[i + 1] == '?') {
             return false;
           }
           ++count;

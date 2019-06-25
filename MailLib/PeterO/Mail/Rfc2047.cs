@@ -223,13 +223,13 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           }
         }
         if (builder.Length == 0) {
-            for (int k = parenStart; k < parenEnd; ++k) {
-              enc.AppendSymbol(str.Substring(k, 1));
-            }
-            break;
+          for (int k = parenStart; k < parenEnd; ++k) {
+            enc.AppendSymbol(str.Substring(k, 1));
+          }
+          break;
         }
         for (int k = parenStart; k < parenEnd; ++k) {
-              enc.AppendSymbol(str.Substring(k, 1));
+          enc.AppendSymbol(str.Substring(k, 1));
         }
         enc.AppendAsEncodedWords(builder.ToString());
       }
@@ -358,8 +358,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
             // with length up to 75 (also exclude '(' , '\', and ')' if the
             // context is a comment)
             if (c >= 0x21 && c < 0x7e && (context !=
-          EncodedWordContext.Comment || (c != '(' && c != ')' && c != '\\'
-))) {
+          EncodedWordContext.Comment || (c != '(' && c != ')' &&
+                                         c != '\\'))) {
               ++charCount;
               if (charCount > 75) {
                 maybeWord = false;
@@ -406,8 +406,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
   afterLast,
   context,
   encodingChar);
-  if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
-                i2 + 2 == afterLast) {
+                  if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
+                                i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -458,8 +458,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                  hasSuspiciousText |= context == EncodedWordContext.Comment &&
-                HasSuspiciousTextInComments(decodedWord);
+                    hasSuspiciousText |= context == EncodedWordContext.Comment &&
+                  HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
                 }
@@ -824,8 +824,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       }
       int lastIndex = index;
       foreach (int[] token in tokens) {
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+        if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
+              token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {

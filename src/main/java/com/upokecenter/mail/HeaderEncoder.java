@@ -318,8 +318,9 @@ import com.upokecenter.util.*;
       int i = 0;
       int symbolBegin = 0;
       while (i < symbol.length()) {
-        if (symbol.charAt(i) == '\r' && i + 1 < symbol.length() && symbol.charAt(i + 1) == '\n'
-) {
+        if (symbol.charAt(i) == '\r' &&
+            i + 1 < symbol.length() &&
+            symbol.charAt(i + 1) == '\n') {
           writeSpace = this.AppendSpaceAndSymbol(
   symbol,
   symbolBegin,
@@ -657,8 +658,10 @@ import com.upokecenter.util.*;
                1) {
           // not simple if a word begins with "=?", an RFC
           // 2047 encoded word start
-          if (count == 0 && str.charAt(i) == '=' && i + 1 < str.length() && str.charAt(i + 1) == '?'
-) {
+          if (count == 0 &&
+              str.charAt(i) == '=' &&
+              i + 1 < str.length() &&
+              str.charAt(i + 1) == '?') {
             return false;
           }
           ++count;

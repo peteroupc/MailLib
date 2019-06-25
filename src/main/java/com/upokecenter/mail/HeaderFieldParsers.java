@@ -314,19 +314,19 @@ private HeaderFieldParsers() {
             continue;
           }
           if (token[0] == HeaderParserUtility.TokenDomain) {
-                    String domain = EncodeDomain(str, token[1], token[2]);
-                    if (domain != null) {
-                    // Treat only domain literals and dot-atoms with
-                    // at least one dot as domains (this is primarily used
-                    // for the Received header field, where RFC 5322 atoms not
-                    // separated by dots are ((treated instanceof words) ? (words)treated : null), not domains)
-                    if (str.charAt(token[1]) == '[' || domain.indexOf('.') >= 0) {
-            enc.AppendString(str, lastIndex, token[1]);
-            enc.AppendString(domain);
-            lastIndex = token[2];
-                    }
-                  }
+            String domain = EncodeDomain(str, token[1], token[2]);
+            if (domain != null) {
+              // Treat only domain literals and dot-atoms with
+              // at least one dot as domains (this is primarily used
+              // for the Received header field, where RFC 5322 atoms not
+              // separated by dots are ((treated instanceof words) ? (words)treated : null), not domains)
+              if (str.charAt(token[1]) == '[' || domain.indexOf('.') >= 0) {
+                enc.AppendString(str, lastIndex, token[1]);
+                enc.AppendString(domain);
+                lastIndex = token[2];
               }
+            }
+          }
         }
         enc.AppendString(str, lastIndex, str.length());
         return enc.toString();
@@ -385,9 +385,9 @@ private HeaderFieldParsers() {
                     // Domain within the mailbox
                     String domain = EncodeDomain(str, token2[1], token2[2]);
                     if (domain == null) {
-                    // ASCII encoding failed
-                    nonasciiDomains = true;
-                    break;
+                      // ASCII encoding failed
+                      nonasciiDomains = true;
+                      break;
                     }
                     sb2.append(
                     str.substring(
@@ -553,31 +553,31 @@ private HeaderFieldParsers() {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
       private static String TrimFWSFromRight(String str) {
-      if (((str) == null || (str).length() == 0)) {
-        return str;
-      }
-      int index = 0;
-      int valueSLength = str.length();
-      int indexStart = index;
-      index = str.length() - 1;
-      while (index >= 0) {
-        char c = str.charAt(index);
-        if (c == 0x0a && index >= 1 && str.charAt(index - 1) == 0x0d) {
-           // CRLF
-           index -= 2;
-        } else if (c == 0x09 || c == 0x20) {
-          --index;
-        } else {
-          int indexEnd = index + 1;
-          if (indexEnd == indexStart) {
-            return "";
-          }
-          return (indexEnd == str.length() && indexStart == 0) ? str :
-            str.substring(indexStart, (indexStart)+(indexEnd - indexStart));
+        if (((str) == null || (str).length() == 0)) {
+          return str;
         }
+        int index = 0;
+        int valueSLength = str.length();
+        int indexStart = index;
+        index = str.length() - 1;
+        while (index >= 0) {
+          char c = str.charAt(index);
+          if (c == 0x0a && index >= 1 && str.charAt(index - 1) == 0x0d) {
+            // CRLF
+            index -= 2;
+          } else if (c == 0x09 || c == 0x20) {
+            --index;
+          } else {
+            int indexEnd = index + 1;
+            if (indexEnd == indexStart) {
+              return "";
+            }
+            return (indexEnd == str.length() && indexStart == 0) ? str :
+              str.substring(indexStart, (indexStart)+(indexEnd - indexStart));
+          }
+        }
+        return "";
       }
-      return "";
-    }
 
       private static boolean IsCFWSWordCFWS(
   String str,
@@ -624,71 +624,71 @@ private HeaderFieldParsers() {
         StringBuilder sb = new StringBuilder();
         int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.length(), null);
         while (index < header.length()) {
-         int newindex = HeaderParser.ParseReceivedToken(
-  header,
-  index,
-  header.length(),
-  null);
-         if (newindex == index) {
-           tokenEnd = HeaderParser.ParseCFWS(
-             header,
-             index,
-             header.length(),
-             null);
-           sb.append(header.substring(index, (index)+(tokenEnd - index)));
-           break;
-         }
-         if (IsCFWSWordCFWS(header, index, newindex, "for")) {
-           Tokener tokener = new Tokener();
-           int clauseEnd = HeaderParser.ParseReceivedToken(
-               header,
-               newindex,
-               header.length(),
-               tokener);
-           List<int[]> tokens = tokener.GetTokens();
-           boolean notGoodLocalPart = false;
-           for (int[] token : tokens) {
-             if (token[0] == HeaderParserUtility.TokenLocalPart) {
-               if (Message.HasTextToEscape(header, token[1], token[2])) {
-                 notGoodLocalPart = true;
-                 break;
-               }
-             }
-           }
-           if (notGoodLocalPart) {
-             changed = true;
-           } else {
-             sb.append(header.substring(index, (index)+(clauseEnd - index)));
-           }
-           index = clauseEnd;
-         } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
-           int clauseEnd = HeaderParser.ParseReceivedToken(
-               header,
-               newindex,
-               header.length(),
-               null);
-           if (Message.HasTextToEscape(header, index, clauseEnd)) {
-             changed = true;
-           } else {
-             sb.append(header.substring(index, (index)+(clauseEnd - index)));
-           }
-           index = clauseEnd;
-         } else {
-           sb.append(header.substring(index, (index)+(newindex - index)));
-           index = newindex;
-         }
-       }
-       String receivedPart = sb.toString();
-       String datePart = header.substring(tokenEnd);
-       if (changed) {
-         receivedPart = TrimFWSFromRight(receivedPart);
-         return new HeaderEncoder().AppendFieldName(name)
-            .AppendString(receivedPart + datePart).toString();
-       } else {
-         return new HeaderEncoder().AppendFieldName(name).toString() +
-            str;
-       }
-     }
+          int newindex = HeaderParser.ParseReceivedToken(
+   header,
+   index,
+   header.length(),
+   null);
+          if (newindex == index) {
+            tokenEnd = HeaderParser.ParseCFWS(
+              header,
+              index,
+              header.length(),
+              null);
+            sb.append(header.substring(index, (index)+(tokenEnd - index)));
+            break;
+          }
+          if (IsCFWSWordCFWS(header, index, newindex, "for")) {
+            Tokener tokener = new Tokener();
+            int clauseEnd = HeaderParser.ParseReceivedToken(
+                header,
+                newindex,
+                header.length(),
+                tokener);
+            List<int[]> tokens = tokener.GetTokens();
+            boolean notGoodLocalPart = false;
+            for (int[] token : tokens) {
+              if (token[0] == HeaderParserUtility.TokenLocalPart) {
+                if (Message.HasTextToEscape(header, token[1], token[2])) {
+                  notGoodLocalPart = true;
+                  break;
+                }
+              }
+            }
+            if (notGoodLocalPart) {
+              changed = true;
+            } else {
+              sb.append(header.substring(index, (index)+(clauseEnd - index)));
+            }
+            index = clauseEnd;
+          } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
+            int clauseEnd = HeaderParser.ParseReceivedToken(
+                header,
+                newindex,
+                header.length(),
+                null);
+            if (Message.HasTextToEscape(header, index, clauseEnd)) {
+              changed = true;
+            } else {
+              sb.append(header.substring(index, (index)+(clauseEnd - index)));
+            }
+            index = clauseEnd;
+          } else {
+            sb.append(header.substring(index, (index)+(newindex - index)));
+            index = newindex;
+          }
+        }
+        String receivedPart = sb.toString();
+        String datePart = header.substring(tokenEnd);
+        if (changed) {
+          receivedPart = TrimFWSFromRight(receivedPart);
+          return new HeaderEncoder().AppendFieldName(name)
+             .AppendString(receivedPart + datePart).toString();
+        } else {
+          return new HeaderEncoder().AppendFieldName(name).toString() +
+             str;
+        }
+      }
     }
 
     private static final class HeaderContentDisposition extends StructuredHeaderField {
@@ -2252,7 +2252,7 @@ private HeaderFieldParsers() {
       fieldMap.put("content-type",new HeaderContentType());
       fieldMap.put("auto-submitted",new HeaderAutoSubmitted());
       fieldMap.put("archive",new HeaderArchive());
-      fieldMap.put("autosubmitted",new HeaderAutoforwarded());  // same syntax
+      fieldMap.put("autosubmitted",new HeaderAutoforwarded()); // same syntax
       fieldMap.put("sio-label",new HeaderSioLabel());
       fieldMap.put("sio-label-history",new HeaderSioLabel());
       fieldMap.put("injection-info",new HeaderInjectionInfo());

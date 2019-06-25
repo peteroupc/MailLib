@@ -13,8 +13,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -55,15 +55,15 @@ namespace PeterO.Mail {
       var hashCode = 632580499;
       if (this.topLevelType != null) {
         for (var i = 0; i < this.topLevelType.Length; ++i) {
- hashCode = unchecked(hashCode + (632580563 *
-             this.topLevelType[i]));
- }
+          hashCode = unchecked(hashCode + (632580563 *
+                      this.topLevelType[i]));
+        }
       }
       if (this.subType != null) {
         for (var i = 0; i < this.subType.Length; ++i) {
- hashCode = unchecked(hashCode + (632580563 *
-             this.subType[i]));
- }
+          hashCode = unchecked(hashCode + (632580563 *
+                      this.subType[i]));
+        }
       }
       if (this.parameters != null) {
         hashCode = unchecked(hashCode + (632580587 * this.parameters.Count));
@@ -118,10 +118,10 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    /// <summary>Use HTTP rules for quoted strings.</summary>
+      /// <summary>Use HTTP rules for quoted strings.</summary>
       Http,
 
-    /// <summary>Use Internet Message Format rules for quoted strings.</summary>
+      /// <summary>Use Internet Message Format rules for quoted strings.</summary>
       Rfc5322,
     }
 
@@ -469,8 +469,8 @@ namespace PeterO.Mail {
         return sa.TryAppendSymbol(str);
       }
       if (uriSafe) {
- return false;
-}
+        return false;
+      }
       var sb = new StringBuilder();
       sb.Append('"');
       for (int i = 0; i < str.Length; ++i) {
@@ -497,7 +497,7 @@ namespace PeterO.Mail {
     internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa) {
-       AppendParameters(parameters, sa, false);
+      AppendParameters(parameters, sa, false);
     }
     internal static void AppendParameters(
       IDictionary<string, string> parameters,
@@ -677,59 +677,59 @@ namespace PeterO.Mail {
     }
 
     internal bool StoresCharsetInPayload() {
-       // Returns true if the media type is text and contains special
-       // procedures for determining the charset from the payload
-       // if no charset is given or supported in the charset
-       // parameter.
-       if (this.IsText) {
+      // Returns true if the media type is text and contains special
+      // procedures for determining the charset from the payload
+      // if no charset is given or supported in the charset
+      // parameter.
+      if (this.IsText) {
         string sub = this.SubType;
         if (sub.Equals("html")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("javascript")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("ecmascript")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("rtf")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("xml")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("xml-external-parsed-entity")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.in3d.3dml")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.iptc.newsml")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.iptc.nitf")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.ms-mediapackage")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.net2phone.commcenter.command")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.radisys.msml-basic-layout")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.wap.si")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.wap.sl")) {
- return true;
-}
+          return true;
+        }
         if (sub.Equals("vnd.wap.wml")) {
- return true;
-}
-       }
-       return false;
+          return true;
+        }
+      }
+      return false;
     }
 
     /// <include file='../../docs.xml'
@@ -843,60 +843,60 @@ namespace PeterO.Mail {
         return DataUtilities.ToLowerCaseAscii(param);
       } else {
         // Charset parameter is absent or empty
-      if (this.IsText) {
-        string sub = this.SubType;
-        // Media types that assume a default of US-ASCII
-        if (sub.Equals("plain") ||
-sub.Equals("sgml") ||
-sub.Equals("troff") ||
-sub.Equals("dns") ||
-sub.Equals("mizar") ||
-sub.Equals("prs.prop.logic") ||
-sub.Equals("vnd.ascii-art") ||
-sub.Equals("vnd.dmclientscript") ||
-sub.Equals("prs.lines.tag") ||
-sub.Equals("vnd.latex-z") ||
-sub.Equals("rfc822-headers") ||
-sub.Equals("vnd.dvb.subtitle") ||
-sub.Equals("vnd.fly") ||
-sub.Equals("directory") ||
-sub.Equals("css") ||
-sub.Equals("richtext") ||
-sub.Equals("enriched") ||
-sub.Equals("tab-separated-values") ||
-sub.Equals("vnd.in3d.spot") ||
-sub.Equals("vnd.abc") ||
-sub.Equals("vnd.wap.wmlscript") ||
-sub.Equals("vnd.curl") ||
-sub.Equals("vnd.fmi.flexstor") ||
-sub.Equals("uri-list") ||
-sub.Equals("vnd.si.uricatalogue")) {
-          return "us-ascii";
+        if (this.IsText) {
+          string sub = this.SubType;
+          // Media types that assume a default of US-ASCII
+          if (sub.Equals("plain") ||
+  sub.Equals("sgml") ||
+  sub.Equals("troff") ||
+  sub.Equals("dns") ||
+  sub.Equals("mizar") ||
+  sub.Equals("prs.prop.logic") ||
+  sub.Equals("vnd.ascii-art") ||
+  sub.Equals("vnd.dmclientscript") ||
+  sub.Equals("prs.lines.tag") ||
+  sub.Equals("vnd.latex-z") ||
+  sub.Equals("rfc822-headers") ||
+  sub.Equals("vnd.dvb.subtitle") ||
+  sub.Equals("vnd.fly") ||
+  sub.Equals("directory") ||
+  sub.Equals("css") ||
+  sub.Equals("richtext") ||
+  sub.Equals("enriched") ||
+  sub.Equals("tab-separated-values") ||
+  sub.Equals("vnd.in3d.spot") ||
+  sub.Equals("vnd.abc") ||
+  sub.Equals("vnd.wap.wmlscript") ||
+  sub.Equals("vnd.curl") ||
+  sub.Equals("vnd.fmi.flexstor") ||
+  sub.Equals("uri-list") ||
+  sub.Equals("vnd.si.uricatalogue")) {
+            return "us-ascii";
+          }
+          // Media types that assume a default of UTF-8
+          if (sub.Equals("vcard") ||
+  sub.Equals("jcr-cnd") ||
+  sub.Equals("n3") ||
+  sub.Equals("turtle") ||
+  sub.Equals("strings") ||
+  sub.Equals("vnd.debian.copyright") ||
+  sub.Equals("provenance-notation") ||
+  sub.Equals("csv") ||
+  sub.Equals("calendar") ||
+  sub.Equals("vnd.a") ||
+  sub.Equals("parameters") ||
+  sub.Equals("prs.fallenstein.rst") ||
+  sub.Equals("vnd.esmertec.theme.descriptor") ||
+  sub.Equals("vnd.trolltech.linguist") ||
+  sub.Equals("csv-schema") ||
+  sub.Equals("vnd.graphviz") ||
+  sub.Equals("cache-manifest") ||
+  sub.Equals("vnd.sun.j2me.app-descriptor")) {
+            return "utf-8";
+          }
         }
-        // Media types that assume a default of UTF-8
-        if (sub.Equals("vcard") ||
-sub.Equals("jcr-cnd") ||
-sub.Equals("n3") ||
-sub.Equals("turtle") ||
-sub.Equals("strings") ||
-sub.Equals("vnd.debian.copyright") ||
-sub.Equals("provenance-notation") ||
-sub.Equals("csv") ||
-sub.Equals("calendar") ||
-sub.Equals("vnd.a") ||
-sub.Equals("parameters") ||
-sub.Equals("prs.fallenstein.rst") ||
-sub.Equals("vnd.esmertec.theme.descriptor") ||
-sub.Equals("vnd.trolltech.linguist") ||
-sub.Equals("csv-schema") ||
-sub.Equals("vnd.graphviz") ||
-sub.Equals("cache-manifest") ||
-sub.Equals("vnd.sun.j2me.app-descriptor")) {
-          return "utf-8";
-        }
+        return String.Empty;
       }
-      return String.Empty;
-       }
     }
 
     /// <include file='../../docs.xml'
@@ -1187,34 +1187,34 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
         }
         builder.Remove(0, builder.Length);
         int qs;
-          // try getting the value quoted
-          qs = SkipQuotedString(
-            str,
-            index,
-            endIndex,
-            builder,
-            httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
-            if (!httpRules && qs != index) {
-            qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
+        // try getting the value quoted
+        qs = SkipQuotedString(
+          str,
+          index,
+          endIndex,
+          builder,
+          httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
+        if (!httpRules && qs != index) {
+          qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
+        }
+        if (qs != index) {
+          // If the attribute name ends with '*' the value may not be a quoted
+          // string because of RFC2231; if this happens, ignore the attribute
+          if (attribute[attribute.Length - 1] != '*' &&
+   (!hasDuplicateAttributes || !duplicateAttributes.ContainsKey(attribute))) {
+            parameters[attribute] = builder.ToString();
           }
-          if (qs != index) {
-            // If the attribute name ends with '*' the value may not be a quoted
-            // string because of RFC2231; if this happens, ignore the attribute
-            if (attribute[attribute.Length - 1] != '*' &&
-     (!hasDuplicateAttributes || !duplicateAttributes.ContainsKey(attribute))) {
-             parameters[attribute] = builder.ToString();
-            }
-            index = qs;
-            continue;
-          }
-          builder.Remove(0, builder.Length);
+          index = qs;
+          continue;
+        }
+        builder.Remove(0, builder.Length);
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);
         if (qs != index) {
-    if (!hasDuplicateAttributes ||
-            !duplicateAttributes.ContainsKey(attribute)) {
-             parameters[attribute] = builder.ToString();
+          if (!hasDuplicateAttributes ||
+                  !duplicateAttributes.ContainsKey(attribute)) {
+            parameters[attribute] = builder.ToString();
           }
           index = qs;
           continue;

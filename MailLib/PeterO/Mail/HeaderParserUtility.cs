@@ -29,8 +29,8 @@ namespace PeterO.Mail {
         ++index;
       } else {
         {
- return indexStart;
-}
+          return indexStart;
+        }
       }
       while (true) {
         indexTemp2 = index;
@@ -48,46 +48,49 @@ namespace PeterO.Mail {
         if (indexTemp2 != index) {
           index = indexTemp2;
         } else {
- break;
-}
+          break;
+        }
       }
       index = HeaderParser.ParseFWS(str, index, endIndex, null);
       if (index < endIndex && (str[index] == 34)) {
         ++index;
       } else {
         {
- return indexStart;
-}
+          return indexStart;
+        }
       }
       return index;
     }
 
     public static bool HasComments(string str, int startIndex, int endIndex) {
-       // Determines whether the string portion has comments.
-       // Assumes the portion of the string is a syntactically valid
-       // header field according to the Parse method of the header
-       // field in question (except that comments may be allowed within white
-       // space), and that parentheses can appear in that
-       // field only within quoted strings or as comment delimiters.
-       int index = startIndex;
-       while (index < endIndex) {
-           int c = str[index];
-           if (c == 0x28 || c == 0x29) {
-                // comment found
-                return true;
-           } else if (c == 0x22) {
-                // quoted string found, skip it
-                int
-  si = HeaderParserUtility.ParseQuotedStringCore(str, index, endIndex);
-  if (si == index) {
- throw new InvalidOperationException("Internal error: " + str);
-}
-index = si;
-           } else {
-               ++index;
-           }
-       }
-       return false;
+      // Determines whether the string portion has comments.
+      // Assumes the portion of the string is a syntactically valid
+      // header field according to the Parse method of the header
+      // field in question (except that comments may be allowed within white
+      // space), and that parentheses can appear in that
+      // field only within quoted strings or as comment delimiters.
+      int index = startIndex;
+      while (index < endIndex) {
+        int c = str[index];
+        if (c == 0x28 || c == 0x29) {
+          // comment found
+          return true;
+        } else if (c == 0x22) {
+          // quoted string found, skip it
+          int
+si = HeaderParserUtility.ParseQuotedStringCore(
+      str,
+      index,
+      endIndex);
+          if (si == index) {
+            throw new InvalidOperationException("Internal error: " + str);
+          }
+          index = si;
+        } else {
+          ++index;
+        }
+      }
+      return false;
     }
 
     public static void TraverseCFWSAndQuotedStrings(
@@ -95,42 +98,42 @@ index = si;
   int startIndex,
   int endIndex,
   ITokener tokener) {
-       // Fills a tokener with "comment" and "quoted-string"
-       // tokens. Assumes the portion of the string is a syntactically valid
-       // header field according to the Parse method of the header
-       // field in question.
+      // Fills a tokener with "comment" and "quoted-string"
+      // tokens. Assumes the portion of the string is a syntactically valid
+      // header field according to the Parse method of the header
+      // field in question.
       if (tokener != null) {
-       int index = startIndex;
-       while (index < endIndex) {
-           int c = str[index];
-           if (c == 0x20 || c == 0x0d || c == 0x0a || c == 0x28 || c == 0x29) {
-                // Whitespace or parentheses
-                int state = tokener.GetState();
-                int si = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
-                if (si == index) {
- throw new InvalidOperationException("Internal error: " + str);
-}
-                if (si < endIndex && str[si] == (char)0x22) {
-                    // Note that quoted-string starts with optional CFWS
-                    tokener.RestoreState(state);
-                    si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
-                    if (si == index) {
- throw new InvalidOperationException("Internal error: " + str);
-}
-                }
-                index = si;
+        int index = startIndex;
+        while (index < endIndex) {
+          int c = str[index];
+          if (c == 0x20 || c == 0x0d || c == 0x0a || c == 0x28 || c == 0x29) {
+            // Whitespace or parentheses
+            int state = tokener.GetState();
+            int si = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+            if (si == index) {
+              throw new InvalidOperationException("Internal error: " + str);
+            }
+            if (si < endIndex && str[si] == (char)0x22) {
+              // Note that quoted-string starts with optional CFWS
+              tokener.RestoreState(state);
+              si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+              if (si == index) {
+                throw new InvalidOperationException("Internal error: " + str);
+              }
+            }
+            index = si;
           } else if (c == 0x22) {
-             int
-  si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
-  if (si == index) {
- throw new InvalidOperationException("Internal error: " + str);
-}
-index = si;
-           } else {
-                ++index;
-           }
-       }
-       }
+            int
+ si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+            if (si == index) {
+              throw new InvalidOperationException("Internal error: " + str);
+            }
+            index = si;
+          } else {
+            ++index;
+          }
+        }
+      }
     }
 
     public static string ParseGroupList(string str, int index, int endIndex) {
@@ -229,10 +232,10 @@ index = si;
             int startQuote = index;
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
-       builder.Append(
-  str.Substring(
-  startQuote + 1,
-  index - (startQuote + 1)));
+              builder.Append(
+         str.Substring(
+         startQuote + 1,
+         index - (startQuote + 1)));
             } else {
               ++index;
             }
@@ -264,13 +267,13 @@ index = si;
             addresses.Add(ParseGroup(str, tokenIndex, tokenEnd, tokens));
             lastIndex = tokenEnd;
           } else if (tokenKind == TokenMailbox) {
- // try {
-              addresses.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
-// } catch (IndexOutOfRangeException ex) {
-// throw new InvalidOperationException(
-  // "str=" + str + " index=" + index, // ex);
-  // }
-  lastIndex = tokenEnd;
+            // try {
+            addresses.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
+            // } catch (IndexOutOfRangeException ex) {
+            // throw new InvalidOperationException(
+            // "str=" + str + " index=" + index, // ex);
+            // }
+            lastIndex = tokenEnd;
           }
         }
       }
@@ -284,8 +287,8 @@ index = si;
   StringBuilder builder) {
       // NOTE: Assumes all CFWS has been read beforehand
       if (index == endIndex) {
- return index;
-}
+        return index;
+      }
       if (str[index] == '"') {
         // May be a quoted string
         return MediaType.SkipQuotedString(str, index, endIndex, builder);
@@ -293,8 +296,8 @@ index = si;
         // May be an atom
         int si = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
         if (si != index) {
- builder.Append(str.Substring(index, si - index));
-}
+          builder.Append(str.Substring(index, si - index));
+        }
         return si;
       }
     }
@@ -387,14 +390,14 @@ index = si;
           }
         }
       }
-      #if DEBUG
+#if DEBUG
       if (localPart == null) {
         throw new ArgumentException("localPart is null");
       }
       if (domain == null) {
         throw new ArgumentException("domain is null");
       }
-      #endif
+#endif
 
       return new NamedAddress(displayName, localPart, domain);
     }
@@ -417,23 +420,23 @@ index = si;
         index = HeaderParser.ParseFWS(str, index, endIndex, null);
         bool backslash = index < endIndex && str[index] == '\\';
         if (backslash) {
- ++index;
-}
-if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
-  (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
- index += 2;
-} else if (!backslash && index < endIndex && ((str[index] >= 1 && str[index]
-  <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 &&
-  str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) || (str[index]
-  >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
- ++index;
-} else if (backslash && index < endIndex && ((str[index] >= 0 && str[index]
-  <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+          ++index;
+        }
+        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
+          (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+          index += 2;
+        } else if (!backslash && index < endIndex && ((str[index] >= 1 && str[index]
+          <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 &&
+          str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) || (str[index]
+          >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 55295) ||
+          (str[index] >= 57344 && str[index] <= 65535))) {
+          ++index;
+        } else if (backslash && index < endIndex && ((str[index] >= 0 && str[index]
+          <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
- ++index;
-} else if (index < endIndex && str[index] == 41) {
+          ++index;
+        } else if (index < endIndex && str[index] == 41) {
           // End of current comment
           ++index;
           if (depth == 0) {
@@ -489,20 +492,21 @@ if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
                     int indexStart4 = index;
                     while (index < endIndex && ((str[index] == 32) || (str[index] ==
                     9))) {
-                    ++index;
+                      ++index;
                     }
                     if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
                     10) {
-                    index += 2;
+                      index += 2;
                     } else {
-                    index = indexStart4; break;
+                      index = indexStart4; break;
                     }
                     indexTemp4 = index;
                     index = indexStart4;
                   } while (false);
                   if (indexTemp4 != index) {
                     index = indexTemp4;
-                  } else { break;
+                  } else {
+                    break;
                   }
                 } while (false);
                 if (index < endIndex && ((str[index] == 32) || (str[index] ==
@@ -520,7 +524,8 @@ if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
-              } else { break;
+              } else {
+                break;
               }
             } while (false);
             do {
@@ -548,26 +553,26 @@ if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
                     int indexTemp5;
                     indexTemp5 = index;
                     do {
-                    if (index < endIndex && ((str[index] == 32) ||
-                    (str[index] == 9) || (str[index] >= 128 &&
-                    str[index] <= 55295) || (str[index] >= 57344 &&
-                    str[index] <= 65535))) {
-                    ++indexTemp5; break;
-                    }
-                    if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                    str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                    str[index + 1] <= 57343))) {
-                    indexTemp5 += 2; break;
-                    }
-                    if (index < endIndex && (str[index] >= 33 && str[index] <=
-                    126)) {
-                    ++indexTemp5; break;
-                    }
+                      if (index < endIndex && ((str[index] == 32) ||
+                      (str[index] == 9) || (str[index] >= 128 &&
+                      str[index] <= 55295) || (str[index] >= 57344 &&
+                      str[index] <= 65535))) {
+                        ++indexTemp5; break;
+                      }
+                      if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                      str[index + 1] <= 57343))) {
+                        indexTemp5 += 2; break;
+                      }
+                      if (index < endIndex && (str[index] >= 33 && str[index] <=
+                      126)) {
+                        ++indexTemp5; break;
+                      }
                     } while (false);
                     if (indexTemp5 != index) {
-                    index = indexTemp5;
+                      index = indexTemp5;
                     } else {
-                    index = indexStart4; break;
+                      index = indexStart4; break;
                     }
                   } while (false);
                   if (index == indexStart4) {
@@ -626,7 +631,8 @@ if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
-              } else { break;
+              } else {
+                break;
               }
             } while (false);
             if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
@@ -643,7 +649,8 @@ if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         if (index < endIndex && str[index] == 41) {

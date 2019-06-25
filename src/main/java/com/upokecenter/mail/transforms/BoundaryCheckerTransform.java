@@ -27,13 +27,13 @@ import com.upokecenter.mail.*;
 
     private void StartInnerBuffer() {
       if (this.innerBufferCount > 0) {
-System.arraycopy(
-  this.innerBuffer,
-  this.innerBufferIndex,
-  this.innerBuffer,
-  0,
-  this.innerBufferCount - this.innerBufferIndex);
-  this.innerBufferCount -= this.innerBufferIndex;
+        System.arraycopy(
+          this.innerBuffer,
+          this.innerBufferIndex,
+          this.innerBuffer,
+          0,
+          this.innerBufferCount - this.innerBufferIndex);
+        this.innerBufferCount -= this.innerBufferIndex;
       }
       this.innerBufferIndex = 0;
     }
@@ -232,8 +232,8 @@ System.arraycopy(
             // CR might signal next boundary or not
             c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
- unget = true;
-}
+              unget = true;
+            }
             if (c == 0x0a) {
               // Start of new body part
               this.StartInnerBuffer();
@@ -264,8 +264,8 @@ System.arraycopy(
           if (c == 0x0d) {
             c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
- unget = true;
-}
+              unget = true;
+            }
             if (c == 0x0a) {
               // Start of new body part
               this.hasNewBodyPart = true;
@@ -289,7 +289,7 @@ System.arraycopy(
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
       this.boundaries.add(boundary);
-      this.started = true;  // in case a boundary delimiter immediately starts
+      this.started = true; // in case a boundary delimiter immediately starts
     }
 
     /**

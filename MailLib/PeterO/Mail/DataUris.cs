@@ -3,16 +3,16 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.DataUris"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.DataUris"]/*'/>
   public static class DataUris {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
     public static MediaType DataUriMediaType(string uri) {
-  string url = uri;
-  string[] parts = URIUtility.SplitIRIToStrings(
-        url);
-        if (parts == null || parts[0] == null || parts[2] == null) {
+      string url = uri;
+      string[] parts = URIUtility.SplitIRIToStrings(
+            url);
+      if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       string path = parts[2];
@@ -81,10 +81,10 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
     public static byte[] DataUriBytes(string uri) {
-  string url = uri;
-  string[] parts = URIUtility.SplitIRIToStrings(
-        url);
-        if (parts == null || parts[0] == null || parts[2] == null) {
+      string url = uri;
+      string[] parts = URIUtility.SplitIRIToStrings(
+            url);
+      if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
       string path = parts[2];
@@ -117,9 +117,9 @@ namespace PeterO.Mail {
             }
           }
           if (hasPercent) {
-  payload = URIUtility.PercentDecode(
-    path.Substring(mediaTypePart + 1, path.Length - (mediaTypePart + 1)));
-  payloadIndex = 0;
+            payload = URIUtility.PercentDecode(
+              path.Substring(mediaTypePart + 1, path.Length - (mediaTypePart + 1)));
+            payloadIndex = 0;
           }
           base64Length = payload.Length - payloadIndex;
           if ((base64Length % 4) != 0) {
@@ -217,12 +217,12 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.String)"]/*'/>
     public static string MakeDataUri(string textString) {
-if (textString == null) {
-  throw new ArgumentNullException(nameof(textString));
-}
-return MakeDataUri(
-  DataUtilities.GetUtf8Bytes(textString, true),
-  MediaType.Parse("text/plain;charset=utf-8"));
+      if (textString == null) {
+        throw new ArgumentNullException(nameof(textString));
+      }
+      return MakeDataUri(
+        DataUtilities.GetUtf8Bytes(textString, true),
+        MediaType.Parse("text/plain;charset=utf-8"));
     }
 
     /// <include file='../../docs.xml'

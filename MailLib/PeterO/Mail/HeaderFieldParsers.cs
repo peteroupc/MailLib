@@ -312,19 +312,19 @@ namespace PeterO.Mail {
             continue;
           }
           if (token[0] == HeaderParserUtility.TokenDomain) {
-                    string domain = EncodeDomain(str, token[1], token[2]);
-                    if (domain != null) {
-                    // Treat only domain literals and dot-atoms with
-                    // at least one dot as domains (this is primarily used
-                    // for the Received header field, where RFC 5322 atoms not
-                    // separated by dots are treated as words, not domains)
-                    if (str[token[1]] == '[' || domain.IndexOf('.') >= 0) {
-            enc.AppendString(str, lastIndex, token[1]);
-            enc.AppendString(domain);
-            lastIndex = token[2];
-                    }
-                  }
+            string domain = EncodeDomain(str, token[1], token[2]);
+            if (domain != null) {
+              // Treat only domain literals and dot-atoms with
+              // at least one dot as domains (this is primarily used
+              // for the Received header field, where RFC 5322 atoms not
+              // separated by dots are treated as words, not domains)
+              if (str[token[1]] == '[' || domain.IndexOf('.') >= 0) {
+                enc.AppendString(str, lastIndex, token[1]);
+                enc.AppendString(domain);
+                lastIndex = token[2];
               }
+            }
+          }
         }
         enc.AppendString(str, lastIndex, str.Length);
         return enc.ToString();
@@ -383,9 +383,9 @@ namespace PeterO.Mail {
                     // Domain within the mailbox
                     string domain = EncodeDomain(str, token2[1], token2[2]);
                     if (domain == null) {
-                    // ASCII encoding failed
-                    nonasciiDomains = true;
-                    break;
+                      // ASCII encoding failed
+                      nonasciiDomains = true;
+                      break;
                     }
                     sb2.Append(
                     str.Substring(
@@ -557,31 +557,31 @@ namespace PeterO.Mail {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
       private static string TrimFWSFromRight(string str) {
-      if (String.IsNullOrEmpty(str)) {
-        return str;
-      }
-      var index = 0;
-      int valueSLength = str.Length;
-      int indexStart = index;
-      index = str.Length - 1;
-      while (index >= 0) {
-        char c = str[index];
-        if (c == 0x0a && index >= 1 && str[index - 1] == 0x0d) {
-           // CRLF
-           index -= 2;
-        } else if (c == 0x09 || c == 0x20) {
-          --index;
-        } else {
-          int indexEnd = index + 1;
-          if (indexEnd == indexStart) {
-            return String.Empty;
-          }
-          return (indexEnd == str.Length && indexStart == 0) ? str :
-            str.Substring(indexStart, indexEnd - indexStart);
+        if (String.IsNullOrEmpty(str)) {
+          return str;
         }
+        var index = 0;
+        int valueSLength = str.Length;
+        int indexStart = index;
+        index = str.Length - 1;
+        while (index >= 0) {
+          char c = str[index];
+          if (c == 0x0a && index >= 1 && str[index - 1] == 0x0d) {
+            // CRLF
+            index -= 2;
+          } else if (c == 0x09 || c == 0x20) {
+            --index;
+          } else {
+            int indexEnd = index + 1;
+            if (indexEnd == indexStart) {
+              return String.Empty;
+            }
+            return (indexEnd == str.Length && indexStart == 0) ? str :
+              str.Substring(indexStart, indexEnd - indexStart);
+          }
+        }
+        return String.Empty;
       }
-      return String.Empty;
-    }
 
       private static bool IsCFWSWordCFWS(
   string str,
@@ -628,71 +628,71 @@ namespace PeterO.Mail {
         var sb = new StringBuilder();
         int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.Length, null);
         while (index < header.Length) {
-         int newindex = HeaderParser.ParseReceivedToken(
-  header,
-  index,
-  header.Length,
-  null);
-         if (newindex == index) {
-           tokenEnd = HeaderParser.ParseCFWS(
-             header,
-             index,
-             header.Length,
-             null);
-           sb.Append(header.Substring(index, tokenEnd - index));
-           break;
-         }
-         if (IsCFWSWordCFWS(header, index, newindex, "for")) {
-           var tokener = new Tokener();
-           int clauseEnd = HeaderParser.ParseReceivedToken(
-               header,
-               newindex,
-               header.Length,
-               tokener);
-           IList<int[]> tokens = tokener.GetTokens();
-           var notGoodLocalPart = false;
-           foreach (int[] token in tokens) {
-             if (token[0] == HeaderParserUtility.TokenLocalPart) {
-               if (Message.HasTextToEscape(header, token[1], token[2])) {
-                 notGoodLocalPart = true;
-                 break;
-               }
-             }
-           }
-           if (notGoodLocalPart) {
-             changed = true;
-           } else {
-             sb.Append(header.Substring(index, clauseEnd - index));
-           }
-           index = clauseEnd;
-         } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
-           int clauseEnd = HeaderParser.ParseReceivedToken(
-               header,
-               newindex,
-               header.Length,
-               null);
-           if (Message.HasTextToEscape(header, index, clauseEnd)) {
-             changed = true;
-           } else {
-             sb.Append(header.Substring(index, clauseEnd - index));
-           }
-           index = clauseEnd;
-         } else {
-           sb.Append(header.Substring(index, newindex - index));
-           index = newindex;
-         }
-       }
-       string receivedPart = sb.ToString();
-       string datePart = header.Substring(tokenEnd);
-       if (changed) {
-         receivedPart = TrimFWSFromRight(receivedPart);
-         return new HeaderEncoder().AppendFieldName(name)
-            .AppendString(receivedPart + datePart).ToString();
-       } else {
-         return new HeaderEncoder().AppendFieldName(name).ToString() +
-            str;
-       }
-     }
+          int newindex = HeaderParser.ParseReceivedToken(
+   header,
+   index,
+   header.Length,
+   null);
+          if (newindex == index) {
+            tokenEnd = HeaderParser.ParseCFWS(
+              header,
+              index,
+              header.Length,
+              null);
+            sb.Append(header.Substring(index, tokenEnd - index));
+            break;
+          }
+          if (IsCFWSWordCFWS(header, index, newindex, "for")) {
+            var tokener = new Tokener();
+            int clauseEnd = HeaderParser.ParseReceivedToken(
+                header,
+                newindex,
+                header.Length,
+                tokener);
+            IList<int[]> tokens = tokener.GetTokens();
+            var notGoodLocalPart = false;
+            foreach (int[] token in tokens) {
+              if (token[0] == HeaderParserUtility.TokenLocalPart) {
+                if (Message.HasTextToEscape(header, token[1], token[2])) {
+                  notGoodLocalPart = true;
+                  break;
+                }
+              }
+            }
+            if (notGoodLocalPart) {
+              changed = true;
+            } else {
+              sb.Append(header.Substring(index, clauseEnd - index));
+            }
+            index = clauseEnd;
+          } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
+            int clauseEnd = HeaderParser.ParseReceivedToken(
+                header,
+                newindex,
+                header.Length,
+                null);
+            if (Message.HasTextToEscape(header, index, clauseEnd)) {
+              changed = true;
+            } else {
+              sb.Append(header.Substring(index, clauseEnd - index));
+            }
+            index = clauseEnd;
+          } else {
+            sb.Append(header.Substring(index, newindex - index));
+            index = newindex;
+          }
+        }
+        string receivedPart = sb.ToString();
+        string datePart = header.Substring(tokenEnd);
+        if (changed) {
+          receivedPart = TrimFWSFromRight(receivedPart);
+          return new HeaderEncoder().AppendFieldName(name)
+             .AppendString(receivedPart + datePart).ToString();
+        } else {
+          return new HeaderEncoder().AppendFieldName(name).ToString() +
+             str;
+        }
+      }
     }
 
     private sealed class HeaderContentDisposition : StructuredHeaderField {

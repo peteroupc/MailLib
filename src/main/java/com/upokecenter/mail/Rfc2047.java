@@ -205,13 +205,13 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
           }
         }
         if (builder.length() == 0) {
-            for (int k = parenStart; k < parenEnd; ++k) {
-              enc.AppendSymbol(str.substring(k, (k)+(1)));
-            }
-            break;
+          for (int k = parenStart; k < parenEnd; ++k) {
+            enc.AppendSymbol(str.substring(k, (k)+(1)));
+          }
+          break;
         }
         for (int k = parenStart; k < parenEnd; ++k) {
-              enc.AppendSymbol(str.substring(k, (k)+(1)));
+          enc.AppendSymbol(str.substring(k, (k)+(1)));
         }
         enc.AppendAsEncodedWords(builder.toString());
       }
@@ -340,8 +340,8 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
             // with length up to 75 (also exclude '(' , '\', and ')' if the
             // context is a comment)
             if (c >= 0x21 && c < 0x7e && (context !=
-          EncodedWordContext.Comment || (c != '(' && c != ')' && c != '\\'
-))) {
+          EncodedWordContext.Comment || (c != '(' && c != ')' &&
+                                         c != '\\'))) {
               ++charCount;
               if (charCount > 75) {
                 maybeWord = false;
@@ -388,8 +388,8 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
   afterLast,
   context,
   encodingChar);
-  if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
-                i2 + 2 == afterLast) {
+                  if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
+                                i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -440,8 +440,8 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                  hasSuspiciousText |= context == EncodedWordContext.Comment &&
-                HasSuspiciousTextInComments(decodedWord);
+                    hasSuspiciousText |= context == EncodedWordContext.Comment &&
+                  HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
                 }
@@ -482,7 +482,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
           char c = str.charAt(index);
           if (c == 0x0d && index + 2 < endIndex && str.charAt(index + 1) == 0x0a &&
                    (str.charAt(index + 2) == 0x09 || str.charAt(index + 2) == 0x20)) {
-            index += 2;  // skip the CRLF break;
+            index += 2; // skip the CRLF break;
           }
           if (c == 0x09 || c == 0x20) {
             break;
@@ -725,7 +725,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
       // Assumes the value matches the production "phrase"
       // and that there are no comments in the value
       if (index == endIndex) {
-        return;  // Empty, so nothing to do
+        return; // Empty, so nothing to do
       }
       int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (index2 == endIndex) {
@@ -804,8 +804,8 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
       }
       int lastIndex = index;
       for (int[] token : tokens) {
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+        if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
+              token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {

@@ -27,20 +27,20 @@ namespace PeterO.Mail.Transforms {
 
     private void StartInnerBuffer() {
       if (this.innerBufferCount > 0) {
-        #if DEBUG
-if (this.innerBufferCount < this.innerBufferIndex) {
-  throw new ArgumentException("this.innerBufferCount (" +
-    this.innerBufferCount + ") is less than " +
-    this.innerBufferIndex);
-}
+#if DEBUG
+        if (this.innerBufferCount < this.innerBufferIndex) {
+          throw new ArgumentException("this.innerBufferCount (" +
+            this.innerBufferCount + ") is less than " +
+            this.innerBufferIndex);
+        }
 #endif
-Array.Copy(
-  this.innerBuffer,
-  this.innerBufferIndex,
-  this.innerBuffer,
-  0,
-  this.innerBufferCount - this.innerBufferIndex);
-  this.innerBufferCount -= this.innerBufferIndex;
+        Array.Copy(
+          this.innerBuffer,
+          this.innerBufferIndex,
+          this.innerBuffer,
+          0,
+          this.innerBufferCount - this.innerBufferIndex);
+        this.innerBufferCount -= this.innerBufferIndex;
       }
       this.innerBufferIndex = 0;
     }
@@ -239,8 +239,8 @@ Array.Copy(
             // CR might signal next boundary or not
             c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
- unget = true;
-}
+              unget = true;
+            }
             if (c == 0x0a) {
               // Start of new body part
               this.StartInnerBuffer();
@@ -271,8 +271,8 @@ Array.Copy(
           if (c == 0x0d) {
             c = this.InnerBufferRead();
             if (c == 0x0d || c < 0) {
- unget = true;
-}
+              unget = true;
+            }
             if (c == 0x0a) {
               // Start of new body part
               this.hasNewBodyPart = true;
