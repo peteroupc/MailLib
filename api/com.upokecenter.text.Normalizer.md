@@ -10,8 +10,7 @@ Use NormalizerInput instead; that class is much more flexible than
 
 * `Normalizer​(java.lang.String str,
           Normalization form) Normalizer`<br>
- Deprecated. Initializes a new instance of the Normalizer
- class.
+ Deprecated. Initializes a new instance of the Normalizer class.
 * `static boolean IsNormalized​(java.lang.String str,
             Normalization form)`<br>
  Deprecated. Returns whether this string is normalized.
@@ -29,8 +28,7 @@ Use NormalizerInput instead; that class is much more flexible than
 
 * `Normalizer​(java.lang.String str,
           Normalization form) Normalizer`<br>
- Deprecated. Initializes a new instance of the Normalizer
- class.
+ Deprecated. Initializes a new instance of the Normalizer class.
 
 ## Method Details
 

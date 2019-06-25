@@ -135,7 +135,7 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 * <code>groupName</code> - The parameter <code>groupName</code> is a text string.
 
-* <code>mailboxes</code> - The parameter <code>mailboxes</code> is an IList object.
+* <code>mailboxes</code> - The parameter <code>mailboxes</code> is an List object.
 
 **Throws:**
 

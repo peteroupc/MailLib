@@ -118,16 +118,10 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    ///
-    /// <summary>Use HTTP rules for quoted strings.
-    /// </summary>
-    ///
+    /// <summary>Use HTTP rules for quoted strings.</summary>
       Http,
 
-    ///
-    /// <summary>Use Internet Message Format rules for quoted strings.
-    /// </summary>
-    ///
+    /// <summary>Use Internet Message Format rules for quoted strings.</summary>
       Rfc5322,
     }
 
@@ -1279,11 +1273,8 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       Justification="This instance is immutable")]
 #endif
 
-    ///
     /// <summary>Specifies the media type "text/plain" and the "charset" parameter
-    /// "US-ASCII", used for plain text data.
-    /// </summary>
-    ///
+    /// "US-ASCII", used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
   "text",
@@ -1298,12 +1289,9 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       Justification="This instance is immutable")]
 #endif
 
-    ///
     /// <summary>Specifies the media type "text/plain" and the "charset" parameter "utf-8",
     /// used for plain text data that may contain characters outside the basic
-    /// Latin range (U+0000 to U+007F).
-    /// </summary>
-    ///
+    /// Latin range (U+0000 to U+007F).</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
   "text",
@@ -1318,11 +1306,8 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       Justification="This instance is immutable")]
 #endif
 
-    ///
     /// <summary>Specifies the media type "message/rfc822", used for Internet mail
-    /// messages.
-    /// </summary>
-    ///
+    /// messages.</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
@@ -1333,11 +1318,8 @@ sub.Equals("vnd.sun.j2me.app-descriptor")) {
       Justification="This instance is immutable")]
 #endif
 
-    ///
     /// <summary>Specifies the media type "application/octet-stream", used for arbitrary
-    /// binary data.
-    /// </summary>
-    ///
+    /// binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 

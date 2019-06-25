@@ -188,24 +188,51 @@ namespace PeterO.Text {
     private int flushIndex;
     private readonly ICharacterInput iterator;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='str'>
+    /// The parameter
+    /// <paramref name='str'/>
+    /// is a text string.
+    /// </param>
     public NormalizerInput(
   string str) : this(
   str,
   Normalization.NFC) {
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='input'>
+    /// The parameter
+    /// <paramref name='input'/>
+    /// is an ICharacterInput object.
+    /// </param>
     public NormalizerInput(
   ICharacterInput input) : this(
   input,
   Normalization.NFC) {
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='str'>
+    /// The parameter
+    /// <paramref name='str'/>
+    /// is a text string.
+    /// </param>
+    /// <param name='index'>
+    /// The parameter
+    /// <paramref name='index'/>
+    /// is a 32-bit signed integer.
+    /// </param>
+    /// <param name='length'>
+    /// The parameter
+    /// <paramref name='length'/>
+    /// is a 32-bit signed integer.
+    /// </param>
+    /// <param name='form'>
+    /// The parameter
+    /// <paramref name='form'/>
+    /// is a Normalization object.
+    /// </param>
     public NormalizerInput(
   string str,
   int index,
@@ -215,14 +242,37 @@ namespace PeterO.Text {
   form) {
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='str'>
+    /// The parameter
+    /// <paramref name='str'/>
+    /// is a text string.
+    /// </param>
+    /// <param name='form'>
+    /// The parameter
+    /// <paramref name='form'/>
+    /// is a Normalization object.
+    /// </param>
     public NormalizerInput(string str, Normalization form)
       : this(new StringCharacterInput2(str), form) {
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='stream'>
+    /// The parameter
+    /// <paramref name='stream'/>
+    /// is an ICharacterInput object.
+    /// </param>
+    /// <param name='form'>
+    /// The parameter
+    /// <paramref name='form'/>
+    /// is a Normalization object.
+    /// </param>
+    /// <exception cref='T:System.ArgumentNullException'>
+    /// The parameter
+    /// <paramref name='stream'/>
+    /// is null.
+    /// </exception>
     public NormalizerInput(
    ICharacterInput stream,
    Normalization form) {

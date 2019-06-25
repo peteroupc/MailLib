@@ -35,8 +35,7 @@ at: http://peteroupc.github.io/
     private final NormalizerInput nci;
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.text.Normalizer}
-     * class.
+     * Initializes a new instance of the {@link Normalizer} class.
      * @param str The parameter {@code str} is a text string.
      * @param form The parameter {@code form} is a Normalization object.
      */

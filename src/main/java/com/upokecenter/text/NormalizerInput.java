@@ -827,7 +827,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         return false;
       }
       this.flushIndex = 0;
-       // DebugUtility.Log ("reordering " +  // (EC (buffer, 0, lastQcsIndex)) +
+       // DebugUtility.Log ("reordering " + // (EC (buffer, 0, lastQcsIndex)) +
       // " [" + this.form + "]");
       // Canonical reordering
       ReorderBuffer(this.buffer, 0, this.lastQcsIndex);

@@ -8678,45 +8678,45 @@ Assert.assertEquals(
     }
 
     private static void assertIdempotency(String s) {
-      boolean cond = URIUtility.isValidIRI(s);
+      boolean cond = URIUtility.IsValidIRI(s);
 
       if (!(cond)) {
  Assert.fail(s);
  }
 
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
   s,
   0);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 0),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 0),
           0);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
           s,
           1);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 1),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 1),
           1);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
           s,
           2);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 2),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 2),
           2);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
           s,
           3);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 3),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 3),
           3);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
@@ -8724,43 +8724,43 @@ Assert.assertEquals(
 
     private static void AssertIdempotencyNeg(
   String s) {
-      if ((boolean)URIUtility.isValidIRI(s)) {
+      if ((boolean)URIUtility.IsValidIRI(s)) {
        Assert.fail(s);
       }
 
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
           s,
           0);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 0),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 0),
           0);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
              s,
              1);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 1),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 1),
           1);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
   s,
   2);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 2),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 2),
           2);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
       {
-        String stringTemp = (String)URIUtility.escapeURI(
+        String stringTemp = (String)URIUtility.EscapeURI(
           s,
           3);
-        String stringTemp2 = (String)URIUtility.escapeURI(
-          (String)URIUtility.escapeURI(s, 3),
+        String stringTemp2 = (String)URIUtility.EscapeURI(
+          (String)URIUtility.EscapeURI(s, 3),
           3);
         Assert.assertEquals(stringTemp, stringTemp2);
       }
@@ -8770,7 +8770,7 @@ Assert.assertEquals(
       assertIdempotency(src);
       assertIdempotency(baseuri);
       assertIdempotency(dest);
-      String res = (String)URIUtility.relativeResolve(
+      String res = (String)URIUtility.RelativeResolve(
     src,
     baseuri);
       assertIdempotency(res);

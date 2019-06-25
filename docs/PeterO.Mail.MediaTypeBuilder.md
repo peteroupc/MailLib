@@ -20,15 +20,15 @@
     public MediaTypeBuilder(
         PeterO.Mail.MediaType mt);
 
- Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.    <b>Parameters:</b>
 
- * <i>mt</i>: The parameter  <i>mt</i>
+ * <i>mt</i>:  The parameter  <i>mt</i>
  is a MediaType object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>mt</i>
+ The parameter  <i>mt</i>
  is null.
 
 <a id="Void_ctor_String_String"></a>
@@ -38,12 +38,12 @@ The parameter  <i>mt</i>
         string type,
         string subtype);
 
- Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.    <b>Parameters:</b>
 
- * <i>type</i>: The parameter  <i>type</i>
+ * <i>type</i>:  The parameter  <i>type</i>
  is a text string.
 
- * <i>subtype</i>: The parameter  <i>subtype</i>
+ * <i>subtype</i>:  The parameter  <i>subtype</i>
  is a text string.
 
 <a id="Void_ctor"></a>

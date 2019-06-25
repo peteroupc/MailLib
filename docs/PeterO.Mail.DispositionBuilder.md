@@ -18,15 +18,15 @@
     public DispositionBuilder(
         PeterO.Mail.ContentDisposition mt);
 
- Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.    <b>Parameters:</b>
 
- * <i>mt</i>: The parameter  <i>mt</i>
+ * <i>mt</i>:  The parameter  <i>mt</i>
  is a ContentDisposition object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>mt</i>
+ The parameter  <i>mt</i>
  is null.
 
 <a id="Void_ctor_String"></a>
@@ -35,15 +35,15 @@ The parameter  <i>mt</i>
     public DispositionBuilder(
         string type);
 
- Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.    <b>Parameters:</b>
 
- * <i>type</i>: The parameter  <i>type</i>
+ * <i>type</i>:  The parameter  <i>type</i>
  is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>type</i>
+ The parameter  <i>type</i>
  is null.
 
 <a id="Void_ctor"></a>

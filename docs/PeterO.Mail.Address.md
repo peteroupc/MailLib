@@ -15,19 +15,19 @@
     public Address(
         string addressValue);
 
- Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.     <b>Parameters:</b>
 
- * <i>addressValue</i>: The parameter  <i>addressValue</i>
+ * <i>addressValue</i>:  The parameter  <i>addressValue</i>
  is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>addressValue</i>
+ The parameter  <i>addressValue</i>
  is null.
 
  * System.ArgumentException:
-AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
+ AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
 
 <a id="Domain"></a>
 ### Domain

@@ -119,7 +119,7 @@ Deprecated.
 
 **Parameters:**
 
-* <code>characterList</code> - The parameter <code>characterList</code> is an IList object.
+* <code>characterList</code> - The parameter <code>characterList</code> is an List object.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput​(java.util.List<java.lang.Integer> characterList, Normalization form)
@@ -127,7 +127,7 @@ Deprecated.
 
 **Parameters:**
 
-* <code>characterList</code> - The parameter <code>characterList</code> is an IList object.
+* <code>characterList</code> - The parameter <code>characterList</code> is an List object.
 
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 

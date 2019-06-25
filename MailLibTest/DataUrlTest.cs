@@ -8672,7 +8672,7 @@ Assert.AreEqual(
     }
 
     private static void assertIdempotency(string s) {
-      bool cond = URIUtility.isValidIRI(s);
+      bool cond = URIUtility.IsValidIRI(s);
 
       Assert.IsTrue(cond, s);
 
@@ -8716,7 +8716,7 @@ Assert.AreEqual(
 
     private static void AssertIdempotencyNeg(
   string s) {
-      if ((bool)URIUtility.isValidIRI(s)) {
+      if ((bool)URIUtility.IsValidIRI(s)) {
        Assert.Fail(s);
       }
 
@@ -8762,7 +8762,7 @@ Assert.AreEqual(
       assertIdempotency(src);
       assertIdempotency(baseuri);
       assertIdempotency(dest);
-      var res = (string)URIUtility.relativeResolve(
+      var res = (string)URIUtility.RelativeResolve(
     src,
     baseuri);
       assertIdempotency(res);

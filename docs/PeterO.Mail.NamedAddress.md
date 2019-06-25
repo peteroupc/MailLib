@@ -20,19 +20,19 @@
     public NamedAddress(
         string address);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.     <b>Parameters:</b>
 
- * <i>address</i>: The parameter  <i>address</i>
+ * <i>address</i>:  The parameter  <i>address</i>
  is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>address</i>
+ The parameter  <i>address</i>
  is null.
 
  * System.ArgumentException:
-Address has an invalid syntax.; Address has an invalid syntax.
+ Address has an invalid syntax.; Address has an invalid syntax.
 
 <a id="Void_ctor_String_Address"></a>
 ### NamedAddress Constructor
@@ -41,18 +41,18 @@ Address has an invalid syntax.; Address has an invalid syntax.
         string displayName,
         PeterO.Mail.Address address);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.     <b>Parameters:</b>
 
- * <i>displayName</i>: The parameter  <i>displayName</i>
+ * <i>displayName</i>:  The parameter  <i>displayName</i>
  is a text string.
 
- * <i>address</i>: The parameter  <i>address</i>
+ * <i>address</i>:  The parameter  <i>address</i>
  is an Address object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>address</i>
+ The parameter  <i>address</i>
  is null.
 
 <a id="Void_ctor_String_String"></a>
@@ -62,18 +62,18 @@ The parameter  <i>address</i>
         string displayName,
         string address);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.     <b>Parameters:</b>
 
- * <i>displayName</i>: The parameter  <i>displayName</i>
+ * <i>displayName</i>:  The parameter  <i>displayName</i>
  is a text string.
 
- * <i>address</i>: The parameter  <i>address</i>
+ * <i>address</i>:  The parameter  <i>address</i>
  is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>address</i>
+ The parameter  <i>address</i>
  is null.
 
 <a id="Void_ctor_String_String_String"></a>
@@ -84,21 +84,21 @@ The parameter  <i>address</i>
         string localPart,
         string domain);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.      <b>Parameters:</b>
 
- * <i>displayName</i>: The parameter  <i>displayName</i>
+ * <i>displayName</i>:  The parameter  <i>displayName</i>
  is a text string.
 
- * <i>localPart</i>: The parameter  <i>localPart</i>
+ * <i>localPart</i>:  The parameter  <i>localPart</i>
  is a text string.
 
- * <i>domain</i>: The parameter  <i>domain</i>
+ * <i>domain</i>:  The parameter  <i>domain</i>
  is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>localPart</i>
+ The parameter  <i>localPart</i>
  or  <i>domain</i>
  is null.
 
@@ -109,23 +109,23 @@ The parameter  <i>localPart</i>
         string groupName,
         System.Collections.Generic.IList mailboxes);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.      <b>Parameters:</b>
 
- * <i>groupName</i>: The parameter  <i>groupName</i>
+ * <i>groupName</i>:  The parameter  <i>groupName</i>
  is a text string.
 
- * <i>mailboxes</i>: The parameter  <i>mailboxes</i>
+ * <i>mailboxes</i>:  The parameter  <i>mailboxes</i>
  is an IList object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>groupName</i>
+ The parameter  <i>groupName</i>
  or  <i>mailboxes</i>
  is null.
 
  * System.ArgumentException:
-GroupName is empty.; A mailbox in the list is a group.
+ GroupName is empty.; A mailbox in the list is a group.
 
 <a id="Address"></a>
 ### Address

@@ -136,8 +136,22 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='Address'/> class.</summary>
+    /// <param name='addressValue'>
+    /// The parameter
+    /// <paramref name='addressValue'/>
+    /// is a text string.
+    /// </param>
+    /// <exception cref='T:System.ArgumentNullException'>
+    /// The parameter
+    /// <paramref name='addressValue'/>
+    /// is null.
+    /// </exception>
+    /// <exception cref='T:System.ArgumentException'>
+    /// AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local
+    /// part; Expected '@' sign after local part; Expected domain after '@';
+    /// Invalid domain; Address too long.
+    /// </exception>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException(nameof(addressValue));

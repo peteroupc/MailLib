@@ -280,7 +280,7 @@ import com.upokecenter.text.*;
   String str,
   int index,
   int endIndex,
-  StringBuilder builder,  // receives the unescaped version of the String
+  StringBuilder builder, // receives the unescaped version of the String
   QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.length();
@@ -290,7 +290,7 @@ import com.upokecenter.text.*;
         if (builder != null) {
           builder.setLength(valueBLength);
         }
-        return startIndex;  // not a valid quoted-String
+        return startIndex; // not a valid quoted-String
       }
       ++index;
       while (index < endIndex) {
@@ -309,7 +309,7 @@ import com.upokecenter.text.*;
         }
         index = i2;
         char c = str.charAt(index);
-        if (c == '"') {  // end of quoted-String
+        if (c == '"') { // end of quoted-String
           ++index;
           // NOTE: Don't skip CFWS even if the rule is Rfc5322
           return index;
@@ -331,7 +331,7 @@ import com.upokecenter.text.*;
       if (builder != null) {
         builder.delete(valueBLength, (valueBLength)+(builder.length() - valueBLength));
       }
-      return startIndex;  // not a valid quoted-String
+      return startIndex; // not a valid quoted-String
     }
 
     private static boolean IsAttributeChar(int c) {
@@ -414,7 +414,7 @@ import com.upokecenter.text.*;
           PctAppend(sb, 0x80 | ((c >> 12) & 0x3f));
           PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
           PctAppend(sb, 0x80 | (c & 0x3f));
-          ++index;  // Because it uses 2 surrogates
+          ++index; // Because it uses 2 surrogates
         }
         ++index;
         column += contin;
@@ -1203,7 +1203,7 @@ sub.equals("vnd.sun.j2me.app-descriptor")) {
           endIndex,
           builder,
           httpRules);
-        if (afteratt == index) {  // ill-formed attribute
+        if (afteratt == index) { // ill-formed attribute
           return false;
         }
         String attribute = builder.toString();

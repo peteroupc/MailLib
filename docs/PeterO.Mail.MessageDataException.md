@@ -13,9 +13,9 @@
     public MessageDataException(
         string message);
 
- Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.   <b>Parameters:</b>
 
- * <i>message</i>: The parameter  <i>message</i>
+ * <i>message</i>:  The parameter  <i>message</i>
  is a text string.
 
 <a id="Void_ctor_String_Exception"></a>
@@ -25,12 +25,12 @@
         string message,
         System.Exception innerException);
 
- Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.    <b>Parameters:</b>
 
- * <i>message</i>: The parameter  <i>message</i>
+ * <i>message</i>:  The parameter  <i>message</i>
  is a text string.
 
- * <i>innerException</i>: The parameter  <i>innerException</i>
+ * <i>innerException</i>:  The parameter  <i>innerException</i>
  is an Exception object.
 
 <a id="Void_ctor"></a>

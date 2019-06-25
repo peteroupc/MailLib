@@ -54,8 +54,17 @@ namespace PeterO.Mail {
 
     private int transferEncoding;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='Message'/> class.</summary>
+    /// <param name='stream'>
+    /// The parameter
+    /// <paramref name='stream'/>
+    /// is a Stream object.
+    /// </param>
+    /// <exception cref='T:System.ArgumentNullException'>
+    /// The parameter
+    /// <paramref name='stream'/>
+    /// is null.
+    /// </exception>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -67,8 +76,15 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='Message'/> class.</summary>
+    /// <param name='bytes'>
+    /// A byte array.
+    /// </param>
+    /// <exception cref='T:System.ArgumentNullException'>
+    /// The parameter
+    /// <paramref name='bytes'/>
+    /// is null.
+    /// </exception>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -80,8 +96,7 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='Message'/> class.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -1093,9 +1108,9 @@ prefaceBody; for (var i = 0; i < messages.Count; ++i) {
         MediaType mt = MediaType.Parse("message/rfc822");
         string msgstring = messages[i].Generate();
         if (msgstring.IndexOf("\r\n--", StringComparison.Ordinal) >= 0 || (
-          msgstring.Length >=2 &&
-             msgstring[0] =='-' &&
-             msgstring[1] =='-')) {
+          msgstring.Length >= 2 &&
+             msgstring[0] == '-' &&
+             msgstring[1] == '-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");

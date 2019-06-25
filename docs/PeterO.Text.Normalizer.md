@@ -21,12 +21,12 @@
         string str,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.    <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
+ * <i>str</i>:  The parameter  <i>str</i>
  is a text string.
 
- * <i>form</i>: The parameter  <i>form</i>
+ * <i>form</i>:  The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="IsNormalized_string_PeterO_Text_Normalization"></a>

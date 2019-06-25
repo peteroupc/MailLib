@@ -114,14 +114,14 @@
     public Message(
         byte[] bytes);
 
- Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.    <b>Parameters:</b>
 
- * <i>bytes</i>: A byte array.
+ * <i>bytes</i>:  A byte array.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>bytes</i>
+ The parameter  <i>bytes</i>
  is null.
 
 <a id="Void_ctor_Stream"></a>
@@ -130,15 +130,15 @@ The parameter  <i>bytes</i>
     public Message(
         System.IO.Stream stream);
 
- Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.    <b>Parameters:</b>
 
- * <i>stream</i>: The parameter  <i>stream</i>
+ * <i>stream</i>:  The parameter  <i>stream</i>
  is a Stream object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>stream</i>
+ The parameter  <i>stream</i>
  is null.
 
 <a id="Void_ctor"></a>

@@ -37,8 +37,7 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class.
+     * Initializes a new instance of the {@link DispositionBuilder} class.
      * @param mt The parameter {@code mt} is a ContentDisposition object.
      * @throws java.lang.NullPointerException The parameter {@code mt} is null.
      */
@@ -51,8 +50,7 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class.
+     * Initializes a new instance of the {@link DispositionBuilder} class.
      * @param type The parameter {@code type} is a text string.
      * @throws java.lang.NullPointerException The parameter {@code type} is null.
      */

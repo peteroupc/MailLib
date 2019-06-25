@@ -7,8 +7,7 @@ package com.upokecenter.mail;
      */
     public final class StringAndQuality {
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.StringAndQuality} class.
+     * Initializes a new instance of the {@link StringAndQuality} class.
      * @param value The parameter {@code value} is a text string.
      * @param quality The parameter {@code quality} is a 32-bit signed integer.
      */

@@ -280,7 +280,7 @@ import java.util.*;
     /**
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param groupName The parameter {@code groupName} is a text string.
-     * @param mailboxes The parameter {@code mailboxes} is an IList object.
+     * @param mailboxes The parameter {@code mailboxes} is an List object.
      * @throws java.lang.NullPointerException The parameter {@code groupName} or
      * {@code mailboxes} is null.
      * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list

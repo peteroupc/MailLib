@@ -21,8 +21,17 @@ namespace PeterO.Text {
 
     private readonly NormalizerInput nci;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Normalizer.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Initializes a new instance of the <see cref='Normalizer'/> class.</summary>
+    /// <param name='str'>
+    /// The parameter
+    /// <paramref name='str'/>
+    /// is a text string.
+    /// </param>
+    /// <param name='form'>
+    /// The parameter
+    /// <paramref name='form'/>
+    /// is a Normalization object.
+    /// </param>
     public Normalizer(string str, Normalization form) {
       this.nci = new NormalizerInput(str, form);
     }

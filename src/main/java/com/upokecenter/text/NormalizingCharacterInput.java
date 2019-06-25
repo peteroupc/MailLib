@@ -94,7 +94,7 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param characterList The parameter {@code characterList} is an IList object.
+     * @param characterList The parameter {@code characterList} is an List object.
      */
     public NormalizingCharacterInput(List<Integer> characterList) {
  this(characterList, Normalization.NFC);
@@ -102,7 +102,7 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param characterList The parameter {@code characterList} is an IList object.
+     * @param characterList The parameter {@code characterList} is an List object.
      * @param form The parameter {@code form} is a Normalization object.
      */
     public NormalizingCharacterInput(

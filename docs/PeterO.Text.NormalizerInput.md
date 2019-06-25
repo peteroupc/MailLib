@@ -42,9 +42,9 @@
     public NormalizerInput(
         PeterO.Text.ICharacterInput input);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.   <b>Parameters:</b>
 
- * <i>input</i>: The parameter  <i>input</i>
+ * <i>input</i>:  The parameter  <i>input</i>
  is an ICharacterInput object.
 
 <a id="Void_ctor_ICharacterInput_Normalization"></a>
@@ -54,18 +54,18 @@
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.     <b>Parameters:</b>
 
- * <i>stream</i>: The parameter  <i>stream</i>
+ * <i>stream</i>:  The parameter  <i>stream</i>
  is an ICharacterInput object.
 
- * <i>form</i>: The parameter  <i>form</i>
+ * <i>form</i>:  The parameter  <i>form</i>
  is a Normalization object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>stream</i>
+ The parameter  <i>stream</i>
  is null.
 
 <a id="Void_ctor_String"></a>
@@ -74,9 +74,9 @@ The parameter  <i>stream</i>
     public NormalizerInput(
         string str);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.   <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
+ * <i>str</i>:  The parameter  <i>str</i>
  is a text string.
 
 <a id="Void_ctor_String_Int32_Int32_Normalization"></a>
@@ -88,18 +88,18 @@ The parameter  <i>stream</i>
         int length,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.      <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
+ * <i>str</i>:  The parameter  <i>str</i>
  is a text string.
 
- * <i>index</i>: The parameter  <i>index</i>
+ * <i>index</i>:  The parameter  <i>index</i>
  is a 32-bit signed integer.
 
- * <i>length</i>: The parameter  <i>length</i>
+ * <i>length</i>:  The parameter  <i>length</i>
  is a 32-bit signed integer.
 
- * <i>form</i>: The parameter  <i>form</i>
+ * <i>form</i>:  The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="Void_ctor_String_Normalization"></a>
@@ -109,12 +109,12 @@ The parameter  <i>stream</i>
         string str,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.  <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.    <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
+ * <i>str</i>:  The parameter  <i>str</i>
  is a text string.
 
- * <i>form</i>: The parameter  <i>form</i>
+ * <i>form</i>:  The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>
