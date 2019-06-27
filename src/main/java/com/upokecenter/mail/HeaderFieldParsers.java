@@ -798,7 +798,8 @@ private HeaderFieldParsers() {
           return index;
         }
         int ret = (cd.getDispositionType().equals("no") ||
- cd.getDispositionType().equals("yes")) ? endIndex : index; if (ret ==
+ cd.getDispositionType().equals("yes")) ? endIndex : index;
+ if (ret ==
             endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
   str,
@@ -830,7 +831,8 @@ private HeaderFieldParsers() {
           index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
           tx2 = HeaderParser.ParsePathIdentity(str, index, endIndex, tokener);
           if (tx2 == index) {
-            index = indexStart; break;
+            index = indexStart;
+            break;
           } else {
             index = tx2;
           }

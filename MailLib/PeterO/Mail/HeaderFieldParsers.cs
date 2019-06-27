@@ -802,8 +802,9 @@ namespace PeterO.Mail {
           return index;
         }
         int ret = (cd.DispositionType.Equals("no") ||
- cd.DispositionType.Equals("yes")) ? endIndex : index; if (ret ==
-            endIndex) {
+ cd.DispositionType.Equals("yes")) ?
+          endIndex : index;
+        if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
   str,
   index,
@@ -834,7 +835,8 @@ namespace PeterO.Mail {
           index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
           tx2 = HeaderParser.ParsePathIdentity(str, index, endIndex, tokener);
           if (tx2 == index) {
-            index = indexStart; break;
+            index = indexStart;
+            break;
           } else {
             index = tx2;
           }
@@ -2255,16 +2257,16 @@ namespace PeterO.Mail {
       }
     }
 
-    private static IDictionary<string, IHeaderFieldParser> fieldMap =
-      CreateHeaderFieldList();
-
     private static readonly IHeaderFieldParser Unstructured = new
-      UnstructuredHeaderField();
+  UnstructuredHeaderField();
+
+    private static readonly IDictionary<string, IHeaderFieldParser> FieldMap =
+      CreateHeaderFieldList();
 
     private static IDictionary<string, IHeaderFieldParser>
       CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
-      fieldMap = new Dictionary<string, IHeaderFieldParser>();
+      var fieldMap = new Dictionary<string, IHeaderFieldParser>();
       fieldMap["content-disposition"] = new HeaderContentDisposition();
       fieldMap["content-type"] = new HeaderContentType();
       fieldMap["auto-submitted"] = new HeaderAutoSubmitted();
@@ -2426,7 +2428,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(name));
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      return fieldMap.ContainsKey(name) ? fieldMap[name] : Unstructured;
+      return FieldMap.ContainsKey(name) ? FieldMap[name] : Unstructured;
     }
   }
 }

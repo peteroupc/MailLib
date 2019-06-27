@@ -59,7 +59,7 @@ namespace PeterO.Text {
           if (part == null) {
             return null;
           }
-          sb = sb ?? (new StringBuilder());
+          sb = sb ?? new StringBuilder();
           sb.Append(part);
           while (i < str.Length) {
             if (str[i] != ' ') {
@@ -83,7 +83,7 @@ namespace PeterO.Text {
         if (part == null) {
           return null;
         }
-        sb = sb ?? (new StringBuilder());
+        sb = sb ?? new StringBuilder();
         sb.Append(part);
       }
       return sb.ToString();

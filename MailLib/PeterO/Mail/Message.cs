@@ -422,11 +422,11 @@ namespace PeterO.Mail {
       return (this.ContentType.TopLevelType.Equals("message") &&
           (this.ContentType.SubType.Equals("rfc822") ||
            this.ContentType.SubType.Equals("news") ||
-           this.ContentType.SubType.Equals("global"))) ? (new
-             Message(this.body)) : null;
+           this.ContentType.SubType.Equals("global"))) ?
+        new Message(this.body) : null;
     }
 
-    /// <include file='../../docs.xml'
+    /// <include file='../../docs.xml' 
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.Int32)"]/*'/>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
@@ -1032,8 +1032,8 @@ ext.Equals(".txt")) {
         throw new ArgumentException("messages.Count (" + messages.Count +
           ") is not equal to " + languages.Count);
       }
-      StringBuilder
-prefaceBody; for (var i = 0; i < messages.Count; ++i) {
+      StringBuilder prefaceBody;
+      for (var i = 0; i < messages.Count; ++i) {
         if (messages[i] == null) {
           throw new ArgumentException("messages");
         }
@@ -1670,7 +1670,8 @@ prefaceBody; for (var i = 0; i < messages.Count; ++i) {
           var found = false;
           for (int j = i; j < endIndex; ++j) {
             if (s[j] != 0x09 && s[j] != 0x20 && s[j] != 0x0d) {
-              found = true; break;
+              found = true;
+              break;
             } else if (s[j] == 0x0d) {
               // Possible CRLF after all-whitespace line
               return i;

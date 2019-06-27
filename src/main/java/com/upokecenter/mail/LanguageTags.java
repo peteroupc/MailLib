@@ -32,13 +32,13 @@ private LanguageTags() {
             strret[0] = str;
             return strret;
           }
-          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
           strings.add(str.substring(index));
           break;
         } else {
           first = false;
           String newstr = str.substring(index, (index)+(index2 - index));
-          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -852,7 +852,7 @@ str.equals("zh-min-nan")) {
             String curString = splitString[splitIndex];
             len = LengthIfAllAlphaNum(curString);
             if (len >= 5 && len <= 8) {
-              variants = (variants == null) ? ((new ArrayList<String>())) : variants;
+              variants = (variants == null) ? (new ArrayList<String>()) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
@@ -863,7 +863,7 @@ str.equals("zh-min-nan")) {
               ++splitIndex;
             } else if (len == 4 &&
                  (curString.charAt(0) >= '0' && curString.charAt(0) <= '9')) {
-              variants = (variants == null) ? ((new ArrayList<String>())) : variants;
+              variants = (variants == null) ? (new ArrayList<String>()) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
@@ -885,7 +885,7 @@ str.equals("zh-min-nan")) {
             int curIndex = splitIndex;
             if (LengthIfAllAlphaNum(curString) == 1 &&
                     !curString.equals("x")) {
-              variants = (variants == null) ? ((new ArrayList<String>())) : variants;
+              variants = (variants == null) ? (new ArrayList<String>()) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {

@@ -360,49 +360,57 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
                   (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) ==
                   78) {
                   dayOfWeek = 1;
-                  indexTemp3 += 3; break;
+                  indexTemp3 += 3;
+                  break;
                 }
                 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 84 &&
                   (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) ==
                   69) {
                   dayOfWeek = 2;
-                  indexTemp3 += 3; break;
+                  indexTemp3 += 3;
+                  break;
                 }
                 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 87 &&
                   (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) ==
                   68) {
                   dayOfWeek = 3;
-                  indexTemp3 += 3; break;
+                  indexTemp3 += 3;
+                  break;
                 }
                 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 84 &&
                   (str.charAt(index + 1) & ~32) == 72 && (str.charAt(index + 2) & ~32) ==
                   85) {
                   dayOfWeek = 4;
-                  indexTemp3 += 3; break;
+                  indexTemp3 += 3;
+                  break;
                 }
                 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 70 &&
                   (str.charAt(index + 1) & ~32) == 82 && (str.charAt(index + 2) & ~32) ==
                   73) {
                   dayOfWeek = 5;
-                  indexTemp3 += 3; break;
+                  indexTemp3 += 3;
+                  break;
                 }
                 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 83 &&
                   (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) ==
                   84) {
                   dayOfWeek = 6;
-                  indexTemp3 += 3; break;
+                  indexTemp3 += 3;
+                  break;
                 }
                 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 83 &&
                   (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) ==
                   78) {
                   dayOfWeek = 0;
-                  indexTemp3 += 3; break;
+                  indexTemp3 += 3;
+                  break;
                 }
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
-                index = indexStart2; break;
+                index = indexStart2;
+                break;
               }
             } while (false);
             if (index == indexStart2) {
@@ -412,7 +420,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
             if (index < endIndex && (str.charAt(index) == 44)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             indexTemp2 = index;
             index = indexStart2;
@@ -434,7 +443,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
             }
             ++index;
           } else if (i < 1) {
-            index = indexStart; break;
+            index = indexStart;
+            break;
           } else {
             break;
           }
@@ -508,7 +518,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
-            index = indexStart; break;
+            index = indexStart;
+            break;
           }
         } while (false);
         if (index == indexStart) {
@@ -526,7 +537,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
           index += 2;
           yearDigits += 2;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         while (index < endIndex && (str.charAt(index) >= 48 && str.charAt(index) <= 57)) {
           yearDigits = Math.min(yearDigits + 1, 4);
@@ -575,13 +587,15 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
           }
           index += 2;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index < endIndex && (str.charAt(index) == 58)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
@@ -596,7 +610,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
           minute = Math.min(59, minute);
           index += 2;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         second = 0;
         do {
@@ -607,7 +622,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
             if (index < endIndex && (str.charAt(index) == 58)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = HeaderParser.ParseCFWS(str, index, endIndex, null);
             if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <=
@@ -621,7 +637,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
               }
               index += 2;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             indexTemp2 = index;
             index = indexStart2;
@@ -658,7 +675,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
                 minus = str.charAt(index) == 45;
                 ++index;
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               if (index + 3 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index)
                 <= 57) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57) ||
@@ -678,13 +696,15 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
                 }
                 index += 4;
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             indexTemp3 = index;
             do {
@@ -753,7 +773,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
                 if (indexTemp4 != index) {
                   index = indexTemp4;
                 } else {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 }
               } while (false);
               if (index == indexStart3) {
@@ -764,13 +785,15 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
-            index = indexStart; break;
+            index = indexStart;
+            break;
           }
         } while (false);
         if (index == indexStart) {

@@ -12,7 +12,7 @@ namespace PeterO {
       ret[4] = dt.Minute;
       ret[5] = dt.Second;
       ret[6] = dt.Millisecond;
-      ret[7] = 0;  // time zone offset
+      ret[7] = 0; // time zone offset
       return ret;
     }
   }

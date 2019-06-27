@@ -85,22 +85,26 @@ ret + str.Substring(index, 2) + str.Substring(index + 5, 2) +
               >= 9 &&
            str[index] <= 10) || (str[index] >= 97 && str[index] <= 122) ||
               (str[index] >= 65 && str[index] <= 90))) {
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
             int indexTemp3 = index;
             do {
               if (index < endIndex && ((str[index] >= 128 && str[index]
           <= 55295) || (str[index] >= 57344 && str[index] <=
               65535))) {
-                ++indexTemp3; break;
+                ++indexTemp3;
+                break;
               }
               if (index + 1 < endIndex && ((str[index] >= 55296 &&
 str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
-                indexTemp3 += 2; break;
+                indexTemp3 += 2;
+                break;
               }
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
@@ -143,13 +147,13 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             strret[0] = str;
             return strret;
           }
-          strings = strings ?? (new List<string>());
+          strings = strings ?? new List<string>();
           strings.Add(str.Substring(index));
           break;
         } else {
           first = false;
           string newstr = str.Substring(index, index2 - index);
-          strings = strings ?? (new List<string>());
+          strings = strings ?? new List<string>();
           strings.Add(newstr);
           index = index2 + delimLength;
         }
@@ -202,7 +206,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             if (index + 1 < endIndex && str[index] == 60 && str[index + 1] ==
                   60) {
               currentBuilder.Append("<");
-              indexTemp2 += 2; break;
+              indexTemp2 += 2;
+              break;
             }
             int indexTemp3 = index;
             do {
@@ -226,7 +231,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                 90))) {
                   ++index;
                 } else if (i3 < 1) {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 } else {
                   break;
                 }
@@ -258,13 +264,15 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                   }
                 }
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             int indexStart2 = index;
             var lineBreakCount = 0;
@@ -274,11 +282,13 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               do {
                 if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
                   == 10) {
-                  indexTemp3 += 2; break;
+                  indexTemp3 += 2;
+                  break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]
                 == 10))) {
-                  ++indexTemp3; break;
+                  ++indexTemp3;
+                  break;
                 }
               } while (false);
               if (indexTemp3 == index) {
@@ -328,7 +338,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               } else {
                 currentBuilder.Append(str[index]);
               }
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
             indexTemp3 = index;
             do {
@@ -337,24 +348,28 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               65535))) {
                 // BMP character
                 currentBuilder.Append(str[index]);
-                ++indexTemp3; break;
+                ++indexTemp3;
+                break;
               }
               if (index + 1 < endIndex && ((str[index] >= 55296 &&
 str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                 // Supplementary character
                 currentBuilder.Append(str[index]);
                 currentBuilder.Append(str[index + 1]);
-                indexTemp3 += 2; break;
+                indexTemp3 += 2;
+                break;
               }
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             if (index < endIndex && (str[index] >= 55296 && str[index]
             <= 57343)) {
               // Unpaired surrogate
               currentBuilder.Append((char)0xfffd);
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
@@ -386,7 +401,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             if (index + 1 < endIndex && str[index] == 60 && str[index + 1] ==
                   60) {
               currentBuilder.Append("&lt;");
-              indexTemp2 += 2; break;
+              indexTemp2 += 2;
+              break;
             }
             int indexTemp3 = index;
             do {
@@ -410,7 +426,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                 90))) {
                   ++index;
                 } else if (i3 < 1) {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 } else {
                   break;
                 }
@@ -587,13 +604,15 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                   currentBuilder.Append(">");
                 }
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             int indexStart2 = index;
             var lineBreakCount = 0;
@@ -602,11 +621,13 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               do {
                 if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
                   == 10) {
-                  indexTemp3 += 2; break;
+                  indexTemp3 += 2;
+                  break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]
                 == 10))) {
-                  ++indexTemp3; break;
+                  ++indexTemp3;
+                  break;
                 }
               } while (false);
               if (indexTemp3 == index) {
@@ -659,7 +680,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               } else {
                 currentBuilder.Append(str[index]);
               }
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
             indexTemp3 = index;
             do {
@@ -668,24 +690,28 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               65535))) {
                 // BMP character
                 currentBuilder.Append(str[index]);
-                ++indexTemp3; break;
+                ++indexTemp3;
+                break;
               }
               if (index + 1 < endIndex && ((str[index] >= 55296 &&
 str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                 // Supplementary character
                 currentBuilder.Append(str[index]);
                 currentBuilder.Append(str[index + 1]);
-                indexTemp3 += 2; break;
+                indexTemp3 += 2;
+                break;
               }
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             if (index < endIndex && (str[index] >= 55296 && str[index]
             <= 57343)) {
               // Unpaired surrogate
               currentBuilder.Append((char)0xfffd);
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {

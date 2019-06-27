@@ -883,7 +883,7 @@ namespace PeterO.Text {
       while (index < str.Length) {
         char c = str[index];
         if (c == 0x20 || IsZsCodePoint(c)) {
-          builder = builder ?? (new StringBuilder());
+          builder = builder ?? new StringBuilder();
           ++index;
         } else {
           break;
@@ -1033,7 +1033,7 @@ namespace PeterO.Text {
       }
       int aceLength = DomainUtility.ALabelLength(str, 0, str.Length);
       if (aceLength < 0) {
-        return false;  // Overflow error
+        return false; // Overflow error
       }
       if (!lookupRules) {
         // Additional rules for non-lookup validation

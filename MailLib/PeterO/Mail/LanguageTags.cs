@@ -29,13 +29,13 @@ namespace PeterO.Mail {
             strret[0] = str;
             return strret;
           }
-          strings = strings ?? (new List<string>());
+          strings = strings ?? new List<string>();
           strings.Add(str.Substring(index));
           break;
         } else {
           first = false;
           string newstr = str.Substring(index, index2 - index);
-          strings = strings ?? (new List<string>());
+          strings = strings ?? new List<string>();
           strings.Add(newstr);
           index = index2 + delimLength;
         }
@@ -698,7 +698,7 @@ str.Equals("zh-min-nan")) {
             string curString = splitString[splitIndex];
             len = LengthIfAllAlphaNum(curString);
             if (len >= 5 && len <= 8) {
-              variants = variants ?? (new List<string>());
+              variants = variants ?? new List<string>();
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
@@ -709,7 +709,7 @@ str.Equals("zh-min-nan")) {
               ++splitIndex;
             } else if (len == 4 &&
                  (curString[0] >= '0' && curString[0] <= '9')) {
-              variants = variants ?? (new List<string>());
+              variants = variants ?? new List<string>();
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
@@ -731,7 +731,7 @@ str.Equals("zh-min-nan")) {
             int curIndex = splitIndex;
             if (LengthIfAllAlphaNum(curString) == 1 &&
                     !curString.Equals("x")) {
-              variants = variants ?? (new List<string>());
+              variants = variants ?? new List<string>();
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {

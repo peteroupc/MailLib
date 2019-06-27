@@ -18,7 +18,7 @@ namespace PeterO.Mail {
       while (index < str.Length) {
         char c = str[index];
         if (c == 0x09 || c == 0x20) {
-          builder = builder ?? (new StringBuilder());
+          builder = builder ?? new StringBuilder();
           ++index;
         } else {
           break;

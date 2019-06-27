@@ -447,7 +447,8 @@ import com.upokecenter.util.*;
           1;
         int unitLength = 1;
         unitLength = (ch == 0x20 || smallChar) ? 1 : ((ch <= 0x7f) ? 3 :
-          ((ch <= 0x7ff) ? 6 : ((ch <= 0xffff) ? 9 : 12))); if
+          ((ch <= 0x7ff) ? 6 : ((ch <= 0xffff) ? 9 : 12)));
+          if
             (!this.CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
             this.AppendSymbol("?=");
@@ -501,7 +502,7 @@ import com.upokecenter.util.*;
         this.builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
         this.builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
           15)));
-        this.builder.append((char)Base64Classic.charAt(((b2 & 15) << 2)));
+        this.builder.append((char)Base64Classic.charAt((b2 & 15) << 2));
         this.builder.append('=');
         this.column += 4;
       } else if (quantumCount == 1) {
@@ -550,8 +551,10 @@ import com.upokecenter.util.*;
           ++i;
         }
         int unitLength = (ch <= 0x7f) ? 1 : ((ch <= 0x7ff) ? 2 : ((ch <=
-          0xffff) ? 3 : 4)); int bytesNeeded = 4 + (base64state[2] +
-            unitLength > 3 ? 4 : 0); if
+          0xffff) ? 3 : 4));
+          int bytesNeeded = 4 + (base64state[2] +
+            unitLength > 3 ? 4 : 0);
+            if
             (!this.CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
           if (currentWordLength > 0) {
             this.AppendFinalBase64(base64state);
@@ -856,7 +859,8 @@ import com.upokecenter.util.*;
           boolean found = false;
           for (int j = i; j < len; ++j) {
             if (s.charAt(j) != 0x09 && s.charAt(j) != 0x20 && s.charAt(j) != 0x0d) {
-              found = true; break;
+              found = true;
+              break;
             } else if (s.charAt(j) == 0x0d) {
               // Possible CRLF after all-whitespace line
               return false;

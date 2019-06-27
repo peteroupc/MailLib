@@ -88,22 +88,26 @@ ret + str.substring(index, (index)+(2)) + str.substring(index + 5, (index + 5)+(
               >= 9 &&
            str.charAt(index) <= 10) || (str.charAt(index) >= 97 && str.charAt(index) <= 122) ||
               (str.charAt(index) >= 65 && str.charAt(index) <= 90))) {
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
             int indexTemp3 = index;
             do {
               if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index)
           <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
               65535))) {
-                ++indexTemp3; break;
+                ++indexTemp3;
+                break;
               }
               if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
 str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
-                indexTemp3 += 2; break;
+                indexTemp3 += 2;
+                break;
               }
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
@@ -146,13 +150,13 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             strret[0] = str;
             return strret;
           }
-          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
           strings.add(str.substring(index));
           break;
         } else {
           first = false;
           String newstr = str.substring(index, (index)+(index2 - index));
-          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -205,7 +209,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
                   60) {
               currentBuilder.append("<");
-              indexTemp2 += 2; break;
+              indexTemp2 += 2;
+              break;
             }
             int indexTemp3 = index;
             do {
@@ -229,7 +234,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                 90))) {
                   ++index;
                 } else if (i3 < 1) {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 } else {
                   break;
                 }
@@ -261,13 +267,15 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                   }
                 }
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             int indexStart2 = index;
             int lineBreakCount = 0;
@@ -277,11 +285,13 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               do {
                 if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
                   == 10) {
-                  indexTemp3 += 2; break;
+                  indexTemp3 += 2;
+                  break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)
                 == 10))) {
-                  ++indexTemp3; break;
+                  ++indexTemp3;
+                  break;
                 }
               } while (false);
               if (indexTemp3 == index) {
@@ -331,7 +341,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               } else {
                 currentBuilder.append(str.charAt(index));
               }
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
             indexTemp3 = index;
             do {
@@ -340,24 +351,28 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               65535))) {
                 // BMP character
                 currentBuilder.append(str.charAt(index));
-                ++indexTemp3; break;
+                ++indexTemp3;
+                break;
               }
               if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
 str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
                 // Supplementary character
                 currentBuilder.append(str.charAt(index));
                 currentBuilder.append(str.charAt(index + 1));
-                indexTemp3 += 2; break;
+                indexTemp3 += 2;
+                break;
               }
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             if (index < endIndex && (str.charAt(index) >= 55296 && str.charAt(index)
             <= 57343)) {
               // Unpaired surrogate
               currentBuilder.append((char)0xfffd);
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
@@ -389,7 +404,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
                   60) {
               currentBuilder.append("&lt;");
-              indexTemp2 += 2; break;
+              indexTemp2 += 2;
+              break;
             }
             int indexTemp3 = index;
             do {
@@ -413,7 +429,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                 90))) {
                   ++index;
                 } else if (i3 < 1) {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 } else {
                   break;
                 }
@@ -590,13 +607,15 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                   currentBuilder.append(">");
                 }
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             int indexStart2 = index;
             int lineBreakCount = 0;
@@ -605,11 +624,13 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               do {
                 if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
                   == 10) {
-                  indexTemp3 += 2; break;
+                  indexTemp3 += 2;
+                  break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)
                 == 10))) {
-                  ++indexTemp3; break;
+                  ++indexTemp3;
+                  break;
                 }
               } while (false);
               if (indexTemp3 == index) {
@@ -662,7 +683,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               } else {
                 currentBuilder.append(str.charAt(index));
               }
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
             indexTemp3 = index;
             do {
@@ -671,24 +693,28 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               65535))) {
                 // BMP character
                 currentBuilder.append(str.charAt(index));
-                ++indexTemp3; break;
+                ++indexTemp3;
+                break;
               }
               if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
 str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
                 // Supplementary character
                 currentBuilder.append(str.charAt(index));
                 currentBuilder.append(str.charAt(index + 1));
-                indexTemp3 += 2; break;
+                indexTemp3 += 2;
+                break;
               }
             } while (false);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             if (index < endIndex && (str.charAt(index) >= 55296 && str.charAt(index)
             <= 57343)) {
               // Unpaired surrogate
               currentBuilder.append((char)0xfffd);
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {

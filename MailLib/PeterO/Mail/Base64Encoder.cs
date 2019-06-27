@@ -140,7 +140,7 @@ throw new
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
         byte c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
           15)];
-        byte c3 = this.alphabet[((this.byte2 & 15) << 2)];
+        byte c3 = this.alphabet[(this.byte2 & 15) << 2];
         if (this.padding) {
           count += this.LineAwareAppendFour(output, c1, c2, c3, (byte)'=');
         } else {
@@ -153,7 +153,7 @@ throw new
         this.quantumCount = 0;
       } else if (this.quantumCount == 1) {
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
-        byte c2 = this.alphabet[((this.byte1 & 3) << 4)];
+        byte c2 = this.alphabet[(this.byte1 & 3) << 4];
         if (this.padding) {
          count += this.LineAwareAppendFour(
            output,

@@ -179,14 +179,14 @@ namespace PeterO.Text {
       return retval;
     }
 
+    private readonly bool compatMode;
+    private readonly Normalization form;
+    private readonly ICharacterInput iterator;
     private int lastQcsIndex;
     private int endIndex;
     private int[] buffer;
-    private readonly bool compatMode;
-    private readonly Normalization form;
     private int processedIndex;
     private int flushIndex;
-    private readonly ICharacterInput iterator;
 
     /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
     /// <param name='str'>

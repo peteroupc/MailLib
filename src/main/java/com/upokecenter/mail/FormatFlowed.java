@@ -465,7 +465,8 @@ private FormatFlowed() {
           while (qi < str.length()) {
             sb.append(str.charAt(qi));
             if (str.charAt(qi) == '>') {
-              ++qi; break;
+              ++qi;
+              break;
             }
             ++qi;
           }

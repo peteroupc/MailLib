@@ -204,7 +204,7 @@ namespace PeterO.Mail {
         builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
         builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
           15)]);
-        builder.Append((char)Base64Classic[((b2 & 15) << 2)]);
+        builder.Append((char)Base64Classic[(b2 & 15) << 2]);
         builder.Append('=');
       } else if (quantumCount == 1) {
         builder.Append((char)Base64Classic[(b1 >> 2) & 63]);

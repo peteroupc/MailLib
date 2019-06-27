@@ -19,7 +19,7 @@ private MakeFilenameMethod() {
       while (index < str.length()) {
         char c = str.charAt(index);
         if (c == 0x09 || c == 0x20) {
-          builder = (builder == null) ? ((new StringBuilder())) : builder;
+          builder = (builder == null) ? (new StringBuilder()) : builder;
           ++index;
         } else {
           break;

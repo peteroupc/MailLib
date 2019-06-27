@@ -449,8 +449,11 @@ namespace PeterO.Mail {
           1;
         var unitLength = 1;
         unitLength = (ch == 0x20 || smallChar) ? 1 : ((ch <= 0x7f) ? 3 :
-          ((ch <= 0x7ff) ? 6 : ((ch <= 0xffff) ? 9 : 12))); if
-            (!this.CanCharUnitFit(currentWordLength, unitLength, false)) {
+          ((ch <= 0x7ff) ? 6 : ((ch <= 0xffff) ? 9 : 12)));
+        if (!this.CanCharUnitFit(
+          currentWordLength,
+          unitLength,
+          false)) {
           if (currentWordLength > 0) {
             this.AppendSymbol("?=");
             if (this.CanCharUnitFit(0, unitLength, true)) {
@@ -503,7 +506,7 @@ namespace PeterO.Mail {
         this.builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
         this.builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
           15)]);
-        this.builder.Append((char)Base64Classic[((b2 & 15) << 2)]);
+        this.builder.Append((char)Base64Classic[(b2 & 15) << 2]);
         this.builder.Append('=');
         this.column += 4;
       } else if (quantumCount == 1) {
@@ -552,9 +555,13 @@ namespace PeterO.Mail {
           ++i;
         }
         int unitLength = (ch <= 0x7f) ? 1 : ((ch <= 0x7ff) ? 2 : ((ch <=
-          0xffff) ? 3 : 4)); int bytesNeeded = 4 + (base64state[2] +
-            unitLength > 3 ? 4 : 0); if
-            (!this.CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
+          0xffff) ? 3 : 4));
+        int bytesNeeded = 4 + (base64state[2] +
+          unitLength > 3 ? 4 : 0);
+        if (!this.CanCharUnitFit(
+          currentWordLength,
+          bytesNeeded,
+          false)) {
           if (currentWordLength > 0) {
             this.AppendFinalBase64(base64state);
             this.AppendSymbol("?=");
@@ -858,7 +865,8 @@ namespace PeterO.Mail {
           var found = false;
           for (int j = i; j < len; ++j) {
             if (s[j] != 0x09 && s[j] != 0x20 && s[j] != 0x0d) {
-              found = true; break;
+              found = true;
+              break;
             } else if (s[j] == 0x0d) {
               // Possible CRLF after all-whitespace line
               return false;

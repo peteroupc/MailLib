@@ -169,7 +169,7 @@ private ProtocolStrings() {
           if (part == null) {
             return null;
           }
-          sb = (sb == null) ? ((new StringBuilder())) : sb;
+          sb = (sb == null) ? (new StringBuilder()) : sb;
           sb.append(part);
           while (i < str.length()) {
             if (str.charAt(i) != ' ') {
@@ -193,7 +193,7 @@ private ProtocolStrings() {
         if (part == null) {
           return null;
         }
-        sb = (sb == null) ? ((new StringBuilder())) : sb;
+        sb = (sb == null) ? (new StringBuilder()) : sb;
         sb.append(part);
       }
       return sb.toString();

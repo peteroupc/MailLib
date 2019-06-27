@@ -219,7 +219,7 @@ private DataUris() {
         builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
         builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
           15)));
-        builder.append((char)Base64Classic.charAt(((b2 & 15) << 2)));
+        builder.append((char)Base64Classic.charAt((b2 & 15) << 2));
         builder.append('=');
       } else if (quantumCount == 1) {
         builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));

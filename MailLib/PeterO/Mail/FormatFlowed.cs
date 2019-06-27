@@ -464,7 +464,8 @@ string ReplaceTwoOrMoreSpacesWithBR(string str) {
           while (qi < str.Length) {
             sb.Append(str[qi]);
             if (str[qi] == '>') {
-              ++qi; break;
+              ++qi;
+              break;
             }
             ++qi;
           }

@@ -40,7 +40,8 @@ private HeaderParserUtility() {
           index = HeaderParser.ParseFWS(str, index, endIndex, null);
           tx3 = HeaderParser.ParseQcontent(str, index, endIndex, null);
           if (tx3 == index) {
-            index = indexStart2; break;
+            index = indexStart2;
+            break;
           }
           index = tx3;
           indexTemp2 = index;
@@ -491,7 +492,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                     10) {
                       index += 2;
                     } else {
-                      index = indexStart4; break;
+                      index = indexStart4;
+                      break;
                     }
                     indexTemp4 = index;
                     index = indexStart4;
@@ -510,7 +512,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                     ++index;
                   }
                 } else {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 }
                 indexTemp3 = index;
                 index = indexStart3;
@@ -526,12 +529,14 @@ si = HeaderParserUtility.ParseQuotedStringCore(
               do {
                 if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <=
                   55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
-                  ++indexTemp3; break;
+                  ++indexTemp3;
+                  break;
                 }
                 if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
                   str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
                   str.charAt(index + 1) <= 57343))) {
-                  indexTemp3 += 2; break;
+                  indexTemp3 += 2;
+                  break;
                 }
                 int indexTemp4;
                 indexTemp4 = index;
@@ -550,22 +555,26 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                       (str.charAt(index) == 9) || (str.charAt(index) >= 128 &&
                       str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
                       str.charAt(index) <= 65535))) {
-                        ++indexTemp5; break;
+                        ++indexTemp5;
+                        break;
                       }
                       if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
                       str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
                       str.charAt(index + 1) <= 57343))) {
-                        indexTemp5 += 2; break;
+                        indexTemp5 += 2;
+                        break;
                       }
                       if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <=
                       126)) {
-                        ++indexTemp5; break;
+                        ++indexTemp5;
+                        break;
                       }
                     } while (false);
                     if (indexTemp5 != index) {
                       index = indexTemp5;
                     } else {
-                      index = indexStart4; break;
+                      index = indexStart4;
+                      break;
                     }
                   } while (false);
                   if (index == indexStart4) {
@@ -575,18 +584,21 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   index = indexStart4;
                 } while (false);
                 if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                  indexTemp3 = indexTemp4;
+                  break;
                 }
                 if (index < endIndex && ((str.charAt(index) >= 93 && str.charAt(index) <=
                   126) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
                   (str.charAt(index) >= 33 && str.charAt(index) <= 39))) {
-                  ++indexTemp3; break;
+                  ++indexTemp3;
+                  break;
                 }
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
-                index = indexStart2; break;
+                index = indexStart2;
+                break;
               }
             } while (false);
             if (index == indexStart2) {
@@ -617,7 +629,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   10) {
                   index += 2;
                 } else {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 }
                 indexTemp3 = index;
                 index = indexStart3;
@@ -635,7 +648,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                 ++index;
               }
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             indexTemp2 = index;
             index = indexStart2;

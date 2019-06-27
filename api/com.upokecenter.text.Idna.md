@@ -9,9 +9,9 @@
  <p>The following summarizes the rules for domain names in IDNA2008;
  see RFC5890 for more information and additional terminology. </p>
  <p>A domain name is divided into one or more strings separated by
- dots ("."), called <b>labels </b> . For IDNA2008's purposes, a valid
- label can be an <b>NR-LDH label </b> , an <b>A-label </b> , or a
- <b>U-label </b> . </p> <p>An LDH label contains only basic letters,
+ dots ("."), called <b>labels</b> . For IDNA2008's purposes, a valid
+ label can be an <b>NR-LDH label</b> , an <b>A-label</b> , or a
+ <b>U-label</b> . </p> <p>An LDH label contains only basic letters,
  basic digits, and/or "-", and neither begins nor ends with "-". For
  example, "exa-mple" and "1example" are LDH labels, but not
  "-example". </p> <p>An NR-LDH label is an LDH label whose third and
@@ -24,10 +24,10 @@
  example is "xn--e-ufa". </p> <p>An XN-label is an LDH label beginning
  with "xn--" in any combination of case. </p> <p>NOTICE: While this
  class's source code is in the public domain, the class uses two
- internal classes, called <code>NormalizationData </code> and <code>IdnaData
- </code> , that include data derived from the Unicode Character Database.
- See the documentation for the NormalizerInput class for the
- permission notice for the Unicode Character Database. </p>
+ internal classes, called <code>NormalizationData</code> and <code>IdnaData</code>
+ , that include data derived from the Unicode Character Database. See
+ the documentation for the NormalizerInput class for the permission
+ notice for the Unicode Character Database. </p>
 
 ## Methods
 

@@ -641,18 +641,15 @@ public final void setSubject(String value) {
       return (this.getContentType().getTopLevelType().equals("message") &&
           (this.getContentType().getSubType().equals("rfc822") ||
            this.getContentType().getSubType().equals("news") ||
-           this.getContentType().getSubType().equals("global"))) ? (new
-             Message(this.body)) : null;
-    }
 
-    /**
-     * Gets the name and value of a header field by index.
-     * @param index Zero-based index of the header field to get.
-     * @return A key/value pair. The key is the name of the header field, such as
-     * "From" or "Content-ID". The value is the header field's value.
-     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
-     * least as high as the number of header fields.
-     */
+           this.getContentType().getSubType().equals("global"))) ? (new Message(this.body)) : null; } /**
+  * Gets the name and value of a header field by index.
+  * @param index Zero-based index of the header field to get.
+  * @return A key/value pair. The key is the name of the header field, such as
+  * "From" or "Content-ID". The value is the header field's value.
+  * @throws IllegalArgumentException The parameter {@code index} is 0 or at
+  * least as high as the number of header fields.
+  */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
         throw new IllegalArgumentException("index (" + index + ") is less than " +
@@ -1602,7 +1599,8 @@ try { if (fs != null) {
           ") is not equal to " + languages.size());
       }
       StringBuilder
-prefaceBody; for (int i = 0; i < messages.size(); ++i) {
+prefaceBody;
+for (int i = 0; i < messages.size(); ++i) {
         if (messages.get(i) == null) {
           throw new IllegalArgumentException("messages");
         }
@@ -2238,7 +2236,8 @@ prefaceBody; for (int i = 0; i < messages.size(); ++i) {
           boolean found = false;
           for (int j = i; j < endIndex; ++j) {
             if (s.charAt(j) != 0x09 && s.charAt(j) != 0x20 && s.charAt(j) != 0x0d) {
-              found = true; break;
+              found = true;
+              break;
             } else if (s.charAt(j) == 0x0d) {
               // Possible CRLF after all-whitespace line
               return i;
