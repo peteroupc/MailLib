@@ -448,8 +448,10 @@ import com.upokecenter.util.*;
         int unitLength = 1;
         unitLength = (ch == 0x20 || smallChar) ? 1 : ((ch <= 0x7f) ? 3 :
           ((ch <= 0x7ff) ? 6 : ((ch <= 0xffff) ? 9 : 12)));
-          if
-            (!this.CanCharUnitFit(currentWordLength, unitLength, false)) {
+        if (!this.CanCharUnitFit(
+          currentWordLength,
+          unitLength,
+          false)) {
           if (currentWordLength > 0) {
             this.AppendSymbol("?=");
             if (this.CanCharUnitFit(0, unitLength, true)) {
@@ -552,10 +554,12 @@ import com.upokecenter.util.*;
         }
         int unitLength = (ch <= 0x7f) ? 1 : ((ch <= 0x7ff) ? 2 : ((ch <=
           0xffff) ? 3 : 4));
-          int bytesNeeded = 4 + (base64state[2] +
-            unitLength > 3 ? 4 : 0);
-            if
-            (!this.CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
+        int bytesNeeded = 4 + (base64state[2] +
+          unitLength > 3 ? 4 : 0);
+        if (!this.CanCharUnitFit(
+          currentWordLength,
+          bytesNeeded,
+          false)) {
           if (currentWordLength > 0) {
             this.AppendFinalBase64(base64state);
             this.AppendSymbol("?=");

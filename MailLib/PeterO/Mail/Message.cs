@@ -426,7 +426,7 @@ namespace PeterO.Mail {
         new Message(this.body) : null;
     }
 
-    /// <include file='../../docs.xml' 
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.Int32)"]/*'/>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {

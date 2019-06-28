@@ -798,9 +798,9 @@ private HeaderFieldParsers() {
           return index;
         }
         int ret = (cd.getDispositionType().equals("no") ||
- cd.getDispositionType().equals("yes")) ? endIndex : index;
- if (ret ==
-            endIndex) {
+ cd.getDispositionType().equals("yes")) ?
+          endIndex : index;
+        if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
   str,
   index,
@@ -2241,15 +2241,15 @@ private HeaderFieldParsers() {
       }
     }
 
-    private static Map<String, IHeaderFieldParser> fieldMap =
-      CreateHeaderFieldList();
-
     private static final IHeaderFieldParser Unstructured = new
-      UnstructuredHeaderField();
+  UnstructuredHeaderField();
+
+    private static final Map<String, IHeaderFieldParser> FieldMap =
+      CreateHeaderFieldList();
 
     private static Map<String, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
-      fieldMap = new HashMap<String, IHeaderFieldParser>();
+      HashMap<String, IHeaderFieldParser> fieldMap = new HashMap<String, IHeaderFieldParser>();
       fieldMap.put("content-disposition",new HeaderContentDisposition());
       fieldMap.put("content-type",new HeaderContentType());
       fieldMap.put("auto-submitted",new HeaderAutoSubmitted());
@@ -2411,6 +2411,6 @@ private HeaderFieldParsers() {
         throw new NullPointerException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      return fieldMap.containsKey(name) ? fieldMap.get(name) : Unstructured;
+      return FieldMap.containsKey(name) ? FieldMap.get(name) : Unstructured;
     }
   }

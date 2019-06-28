@@ -641,15 +641,18 @@ public final void setSubject(String value) {
       return (this.getContentType().getTopLevelType().equals("message") &&
           (this.getContentType().getSubType().equals("rfc822") ||
            this.getContentType().getSubType().equals("news") ||
+           this.getContentType().getSubType().equals("global"))) ?
+        new Message(this.body) : null;
+    }
 
-           this.getContentType().getSubType().equals("global"))) ? (new Message(this.body)) : null; } /**
-  * Gets the name and value of a header field by index.
-  * @param index Zero-based index of the header field to get.
-  * @return A key/value pair. The key is the name of the header field, such as
-  * "From" or "Content-ID". The value is the header field's value.
-  * @throws IllegalArgumentException The parameter {@code index} is 0 or at
-  * least as high as the number of header fields.
-  */
+    /**
+     * Gets the name and value of a header field by index.
+     * @param index Zero-based index of the header field to get.
+     * @return A key/value pair. The key is the name of the header field, such as
+     * "From" or "Content-ID". The value is the header field's value.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
+     * least as high as the number of header fields.
+     */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
         throw new IllegalArgumentException("index (" + index + ") is less than " +
@@ -1598,9 +1601,8 @@ try { if (fs != null) {
         throw new IllegalArgumentException("messages.size() (" + messages.size() +
           ") is not equal to " + languages.size());
       }
-      StringBuilder
-prefaceBody;
-for (int i = 0; i < messages.size(); ++i) {
+      StringBuilder prefaceBody;
+      for (int i = 0; i < messages.size(); ++i) {
         if (messages.get(i) == null) {
           throw new IllegalArgumentException("messages");
         }

@@ -4,11 +4,15 @@
     </summary>
   </doc>
   <doc name='M:PeterO.ArrayWriter.#ctor'>
-    <summary>Initializes a new instance of the <see cref='ArrayWriter'/> class with a default buffer size.
+    <summary>Initializes a new instance of the
+      <see cref='ArrayWriter'/>
+       class with a default buffer size.
     </summary>
   </doc>
   <doc name='M:PeterO.ArrayWriter.#ctor(System.Int32)'>
-    <summary>Initializes a new instance of the <see cref='ArrayWriter'/> class with the given initial buffer size.
+    <summary>Initializes a new instance of the
+      <see cref='ArrayWriter'/>
+       class with the given initial buffer size.
     </summary>
     <param name='initialSize'>The parameter
       <paramref name='initialSize'/>
@@ -891,7 +895,9 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.Address.#ctor(System.String)'>
-    <summary>Initializes a new instance of the <see cref='Address'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='Address'/>
+       class.
     </summary>
     <param name='addressValue'>The parameter
       <paramref name='addressValue'/>
@@ -1147,7 +1153,9 @@
            is null or empty.
         </item>
         <item>The string returned by this method is normalized using Unicode
-          normalization form C (NFC) (see the <see cref='T:PeterO.Text.NormalizerInput'/> class for details). Although most file systems preserve the
+          normalization form C (NFC) (see the
+          <see cref='T:PeterO.Text.NormalizerInput'/>
+           class for details). Although most file systems preserve the
           normalization of file names, there is one notable exception: The HFS
           Plus file system (on macOS before High Sierra) stores file names using
           a modified version of normalization form D (NFD) in which certain code
@@ -1423,11 +1431,15 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor'>
-    <summary>Initializes a new instance of the <see cref='DispositionBuilder'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='DispositionBuilder'/>
+       class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)'>
-    <summary>Initializes a new instance of the <see cref='DispositionBuilder'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='DispositionBuilder'/>
+       class.
     </summary>
     <param name='mt'>The parameter
       <paramref name='mt'/>
@@ -1439,7 +1451,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor(System.String)'>
-    <summary>Initializes a new instance of the <see cref='DispositionBuilder'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='DispositionBuilder'/>
+       class.
     </summary>
     <param name='type'>The parameter
       <paramref name='type'/>
@@ -2195,11 +2209,15 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor'>
-    <summary>Initializes a new instance of the <see cref='MediaTypeBuilder'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='MediaTypeBuilder'/>
+       class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)'>
-    <summary>Initializes a new instance of the <see cref='MediaTypeBuilder'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='MediaTypeBuilder'/>
+       class.
     </summary>
     <param name='mt'>The parameter
       <paramref name='mt'/>
@@ -2211,7 +2229,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor(System.String,System.String)'>
-    <summary>Initializes a new instance of the <see cref='MediaTypeBuilder'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='MediaTypeBuilder'/>
+       class.
     </summary>
     <param name='type'>The parameter
       <paramref name='type'/>
@@ -2455,11 +2475,15 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor'>
-    <summary>Initializes a new instance of the <see cref='Message'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='Message'/>
+       class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor(System.Byte[])'>
-    <summary>Initializes a new instance of the <see cref='Message'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='Message'/>
+       class.
     </summary>
     <param name='bytes'>A byte array.
     </param>
@@ -2469,7 +2493,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor(System.IO.Stream)'>
-    <summary>Initializes a new instance of the <see cref='Message'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='Message'/>
+       class.
     </summary>
     <param name='stream'>The parameter
       <paramref name='stream'/>
@@ -3430,11 +3456,15 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor'>
-    <summary>Initializes a new instance of the <see cref='MessageDataException'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='MessageDataException'/>
+       class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor(System.String)'>
-    <summary>Initializes a new instance of the <see cref='MessageDataException'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='MessageDataException'/>
+       class.
     </summary>
     <param name='message'>The parameter
       <paramref name='message'/>
@@ -3442,7 +3472,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor(System.String,System.Exception)'>
-    <summary>Initializes a new instance of the <see cref='MessageDataException'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='MessageDataException'/>
+       class.
     </summary>
     <param name='message'>The parameter
       <paramref name='message'/>
@@ -3459,7 +3491,9 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String)'>
-    <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NamedAddress'/>
+       class.
     </summary>
     <param name='address'>The parameter
       <paramref name='address'/>
@@ -3473,7 +3507,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)'>
-    <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NamedAddress'/>
+       class.
     </summary>
     <param name='displayName'>The parameter
       <paramref name='displayName'/>
@@ -3489,7 +3525,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})'>
-    <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NamedAddress'/>
+       class.
     </summary>
     <param name='groupName'>The parameter
       <paramref name='groupName'/>
@@ -3509,7 +3547,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)'>
-    <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NamedAddress'/>
+       class.
     </summary>
     <param name='displayName'>The parameter
       <paramref name='displayName'/>
@@ -3525,7 +3565,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)'>
-    <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NamedAddress'/>
+       class.
     </summary>
     <param name='displayName'>The parameter
       <paramref name='displayName'/>
@@ -3642,7 +3684,9 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.StringAndQuality.#ctor(System.String,System.Int32)'>
-    <summary>Initializes a new instance of the <see cref='StringAndQuality'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='StringAndQuality'/>
+       class.
     </summary>
     <param name='value'>The parameter
       <paramref name='value'/>
@@ -4379,7 +4423,9 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Text.Normalizer.#ctor(System.String,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='Normalizer'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='Normalizer'/>
+       class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -4543,7 +4589,9 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput)'>
-    <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizerInput'/>
+       class.
     </summary>
     <param name='input'>The parameter
       <paramref name='input'/>
@@ -4551,7 +4599,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizerInput'/>
+       class.
     </summary>
     <param name='stream'>The parameter
       <paramref name='stream'/>
@@ -4567,7 +4617,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String)'>
-    <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizerInput'/>
+       class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -4575,7 +4627,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizerInput'/>
+       class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -4587,7 +4641,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizerInput'/>
+       class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -4777,7 +4833,9 @@
     </summary>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)'>
-    <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizingCharacterInput'/>
+       class.
     </summary>
     <param name='input'>The parameter
       <paramref name='input'/>
@@ -4785,7 +4843,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizingCharacterInput'/>
+       class.
     </summary>
     <param name='stream'>The parameter
       <paramref name='stream'/>
@@ -4797,7 +4857,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})'>
-    <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizingCharacterInput'/>
+       class.
     </summary>
     <param name='characterList'>The parameter
       <paramref name='characterList'/>
@@ -4805,7 +4867,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizingCharacterInput'/>
+       class.
     </summary>
     <param name='characterList'>The parameter
       <paramref name='characterList'/>
@@ -4817,7 +4881,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)'>
-    <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizingCharacterInput'/>
+       class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -4825,7 +4891,9 @@
     </param>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizingCharacterInput'/>
+       class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
@@ -4841,7 +4909,9 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)'>
-    <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.
+    <summary>Initializes a new instance of the
+      <see cref='NormalizingCharacterInput'/>
+       class.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>

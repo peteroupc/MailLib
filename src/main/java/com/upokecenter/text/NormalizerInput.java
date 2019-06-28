@@ -213,14 +213,14 @@ package com.upokecenter.text;
       return retval;
     }
 
+    private final boolean compatMode;
+    private final Normalization form;
+    private final ICharacterInput iterator;
     private int lastQcsIndex;
     private int endIndex;
     private int[] buffer;
-    private final boolean compatMode;
-    private final Normalization form;
     private int processedIndex;
     private int flushIndex;
-    private final ICharacterInput iterator;
 
     /**
      * Initializes a new instance of the {@link NormalizerInput} class.
