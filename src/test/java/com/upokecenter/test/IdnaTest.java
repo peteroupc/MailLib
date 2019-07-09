@@ -36,8 +36,8 @@ import com.upokecenter.text.*;
       {
         String stringTemp = Idna.EncodeDomainName("e\u00e1");
         Assert.assertEquals(
-        "xn--e-ufa",
-        stringTemp);
+          "xn--e-ufa",
+          stringTemp);
       }
     }
     @Test
@@ -137,34 +137,33 @@ Assert.assertEquals(
 Assert.assertEquals(
   null,
   ProtocolStrings.UsernameEnforce(null));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.UsernameEnforce(""));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.UserpartEnforce(null));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.UserpartEnforce(""));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.OpaqueStringEnforce(null));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.OpaqueStringEnforce(""));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.NicknameEnforce(null));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.NicknameEnforce(""));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.NicknameForComparison(null));
-Assert.assertEquals(
+  Assert.assertEquals(
   null,
   ProtocolStrings.NicknameForComparison(""));
-
 {
 String stringTemp = ProtocolStrings.OpaqueStringEnforce("a b ccccc test");
 Assert.assertEquals(
@@ -178,20 +177,20 @@ Assert.assertEquals(
   stringTemp);
 }
 {
-String stringTemp = ProtocolStrings.NicknameEnforce("  a b ccccc test  ");
+String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
 Assert.assertEquals(
   "a b ccccc test",
   stringTemp);
 }
 {
-String stringTemp = ProtocolStrings.NicknameEnforce("  a b ccccc   test  ");
+String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
 Assert.assertEquals(
   "a b ccccc test",
   stringTemp);
 }
 {
 String stringTemp =
-  ProtocolStrings.NicknameEnforce("  a b\u00a0ccccc   test  ");
+  ProtocolStrings.NicknameEnforce(" a b\u00a0ccccc test ");
 Assert.assertEquals(
   "a b ccccc test",
   stringTemp);
@@ -199,7 +198,7 @@ Assert.assertEquals(
 Assert.assertEquals(
   null,
   ProtocolStrings.OpaqueStringEnforce("a\ntest"));
-{
+  {
 String stringTemp = ProtocolStrings.OpaqueStringEnforce("A b Ccccc tEst");
 Assert.assertEquals(
   "A b Ccccc tEst",
@@ -257,14 +256,14 @@ Assert.assertEquals(
       // Label starting with digit is not valid since there are RTL labels
       if (
   Idna.IsValidDomainName(
-  "1domain.example.\u05d0\u05d0",
-  false)) {
+    "1domain.example.\u05d0\u05d0",
+    false)) {
  Assert.fail();
  }
       if (
   Idna.IsValidDomainName(
-  "\u05d0\u05d0.1domain.example",
-  false)) {
+    "\u05d0\u05d0.1domain.example",
+    false)) {
  Assert.fail();
  }
       if (Idna.IsValidDomainName("el\u00b7", false)) {
@@ -328,8 +327,8 @@ Assert.assertEquals(
 
   if (
   Idna.IsValidDomainName(
-  "\ua840\u0300\u0300\u200d\u0300\u0300\ua840",
-  false)) {
+    "\ua840\u0300\u0300\u200d\u0300\u0300\ua840",
+    false)) {
  Assert.fail();
  }
       // ZWNJ preceded by virama
@@ -346,15 +345,15 @@ Assert.assertEquals(
       // Dual-joining character with intervening T-joining characters
       if (!(
   Idna.IsValidDomainName(
-  "\ua840\u0300\u0300\u200c\ua840",
-  false))) {
+    "\ua840\u0300\u0300\u200c\ua840",
+    false))) {
  Assert.fail();
  }
 
   if (!(
   Idna.IsValidDomainName(
-  "\ua840\u0300\u0300\u200c\u0300\u0300\ua840",
-  false))) {
+    "\ua840\u0300\u0300\u200c\u0300\u0300\ua840",
+    false))) {
  Assert.fail();
  }
       // Left-joining character (U + A872, the only such character
@@ -365,8 +364,8 @@ Assert.assertEquals(
 
   if (!(
   Idna.IsValidDomainName(
-  "\ua872\u0300\u0300\u200c\u0300\u0300\ua840",
-  false))) {
+    "\ua872\u0300\u0300\u200c\u0300\u0300\ua840",
+    false))) {
  Assert.fail();
  }
       // Left-joining character on right side
@@ -376,8 +375,8 @@ Assert.assertEquals(
 
   if (
   Idna.IsValidDomainName(
-  "\ua840\u0300\u0300\u200c\u0300\u0300\ua872",
-  false)) {
+    "\ua840\u0300\u0300\u200c\u0300\u0300\ua872",
+    false)) {
  Assert.fail();
  }
       // Nonjoining character on right side
@@ -387,8 +386,8 @@ Assert.assertEquals(
 
   if (
   Idna.IsValidDomainName(
-  "\ua840\u0300\u0300\u200c\u0300\u0300x",
-  false)) {
+    "\ua840\u0300\u0300\u200c\u0300\u0300x",
+    false)) {
  Assert.fail();
  }
       // Nonjoining character on left side
@@ -398,8 +397,8 @@ Assert.assertEquals(
 
   if (
   Idna.IsValidDomainName(
-  "x\u0300\u0300\u200c\u0300\u0300\ua840",
-  false)) {
+    "x\u0300\u0300\u200c\u0300\u0300\ua840",
+    false)) {
  Assert.fail();
  }
       // Consecutive ZWNJs
@@ -410,21 +409,21 @@ Assert.assertEquals(
       // Keraia
       if (!(Idna.IsValidDomainName("x\u0375\u03b1", false))) {
  Assert.fail();
- }  // Greek
+ } // Greek
       if (Idna.IsValidDomainName("x\u0375a", false)) {
  Assert.fail();
- }  // Non-Greek
+ } // Non-Greek
       // Geresh and gershayim
       if (!(Idna.IsValidDomainName("\u05d0\u05f3", false))) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       // Arabic (non-Hebrew)
       if (Idna.IsValidDomainName("\u0627\u05f3", false)) {
  Assert.fail();
  }
       if (!(Idna.IsValidDomainName("\u05d0\u05f4", false))) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       // Arabic (non-Hebrew)
       if (Idna.IsValidDomainName("\u0627\u05f4", false)) {
  Assert.fail();
@@ -432,10 +431,10 @@ Assert.assertEquals(
       // Bidi Rule: Hebrew and Latin in the same label
       if (Idna.IsValidDomainName("a\u05d0", false)) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       if (Idna.IsValidDomainName("\u05d0a", false)) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       // Arabic-indic digits and extended Arabic-indic digits
       if (Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627", false)) {
  Assert.fail();
@@ -450,8 +449,8 @@ Assert.assertEquals(
 
   if (!(
   Idna.IsValidDomainName(
-  "\u062d\u0300\u0300\u200c\u0300\u0300\u062f",
-  false))) {
+    "\u062d\u0300\u0300\u200c\u0300\u0300\u062f",
+    false))) {
  Assert.fail();
  }
       // Right-joining character on left side
@@ -461,11 +460,11 @@ Assert.assertEquals(
 
   if (
   Idna.IsValidDomainName(
-  "\u062f\u0300\u0300\u200c\u0300\u0300\u062d",
-  false)) {
+    "\u062f\u0300\u0300\u200c\u0300\u0300\u062d",
+    false)) {
  Assert.fail();
  }
-      // Regression testa: U + 07FA mistakenly allowed (since
+      // Regression tests: U + 07FA mistakenly allowed (since
       // U + 07FA has Bidi type R, the other characters in these tests
       // also have Bidi type R).
       if (Idna.IsValidDomainName("\u07ca\u07fa\u07ca", false)) {

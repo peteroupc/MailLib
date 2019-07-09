@@ -38,59 +38,59 @@ namespace MailLibTest {
     }
 
     [Test]
-public void TestNormalizationAscii() {
-  var rnd = new RandomGenerator();
-  for (var i = 0; i < 50000; ++i) {
-    string str = RandomAscii(rnd);
-    // ASCII strings are already normalized
-    Assert.IsTrue(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFC));
-    Assert.IsTrue(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFD));
-    Assert.IsTrue(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFKC));
-    Assert.IsTrue(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFKD));
-    // ASCII strings normalize to themselves
-    string str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFC);
-    Assert.AreEqual(str, str2);
-    str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFD);
-    Assert.AreEqual(str, str2);
-    str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFKC);
-    Assert.AreEqual(str, str2);
-    str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFKD);
-    Assert.AreEqual(str, str2);
-  }
-}
+    public void TestNormalizationAscii() {
+      var rnd = new RandomGenerator();
+      for (var i = 0; i < 50000; ++i) {
+        string str = RandomAscii(rnd);
+        // ASCII strings are already normalized
+        Assert.IsTrue(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFC));
+        Assert.IsTrue(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFD));
+        Assert.IsTrue(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFKC));
+        Assert.IsTrue(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFKD));
+        // ASCII strings normalize to themselves
+        string str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFC);
+        Assert.AreEqual(str, str2);
+        str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFD);
+        Assert.AreEqual(str, str2);
+        str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFKC);
+        Assert.AreEqual(str, str2);
+        str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFKD);
+        Assert.AreEqual(str, str2);
+      }
+    }
 
     [Test]
-public void TestNormalizationLatinOne() {
-  var rnd = new RandomGenerator();
-  for (var i = 0; i < 50000; ++i) {
-    string str = RandomLatinOne(rnd);
-    // Latin-1 strings are already normalized in NFC
-    Assert.IsTrue(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFC));
-    // Latin-1 strings normalize to themselves in NFC
-    string str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFC);
-    Assert.AreEqual(str, str2);
-  }
-}
+    public void TestNormalizationLatinOne() {
+      var rnd = new RandomGenerator();
+      for (var i = 0; i < 50000; ++i) {
+        string str = RandomLatinOne(rnd);
+        // Latin-1 strings are already normalized in NFC
+        Assert.IsTrue(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFC));
+        // Latin-1 strings normalize to themselves in NFC
+        string str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFC);
+        Assert.AreEqual(str, str2);
+      }
+    }
 
     [Test]
     public void TestIsNormalized() {
@@ -108,27 +108,27 @@ public void TestNormalizationLatinOne() {
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
 
       Assert.IsTrue(
   NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFC));
+    "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+    Normalization.NFC));
       Assert.IsTrue(
       NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFD));
+        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+        Normalization.NFD));
       Assert.IsTrue(
       NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFKC));
+        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+        Normalization.NFKC));
       Assert.IsTrue(
       NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFKD));
+        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+        Normalization.NFKD));
     }
     [Test]
     public void TestRead() {
@@ -138,7 +138,7 @@ public void TestNormalizationLatinOne() {
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -147,7 +147,7 @@ public void TestNormalizationLatinOne() {
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -156,7 +156,7 @@ public void TestNormalizationLatinOne() {
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -165,7 +165,7 @@ public void TestNormalizationLatinOne() {
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -174,7 +174,7 @@ public void TestNormalizationLatinOne() {
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -183,7 +183,7 @@ public void TestNormalizationLatinOne() {
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }

@@ -18,7 +18,8 @@ import com.upokecenter.mail.*;
 
     public static final int MaxLineLength = 76;
 
-    private final int[] printable = { 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    private final int[] printable = {
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -29,7 +30,8 @@ import com.upokecenter.mail.*;
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    };
 
     private int lineCharCount;
     private byte[] buffer;
@@ -40,10 +42,10 @@ import com.upokecenter.mail.*;
     private boolean unget;
 
     public QuotedPrintableTransform(
-  IByteReader input,
-  boolean allowBareLfCr,
-  int maxLineSize,
-  boolean checkStrictEncoding) {
+      IByteReader input,
+      boolean allowBareLfCr,
+      int maxLineSize,
+      boolean checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
       this.allowBareLfCr = allowBareLfCr;
       this.checkStrictEncoding = checkStrictEncoding;
@@ -52,8 +54,8 @@ import com.upokecenter.mail.*;
     }
 
     public QuotedPrintableTransform(
-  IByteReader input,
-  boolean allowBareLfCr) {
+      IByteReader input,
+      boolean allowBareLfCr) {
  this(
   input,
   allowBareLfCr,
@@ -62,9 +64,9 @@ import com.upokecenter.mail.*;
     }
 
     public QuotedPrintableTransform(
-  IByteReader input,
-  boolean allowBareLfCr,
-  int maxLineLength) {
+      IByteReader input,
+      boolean allowBareLfCr,
+      int maxLineLength) {
  this(
   input,
   allowBareLfCr,
@@ -130,14 +132,14 @@ import com.upokecenter.mail.*;
           // Ignore CR (part of suggested behavior by RFC 2045)
           continue;
         }
-        if (c == 0x0a) {  // LF
+        if (c == 0x0a) { // LF
           if (!this.allowBareLfCr) {
             throw new MessageDataException("Expected LF after CR");
           }
           // Ignore LF (part of suggested behavior by RFC 2045)
           continue;
         }
-        if (c == '=') {  // Equals
+        if (c == '=') { // Equals
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {

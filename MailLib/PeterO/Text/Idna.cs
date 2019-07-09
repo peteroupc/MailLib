@@ -50,7 +50,7 @@ namespace PeterO.Text {
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
              (str[index - 2] & 0xfc00) == 0xd800) {
         // Get the Unicode code point for the surrogate pair
-        return 0x10000 + ((str[index - 2] - 0xd800) << 10) + (c - 0xdc00);
+        return 0x10000 + ((str[index - 2] & 0x3ff) << 10) + (c & 0x3ff);
       }
       return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
@@ -69,7 +69,7 @@ namespace PeterO.Text {
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
           (str[index + 1] & 0xfc00) == 0xdc00) {
         // Get the Unicode code point for the surrogate pair
-        return 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
+        return 0x10000 + ((c & 0x3ff) << 10) + (str[index + 1] & 0x3ff);
       }
       return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
@@ -236,8 +236,8 @@ namespace PeterO.Text {
             if (c2 <= 0xffff) {
               sb.Append((char)c2);
             } else if (ch <= 0x10ffff) {
-              sb.Append((char)((((c2 - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              sb.Append((char)(((c2 - 0x10000) & 0x3ff) + 0xdc00));
+              sb.Append((char)((((c2 - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.Append((char)(((c2 - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }
@@ -276,7 +276,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.Idna.DecodeDomainName(System.String)"]/*'/>
     public static string DecodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -304,9 +304,9 @@ namespace PeterO.Text {
         }
       }
       retval = DecodeLabel(
-      value,
-      lastIndex,
-      value.Length);
+        value,
+        lastIndex,
+        value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -316,7 +316,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -344,9 +344,9 @@ namespace PeterO.Text {
         }
       }
       retval = DomainUtility.ALabelEncodePortion(
-      value,
-      lastIndex,
-      value.Length);
+        value,
+        lastIndex,
+        value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -356,7 +356,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)"]/*'/>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;
@@ -855,8 +855,8 @@ namespace PeterO.Text {
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           string chs = str.Substring(istart, (i - istart) + 1);
           string nfkd = NormalizerInput.Normalize(
-             chs,
-             Normalization.NFKD);
+            chs,
+            Normalization.NFKD);
           sb.Append(nfkd);
         } else {
           if (ch <= 0xffff) {
@@ -864,8 +864,8 @@ namespace PeterO.Text {
               sb.Append((char)ch);
             }
           } else if (ch <= 0x10ffff) {
-            sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+            sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) | 0xd800));
+            sb.Append((char)(((ch - 0x10000) & 0x3ff) | 0xdc00));
           }
         }
       }
@@ -956,8 +956,8 @@ namespace PeterO.Text {
           if (ch <= 0xffff) {
             sb.Append((char)ch);
           } else if (ch <= 0x10ffff) {
-            sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            sb.Append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+            sb.Append((char)((((ch - 0x10000) >> 10) & 0x3ff) | 0xd800));
+            sb.Append((char)(((ch - 0x10000) & 0x3ff) | 0xdc00));
           }
         } else {
           sb.Append(' ');
@@ -967,9 +967,9 @@ namespace PeterO.Text {
     }
 
     private static bool IsValidULabel(
-  string str,
-  bool lookupRules,
-  bool bidiRule) {
+      string str,
+      bool lookupRules,
+      bool bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }

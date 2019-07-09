@@ -2,7 +2,9 @@
 
     public static class MailDateTime
 
- Contains methods for parsing and generating date-time strings following the Internet Message Format (RFC 5322).  ### Member Summary
+ Contains methods for parsing and generating date-time strings following the Internet Message Format (RFC 5322).
+
+### Member Summary
 * <code>[GenerateDateString(int[])](#GenerateDateString_int)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 * <code>[GenerateDateString(int[], bool)](#GenerateDateString_int_bool)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array, optionally using a "GMT" time zone indicator.
 * <code>[ParseDateString(string)](#ParseDateString_string)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322).
@@ -116,8 +118,7 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
 
  Parses a date string in one of the three formats allowed by HTTP/1.1.  <b>Parameters:</b>
 
- * <i>v</i>: The parameter  <i>v</i>
- is not documented yet.
+ * <i>v</i>: A date-time string.
 
 <b>Return Value:</b>
 

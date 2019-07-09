@@ -2,19 +2,21 @@ package com.upokecenter.mail;
 
 import com.upokecenter.util.*;
 
-  /**
-   * Contains methods for parsing and generating Data URIs (uniform resource
-   * identifiers). Data URIs are described in RFC 2397. Examples for Data
-   * URIs follow. <pre>data:, hello%20world</pre>
-   * <pre>data:text/markdown, hello%20world</pre>
-   * <pre>data:application/octet-stream;base64, AAAAAA==</pre>
-   */
+    /**
+     * Contains methods for parsing and generating Data URIs (uniform resource
+     * identifiers). Data URIs are described in RFC 2397. Examples for Data
+     * URIs follow. <pre>data:, hello%20world</pre>
+     * <pre>data:text/markdown, hello%20world</pre>
+     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
+     */
   public final class DataUris {
 private DataUris() {
 }
     /**
      * Extracts the media type from a Data URI (uniform resource identifier).
-     * @param uri The parameter {@code uri} is a text string.
+     * @param uri The parameter
+      {@code uri}
+       is a text string.
      * @return The media type. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a Data URI.
      */
@@ -78,7 +80,8 @@ private DataUris() {
       }
     }
 
-    static final int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
+    static final int[] Alphabet = {
+      -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -86,12 +89,15 @@ private DataUris() {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, };
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1,
+    };
 
     /**
      * Extracts the data from a Data URI (uniform resource identifier) in the form
      * of a byte array.
-     * @param uri The parameter {@code uri} is a text string.
+     * @param uri The parameter
+      {@code uri}
+       is a text string.
      * @return The data as a byte array. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a data URI.
      */
@@ -110,8 +116,8 @@ private DataUris() {
         }
         boolean usesBase64 = mediaTypePart >= 7 &&
           DataUtilities.ToLowerCaseAscii(path.substring(
-     mediaTypePart - 7, (
-     mediaTypePart - 7)+(7))).equals(";base64");
+            mediaTypePart - 7, (
+            mediaTypePart - 7)+(7))).equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -133,7 +139,8 @@ private DataUris() {
           }
           if (hasPercent) {
             payload = URIUtility.PercentDecode(
-              path.substring(mediaTypePart + 1, (mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
+         path.substring(mediaTypePart + 1, (mediaTypePart + 1)+(path.length() - (mediaTypePart +
+                1))));
             payloadIndex = 0;
           }
           base64Length = payload.length() - payloadIndex;
@@ -233,7 +240,7 @@ private DataUris() {
      * Encodes text as a Data URI (uniform resource identifier).
      * @param textString A text string to encode as a data URI.
      * @return A Data URI that encodes the given text.
-     * @throws java.lang.NullPointerException The parameter {@code textString} is
+     * @throws NullPointerException The parameter {@code textString} is
      * null.
      */
     public static String MakeDataUri(String textString) {
@@ -251,7 +258,7 @@ private DataUris() {
      * @param bytes A byte array containing the data to encode in a Data URI.
      * @param mediaType A media type to assign to the data.
      * @return A Data URI that encodes the given data and media type.
-     * @throws java.lang.NullPointerException The parameter {@code bytes} or {@code
+     * @throws NullPointerException The parameter {@code bytes} or {@code
      * mediaType} is null.
      */
     public static String MakeDataUri(byte[] bytes, MediaType mediaType) {

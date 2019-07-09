@@ -11,7 +11,8 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class Base64Transform implements IByteReader {
-    public static final int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
+    public static final int[] Alphabet = {
+      -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -19,7 +20,8 @@ import com.upokecenter.mail.*;
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, };
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1,
+    };
 
     public static final int MaxLineLength = 76;
 
@@ -34,8 +36,8 @@ import com.upokecenter.mail.*;
     private int paddingCount;
 
     public Base64Transform(
-  IByteReader input,
-  boolean lenientLineBreaks) {
+      IByteReader input,
+      boolean lenientLineBreaks) {
  this(
   input,
   lenientLineBreaks,
@@ -44,10 +46,10 @@ import com.upokecenter.mail.*;
     }
 
     public Base64Transform(
-  IByteReader input,
-  boolean lenientLineBreaks,
-  int maxLineLength,
-  boolean checkStrictEncoding) {
+      IByteReader input,
+      boolean lenientLineBreaks,
+      int maxLineLength,
+      boolean checkStrictEncoding) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;

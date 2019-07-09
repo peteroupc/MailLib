@@ -21,9 +21,9 @@ private HeaderParserUtility() {
     static final int TokenLocalPart = 7;
     static final int TokenDomain = 8;
     public static int ParseQuotedStringCore(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       int indexStart, indexStart2, indexTemp2, tx3;
       indexStart = index;
       if (index < endIndex && (str.charAt(index) == 34)) {
@@ -96,10 +96,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static void TraverseCFWSAndQuotedStrings(
-  String str,
-  int startIndex,
-  int endIndex,
-  ITokener tokener) {
+      String str,
+      int startIndex,
+      int endIndex,
+      ITokener tokener) {
       // Fills a tokener with "comment" and "quoted-String"
       // tokens. Assumes the portion of the String is a syntactically valid
       // header field according to the Parse method of the header
@@ -118,7 +118,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             if (si < endIndex && str.charAt(si) == (char)0x22) {
               // Note that quoted-String starts with optional CFWS
               tokener.RestoreState(state);
-              si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+              si = HeaderParser.ParseQuotedString(str, index, endIndex,
+                tokener);
               if (si == index) {
                 throw new IllegalStateException("Internal error: " + str);
               }
@@ -155,9 +156,9 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     private static String ParseDotAtomAfterCFWS(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       StringBuilder builder = new StringBuilder();
@@ -179,9 +180,9 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     private static String ParseDotWordAfterCFWS(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
       StringBuilder builder = new StringBuilder();
@@ -273,7 +274,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             addresses.add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
             // } catch (IndexOutOfRangeException ex) {
             // throw new IllegalStateException(
-            // "str=" + str + " index=" + index, // ex);
+              // "str=" + str + " index=" + index, // ex);
             // }
             lastIndex = tokenEnd;
           }
@@ -283,10 +284,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static int ParseWord(
-  String str,
-  int index,
-  int endIndex,
-  StringBuilder builder) {
+      String str,
+      int index,
+      int endIndex,
+      StringBuilder builder) {
       // NOTE: Assumes all CFWS has been read beforehand
       if (index == endIndex) {
         return index;
@@ -398,10 +399,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
 
     // Parses a comment using the obsolete syntax.
     static int ParseCommentLax(
-  String str,
-  int index,
-  int endIndex,
-  ITokener tokener) {
+      String str,
+      int index,
+      int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int depth = 0;
       if (index < endIndex && (str.charAt(index) == 40)) {
@@ -416,16 +417,20 @@ si = HeaderParserUtility.ParseQuotedStringCore(
         if (backslash) {
           ++index;
         }
-        if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-          (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+        if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+          56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
           index += 2;
-        } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 && str.charAt(index)
-          <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14 &&
-          str.charAt(index) <= 31) || (str.charAt(index) >= 33 && str.charAt(index) <= 39) || (str.charAt(index)
-          >= 42 && str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index) <= 55295) ||
-          (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+   } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 &&
+          str.charAt(index)
+        <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14
+            &&
+     str.charAt(index) <= 31) || (str.charAt(index) >= 33 && str.charAt(index) <= 39) ||
+            (str.charAt(index)
+     >= 42 && str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index) <= 55295) ||
+            (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           ++index;
-        } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 && str.charAt(index)
+    } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 &&
+          str.charAt(index)
           <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
@@ -459,9 +464,9 @@ si = HeaderParserUtility.ParseQuotedStringCore(
 
     // Parses a comment without using the obsolete syntax.
     static int ParseCommentStrict(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       if (index < endIndex && (str.charAt(index) == 40)) {
         ++index;
       } else {
@@ -484,12 +489,12 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   indexTemp4 = index;
                   do {
                     int indexStart4 = index;
-                    while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                    9))) {
+                    while (index < endIndex && ((str.charAt(index) == 32) ||
+                (str.charAt(index) == 9))) {
                       ++index;
                     }
-                    if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
-                    10) {
+                    if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index +
+                1) == 10) {
                       index += 2;
                     } else {
                       index = indexStart4;
@@ -507,8 +512,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                 if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
                   9))) {
                   ++index;
-                  while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                    9))) {
+                  while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index)
+                == 9))) {
                     ++index;
                   }
                 } else {
@@ -625,8 +630,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   9))) {
                   ++index;
                 }
-                if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
-                  10) {
+                if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
+                == 10) {
                   index += 2;
                 } else {
                   index = indexStart3;

@@ -5,10 +5,10 @@ package com.upokecenter.text;
 
     /**
      * Decompresses a byte array compressed using the LZ4 format (see "LZ4 Format
-     * Description" by Y Collet for more information).
+     *  Description" by Y Collet for more information).
      * @param input Input byte array.
      * @return Decompressed output byte array.
-     * @throws java.lang.NullPointerException The parameter "output" is null.
+     * @throws NullPointerException The parameter "output" is null.
      * @throws IllegalArgumentException Invalid LZ4.
      */
     public static byte[] DecompressLz4(byte[] input) {
@@ -152,7 +152,7 @@ package com.upokecenter.text;
       }
       int index = (cp >> 9) << 1;
       int x = this.array[index + 1];
-      if ((x & 0x80) != 0) {  // Indicates a default value.
+      if ((x & 0x80) != 0) { // Indicates a default value.
         return this.array[index];
       }
       // Indicates an array block.

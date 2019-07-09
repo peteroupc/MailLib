@@ -10,14 +10,14 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.DispositionBuilder"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.DispositionBuilder"]/*'/>
   public class DispositionBuilder {
     private readonly IDictionary<string, string> parameters;
     private string type;
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.DispositionType"]/*'/>
+    ///   path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.DispositionType"]/*'/>
     public string DispositionType {
       get {
         return this.type;
@@ -28,23 +28,21 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Initializes a new instance of the <see cref='DispositionBuilder'/> class.</summary>
+    /// <xmlbegin id='31'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='DispositionBuilder'/> class.</summary>
     public DispositionBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "attachment";
     }
 
-    /// <summary>Initializes a new instance of the <see cref='DispositionBuilder'/> class.</summary>
-    /// <param name='mt'>
-    /// The parameter
-    /// <paramref name='mt'/>
-    /// is a ContentDisposition object.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='mt'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='32'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='DispositionBuilder'/> class.</summary>
+    /// <param name='mt'>The parameter <paramref name='mt'/> is a
+    /// ContentDisposition object.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
@@ -53,17 +51,15 @@ namespace PeterO.Mail {
       this.type = mt.DispositionType;
     }
 
-    /// <summary>Initializes a new instance of the <see cref='DispositionBuilder'/> class.</summary>
-    /// <param name='type'>
-    /// The parameter
-    /// <paramref name='type'/>
-    /// is a text string.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='type'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='33'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='DispositionBuilder'/> class.</summary>
+    /// <param name='type'>The parameter <paramref name='type'/> is a text
+    /// string.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='type'/> is null.</exception>
+    /// <exception cref='T:System.ArgumentException'>Type is
+    /// empty.</exception>
     public DispositionBuilder(string type) {
       if (type == null) {
         throw new ArgumentNullException(nameof(type));
@@ -76,7 +72,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsText"]/*'/>
+    ///   path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsText"]/*'/>
     [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsText {
@@ -85,8 +81,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsMultipart"]/*'/>
+    /// <xmlbegin id='34'/>
+    /// <value/>
     [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsMultipart {
@@ -96,13 +92,13 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToDisposition"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToDisposition"]/*'/>
     public ContentDisposition ToDisposition() {
       return new ContentDisposition(this.type, this.parameters);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)"]/*'/>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -119,7 +115,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)"]/*'/>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -129,7 +125,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)"]/*'/>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -150,7 +146,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToString"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToString"]/*'/>
     public override string ToString() {
       return this.ToDisposition().ToString();
     }

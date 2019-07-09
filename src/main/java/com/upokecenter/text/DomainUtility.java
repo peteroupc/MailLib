@@ -29,8 +29,8 @@ private DomainUtility() {
           str.length());
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
-                  "0");
+      throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is less than " + "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -67,7 +67,7 @@ private DomainUtility() {
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
             (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           return -1;
@@ -101,7 +101,7 @@ private DomainUtility() {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return -1;
@@ -131,7 +131,7 @@ private DomainUtility() {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return -1;
@@ -174,7 +174,8 @@ private DomainUtility() {
       }
       return outputLength;
     }
-    private static final int[] ValueDigitValues = { -1, -1, -1, -1, -1, -1,
+    private static final int[] ValueDigitValues = {
+      -1, -1, -1, -1, -1, -1,
       -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1,
@@ -183,7 +184,8 @@ private DomainUtility() {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, };
+      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
+    };
 
     static String PunycodeDecode(String str, int index, int endIndex) {
       if (str == null) {
@@ -198,8 +200,8 @@ private DomainUtility() {
           str.length());
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
-                  "0");
+      throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is less than " + "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -307,8 +309,8 @@ private DomainUtility() {
           chararr[0] = (char)vnum;
           builder.insert(i, chararr, 0, 1);
         } else if (vnum <= 0x10ffff) {
-          chararr[0] = (char)((((vnum - 0x10000) >> 10) & 0x3ff) + 0xd800);
-          chararr[1] = (char)(((vnum - 0x10000) & 0x3ff) + 0xdc00);
+          chararr[0] = (char)((((vnum - 0x10000) >> 10) & 0x3ff) | 0xd800);
+          chararr[1] = (char)(((vnum - 0x10000) & 0x3ff) | 0xdc00);
           builder.insert(i, chararr, 0, 2);
         } else {
           return null;
@@ -324,9 +326,9 @@ private DomainUtility() {
     }
 
     static String ALabelEncodePortion(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -339,8 +341,8 @@ private DomainUtility() {
           str.length());
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
-                  "0");
+      throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is less than " + "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -385,7 +387,7 @@ private DomainUtility() {
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
             (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           return null;
@@ -427,7 +429,7 @@ private DomainUtility() {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return null;
@@ -460,7 +462,7 @@ private DomainUtility() {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return null;

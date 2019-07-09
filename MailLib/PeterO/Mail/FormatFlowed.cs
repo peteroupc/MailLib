@@ -448,10 +448,10 @@ string ReplaceTwoOrMoreSpacesWithBR(string str) {
     }
 
     private static string FormatParagraph(
-         string str,
-         string delim,
-         string tag,
-         bool escaped) {
+      string str,
+      string delim,
+      string tag,
+      bool escaped) {
       if (delim.Length == 1 && str.IndexOf(delim[0]) < 0) {
         return str;
       }
@@ -812,8 +812,7 @@ string ReplaceTwoOrMoreSpacesWithBR(string str) {
           while (qi < str.Length) {
             if (str[qi] == '`') {
               ++backTicks;
-            } else
-{ break;
+            } else { break;
 }
             ++qi;
           }
@@ -828,8 +827,7 @@ string ReplaceTwoOrMoreSpacesWithBR(string str) {
                     qi = qi2;
                     break;
                   }
-                } else
-{ break;
+                } else { break;
 }
                 ++qi2;
               }

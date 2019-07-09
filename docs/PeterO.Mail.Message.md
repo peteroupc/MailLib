@@ -48,11 +48,11 @@
 
  Note that this class currently doesn't support the "padding" parameter for message bodies with the media type "application/octet-stream" or treated as that media type (see RFC 2046 sec. 4.5.1).
 
- Note that this implementation can decode an RFC 2047 encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in "ASCII mode", though.) This, however, is not a deviation to RFC 2047 because the relevant rule only concerns bringing the output device back to "ASCII mode" after the decoded text is displayed (see last paragraph of sec. 6.2) -- since the decoded text is converted to Unicode rather than kept as ISO-2022-JP, this is not applicable since there is no such thing as "ASCII mode" in the Unicode Standard.
+ Note that this implementation can decode an RFC 2047 encoded word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that uses code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in "ASCII mode", though.) This, however, is not a deviation to RFC 2047 because the relevant rule only concerns bringing the output device back to "ASCII mode" after the decoded text is displayed (see last paragraph of sec. 6.2) -- since the decoded text is converted to Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is not applicable since there is no such thing as "ASCII mode" in the Unicode Standard.
 
  Note that this library (the MailLib library) has no facilities for sending and receiving email messages, since that's outside this library's scope.
 
-  ### Member Summary
+### Member Summary
 * <code>[AddAttachment(PeterO.Mail.MediaType)](#AddAttachment_PeterO_Mail_MediaType)</code> - Adds an attachment with an empty body and with the given media type to this message.
 * <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given media type.
 * <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name.
@@ -116,12 +116,12 @@
 
  Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.    <b>Parameters:</b>
 
- * <i>bytes</i>:  A byte array.
+ * <i>bytes</i>: A byte array.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>bytes</i>
+The parameter  <i>bytes</i>
  is null.
 
 <a id="Void_ctor_Stream"></a>
@@ -132,13 +132,13 @@
 
  Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class.    <b>Parameters:</b>
 
- * <i>stream</i>:  The parameter  <i>stream</i>
+ * <i>stream</i>: The parameter  <i>stream</i>
  is a Stream object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>stream</i>
+The parameter  <i>stream</i>
  is null.
 
 <a id="Void_ctor"></a>
@@ -293,6 +293,8 @@ A Message object for the generated attachment.
     public static Message AddAttachmentFromBytes(this Message msg, byte[]
             bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
             return msg.AddAttachment(fs, mediaType); } }
+
+ .
 
  <b>Parameters:</b>
 
@@ -450,6 +452,8 @@ A Message object for the generated body part.
     public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
             MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
             { return msg.AddInline(fs, mediaType); } }
+
+ .
 
  <b>Parameters:</b>
 

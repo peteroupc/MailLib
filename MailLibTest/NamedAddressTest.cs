@@ -139,7 +139,7 @@ Assert.AreEqual(
 }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.AreEqual("John's Office", na.Name);
-na = new NamedAddress("<me@example.com>");
+      na = new NamedAddress("<me@example.com>");
       if (na.DisplayName != null) {
  Assert.Fail();
  }
@@ -152,7 +152,7 @@ Assert.AreEqual(
   "me@example.com",
   stringTemp);
 }
-    na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
+na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
       Assert.AreEqual("Me", na.Name);
       Assert.IsFalse(na.IsGroup);
       {
@@ -176,7 +176,7 @@ Assert.AreEqual(
   "Me <me@example.com>",
   stringTemp);
 }
-   na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
+na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
                   "me@example.com>");
       Assert.AreEqual("John's Office", na.Name);
       Assert.IsFalse(na.IsGroup);
@@ -248,14 +248,14 @@ Assert.AreEqual(
   stringTemp);
 }
       //------------
-na = new
+      na = new
         NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
       Assert.AreEqual("Group", na.Name);
       Assert.IsTrue(na.IsGroup);
       {
 string stringTemp = na.ToString();
-    const string ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";
-        Assert.AreEqual(ValueS1, stringTemp);
+const string ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";
+Assert.AreEqual(ValueS1, stringTemp);
 }
       groupAddr = na.GroupAddresses;
       Assert.AreEqual(2, groupAddr.Count);

@@ -22,12 +22,12 @@ namespace MailLibTest {
       var builder = new MediaTypeBuilder();
       try {
  builder.RemoveParameter(null);
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
     }
     [Test]
@@ -44,39 +44,39 @@ Assert.AreEqual(
       Assert.AreEqual(String.Empty, builder.ToMediaType().GetParameter("a"));
       try {
  new MediaTypeBuilder().SetParameter(null, null);
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new MediaTypeBuilder().SetParameter(null, "test");
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new MediaTypeBuilder().SetParameter(null, String.Empty);
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new MediaTypeBuilder().SetParameter("test", null);
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new MediaTypeBuilder().SetParameter("test", String.Empty);
@@ -86,21 +86,21 @@ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new MediaTypeBuilder().SetParameter(String.Empty, "value");
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new MediaTypeBuilder().SetParameter("test\u00e0", "value");
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
     }
     [Test]

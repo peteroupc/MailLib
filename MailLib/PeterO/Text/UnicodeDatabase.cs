@@ -30,7 +30,7 @@ namespace PeterO.Text {
       }
       if (classes == null) {
         lock (ValueSyncRoot) {
-          classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
+  classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
         }
       }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -68,10 +68,10 @@ namespace PeterO.Text {
     }
 
     public static int GetDecomposition(
-  int cp,
-  bool compat,
-  int[] buffer,
-  int offset) {
+      int cp,
+      bool compat,
+      int[] buffer,
+      int offset) {
       if (cp < 0x80) {
         // ASCII characters have no decomposition
         buffer[offset++] = cp;
@@ -110,11 +110,11 @@ namespace PeterO.Text {
           }
           realIndex = data1 & 0x1fffff;
           Array.Copy(
-                NormalizationData.ComplexDecompMappings,
-                realIndex,
-                buffer,
-                offset,
-                size);
+            NormalizationData.ComplexDecompMappings,
+            realIndex,
+            buffer,
+            offset,
+            size);
           return offset + size;
         }
         if (dricp < cp) {
@@ -128,9 +128,9 @@ namespace PeterO.Text {
     }
 
     public static int GetLowerCaseMapping(
-  int cp,
-  int[] buffer,
-  int offset) {
+      int cp,
+      int[] buffer,
+      int offset) {
       if (cp < 0x80) {
         buffer[offset++] = (cp >= 0x41 && cp <= 0x5a) ? cp + 32 : cp;
         return offset;
@@ -206,7 +206,7 @@ namespace PeterO.Text {
       }
       if (casedprop == null) {
         lock (ValueSyncRoot) {
-          casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
+  casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
         }
       }
       return ((int)casedprop.GetByte(cp)) & 0xff;
@@ -218,7 +218,8 @@ namespace PeterO.Text {
       }
       if (precisCat == null) {
         lock (ValueSyncRoot) {
-          precisCat = precisCat ?? ByteData.Decompress(IdnaData.PrecisCategories);
+       precisCat = precisCat ??
+            ByteData.Decompress(IdnaData.PrecisCategories);
         }
       }
       return ((int)precisCat.GetByte(cp)) & 0xff;

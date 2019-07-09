@@ -11,7 +11,7 @@ import com.upokecenter.mail.*;
       ContentDisposition dispNull = null;
       try {
 Assert.assertEquals(null, new DispositionBuilder(stringNull));
-        Assert.fail("Should have failed");
+Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -20,7 +20,7 @@ Assert.assertEquals(null, new DispositionBuilder(stringNull));
       }
       try {
 Assert.assertEquals(null, new DispositionBuilder(dispNull));
-        Assert.fail("Should have failed");
+Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -29,7 +29,7 @@ Assert.assertEquals(null, new DispositionBuilder(dispNull));
       }
       try {
 Assert.assertEquals(null, new DispositionBuilder(""));
-        Assert.fail("Should have failed");
+Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -89,39 +89,39 @@ Assert.assertEquals(
       Assert.assertEquals("", db.ToDisposition().GetParameter("a"));
       try {
  new DispositionBuilder().SetParameter(null, null);
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
       try {
  new DispositionBuilder().SetParameter(null, "test");
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
       try {
  new DispositionBuilder().SetParameter(null, "");
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
       try {
  new DispositionBuilder().SetParameter("test", null);
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
       try {
  new DispositionBuilder().SetParameter("test", "");
@@ -131,21 +131,21 @@ throw new IllegalStateException("", ex);
 }
       try {
  new DispositionBuilder().SetParameter("", "value");
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
       try {
  new DispositionBuilder().SetParameter("test\u00e0", "value");
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
     @Test

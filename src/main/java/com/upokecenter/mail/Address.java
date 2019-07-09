@@ -12,17 +12,19 @@ import java.util.*;
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
-  /**
-   * Represents an email address.
-   */
+    /**
+     * Represents an email address.
+     */
   public class Address {
     private final String localPart;
 
     /**
      * Determines whether this object and another object are equal.
-     * @param obj The parameter {@code obj} is an arbitrary object.
+     * @param obj The parameter
+      {@code obj}
+       is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false} .
+     * {@code false}.
      */
     @Override public boolean equals(Object obj) {
       Address other = ((obj instanceof Address) ? (Address)obj : null);
@@ -46,10 +48,10 @@ import com.upokecenter.text.*;
     }
     static String LocalPartToString(String localPart) {
       if (localPart.length() > 0 && HeaderParser.ParseDotAtomText(
-   localPart,
-   0,
-   localPart.length(),
-   null) == localPart.length()) {
+        localPart,
+        0,
+        localPart.length(),
+        null) == localPart.length()) {
         return localPart;
       } else {
         StringBuilder sb = new StringBuilder();
@@ -149,11 +151,12 @@ import com.upokecenter.text.*;
     /**
      * Initializes a new instance of the {@link Address} class.
      * @param addressValue The parameter {@code addressValue} is a text string.
-     * @throws java.lang.NullPointerException The parameter {@code addressValue} is
+     * @throws NullPointerException The parameter {@code addressValue} is
      * null.
      * @throws IllegalArgumentException AddressValue is empty.; Address doesn't
-     * contain a '@' sign; Invalid local part; Expected '@' sign after local
-     * part; Expected domain after '@'; Invalid domain; Address too long.
+     * contain a '@' sign; Invalid local part; Expected '@' sign after
+     * local part; Expected domain after '@'; Invalid domain; Address too
+     * long.
      */
     public Address(String addressValue) {
       if (addressValue == null) {
@@ -166,10 +169,10 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("Address doesn't contain a '@' sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
-  addressValue,
-  0,
-  addressValue.length(),
-  null);
+        addressValue,
+        0,
+        addressValue.length(),
+        null);
       if (localPartEnd == 0) {
         throw new IllegalArgumentException("Invalid local part");
       }
@@ -181,21 +184,21 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("Expected domain after '@'");
       }
       int domainEnd = HeaderParser.ParseDomainNoCfws(
-  addressValue,
-  localPartEnd + 1,
-  addressValue.length(),
-  null);
+        addressValue,
+        localPartEnd + 1,
+        addressValue.length(),
+        null);
       if (domainEnd != addressValue.length()) {
         throw new IllegalArgumentException("Invalid domain");
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(
-  addressValue,
-  0,
-  localPartEnd);
+        addressValue,
+        0,
+        localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(
-  addressValue,
-  localPartEnd + 1,
-  addressValue.length());
+        addressValue,
+        localPartEnd + 1,
+        addressValue.length());
       // Check length restrictions.
       if (this.IsTooLong()) {
         throw new IllegalArgumentException("Address too long");

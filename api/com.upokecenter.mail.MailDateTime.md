@@ -134,7 +134,7 @@ Parses a date string in one of the three formats allowed by HTTP/1.1.
 
 **Parameters:**
 
-* <code>v</code> - The parameter <code>v</code> is not documented yet.
+* <code>v</code> - A date-time string.
 
 **Returns:**
 

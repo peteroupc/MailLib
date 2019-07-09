@@ -206,12 +206,12 @@ Converts a file name from the Content-Disposition header to a suitable name
  for saving data to a file. This method is idempotent; that is,
  calling the method again on the result doesn't change that result.
  <p>Examples: </p> <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt;
- "hello.txt"</code> (RFC 2047 encoding) </p>
+ "hello.txt"</code> (RFC 2047 encoding). </p>
  <p><code>"=?utf-8?q?long_filename?=" -&gt; "long filename"</code> (RFC 2047
- encoding) </p> <p><code>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</code>
- (RFC 2231 encoding) </p> <p><code>"nul.txt" -&gt; "_nul.txt"</code>
- (Reserved name) </p> <p><code>"dir1/dir2/file" -&gt;
- "dir1_dir2_file"</code> (Directory separators) </p><p>
+ encoding). </p> <p><code>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</code>
+ (RFC 2231 encoding). </p> <p><code>"nul.txt" -&gt; "_nul.txt"</code>
+ (Reserved name). </p> <p><code>"dir1/dir2/file" -&gt;
+ "dir1_dir2_file"</code> (Directory separators). </p><p>
  </p><p><b>Remarks:</b> </p> <ul> <li>The exact file name conversion used
  by this method is not guaranteed to remain the same between versions
  of this library, with the exception that the return value will be in
@@ -258,7 +258,7 @@ Converts a file name from the Content-Disposition header to a suitable name
  media types"). (Some email implementations may still write out the
  "name" parameter, even for media types other than
  <code>application/octet-stream</code> and even though RFC 2046 has
- deprecated that parameter.) </p> </li> </ul>
+ deprecated that parameter.) </p> </li> </ul> .
 
 **Parameters:**
 

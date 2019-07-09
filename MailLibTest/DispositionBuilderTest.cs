@@ -11,7 +11,7 @@ namespace MailLibTest {
       ContentDisposition dispNull = null;
       try {
 Assert.AreEqual(null, new DispositionBuilder(stringNull));
-        Assert.Fail("Should have failed");
+Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -20,7 +20,7 @@ Assert.AreEqual(null, new DispositionBuilder(stringNull));
       }
       try {
 Assert.AreEqual(null, new DispositionBuilder(dispNull));
-        Assert.Fail("Should have failed");
+Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -29,7 +29,7 @@ Assert.AreEqual(null, new DispositionBuilder(dispNull));
       }
       try {
 Assert.AreEqual(null, new DispositionBuilder(String.Empty));
-        Assert.Fail("Should have failed");
+Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -89,39 +89,39 @@ Assert.AreEqual(
       Assert.AreEqual(String.Empty, db.ToDisposition().GetParameter("a"));
       try {
  new DispositionBuilder().SetParameter(null, null);
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new DispositionBuilder().SetParameter(null, "test");
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new DispositionBuilder().SetParameter(null, String.Empty);
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new DispositionBuilder().SetParameter("test", null);
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new DispositionBuilder().SetParameter("test", String.Empty);
@@ -131,21 +131,21 @@ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new DispositionBuilder().SetParameter(String.Empty, "value");
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
       try {
  new DispositionBuilder().SetParameter("test\u00e0", "value");
-Assert.Fail("Should have failed");
+ Assert.Fail("Should have failed");
 } catch (ArgumentException) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
+ throw new InvalidOperationException(String.Empty, ex);
 }
     }
     [Test]

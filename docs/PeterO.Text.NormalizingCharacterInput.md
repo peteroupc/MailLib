@@ -29,7 +29,7 @@
 
  Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
 
-  ### Member Summary
+### Member Summary
 * <code>[GetChars(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#GetChars_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Gets a list of normalized code points after reading from a character stream.
 * <code>[GetChars(string, PeterO.Text.Normalization)](#GetChars_string_PeterO_Text_Normalization)</code> - Gets a list of normalized code points after reading from a string.
 * <code>[IsNormalized(int[], PeterO.Text.Normalization)](#IsNormalized_int_PeterO_Text_Normalization)</code> - Determines whether the given array of characters is in the given Unicode normalization form.
@@ -48,7 +48,7 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.   <b>Parameters:</b>
 
- * <i>input</i>:  The parameter  <i>input</i>
+ * <i>input</i>: The parameter  <i>input</i>
  is an ICharacterInput object.
 
 <a id="Void_ctor_ICharacterInput_Normalization"></a>
@@ -60,10 +60,10 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.    <b>Parameters:</b>
 
- * <i>stream</i>:  The parameter  <i>stream</i>
+ * <i>stream</i>: The parameter  <i>stream</i>
  is an ICharacterInput object.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="Void_ctor_String"></a>
@@ -74,7 +74,7 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.   <b>Parameters:</b>
 
- * <i>str</i>:  The parameter  <i>str</i>
+ * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
 <a id="Void_ctor_String_Int32_Int32_Normalization"></a>
@@ -88,16 +88,16 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.      <b>Parameters:</b>
 
- * <i>str</i>:  The parameter  <i>str</i>
+ * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>index</i>:  The parameter  <i>index</i>
+ * <i>index</i>: The parameter  <i>index</i>
  is a 32-bit signed integer.
 
- * <i>length</i>:  The parameter  <i>length</i>
+ * <i>length</i>: The parameter  <i>length</i>
  is a 32-bit signed integer.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="Void_ctor_String_Normalization"></a>
@@ -109,16 +109,16 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.     <b>Parameters:</b>
 
- * <i>str</i>:  The parameter  <i>str</i>
+ * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>str</i>
+The parameter  <i>str</i>
  is null.
 
 <a id="Void_ctor_IList_1"></a>
@@ -129,7 +129,7 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.   <b>Parameters:</b>
 
- * <i>characterList</i>:  The parameter  <i>characterList</i>
+ * <i>characterList</i>: The parameter  <i>characterList</i>
  is an IList object.
 
 <a id="Void_ctor_IList_1_Normalization"></a>
@@ -141,10 +141,10 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.    <b>Parameters:</b>
 
- * <i>characterList</i>:  The parameter  <i>characterList</i>
+ * <i>characterList</i>: The parameter  <i>characterList</i>
  is an IList object.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="GetChars_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>

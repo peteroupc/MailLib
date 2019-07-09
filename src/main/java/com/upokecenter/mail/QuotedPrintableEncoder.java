@@ -46,8 +46,8 @@ import com.upokecenter.text.*;
       for (int i = 0; i < appendStr.length(); ++i) {
         if (i == 0 && this.lineCount == 0 && appendStr.charAt(i) == '.') {
           output.write((byte)'=');
-          output.write((byte)'2');
-          output.write((byte)'E');
+          output.write((byte)0x32);
+          output.write((byte)0x45);
           this.lineCount += 2;
           count += 2;
         } else {
@@ -60,9 +60,9 @@ import com.upokecenter.text.*;
     }
 
     private int IncrementAndAppendChars(
-  IWriter output,
-  char b2,
-  char b3) {
+      IWriter output,
+      char b2,
+      char b3) {
       int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 3 >= MaxLineLength) {
@@ -89,8 +89,10 @@ import com.upokecenter.text.*;
           // MaxLineLength including the final '='
           byte[] buf;
           if (ch == '.') {
-            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',
-            (byte)'2', (byte)'E', };
+            buf = new byte[] {
+              0x3d, 0x0d, 0x0a, (byte)'=',
+              (byte)0x32, (byte)0x45,
+             };
           } else {
             buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
           }
@@ -101,8 +103,8 @@ import com.upokecenter.text.*;
       }
       if (this.lineCount == 0 && ch == '.') {
         output.write((byte)'=');
-        output.write((byte)'2');
-        output.write((byte)'E');
+        output.write((byte)0x32);
+        output.write((byte)0x45);
         this.lineCount += 2;
         count += 2;
       } else {
@@ -204,7 +206,7 @@ import com.upokecenter.text.*;
           case 3: {
               // Capital F at beginning of line
               // See page 7-8 of RFC 2049
-              if (c == (byte)'r') {
+              if (c == (byte)0x72) {
                 this.machineState = 4;
                 return count;
               } else {
@@ -215,7 +217,7 @@ import com.upokecenter.text.*;
             }
           case 4: {
               // 'Fr' at beginning of line
-              if (c == (byte)'o') {
+              if (c == (byte)0x6f) {
                 this.machineState = 5;
                 return count;
               } else {
@@ -227,7 +229,7 @@ import com.upokecenter.text.*;
             }
           case 5: {
               // 'Fro' at beginning of line
-              if (c == (byte)'m') {
+              if (c == (byte)0x6d) {
                 this.machineState = 6;
                 return count;
               } else {

@@ -7,7 +7,7 @@ import com.upokecenter.util.*;
      * identifiers). Data URIs are described in RFC 2397. Examples for Data
      * URIs follow. <pre>data:, hello%20world</pre>
      * <pre>data:text/markdown, hello%20world</pre>
-     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>
+     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
      * @deprecated Renamed to DataUris.
  */
 @Deprecated
@@ -43,7 +43,7 @@ return DataUris.DataUriBytes(url);
      * Encodes text as a Data URI (uniform resource identifier).
      * @param textString A text string to encode as a data URI.
      * @return A Data URI that encodes the given text.
-     * @throws java.lang.NullPointerException The parameter {@code textString} is
+     * @throws NullPointerException The parameter {@code textString} is
      * null.
      * @deprecated Renamed to MakeDataUri.
  */
@@ -58,7 +58,7 @@ return DataUris.MakeDataUri(textString);
      * @param bytes A byte array containing the data to encode in a Data URI.
      * @param mediaType A media type to assign to the data.
      * @return A Data URI that encodes the given data and media type.
-     * @throws java.lang.NullPointerException The parameter {@code bytes} or {@code
+     * @throws NullPointerException The parameter {@code bytes} or {@code
      * mediaType} is null.
      * @deprecated Renamed to MakeDataUri.
  */

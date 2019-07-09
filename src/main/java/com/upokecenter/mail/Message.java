@@ -14,89 +14,93 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
-  /**
-   * <p>Represents an email message, and contains methods and properties for
-   * accessing and modifying email message data. This class implements the
-   * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
-   * Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
-   * safety:</b> This class is mutable; its properties can be changed. None
-   * of its instance methods are designed to be thread safe. Therefore,
-   * access to objects from this class must be synchronized if multiple
-   * threads can access them at the same time. </p> <p>The following lists
-   * known deviations from the mail specifications (Internet Message Format
-   * and MIME): </p> <ul> <li>The content-transfer-encodings
-   * "quoted-printable" and "base64" are treated as 7bit instead if they
-   * occur in a message or body part with content type "multipart/&#x2a;" or
-   * "message/&#x2a;" (other than "message/global",
-   * "message/global-headers", "message/global-disposition-notification", or
-   * "message/global-delivery-status"). </li> <li>If a message has two or
-   * more Content-Type header fields, it is treated as having a content type
-   * of "application/octet-stream", unless one or more of the header fields
-   * is syntactically invalid. </li> <li>Illegal UTF-8 byte sequences
-   * appearing in header field values are replaced with replacement
-   * characters. Moreover, UTF-8 is parsed everywhere in header field
-   * values, even in those parts of some structured header fields where this
-   * appears not to be allowed. (UTF-8 is a character encoding for the
-   * Unicode character set.) </li> <li>This implementation can parse a
-   * message even if that message is without a From header field, without a
-   * Date header field, or without both. </li> <li>The To and Cc header
-   * fields are allowed to contain only comments and whitespace, but these
-   * "empty" header fields will be omitted when generating. </li> <li>There
-   * is no line length limit imposed when parsing header fields, except
-   * header field names. </li> <li>There is no line length limit imposed
-   * when parsing quoted-printable or base64 encoded bodies. </li> <li>If
-   * the transfer encoding is absent and the content type is
-   * "message/rfc822", bytes with values greater than 127 (called "8-bit
-   * bytes" in the rest of this summary) are still allowed, despite the
-   * default value of "7bit" for "Content-Transfer-Encoding". </li> <li>In
-   * the following cases, if the transfer encoding is absent, declared as
-   * 7bit, or treated as 7bit, 8-bit bytes are still allowed: </li> <li>(a)
-   * The preamble and epilogue of multipart messages, which will be ignored.
-   * </li> <li>(b) If the charset is declared to be <code>utf-8</code> . </li>
-   * <li>(c) If the content type is "text/html" and the charset is declared
-   * to be <code>us-ascii</code> , "windows-1252", "windows-1251", or
-   * "iso-8859-&#x2a;" (all single byte encodings). </li> <li>(d) In
-   * non-MIME message bodies and in text/plain message bodies. Any 8-bit
-   * bytes are replaced with the substitute character byte (0x1a). </li>
-   * <li>If the message starts with the word "From" (and no other case
-   * variations of that word) followed by one or more space (U + 0020) not
-   * followed by colon, that text and the rest of the text is skipped up to
-   * and including a line feed (U + 000A). (See also RFC 4155, which describes
-   * the so-called "mbox" convention with "From" lines of this kind.) </li>
-   * <li>The name <code>ascii</code> is treated as a synonym for <code>us-ascii</code> ,
-   * despite being a reserved name under RFC 2046. The name <code>cp1252</code>
-   * and <code>utf8</code> are treated as synonyms for <code>windows-1252</code> and
-   * <code>utf-8</code> , respectively, even though they are not IANA registered
-   * aliases. </li> <li>The following deviations involve encoded words under
-   * RFC 2047: </li> <li>(a) If a sequence of encoded words decodes to a
-   * string with a CTL character (U + 007F, or a character less than U + 0020
-   * and not TAB) after being converted to Unicode, the encoded words are
-   * left un-decoded. </li> <li>(b) This implementation can decode encoded
-   * words regardless of the character length of the line in which they
-   * appear. This implementation can generate a header field line with one
-   * or more encoded words even if that line is more than 76 characters
-   * long. (This implementation follows the recommendation in RFC 5322 to
-   * limit header field lines to no more than 78 characters, where
-   * possible.) </li> </ul> <p>It would be appreciated if users of this
-   * library contact the author if they find other ways in which this
-   * implementation deviates from the mail specifications or other
-   * applicable specifications. </p> <p>Note that this class currently
-   * doesn't support the "padding" parameter for message bodies with the
-   * media type "application/octet-stream" or treated as that media type
-   * (see RFC 2046 sec. 4.5.1). </p> <p>Note that this implementation can
-   * decode an RFC 2047 encoded word that uses ISO-2022-JP (the only
-   * supported encoding that uses code switching) even if the encoded word's
-   * payload ends in a different mode from "ASCII mode". (Each encoded word
-   * still starts in "ASCII mode", though.) This, however, is not a
-   * deviation to RFC 2047 because the relevant rule only concerns bringing
-   * the output device back to "ASCII mode" after the decoded text is
-   * displayed (see last paragraph of sec. 6.2) -- since the decoded text is
-   * converted to Unicode rather than kept as ISO-2022-JP, this is not
-   * applicable since there is no such thing as "ASCII mode" in the Unicode
-   * Standard. </p> <p>Note that this library (the MailLib library) has no
-   * facilities for sending and receiving email messages, since that's
-   * outside this library's scope. </p>
-   */
+    /**
+     * <p>Represents an email message, and contains methods and properties for
+     * accessing and modifying email message data. This class implements
+     * the Internet Message Format (RFC 5322) and Multipurpose Internet
+     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
+     * safety:</b> This class is mutable; its properties can be changed.
+     * None of its instance methods are designed to be thread safe.
+     * Therefore, access to objects from this class must be synchronized if
+     * multiple threads can access them at the same time. </p> <p>The
+     * following lists known deviations from the mail specifications
+     * (Internet Message Format and MIME): </p> <ul> <li>The
+     *  content-transfer-encodings "quoted-printable" and "base64" are
+     * treated as 7bit instead if they occur in a message or body part with
+     *  content type "multipart/&#x2a;" or "message/&#x2a;" (other than
+     *  "message/global", "message/global-headers",
+     *  "message/global-disposition-notification", or
+     *  "message/global-delivery-status"). </li> <li>If a message has two or
+     * more Content-Type header fields, it is treated as having a content
+     *  type of "application/octet-stream", unless one or more of the header
+     * fields is syntactically invalid. </li> <li>Illegal UTF-8 byte
+     * sequences appearing in header field values are replaced with
+     * replacement characters. Moreover, UTF-8 is parsed everywhere in
+     * header field values, even in those parts of some structured header
+     * fields where this appears not to be allowed. (UTF-8 is a character
+     * encoding for the Unicode character set.) </li> <li>This
+     * implementation can parse a message even if that message is without a
+     * From header field, without a Date header field, or without both.
+     * </li> <li>The To and Cc header fields are allowed to contain only
+     *  comments and whitespace, but these "empty" header fields will be
+     * omitted when generating. </li> <li>There is no line length limit
+     * imposed when parsing header fields, except header field names. </li>
+     * <li>There is no line length limit imposed when parsing
+     * quoted-printable or base64 encoded bodies. </li> <li>If the transfer
+     *  encoding is absent and the content type is "message/rfc822", bytes
+     *  with values greater than 127 (called "8-bit bytes" in the rest of
+     *  this summary) are still allowed, despite the default value of "7bit"
+     *  for "Content-Transfer-Encoding". </li> <li>In the following cases,
+     * if the transfer encoding is absent, declared as 7bit, or treated as
+     * 7bit, 8-bit bytes are still allowed: </li> <li>(a) The preamble and
+     * epilogue of multipart messages, which will be ignored. </li> <li>(b)
+     * If the charset is declared to be <code>utf-8</code> . </li> <li>(c) If the
+     *  content type is "text/html" and the charset is declared to be
+     *  <code>us-ascii</code> , "windows-1252", "windows-1251", or
+     *  "iso-8859-&#x2a;" (all single byte encodings). </li> <li>(d) In
+     * non-MIME message bodies and in text/plain message bodies. Any 8-bit
+     * bytes are replaced with the substitute character byte (0x1a). </li>
+     *  <li>If the message starts with the word "From" (and no other case
+     * variations of that word) followed by one or more space (U + 0020) not
+     * followed by colon, that text and the rest of the text is skipped up
+     * to and including a line feed (U + 000A). (See also RFC 4155, which
+     *  describes the so-called "mbox" convention with "From" lines of this
+     * kind.) </li> <li>The name <code>ascii</code> is treated as a synonym for
+     * <code>us-ascii</code> , despite being a reserved name under RFC 2046. The
+     * name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
+     * <code>windows-1252</code> and <code>utf-8</code> , respectively, even though
+     * they are not IANA registered aliases. </li> <li>The following
+     * deviations involve encoded words under RFC 2047: </li> <li>(a) If a
+     * sequence of encoded words decodes to a string with a CTL character
+     * (U + 007F, or a character less than U + 0020 and not TAB) after being
+     * converted to Unicode, the encoded words are left un-decoded. </li>
+     * <li>(b) This implementation can decode encoded words regardless of
+     * the character length of the line in which they appear. This
+     * implementation can generate a header field line with one or more
+     * encoded words even if that line is more than 76 characters long.
+     * (This implementation follows the recommendation in RFC 5322 to limit
+     * header field lines to no more than 78 characters, where possible.)
+     * </li> </ul> <p>It would be appreciated if users of this library
+     * contact the author if they find other ways in which this
+     * implementation deviates from the mail specifications or other
+     * applicable specifications. </p> <p>Note that this class currently
+     *  doesn't support the "padding" parameter for message bodies with the
+     *  media type "application/octet-stream" or treated as that media type
+     * (see RFC 2046 sec. 4.5.1). </p> <p>Note that this implementation can
+     * decode an RFC 2047 encoded word that uses ISO-2022-JP or
+     * ISO-2022-JP-2 (encodings that uses code switching) even if the
+     *  encoded word's payload ends in a different mode from "ASCII mode".
+     *  (Each encoded word still starts in "ASCII mode", though.) This,
+     * however, is not a deviation to RFC 2047 because the relevant rule
+     *  only concerns bringing the output device back to "ASCII mode" after
+     * the decoded text is displayed (see last paragraph of sec. 6.2) --
+     * since the decoded text is converted to Unicode rather than kept as
+     * ISO-2022-JP or ISO-2022-JP-2, this is not applicable since there is
+     *  no such thing as "ASCII mode" in the Unicode Standard. </p> <p>Note
+     * that this library (the MailLib library) has no facilities for
+     * sending and receiving email messages, since that's outside this
+     * library's scope. </p>
+     */
   public final class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -138,7 +142,7 @@ import com.upokecenter.text.*;
     /**
      * Initializes a new instance of the {@link Message} class.
      * @param stream The parameter {@code stream} is a InputStream object.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws NullPointerException The parameter {@code stream} is null.
      */
     public Message(InputStream stream) {
       if (stream == null) {
@@ -154,7 +158,7 @@ import com.upokecenter.text.*;
     /**
      * Initializes a new instance of the {@link Message} class.
      * @param bytes A byte array.
-     * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
+     * @throws NullPointerException The parameter {@code bytes} is null.
      */
     public Message(byte[] bytes) {
       if (bytes == null) {
@@ -199,7 +203,7 @@ import com.upokecenter.text.*;
      * Sets this message's Date header field to the current time as its value, with
      * an unspecified time zone offset. <p>This method can be used when the
      * message is considered complete and ready to be generated, for
-     * example, using the "Generate()" method. </p>
+     *  example, using the "Generate()" method. </p>
      * @return This object.
      */
     public Message SetCurrentDate() {
@@ -232,16 +236,16 @@ import com.upokecenter.text.*;
      * Gets the body of this message as a text string.
      * @return The body of this message as a text string.
      * @throws UnsupportedOperationException Either this message is a multipart
-     * message, so it doesn't have its own body text, or this message has no
-     * character encoding declared or assumed for it (which is usually the
-     * case for non-text messages), or the character encoding is not
+     * message, so it doesn't have its own body text, or this message has
+     * no character encoding declared or assumed for it (which is usually
+     * the case for non-text messages), or the character encoding is not
      * supported.
      */
     public final String getBodyString() {
         if (this.getContentType().isMultipart()) {
-          throw new
-
-  UnsupportedOperationException("This is a multipart message, so it doesn't have its own body text.");
+          throw new UnsupportedOperationException(
+              "This is a multipart message,
+              so it doesn't have its " + "own body text.");
         }
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.getContentType().GetCharset(),
@@ -266,23 +270,8 @@ import com.upokecenter.text.*;
       }
 
     /**
-     * <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
-     * body. This method currently supports text/plain, text/plain with
-     * format = flowed, text/enriched, and text/markdown (original
-     * Markdown). </p><p> <p>REMARK: The Markdown implementation currently
-     * supports all features of original Markdown, except that the
-     * implementation-- </p> <ul> <li>does not strictly check the placement
-     * of "block-level HTML elements", </li> <li>does not prevent Markdown
-     * content from being interpreted as such merely because it's contained
-     * in a "block-level HTML element", and </li> <li>does not deliberately
-     * use HTML escapes to obfuscate email addresses wrapped in
-     * angle-brackets. </li> </ul> </p>
-     * @return An HTML rendering of this message's text.
-     * @throws UnsupportedOperationException Either this message is a multipart
-     * message, so it doesn't have its own body text, or this message has no
-     * character encoding declared or assumed for it (which is usually the
-     * case for non-text messages), or the character encoding is not
-     * supported.
+     *
+     * @return A string object.
      */
     public String GetFormattedBodyString() {
       String text = this.getBodyString();
@@ -327,8 +316,8 @@ import com.upokecenter.text.*;
 
     /**
      * Gets this message's content disposition. The content disposition specifies
-     * how a user agent should display or otherwise handle this message. Can
-     * be set to null. If set to a disposition or to null, updates the
+     * how a user agent should display or otherwise handle this message.
+     * Can be set to null. If set to a disposition or to null, updates the
      * Content-Disposition header field as appropriate.
      * @return This message's content disposition, or null if none is specified.
      */
@@ -354,7 +343,7 @@ public final void setContentDisposition(ContentDisposition value) {
      * absent from this message. If set to a media type, updates the
      * Content-Type header field as appropriate. Cannot be set to null.
      * @return This message's media type.
-     * @throws java.lang.NullPointerException This value is being set and "value" is
+     * @throws NullPointerException This value is being set and "value" is
      * null.
      */
     public final MediaType getContentType() {
@@ -378,10 +367,11 @@ public final void setContentType(MediaType value) {
     /**
      * <p>Gets a file name suggested by this message for saving the message's body
      * to a file. For more information on the algorithm, see
-     * ContentDisposition.MakeFilename. </p> <p>This method generates a file
-     * name based on the <code>filename</code> parameter of the
-     * Content-Disposition header field, if it exists, or on the <code>name</code>
-     * parameter of the Content-Type header field, otherwise. </p>
+     * ContentDisposition.MakeFilename. </p> <p>This method generates a
+     * file name based on the <code>filename</code> parameter of the
+     * Content-Disposition header field, if it exists, or on the
+     * <code>name</code> parameter of the Content-Type header field, otherwise.
+     * </p>
      * @return A suggested name for the file. Returns the empty string if there is
      * no filename suggested by the content type or content disposition, or
      * if that filename is an empty string.
@@ -403,7 +393,7 @@ public final void setContentType(MediaType value) {
      * @throws UnsupportedOperationException The parameter {@code headerName} is not
      * supported for this method. Currently, the only header fields
      * supported are To, Cc, Bcc, Reply-To, Sender, and From.
-     * @throws java.lang.NullPointerException The parameter {@code headerName} is
+     * @throws NullPointerException The parameter {@code headerName} is
      * null.
      * @throws IllegalArgumentException The parameter {@code headerName} is empty.
      */
@@ -435,9 +425,9 @@ public final void setContentType(MediaType value) {
 
     /**
      * Gets a snapshot of the header fields of this message, in the order in which
-     * they appear in the message. For each item in the list, the key is the
-     * header field's name (where any basic upper-case letters [U+0041 to
-     * U + 005A] are converted to lower case) and the value is the header
+     * they appear in the message. For each item in the list, the key is
+     * the header field's name (where any basic upper-case letters [U+0041
+     * to U + 005A] are converted to lower case) and the value is the header
      * field's value.
      * @return A snapshot of the header fields of this message.
      */
@@ -445,9 +435,7 @@ public final void setContentType(MediaType value) {
         ArrayList<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>();
         for (int i = 0; i < this.headers.size(); i += 2) {
           list.add(
-            new AbstractMap.SimpleImmutableEntry<String, String>(
-              this.headers.get(i),
-              this.headers.get(i + 1)));
+      new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
         }
         return list;
       }
@@ -488,10 +476,10 @@ public final void setSubject(String value) {
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method. </p>
      * @param header A key/value pair. The key is the name of the header field,
-     * such as "From" or "Content-ID". The value is the header field's
+     *  such as "From" or "Content-ID". The value is the header field's
      * value.
      * @return This instance.
-     * @throws java.lang.NullPointerException The key or value of {@code header} is
+     * @throws NullPointerException The key or value of {@code header} is
      * null.
      * @throws IllegalArgumentException The header field name is too long or
      * contains an invalid character, or the header field's value is
@@ -508,7 +496,7 @@ public final void setSubject(String value) {
      * @param name Name of a header field, such as "From" or "Content-ID" .
      * @param value Value of the header field.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code name} or {@code
+     * @throws NullPointerException The parameter {@code name} or {@code
      * value} is null.
      * @throws IllegalArgumentException The header field name is too long or
      * contains an invalid character, or the header field's value is
@@ -529,22 +517,22 @@ public final void setSubject(String value) {
      * (the declared transfer encoding for this message will be ignored).
      * </p> <p>The following applies to the following header fields: From,
      * To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
-     * Resent-Bcc, and Resent-Sender. If the header field exists, but has an
-     * invalid syntax, has no addresses, or appears more than once, this
+     * Resent-Bcc, and Resent-Sender. If the header field exists, but has
+     * an invalid syntax, has no addresses, or appears more than once, this
      * method will generate a synthetic header field with the display-name
      * set to the contents of all of the header fields with the same name,
-     * and the address set to <code>me@[header-name]-address.invalid</code> as the
-     * address (a <code>.invalid</code> address is a reserved address that can
-     * never belong to anyone). (An exception is that the Resent-&#x2a;
+     * and the address set to <code>me@[header-name]-address.invalid</code> as
+     * the address (a <code>.invalid</code> address is a reserved address that
+     * can never belong to anyone). (An exception is that the Resent-&#x2a;
      * header fields may appear more than once.) The generated message
      * should always have a From header field. </p> <p>If a Date and/or
-     * Message-ID header field doesn't exist, a field with that name will be
-     * generated (using the current local time for the Date field). </p>
+     * Message-ID header field doesn't exist, a field with that name will
+     * be generated (using the current local time for the Date field). </p>
      * <p>When encoding the message's body, if the message has a text
-     * content type ("text/&#x2a;"), the line breaks are a CR byte (carriage
-     * return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or
-     * LF alone. If the message has any other content type, only CR followed
-     * by LF is considered a line break. </p>
+     *  content type ("text/&#x2a;"), the line breaks are a CR byte
+     * (carriage return, 0x0d) followed by an LF byte (line feed, 0x0a), CR
+     * alone, or LF alone. If the message has any other content type, only
+     * CR followed by LF is considered a line break. </p>
      * @return The generated message.
      * @throws com.upokecenter.mail.MessageDataException The message can't be
      * generated.
@@ -577,11 +565,13 @@ public final void setSubject(String value) {
 
     /**
      * Gets the date and time extracted from this message's Date header field (the
-     * value of which is found as though GetHeader("date") were called). See
-     * <see
-  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-     * for more information on the format of the date-time array returned by
-     * this method.
+     *  value of which is found as though GetHeader("date") were called).
+     * See <see
+     *
+       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
+       System.String,System.Boolean)'/>
+     * for more information on the format of the date-time array returned
+     * by this method.
      * @return An array containing eight elements. Returns null if the Date header
      * doesn't exist, if the Date field is syntactically or semantically
      * invalid, or if the field's year would overflow a 32-bit signed
@@ -593,27 +583,11 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets this message's Date header field to the given date and time.
-     * @param dateTime An array containing eight elements. Each element of the
-     * array (starting from 0) is as follows: <ul> <li>0 - The year. For
-     * example, the value 2000 means 2000 C.E. </li> <li>1 - Month of the
-     * year, from 1 (January) through 12 (December). </li> <li>2 - Day of
-     * the month, from 1 through 31. </li> <li>3 - Hour of the day, from 0
-     * through 23. </li> <li>4 - Minute of the hour, from 0 through 59.
-     * </li> <li>5 - Second of the minute, from 0 through 60 (this value can
-     * go up to 60 to accommodate leap seconds). (Leap seconds are
-     * additional seconds added to adjust international atomic time, or TAI,
-     * to an approximation of astronomical time known as coordinated
-     * universal time, or UTC.) </li> <li>6 - Milliseconds of the second,
-     * from 0 through 999. This value is not used to generate the date
-     * string, but must still be valid. </li> <li>7 - Number of minutes to
-     * subtract from this date and time to get global time. This number can
-     * be positive or negative. </li> </ul> .
-     * @return This object.
-     * @throws IllegalArgumentException The parameter {@code dateTime} contains
-     * fewer than eight elements, contains invalid values, or contains a
-     * year less than 0.
-     * @throws java.lang.NullPointerException The parameter {@code dateTime} is null.
+     *
+     * @param dateTime Not documented yet.
+     * @return A Message object.
+     * @throws NullPointerException The parameter {@code dateTime} is null.
+     * @throws IllegalArgumentException Invalid date and time.
      */
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
@@ -634,7 +608,7 @@ public final void setSubject(String value) {
     /**
      * Returns the mail message contained in this message's body.
      * @return A message object if this object's content type is "message/rfc822",
-     * "message/news", or "message/global", or null otherwise.
+     *  "message/news", or "message/global", or null otherwise.
      */
 
     public Message GetBodyMessage() {
@@ -646,12 +620,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Gets the name and value of a header field by index.
-     * @param index Zero-based index of the header field to get.
-     * @return A key/value pair. The key is the name of the header field, such as
-     * "From" or "Content-ID". The value is the header field's value.
-     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
-     * least as high as the number of header fields.
+     *
+     * @param index Not documented yet.
+     * @return A Map.Entry(string, string) object.
      */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
@@ -676,7 +647,7 @@ public final void setSubject(String value) {
      * @param name The name of a header field.
      * @return The value of the first header field with that name, or null if there
      * is none.
-     * @throws java.lang.NullPointerException Name is null.
+     * @throws NullPointerException Name is null.
      */
     public String GetHeader(String name) {
       if (name == null) {
@@ -696,13 +667,13 @@ public final void setSubject(String value) {
      * Gets an array with the values of all header fields with the specified name,
      * using a basic case-insensitive comparison. (Two strings are equal in
      * such a comparison, if they match after converting the basic
-     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower
-     * case.).
+     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+     * lower case.).
      * @param name The name of a header field.
      * @return An array containing the values of all header fields with the given
      * name, in the order they appear in the message. The array will be
      * empty if no header field has that name.
-     * @throws java.lang.NullPointerException Name is null.
+     * @throws NullPointerException Name is null.
      */
     public String[] GetHeaderArray(String name) {
       if (name == null) {
@@ -763,8 +734,8 @@ public final void setSubject(String value) {
 
     /**
      * Removes all instances of the given header field from this message. If this
-     * is a multipart message, the header field is not removed from its body
-     * part headers. A basic case-insensitive comparison is used. (Two
+     * is a multipart message, the header field is not removed from its
+     * body part headers. A basic case-insensitive comparison is used. (Two
      * strings are equal in such a comparison, if they match after
      * converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
      * both strings to lower case.). <p>Updates the ContentType and
@@ -772,7 +743,7 @@ public final void setSubject(String value) {
      * modified by this method. </p>
      * @param name The name of the header field to remove.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code name} is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public Message RemoveHeader(String name) {
       if (name == null) {
@@ -796,11 +767,10 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets the body of this message to the given byte array. This method doesn't
-     * make a copy of that byte array.
-     * @param bytes A byte array.
-     * @return This object.
-     * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
+     *
+     * @param bytes Not documented yet.
+     * @return A Message object.
+     * @throws NullPointerException The parameter {@code bytes} is null.
      */
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
@@ -816,14 +786,14 @@ public final void setSubject(String value) {
      * have been modified by this method. </p>
      * @param index Zero-based index of the header field to set.
      * @param header A key/value pair. The key is the name of the header field,
-     * such as "From" or "Content-ID". The value is the header field's
+     *  such as "From" or "Content-ID". The value is the header field's
      * value.
      * @return A Message object.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at
      * least as high as the number of header fields; or, the header field
      * name is too long or contains an invalid character, or the header
      * field's value is syntactically invalid.
-     * @throws java.lang.NullPointerException The key or value of {@code header} is
+     * @throws NullPointerException The key or value of {@code header} is
      * null.
      */
     public Message SetHeader(int index, Map.Entry<String, String> header) {
@@ -842,7 +812,7 @@ public final void setSubject(String value) {
      * least as high as the number of header fields; or, the header field
      * name is too long or contains an invalid character, or the header
      * field's value is syntactically invalid.
-     * @throws java.lang.NullPointerException The parameter {@code name} or {@code
+     * @throws NullPointerException The parameter {@code name} or {@code
      * value} is null.
      */
     public Message SetHeader(int index, String name, String value) {
@@ -868,8 +838,8 @@ public final void setSubject(String value) {
 
     /**
      * Sets the value of a header field by index without changing its name.
-     * <p>Updates the ContentType and ContentDisposition properties if those
-     * header fields have been modified by this method. </p>
+     * <p>Updates the ContentType and ContentDisposition properties if
+     * those header fields have been modified by this method. </p>
      * @param index Zero-based index of the header field to set.
      * @param value Value of the header field.
      * @return This instance.
@@ -877,7 +847,7 @@ public final void setSubject(String value) {
      * least as high as the number of header fields; or, the header field
      * name is too long or contains an invalid character, or the header
      * field's value is syntactically invalid.
-     * @throws java.lang.NullPointerException The parameter {@code value} is null.
+     * @throws NullPointerException The parameter {@code value} is null.
      */
     public Message SetHeader(int index, String value) {
       if (index < 0) {
@@ -897,13 +867,13 @@ public final void setSubject(String value) {
      * a string with those words decoded. For an example of encoded words,
      * see the constructor for PeterO.Mail.NamedAddress.
      * @param name Name of the header field. This determines the syntax of the
-     * "value" parameter and is necessary to help this method interpret
+     *  "value" parameter and is necessary to help this method interpret
      * encoded words properly.
      * @param value A header field value that could contain encoded words. For
-     * example, if the name parameter is "From", this parameter could be
-     * "=?utf-8?q?me?= &lt;me@example.com&gt;".
+     *  example, if the name parameter is "From", this parameter could be
+     *  "=?utf-8?q?me?= &lt;me@example.com&gt;".
      * @return The header field value with valid encoded words decoded.
-     * @throws java.lang.NullPointerException The parameter {@code name} is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public static String DecodeHeaderValue(String name, String value) {
       return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
@@ -912,8 +882,8 @@ public final void setSubject(String value) {
     /**
      * Sets the value of this message's header field. If a header field with the
      * same name exists, its value is replaced. If the header field's name
-     * occurs more than once, only the first instance of the header field is
-     * replaced. <p>Updates the ContentType and ContentDisposition
+     * occurs more than once, only the first instance of the header field
+     * is replaced. <p>Updates the ContentType and ContentDisposition
      * properties if those header fields have been modified by this method.
      * </p>
      * @param name The name of a header field, such as "from" or "subject" .
@@ -922,7 +892,7 @@ public final void setSubject(String value) {
      * @throws IllegalArgumentException The header field name is too long or
      * contains an invalid character, or the header field's value is
      * syntactically invalid.
-     * @throws java.lang.NullPointerException The parameter {@code name} or {@code
+     * @throws NullPointerException The parameter {@code name} or {@code
      * value} is null.
      */
     public Message SetHeader(String name, String value) {
@@ -949,12 +919,12 @@ public final void setSubject(String value) {
     /**
      * Sets the body of this message to the specified string in Hypertext Markup
      * Language (HTML) format. The character sequences CR (carriage return,
-     * "&#x5c;r", U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will be
+     *  "&#x5c;r", U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will be
      * converted to CR/LF line breaks. Unpaired surrogate code points will
      * be replaced with replacement characters.
      * @param str A string consisting of the message in HTML format.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public Message SetHtmlBody(String str) {
       if (str == null) {
@@ -969,14 +939,14 @@ public final void setSubject(String value) {
     /**
      * Sets the body of this message to a multipart body with plain text and
      * Hypertext Markup Language (HTML) versions of the same message. The
-     * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
-     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+     *  character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
+     *  feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters.
      * @param text A string consisting of the plain text version of the message.
      * @param html A string consisting of the HTML version of the message.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code text} or {@code
+     * @throws NullPointerException The parameter {@code text} or {@code
      * html} is null.
      */
     public Message SetTextAndHtml(String text, String html) {
@@ -991,7 +961,8 @@ public final void setSubject(String value) {
       // this case, the HTML version)
       Message textMessage = NewBodyPart().SetTextBody(text);
       Message htmlMessage = NewBodyPart().SetHtmlBody(html);
-      String mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      String mtypestr =
+        "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
       this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
       messageParts.clear();
@@ -1003,18 +974,18 @@ public final void setSubject(String value) {
     /**
      * Sets the body of this message to a multipart body with plain text, Markdown,
      * and Hypertext Markup Language (HTML) versions of the same message.
-     * The character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
-     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+     *  The character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
+     *  feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters.
      * @param text A string consisting of the plain text version of the message.
-     * Can be null, in which case the value of the "markdown" parameter is
+     *  Can be null, in which case the value of the "markdown" parameter is
      * used as the plain text version.
      * @param markdown A string consisting of the Markdown version of the message.
      * For interoperability, this Markdown version will be converted to
      * HTML.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code markdown} is null.
+     * @throws NullPointerException The parameter {@code markdown} is null.
      */
     public Message SetTextAndMarkdown(String text, String markdown) {
       if (markdown == null) {
@@ -1041,14 +1012,14 @@ public final void setSubject(String value) {
 
     /**
      * Sets the body of this message to the specified plain text string. The
-     * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
-     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
+     *  character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
+     *  feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
-     * replacement characters. This method changes this message's media type
-     * to plain text.
+     * replacement characters. This method changes this message's media
+     * type to plain text.
      * @param str A string consisting of the message in plain text format.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public Message SetTextBody(String str) {
       if (str == null) {
@@ -1061,22 +1032,22 @@ public final void setSubject(String value) {
     }
 
     private Message AddBodyPart(
-         InputStream inputStream,
-         MediaType mediaType,
-         String filename,
-         String disposition) {
+      InputStream inputStream,
+      MediaType mediaType,
+      String filename,
+      String disposition) {
       return this.AddBodyPart(
-  inputStream,
-  mediaType,
-  filename,
-  disposition,
-  false);
+        inputStream,
+        mediaType,
+        filename,
+        disposition,
+        false);
     }
 
     /**
      * Adds an inline body part with an empty body and with the given media type to
      * this message. Before the new body part is added, if this message
-     * isn't already a multipart message, it becomes a "multipart/mixed"
+     *  isn't already a multipart message, it becomes a "multipart/mixed"
      * message with the current body converted to an inline body part.
      * @param mediaType A media type to assign to the body part.
      * @return A Message object for the generated body part.
@@ -1088,7 +1059,7 @@ public final void setSubject(String value) {
     /**
      * Adds an attachment with an empty body and with the given media type to this
      * message. Before the new attachment is added, if this message isn't
-     * already a multipart message, it becomes a "multipart/mixed" message
+     *  already a multipart message, it becomes a "multipart/mixed" message
      * with the current body converted to an inline body part.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
@@ -1098,11 +1069,11 @@ public final void setSubject(String value) {
     }
 
     private Message AddBodyPart(
-             InputStream inputStream,
-             MediaType mediaType,
-             String filename,
-             String disposition,
-             boolean allowNullStream) {
+      InputStream inputStream,
+      MediaType mediaType,
+      String filename,
+      String disposition,
+      boolean allowNullStream) {
       if (!allowNullStream && inputStream == null) {
         throw new NullPointerException("inputStream");
       }
@@ -1144,8 +1115,8 @@ try { if (ms != null) {
         String basename = BaseName(filename);
         if (!((basename) == null || (basename).length() == 0)) {
           dispBuilder.SetParameter(
-  "filename",
-  basename);
+            "filename",
+            basename);
         }
       }
       bodyPart.setContentDisposition(dispBuilder.ToDisposition());
@@ -1264,28 +1235,18 @@ ext.equals(".txt")) {
      * Adds an attachment to this message in the form of data from the given
      * readable stream, and with the given media type. Before the new
      * attachment is added, if this message isn't already a multipart
-     * message, it becomes a "multipart/mixed" message with the current body
-     * converted to an inline body part.<p>The following example (written in
-     * C# for the .NET version) is an extension method that adds an
-     * attachment from a byte array to a message. <pre>public static
-     * Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
-     * MediaType mediaType) { {
-java.io.ByteArrayInputStream fs = null;
-try {
-fs = new java.io.ByteArrayInputStream(bytes);
-
-     * return msg.AddAttachment(fs, mediaType);
-}
-finally {
-try { if (fs != null) {
- fs.close();
- } } catch (java.io.IOException ex) {}
-}
-} }</pre> </p>
+     *  message, it becomes a "multipart/mixed" message with the current
+     * body converted to an inline body part.<p>The following example
+     * (written in C# for the .NET version) is an extension method that
+     * adds an attachment from a byte array to a message. <pre>public
+     * static Message AddAttachmentFromBytes(this Message msg, byte[]
+     * bytes, MediaType mediaType) { using(var fs = new
+     * MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); }
+     * }</pre> . </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
-     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * @throws NullPointerException The parameter {@code inputStream} or
      * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
@@ -1297,20 +1258,20 @@ try { if (fs != null) {
      * Adds an attachment to this message in the form of data from the given
      * readable stream, and with the given file name. Before the new
      * attachment is added, if this message isn't already a multipart
-     * message, it becomes a "multipart/mixed" message with the current body
-     * converted to an inline body part.
+     *  message, it becomes a "multipart/mixed" message with the current
+     * body converted to an inline body part.
      * @param inputStream A readable data stream.
      * @param filename A file name to assign to the attachment. Can be null or
      * empty, in which case no file name is assigned. Only the file name
      * portion of this parameter is used, which in this case means the
-     * portion of the string after the last "/" or "&#x5c;", if either character
+     *  portion of the string after the last "/" or "&#x5c;", if either character
      * exists, or the entire string otherwise An appropriate media type (or
-     * "application/octet-stream") will be assigned to the attachment based
+     *  "application/octet-stream") will be assigned to the attachment based
      * on this file name's extension. If the file name has an extension
-     * .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md,
-     * .markdown, or .srt, the media type will have a "charset" of "utf-8".
+     *.txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md,
+     *.markdown, or .srt, the media type will have a "charset" of "utf-8".
      * @return A Message object for the generated attachment.
-     * @throws java.lang.NullPointerException The parameter {@code inputStream} is
+     * @throws NullPointerException The parameter {@code inputStream} is
      * null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
@@ -1327,36 +1288,36 @@ try { if (fs != null) {
      * Adds an attachment to this message in the form of data from the given
      * readable stream, and with the given media type and file name. Before
      * the new attachment is added, if this message isn't already a
-     * multipart message, it becomes a "multipart/mixed" message with the
+     *  multipart message, it becomes a "multipart/mixed" message with the
      * current body converted to an inline body part.
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @param filename A file name to assign to the attachment. Can be null or
      * empty, in which case no file name is assigned. Only the file name
      * portion of this parameter is used, which in this case means the
-     * portion of the string after the last "/" or "&#x5c;", if either character
+     *  portion of the string after the last "/" or "&#x5c;", if either character
      * exists, or the entire string otherwise.
      * @return A Message object for the generated attachment.
-     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * @throws NullPointerException The parameter {@code inputStream} or
      * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(
-  InputStream inputStream,
-  MediaType mediaType,
-  String filename) {
+      InputStream inputStream,
+      MediaType mediaType,
+      String filename) {
       return this.AddBodyPart(
-      inputStream,
-      mediaType,
-      filename,
-      "attachment");
+        inputStream,
+        mediaType,
+        filename,
+        "attachment");
     }
 
     /**
      * Adds an inline body part to this message in the form of data from the given
      * readable stream, and with the given media type. Before the new body
      * part is added, if this message isn't already a multipart message, it
-     * becomes a "multipart/mixed" message with the current body converted
+     *  becomes a "multipart/mixed" message with the current body converted
      * to an inline body part.<p>The following example (written in C# for
      * the .NET version) is an extension method that adds an inline body
      * part from a byte array to a message. <pre>public static Message
@@ -1373,11 +1334,11 @@ try { if (fs != null) {
  fs.close();
  } } catch (java.io.IOException ex) {}
 }
-} }</pre> </p>
+} }</pre> . </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @return A Message object for the generated body part.
-     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * @throws NullPointerException The parameter {@code inputStream} or
      * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
@@ -1389,21 +1350,21 @@ try { if (fs != null) {
      * Adds an inline body part to this message in the form of data from the given
      * readable stream, and with the given file name. Before the new body
      * part is added, if this message isn't already a multipart message, it
-     * becomes a "multipart/mixed" message with the current body converted
+     *  becomes a "multipart/mixed" message with the current body converted
      * to an inline body part.
      * @param inputStream A readable data stream.
      * @param filename A file name to assign to the inline body part. Can be null
      * or empty, in which case no file name is assigned. Only the file name
      * portion of this parameter is used, which in this case means the
-     * portion of the string after the last "/" or "&#x5c;", if either character
+     *  portion of the string after the last "/" or "&#x5c;", if either character
      * exists, or the entire string otherwise An appropriate media type (or
-     * "application/octet-stream") will be assigned to the body part based
+     *  "application/octet-stream") will be assigned to the body part based
      * on this file name's extension. If the file name has an extension
-     * .txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md,
-     * .markdown, or .srt, the media type will have a "charset" of "utf-8".
+     *.txt, .text, .htm, .html, .shtml, .asc, .brf, .pot, .rst, .md,
+     *.markdown, or .srt, the media type will have a "charset" of "utf-8".
      * @return A Message object for the generated body part.
-     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
-     * "mediaType" is null.
+     * @throws NullPointerException The parameter {@code inputStream} or
+     *  "mediaType" is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, String filename) {
@@ -1417,21 +1378,21 @@ try { if (fs != null) {
     /**
      * Adds an inline body part to this message in the form of data from the given
      * readable stream, and with the given media type and file name. Before
-     * the new body part is added, if this message isn't already a multipart
-     * message, it becomes a "multipart/mixed" message with the current body
-     * converted to an inline body part.
+     * the new body part is added, if this message isn't already a
+     *  multipart message, it becomes a "multipart/mixed" message with the
+     * current body converted to an inline body part.
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @param filename A file name to assign to the body part.
      * @return A Message object for the generated body part.
-     * @throws java.lang.NullPointerException The parameter {@code inputStream} or
+     * @throws NullPointerException The parameter {@code inputStream} or
      * {@code mediaType} is null.
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(
-  InputStream inputStream,
-  MediaType mediaType,
-  String filename) {
+      InputStream inputStream,
+      MediaType mediaType,
+      String filename) {
       return this.AddBodyPart(inputStream, mediaType, filename, "inline");
     }
 
@@ -1469,11 +1430,11 @@ try { if (fs != null) {
      * of priority (see the LanguageTags.LanguageTagFilter method).
      * @return The best matching body part for the given languages. If the body
      * part has no subject, then the top-level subject is used. If this
-     * message is not a multipart/multilingual message or has fewer than two
-     * body parts, returns this object. If no body part matches the given
-     * languages, returns the last body part if its language is "zxx", or
-     * the second body part otherwise.
-     * @throws java.lang.NullPointerException The parameter {@code languages} is
+     * message is not a multipart/multilingual message or has fewer than
+     * two body parts, returns this object. If no body part matches the
+     * given languages, returns the last body part if its language is
+     *  "zxx", or the second body part otherwise.
+     * @throws NullPointerException The parameter {@code languages} is
      * null.
      */
     public Message SelectLanguageMessage(
@@ -1493,11 +1454,11 @@ try { if (fs != null) {
      * language with a matching body part.
      * @return The best matching body part for the given languages. If the body
      * part has no subject, then the top-level subject is used. If this
-     * message is not a multipart/multilingual message or has fewer than two
-     * body parts, returns this object. If no body part matches the given
-     * languages, returns the last body part if its language is "zxx", or
-     * the second body part otherwise.
-     * @throws java.lang.NullPointerException The parameter {@code languages} is
+     * message is not a multipart/multilingual message or has fewer than
+     * two body parts, returns this object. If no body part matches the
+     * given languages, returns the last body part if its language is
+     *  "zxx", or the second body part otherwise.
+     * @throws NullPointerException The parameter {@code languages} is
      * null.
      */
     public Message SelectLanguageMessage(
@@ -1567,22 +1528,22 @@ try { if (fs != null) {
      * use the same email address in that field as the other messages. The
      * messages should be ordered in descending preference of language.
      * @param languages A list of language strings corresponding to the messages
-     * given in the "messages" parameter. A language string at a given index
-     * corresponds to the message at the same index. Each language string
-     * must follow the syntax of the Content-Language header field (see
-     * LanguageTags.GetLanguageList).
+     *  given in the "messages" parameter. A language string at a given
+     * index corresponds to the message at the same index. Each language
+     * string must follow the syntax of the Content-Language header field
+     * (see LanguageTags.GetLanguageList).
      * @return A Message object with the content type "multipart/multilingual" . It
      * will begin with an explanatory body part and be followed by the
      * messages given in the {@code messages} parameter in the order given.
-     * @throws java.lang.NullPointerException The parameter {@code messages} or
+     * @throws NullPointerException The parameter {@code messages} or
      * {@code languages} is null.
      * @throws IllegalArgumentException The parameter {@code messages} or {@code
      * languages} is empty, their lengths don't match, at least one message
-     * is "null", each message doesn't contain the same email addresses in
+     *  is "null", each message doesn't contain the same email addresses in
      * their From header fields, {@code languages} contains a syntactically
      * invalid language tag list, {@code languages} contains the language
-     * tag "zzx" not appearing alone or at the end of the language tag list,
-     * or the first message contains no From header field.
+     *  tag "zzx" not appearing alone or at the end of the language tag
+     * list, or the first message contains no From header field.
      */
     public static Message MakeMultilingualMessage(
   List<Message> messages,
@@ -1634,8 +1595,8 @@ try { if (fs != null) {
         boolean langInd = i == languages.size() - 1 && langs.size() == 1 &&
           langs.get(0).equals("zxx");
         if (!langInd && LanguageTags.LanguageTagFilter(
-        zxx,
-        langs).size() > 0) {
+          zxx,
+          langs).size() > 0) {
           throw new IllegalArgumentException("zxx tag can only appear at end");
         }
         String subject = messages.get(i).GetHeader("subject");
@@ -1677,8 +1638,7 @@ try { if (fs != null) {
         MediaType mt = MediaType.Parse("message/rfc822");
         String msgstring = messages.get(i).Generate();
         if (msgstring.indexOf("\r\n--") >= 0 || (
-          msgstring.length() >= 2 &&
-             msgstring.charAt(0) == '-' &&
+          msgstring.length() >= 2 && msgstring.charAt(0) == '-' &&
              msgstring.charAt(1) == '-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
@@ -1865,12 +1825,12 @@ try { if (fs != null) {
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                      // CRLF was read
-                      lineStart = true;
+                    // CRLF was read
+                    lineStart = true;
                     } else {
-                      // It's the first part of the line, where the header name
-                      // should be, so the CR here is illegal
-                      throw new MessageDataException("CR not followed by LF");
+                    // It's the first part of the line, where the header name
+                    // should be, so the CR here is illegal
+                    throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -1913,10 +1873,10 @@ try { if (fs != null) {
           int[] status = new int[1];
           try {
             headerValue = DataUtilities.GetUtf8String(
-            bytes,
-            headerValueStart,
-            headerValueEnd - headerValueStart,
-            false); // throws on invalid UTF-8
+              bytes,
+              headerValueStart,
+              headerValueEnd - headerValueStart,
+              false); // throws on invalid UTF-8
           } catch (IllegalArgumentException ex) {
             // Invalid UTF-8, so encapsulate
             headerValue = null;
@@ -1939,21 +1899,21 @@ try { if (fs != null) {
             if (status[0] == 1) {
               // Downgraded
               byte[] newBytes = DataUtilities.GetUtf8Bytes(
-                 headerValue,
-                 true);
+                headerValue,
+                true);
               writer.write(newBytes, 0, newBytes.length);
             } else {
               // Encapsulated
               String field = origRecipient ? "Downgraded-Original-Recipient" :
                 "Downgraded-Final-Recipient";
               headerValue = DataUtilities.GetUtf8String(
-                  bytes,
-                  headerValueStart,
-                  headerValueEnd - headerValueStart,
-                  true); // replaces invalid UTF-8
+                bytes,
+                headerValueStart,
+                headerValueEnd - headerValueStart,
+                true); // replaces invalid UTF-8
               String newField = HeaderEncoder.EncodeFieldAsEncodedWords(
-  field,
-  headerValue);
+                field,
+                headerValue);
               byte[] newBytes = DataUtilities.GetUtf8Bytes(
                 newField,
                 true);
@@ -1971,8 +1931,8 @@ try { if (fs != null) {
     }
 
     private static HeaderEncoder EncodeCommentsInText(
-  HeaderEncoder enc,
-  String str) {
+      HeaderEncoder enc,
+      String str) {
       int i = 0;
       int begin = 0;
       if (str.indexOf('(') < 0) {
@@ -1982,10 +1942,10 @@ try { if (fs != null) {
       while (i < str.length()) {
         if (str.charAt(i) == '(') {
           int si = HeaderParserUtility.ParseCommentLax(
-  str,
-  i,
-  str.length(),
-  null);
+            str,
+            i,
+            str.length(),
+            null);
           if (si != i) {
             enc.AppendString(str, begin, i);
             Rfc2047.EncodeComment(enc, str, i, si);
@@ -2037,10 +1997,10 @@ try { if (fs != null) {
         // }
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
           int addressPart = HeaderParser.ParseCFWS(
-           headerValue,
-           atomText + 1,
-           headerValue.length(),
-           null);
+            headerValue,
+            atomText + 1,
+            headerValue.length(),
+            null);
           HeaderEncoder encoder = new HeaderEncoder().AppendFieldName(fieldName);
           if (isUtf8) {
             String typePart = headerValue.substring(0, addressPart);
@@ -2143,9 +2103,9 @@ try { if (fs != null) {
     }
 
     static boolean HasTextToEscapeOrEncodedWordStarts(
-  String s,
-  int index,
-  int endIndex) {
+      String s,
+      int index,
+      int endIndex) {
       return HasTextToEscapeOrEncodedWordStarts(s, index, endIndex, true);
     }
 
@@ -2158,10 +2118,10 @@ try { if (fs != null) {
     }
 
     static boolean HasTextToEscapeOrEncodedWordStarts(
-  String s,
-  int index,
-  int endIndex,
-  boolean checkEWStarts) {
+      String s,
+      int index,
+      int endIndex,
+      boolean checkEWStarts) {
       int len = endIndex;
       int chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
@@ -2214,9 +2174,9 @@ try { if (fs != null) {
     }
 
     static int ParseUnstructuredText(
-  String s,
-  int startIndex,
-  int endIndex) {
+      String s,
+      int startIndex,
+      int endIndex) {
       // Parses "unstructured" in RFC 5322 without obsolete syntax
       // and with non-ASCII characters allowed
       for (int i = startIndex; i < endIndex;) {
@@ -2403,9 +2363,8 @@ try { if (fs != null) {
             }
           }
           if (c == -1) {
-            throw new
-
-  MessageDataException("Premature end of message before all headers were read, while reading header field name");
+            throw new MessageDataException("Premature end of message " +
+               "before all headers were read, while reading header field name");
           }
           ++lineCount;
           if (first && c == '\r') {
@@ -2535,12 +2494,12 @@ try { if (fs != null) {
                   if (c == '\r') {
                     c = stream.read();
                     if (c == '\n') {
-                      // CRLF was read
-                      lineCount = 0;
+                    // CRLF was read
+                    lineCount = 0;
                     } else {
-                      // It's the first part of the line, where the header name
-                      // should be, so the CR here is illegal
-                      throw new MessageDataException("CR not followed by LF");
+                    // It's the first part of the line, where the header name
+                    // should be, so the CR here is illegal
+                    throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -2605,8 +2564,8 @@ try { if (fs != null) {
             if (c <= 0xffff) {
               sb.append((char)c);
             } else if (c <= 0x10ffff) {
-              sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              sb.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }
@@ -2796,7 +2755,7 @@ try { if (fs != null) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-          throw new IllegalArgumentException("Header field value contains invalid text");
+       throw new IllegalArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new
@@ -3026,7 +2985,8 @@ name.equals("final-recipient")) {
         // reasons not to use local time, despite the SHOULD in RFC 5322
         AppendAscii(
           output,
-          MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
+
+  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
@@ -3043,8 +3003,8 @@ name.equals("final-recipient")) {
       }
       if (!haveContentEncoding) {
         AppendAscii(
-      output,
-      "Content-Transfer-Encoding: " + encodingString + "\r\n");
+          output,
+          "Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       ICharacterEncoder bodyEncoder = null;
       switch (transferEnc) {
@@ -3180,12 +3140,12 @@ name.equals("final-recipient")) {
      * Creates a message object from a MailTo URI (uniform resource identifier).
      * The MailTo URI can contain key-value pairs that follow a
      * question-mark, as in the following example:
-     * "mailto:me@example.com?subject=A%20Subject". In this example,
-     * "subject" is the subject of the email address. Only certain keys are
-     * supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
-     * "comments", "keywords", and "body". The first seven are header field
+     *  "mailto:me@example.com?subject=A%20Subject". In this example,
+     *  "subject" is the subject of the email address. Only certain keys are
+     *  supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+     *  "comments", "keywords", and "body". The first seven are header field
      * names that will be used to set the returned message's corresponding
-     * header fields. The last, "body", sets the body of the message to the
+     *  header fields. The last, "body", sets the body of the message to the
      * given text. Keys other than these eight will be ignored.
      * @param url A MailTo URI.
      * @return A Message object created from the given MailTo URI. Returs null if
@@ -3203,9 +3163,9 @@ name.equals("final-recipient")) {
      * message. The following header fields, and only these, are used to
      * generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
      * Comments. The message body is included in the URI only if this
-     * message has a text media type and uses a supported character encoding
-     * ("charset" parameter). The To header field is included in the URI
-     * only if it has display names or group syntax.
+     * message has a text media type and uses a supported character
+     *  encoding ("charset" parameter). The To header field is included in
+     * the URI only if it has display names or group syntax.
      * @return A MailTo URI corresponding to this message.
      * @deprecated Renamed to ToMailtoUri.
  */
@@ -3218,14 +3178,16 @@ name.equals("final-recipient")) {
      * Creates a message object from a MailTo URI (uniform resource identifier).
      * The MailTo URI can contain key-value pairs that follow a
      * question-mark, as in the following example:
-     * "mailto:me@example.com?subject=A%20Subject". In this example,
-     * "subject" is the subject of the email address. Only certain keys are
-     * supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
-     * "comments", "keywords", and "body". The first seven are header field
+     *  "mailto:me@example.com?subject=A%20Subject". In this example,
+     *  "subject" is the subject of the email address. Only certain keys are
+     *  supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+     *  "comments", "keywords", and "body". The first seven are header field
      * names that will be used to set the returned message's corresponding
-     * header fields. The last, "body", sets the body of the message to the
+     *  header fields. The last, "body", sets the body of the message to the
      * given text. Keys other than these eight will be ignored.
-     * @param uri The parameter {@code uri} is a text string.
+     * @param uri The parameter
+      {@code uri}
+       is a text string.
      * @return A Message object created from the given MailTo URI. Returs null if
      * {@code uri} is null, is syntactically invalid, or is not a MailTo
      * URI.
@@ -3239,9 +3201,9 @@ name.equals("final-recipient")) {
      * message. The following header fields, and only these, are used to
      * generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
      * Comments. The message body is included in the URI only if this
-     * message has a text media type and uses a supported character encoding
-     * ("charset" parameter). The To header field is included in the URI
-     * only if it has display names or group syntax.
+     * message has a text media type and uses a supported character
+     *  encoding ("charset" parameter). The To header field is included in
+     * the URI only if it has display names or group syntax.
      * @return A MailTo URI corresponding to this message.
      */
     public String ToMailtoUri() {
@@ -3429,8 +3391,8 @@ name.equals("final-recipient")) {
       MessageStackEntry entry = new MessageStackEntry(this);
       multipartStack.add(entry);
       BoundaryCheckerTransform boundaryChecker = new BoundaryCheckerTransform(
-         stream,
-         entry.getBoundary());
+        stream,
+        entry.getBoundary());
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       IByteReader currentTransform = MakeTransferEncoding(
@@ -3572,17 +3534,17 @@ name.equals("final-recipient")) {
     }
 
     private static class MessageStackEntry {
-      /**
-       * Gets a value which is used in an internal API.
-       * @return This is an internal API.
-       */
+    /**
+     * Gets a value which is used in an internal API.
+     * @return This is an internal API.
+     */
       public final Message getMessage() { return propVarmessage; }
 private final Message propVarmessage;
 
-      /**
-       * Gets a value which is used in an internal API.
-       * @return This is an internal API.
-       */
+    /**
+     * Gets a value which is used in an internal API.
+     * @return This is an internal API.
+     */
       public final String getBoundary() { return propVarboundary; }
 private final String propVarboundary;
 

@@ -31,13 +31,13 @@ namespace MailLibTest {
             strret[0] = str;
             return strret;
           }
-          strings = strings ?? (new List<string>());
+          strings = strings ?? new List<string>();
           strings.Add(str.Substring(index));
           break;
         } else {
           first = false;
           string newstr = str.Substring(index, index2 - index);
-          strings = strings ?? (new List<string>());
+          strings = strings ?? new List<string>();
           strings.Add(newstr);
           index = index2 + delimLength;
         }
@@ -116,17 +116,17 @@ namespace MailLibTest {
         if (v <= 0xffff) {
           builder.Append((char)v);
         } else if (v <= 0x10ffff) {
-          builder.Append((char)((((v - 0x10000) >> 10) & 0x3ff) + 0xd800));
-          builder.Append((char)(((v - 0x10000) & 0x3ff) + 0xdc00));
+          builder.Append((char)((((v - 0x10000) >> 10) & 0x3ff) | 0xd800));
+          builder.Append((char)(((v - 0x10000) & 0x3ff) | 0xdc00));
         }
       }
       return builder.ToString();
     }
 
     public static void AssertEqual(
-  string expectedStr,
-  string actualStr,
-  string msg) {
+      string expectedStr,
+      string actualStr,
+      string msg) {
       if (!expectedStr.Equals(actualStr)) {
                 Assert.Fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
@@ -159,7 +159,7 @@ namespace MailLibTest {
       bool isForm = NormalizerInput.IsNormalized(str, norm);
       string newStr = NormalizerInput.Normalize(str, norm);
       ICharacterInput sci = new CharacterReader(str, false, true);
-            bool isForm2 = NormalizerInput.IsNormalized(sci, norm);
+      bool isForm2 = NormalizerInput.IsNormalized(sci, norm);
       if (isForm) {
         AssertEqual(str, newStr, EncodingTest.EscapeString(str));
       }
@@ -184,10 +184,10 @@ namespace MailLibTest {
  Console.WriteLine(i);
 }
         string str = EncodingTest.RandomString(rand);
-                this.TestIdempotent(str, Normalization.NFC);
-                this.TestIdempotent(str, Normalization.NFD);
-                this.TestIdempotent(str, Normalization.NFKC);
-                this.TestIdempotent(str, Normalization.NFKD);
+        this.TestIdempotent(str, Normalization.NFC);
+        this.TestIdempotent(str, Normalization.NFD);
+        this.TestIdempotent(str, Normalization.NFKC);
+        this.TestIdempotent(str, Normalization.NFKD);
 }
 Console.WriteLine("Done");
     }
@@ -195,7 +195,7 @@ Console.WriteLine("Done");
     [Test]
     public void NormTestSpecific() {
       string str = "_\ufac7\uc972+67 Tqd R_.";
-            {
+      {
 string stringTemp = NormalizerInput.Normalize(
   str,
   Normalization.NFC);
@@ -206,10 +206,10 @@ Assert.AreEqual(
       Assert.IsFalse(
         NormalizerInput.IsNormalized(str, Normalization.NFC));
       this.TestIdempotent(str, Normalization.NFC);
-            str = "_\u96e3\uc972+67 Tqd R_._";
-            Assert.IsTrue(
+      str = "_\u96e3\uc972+67 Tqd R_._";
+      Assert.IsTrue(
         NormalizerInput.IsNormalized(str, Normalization.NFC));
-            this.TestIdempotent(str, Normalization.NFC);
+        this.TestIdempotent(str, Normalization.NFC);
     }
 
     private sealed class NormResult {
@@ -226,41 +226,41 @@ Assert.AreEqual(
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
         this.nfc = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFC);
+          this.origstr,
+          Normalization.NFC);
         this.nfd = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFD);
+          this.origstr,
+          Normalization.NFD);
         this.nfkc = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFKC);
+          this.origstr,
+          Normalization.NFKC);
         this.nfkd = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFKD);
+          this.origstr,
+          Normalization.NFKD);
         if (!NormalizerInput.IsNormalized(
-            this.nfc,
-            Normalization.NFC)) {
+          this.nfc,
+          Normalization.NFC)) {
           {
             Assert.Fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-            this.nfd,
-            Normalization.NFD)) {
+          this.nfd,
+          Normalization.NFD)) {
           {
             Assert.Fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-            this.nfkc,
-            Normalization.NFKC)) {
+          this.nfkc,
+          Normalization.NFKC)) {
           {
             Assert.Fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-            this.nfkd,
-            Normalization.NFKD)) {
+          this.nfkd,
+          Normalization.NFKD)) {
           {
             Assert.Fail(line);
           }
@@ -301,8 +301,9 @@ public void TestNormD() {
         int p1 = pairs[i];
         int p2 = pairs[i + 1];
         int p3 = pairs[i + 2];
-        if (IsSpecialChar(p1) || IsSpecialChar(p2) ||
-           IsSpecialChar(p3)) {
+        if (IsSpecialChar(p1) ||
+IsSpecialChar(p2) ||
+IsSpecialChar(p3)) {
           Console.WriteLine("{0:X4},{1:X4},{2:X4}", p1, p2, p3);
         }
       }
@@ -345,7 +346,7 @@ string nfdfs = NormalizerInput.Normalize(codePointString,
  }
       Assert.IsTrue(lines.Length > 0);
       var part1 = false;
-       foreach (string lineItem in lines) {
+      foreach (string lineItem in lines) {
         string line = lineItem;
         int hash = line.IndexOf("#", StringComparison.Ordinal);
         if (hash >= 0) {
@@ -386,30 +387,30 @@ string nfdfs = NormalizerInput.Normalize(codePointString,
         }
         if (!handled[i]) {
           if (i >= 0x10000) {
-            cptemp[0] = (char)((((i - 0x10000) >> 10) & 0x3ff) + 0xd800);
-            cptemp[1] = (char)(((i - 0x10000) & 0x3ff) + 0xdc00);
+            cptemp[0] = (char)((((i - 0x10000) >> 10) & 0x3ff) | 0xd800);
+            cptemp[1] = (char)(((i - 0x10000) & 0x3ff) | 0xdc00);
           } else {
             cptemp[0] = (char)i;
           }
           string cpstr = new String(cptemp, 0, i >= 0x10000 ? 2 : 1);
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFC)) {
+            cpstr,
+            Normalization.NFC)) {
             Assert.Fail(TestCommon.IntToString(i));
           }
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFD)) {
+            cpstr,
+            Normalization.NFD)) {
                     Assert.Fail(TestCommon.IntToString(i));
           }
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFKC)) {
+            cpstr,
+            Normalization.NFKC)) {
                     Assert.Fail(TestCommon.IntToString(i));
  }
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFKD)) {
+            cpstr,
+            Normalization.NFKD)) {
                     Assert.Fail(TestCommon.IntToString(i));
         }
           string imsg = TestCommon.IntToString(i);

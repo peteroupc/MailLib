@@ -56,9 +56,9 @@ namespace PeterO.Mail {
     }
 
     private static string DecodeEncodedWordsLenient(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       var state = 0;
       var markStart = 0;
       var wordStart = 0;
@@ -144,8 +144,8 @@ namespace PeterO.Mail {
             if (str[index] == '?' && index + 1 < endIndex &&
             str[index + 1] == '=') {
               string charset = str.Substring(
-           charsetStart,
-           charsetEnd - charsetStart);
+                charsetStart,
+                charsetEnd - charsetStart);
               string data = str.Substring(dataStart, index - dataStart);
               index += 2;
               int endData = index;
@@ -165,12 +165,12 @@ namespace PeterO.Mail {
                 (IByteReader)new BEncodingStringTransform(data) :
                 (IByteReader)new QEncodingStringTransform(data);
                 ICharacterEncoding charEncoding = Encodings.GetEncoding(
-                charset,
-                true);
+                  charset,
+                  true);
                 if (charEncoding != null) {
                   decodedWord = Encodings.DecodeToString(
-                  charEncoding,
-                  transform);
+                    charEncoding,
+                    transform);
                 }
               }
               if (decodedWord == null) {
@@ -181,8 +181,8 @@ namespace PeterO.Mail {
                 if (!haveSpace) {
                   builder.Append(
                  str.Substring(
-                 markStart,
-                 wordStart - markStart));
+                   markStart,
+                   wordStart - markStart));
                 }
                 builder.Append(decodedWord);
                 haveSpace = false;
@@ -447,8 +447,8 @@ namespace PeterO.Mail {
         // show unquoted use of this encoding.
         string charset = Encodings.ResolveAliasForEmail(
   str.Substring(
-  0,
-  index));
+    0,
+    index));
         if (!String.IsNullOrEmpty(charset)) {
           string newstr = DecodeRfc2231ExtensionLenient(str);
           if (!String.IsNullOrEmpty(newstr)) {
@@ -490,9 +490,9 @@ namespace PeterO.Mail {
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
         str = MakeFilenameMethod.DecodeEncodedWordsLenient(
-  str,
-  0,
-  str.Length);
+          str,
+          0,
+          str.Length);
         if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -590,9 +590,9 @@ namespace PeterO.Mail {
               if (c <= 0xffff) {
                 builder.Append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             } else if (builder.Length >= MaxFileNameCodeUnitLength - 1) {
               break;
@@ -614,24 +614,25 @@ namespace PeterO.Mail {
           "prn") || strLower.IndexOf(
           "prn.",
           StringComparison.Ordinal) == 0 || strLower.IndexOf(
-          "![",
-          StringComparison.Ordinal) >= 0 || strLower.Equals(
+            "![",
+            StringComparison.Ordinal) >= 0 || strLower.Equals(
           "aux") || strLower.IndexOf(
-          "aux.",
-          StringComparison.Ordinal) == 0 || strLower.Equals(
+            "aux.",
+            StringComparison.Ordinal) == 0 || strLower.Equals(
           "con") || strLower.IndexOf(
-          "con.",
-          StringComparison.Ordinal) == 0;
+            "con.",
+            StringComparison.Ordinal) == 0;
         // LPTn, COMn
-        if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
+        if (
+          strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
           strLower[4] == ' '))) {
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "lpt",
             StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
                  strLower[3] <= '9');
           reservedFilename = reservedFilename || (strLower.IndexOf(
-          "com",
-          StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+            "com",
+            StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
                 strLower[3] <= '9');
         }
         bool bracketDigit = str[0] == '{' && str.Length > 1 &&

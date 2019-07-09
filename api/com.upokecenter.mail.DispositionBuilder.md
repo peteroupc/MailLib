@@ -73,6 +73,8 @@ Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>type</code> is null.
 
+* <code>java.lang.IllegalArgumentException</code> - Type is empty.
+
 ### getDispositionType
     public final java.lang.String getDispositionType()
 Gets this value's disposition type, such as "inline" or "attachment".

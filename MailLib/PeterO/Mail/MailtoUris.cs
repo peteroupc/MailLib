@@ -199,8 +199,9 @@ namespace PeterO.Mail {
               string decoded = Message.DecodeHeaderValue(name, value);
               msg.AddHeader(name, decoded);
             } else if (name.Equals("subject") ||
-              name.Equals("cc") || name.Equals("bcc") ||
-              name.Equals("in-reply-to")) {
+name.Equals("cc") ||
+name.Equals("bcc") ||
+name.Equals("in-reply-to")) {
               string decoded = Message.DecodeHeaderValue(name, value);
               msg.SetHeader(name, decoded);
             } else if (name.Equals("to")) {

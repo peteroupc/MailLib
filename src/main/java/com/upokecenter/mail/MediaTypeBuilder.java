@@ -19,8 +19,7 @@ import com.upokecenter.util.*;
     private String subtype;
 
     /**
-     * Gets this value's top-level type.
-     * @return This value's top-level type.
+     *
      */
     public final String getTopLevelType() {
         return this.type;
@@ -52,7 +51,7 @@ public final void setSubType(String value) {
     /**
      * Initializes a new instance of the {@link MediaTypeBuilder} class.
      * @param mt The parameter {@code mt} is a MediaType object.
-     * @throws java.lang.NullPointerException The parameter {@code mt} is null.
+     * @throws NullPointerException The parameter {@code mt} is null.
      */
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
@@ -77,23 +76,21 @@ public final void setSubType(String value) {
     /**
      * Gets a value indicating whether this is a text media type.
      * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false} .
+     * false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
       }
 
     /**
-     * Gets a value indicating whether this is a multipart media type.
-     * @return {@code true} If this is a multipart media type; otherwise, . {@code
-     * false} .
+     *
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
       }
 
     /**
-     * Converts this builder to an immutable media type object.
+     *
      * @return A MediaType object.
      */
     public MediaType ToMediaType() {
@@ -103,9 +100,9 @@ public final void setSubType(String value) {
     /**
      * Sets this media type's top-level type.
      * @param str A text string naming a top-level type, such as "text" or "audio"
-     * .
+     *.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code str} is syntactically
      * invalid for a top-level type.
      */
@@ -132,7 +129,7 @@ public final void setSubType(String value) {
      * comparison, if they match after converting the basic upper-case
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code name} is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public MediaTypeBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -147,11 +144,11 @@ public final void setSubType(String value) {
      * @param name Name of the parameter to set, such as "charset" . The name is
      * compared using a basic case-insensitive comparison. (Two strings are
      * equal in such a comparison, if they match after converting the basic
-     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower
-     * case.).
+     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+     * lower case.).
      * @param value A text string giving the parameter's value.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code value} or {@code
+     * @throws NullPointerException The parameter {@code value} or {@code
      * name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty or
      * syntactically invalid.
@@ -179,7 +176,7 @@ public final void setSubType(String value) {
      * Sets this media type's subtype, such as "plain" or "xml" .
      * @param str A text string naming a media subtype.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code str} is empty or
      * syntactically invalid.
      */
@@ -200,7 +197,7 @@ public final void setSubType(String value) {
 
     /**
      * Converts this object to a text string of the media type it represents, in
-     * the same form as <code>MediaType.toString</code>
+     * the same form as <code>MediaType.toString</code>.
      * @return A string representation of this object.
      */
     @Override public String toString() {

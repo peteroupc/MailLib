@@ -192,29 +192,29 @@ namespace Test {
       {
         long numberTemp = Math.Sign(
           DataUtilities.CodePointCompare(
-  "\ud800\udc00",
-  "\ud800\udc00"));
+            "\ud800\udc00",
+            "\ud800\udc00"));
         Assert.AreEqual(0, numberTemp);
       }
       {
         long numberTemp = Math.Sign(
           DataUtilities.CodePointCompare(
-  "abc",
-  "\ud800\udc00"));
+            "abc",
+            "\ud800\udc00"));
         Assert.AreEqual(-1, numberTemp);
       }
       {
         long numberTemp = Math.Sign(
           DataUtilities.CodePointCompare(
-  "\uf000",
-  "\ud800\udc00"));
+            "\uf000",
+            "\ud800\udc00"));
         Assert.AreEqual(-1, numberTemp);
       }
       {
         long numberTemp = Math.Sign(
   DataUtilities.CodePointCompare(
-  "\uf000",
-  "\ud800"));
+    "\uf000",
+    "\ud800"));
         Assert.AreEqual(1, numberTemp);
       }
       Assert.IsTrue(DataUtilities.CodePointCompare("abc", "def") < 0);
@@ -453,16 +453,16 @@ namespace Test {
       } catch (ArgumentNullException) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
-        Assert.Fail(ex.ToString()); throw new
-          InvalidOperationException(String.Empty, ex);
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         DataUtilities.GetUtf8Length(null, false);
       } catch (ArgumentNullException) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
-        Assert.Fail(ex.ToString()); throw new
-          InvalidOperationException(String.Empty, ex);
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
       }
       Assert.AreEqual(3, DataUtilities.GetUtf8Length("abc", true));
       Assert.AreEqual(4, DataUtilities.GetUtf8Length("\u0300\u0300", true));
@@ -699,11 +699,11 @@ namespace Test {
     }
 
     public static void DoTestReadUtf8(
-  byte[] bytes,
-  int expectedRet,
-  string expectedString,
-  int noReplaceRet,
-  string noReplaceString) {
+      byte[] bytes,
+      int expectedRet,
+      string expectedString,
+      int noReplaceRet,
+      string noReplaceString) {
       DoTestReadUtf8(
         bytes,
         bytes.Length,
@@ -730,7 +730,7 @@ namespace Test {
             Assert.AreEqual(expectedString, builder.ToString());
           }
           ms.Position = 0;
-          builder.Remove(0,builder.Length);
+          builder.Remove(0, builder.Length);
           ret = DataUtilities.ReadUtf8(ms, length, builder, false);
           Assert.AreEqual(noReplaceRet, ret);
           if (noReplaceRet == 0) {
@@ -738,7 +738,7 @@ namespace Test {
           }
         }
         if (bytes.Length >= length) {
-          builder.Remove(0,builder.Length);
+          builder.Remove(0, builder.Length);
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,
@@ -749,7 +749,7 @@ namespace Test {
           if (expectedRet == 0) {
             Assert.AreEqual(expectedString, builder.ToString());
           }
-          builder.Remove(0,builder.Length);
+          builder.Remove(0, builder.Length);
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,
@@ -805,60 +805,60 @@ namespace Test {
       DoTestReadUtf8(
   new byte[] { 0x21, 0x21, 0x21 },
   0,
- "!!!",
- 0,
- "!!!");
+  "!!!",
+  0,
+  "!!!");
       DoTestReadUtf8(
         new byte[] { 0x20, 0xc2, 0x80 },
         0,
- " \u0080",
- 0,
- " \u0080");
+        " \u0080",
+        0,
+        " \u0080");
       DoTestReadUtf8(
         new byte[] { 0x20, 0xc2, 0x80, 0x20 },
         0,
- " \u0080 ",
- 0,
- " \u0080 ");
+        " \u0080 ",
+        0,
+        " \u0080 ");
       DoTestReadUtf8(
         new byte[] { 0x20, 0xc2, 0x80, 0xc2 },
         0,
- " \u0080\ufffd",
- -1,
- null);
+        " \u0080\ufffd",
+        -1,
+        null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xc2, 0x21, 0x21 },
         0,
- " \ufffd!!",
- -1,
+        " \ufffd!!",
+        -1,
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xc2, 0xff, 0x20 },
         0,
- " \ufffd\ufffd ",
- -1,
- null);
+        " \ufffd\ufffd ",
+        -1,
+        null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xe0, 0xa0, 0x80 },
         0,
- " \u0800",
- 0,
- " \u0800");
+        " \u0800",
+        0,
+        " \u0800");
       DoTestReadUtf8(
     new byte[] { 0x20, 0xe0, 0xa0, 0x80, 0x20 }, 0, " \u0800 ", 0, " \u0800 ");
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90, 0x80, 0x80 },
- 0,
- " \ud800\udc00",
- 0,
-          " \ud800\udc00");
+        0,
+        " \ud800\udc00",
+        0,
+        " \ud800\udc00");
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90, 0x80, 0x80 },
         3,
         0,
- " \ufffd",
- -1,
- null);
+        " \ufffd",
+        -1,
+        null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90 },
         5,
@@ -875,57 +875,57 @@ namespace Test {
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90, 0x80, 0x80, 0x20 },
- 0,
- " \ud800\udc00 ",
-          0,
- " \ud800\udc00 ");
+        0,
+        " \ud800\udc00 ",
+        0,
+        " \ud800\udc00 ");
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90, 0x80, 0x20 },
- 0,
- " \ufffd ",
- -1,
+        0,
+        " \ufffd ",
+        -1,
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90, 0x20 },
         0,
- " \ufffd ",
- -1,
- null);
+        " \ufffd ",
+        -1,
+        null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90, 0x80, 0xff },
         0,
- " \ufffd\ufffd",
- -1,
- null);
+        " \ufffd\ufffd",
+        -1,
+        null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xf0, 0x90, 0xff },
         0,
- " \ufffd\ufffd",
- -1,
+        " \ufffd\ufffd",
+        -1,
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xe0, 0xa0, 0x20 },
         0,
- " \ufffd ",
- -1,
- null);
+        " \ufffd ",
+        -1,
+        null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xe0, 0x20 },
         0,
- " \ufffd ",
- -1,
- null);
+        " \ufffd ",
+        -1,
+        null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xe0, 0xa0, 0xff },
         0,
- " \ufffd\ufffd",
- -1,
+        " \ufffd\ufffd",
+        -1,
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, 0xe0, 0xff },
- 0,
- " \ufffd\ufffd",
- -1,
+        0,
+        " \ufffd\ufffd",
+        -1,
         null);
     }
     [Test]

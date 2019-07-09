@@ -31,7 +31,7 @@ private UnicodeDatabase() {
       }
       if (classes == null) {
         synchronized (ValueSyncRoot) {
-          classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
+  classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
         }
       }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -69,10 +69,10 @@ private UnicodeDatabase() {
     }
 
     public static int GetDecomposition(
-  int cp,
-  boolean compat,
-  int[] buffer,
-  int offset) {
+      int cp,
+      boolean compat,
+      int[] buffer,
+      int offset) {
       if (cp < 0x80) {
         // ASCII characters have no decomposition
         buffer[offset++] = cp;
@@ -111,11 +111,11 @@ private UnicodeDatabase() {
           }
           realIndex = data1 & 0x1fffff;
           System.arraycopy(
-                NormalizationData.ComplexDecompMappings,
-                realIndex,
-                buffer,
-                offset,
-                size);
+            NormalizationData.ComplexDecompMappings,
+            realIndex,
+            buffer,
+            offset,
+            size);
           return offset + size;
         }
         if (dricp < cp) {
@@ -129,9 +129,9 @@ private UnicodeDatabase() {
     }
 
     public static int GetLowerCaseMapping(
-  int cp,
-  int[] buffer,
-  int offset) {
+      int cp,
+      int[] buffer,
+      int offset) {
       if (cp < 0x80) {
         buffer[offset++] = (cp >= 0x41 && cp <= 0x5a) ? cp + 32 : cp;
         return offset;
@@ -207,7 +207,7 @@ private UnicodeDatabase() {
       }
       if (casedprop == null) {
         synchronized (ValueSyncRoot) {
-          casedprop = (casedprop == null) ? (ByteData.Decompress(NormalizationData.CaseProperty)) : casedprop;
+  casedprop = (casedprop == null) ? (ByteData.Decompress(NormalizationData.CaseProperty)) : casedprop;
         }
       }
       return ((int)casedprop.GetByte(cp)) & 0xff;
@@ -219,7 +219,7 @@ private UnicodeDatabase() {
       }
       if (precisCat == null) {
         synchronized (ValueSyncRoot) {
-          precisCat = (precisCat == null) ? (ByteData.Decompress(IdnaData.PrecisCategories)) : precisCat;
+       precisCat = (precisCat == null) ? (ByteData.Decompress(IdnaData.PrecisCategories)) : precisCat;
         }
       }
       return ((int)precisCat.GetByte(cp)) & 0xff;

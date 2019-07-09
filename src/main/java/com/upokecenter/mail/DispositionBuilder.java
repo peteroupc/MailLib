@@ -10,15 +10,16 @@ at: http://peteroupc.github.io/
 import java.util.*;
 import com.upokecenter.util.*;
 
-  /**
-   * A mutable data type that allows a content disposition to be built.
-   */
+    /**
+     * A mutable data type that allows a content disposition to be built.
+     */
   public class DispositionBuilder {
     private final Map<String, String> parameters;
     private String type;
 
     /**
-     * Gets this value's disposition type, such as "inline" or "attachment".
+     * Gets this value's disposition type, such as "inline" or
+      "attachment".
      * @return This value's disposition type, such as "inline" or "attachment" .
      */
     public final String getDispositionType() {
@@ -39,7 +40,7 @@ public final void setDispositionType(String value) {
     /**
      * Initializes a new instance of the {@link DispositionBuilder} class.
      * @param mt The parameter {@code mt} is a ContentDisposition object.
-     * @throws java.lang.NullPointerException The parameter {@code mt} is null.
+     * @throws NullPointerException The parameter {@code mt} is null.
      */
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
@@ -52,7 +53,8 @@ public final void setDispositionType(String value) {
     /**
      * Initializes a new instance of the {@link DispositionBuilder} class.
      * @param type The parameter {@code type} is a text string.
-     * @throws java.lang.NullPointerException The parameter {@code type} is null.
+     * @throws NullPointerException The parameter {@code type} is null.
+     * @throws IllegalArgumentException Type is empty.
      */
     public DispositionBuilder(String type) {
       if (type == null) {
@@ -68,7 +70,7 @@ public final void setDispositionType(String value) {
     /**
      * Gets a value indicating whether this is a text media type.
      * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false} .
+     * false}.
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated
@@ -77,9 +79,7 @@ public final void setDispositionType(String value) {
       }
 
     /**
-     * Gets a value indicating whether this is a multipart media type.
-     * @return {@code true} If this is a multipart media type; otherwise, . {@code
-     * false} .
+     *
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated
@@ -97,9 +97,11 @@ public final void setDispositionType(String value) {
 
     /**
      * Sets the disposition type, such as "inline".
-     * @param str The parameter {@code str} is a text string.
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Str is empty.
      */
     public DispositionBuilder SetDispositionType(String str) {
@@ -125,7 +127,7 @@ public final void setDispositionType(String value) {
      * comparison, if they match after converting the basic upper-case
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code name} is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public DispositionBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -144,7 +146,7 @@ public final void setDispositionType(String value) {
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @param value Value of the parameter to set.
      * @return This instance.
-     * @throws java.lang.NullPointerException Either {@code value} or {@code name} is
+     * @throws NullPointerException Either {@code value} or {@code name} is
      * null.
      * @throws IllegalArgumentException The parameter {@code name} is empty, or it
      * isn't a well-formed parameter name.

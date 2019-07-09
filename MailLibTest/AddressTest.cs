@@ -10,7 +10,7 @@ namespace MailLibTest {
       var na = new NamedAddress("b <" + str + "@example.com>");
       Address addr = na.Address;
       Assert.AreEqual(expected, addr.LocalPart);
-addr = new Address(str + "@example.com");
+      addr = new Address(str + "@example.com");
       Assert.AreEqual(expected, addr.LocalPart);
     }
 
@@ -24,7 +24,7 @@ addr = new Address(str + "@example.com");
       var na = new NamedAddress("b <example@" + str + ">");
       Address addr = na.Address;
       Assert.AreEqual(expected, addr.Domain);
-addr = new Address("example@" + str);
+      addr = new Address("example@" + str);
       Assert.AreEqual(expected, addr.Domain);
     }
 
@@ -85,8 +85,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
       TestParseDomain("x", "x");
       TestParseDomain("x.example", "x.example");
       TestParseDomain(
-  "x.example\ud800\udc00.example.com",
-  "x.example\ud800\udc00.example.com");
+        "x.example\ud800\udc00.example.com",
+        "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
       TestParseDomainNAOnly("(comment1) x (comment2)", "x");
       TestParseDomainNAOnly(
@@ -104,11 +104,11 @@ Assert.AreEqual(objectTemp, objectTemp2);
     public void TestLocalPart() {
       var addr = new Address("local.local@example.com");
       Assert.AreEqual("local.local", addr.LocalPart);
-addr = new Address("x!y!z!example@example.com");
+      addr = new Address("x!y!z!example@example.com");
       Assert.AreEqual("x!y!z!example", addr.LocalPart);
-addr = new Address("x%y%z%example@example.com");
+      addr = new Address("x%y%z%example@example.com");
       Assert.AreEqual("x%y%z%example", addr.LocalPart);
-addr = new Address("x!y%z!example@example.com");
+      addr = new Address("x!y%z!example@example.com");
       Assert.AreEqual("x!y%z!example", addr.LocalPart);
 
       TestParseLocalPart("x", "x");
@@ -116,8 +116,8 @@ addr = new Address("x!y%z!example@example.com");
       TestParseLocalPart("\"" + "\"", String.Empty);
       TestParseLocalPart("x.example", "x.example");
       TestParseLocalPart(
-  "x.example\ud800\udc00.example.com",
-  "x.example\ud800\udc00.example.com");
+        "x.example\ud800\udc00.example.com",
+        "x.example\ud800\udc00.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
       TestParseLocalPartNAOnly("(comment1) x (comment2)", "x");

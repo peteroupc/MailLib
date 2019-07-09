@@ -11,15 +11,15 @@ using System.Net;
 namespace MailLibTest {
   internal static class NetHelper {
     public static string[] DownloadOrOpenAllLines(
-  string location,
-  string cachedPath) {
+      string location,
+      string cachedPath) {
       if (!File.Exists(cachedPath)) {
         var request = WebRequest.Create(location);
         var response = request.GetResponse();
         using (var stream = response.GetResponseStream()) {
           using (var output = new FileStream(cachedPath, FileMode.Create)) {
 var buffer = new byte[8192];
-            while (true) {
+while (true) {
               var b = stream.Read(buffer, 0, buffer.Length);
               if (b == 0) {
  break;

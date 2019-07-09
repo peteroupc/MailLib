@@ -20,9 +20,9 @@ namespace PeterO.Mail {
     internal const int TokenLocalPart = 7;
     internal const int TokenDomain = 8;
     public static int ParseQuotedStringCore(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       int indexStart, indexStart2, indexTemp2, tx3;
       indexStart = index;
       if (index < endIndex && (str[index] == 34)) {
@@ -95,10 +95,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static void TraverseCFWSAndQuotedStrings(
-  string str,
-  int startIndex,
-  int endIndex,
-  ITokener tokener) {
+      string str,
+      int startIndex,
+      int endIndex,
+      ITokener tokener) {
       // Fills a tokener with "comment" and "quoted-string"
       // tokens. Assumes the portion of the string is a syntactically valid
       // header field according to the Parse method of the header
@@ -117,7 +117,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             if (si < endIndex && str[si] == (char)0x22) {
               // Note that quoted-string starts with optional CFWS
               tokener.RestoreState(state);
-              si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+              si = HeaderParser.ParseQuotedString(str, index, endIndex,
+                tokener);
               if (si == index) {
                 throw new InvalidOperationException("Internal error: " + str);
               }
@@ -154,9 +155,9 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     private static string ParseDotAtomAfterCFWS(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       var builder = new StringBuilder();
@@ -178,9 +179,9 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     private static string ParseDotWordAfterCFWS(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
       var builder = new StringBuilder();
@@ -272,7 +273,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             addresses.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
             // } catch (IndexOutOfRangeException ex) {
             // throw new InvalidOperationException(
-            // "str=" + str + " index=" + index, // ex);
+              // "str=" + str + " index=" + index, // ex);
             // }
             lastIndex = tokenEnd;
           }
@@ -282,10 +283,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static int ParseWord(
-  string str,
-  int index,
-  int endIndex,
-  StringBuilder builder) {
+      string str,
+      int index,
+      int endIndex,
+      StringBuilder builder) {
       // NOTE: Assumes all CFWS has been read beforehand
       if (index == endIndex) {
         return index;
@@ -405,10 +406,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
 
     // Parses a comment using the obsolete syntax.
     internal static int ParseCommentLax(
-  string str,
-  int index,
-  int endIndex,
-  ITokener tokener) {
+      string str,
+      int index,
+      int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       var depth = 0;
       if (index < endIndex && (str[index] == 40)) {
@@ -423,16 +424,20 @@ si = HeaderParserUtility.ParseQuotedStringCore(
         if (backslash) {
           ++index;
         }
-        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
-          (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           index += 2;
-        } else if (!backslash && index < endIndex && ((str[index] >= 1 && str[index]
-          <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 &&
-          str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) || (str[index]
-          >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 55295) ||
-          (str[index] >= 57344 && str[index] <= 65535))) {
+   } else if (!backslash && index < endIndex && ((str[index] >= 1 &&
+          str[index]
+        <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14
+            &&
+     str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) ||
+            (str[index]
+     >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 55295) ||
+            (str[index] >= 57344 && str[index] <= 65535))) {
           ++index;
-        } else if (backslash && index < endIndex && ((str[index] >= 0 && str[index]
+    } else if (backslash && index < endIndex && ((str[index] >= 0 &&
+          str[index]
           <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
@@ -466,9 +471,9 @@ si = HeaderParserUtility.ParseQuotedStringCore(
 
     // Parses a comment without using the obsolete syntax.
     internal static int ParseCommentStrict(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       if (index < endIndex && (str[index] == 40)) {
         ++index;
       } else {
@@ -491,12 +496,12 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   indexTemp4 = index;
                   do {
                     int indexStart4 = index;
-                    while (index < endIndex && ((str[index] == 32) || (str[index] ==
-                    9))) {
+                    while (index < endIndex && ((str[index] == 32) ||
+                (str[index] == 9))) {
                       ++index;
                     }
-                    if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
-                    10) {
+                    if (index + 1 < endIndex && str[index] == 13 && str[index +
+                1] == 10) {
                       index += 2;
                     } else {
                       index = indexStart4;
@@ -514,8 +519,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                 if (index < endIndex && ((str[index] == 32) || (str[index] ==
                   9))) {
                   ++index;
-                  while (index < endIndex && ((str[index] == 32) || (str[index] ==
-                    9))) {
+                  while (index < endIndex && ((str[index] == 32) || (str[index]
+                == 9))) {
                     ++index;
                   }
                 } else {
@@ -632,8 +637,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   9))) {
                   ++index;
                 }
-                if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
-                  10) {
+                if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
+                == 10) {
                   index += 2;
                 } else {
                   index = indexStart3;

@@ -9,7 +9,7 @@ import com.upokecenter.mail.*;
       NamedAddress na = new NamedAddress("b <" + str + "@example.com>");
       Address addr = na.getAddress();
       Assert.assertEquals(expected, addr.getLocalPart());
-addr = new Address(str + "@example.com");
+      addr = new Address(str + "@example.com");
       Assert.assertEquals(expected, addr.getLocalPart());
     }
 
@@ -23,7 +23,7 @@ addr = new Address(str + "@example.com");
       NamedAddress na = new NamedAddress("b <example@" + str + ">");
       Address addr = na.getAddress();
       Assert.assertEquals(expected, addr.getDomain());
-addr = new Address("example@" + str);
+      addr = new Address("example@" + str);
       Assert.assertEquals(expected, addr.getDomain());
     }
 
@@ -84,8 +84,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       TestParseDomain("x", "x");
       TestParseDomain("x.example", "x.example");
       TestParseDomain(
-  "x.example\ud800\udc00.example.com",
-  "x.example\ud800\udc00.example.com");
+        "x.example\ud800\udc00.example.com",
+        "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
       TestParseDomainNAOnly("(comment1) x (comment2)", "x");
       TestParseDomainNAOnly(
@@ -103,11 +103,11 @@ Assert.assertEquals(objectTemp, objectTemp2);
     public void TestLocalPart() {
       Address addr = new Address("local.local@example.com");
       Assert.assertEquals("local.local", addr.getLocalPart());
-addr = new Address("x!y!z!example@example.com");
+      addr = new Address("x!y!z!example@example.com");
       Assert.assertEquals("x!y!z!example", addr.getLocalPart());
-addr = new Address("x%y%z%example@example.com");
+      addr = new Address("x%y%z%example@example.com");
       Assert.assertEquals("x%y%z%example", addr.getLocalPart());
-addr = new Address("x!y%z!example@example.com");
+      addr = new Address("x!y%z!example@example.com");
       Assert.assertEquals("x!y%z!example", addr.getLocalPart());
 
       TestParseLocalPart("x", "x");
@@ -115,8 +115,8 @@ addr = new Address("x!y%z!example@example.com");
       TestParseLocalPart("\"" + "\"", "");
       TestParseLocalPart("x.example", "x.example");
       TestParseLocalPart(
-  "x.example\ud800\udc00.example.com",
-  "x.example\ud800\udc00.example.com");
+        "x.example\ud800\udc00.example.com",
+        "x.example\ud800\udc00.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
       TestParseLocalPartNAOnly("(comment1) x (comment2)", "x");

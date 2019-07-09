@@ -9,108 +9,84 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO.Text {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Text.NormalizingCharacterInput"]/*'/>
+    /// <include file='../../docs.xml'
+    ///   path='docs/doc[@name="T:PeterO.Text.NormalizingCharacterInput"]/*'/>
   [Obsolete("Renamed to NormalizerInput.")]
   public sealed class NormalizingCharacterInput : ICharacterInput {
     private readonly ICharacterInput nci;
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-    /// <param name='str'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is a text string.
-    /// </param>
+    /// <xmlbegin id='46'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
     public NormalizingCharacterInput(
   string str) : this(
   str,
   Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-    /// <param name='input'>
-    /// The parameter
-    /// <paramref name='input'/>
-    /// is an ICharacterInput object.
-    /// </param>
+    /// <xmlbegin id='47'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='input'>The parameter <paramref name='input'/> is an
+    /// ICharacterInput object.</param>
     public NormalizingCharacterInput(
   ICharacterInput input) : this(
   input,
   Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-    /// <param name='characterList'>
-    /// The parameter
-    /// <paramref name='characterList'/>
-    /// is an IList object.
-    /// </param>
+    /// <xmlbegin id='48'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='characterList'>The parameter <paramref
+    /// name='characterList'/> is an IList object.</param>
     public NormalizingCharacterInput(IList<int> characterList)
         : this(characterList, Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-    /// <param name='characterList'>
-    /// The parameter
-    /// <paramref name='characterList'/>
-    /// is an IList object.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
+    /// <xmlbegin id='49'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='characterList'>The parameter <paramref
+    /// name='characterList'/> is an IList object.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
     public NormalizingCharacterInput(
     IList<int> characterList,
     Normalization form)
     : this(new PartialListCharacterInput(characterList), form) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-    /// <param name='str'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='index'>
-    /// The parameter
-    /// <paramref name='index'/>
-    /// is a 32-bit signed integer.
-    /// </param>
-    /// <param name='length'>
-    /// The parameter
-    /// <paramref name='length'/>
-    /// is a 32-bit signed integer.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
+    /// <xmlbegin id='50'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
+    /// <param name='index'>The parameter <paramref name='index'/> is a
+    /// 32-bit signed integer.</param>
+    /// <param name='length'>The parameter <paramref name='length'/> is a
+    /// 32-bit signed integer.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
     public NormalizingCharacterInput(
-  string str,
-  int index,
-  int length,
-  Normalization form) {
+      string str,
+      int index,
+      int length,
+      Normalization form) {
       this.nci = new NormalizerInput(str, index, length, form);
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-    /// <param name='str'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='51'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public NormalizingCharacterInput(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -118,46 +94,44 @@ namespace PeterO.Text {
       this.nci = new NormalizerInput(str, 0, str.Length, form);
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-    /// <param name='stream'>
-    /// The parameter
-    /// <paramref name='stream'/>
-    /// is an ICharacterInput object.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
+    /// <xmlbegin id='52'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizingCharacterInput'/> class.</summary>
+    /// <param name='stream'>The parameter <paramref name='stream'/> is an
+    /// ICharacterInput object.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
     public NormalizingCharacterInput(
-   ICharacterInput stream,
-   Normalization form) {
+      ICharacterInput stream,
+      Normalization form) {
       this.nci = new NormalizerInput(stream, form);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(
-  ICharacterInput chars,
-  Normalization form) {
+      ICharacterInput chars,
+      Normalization form) {
       return NormalizerInput.IsNormalized(chars, form);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
     public static string Normalize(string str, Normalization form) {
       return NormalizerInput.Normalize(str, form);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(string str, Normalization form) {
       return NormalizerInput.IsNormalized(str, form);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
-    [Obsolete("Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.")]
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
+    [Obsolete("Instead of this method, create a NormalizerInput on " +
+     "the string and call ReadChar to get the normalized string's code " +
+     "points.")]
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -172,11 +146,12 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-    [Obsolete("Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.")]
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    [Obsolete("Instead of this method, create a NormalizerInput on the " +
+     "input and call ReadChar to get the normalized string's code points.")]
     public static IList<int> GetChars(
-  ICharacterInput chars,
-  Normalization form) {
+      ICharacterInput chars,
+      Normalization form) {
       if (chars == null) {
         throw new ArgumentNullException(nameof(chars));
       }
@@ -190,8 +165,9 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
-    [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
+    [Obsolete("Either convert the array to a string or wrap it in " +
+"an ICharacterInput and call the corresponding overload instead.")]
     public static bool IsNormalized(int[] charArray, Normalization form) {
       if (charArray == null) {
         throw new ArgumentNullException(nameof(charArray));
@@ -200,22 +176,23 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
-    [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
+    [Obsolete("Either convert the list to a string or wrap it in  " +
+"an ICharacterInput and call the corresponding overload instead.")]
     public static bool IsNormalized(IList<int> charList, Normalization form) {
       return IsNormalized(
-new PartialListCharacterInput(charList),
-form);
+  new PartialListCharacterInput(charList),
+  form);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.ReadChar"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.ReadChar"]/*'/>
     public int ReadChar() {
       return this.nci.ReadChar();
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);
     }

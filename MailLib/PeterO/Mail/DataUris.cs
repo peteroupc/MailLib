@@ -3,11 +3,11 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.DataUris"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.DataUris"]/*'/>
   public static class DataUris {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
     public static MediaType DataUriMediaType(string uri) {
       string url = uri;
       string[] parts = URIUtility.SplitIRIToStrings(
@@ -68,7 +68,8 @@ namespace PeterO.Mail {
       }
     }
 
-    internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
+    internal static readonly int[] Alphabet = {
+      -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -76,10 +77,11 @@ namespace PeterO.Mail {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, };
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1,
+    };
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
     public static byte[] DataUriBytes(string uri) {
       string url = uri;
       string[] parts = URIUtility.SplitIRIToStrings(
@@ -95,8 +97,8 @@ namespace PeterO.Mail {
         }
         bool usesBase64 = mediaTypePart >= 7 &&
           DataUtilities.ToLowerCaseAscii(path.Substring(
-     mediaTypePart - 7,
-     7)).Equals(";base64");
+            mediaTypePart - 7,
+            7)).Equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -118,7 +120,8 @@ namespace PeterO.Mail {
           }
           if (hasPercent) {
             payload = URIUtility.PercentDecode(
-              path.Substring(mediaTypePart + 1, path.Length - (mediaTypePart + 1)));
+         path.Substring(mediaTypePart + 1, path.Length - (mediaTypePart +
+                1)));
             payloadIndex = 0;
           }
           base64Length = payload.Length - payloadIndex;
@@ -215,7 +218,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.String)"]/*'/>
     public static string MakeDataUri(string textString) {
       if (textString == null) {
         throw new ArgumentNullException(nameof(textString));
@@ -226,7 +229,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.Byte[],PeterO.Mail.MediaType)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.Byte[],PeterO.Mail.MediaType)"]/*'/>
     public static string MakeDataUri(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));

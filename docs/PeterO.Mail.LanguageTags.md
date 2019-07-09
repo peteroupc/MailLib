@@ -2,7 +2,9 @@
 
     public static class LanguageTags
 
- Contains methods for parsing and matching language tags.  ### Member Summary
+ Contains methods for parsing and matching language tags.
+
+### Member Summary
 * <code>[GetLanguageList(string)](#GetLanguageList_string)</code> - Parses a language list from a Content-Language header field.
 * <code>[GetRangeListWithQuality(string)](#GetRangeListWithQuality_string)</code> - Parses a language range list from an Accept-Language header field.
 * <code>[IsLanguageRange(string)](#IsLanguageRange_string)</code> - Returns whether the given string is a basic language range under RFC 4647.

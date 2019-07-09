@@ -12,7 +12,9 @@ import com.upokecenter.mail.*;
     public void TestPseudoboundary() {
       String msgstr =
 
-  "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed;boundary=BOUNDARY\r\nContent-Encoding: 7bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n"
+  "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type:
+multipart/mixed;boundary = BOUNDARY\r\nContent-Encoding:
+7bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n"
     +
     "-- NOT A BOUNDARY --\r\n--NOT A BOUNDARY EITHER\r\n--BOUNDARY--";
       Message msg = MessageFromString(msgstr);
@@ -43,7 +45,7 @@ Assert.assertEquals(
   stringTemp);
 }
       languages = Arrays.asList(new String[] { "en" });
-       msg2 = msg.SelectLanguageMessage(languages);
+      msg2 = msg.SelectLanguageMessage(languages);
       {
 String stringTemp = msg2.GetHeader("subject");
 Assert.assertEquals(
@@ -108,33 +110,32 @@ Assert.assertEquals(
         String stringTemp = MediaType.Parse("x/y;z=1;z*=utf-8''2")
 .GetParameter("z");
         Assert.assertEquals(
-        "2",
-        stringTemp);
+          "2",
+          stringTemp);
       }
     }
 
     static Message MessageFromString(String valueMessageString) {
       Message msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
-  valueMessageString,
-  true));
+    valueMessageString,
+    true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
     static void MessageConstructOnly(String valueMessageString) {
-      if ((new Message(
-  DataUtilities.GetUtf8Bytes(
-  valueMessageString,
-  true))) == null) {
+      if ((new Message(DataUtilities.GetUtf8Bytes(
+        valueMessageString,
+        true))) == null) {
         Assert.fail();
       }
     }
 
     private static void TestMediaTypeRoundTrip(String valueMessageString) {
       String mtstring = new MediaTypeBuilder(
-  "x",
-  "y").SetParameter(
+        "x",
+        "y").SetParameter(
   "z",
   valueMessageString).toString();
       if (mtstring.contains("\r\n\r\n")) {
@@ -154,9 +155,9 @@ Assert.assertEquals(
       Message mtmessage = MessageFromString(msgstring);
       {
         boolean boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
-                  msgstring,
-                  false,
-                  "TestGenerate") == 2;
+          msgstring,
+          false,
+          "TestGenerate") == 2;
         if (!(boolTemp)) {
  Assert.fail(msgstring);
  }
@@ -220,8 +221,8 @@ Assert.assertEquals(
 
     private static byte[] BytesFromString(String str) {
       return DataUtilities.GetUtf8Bytes(
-       str,
-       true);
+        str,
+        true);
     }
 
     @Test
@@ -366,16 +367,16 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
             }
             Assert.assertEquals("multipart/mixed", msg.getContentType().getTypeAndSubType());
             Assert.assertEquals(2, msg.getParts().size());
-        Assert.assertEquals(
-  "text/plain",
-  msg.getParts().get(0).getContentType().getTypeAndSubType());
-    Assert.assertEquals(
-  "inline",
-  msg.getParts().get(0).getContentDisposition().getDispositionType());
+            Assert.assertEquals(
+              "text/plain",
+              msg.getParts().get(0).getContentType().getTypeAndSubType());
+          Assert.assertEquals(
+            "inline",
+            msg.getParts().get(0).getContentDisposition().getDispositionType());
             Assert.assertEquals(stringBody, msg.getParts().get(0).getBodyString());
-   Assert.assertEquals(
-  mt.getTypeAndSubType(),
-  msg.getParts().get(1).getContentType().getTypeAndSubType());
+            Assert.assertEquals(
+              mt.getTypeAndSubType(),
+              msg.getParts().get(1).getContentType().getTypeAndSubType());
             Assert.assertEquals(
                phase < 6 ? "attachment" : "inline",
                msg.getParts().get(1).getContentDisposition().getDispositionType());
@@ -397,21 +398,21 @@ try { if (ms != null) {
     @Test
     public void TestContentTypeDefaults() {
   String ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
-      String msg;
-      msg = ValueStartCTD + "\r\n\r\n";
-      Assert.assertEquals(
+  String msg;
+  msg = ValueStartCTD + "\r\n\r\n";
+  Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
-      msg = ValueStartCTD + "Content-Type: text/html\r\n\r\n";
-      Assert.assertEquals(
+  msg = ValueStartCTD + "Content-Type: text/html\r\n\r\n";
+  Assert.assertEquals(
   MediaType.Parse("text/html"),
   MessageFromString(msg).getContentType());
-      msg = ValueStartCTD + "Content-Type: text/\r\n\r\n";
-      Assert.assertEquals(
+  msg = ValueStartCTD + "Content-Type: text/\r\n\r\n";
+  Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
-      msg = ValueStartCTD + "Content-Type: /html\r\n\r\n";
-      Assert.assertEquals(
+  msg = ValueStartCTD + "Content-Type: /html\r\n\r\n";
+  Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
       // All header fields are syntactically valid
@@ -422,9 +423,10 @@ try { if (ms != null) {
       Assert.assertEquals(
   MediaType.ApplicationOctetStream,
   MessageFromString(msg).getContentType());
-      msg = ValueStartCTD +
+  msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n";
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type:
+image/jpeg\r\nContent-Type: text/html\r\n\r\n";
 
       Assert.assertEquals(
   MediaType.ApplicationOctetStream,
@@ -432,18 +434,19 @@ try { if (ms != null) {
       // First header field is syntactically invalid
       msg = ValueStartCTD +
   "Content-Type: /plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
-      Assert.assertEquals(
+  Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
       // Second header field is syntactically invalid
       msg = ValueStartCTD +
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\n\r\n";
-      Assert.assertEquals(
+  Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
-      msg = ValueStartCTD +
+  msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n";
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type:
+image\r\nContent-Type: text/html\r\n\r\n";
 
       Assert.assertEquals(
   MediaType.TextPlainAscii,
@@ -451,7 +454,8 @@ try { if (ms != null) {
       // Third header field is syntactically invalid
       msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n";
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type:
+image/jpeg\r\nContent-Type: audio\r\n\r\n";
 
       Assert.assertEquals(
   MediaType.TextPlainAscii,
@@ -459,8 +463,9 @@ try { if (ms != null) {
       // Unknown encoding
       msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Transfer-Encoding: unknown\r\n\r\n";
-      Assert.assertEquals(
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Transfer-Encoding:
+unknown\r\n\r\n";
+  Assert.assertEquals(
   MediaType.ApplicationOctetStream,
   MessageFromString(msg).getContentType());
       // Unsupported charset
@@ -471,13 +476,13 @@ try { if (ms != null) {
       // Unregistered ISO-8859-*
       msg = ValueStartCTD +
         "Content-Type: text/plain;charset=iso-8859-999\r\n\r\n";
-      Assert.assertEquals(
+        Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
       // Registered ISO-8859-*
       msg = ValueStartCTD +
         "Content-Type: text/plain;charset=iso-8859-2-windows-latin-2\r\n\r\n";
-      Assert.assertEquals(
+        Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
     }
@@ -495,7 +500,7 @@ try { if (ms != null) {
         "From: me@example.com\r\nDate",
         "From: me@example.com\r\nDate\r",
         "Received: from x",
-        "Received: from x\r"
+        "Received: from x\r",
       };
       for (String msgstr : messages) {
         try {
@@ -512,9 +517,9 @@ try { if (ms != null) {
     }
 
     private static void TestRfc2231ExtensionMediaType(
-  String mtype,
-  String param,
-  String expected) {
+      String mtype,
+      String param,
+      String expected) {
       MediaType mt = MediaType.Parse("text/plain" + mtype);
       Assert.assertEquals(expected, mt.GetParameter(param));
       String valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
@@ -525,9 +530,9 @@ try { if (ms != null) {
     }
 
     private static void TestRfc2231ExtensionContentDisposition(
-  String mtype,
-  String param,
-  String expected) {
+      String mtype,
+      String param,
+      String expected) {
       ContentDisposition mt = ContentDisposition.Parse("inline" + mtype);
       Assert.assertEquals(expected, mt.GetParameter(param));
       String valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
@@ -539,9 +544,9 @@ try { if (ms != null) {
     }
 
     public static void TestRfc2231Extension(
-  String mtype,
-  String param,
-  String expected) {
+      String mtype,
+      String param,
+      String expected) {
       TestRfc2231ExtensionMediaType(mtype, param, expected);
       TestRfc2231ExtensionContentDisposition(mtype, param, expected);
     }
@@ -554,104 +559,104 @@ try { if (ms != null) {
       // error handling behavior here
       TestRfc2231Extension(";param1*=utf-8''example%", "param1", "example%");
       TestRfc2231Extension(
-  ";param1*=utf-8''example%;param2=x",
-  "param1",
-  "example%");
+        ";param1*=utf-8''example%;param2=x",
+        "param1",
+        "example%");
       TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%",
-  "param1",
-  "example%");
+        ";param2=x;param1*=utf-8''example%",
+        "param1",
+        "example%");
       TestRfc2231Extension(";param1*=utf-8''example%a", "param1", "example%a");
       TestRfc2231Extension(
-  ";param1*=utf-8''example%a;param2=x",
-  "param1",
-  "example%a");
+        ";param1*=utf-8''example%a;param2=x",
+        "param1",
+        "example%a");
       TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%a",
-  "param1",
-  "example%a");
+        ";param2=x;param1*=utf-8''example%a",
+        "param1",
+        "example%a");
       TestRfc2231Extension(";param1*=utf-8''example%A", "param1", "example%A");
       TestRfc2231Extension(
-  ";param1*=utf-8''example%A;param2=x",
-  "param1",
-  "example%A");
+        ";param1*=utf-8''example%A;param2=x",
+        "param1",
+        "example%A");
       TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%A",
-  "param1",
-  "example%A");
+        ";param2=x;param1*=utf-8''example%A",
+        "param1",
+        "example%A");
       TestRfc2231Extension(";param1*=utf-8''example%9", "param1", "example%9");
       TestRfc2231Extension(
-  ";param1*=utf-8''example%9;param2=x",
-  "param1",
-  "example%9");
+        ";param1*=utf-8''example%9;param2=x",
+        "param1",
+        "example%9");
       TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%9",
-  "param1",
-  "example%9");
+        ";param2=x;param1*=utf-8''example%9",
+        "param1",
+        "example%9");
       TestRfc2231Extension(";param1*=utf-8''example%w", "param1", "example%w");
       TestRfc2231Extension(
-  ";param1*=utf-8''example%w;param2=x",
-  "param1",
-  "example%w");
+        ";param1*=utf-8''example%w;param2=x",
+        "param1",
+        "example%w");
       TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%w",
-  "param1",
-  "example%w");
+        ";param2=x;param1*=utf-8''example%w",
+        "param1",
+        "example%w");
     }
 
     @Test
     public void TestRfc2231Extensions() {
       TestRfc2231Extension("; charset=\"utf-8\"", "charset", "utf-8");
       TestRfc2231Extension(
-  "; charset*=us-ascii'en'utf-8",
-  "charset",
-  "utf-8");
+        "; charset*=us-ascii'en'utf-8",
+        "charset",
+        "utf-8");
       TestRfc2231Extension(
-  "; charset*=us-ascii''utf-8",
-  "charset",
-  "utf-8");
+        "; charset*=us-ascii''utf-8",
+        "charset",
+        "utf-8");
       TestRfc2231Extension(
-  "; charset*='en'utf-8",
-  "charset",
-  "utf-8");
+        "; charset*='en'utf-8",
+        "charset",
+        "utf-8");
       TestRfc2231Extension("; charset*=''utf-8", "charset", "utf-8");
       TestRfc2231Extension(
-  "; charset*0=ut;charset*1=f-8",
-  "charset",
-  "utf-8");
+        "; charset*0=ut;charset*1=f-8",
+        "charset",
+        "utf-8");
       TestRfc2231Extension(
         "; charset*0=ut;charset*1=f;charset*2=-8",
         "charset",
         "utf-8");
       TestRfc2231Extension(
-  "; mockcharset*=utf-8''a%20b",
-  "mockcharset",
-  "a b");
+        "; mockcharset*=utf-8''a%20b",
+        "mockcharset",
+        "a b");
       TestRfc2231Extension(
-  "; mockcharset*=iso-8859-1''a%a0b",
-  "mockcharset",
-  "a\u00a0b");
+        "; mockcharset*=iso-8859-1''a%a0b",
+        "mockcharset",
+        "a\u00a0b");
       TestRfc2231Extension(
-  "; mockcharset*=utf-8''a%c2%a0b",
-  "mockcharset",
-  "a\u00a0b");
+        "; mockcharset*=utf-8''a%c2%a0b",
+        "mockcharset",
+        "a\u00a0b");
       TestRfc2231Extension(
-  "; mockcharset*=iso-8859-1''a%a0b",
-  "mockcharset",
-  "a\u00a0b");
+        "; mockcharset*=iso-8859-1''a%a0b",
+        "mockcharset",
+        "a\u00a0b");
       TestRfc2231Extension(
-  "; mockcharset*=utf-8''a%c2%a0b",
-  "mockcharset",
-  "a\u00a0b");
+        "; mockcharset*=utf-8''a%c2%a0b",
+        "mockcharset",
+        "a\u00a0b");
       TestRfc2231Extension(
-  "; mockcharset*0=\"a\";mockcharset*1=b",
-  "mockcharset",
-  "ab");
+        "; mockcharset*0=\"a\";mockcharset*1=b",
+        "mockcharset",
+        "ab");
 
       TestRfc2231Extension(
-      "; mockcharset*0*=utf-8''a%20b;mockcharset*1*=c%20d",
-      "mockcharset",
-      "a bc d");
+        "; mockcharset*0*=utf-8''a%20b;mockcharset*1*=c%20d",
+        "mockcharset",
+        "a bc d");
       TestRfc2231Extension(
         "; mockcharset*0=ab;mockcharset*1*=iso-8859-1-en-xyz",
         "mockcharset",
@@ -665,13 +670,13 @@ try { if (ms != null) {
         "mockcharset",
         "a ba%20b");
       TestRfc2231Extension(
-         "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=a%20b",
-         "mockcharset",
-         "a ba%20b");
+        "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=a%20b",
+        "mockcharset",
+        "a ba%20b");
       TestRfc2231Extension(
-         "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=\"a%20b\"",
-         "mockcharset",
-         "a ba%20b");
+        "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=\"a%20b\"",
+        "mockcharset",
+        "a ba%20b");
       TestRfc2231Extension(
         "\r\n (; mockcharset=x;y=\");mockChaRseT*=''a%41b-c(\")",
         "mockcharset",
@@ -800,7 +805,7 @@ try { if (ms != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        if ((new NamedAddress("Me\u00e0 <me@example.com>")) == null) {
+        if (new NamedAddress("Me\u00e0 <me@example.com>") == null) {
           Assert.fail();
         }
       } catch (Exception ex) {
@@ -808,7 +813,7 @@ try { if (ms != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        if ((new NamedAddress("\"Me\" <me@example.com>")) == null) {
+        if (new NamedAddress("\"Me\" <me@example.com>") == null) {
           Assert.fail();
         }
       } catch (Exception ex) {
@@ -816,7 +821,7 @@ try { if (ms != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        if ((new NamedAddress("\"Me\u00e0\" <me@example.com>")) == null) {
+        if (new NamedAddress("\"Me\u00e0\" <me@example.com>") == null) {
           Assert.fail();
         }
       } catch (Exception ex) {
@@ -882,8 +887,8 @@ try { if (ms != null) {
         String stringTemp = new NamedAddress(
                 "x@example.com").getAddress().toString();
         Assert.assertEquals(
-        "x@example.com",
-        stringTemp);
+          "x@example.com",
+          stringTemp);
       }
       Assert.assertEquals(
   "\"(lo cal)\"@example.com",
@@ -924,8 +929,8 @@ try { if (ms != null) {
       {
         String stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "you@example.com").GetHeader(0).getKey();
+            0,
+            "you@example.com").GetHeader(0).getKey();
         Assert.assertEquals(
           "from",
           stringTemp);
@@ -933,8 +938,8 @@ try { if (ms != null) {
       {
         String stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "you@example.com").GetHeader(0).getValue();
+            0,
+            "you@example.com").GetHeader(0).getValue();
         Assert.assertEquals(
           "you@example.com",
           stringTemp);
@@ -942,9 +947,9 @@ try { if (ms != null) {
       {
         String stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "x-comment",
-  "comment").GetHeader(0).getKey();
+            0,
+            "x-comment",
+            "comment").GetHeader(0).getKey();
         Assert.assertEquals(
           "x-comment",
           stringTemp);
@@ -952,9 +957,9 @@ try { if (ms != null) {
       {
         String stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "x-comment",
-  "comment").GetHeader(0).getValue();
+            0,
+            "x-comment",
+            "comment").GetHeader(0).getValue();
         Assert.assertEquals(
           "comment",
           stringTemp);
@@ -1033,7 +1038,8 @@ try { if (ms != null) {
       String msg;
       msg = ValueMultipart +
 
-  "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--";
+  "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description:
+description\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1059,7 +1065,8 @@ try { if (ms != null) {
       }
       msg =
 
-  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
+  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type:
+8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1069,7 +1076,8 @@ try { if (ms != null) {
       }
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA";
+  "Mime-Version: 1.0\r\nContent-Type: text/plain;
+charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA";
 
       try {
         MessageFromString(msg);
@@ -1079,7 +1087,8 @@ try { if (ms != null) {
       }
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\"
+<me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1089,7 +1098,8 @@ try { if (ms != null) {
       }
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: 7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding:
+7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1119,7 +1129,8 @@ try { if (ms != null) {
       // Message top-level-type with base64
       msg =
 
-  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: base64\r\n--b\r\n\r\n\r\n--b--";
+  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type:
+base64\r\n--b\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1159,7 +1170,8 @@ try { if (ms != null) {
       // would be illegal in a 7-bit encoding
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\nX\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\"
+<me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1171,7 +1183,8 @@ try { if (ms != null) {
       // which is not allowed for this media type
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding:
+base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1185,7 +1198,8 @@ try { if (ms != null) {
       // would be illegal in a 7-bit encoding
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--";
+  "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom:
+\"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1211,7 +1225,8 @@ try { if (ms != null) {
       // would be illegal in a 7-bit encoding
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd";
+  "Mime-Version: 1.0\r\nContent-Type:
+text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd";
 
       try {
         MessageFromString(msg);
@@ -1235,7 +1250,8 @@ try { if (ms != null) {
       // or included?
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA";
+  "Mime-Version: 1.0\r\nContent-Type: text/plain;
+charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA";
 
       try {
         MessageFromString(msg);
@@ -1521,7 +1537,7 @@ try { if (ms != null) {
         "",
         "\u0020",
         "\t", "\u0020\u0020",
-          "\t\u0020", "\u0020\t", "\t\t"
+        "\t\u0020", "\u0020\t", "\t\t"
       };
       for (Object padding1 : paddings) {
         for (Object padding2 : paddings) {
@@ -1899,15 +1915,15 @@ try { if (ms != null) {
         String stringTemp = new
                     MediaTypeBuilder(MediaType.TextPlainAscii).getTopLevelType();
         Assert.assertEquals(
-        "text",
-        stringTemp);
+          "text",
+          stringTemp);
       }
       {
         String stringTemp = new
                     MediaTypeBuilder(MediaType.TextPlainAscii).getSubType();
         Assert.assertEquals(
-        "plain",
-        stringTemp);
+          "plain",
+          stringTemp);
       }
       Assert.assertEquals(
   MediaType.TextPlainAscii,
@@ -2145,8 +2161,8 @@ MessageFromString(MessageFromString(msg).Generate())
       {
         String stringTemp = msg.GetHeader("subject");
         Assert.assertEquals(
-        "Test ",
-        stringTemp);
+          "Test ",
+          stringTemp);
       }
     }
 
@@ -2155,7 +2171,7 @@ MessageFromString(MessageFromString(msg).Generate())
     String ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
             "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
             "\r\n\r\nBody";
-      MessageFromString(ValueStringVar);
+            MessageFromString(ValueStringVar);
     }
 
     @Test
@@ -2170,8 +2186,8 @@ MessageFromString(MessageFromString(msg).Generate())
         String stringTemp = MediaType.Parse(
                 "example/x ").getTypeAndSubType();
         Assert.assertEquals(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
       String ValueStrtest = "example/x" + "," + " a=b";
       {
@@ -2184,22 +2200,22 @@ MessageFromString(MessageFromString(msg).Generate())
         String stringTemp = MediaType.Parse(
         "example/x ; a=b").getTypeAndSubType();
         Assert.assertEquals(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
       {
         String stringTemp = MediaType.Parse(
         "example/x; a=b").getTypeAndSubType();
         Assert.assertEquals(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
       {
         String stringTemp = MediaType.Parse(
         "example/x; a=b ").getTypeAndSubType();
         Assert.assertEquals(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
     }
     @Test
@@ -2262,8 +2278,8 @@ MessageFromString(MessageFromString(msg).Generate())
       try {
         MessageConstructOnly("From: x@example.com\r\nX-" +
               EncodingTest.Repeat(
-      "a",
-      2000) + ": Test\r\n\r\nBody");
+                "a",
+                2000) + ": Test\r\n\r\nBody");
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
         // NOTE: Intentionally empty
@@ -2274,8 +2290,8 @@ MessageFromString(MessageFromString(msg).Generate())
       try {
         MessageConstructOnly("From: x@example.com\r\nX-" +
               EncodingTest.Repeat(
-      "a",
-      996) + ":\r\n Test\r\n\r\nBody");
+                "a",
+                996) + ":\r\n Test\r\n\r\nBody");
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
         // NOTE: Intentionally empty
@@ -2322,8 +2338,8 @@ MessageFromString(MessageFromString(msg).Generate())
       try {
         MessageFromString(
   "From: x@example.com\r\nX-" + EncodingTest.Repeat(
-  "a",
-  995) + ":\r\n Test\r\n\r\nBody");
+    "a",
+    995) + ":\r\n Test\r\n\r\nBody");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -2451,7 +2467,7 @@ MessageFromString(MessageFromString(msg).Generate())
           "me2@example.com",
           stringTemp);
       }
-    msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
+    msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody" ;
       msg = MessageFromString(msgString);
       {
         String stringTemp = msg.GetHeader("from");
@@ -2675,8 +2691,8 @@ MessageFromString(MessageFromString(msg).Generate())
                     .SetHeader("subject", "my subject")
                     .GetHeader("subject");
         Assert.assertEquals(
-        "my subject",
-        stringTemp);
+          "my subject",
+          stringTemp);
       }
       try {
         new Message().SetHeader(EncodingTest.Repeat("a", 998), "x");
@@ -2739,8 +2755,10 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      String[] headerNames = new String[] { "from", "to", "cc",
-              "bcc", "reply-to" };
+      String[] headerNames = new String[] {
+        "from", "to", "cc",
+        "bcc", "reply-to",
+      };
       for (String headerName : headerNames) {
         try {
           new Message().SetHeader(headerName, "\"Me\" <x@example.com>");
@@ -2827,17 +2845,17 @@ MessageFromString(MessageFromString(msg).Generate())
     }
 
     private static void TestSetHeaderOne(
-  Message msg,
-  String header,
-  String value) {
+      Message msg,
+      String header,
+      String value) {
       msg.SetHeader(header, value);
       Assert.assertEquals(value, msg.GetHeader(header));
     }
 
     private static void TestSetHeaderInvalid(
-  Message msg,
-  String header,
-  String value) {
+      Message msg,
+      String header,
+      String value) {
       try {
         msg.SetHeader(header, value);
         Assert.fail("Should have failed");

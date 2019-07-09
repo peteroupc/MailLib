@@ -22,7 +22,7 @@
 
  In this implementation, the first and second of these are syntactically invalid, so they trigger parse errors, while the third of these is syntactically valid, but the "filename" parameter is treated as "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047 encoded words are not decoded at the moment a content disposition is parsed (using the Parse method).
 
-  ### Member Summary
+### Member Summary
 * <code>[public static readonly PeterO.Mail.ContentDisposition Attachment;](#Attachment)</code> - The content disposition value "attachment".
 * <code>[DispositionType](#DispositionType)</code> - Gets a string containing this object's disposition type, such as "inline" or "attachment".
 * <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
@@ -182,15 +182,15 @@ The extracted date and time as an 8-element array, or  `null`  if the "read-date
 
  Converts a file name from the Content-Disposition header to a suitable name for saving data to a file. This method is idempotent; that is, calling the method again on the result doesn't change that result. Examples:
 
-  `"=?utf-8?q?hello=2Etxt?=" -> "hello.txt"`  (RFC 2047 encoding)
+  `"=?utf-8?q?hello=2Etxt?=" -> "hello.txt"`  (RFC 2047 encoding).
 
-  `"=?utf-8?q?long_filename?=" -> "long filename"`  (RFC 2047 encoding)
+  `"=?utf-8?q?long_filename?=" -> "long filename"`  (RFC 2047 encoding).
 
-  `"utf-8'en'hello%2Etxt" -> "hello.txt"`  (RFC 2231 encoding)
+  `"utf-8'en'hello%2Etxt" -> "hello.txt"`  (RFC 2231 encoding).
 
-  `"nul.txt" -> "_nul.txt"`  (Reserved name)
+  `"nul.txt" -> "_nul.txt"`  (Reserved name).
 
-  `"dir1/dir2/file" -> "dir1_dir2_file"`  (Directory separators)
+  `"dir1/dir2/file" -> "dir1_dir2_file"`  (Directory separators).
 
   <b>Remarks:</b>
 
@@ -206,6 +206,8 @@ The extracted date and time as an 8-element array, or  `null`  if the "read-date
  RFC 2046 sec. 4.5.1 (  `application/octet-stream`  subtype in Content-Type header field) cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave a <i> suggested </i> file name to be used if the data were written to a file". Also, RFC 2183 sec. 2.3 (  `filename`  parameter in Content-Disposition) confirms that the " <i> suggested </i> filename" in the  `filename`  parameter "should be <i> used as a basis </i> for the actual filename, where possible", and that that file name should "not [be] blindly use[d]". See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext Transfer Protocol (HTTP).
 
  To the extent that the "name" parameter is not allowed in message bodies other than those with the media type "application/octet-stream" or treated as that media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types"). (Some email implementations may still write out the "name" parameter, even for media types other than  `application/octet-stream`  and even though RFC 2046 has deprecated that parameter.)
+
+  .
 
  <b>Parameters:</b>
 

@@ -15,25 +15,26 @@ at: http://peteroupc.github.io/
      * <p>The following summarizes the rules for domain names in IDNA2008;
      * see RFC5890 for more information and additional terminology. </p>
      * <p>A domain name is divided into one or more strings separated by
-     * dots ("."), called <b>labels</b> . For IDNA2008's purposes, a valid
+     *  dots ("."), called <b>labels</b> . For IDNA2008's purposes, a valid
      * label can be an <b>NR-LDH label</b> , an <b>A-label</b> , or a
      * <b>U-label</b> . </p> <p>An LDH label contains only basic letters,
-     * basic digits, and/or "-", and neither begins nor ends with "-". For
-     * example, "exa-mple" and "1example" are LDH labels, but not
-     * "-example". </p> <p>An NR-LDH label is an LDH label whose third and
-     * fourth characters are not both "-". For example, "ex--ample" is not
+     *  basic digits, and/or "-", and neither begins nor ends with "-". For
+     *  example, "exa-mple" and "1example" are LDH labels, but not
+     *  "-example". </p> <p>An NR-LDH label is an LDH label whose third and
+     *  fourth characters are not both "-". For example, "ex--ample" is not
      * an NR-LDH label. </p> <p>A U-label contains one or more characters
      * outside the Basic Latin range (U + 0000 to U + 007F) and meets IDNA2008
      * requirements for labels with such characters. An example is
-     * "e&#xe1;". </p> <p>An A-label is an LDH label beginning with "xn--"
+     *  "e&#xe1;". </p> <p>An A-label is an LDH label beginning with "xn--"
      * in any combination of case, and is convertible to a U-label. An
-     * example is "xn--e-ufa". </p> <p>An XN-label is an LDH label beginning
-     * with "xn--" in any combination of case. </p> <p>NOTICE: While this
-     * class's source code is in the public domain, the class uses two
-     * internal classes, called <code>NormalizationData</code> and <code>IdnaData</code>
-     * , that include data derived from the Unicode Character Database. See
-     * the documentation for the NormalizerInput class for the permission
-     * notice for the Unicode Character Database. </p>
+     *  example is "xn--e-ufa". </p> <p>An XN-label is an LDH label
+     *  beginning with "xn--" in any combination of case. </p> <p>NOTICE:
+     * While this class's source code is in the public domain, the class
+     * uses two internal classes, called <code>NormalizationData</code> and
+     * <code>IdnaData</code> , that include data derived from the Unicode
+     * Character Database. See the documentation for the NormalizerInput
+     * class for the permission notice for the Unicode Character Database.
+     * </p>
      */
   public final class Idna {
 private Idna() {
@@ -76,7 +77,7 @@ private Idna() {
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
              (str.charAt(index - 2) & 0xfc00) == 0xd800) {
         // Get the Unicode code point for the surrogate pair
-        return 0x10000 + ((str.charAt(index - 2) - 0xd800) << 10) + (c - 0xdc00);
+        return 0x10000 + ((str.charAt(index - 2) & 0x3ff) << 10) + (c & 0x3ff);
       }
       return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
@@ -95,7 +96,7 @@ private Idna() {
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
           (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
         // Get the Unicode code point for the surrogate pair
-        return 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
+        return 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(index + 1) & 0x3ff);
       }
       return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
@@ -261,8 +262,8 @@ private Idna() {
             if (c2 <= 0xffff) {
               sb.append((char)c2);
             } else if (ch <= 0x10ffff) {
-              sb.append((char)((((c2 - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              sb.append((char)(((c2 - 0x10000) & 0x3ff) + 0xdc00));
+              sb.append((char)((((c2 - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.append((char)(((c2 - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }
@@ -307,7 +308,7 @@ private Idna() {
      * @param value A domain name.
      * @return The domain name where each XN-label is encoded into Unicode. Labels
      * where this is not possible remain unchanged.
-     * @throws java.lang.NullPointerException The parameter {@code value} is null.
+     * @throws NullPointerException The parameter {@code value} is null.
      */
     public static String DecodeDomainName(String value) {
       if (value == null) {
@@ -336,9 +337,9 @@ private Idna() {
         }
       }
       retval = DecodeLabel(
-      value,
-      lastIndex,
-      value.length());
+        value,
+        lastIndex,
+        value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -356,7 +357,7 @@ private Idna() {
      * @return The domain name where each label with code points outside the Basic
      * Latin range (U + 0000 to U + 007F) is encoded into an XN-label. Labels
      * where this is not possible remain unchanged.
-     * @throws java.lang.NullPointerException The parameter {@code value} is null.
+     * @throws NullPointerException The parameter {@code value} is null.
      */
     public static String EncodeDomainName(String value) {
       if (value == null) {
@@ -385,9 +386,9 @@ private Idna() {
         }
       }
       retval = DomainUtility.ALabelEncodePortion(
-      value,
-      lastIndex,
-      value.length());
+        value,
+        lastIndex,
+        value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -399,8 +400,10 @@ private Idna() {
     /**
      * Determines whether the given string is a domain name containing only
      * U-labels, A-labels, NR-LDH labels, or any combination of these,
-     * separated by dots (".").
-     * @param str The parameter {@code str} is a text string.
+     *  separated by dots (".").
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param lookupRules If true, uses rules to apply when looking up the string
      * as a domain name. If false, uses rules to apply when registering the
      * string as a domain name.
@@ -905,8 +908,8 @@ private Idna() {
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           String chs = str.substring(istart, (istart)+((i - istart) + 1));
           String nfkd = NormalizerInput.Normalize(
-             chs,
-             Normalization.NFKD);
+            chs,
+            Normalization.NFKD);
           sb.append(nfkd);
         } else {
           if (ch <= 0xffff) {
@@ -914,8 +917,8 @@ private Idna() {
               sb.append((char)ch);
             }
           } else if (ch <= 0x10ffff) {
-            sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+            sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) | 0xd800));
+            sb.append((char)(((ch - 0x10000) & 0x3ff) | 0xdc00));
           }
         }
       }
@@ -1006,8 +1009,8 @@ private Idna() {
           if (ch <= 0xffff) {
             sb.append((char)ch);
           } else if (ch <= 0x10ffff) {
-            sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            sb.append((char)(((ch - 0x10000) & 0x3ff) + 0xdc00));
+            sb.append((char)((((ch - 0x10000) >> 10) & 0x3ff) | 0xd800));
+            sb.append((char)(((ch - 0x10000) & 0x3ff) | 0xdc00));
           }
         } else {
           sb.append(' ');
@@ -1017,9 +1020,9 @@ private Idna() {
     }
 
     private static boolean IsValidULabel(
-  String str,
-  boolean lookupRules,
-  boolean bidiRule) {
+      String str,
+      boolean lookupRules,
+      boolean bidiRule) {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }

@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
   public class NamedAddress {
     private readonly string displayName;
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ParseAddresses(System.String)"]/*'/>
     public static IList<NamedAddress> ParseAddresses(string addressValue) {
       var list = new List<NamedAddress>();
       if (String.IsNullOrEmpty(addressValue)) {
@@ -60,7 +60,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.Equals(System.Object)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.NamedAddress.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as NamedAddress;
       return other != null &&
@@ -69,12 +69,12 @@ namespace PeterO.Mail {
    (this.address == null ? other.address == null :
      this.address.Equals(other.address)) && this.isGroup == other.isGroup &&
           (!this.isGroup || CollectionUtilities.ListEquals(
-  this.groupAddresses,
-  other.groupAddresses));
+            this.groupAddresses,
+            other.groupAddresses));
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)"]/*'/>
     public bool AddressesEqual(NamedAddress na) {
       if (na == null || this.isGroup != na.isGroup) {
         return false;
@@ -167,20 +167,15 @@ namespace PeterO.Mail {
       return enc.ToString();
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.</summary>
-    /// <param name='address'>
-    /// The parameter
-    /// <paramref name='address'/>
-    /// is a text string.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='address'/>
-    /// is null.
-    /// </exception>
-    /// <exception cref='T:System.ArgumentException'>
-    /// Address has an invalid syntax.; Address has an invalid syntax.
-    /// </exception>
+    /// <xmlbegin id='10'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NamedAddress'/> class.</summary>
+    /// <param name='address'>The parameter <paramref name='address'/> is a
+    /// text string.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='address'/> is null.</exception>
+    /// <exception cref='T:System.ArgumentException'>Address has an invalid
+    /// syntax.; Address has an invalid syntax.</exception>
     public NamedAddress(string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -204,22 +199,15 @@ namespace PeterO.Mail {
       this.isGroup = na.isGroup;
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.</summary>
-    /// <param name='displayName'>
-    /// The parameter
-    /// <paramref name='displayName'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='address'>
-    /// The parameter
-    /// <paramref name='address'/>
-    /// is a text string.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='address'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='11'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NamedAddress'/> class.</summary>
+    /// <param name='displayName'>The parameter <paramref
+    /// name='displayName'/> is a text string.</param>
+    /// <param name='address'>The parameter <paramref name='address'/> is a
+    /// text string.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='address'/> is null.</exception>
     public NamedAddress(string displayName, string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -230,22 +218,15 @@ namespace PeterO.Mail {
       this.isGroup = false;
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.</summary>
-    /// <param name='displayName'>
-    /// The parameter
-    /// <paramref name='displayName'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='address'>
-    /// The parameter
-    /// <paramref name='address'/>
-    /// is an Address object.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='address'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='12'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NamedAddress'/> class.</summary>
+    /// <param name='displayName'>The parameter <paramref
+    /// name='displayName'/> is a text string.</param>
+    /// <param name='address'>The parameter <paramref name='address'/> is
+    /// an Address object.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='address'/> is null.</exception>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -256,29 +237,18 @@ namespace PeterO.Mail {
       this.isGroup = false;
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.</summary>
-    /// <param name='displayName'>
-    /// The parameter
-    /// <paramref name='displayName'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='localPart'>
-    /// The parameter
-    /// <paramref name='localPart'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='domain'>
-    /// The parameter
-    /// <paramref name='domain'/>
-    /// is a text string.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='localPart'/>
-    /// or
-    /// <paramref name='domain'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='13'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NamedAddress'/> class.</summary>
+    /// <param name='displayName'>The parameter <paramref
+    /// name='displayName'/> is a text string.</param>
+    /// <param name='localPart'>The parameter <paramref name='localPart'/>
+    /// is a text string.</param>
+    /// <param name='domain'>The parameter <paramref name='domain'/> is a
+    /// text string.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='localPart'/> or <paramref name='domain'/> is
+    /// null.</exception>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
         throw new ArgumentNullException(nameof(localPart));
@@ -292,27 +262,18 @@ namespace PeterO.Mail {
       this.isGroup = false;
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NamedAddress'/> class.</summary>
-    /// <param name='groupName'>
-    /// The parameter
-    /// <paramref name='groupName'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='mailboxes'>
-    /// The parameter
-    /// <paramref name='mailboxes'/>
-    /// is an IList object.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='groupName'/>
-    /// or
-    /// <paramref name='mailboxes'/>
-    /// is null.
-    /// </exception>
-    /// <exception cref='T:System.ArgumentException'>
-    /// GroupName is empty.; A mailbox in the list is a group.
-    /// </exception>
+    /// <xmlbegin id='14'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NamedAddress'/> class.</summary>
+    /// <param name='groupName'>The parameter <paramref name='groupName'/>
+    /// is a text string.</param>
+    /// <param name='mailboxes'>The parameter <paramref name='mailboxes'/>
+    /// is an IList object.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='groupName'/> or <paramref name='mailboxes'/> is
+    /// null.</exception>
+    /// <exception cref='T:System.ArgumentException'>GroupName is empty.; A
+    /// mailbox in the list is a group.</exception>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new ArgumentNullException(nameof(groupName));
@@ -340,7 +301,7 @@ namespace PeterO.Mail {
     private readonly IList<NamedAddress> groupAddresses;
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.GroupAddresses"]/*'/>
+    ///   path='docs/doc[@name="P:PeterO.Mail.NamedAddress.GroupAddresses"]/*'/>
     public IList<NamedAddress> GroupAddresses {
       get {
         return new

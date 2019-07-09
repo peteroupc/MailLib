@@ -178,7 +178,9 @@ if (index < endIndex && (str[index] == 62)) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseAtext(string str, int index, int endIndex, ITokener
   tokener) {
@@ -203,7 +205,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -227,7 +229,9 @@ indexStart = index;
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseBase64Terminal(string str, int index, int endIndex,
   ITokener tokener) {
@@ -297,7 +301,7 @@ indexStart = index;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
@@ -331,7 +335,7 @@ index = indexStart3; break;
  if (tokener != null) {
  tokener.RestoreState(state2);
 }
-for (i = 0; ; ++i) {
+for (i = 0; true; ++i) {
   indexTemp2 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp2 == index) { if (i < 1) {
  index = indexStart;
@@ -567,7 +571,9 @@ public static int ParseDesignator(string str, int index, int endIndex,
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseDiagIdentity(string str, int index, int endIndex,
   ITokener tokener) {
@@ -577,7 +583,7 @@ int i2, i4, indexStart2, indexStart3, indexStart4, indexTemp2, indexTemp3,
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
@@ -636,7 +642,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 } else {
  break;
 }
- for (i4 = 0;; ++i4) {
+ for (i4 = 0; true; ++i4) {
   indexTemp5 = index;
 if (endIndex - index > 1 && ((str[index] == 45) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
@@ -744,7 +750,9 @@ public static int ParseDisplayName(string str, int index, int endIndex,
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseDistName(string str, int index, int endIndex,
   ITokener tokener) {
@@ -811,7 +819,7 @@ indexStart = index;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -836,7 +844,7 @@ if (index < endIndex && (str[index] == 46)) {
  index = indexStart3; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i3 = 0;; ++i3) {
+ for (i3 = 0; true; ++i3) {
   indexTemp4 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp4 != index) {
  index = indexTemp4;
@@ -938,7 +946,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
  break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -1037,7 +1045,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -1060,7 +1068,7 @@ if (index < endIndex && (str[index] == 46)) {
 } else {
  break;
 }
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -1097,7 +1105,7 @@ int i, i2, indexStart, indexStart2, indexTemp2, indexTemp3, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -1120,7 +1128,7 @@ if (index < endIndex && (str[index] == 46)) {
 } else {
  break;
 }
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -1237,13 +1245,15 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseFWS(string str, int index, int endIndex, ITokener
   tokener) {
 int i, indexStart, indexStart2, indexTemp2;
 indexStart = index;
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -1277,7 +1287,9 @@ if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseFsarg(string str, int index, int endIndex, ITokener
   tokener) {
@@ -1500,7 +1512,7 @@ indexStart = index;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
@@ -1534,7 +1546,7 @@ index = indexStart3; break;
  if (tokener != null) {
  tokener.RestoreState(state2);
 }
-for (i = 0; ; ++i) {
+for (i = 0; true; ++i) {
   indexTemp2 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp2 == index) { if (i < 1) {
  index = indexStart;
@@ -1837,7 +1849,7 @@ do {
  indexTemp3 = indexTemp4; break;
 }
  indexStart3 = index;
-for (i3 = 0; ; ++i3) {
+for (i3 = 0; true; ++i3) {
   indexTemp4 = ParseResinfo(str, index, endIndex, tokener);
   if (indexTemp4 == index) { if (i3 < 1) {
  indexTemp3 = indexStart3;
@@ -1906,7 +1918,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
  index = indexStart2; break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
@@ -1940,7 +1952,7 @@ if (index < endIndex && (str[index] == 59)) {
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseLdhStr(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -2027,7 +2039,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
  index = indexStart3; break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i3 = 0;; ++i3) {
+ for (i3 = 0; true; ++i3) {
   indexTemp4 = index;
  do {
  indexStart4 = index;
@@ -2061,7 +2073,7 @@ if (index < endIndex && (str[index] == 59)) {
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i3 = 0;; ++i3) {
+ for (i3 = 0; true; ++i3) {
   indexTemp4 = ParseLdhStr(str, index, endIndex, tokener);
   if (indexTemp4 != index) {
  index = indexTemp4;
@@ -2698,7 +2710,7 @@ if (endIndex - index > 4 && (str[index] & ~32) == 72 && (str[index + 1] & ~32) =
 }
  indexTemp3 = index;
  indexStart2 = index;
-for (i2 = 0; ; ++i2) {
+for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 == index) { if (i2 < 1) {
  indexTemp2 = indexStart2;
@@ -2734,7 +2746,9 @@ public static int ParseHeaderContentType(string str, int index, int
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseHeaderControl(string str, int index, int endIndex,
   ITokener tokener) {
@@ -2898,7 +2912,7 @@ if (endIndex - index > 1 && ((str[index] >= 48 && str[index] <= 57) &&
  index = indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-for (i2 = 0;; ++i2) {
+for (i2 = 0; true; ++i2) {
  if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
   ++index;
  } else if (i2 < 4) {
@@ -3159,7 +3173,9 @@ public static int ParseHeaderDkimSignature(string str, int index, int
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseHeaderEdiintFeatures(string str, int index, int
   endIndex, ITokener tokener) {
@@ -3260,7 +3276,7 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  index = indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseEncodingKeyword(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -3292,7 +3308,7 @@ index = indexTemp2;
 }
  }
  index = ParseEncodingCount(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseEncodingKeyword(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -3487,7 +3503,7 @@ do {
  indexTemp3 = index;
  do {
  indexStart3 = index;
- for (i3 = 0;; ++i3) {
+ for (i3 = 0; true; ++i3) {
   indexTemp4 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp4 != index) {
  index = indexTemp4;
@@ -3641,7 +3657,7 @@ int i, i2, indexStart, indexStart2, indexTemp2, indexTemp3, state, state2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -3665,7 +3681,7 @@ if (endIndex - index > 2 && (str[index] & ~32) == 86 && str[index + 1] == 61 &&
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -3683,7 +3699,7 @@ if (index < endIndex && (str[index] == 59)) {
 } else {
  index = indexStart2; break;
 }
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -4009,7 +4025,7 @@ if (index < endIndex && (str[index] == 60)) {
  index = indexStart; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -4029,7 +4045,7 @@ if (index < endIndex && (str[index] == 46)) {
  index = indexStart; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -4052,7 +4068,7 @@ if (index < endIndex && (str[index] == 46)) {
 } else {
  break;
 }
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -4140,7 +4156,9 @@ public static int ParseHeaderListUnsubscribe(string str, int index, int
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseHeaderListUnsubscribePost(string str, int index, int
   endIndex, ITokener tokener) {
@@ -5225,7 +5243,7 @@ if (index < endIndex && (str[index] == 60)) {
 } else {
  index = indexStart; break;
 }
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -5248,7 +5266,7 @@ do {
  do {
  indexTemp3 = index;
  indexStart2 = index;
-for (i2 = 0; ; ++i2) {
+for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 == index) { if (i2 < 1) {
  indexTemp2 = indexStart2;
@@ -5322,7 +5340,7 @@ if (index < endIndex && (str[index] == 60)) {
 } else {
  index = indexStart; break;
 }
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -5345,7 +5363,7 @@ do {
  do {
  indexTemp3 = index;
  indexStart2 = index;
-for (i2 = 0; ; ++i2) {
+for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 == index) { if (i2 < 1) {
  indexTemp2 = indexStart2;
@@ -5662,7 +5680,7 @@ indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -5754,7 +5772,7 @@ do {
  do {
  indexTemp3 = index;
  indexStart2 = index;
-for (i2 = 0; ; ++i2) {
+for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseReceivedToken(str, index, endIndex, tokener);
   if (indexTemp3 == index) { if (i2 < 1) {
  indexTemp2 = indexStart2;
@@ -5974,7 +5992,7 @@ do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -6004,7 +6022,7 @@ do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -6393,7 +6411,7 @@ int i, indexStart, indexStart2, indexTemp2, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -6462,7 +6480,7 @@ int i, indexStart, indexStart2, indexStart3, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -6547,7 +6565,7 @@ int i, indexStart, indexStart2, indexTemp2, indexTemp3, indexTemp4, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -6685,11 +6703,11 @@ while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
 index = indexStart; break;
 }
  index = tx2;
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;
@@ -6818,7 +6836,9 @@ public static int ParseLanguageDescription(string str, int index, int
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseLanguageRange(string str, int index, int endIndex,
   ITokener tokener) {
@@ -6917,13 +6937,15 @@ do {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseLdhStr(string str, int index, int endIndex, ITokener
   tokener) {
 int i, indexStart, indexStart3, indexTemp2, indexTemp3;
 indexStart = index;
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
 if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
@@ -7372,7 +7394,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
  index = indexStart; break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -7408,7 +7430,9 @@ if (endIndex - index > 1 && (str[index] == 46) && ((str[index + 1] >= 65 &&
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseMilitaryString(string str, int index, int endIndex,
   ITokener tokener) {
@@ -7514,7 +7538,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
  index = indexStart; break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -7553,7 +7577,7 @@ if (endIndex - index > 1 && (str[index] == 58) && ((str[index + 1] >= 65 &&
  break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
@@ -7831,7 +7855,9 @@ if (endIndex - index > 3 && (str[index] & ~32) == 78 && (str[index + 1] & ~32) =
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseNodeid(string str, int index, int endIndex, ITokener
   tokener) {
@@ -7866,7 +7892,9 @@ index = indexTemp2;
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseNonnegInteger(string str, int index, int endIndex,
   ITokener tokener) {
@@ -8020,7 +8048,7 @@ int i, indexStart, indexStart2, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  do {
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -8055,7 +8083,9 @@ if (index < endIndex && (str[index] == 44)) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseObsNOWSCTL(string str, int index, int endIndex,
   ITokener tokener) {
@@ -8180,7 +8210,7 @@ indexStart = index;
 while (index < endIndex && (str[index] == 13)) {
  ++index;
 }
- for (i3 = 0;; ++i3) {
+ for (i3 = 0; true; ++i3) {
   indexTemp4 = index;
  do {
  indexTemp5 = index;
@@ -8197,7 +8227,7 @@ if (index < endIndex && ((str[index] >= 0 && str[index] <= 8) || (str[index]
  indexTemp4 = indexTemp5; break;
 }
  indexStart4 = index;
-for (i4 = 0; ; ++i4) {
+for (i4 = 0; true; ++i4) {
   indexTemp5 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp5 == index) { if (i4 < 1) {
  indexTemp4 = indexStart4;
@@ -8301,7 +8331,9 @@ if (index < endIndex && (str[index] == 62)) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParsePathIdentity(string str, int index, int endIndex,
   ITokener tokener) {
@@ -8311,7 +8343,7 @@ int i2, i4, indexStart2, indexStart3, indexStart4, indexTemp2, indexTemp3,
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
@@ -8370,7 +8402,7 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 } else {
  break;
 }
- for (i4 = 0;; ++i4) {
+ for (i4 = 0; true; ++i4) {
   indexTemp5 = index;
 if (endIndex - index > 1 && ((str[index] == 45) && ((str[index + 1] >= 65 &&
   str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
@@ -8803,7 +8835,7 @@ public static int ParsePhraseAtom(string str, int index, int endIndex,
 int i, indexStart, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = index;
 if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   (str[index] == 33) || (str[index] >= 35 && str[index] <= 39) ||
@@ -8879,7 +8911,9 @@ index = indexStart2; break;
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParsePrintablestring(string str, int index, int endIndex,
   ITokener tokener) {
@@ -8927,7 +8961,9 @@ if (endIndex - index > 1 && ((str[index] >= 55296 && str[index] <= 56319) &&
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseQuotedPair(string str, int index, int endIndex,
   ITokener tokener) {
@@ -9010,7 +9046,9 @@ if (index < endIndex && (str[index] == 34)) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseQvalue(string str, int index, int endIndex, ITokener
   tokener) {
@@ -9131,7 +9169,9 @@ indexStart = index;
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseRegName(string str, int index, int endIndex, ITokener
   tokener) {
@@ -9166,7 +9206,9 @@ index = indexTemp2;
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseResid(string str, int index, int endIndex, ITokener
   tokener) {
@@ -9211,7 +9253,7 @@ if (index < endIndex && (str[index] == 59)) {
  index = indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0; true; ++i) {
   indexTemp2 = ParseLdhStr(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
  index = indexTemp2;
@@ -9354,7 +9396,7 @@ if (endIndex - index > 1 && (str[index] == 64) && ((str[index + 1] >= 65 &&
  index = indexStart4; break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i4 = 0;; ++i4) {
+ for (i4 = 0; true; ++i4) {
   indexTemp5 = index;
  do {
  indexStart5 = index;
@@ -9401,7 +9443,7 @@ if (endIndex - index > 1 && (str[index] == 64) && ((str[index + 1] >= 65 &&
  break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i4 = 0;; ++i4) {
+ for (i4 = 0; true; ++i4) {
   indexTemp5 = index;
  do {
  indexStart5 = index;
@@ -9501,7 +9543,9 @@ public static int ParseStrictHeaderTo(string str, int index, int endIndex,
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseTextExceptOpeningParen(string str, int index, int
   endIndex, ITokener tokener) {
@@ -9520,7 +9564,9 @@ if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) || (str[index]
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
   "Microsoft.Usage",
   "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+  Justification =
+  "Tokener argument appears for consistency with other Parse* methods
+defined here.")]
 #endif
 public static int ParseTypeString(string str, int index, int endIndex,
   ITokener tokener) {
@@ -9602,7 +9648,7 @@ indexStart = index;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0; true; ++i2) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
  index = indexTemp3;

@@ -286,13 +286,13 @@ namespace MailLibTest {
           }
         }
       }
-        int bracketedText = str.IndexOf('[');
+      int bracketedText = str.IndexOf('[');
+      if (bracketedText >= 0) {
+        bracketedText = str.IndexOf(']', bracketedText);
         if (bracketedText >= 0) {
- bracketedText = str.IndexOf(']', bracketedText);
-   if (bracketedText >= 0) {
-            FailFilename(filename, str, strLower);
-   }
-}
+          FailFilename(filename, str, strLower);
+        }
+      }
       int i;
       for (i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -354,160 +354,11 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
     }
 
-    public static readonly string[] FileNames = {
-"hello.\u0020txt", "hello._txt",
-  "hello\u0020.txt", "hello_.txt",
-  "hello\u0020.\u0020txt", "hello_._txt",
-  "hello._", "hello._",
-      "com1.x", "_com1.x",
-      "lpt1.x", "_lpt1.x",
-  "xx#xx", "xx_xx",
-  "=?utf=?utf-8?q?test?=", "=_utftest",
-  "=?utf-8?q=?utf-8?q?test?=", "=_utf-8_qtest",
-  "=?utf-8?=?utf-8?q?test?=", "=_utf-8_test",
-  "=?utf-8?q?t=?utf-8?q?test?=", "ttest",
-  "=?utf-8?q?long_filename?=", "long filename",
-  "com.txt", "com.txt",
-  "com0.txt", "_com0.txt",
-  "lpt0.txt", "_lpt0.txt",
-  "-hello.txt", "_-hello.txt",
-  "hello.txt", "hello.txt",
-  "=?utf-8?q?hello=2Etxt?=", "hello.txt",
-  "=?utf-8?q?hello.txt?=", "hello.txt",
-  "utf-8''hello%2Etxt", "hello.txt",
-  "utf-8'en'hello%2Etxt", "hello.txt",
-  "hello" + " " + " " + "txt", "hello txt",
-  "hello.txt" + " " + " ", "hello.txt",
-  " " + "hello.txt", "hello.txt",
-  "hello" + " " + "txt", "hello txt",
-  "hello.txt" + " ", "hello.txt",
-  "=?utf-8?q?___hello.txt___?=", "hello.txt",
-  "=?utf-8?q?a?= =?utf-8?q?b?=", "ab",
-  "=?utf-8?q?a?= =?x-unknown?q?b?=", "a b",
-  "a" + " " + " " + " " + "b", "a b",
-  "=?iso-8859-1*en?q?fil=E7test?=", "fil\u00e7test",
-  "=?iso-8859-1*en-us?q?fil=E7test?=", "fil\u00e7test",
-  "=?iso-8859-1*xx9x9x?q?fil=E7test?=", "fil\u00e7test",
-  "=?iso-8859-1*en?q?fil=e7test?=", "fil\u00e7test",
-  "=?iso-8859-1*en-us?q?fil=e7test?=", "fil\u00e7test",
-  "=?iso-8859-1*xx9x9x?q?fil=e7test?=", "fil\u00e7test",
-  "=?us-ascii*en?q?filetest?=", "filetest",
-  "=?us-ascii*en-us?q?filetest?=", "filetest",
-  "=?us-ascii*xx9x9x?q?filetest?=", "filetest",
-  "d\ud800e", "d\ufffde",
-  "d\udc00e", "d\ufffde",
-  "d'e", "d_e",
-  "utf-8'e", "utf-8_e",
-  "com0.txt", "_com0.txt",
-  "-hello.txt", "_-hello.txt",
-  "lpt0.txt", "_lpt0.txt",
-  "com1.txt", "_com1.txt",
-  "lpt1.txt", "_lpt1.txt",
-  "nul.txt", "_nul.txt",
-  "hello . txt", "hello_._txt",
-  "hello\u2028world.txt", "hello_world.txt",
-  "hello\u2029world.txt", "hello_world.txt",
-  "hello\u0085world.txt", "hello_world.txt",
-  "prn.txt", "_prn.txt",
-  "aux.txt", "_aux.txt",
-  "con.txt", "_con.txt",
-
-          " =?utf-8?q?hello.txt?= ", "hello.txt",
-
-            " =?utf-8?q?___hello.txt___?= ", "hello.txt",
-
-            " =?utf-8*en?q?___hello.txt___?= ", "hello.txt",
-      " =?utf-8*?q?___hello.txt___?= ", "___hello.txt___",
-      " =?utf-8*i-unknown?q?___hello.txt___?= ", "hello.txt",
-  " =?*en?q?___hello.txt___?= ", "___hello.txt___",
-  "=?iso-8859-1?q?a=E7=E3o.txt?=", "a\u00e7\u00e3o.txt",
-
-            "a\u00e7\u00e3o.txt", "a\u00e7\u00e3o.txt",
-
-          "=?x-unknown?q?hello.txt?=", "hello.txt",
-  "=?x-unknown", "=_x-unknown",
-  "my?file<name>.txt", "my_file_name_.txt",
-
-            "my file\tname\".txt", "my file name_.txt",
-
-          "my\ud800file\udc00name\ud800\udc00.txt",
-  "my\ufffdfile\ufffdname\ud800\udc00.txt",
-  "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
-
-          "utf-8''file%c2%bename.txt", "file\u00bename.txt",
-
-            "utf-8'en'file%c2%bename.txt", "file\u00bename.txt",
-
-            "windows-1252'en'file%bename.txt", "file\u00bename.txt",
-
-          "x-unknown'en'file%c2%bename.txt",
-              "x-unknown_en_file_c2_bename.txt",
-
-            "utf-8'en-us'file%c2%bename.txt", "file\u00bename.txt",
-  "utf-8''file%c2%bename.txt", "file\u00bename.txt",
-  "...", "_..._",
-  "~home", "_~home",
-  "~nul", "_~nul",
-
-            "myfilename.txt.", "myfilename.txt._",
-  "nul", "_nul",
-  " nul ", "_nul",
-  " ordinary ", "ordinary",
-  "nul.txt", "_nul.txt",
-  "con", "_con",
-  "aux", "_aux",
-  "lpt1device", "lpt1device",
-  "my\u0001file\u007fname*.txt", "my_file_name_.txt",
-  "=?utf-8?q?folder\\hello.txt?=", "folder_hello.txt",
-  "folder/", "folder_",
-  "folder//////", "folder______",
-  ".", "_._",
-  "..", "_.._",
-  "fol/der/", "fol_der_",
-  "fol/der//////", "fol_der______",
-  "com1 .x", "_com1_.x",
-  "lpt1 .x", "_lpt1_.x",
-  "com1 .x.y", "_com1 .x.y",
-  "lpt1 .x.y", "_lpt1 .x.y",
-      String.Empty, String.Empty,
-      "folder/hello.txt", "folder_hello.txt",
-  "fol/der/hello.txt", "fol_der_hello.txt",
-  "=?x-unknown?q?folder\\hello.txt?=", "folder_hello.txt",
-      "\u0020\u0020hello.txt", "hello.txt"
-};
-
-    private static string[] specificFilenames = {
-      "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E",
-      "xx\u1fefxx",
-      "xx!\ud845\udd33[xx",
-      "com20020",
-      "xx#xx",
-      "xx!\ud845\udd33[",
-      "xx![xx",
-
-  "0_@S\u2000\u164d7~?H |Hw\u669b\u007f\u12c6>kT\ud802\udda8 .hu-z\u2e03A\ua944}N.\u176cL\uffffJRm+{K `\"\u7ff2D\u2f2d7Q(\"[~JWP@Dy\u2f77voW\u202f\u001b\uf8e2;w\ud9d6\ude5c\udb66\udf9d?o\ufeff\u2f0c \u1384l1N_tG?\u2eae\u008f.\ubf99l5<p.@\"S\ufdefiU ~\u73d6ag/l7\ufdd0\u27a4u W$vZ!(jxf^eQ\u13ac \uf8a4l0\"\ufeffz3.2\u179b$V9,b\u24fe\u4b27S\u001bO\u072a|H6 e_\u2377.F*##xX\u007f ~\u2aa4xU\uc09b$MXPI\u007fMr\uc880 u#'Do5qR; |;:1(A\u200bRR*T*:xLAR#;%.||k?v4/~6EB..1\udacc\udd9bP\ud824\ude7d.|%'Z970<?u'\\gG\u3189V.es0.f\tu? %t&=6\u205f\u2a4f#F\u2000 {*\\ &(]Rk<u<|\ud80e\udeb7l>s}/JG'\u205f-t-k\uc774#.\u0020\u0020",
-
-  "\u1492\u0f68r\t\ud9d6\udf2cquip %T;K=_%\u008fW\ufffe-\u2ef5u%.p\u0010~#uI_U0!6 {1?uIFA 0iO4y9 (\u53807aPz+\u009f}rj\u0a81 \u2446fo[\\? \u0757 I\t0\u19c8.z(c\uffffgc)J5VdW\ufeff4*\u200b%.\u00aaR\ufbbfw\u16d0Rm%\u001f\u189d\u00a0W\ufffe\u0bfa(9!.'\u1499.\u200b_m\ufffe>7v\u2000N},gch[3\ufffe\u2a07pD:gXhG_\u0000&\ufffeyT$&\u2fa5 N\ud8fd\udd2am \u0000)1\u009f$y1 \ud9e1\udc78\u001f;\u2bdd9.\u1d21B}\u1271 X.U|O/\ufeffQQ.A>cW!1'\u2374hmt \u0866\ufeff&t\\fe\u009f\u2cado?\ud9f5\ude56;\\b^\udb81\udf2d\u008f \u00a0\udbfd\udf53@.]7MD\u008fxwKs\u202f}\"\u17ff^m\u0010\ufdef'FF\u2000T>:\u2000h.J\u1e10\ufdefI$\u0355eIL`CDcH\u0dffrX4.'qx {. p:w. E64cF?1\\;",
-
-  ".Zw\"\ud91f\udd46\u0010p *L {fN_\t5Wvs%Bka-\u00fb\ufdef@\uffffy|-\u001fDWqpX\uda60\udeadznb'\u00a0h1 \udb32\uddcah..\u0cab\u26eff\u21114\u2b8aSz,\t \u2d0d.Q\u009f\ufacfD\u0010E+r@!.MY/\u0010dFN\ubdb8\u21203\ud9af\udf5e`\u3000\u15ae _>vg",
-
-  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.RV\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j ",
-
-  "K GY2n8 Uml\ufdd0U {\\\udbee\ude3brac,;8d\u3000i\ud965\uddd1W&9\ufffe`)nM@(\u1125=nZ:_='g5 ?g[\u1432S\ufdef/Y\u001fzF\ud84d\udda1\u009fb'C:\u00a0-M\u205f476\u001b\ud8c7\udc378=\"z\u0010\u2d33 {:\"mN\"5V!\ufdd0\u00a0> \u1680mdnR8\u03b2s\u008f^7*{yH\u001fil1>\u00108C6 \"p\u009fV,?/.C.o P9yP}s {\"{>\u205f\\(U\ufdd0\u205f!/ \"%K\u2000@ Y\u205fP/C,?O(\u03eb+\u009f\ubd8b\udbf3\udf10f.rv8\u009f%v6!]H6\u001bp`.\u008f:BVkI\u09f5|8!FQ\\Fp.88\u2000m\u0933 s.~cO$ fQoq\"\u3000\u6b07\ud8bd\udca6H\ud9be\udc02zY(N.h1\u0000|=!\ud845\udd33[\ua233o'dt;)H1p\u00a0?TVw5sZ\"\u205fF5.)M&?Kq<#\u0f96Td5Zr3@`~8.:",
-
-      "utf-8'en'utf-8%27%27test",
-      "utf-8'en'utf-8%27en%27test",
-      "utf-8''utf-8%27%27test",
-      "utf-8''utf-8%27en%27test",
-      "utf-8''unknown%27%27test",
-      "utf-8'en'unknown%27%27test",
-      "utf-8'en'unknown%27en%27test",
-
-  ".Fm\u2a32\u16801c sl\u001fvU0O\u2af4\ufeff7r'\ufdd0&R|.W\".R@)\u02f1|q|\u2a84Ji4Lj65XTP2&\u3000t\ta]:\u008fk0$\"^QNU\ub7e7l\tpj>K\ud81e\udcb24\u8463pC[\ufdd0aJL ZSDX./|!3(lA\\a\ud800\udca6N?\"\uffff\\/\u06b5V1\"\u0000K\u1a41MZ.(iE&\u0d91\tJ\u009f\u0da3x)\"\u0396 hN\u1585uCF U2/|\\\u2043s9Zkd {\u2fdcZB+\u008f.\ud942\udda6.+!\\j!-`nuM@H/y\u205f0';$?^Q.&Mo.e?\u2000FY$2\u0559|B>\"7'A\u2e51\u07463.\u009f3\u12a4U|~>2.#\"t!X,I|vn\u2000.\ufffe6\u00a0X\u2315*G+*%^\ufeff\u001bt\ud87e\udcb0z}ig\u4609y\ud943\udf81>o%<g,\u205f&)\u007f\u200b|\udb79\ude00?a'X*z|Bm\udaa1\udc53#N$\"&)O: F\u0000\uda2b\uddbdeAte\ufffe\\pqb'\u202fT}\u23cdC!K.^2}c:Wj)[ZCa\u19094\u3000\udb4b\udff1R\ufdef64o.\u26d94hf.+&P>_\u22b1\t\ufdd0f\u200b\\P\uc5a0\u05ddf*P \u1ecav\ufdd0S"
-};
-
     [Test]
     public void TestMakeFilenameSpecific() {
+      var resources = new AppResources("Resources");
+      string[] specificFilenames = DictUtility.ParseJSONStringArray(
+        resources.GetString("specificfiles"));
       foreach (string str in specificFilenames) {
         AssertGoodFilename(str);
       }
@@ -526,15 +377,24 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
         }
         AssertGoodFilename(RandomString(rnd));
       }
-      for (var i = 0; i < ContentDispositionTest.FileNames.Length; i += 2) {
+      var resources = new AppResources("Resources");
+      string[] filenames = DictUtility.ParseJSONStringArray(
+        resources.GetString("specificfilenames"));
+      //   "d\ud800e", "d\ufffde",
+      // "d\udc00e", "d\ufffde",
+      //      "my\ud800file\udc00name\ud800\udc00.txt",
+      //  "my\ufffdfile\ufffdname\ud800\udc00.txt",
+      //  "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
+
+      for (var i = 0; i < filenames.Length; i += 2) {
         string str = ContentDisposition.MakeFilename(
-          ContentDispositionTest.FileNames[i]);
+          filenames[i]);
         Assert.AreEqual(
-  ContentDispositionTest.FileNames[i + 1],
+          filenames[i + 1],
   str,
-  ContentDispositionTest.FileNames[i]);
-        AssertGoodFilename(ContentDispositionTest.FileNames[i]);
-        AssertGoodFilename(ContentDispositionTest.FileNames[i + 1]);
+          filenames[i]);
+        AssertGoodFilename(filenames[i]);
+        AssertGoodFilename(filenames[i + 1]);
       }
     }
 
@@ -698,8 +558,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
         Assert.AreEqual(0, keys.Count);
         Assert.AreEqual("inline", mt.DispositionType);
       }
- mt =
-  ParseAndTestAspects("inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
+      mt =
+       ParseAndTestAspects("inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
       {
         string stringTemp = mt.GetParameter("charset");
         Assert.AreEqual(

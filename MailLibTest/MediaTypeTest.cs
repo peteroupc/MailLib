@@ -10,324 +10,324 @@ namespace MailLibTest {
     private static IList<IDictionary<string, string>> testMediaTypes =
       new List<IDictionary<string, string>> {
       DictUtility.MakeDict(
-  "name",
-  "multipart/example",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/example",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multipart/example;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/example;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MULTIPART/example",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MULTIPART/example",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MULTIPART/example;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MULTIPART/example;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MuLtIpArT/example",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MuLtIpArT/example",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MuLtIpArT/example;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MuLtIpArT/example;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multipart/EXAMPLE",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/EXAMPLE",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multipart/EXAMPLE;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/EXAMPLE;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MuLtIpArT/EXAMPLE",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MuLtIpArT/EXAMPLE",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MuLtIpArT/EXAMPLE;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MuLtIpArT/EXAMPLE;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multipart/ExAmPlE",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/ExAmPlE",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multipart/ExAmPlE;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/ExAmPlE;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multipart/eXaMpLe",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/eXaMpLe",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multipart/eXaMpLe;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "multipart/eXaMpLe;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MuLtIpArT/eXaMpLe",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MuLtIpArT/eXaMpLe",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "MuLtIpArT/eXaMpLe;x=y",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "example",
-  "multipart",
-  "1",
-  "text",
-  "0"),
+        "name",
+        "MuLtIpArT/eXaMpLe;x=y",
+        "toplevel",
+        "multipart",
+        "subtype",
+        "example",
+        "multipart",
+        "1",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "multi-part/example",
-  "toplevel",
-  "multi-part",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "0"),
+        "name",
+        "multi-part/example",
+        "toplevel",
+        "multi-part",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "font/otf",
-  "toplevel",
-  "font",
-  "subtype",
-  "otf",
-  "multipart",
-  "0",
-  "text",
-  "0"),
-  DictUtility.MakeDict(
-  "name",
-  "message/alternative",
-  "toplevel",
-  "message",
-  "subtype",
-  "alternative",
-  "multipart",
-  "0",
-  "text",
-  "0"),
-  DictUtility.MakeDict(
-  "name",
-  "multipart/alternative",
-  "toplevel",
-  "multipart",
-  "subtype",
-  "alternative",
-  "multipart",
-  "1",
-  "text",
-  "0"),
-  DictUtility.MakeDict(
-  "name",
-  "multi-part/example;x=y",
-  "toplevel",
-  "multi-part",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "0"),
+        "name",
+        "font/otf",
+        "toplevel",
+        "font",
+        "subtype",
+        "otf",
+        "multipart",
+        "0",
+        "text",
+        "0"),
+        DictUtility.MakeDict(
+          "name",
+          "message/alternative",
+          "toplevel",
+          "message",
+          "subtype",
+          "alternative",
+          "multipart",
+          "0",
+          "text",
+          "0"),
+    DictUtility.MakeDict(
+      "name",
+      "multipart/alternative",
+      "toplevel",
+      "multipart",
+      "subtype",
+      "alternative",
+      "multipart",
+      "1",
+      "text",
+      "0"),
+    DictUtility.MakeDict(
+      "name",
+      "multi-part/example;x=y",
+      "toplevel",
+      "multi-part",
+      "subtype",
+      "example",
+      "multipart",
+      "0",
+      "text",
+      "0"),
       DictUtility.MakeDict(
-  "name",
-  "texb/example",
-  "toplevel",
-  "texb",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "0"),
+        "name",
+        "texb/example",
+        "toplevel",
+        "texb",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "texb/example;x=y",
-  "toplevel",
-  "texb",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "0"),
+        "name",
+        "texb/example;x=y",
+        "toplevel",
+        "texb",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "0"),
       DictUtility.MakeDict(
-  "name",
-  "text/example",
-  "toplevel",
-  "text",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "1"),
+        "name",
+        "text/example",
+        "toplevel",
+        "text",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "1"),
       DictUtility.MakeDict(
-  "name",
-  "text/example;x=y",
-  "toplevel",
-  "text",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "1"),
+        "name",
+        "text/example;x=y",
+        "toplevel",
+        "text",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "1"),
       DictUtility.MakeDict(
-  "name",
-  "TEXT/example",
-  "toplevel",
-  "text",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "1"),
+        "name",
+        "TEXT/example",
+        "toplevel",
+        "text",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "1"),
       DictUtility.MakeDict(
-  "name",
-  "TEXT/example;x=y",
-  "toplevel",
-  "text",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "1"),
+        "name",
+        "TEXT/example;x=y",
+        "toplevel",
+        "text",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "1"),
       DictUtility.MakeDict(
-  "name",
-  "TexT/example",
-  "toplevel",
-  "text",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "1"),
+        "name",
+        "TexT/example",
+        "toplevel",
+        "text",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "1"),
       DictUtility.MakeDict(
-  "name",
-  "TexT/example;x=y",
-  "toplevel",
-  "text",
-  "subtype",
-  "example",
-  "multipart",
-  "0",
-  "text",
-  "1")
+        "name",
+        "TexT/example;x=y",
+        "toplevel",
+        "text",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "1")
     };
 
 private static MediaType ParseAndTestAspects(string s) {
@@ -396,8 +396,8 @@ private static MediaType ParseAndTestAspects(string s) {
         {
           string stringTemp = mt.GetCharset();
           Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
+            "us-ascii",
+            stringTemp);
         }
       }
       mt = ParseAndTestAspects("text/vcard");
@@ -405,13 +405,12 @@ private static MediaType ParseAndTestAspects(string s) {
         {
           string stringTemp = mt.GetCharset();
           Assert.AreEqual(
-          "utf-8",
-          stringTemp);
+            "utf-8",
+            stringTemp);
         }
       }
       mt = ParseAndTestAspects("text/x-unknown");
       Assert.AreEqual(String.Empty, mt.GetCharset());
-
       {
         string stringTemp = ParseAndTestAspects("text/plain").GetCharset();
         Assert.AreEqual(
@@ -421,20 +420,20 @@ private static MediaType ParseAndTestAspects(string s) {
       {
         string stringTemp = ParseAndTestAspects("TEXT/PLAIN").GetCharset();
         Assert.AreEqual(
-              "us-ascii",
-              stringTemp);
+          "us-ascii",
+          stringTemp);
       }
       {
         string stringTemp = ParseAndTestAspects("TeXt/PlAiN").GetCharset();
         Assert.AreEqual(
-                "us-ascii",
-                stringTemp);
+          "us-ascii",
+          stringTemp);
       }
       {
         string stringTemp = ParseAndTestAspects("text/troff").GetCharset();
         Assert.AreEqual(
-                  "us-ascii",
-                  stringTemp);
+          "us-ascii",
+          stringTemp);
       }
       {
         object objectTemp = "utf-8";
@@ -459,78 +458,78 @@ private static MediaType ParseAndTestAspects(string s) {
         string stringTemp = ParseAndTestAspects("text/plain; charset = UTF-8")
 .GetCharset();
         Assert.AreEqual(
-                  "utf-8",
-                  stringTemp);
+          "utf-8",
+          stringTemp);
       }
       {
  string stringTemp =
           ParseAndTestAspects("text/plain; charset (cmt) = (cmt) UTF-8")
              .GetCharset();
-        Assert.AreEqual(
-                  "utf-8",
-                  stringTemp);
+             Assert.AreEqual(
+               "utf-8",
+               stringTemp);
       }
       {
         // NOTE: 'UTF-8' (with single quotes) is now treated as unknown
         string stringTemp = ParseAndTestAspects("text/plain; charset='UTF-8'")
 .GetCharset();
         Assert.AreEqual(
-                  String.Empty,
-                  stringTemp);
+          String.Empty,
+          stringTemp);
       }
       {
         string stringTemp = ParseAndTestAspects("text/plain; charset=\"UTF-8\"")
 .GetCharset();
         Assert.AreEqual(
-                  "utf-8",
-                  stringTemp);
+          "utf-8",
+          stringTemp);
       }
       {
         string stringTemp =
           ParseAndTestAspects("text/plain; foo=\"\\\"\"; charset=\"UTF-8\"")
 .GetCharset();
         Assert.AreEqual(
-                  "utf-8",
-                  stringTemp);
+          "utf-8",
+          stringTemp);
       }
       {
         string stringTemp =
           ParseAndTestAspects("text/plain; foo=\"; charset=\\\"UTF-8\\\"\"")
 .GetCharset();
         Assert.AreEqual(
-                  "us-ascii",
-                  stringTemp);
+          "us-ascii",
+          stringTemp);
       }
       {
     string stringTemp =
           ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
        .GetCharset();
-        Assert.AreEqual(
-                  "utf-8",
-                  stringTemp);
+       Assert.AreEqual(
+         "utf-8",
+         stringTemp);
       }
       {
   string stringTemp =
           ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
            .GetCharset();
-        Assert.AreEqual(
-                  "utf-8",
-                  stringTemp);
+           Assert.AreEqual(
+             "utf-8",
+             stringTemp);
       }
       {
      string stringTemp = ParseAndTestAspects("text/plain; charset=\"UTF-\\8\"")
 .GetCharset();
-        Assert.AreEqual(
-                  "utf-8",
-                  stringTemp);
+Assert.AreEqual(
+          "utf-8",
+          stringTemp);
       }
       {
         string stringTemp = ParseAndTestAspects("nana").GetCharset();
         Assert.AreEqual(
-                  "us-ascii",
-                  stringTemp);
+          "us-ascii",
+          stringTemp);
       }
-   {
+      {
 object objectTemp = String.Empty;
 object objectTemp2 = ParseAndTestAspects("text/xyz")
 .GetCharset();
@@ -570,8 +569,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
         string stringTemp = ParseAndTestAspects("text/plain;chabset=utf-8")
       .GetCharset();
         Assert.AreEqual(
-                  "us-ascii",
-                  stringTemp);
+          "us-ascii",
+          stringTemp);
       }
       {
         object objectTemp = "utf-8";
@@ -612,25 +611,25 @@ public static readonly IList<IDictionary<string, string>>
   DictUtility.MakeDict("params", ";filename=x.y ", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\" ", "filename", "cc"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"a\\" + "\u0020b\"",
-  "filename",
-  "a b"),
+    "params",
+    ";filename=\"a\\" + "\u0020b\"",
+    "filename",
+    "a b"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"a\\" + "\tb\"",
-  "filename",
-  "a\tb"),
+    "params",
+    ";filename=\"a\\" + "\tb\"",
+    "filename",
+    "a\tb"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"a\\" + "\\b\"",
-  "filename",
-  "a\\b"),
+    "params",
+    ";filename=\"a\\" + "\\b\"",
+    "filename",
+    "a\\b"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"ccaaaaaaaaaaaaaaaaaaaa\"",
-  "filename",
-  "ccaaaaaaaaaaaaaaaaaaaa"),
+    "params",
+    ";filename=\"ccaaaaaaaaaaaaaaaaaaaa\"",
+    "filename",
+    "ccaaaaaaaaaaaaaaaaaaaa"),
   DictUtility.MakeDict(
   "params",
   ";filename=\"ccaaaaaaa,;=aaaaaaaaaaa\"",
@@ -642,47 +641,47 @@ public static readonly IList<IDictionary<string, string>>
   "filename",
   "ccaaaaaaa,;e1=xxx;e2=yyy"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"cc\\a\\b\\c\\1\\2\\3\"",
-  "filename",
-  "ccabc123"),
+    "params",
+    ";filename=\"cc\\a\\b\\c\\1\\2\\3\"",
+    "filename",
+    "ccabc123"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"cc\\\\\\'\\\"\\[\\]\"",
-  "filename",
-  "cc\\'\"[]"),
+    "params",
+    ";filename=\"cc\\\\\\'\\\"\\[\\]\"",
+    "filename",
+    "cc\\'\"[]"),
   DictUtility.MakeDict("params", ";filename=\"cc%\\ab\"", "filename", "cc%ab"),
   DictUtility.MakeDict("params", ";filename=\"\u00e7\"", "filename", "\u00e7"),
   DictUtility.MakeDict("params", ";filename=e's", "filename", "e's"),
   DictUtility.MakeDict("params", ";filename='es", "filename", "'es"),
   DictUtility.MakeDict("params", ";filename='es'", "filename", "'es'"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=utf-8'en'example",
-  "filename",
-  "utf-8'en'example"),
+    "params",
+    ";filename=utf-8'en'example",
+    "filename",
+    "utf-8'en'example"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=utf-8''example",
-  "filename",
-  "utf-8''example"),
+    "params",
+    ";filename=utf-8''example",
+    "filename",
+    "utf-8''example"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"%ab\u00e7\"",
-  "filename",
-  "%ab\u00e7"),
+    "params",
+    ";filename=\"%ab\u00e7\"",
+    "filename",
+    "%ab\u00e7"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"%ab\u00c2\u00a0\"",
-  "filename",
-  "%ab\u00c2\u00a0"),
+    "params",
+    ";filename=\"%ab\u00c2\u00a0\"",
+    "filename",
+    "%ab\u00c2\u00a0"),
   DictUtility.MakeDict("params", ";filename=\"cc%\\66\"", "filename", "cc%66"),
   DictUtility.MakeDict("params", ";filename=\"cc%xy\"", "filename", "cc%xy"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"cc\\\"x\\\"y\"",
-  "filename",
-  "cc\"x\"y"),
+    "params",
+    ";filename=\"cc\\\"x\\\"y\"",
+    "filename",
+    "cc\"x\"y"),
   DictUtility.MakeDict("params", ";FILENAME=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";FILENAME=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";FiLeNaMe=x.y", "filename", "x.y"),
@@ -690,54 +689,54 @@ public static readonly IList<IDictionary<string, string>>
   DictUtility.MakeDict("params", ";fIlEnAmE=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";fIlEnAmE=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"a\u0020\u0020b\"",
-  "filename",
-  "a\u0020\u0020b"),
+    "params",
+    ";filename=\"a\u0020\u0020b\"",
+    "filename",
+    "a\u0020\u0020b"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"a\u0020\tb\"",
-  "filename",
-  "a\u0020\tb"),
+    "params",
+    ";filename=\"a\u0020\tb\"",
+    "filename",
+    "a\u0020\tb"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"a\t\u0020b\"",
-  "filename",
-  "a\t\u0020b"),
+    "params",
+    ";filename=\"a\t\u0020b\"",
+    "filename",
+    "a\t\u0020b"),
   DictUtility.MakeDict("params", ";filename=\"a\t\tb\"", "filename", "a\t\tb"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"\u0020\u0020ab\"",
-  "filename",
-  "\u0020\u0020ab"),
+    "params",
+    ";filename=\"\u0020\u0020ab\"",
+    "filename",
+    "\u0020\u0020ab"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"\u0020\tab\"",
-  "filename",
-  "\u0020\tab"),
+    "params",
+    ";filename=\"\u0020\tab\"",
+    "filename",
+    "\u0020\tab"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"\t\u0020ab\"",
-  "filename",
-  "\t\u0020ab"),
+    "params",
+    ";filename=\"\t\u0020ab\"",
+    "filename",
+    "\t\u0020ab"),
   DictUtility.MakeDict("params", ";filename=\"\t\tab\"", "filename", "\t\tab"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"ab\u0020\u0020\"",
-  "filename",
-  "ab\u0020\u0020"),
+    "params",
+    ";filename=\"ab\u0020\u0020\"",
+    "filename",
+    "ab\u0020\u0020"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"ab\u0020\t\"",
-  "filename",
-  "ab\u0020\t"),
+    "params",
+    ";filename=\"ab\u0020\t\"",
+    "filename",
+    "ab\u0020\t"),
   DictUtility.MakeDict(
-  "params",
-  ";filename=\"ab\t\u0020\"",
-  "filename",
-  "ab\t\u0020"),
+    "params",
+    ";filename=\"ab\t\u0020\"",
+    "filename",
+    "ab\t\u0020"),
   DictUtility.MakeDict("params", ";filename=\"ab\t\t\"", "filename", "ab\t\t"),
-  DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename", "\\ab")
+  DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename", "\\ab"),
        };
 
     [Test]
@@ -796,7 +795,7 @@ public static readonly IList<IDictionary<string, string>>
       mt = ParseAndTestAspects("text/example;param1*=utf-8'en'value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
- mt =
+      mt =
   ParseAndTestAspects("text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
@@ -818,11 +817,11 @@ public static readonly IList<IDictionary<string, string>>
       mt = ParseAndTestAspects("text/example;param1*=iso-8859-1'en'valu%4e2");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u004e2", parameters["param1"]);
-   mt =
+      mt =
   ParseAndTestAspects("text/example;param1*=utf-8''value2;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
-   mt =
+      mt =
   ParseAndTestAspects("text/example;param1=dummy;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
@@ -872,7 +871,7 @@ public static readonly IList<IDictionary<string, string>>
   ParseAndTestAspects("text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
-foreach (var str in ContentDispositionTest.NoParams) {
+      foreach (var str in ContentDispositionTest.NoParams) {
         mt = ParseAndTestAspects("x/y" + str, null);
         parameters = mt.Parameters;
         IList<string> keys;
@@ -880,7 +879,7 @@ foreach (var str in ContentDispositionTest.NoParams) {
         Assert.AreEqual(0, keys.Count);
         Assert.AreEqual("x/y", mt.TypeAndSubType);
       }
-mt =
+      mt =
   ParseAndTestAspects("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
       {
 string stringTemp = mt.GetParameter("charset");
@@ -917,8 +916,8 @@ Assert.AreEqual(
       TestPercentEncodingOne("tesa", "tes%61");
       TestPercentEncodingOne("tes\r\na", "tes%0D%0Aa");
       TestPercentEncodingOne(
-  "tes%xx",
-  "tes%xx");
+        "tes%xx",
+        "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
     }
 
@@ -932,7 +931,7 @@ Assert.AreEqual(
     private static void TestPercentEncodingOne(string expected, string input) {
    MediaType cd = ParseAndTestAspects("text/plain; filename*=utf-8''" +
         input);
-      Assert.AreEqual(expected, cd.GetParameter("filename"));
+        Assert.AreEqual(expected, cd.GetParameter("filename"));
     }
 
     [Test]

@@ -55,8 +55,8 @@ Content-Type header value is still available.)
     <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="PeterO.Text.Encoders.AppResources.resx">
       <LogicalName>PeterO.Text.Encoders.AppResources.resources</LogicalName>
     </EmbeddedResource>
-  <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.1.118" /><AdditionalFiles Include="stylecop.json"></AdditionalFiles></ItemGroup>
+  <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.1.118" /></ItemGroup>
   <ItemGroup>
     <PackageReference Include="PeterO.Encoding" Version="0.5.1" />
-  </ItemGroup>
+  <AdditionalFiles Include="rules.ruleset"></AdditionalFiles></ItemGroup>
 </Project>

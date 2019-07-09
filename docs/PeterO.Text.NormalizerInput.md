@@ -29,7 +29,7 @@
 
  Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
 
-  ### Member Summary
+### Member Summary
 * <code>[IsNormalized(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Determines whether the text provided by a character input is normalized.
 * <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Determines whether the given string is in the given Unicode normalization form.
 * <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
@@ -44,7 +44,7 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.   <b>Parameters:</b>
 
- * <i>input</i>:  The parameter  <i>input</i>
+ * <i>input</i>: The parameter  <i>input</i>
  is an ICharacterInput object.
 
 <a id="Void_ctor_ICharacterInput_Normalization"></a>
@@ -56,16 +56,16 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.     <b>Parameters:</b>
 
- * <i>stream</i>:  The parameter  <i>stream</i>
+ * <i>stream</i>: The parameter  <i>stream</i>
  is an ICharacterInput object.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>stream</i>
+The parameter  <i>stream</i>
  is null.
 
 <a id="Void_ctor_String"></a>
@@ -76,7 +76,7 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.   <b>Parameters:</b>
 
- * <i>str</i>:  The parameter  <i>str</i>
+ * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
 <a id="Void_ctor_String_Int32_Int32_Normalization"></a>
@@ -90,16 +90,16 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.      <b>Parameters:</b>
 
- * <i>str</i>:  The parameter  <i>str</i>
+ * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>index</i>:  The parameter  <i>index</i>
+ * <i>index</i>: The parameter  <i>index</i>
  is a 32-bit signed integer.
 
- * <i>length</i>:  The parameter  <i>length</i>
+ * <i>length</i>: The parameter  <i>length</i>
  is a 32-bit signed integer.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="Void_ctor_String_Normalization"></a>
@@ -111,10 +111,10 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.    <b>Parameters:</b>
 
- * <i>str</i>:  The parameter  <i>str</i>
+ * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>

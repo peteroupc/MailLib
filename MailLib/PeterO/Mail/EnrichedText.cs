@@ -4,8 +4,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
   internal static class EnrichedText {
     private static bool IsTokenAsciiIgnoreCase(
       string str,
@@ -33,14 +33,14 @@ namespace PeterO.Mail {
     }
     private static string ParseColor(string str, int index, int endIndex) {
       string[] colorNames = {
-"yellow",
-"red",
-"green",
-"blue",
-"black",
-"white",
-"cyan",
-"magenta",
+        "yellow",
+        "red",
+        "green",
+        "blue",
+        "black",
+        "white",
+        "cyan",
+        "magenta",
       };
       foreach (string name in colorNames) {
         if (IsTokenAsciiIgnoreCase(str, index, endIndex, name)) {
@@ -69,8 +69,8 @@ namespace PeterO.Mail {
       return
 ret + str.Substring(index, 2) + str.Substring(index + 5, 2) +
   str.Substring(
-  index,
-  10);
+    index,
+    10);
     }
     private static int SkipFont(string str, int index, int endIndex) {
       int indexTemp = index;
@@ -191,9 +191,9 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       return String.Empty;
     }
     public static string EnrichedToPlain(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       var originalBuilder = new StringBuilder();
       var paramBuilder = new StringBuilder();
       StringBuilder currentBuilder = originalBuilder;
@@ -244,8 +244,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               if (index < endIndex && (str[index] == 62)) {
                 ++index;
                 string command = str.Substring(
-  commandStart,
-  commandEnd - commandStart).ToLowerInvariant();
+                  commandStart,
+                  commandEnd - commandStart).ToLowerInvariant();
                 if (command.Equals("nofill")) {
                   if (isEndTag && nofillDepth > 0) {
                     --nofillDepth;
@@ -382,16 +382,17 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
       return originalBuilder.ToString();
     }
     public static string EnrichedToHtml(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       var originalBuilder = new StringBuilder();
       var paramBuilder = new StringBuilder();
       StringBuilder currentBuilder = originalBuilder;
       var withinParam = false;
       var nofillDepth = 0;
       originalBuilder.Append("<!DOCTYPE html><html><title>Untitled</title>");
-      originalBuilder.Append("<style>p { margin-bottom: 0em; margin-top: 0em; }");
+      originalBuilder.Append("<style>p { margin-bottom: 0em; ")
+           .Append("margin-top: 0em; }");
       originalBuilder.Append("</style><body>");
       string lastCommand = String.Empty;
       do {
@@ -439,8 +440,8 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               if (index < endIndex && (str[index] == 62)) {
                 ++index;
                 string command = str.Substring(
-  commandStart,
-  commandEnd - commandStart).ToLowerInvariant();
+                  commandStart,
+                  commandEnd - commandStart).ToLowerInvariant();
                 if (!withinParam) {
                   if (command.Equals("bold")) {
                     currentBuilder.Append('<');
@@ -549,13 +550,14 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
             0,
             p.Length);
                       if (p != null) {
-                        currentBuilder.Append("<span style='color: " + p + "'>");
+                      currentBuilder.Append("<span style='color: " + p +
+                          "'>");
                       } else {
                         currentBuilder.Append("<span>");
                       }
                     } else if (lastCommand.Equals("lang")) {
                       if (SkipLang(p, 0, p.Length) == p.Length) {
-                        currentBuilder.Append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
+    currentBuilder.Append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
                                         "'> ");
                       } else {
                         currentBuilder.Append("<span>");

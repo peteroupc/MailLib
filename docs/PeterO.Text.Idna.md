@@ -20,7 +20,7 @@
 
  NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called  `NormalizationData`  and  `IdnaData`  , that include data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 
-  ### Member Summary
+### Member Summary
 * <code>[DecodeDomainName(string)](#DecodeDomainName_string)</code> - Tries to encode each XN-label of the given domain name into Unicode.
 * <code>[EncodeDomainName(string)](#EncodeDomainName_string)</code> - Tries to encode each label of a domain name with code points outside the Basic Latin range (U+0000 to U+007F) into an XN-label.
 * <code>[IsValidDomainName(string, bool)](#IsValidDomainName_string_bool)</code> - Determines whether the given string is a domain name containing only U-labels, A-labels, NR-LDH labels, or any combination of these, separated by dots (".

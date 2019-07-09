@@ -8,33 +8,30 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.MessageDataException"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.MessageDataException"]/*'/>
   public class MessageDataException : Exception {
-    /// <summary>Initializes a new instance of the <see cref='MessageDataException'/> class.</summary>
+    /// <xmlbegin id='43'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='MessageDataException'/> class.</summary>
     public MessageDataException() {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='MessageDataException'/> class.</summary>
-    /// <param name='message'>
-    /// The parameter
-    /// <paramref name='message'/>
-    /// is a text string.
-    /// </param>
+    /// <xmlbegin id='44'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='MessageDataException'/> class.</summary>
+    /// <param name='message'>The parameter <paramref name='message'/> is a
+    /// text string.</param>
     public MessageDataException(string message) : base(message) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='MessageDataException'/> class.</summary>
-    /// <param name='message'>
-    /// The parameter
-    /// <paramref name='message'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='innerException'>
-    /// The parameter
-    /// <paramref name='innerException'/>
-    /// is an Exception object.
-    /// </param>
+    /// <xmlbegin id='45'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='MessageDataException'/> class.</summary>
+    /// <param name='message'>The parameter <paramref name='message'/> is a
+    /// text string.</param>
+    /// <param name='innerException'>The parameter <paramref
+    /// name='innerException'/> is an Exception object.</param>
     public MessageDataException(string message, Exception innerException)
       : base(message, innerException) {
     }

@@ -90,9 +90,9 @@ namespace MailLibTest {
     }
 
     internal static int IsGoodAsciiMessageFormat(
-  string str,
-  bool hasMessageType,
-  string fn) {
+      string str,
+      bool hasMessageType,
+      string fn) {
       var lineLength = 0;
       var wordLength = 0;
       var index = 0;
@@ -269,9 +269,9 @@ namespace MailLibTest {
     }
 
     public static void AssertEqual(
-  byte[] expectedBytes,
-  byte[] actualBytes,
-  String msg) {
+      byte[] expectedBytes,
+      byte[] actualBytes,
+      String msg) {
       if (expectedBytes.Length != actualBytes.Length) {
         Assert.Fail("\nexpected: " + ToString(expectedBytes) + "\n" +
                     "\nwas: " + ToString(actualBytes) + "\n" + msg);
@@ -354,8 +354,8 @@ namespace MailLibTest {
     }
 
     private static void TestDecodeQuotedPrintable(
-  string input,
-  string expected) {
+      string input,
+      string expected) {
       string msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -384,7 +384,7 @@ namespace MailLibTest {
       TestBase64Decode(new byte[] { 0, 16, 1, 93 }, "ABABXX==");
       TestBase64Decode(
      new byte[] { 169, 172, 241, 179, 7, 157, 114, 247, 235 },
-          "qazxswedcvfr");
+     "qazxswedcvfr");
       TestBase64Decode(
         new byte[] { 255, 239, 254, 103 }, "/+/+Zz==");
       TestBase64Decode(
@@ -1169,8 +1169,8 @@ namespace MailLibTest {
 
     private static byte[] DowngradeDeliveryStatus(string str) {
       string msgstr =
-
-  "From: xy@x.example\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+        "From: xy@x.example\r\nMIME-Version: 1.0\r\n" +
+        "Content-Type: message/global-delivery-status\r\n"
     +
     "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
       Message msg = MessageTest.MessageFromString(msgstr);
@@ -1253,8 +1253,8 @@ namespace MailLibTest {
     }
 
     private static void TestDowngradeReceivedOne(
-    string input,
-    string expected) {
+      string input,
+      string expected) {
       var msg = new Message();
       msg.SetHeader("received", input);
       msg = new Message(DataUtilities.GetUtf8Bytes(msg.Generate(), true));
@@ -1287,11 +1287,11 @@ namespace MailLibTest {
     public void TestDowngradeDSN() {
       const string ValueHexstart = "\\x" + "{";
       TestDowngradeDSNOne(
-  "utf-8; x@x.example",
-  "utf-8; x@x.example");
+        "utf-8; x@x.example",
+        "utf-8; x@x.example");
       TestDowngradeDSNOne(
-  "utf-8; x@x" + ValueHexstart + "BE}.example",
-  "utf-8; x@x\u00be.example");
+        "utf-8; x@x" + ValueHexstart + "BE}.example",
+        "utf-8; x@x\u00be.example");
       {
         string objectTemp = "utf-8; x@x" + ValueHexstart + "BE}" +
              ValueHexstart + "FF20}.example";
@@ -1304,7 +1304,6 @@ namespace MailLibTest {
       TestDowngradeDSNOne(
   "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
   "(\u00be) rfc822; x@x.example");
-
       {
         string stringTemp =
   "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); e";
@@ -1330,8 +1329,8 @@ namespace MailLibTest {
         TestEncodedWordsOne("x", "=?utf-8*" + str + "?Q?x?=");
       } else {
         TestEncodedWordsOne(
-  "=?utf-8*" + str + "?Q?x?=",
-  "=?utf-8*" + str + "?Q?x?=");
+          "=?utf-8*" + str + "?Q?x?=",
+          "=?utf-8*" + str + "?Q?x?=");
       }
     }
 
@@ -1612,13 +1611,13 @@ namespace MailLibTest {
   " (" + input + ") en");
       TestDecodeStructured(
   ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
- " (comment (cmt " + input + ")comment) en");
+  " (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
      ValuePar + "comment " + ValuePar + "=?bad?= " + expected + ")comment) en",
-        " (comment (=?bad?= " + input + ")comment) en");
+     " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
    ValuePar + "comment " + ValuePar + String.Empty + expected + ")comment) en",
-        " (comment (" + input + ")comment) en");
+   " (comment (" + input + ")comment) en");
       TestDecodeStructured(
   "(" + expected + "()) en",
   " (" + input + "()) en");
@@ -1634,8 +1633,8 @@ namespace MailLibTest {
   "subject",
   "(tes\u00bet) x@x.example");
         Assert.AreEqual(
-  "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
-  stringTemp);
+          "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
+          stringTemp);
       }
     }
 
@@ -1647,8 +1646,8 @@ namespace MailLibTest {
                 "\"X\" <y@example.com>";
         string strparam = "x <x@example.com>, \"X\" <y@example.com>";
         object objectTemp2 = DowngradeHeaderField(
-  "to",
-  strparam);
+          "to",
+          strparam);
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
@@ -1656,8 +1655,8 @@ namespace MailLibTest {
             "=?utf-8?Q?=C2=BE?= <y@example.com>";
         string strparam = "x <x@example.com>, \u00be <y@example.com>";
         object objectTemp2 = DowngradeHeaderField(
-  "to",
-  strparam);
+          "to",
+          strparam);
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
@@ -1678,9 +1677,8 @@ namespace MailLibTest {
       }
       {
         string stringTemp = DowngradeHeaderField(
-  "to",
-  "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
-
+          "to",
+          "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
         {
           object objectTemp =
 "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
@@ -1691,9 +1689,8 @@ namespace MailLibTest {
       }
       {
         string stringTemp = DowngradeHeaderField(
-  "to",
-  "g: x@example.com" + ValueSep + "x@\u0300.example;");
-
+          "to",
+          "g: x@example.com" + ValueSep + "x@\u0300.example;");
         {
           object objectTemp =
 "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
@@ -1706,8 +1703,8 @@ namespace MailLibTest {
         string objectTemp = "g: x@example.com" + ValueSep +
             "x@xn--e-ufa.example;";
         object objectTemp2 = DowngradeHeaderField(
-  "to",
-  "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
+          "to",
+          "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
@@ -1739,8 +1736,8 @@ namespace MailLibTest {
   "sender",
   "x <x\u00e1y@example.com>");
         Assert.AreEqual(
-  "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
-  stringTemp);
+          "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
+          stringTemp);
       }
     }
 
@@ -1783,8 +1780,8 @@ namespace MailLibTest {
     }
 
     private static HeaderInfo DowngradeHeaderFieldEx(
-    string name,
-    string value) {
+      string name,
+      string value) {
       string msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.Equals("from")) {
@@ -1820,30 +1817,30 @@ namespace MailLibTest {
       "to",
       "cc",
       "bcc",
-  "disposition-notification-to",
-      "sender"
+      "disposition-notification-to",
+      "sender",
     };
     [Test]
     public void TestDowngradeAddress() {
       foreach (string valueHeader in addressHeaderFields) {
         TestDowngradeAddressOne(
   valueHeader,
- "down\u00begrade <down@example.com>",
-             "down\u00begrade",
- "down",
- "example.com");
+  "down\u00begrade <down@example.com>",
+  "down\u00begrade",
+  "down",
+  "example.com");
         TestDowngradeAddressOne(
   valueHeader,
- "downgrade <down@example.c\u00e7m>",
-             "downgrade",
- "down",
- "example.c\u00e7m");
+  "downgrade <down@example.c\u00e7m>",
+  "downgrade",
+  "down",
+  "example.c\u00e7m");
         TestDowngradeAddressOne(
   valueHeader,
- "downgrade <down@c\u00e7m.example>",
-             "downgrade",
- "down",
- "c\u00e7m.example");
+  "downgrade <down@c\u00e7m.example>",
+  "downgrade",
+  "down",
+  "c\u00e7m.example");
       }
     }
 
@@ -1889,10 +1886,10 @@ namespace MailLibTest {
       Assert.AreEqual("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
       Assert.AreEqual(
   "(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
-                    EncodeComment("(x()y)"));
+  EncodeComment("(x()y)"));
       Assert.AreEqual(
   "(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
-                    EncodeComment("(x(a\\b)y)"));
+  EncodeComment("(x(a\\b)y)"));
       {
         string stringTemp = EncodeComment("()");
         Assert.AreEqual(
@@ -1999,7 +1996,6 @@ namespace MailLibTest {
         string stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
-
         {
           object objectTemp =
             "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>";
@@ -2116,25 +2112,25 @@ namespace MailLibTest {
       TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
       TestEncodedWordsPhrase(
-  "\"=?utf-8?q?xyz?=\"",
-  "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
+        "\"=?utf-8?q?xyz?=\"",
+        "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
       TestEncodedWordsPhrase(
-  "\"=?utf-8?q?xyz?=\"",
-  "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
+        "\"=?utf-8?q?xyz?=\"",
+        "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
       TestEncodedWordsPhrase(
   "me (x) \"x:y\"",
   "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
       TestEncodedWordsPhrase(
-  "me \"x:y\"",
-  "=?utf-8?q?me?= \"x:y\"");
+        "me \"x:y\"",
+        "=?utf-8?q?me?= \"x:y\"");
       // Non-special (dollar sign) not allowed in
       // Q-encoded encoded
       // words within a phrase
       TestEncodedWordsPhrase(
-  "=?utf-8?q?$10?=",
-  "=?utf-8?q?$10?=");
+        "=?utf-8?q?$10?=",
+        "=?utf-8?q?$10?=");
     }
 
     [Test]
@@ -2160,16 +2156,16 @@ namespace MailLibTest {
       TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
-  "=?bad1?= =?bad2?= =?bad3?=",
-  "=?bad1?= =?bad2?= =?bad3?=");
+        "=?bad1?= =?bad2?= =?bad3?=",
+        "=?bad1?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
       TestEncodedWordsPhrase(
-  "\"y =?bad2?= =?bad3?=\"",
-  "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
+        "\"y =?bad2?= =?bad3?=\"",
+        "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
       TestEncodedWordsPhrase(
-  "\"=?bad1?= y =?bad3?=\"",
-  "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
+        "\"=?bad1?= y =?bad3?=\"",
+        "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
   "xy\u0020(sss)",
@@ -2182,20 +2178,20 @@ namespace MailLibTest {
   "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
    "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
-                    "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
+   "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
   "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
-                  "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
+  "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
   "=?us-ascii?q?x?=" + ValuePar + "z) y",
-                  "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+  "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
       TestEncodedWordsOne("abcde abcde", "abcde abcde");
       TestEncodedWordsOne("abcde", "abcde");
       TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
       TestEncodedWordsOne(
-  "=?utf-8?Q?abcde?=extra",
-  "=?utf-8?Q?abcde?=extra");
+        "=?utf-8?Q?abcde?=extra",
+        "=?utf-8?Q?abcde?=extra");
       TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
       TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
       TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
@@ -2208,22 +2204,22 @@ namespace MailLibTest {
       TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
       TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       TestEncodedWordsOne(
-    "=?x-undefined?q?abcde?=",
-    "=?x-undefined?q?abcde?=");
+        "=?x-undefined?q?abcde?=",
+        "=?x-undefined?q?abcde?=");
       TestEncodedWordsOne(
   "=?utf-8?Q?" + Repeat("x", 200) + "?=",
   "=?utf-8?Q?" + Repeat("x", 200) + "?=");
       TestEncodedWordsPhrase(
-   "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
-   "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+        "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
+        "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
       // Language embedded in encoded word
       TestEncodedWordsOne("x", "=?utf-8*en?Q?x?=");
       TestEncodedWordsOne("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
       TestEncodedWordsOne("x", "=?utf-8*en-us?Q?x?=");
       TestEncodedWordsOne("x", "=?utf-8*i-default?Q?x?=");
       TestEncodedWordsOne(
-    "=?utf-8*i-unknown?Q?x?=",
-    "=?utf-8*i-unknown?Q?x?=");
+        "=?utf-8*i-unknown?Q?x?=",
+        "=?utf-8*i-unknown?Q?x?=");
       TestEncodedWordsOne("=?*en?Q?x?=", "=?*en?Q?x?=");
       TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
@@ -2259,7 +2255,7 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      tmp = "<x y@x.invalid>";  // local part is not a dot-atom
+      tmp = "<x y@x.invalid>"; // local part is not a dot-atom
       try {
         msg.SetHeader("to", tmp);
         Assert.Fail("Should have failed");
@@ -2355,9 +2351,9 @@ namespace MailLibTest {
       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
       {
         byte[] objectTemp = DataUtilities.GetUtf8Bytes(
-  str,
-  true,
-  true);
+          str,
+          true,
+          true);
         TestEncodedBytesRoundTrip(objectTemp, true);
       }
     }

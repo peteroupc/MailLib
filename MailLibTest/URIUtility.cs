@@ -5,42 +5,42 @@ using System.Text;
 namespace Test {
   internal static class URIUtility {
     internal enum ParseMode {
-      IRIStrict,
+    IRIStrict,
 
-      URIStrict,
+    URIStrict,
 
-      IRILenient,
+    IRILenient,
 
-      URILenient,
+    URILenient,
 
-      IRISurrogateLenient,
+    IRISurrogateLenient,
     }
 
     private const string HexChars = "0123456789ABCDEF";
 
     private static void AppendAuthority(
-  StringBuilder builder,
-  string refValue,
-  int[] segments) {
+      StringBuilder builder,
+      string refValue,
+      int[] segments) {
       if (segments[2] >= 0) {
         builder.Append("//");
         builder.Append(
   refValue.Substring(
-  segments[2],
-  segments[3] - segments[2]));
+    segments[2],
+    segments[3] - segments[2]));
       }
     }
 
     private static void AppendFragment(
-  StringBuilder builder,
-  string refValue,
-  int[] segments) {
+      StringBuilder builder,
+      string refValue,
+      int[] segments) {
       if (segments[8] >= 0) {
         builder.Append('#');
         builder.Append(
   refValue.Substring(
-  segments[8],
-  segments[9] - segments[8]));
+    segments[8],
+    segments[9] - segments[8]));
       }
     }
 
@@ -51,42 +51,42 @@ namespace Test {
       builder.Append(
         NormalizePath(
   refValue.Substring(
-  segments[4],
-  segments[5] - segments[4])));
+    segments[4],
+    segments[5] - segments[4])));
     }
 
     private static void AppendPath(
-  StringBuilder builder,
-  string refValue,
-  int[] segments) {
+      StringBuilder builder,
+      string refValue,
+      int[] segments) {
       builder.Append(
   refValue.Substring(
-  segments[4],
-  segments[5] - segments[4]));
+    segments[4],
+    segments[5] - segments[4]));
     }
 
     private static void AppendQuery(
-  StringBuilder builder,
-  string refValue,
-  int[] segments) {
+      StringBuilder builder,
+      string refValue,
+      int[] segments) {
       if (segments[6] >= 0) {
         builder.Append('?');
         builder.Append(
   refValue.Substring(
-  segments[6],
-  segments[7] - segments[6]));
+    segments[6],
+    segments[7] - segments[6]));
       }
     }
 
     private static void AppendScheme(
-  StringBuilder builder,
-  string refValue,
-  int[] segments) {
+      StringBuilder builder,
+      string refValue,
+      int[] segments) {
       if (segments[0] >= 0) {
         builder.Append(
           refValue.Substring(
-  segments[0],
-  segments[1] - segments[0]));
+            segments[0],
+            segments[1] - segments[0]));
         builder.Append(':');
       }
     }
@@ -108,10 +108,10 @@ namespace Test {
         }
       } else {
         components = (s == null) ? null : SplitIRI(
-  s,
-  0,
-  s.Length,
-  ParseMode.IRISurrogateLenient);
+          s,
+          0,
+          s.Length,
+          ParseMode.IRISurrogateLenient);
       }
       var index = 0;
       int valueSLength = s.Length;
@@ -121,7 +121,7 @@ namespace Test {
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s[index + 1] & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s[index + 1] & 0x3ff);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
@@ -136,9 +136,9 @@ namespace Test {
               if (c <= 0xffff) {
                 builder.Append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             }
             ++index;
@@ -154,9 +154,9 @@ namespace Test {
               if (c <= 0xffff) {
                 builder.Append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             } else {
              // percent encode
@@ -166,8 +166,8 @@ namespace Test {
             if (c <= 0xffff) {
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
-              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         } else if (mode == 1 || mode == 2) {
@@ -180,9 +180,9 @@ namespace Test {
               if (c <= 0xffff) {
                 builder.Append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             } else {
              // percent encode
@@ -192,8 +192,8 @@ namespace Test {
             if (c <= 0xffff) {
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
-              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }
@@ -270,7 +270,7 @@ namespace Test {
         if ((c & 0xfc00) == 0xd800 && i + 1 < endIndex &&
             (str[i + 1] & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str[i + 1] & 0x3ff);
           ++i;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
@@ -342,9 +342,9 @@ namespace Test {
                 if (ret <= 0xffff) {
                   retString.Append((char)ret);
                 } else {
-                  retString.Append((char)((((ret - 0x10000) >> 10) &
-                        0x3ff) + 0xd800));
-                  retString.Append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
+                  retString.Append((char)((((ret - 0x10000) >> 10) & 0x3ff)|
+0xd800));
+                  retString.Append((char)(((ret - 0x10000) & 0x3ff) | 0xdc00));
                 }
                 continue;
               }
@@ -363,8 +363,8 @@ namespace Test {
             retString.Append((char)c);
           }
         } else if (c <= 0x10ffff) {
-          retString.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-          retString.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+          retString.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+          retString.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
         }
       }
       if (bytesNeeded > 0) {
@@ -380,14 +380,14 @@ namespace Test {
       if (s == null) {
         throw new ArgumentNullException(nameof(s));
       }
-      int index = 0;
+      var index = 0;
       var builder = new StringBuilder();
       while (index < s.Length) {
         int c = s[index];
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.Length &&
             (s[index + 1] & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s[index + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
@@ -504,7 +504,7 @@ namespace Test {
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s[index + 1] & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s[index + 1] & 0x3ff);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
          // error
@@ -584,7 +584,7 @@ namespace Test {
           if ((c & 0xfc00) == 0xd800 && index + 1 < s.Length &&
               (s[index + 1] & 0xfc00) == 0xdc00) {
            // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (s[index + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             c = 0xfffd;
           }
@@ -626,19 +626,19 @@ namespace Test {
     public static bool IsValidIRI(string s) {
       return ((s == null) ?
   null : SplitIRI(
-  s,
-  0,
-  s.Length,
-  ParseMode.IRIStrict)) != null;
+    s,
+    0,
+    s.Length,
+    ParseMode.IRIStrict)) != null;
     }
 
     public static bool IsValidIRI(string s, ParseMode mode) {
       return ((s == null) ?
   null : SplitIRI(
-  s,
-  0,
-  s.Length,
-  mode)) != null;
+    s,
+    0,
+    s.Length,
+    mode)) != null;
     }
 
     private const string ValueDotSlash = "." + "/";
@@ -651,8 +651,8 @@ namespace Test {
       }
       if (path.IndexOf(ValueSlashDot, StringComparison.Ordinal) < 0 &&
           path.IndexOf(
-  ValueDotSlash,
-  StringComparison.Ordinal) < 0) {
+            ValueDotSlash,
+            StringComparison.Ordinal) < 0) {
         return path;
       }
       var builder = new StringBuilder();
@@ -800,7 +800,7 @@ namespace Test {
           return -1;
         }
        // NOTE: Array is initialized to zeros
-        int[] addressParts = new int[8];
+        var addressParts = new int[8];
         int ipEndIndex = index;
         var doubleColon = false;
         var doubleColonPos = 0;
@@ -809,8 +809,9 @@ namespace Test {
         index = startIndex;
        // DebugUtility.Log(s.Substring(startIndex, ipEndIndex-startIndex));
         for (var part = 0; part < 8; ++part) {
-          if (!doubleColon && ipEndIndex - index > 1 && s[index] == ':' && s[index +
-            1] == ':') {
+          if (!doubleColon &&
+            ipEndIndex - index > 1 && s[index] == ':' &&
+            s[index + 1] == ':') {
             doubleColon = true;
             doubleColonPos = part;
             index += 2;
@@ -846,9 +847,9 @@ namespace Test {
           if (index == ipEndIndex && doubleColon) {
             break;
           }
-         // Skip single colon, but not double colon
-          if (index < ipEndIndex &&
-            (index + 1 >= ipEndIndex || s[index + 1] != ':')) {
+          // Skip single colon, but not double colon
+          if (index < ipEndIndex && (index + 1 >= ipEndIndex ||
+            s[index + 1] != ':')) {
             ++index;
           }
         }
@@ -907,17 +908,19 @@ namespace Test {
             var newAddressParts = new int[8];
             Array.Copy(addressParts, newAddressParts, doubleColonPos);
             Array.Copy(
-            addressParts,
-            doubleColonPos,
-            newAddressParts,
-            doubleColonPos + resid,
-            totalParts - doubleColonPos);
+              addressParts,
+              doubleColonPos,
+              newAddressParts,
+              doubleColonPos + resid,
+              totalParts - doubleColonPos);
             Array.Copy(newAddressParts, addressParts, 8);
           }
         } else if (totalParts != 8) {
           return -1;
         }
-       // DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}",
+
+  // DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}"
+       // ,
        // addressParts[0], addressParts[1], addressParts[2],
        // addressParts[3], addressParts[4], addressParts[5],
        // addressParts[6], addressParts[7]);
@@ -964,9 +967,9 @@ namespace Test {
     }
 
     private static string PathParent(
-  string refValue,
-  int startIndex,
-  int endIndex) {
+      string refValue,
+      int startIndex,
+      int endIndex) {
       if (startIndex > endIndex) {
         return String.Empty;
       }
@@ -1011,9 +1014,9 @@ namespace Test {
     }
 
     public static string RelativeResolve(
-  string refValue,
-  string baseURI,
-  ParseMode parseMode) {
+      string refValue,
+      string baseURI,
+      ParseMode parseMode) {
       int[] segments = (refValue == null) ? null : SplitIRI(
         refValue,
         0,
@@ -1068,9 +1071,9 @@ namespace Test {
           } else {
             merged.Append(
               PathParent(
-  baseURI,
-  segmentsBase[4],
-  segmentsBase[5]));
+                baseURI,
+                segmentsBase[4],
+                segmentsBase[5]));
             AppendPath(merged, refValue, segments);
             builder.Append(NormalizePath(merged.ToString()));
           }
@@ -1116,15 +1119,15 @@ namespace Test {
         return null;
       }
       return new string[] {
- indexes[0] < 0 ? null : ToLowerCaseAscii(
-  s.Substring(
-  indexes[0],
-  indexes[1] - indexes[0])),
- indexes[2] < 0 ? null : s.Substring(indexes[2], indexes[3] - indexes[2]),
- indexes[4] < 0 ? null : s.Substring(indexes[4], indexes[5] - indexes[4]),
- indexes[6] < 0 ? null : s.Substring(indexes[6], indexes[7] - indexes[6]),
- indexes[8] < 0 ? null : s.Substring(indexes[8], indexes[9] - indexes[8]),
-};
+        indexes[0] < 0 ? null : ToLowerCaseAscii(
+        s.Substring(
+        indexes[0],
+        indexes[1] - indexes[0])),
+        indexes[2] < 0 ? null : s.Substring(indexes[2], indexes[3] - indexes[2]),
+        indexes[4] < 0 ? null : s.Substring(indexes[4], indexes[5] - indexes[4]),
+        indexes[6] < 0 ? null : s.Substring(indexes[6], indexes[7] - indexes[6]),
+        indexes[8] < 0 ? null : s.Substring(indexes[8], indexes[9] - indexes[8]),
+      };
     }
 
     public static int[] SplitIRI(string s) {
@@ -1132,10 +1135,10 @@ namespace Test {
     }
 
     public static int[] SplitIRI(
-  string s,
-  int offset,
-  int length,
-  ParseMode parseMode) {
+      string s,
+      int offset,
+      int length,
+      ParseMode parseMode) {
       if (s == null) {
         return null;
       }
@@ -1220,7 +1223,7 @@ namespace Test {
           if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
               (s[index + 1] & 0xfc00) == 0xdc00) {
            // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (s[index + 1] & 0x3ff);
             ++index;
           } else if ((c & 0xf800) == 0xd800) {
             if (parseMode == ParseMode.IRISurrogateLenient) {
@@ -1321,7 +1324,7 @@ namespace Test {
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s[index + 1] & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s[index + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s[index + 1] & 0x3ff);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
          // error
@@ -1400,8 +1403,8 @@ namespace Test {
       }
       if (path.IndexOf(ValueSlashDot, StringComparison.Ordinal) < 0 &&
               path.IndexOf(
-      ValueDotSlash,
-      StringComparison.Ordinal) < 0) {
+                ValueDotSlash,
+                StringComparison.Ordinal) < 0) {
         return false;
       }
       var index = 0;
@@ -1484,8 +1487,8 @@ namespace Test {
     }
 
     public static string RelativeResolveWithinBaseURI(
-     string refValue,
-     string absoluteBaseURI) {
+      string refValue,
+      string absoluteBaseURI) {
       string rel = RelativeResolve(refValue, absoluteBaseURI);
       if (rel == null) {
         return null;

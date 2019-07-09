@@ -11,33 +11,30 @@ namespace PeterO.Text {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Text.Normalizer"]/*'/>
   [Obsolete(
-  "Use NormalizerInput instead; that class is much more flexible than Normalizer.")]
+    "Use NormalizerInput instead; that class is much more flexible than " +
+    "Normalizer.")]
   public sealed class Normalizer {
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
     public static string Normalize(string str, Normalization form) {
       return NormalizerInput.Normalize(str, form);
     }
 
     private readonly NormalizerInput nci;
 
-    /// <summary>Initializes a new instance of the <see cref='Normalizer'/> class.</summary>
-    /// <param name='str'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
+    /// <xmlbegin id='58'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='Normalizer'/> class.</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
     public Normalizer(string str, Normalization form) {
       this.nci = new NormalizerInput(str, form);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Normalizer.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.Normalizer.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(string str, Normalization form) {
       return NormalizerInput.IsNormalized(str, form);
     }
@@ -49,7 +46,7 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Normalizer.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.Normalizer.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);
     }

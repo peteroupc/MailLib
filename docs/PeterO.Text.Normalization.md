@@ -6,7 +6,9 @@
         System.IComparable,
         System.IConvertible
 
- Represents a Unicode normalization form.  ### Member Summary
+ Represents a Unicode normalization form.
+
+### Member Summary
 * <code>[public static PeterO.Text.Normalization NFC = 0;](#NFC)</code> - Normalization form C: canonical decomposition followed by canonical composition.
 * <code>[public static PeterO.Text.Normalization NFD = 1;](#NFD)</code> - Normalization form D: canonical decomposition.
 * <code>[public static PeterO.Text.Normalization NFKC = 2;](#NFKC)</code> - Normalization form KC: compatibility decomposition followed by canonical composition.

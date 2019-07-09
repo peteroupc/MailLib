@@ -2,7 +2,7 @@ package com.upokecenter.mail;
 
     /**
      * Stores an arbitrary string and a "quality value" for that string. For
-     * instance, the string can be a language tag, and the "quality value"
+     *  instance, the string can be a language tag, and the "quality value"
      * can be the degree of preference for that language.
      */
     public final class StringAndQuality {

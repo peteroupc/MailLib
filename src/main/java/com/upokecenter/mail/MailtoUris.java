@@ -201,8 +201,9 @@ private MailtoUris() {
               String decoded = Message.DecodeHeaderValue(name, value);
               msg.AddHeader(name, decoded);
             } else if (name.equals("subject") ||
-              name.equals("cc") || name.equals("bcc") ||
-              name.equals("in-reply-to")) {
+name.equals("cc") ||
+name.equals("bcc") ||
+name.equals("in-reply-to")) {
               String decoded = Message.DecodeHeaderValue(name, value);
               msg.SetHeader(name, decoded);
             } else if (name.equals("to")) {

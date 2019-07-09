@@ -11,9 +11,9 @@ private DictUtility() {
       if (dicts == null) {
         throw new NullPointerException("dicts");
       }
-       List<Map<String, String>> list =
+      List<Map<String, String>> list =
         new ArrayList<Map<String, String>>();
-       for (Map<String, String> dict : dicts) {
+        for (Map<String, String> dict : dicts) {
           list.add(dict);
        }
        return list;

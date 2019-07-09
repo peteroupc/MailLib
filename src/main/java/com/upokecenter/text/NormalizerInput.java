@@ -11,26 +11,26 @@ package com.upokecenter.text;
      * <p>A character input class that implements the Unicode normalization
      * algorithm and contains methods and functionality to test and convert
      * text strings for normalization. This is similar to the deprecated
-     * Normalizer class, except it implements the ICharacterInput interface.
-     * </p> <p>The Unicode Standard includes characters, such as an acute
-     * accent, that can be combined with other characters to make new
-     * characters. For example, the letter E combines with an acute accent
-     * to make E-acute (É). In some cases, the combined form (E-acute)
-     * should be treated as equivalent to the uncombined form (E plus
-     * acute). For this reason, the standard defines four <i> normalization
-     * forms </i> that convert strings to a single equivalent form: </p>
-     * <ul> <li><b>NFD</b> (Normalization Form D) decomposes combined forms
-     * to their constituent characters (E plus acute, for example), then
-     * reorders combining marks to a standardized order. This is called
-     * canonical decomposition. </li> <li><b>NFC</b> does canonical
-     * decomposition, then combines certain constituent characters to their
-     * composites (E-acute, for example). This is called canonical
-     * composition. </li> <li>Two normalization forms, <b>NFKC</b> and
-     * <b>NFKD</b> , are similar to NFC and NFD, except they also
-     * "decompose" certain characters, such as ligatures, font or positional
-     * variants, and subscripts, whose visual distinction can matter in some
-     * contexts. This is called compatibility decomposition. </li> </ul>
-     * <p>For more information, see Standard Annex 15 at
+     * Normalizer class, except it implements the ICharacterInput
+     * interface. </p> <p>The Unicode Standard includes characters, such as
+     * an acute accent, that can be combined with other characters to make
+     * new characters. For example, the letter E combines with an acute
+     * accent to make E-acute (É). In some cases, the combined form
+     * (E-acute) should be treated as equivalent to the uncombined form (E
+     * plus acute). For this reason, the standard defines four <i>
+     * normalization forms </i> that convert strings to a single equivalent
+     * form: </p> <ul> <li><b>NFD</b> (Normalization Form D) decomposes
+     * combined forms to their constituent characters (E plus acute, for
+     * example), then reorders combining marks to a standardized order.
+     * This is called canonical decomposition. </li> <li><b>NFC</b> does
+     * canonical decomposition, then combines certain constituent
+     * characters to their composites (E-acute, for example). This is
+     * called canonical composition. </li> <li>Two normalization forms,
+     * <b>NFKC</b> and <b>NFKD</b> , are similar to NFC and NFD, except
+     *  they also "decompose" certain characters, such as ligatures, font or
+     * positional variants, and subscripts, whose visual distinction can
+     * matter in some contexts. This is called compatibility decomposition.
+     * </li> </ul> <p>For more information, see Standard Annex 15 at
      * <code>http://www.unicode.org/reports/tr15/</code> . </p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
@@ -39,49 +39,51 @@ package com.upokecenter.text;
      * While this class's source code is in the public domain, the class
      * uses an class, called NormalizationData, that includes data
      * derived from the Unicode Character Database. In case doing so is
-     * required, the permission notice for the Unicode Character Database is
-     * given here: </p> <p>COPYRIGHT AND PERMISSION NOTICE </p> <p>Copyright
-     * (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under
-     * the Terms of Use in http://www.unicode.org/copyright.html. </p>
-     * <p>Permission is hereby granted, free of charge, to any person
-     * obtaining a copy of the Unicode data files and any associated
-     * documentation (the "Data Files") or Unicode software and any
-     * associated documentation (the "Software") to deal in the Data Files
-     * or Software without restriction, including without limitation the
-     * rights to use, copy, modify, merge, publish, distribute, and/or sell
-     * copies of the Data Files or Software, and to permit persons to whom
-     * the Data Files or Software are furnished to do so, provided that (a)
-     * this copyright and permission notice appear with all copies of the
-     * Data Files or Software, (b) this copyright and permission notice
-     * appear in associated documentation, and (c) there is clear notice in
-     * each modified Data File or in the Software as well as in the
+     * required, the permission notice for the Unicode Character Database
+     * is given here: </p> <p>COPYRIGHT AND PERMISSION NOTICE </p>
+     * <p>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
+     * Distributed under the Terms of Use in
+     * http://www.unicode.org/copyright.html. </p> <p>Permission is hereby
+     * granted, free of charge, to any person obtaining a copy of the
+     *  Unicode data files and any associated documentation (the "Data
+     *  Files") or Unicode software and any associated documentation (the
+     *  "Software") to deal in the Data Files or Software without
+     * restriction, including without limitation the rights to use, copy,
+     * modify, merge, publish, distribute, and/or sell copies of the Data
+     * Files or Software, and to permit persons to whom the Data Files or
+     * Software are furnished to do so, provided that (a) this copyright
+     * and permission notice appear with all copies of the Data Files or
+     * Software, (b) this copyright and permission notice appear in
+     * associated documentation, and (c) there is clear notice in each
+     * modified Data File or in the Software as well as in the
      * documentation associated with the Data File(s) or Software that the
      * data or software has been modified. </p> <p>THE DATA FILES AND
-     * SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+     *  SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
      * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-     * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
-     * OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-     * HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY
-     * SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
-     * RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
-     * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-     * CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
-     * </p> <p>Except as contained in this notice, the name of a copyright
-     * holder shall not be used in advertising or otherwise to promote the
-     * sale, use or other dealings in these Data Files or Software without
-     * prior written authorization of the copyright holder. </p>
+     * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+     * NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE
+     * COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR
+     * ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY
+     * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+     * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+     * ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+     * OF THE DATA FILES OR SOFTWARE. </p> <p>Except as contained in this
+     * notice, the name of a copyright holder shall not be used in
+     * advertising or otherwise to promote the sale, use or other dealings
+     * in these Data Files or Software without prior written authorization
+     * of the copyright holder. </p>
      */
   public final class NormalizerInput implements ICharacterInput {
     static int DecompToBufferInternal(
-  int ch,
-  boolean compat,
-  int[] buffer,
-  int index) {
+      int ch,
+      boolean compat,
+      int[] buffer,
+      int index) {
       int offset = UnicodeDatabase.GetDecomposition(
-      ch,
-      compat,
-      buffer,
-      index);
+        ch,
+        compat,
+        buffer,
+        index);
       if (buffer[index] != ch) {
         int[] copy = new int[offset - index];
         System.arraycopy(buffer, index, copy, 0, copy.length);
@@ -97,10 +99,10 @@ package com.upokecenter.text;
    }
 
     static int DecompToBuffer(
-  int ch,
-  boolean compat,
-  int[] buffer,
-  int index) {
+      int ch,
+      boolean compat,
+      int[] buffer,
+      int index) {
       if (ch >= 0xac00 && ch < 0xac00 + 11172) {
         // Hangul syllable
         int syllable = ch - 0xac00;
@@ -252,10 +254,10 @@ package com.upokecenter.text;
      * @param form The parameter {@code form} is a Normalization object.
      */
     public NormalizerInput(
-  String str,
-  int index,
-  int length,
-  Normalization form) {
+      String str,
+      int index,
+      int length,
+      Normalization form) {
  this(
   new StringCharacterInput2(str, index, length),
   form);
@@ -274,11 +276,11 @@ package com.upokecenter.text;
      * Initializes a new instance of the {@link NormalizerInput} class.
      * @param stream The parameter {@code stream} is an ICharacterInput object.
      * @param form The parameter {@code form} is a Normalization object.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws NullPointerException The parameter {@code stream} is null.
      */
     public NormalizerInput(
-   ICharacterInput stream,
-   Normalization form) {
+      ICharacterInput stream,
+      Normalization form) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -295,12 +297,12 @@ package com.upokecenter.text;
      * Determines whether the text provided by a character input is normalized.
      * @param chars A object that implements a streamable character input.
      * @param form Specifies the normalization form to check.
-     * @return {@code true} if the text is normalized; otherwise, {@code false} .
-     * @throws java.lang.NullPointerException The parameter {@code chars} is null.
+     * @return {@code true} if the text is normalized; otherwise, {@code false}.
+     * @throws NullPointerException The parameter {@code chars} is null.
      */
     public static boolean IsNormalized(
-  ICharacterInput chars,
-  Normalization form) {
+      ICharacterInput chars,
+      Normalization form) {
       if (chars == null) {
         throw new NullPointerException("chars");
       }
@@ -323,10 +325,10 @@ UnicodeDatabase.IsQuickCheckStarter(
         if (isQcs) {
           if (haveNonQcs) {
             if (!NormalizeAndCheck(
-             array,
-             0,
-             listIndex,
-             form)) {
+              array,
+              0,
+              listIndex,
+              form)) {
               return false;
             }
           }
@@ -344,10 +346,10 @@ UnicodeDatabase.IsQuickCheckStarter(
       }
       if (haveNonQcs) {
         if (!NormalizeAndCheck(
-                    array,
-                    0,
-                    listIndex,
-                    form)) {
+          array,
+          0,
+          listIndex,
+          form)) {
           return false;
         }
       }
@@ -355,10 +357,10 @@ UnicodeDatabase.IsQuickCheckStarter(
     }
 
     private static boolean NormalizeAndCheck(
-  int[] charArray,
-  int start,
-  int length,
-  Normalization form) {
+      int[] charArray,
+      int start,
+      int length,
+      Normalization form) {
       int i = 0;
       int ch;
       NormalizerInput input = new NormalizerInput(
@@ -383,7 +385,7 @@ UnicodeDatabase.IsQuickCheckStarter(
      * @return The parameter {@code str} converted to the given normalization form.
      * @throws IllegalArgumentException The parameter {@code str} contains an
      * unpaired surrogate code point.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String Normalize(String str, Normalization form) {
       if (str == null) {
@@ -403,9 +405,9 @@ UnicodeDatabase.IsQuickCheckStarter(
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return {@code true} if the given string is in the given Unicode
-     * normalization form; otherwise, {@code false} . Returns {@code false}
+     * normalization form; otherwise, {@code false}. Returns {@code false}
      * if the string contains an unpaired surrogate code point.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static boolean IsNormalized(String str, Normalization form) {
       if (str == null) {
@@ -420,7 +422,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
             (str.charAt(i + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(i + 1) & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           return false;
@@ -443,10 +445,10 @@ UnicodeDatabase.IsQuickCheckStarter(
         if (isQcs) {
           if (haveNonQcs) {
             if (!NormalizeAndCheckString(
-            str,
-            lastQcsIndex,
-            i - lastQcsIndex,
-            form)) {
+              str,
+              lastQcsIndex,
+              i - lastQcsIndex,
+              form)) {
               return false;
             }
           }
@@ -463,10 +465,10 @@ UnicodeDatabase.IsQuickCheckStarter(
       }
       if (haveNonQcs) {
         if (!NormalizeAndCheckString(
-    str,
-    lastQcsIndex,
-    str.length() - lastQcsIndex,
-    form)) {
+          str,
+          lastQcsIndex,
+          str.length() - lastQcsIndex,
+          form)) {
           return false;
         }
       }
@@ -480,10 +482,10 @@ UnicodeDatabase.IsQuickCheckStarter(
       Normalization form) {
       int i = start;
       NormalizerInput norm = new NormalizerInput(
-     charString,
-     start,
-     length,
-     form);
+        charString,
+        start,
+        length,
+        form);
       int ch = 0;
       int endIndex = start + length;
       while ((ch = norm.ReadChar()) >= 0) {
@@ -491,7 +493,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         if ((c & 0x1ffc00) == 0xd800 && i + 1 < endIndex &&
             (charString.charAt(i + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (charString.charAt(i + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (charString.charAt(i + 1) & 0x3ff);
           ++i;
         } else if ((c & 0x1ff800) == 0xd800) {
           // unpaired surrogate
@@ -587,10 +589,10 @@ UnicodeDatabase.IsQuickCheckStarter(
      * (but not more than {@code chars} 's length).
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
-     * @throws java.lang.NullPointerException The parameter {@code chars} is null.
+     * @throws NullPointerException The parameter {@code chars} is null.
      * @throws IllegalArgumentException Either {@code index} or {@code length} is
-     * less than 0 or greater than {@code chars} 's length, or {@code chars}
-     * ' s length minus {@code index} is less than {@code length} .
+     * less than 0 or greater than {@code chars} 's length, or {@code
+     * chars} ' s length minus {@code index} is less than {@code length}.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
@@ -662,8 +664,8 @@ UnicodeDatabase.IsQuickCheckStarter(
       }
       do {
         count = Math.min(
-   this.processedIndex - this.flushIndex,
-   length - total);
+          this.processedIndex - this.flushIndex,
+          length - total);
         if (count < 0) {
           count = 0;
         }
@@ -725,11 +727,11 @@ UnicodeDatabase.IsQuickCheckStarter(
             // the buffer
 
             System.arraycopy(
-  this.buffer,
-  this.lastQcsIndex,
-  this.buffer,
-  0,
-  this.buffer.length - this.lastQcsIndex);
+              this.buffer,
+              this.lastQcsIndex,
+              this.buffer,
+              0,
+              this.buffer.length - this.lastQcsIndex);
             // System.out.println("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastQcsIndex;
             this.lastQcsIndex = 0;
@@ -767,10 +769,10 @@ UnicodeDatabase.IsQuickCheckStarter(
           }
 
           this.endIndex = DecompToBuffer(
-  c,
-  this.compatMode,
-  this.buffer,
-  this.endIndex);
+            c,
+            this.compatMode,
+            this.buffer,
+            this.endIndex);
         }
         // Check for the last quick-check starter if the
         // end of the String is not reached yet
@@ -782,8 +784,8 @@ UnicodeDatabase.IsQuickCheckStarter(
           for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
             if (
   UnicodeDatabase.IsQuickCheckStarter(
-  this.buffer[i],
-  this.form)) {
+    this.buffer[i],
+    this.form)) {
               // DebugUtility.Log ("" + (EC (buffer [i])) + " is qcs");
               if (decompForm) {
                 this.lastQcsIndex = i;
@@ -791,8 +793,8 @@ UnicodeDatabase.IsQuickCheckStarter(
                 break;
               } else if (i + 1 < this.endIndex && (nextIsQCS ||
          UnicodeDatabase.IsQuickCheckStarter(
-  this.buffer[i + 1],
-  this.form))) {
+           this.buffer[i + 1],
+           this.form))) {
                 // DebugUtility.Log ("" + (EC (buffer [i +
                 // 1])) + " (next) is qcs");
                 this.lastQcsIndex = i;
@@ -836,8 +838,8 @@ UnicodeDatabase.IsQuickCheckStarter(
         // DebugUtility.Log ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");
         this.processedIndex = ComposeBuffer(
-  this.buffer,
-  this.lastQcsIndex);
+          this.buffer,
+          this.lastQcsIndex);
       } else {
         this.processedIndex = this.lastQcsIndex;
       }
@@ -927,8 +929,8 @@ UnicodeDatabase.IsQuickCheckStarter(
       this.str.charAt(this.index + 1) >= 0xdc00 && this.str.charAt(this.index + 1) <=
               0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (this.str.charAt(this.index + 1) -
-              0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (this.str.charAt(this.index + 1) &
+0x3ff);
           ++this.index;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate, return

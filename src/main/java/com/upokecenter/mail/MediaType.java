@@ -13,24 +13,24 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
-  /**
-   * <p>Specifies what kind of data a message body is. </p> <p>A media type
-   * consists of a top-level type (the general category of the data), a
-   * subtype (the specific type), and an optional list of parameters. For
-   * example, the media type <code>text/plain; charset = utf-8</code> is a text
-   * media type ("text"), namely, a plain text type ("plain"), and the
-   * parameters say that the data uses UTF-8, a Unicode character encoding
-   * ("charset = utf-8"). Other top-level types include "audio", "video",
-   * and "application". </p> <p>A media type is sometimes known as a "MIME
-   * type", for Multipurpose Internet Mail Extensions, the standard that
-   * introduced media types. </p> <p>This type is immutable, meaning its
-   * values can't be changed once it' s created. To create a changeable
-   * media type object, use the MediaTypeBuilder class. </p> <p><b>Note:</b>
-   * According to RFC 2049, unrecognized subtypes of the top-level type
-   * <code>multipart</code> must be treated as <code>multipart/mixed</code> and
-   * unrecognized media types as the media type
-   * <code>application/octet-stream</code> . </p>
-   */
+    /**
+     * <p>Specifies what kind of data a message body is. </p> <p>A media type
+     * consists of a top-level type (the general category of the data), a
+     * subtype (the specific type), and an optional list of parameters. For
+     * example, the media type <code>text/plain; charset = utf-8</code> is a text
+     *  media type ("text"), namely, a plain text type ("plain"), and the
+     * parameters say that the data uses UTF-8, a Unicode character
+     *  encoding ("charset = utf-8"). Other top-level types include "audio",
+     *  "video", and "application". </p> <p>A media type is sometimes known
+     *  as a "MIME type", for Multipurpose Internet Mail Extensions, the
+     * standard that introduced media types. </p> <p>This type is
+     * immutable, meaning its values can't be changed once it' s created.
+     * To create a changeable media type object, use the MediaTypeBuilder
+     * class. </p> <p><b>Note:</b> According to RFC 2049, unrecognized
+     * subtypes of the top-level type <code>multipart</code> must be treated as
+     * <code>multipart/mixed</code> and unrecognized media types as the media
+     * type <code>application/octet-stream</code> . </p>
+     */
   public final class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -45,20 +45,19 @@ import com.upokecenter.text.*;
 
     /**
      * Gets the name of this media type's top-level type (such as "text" in
-     * "text/plain", or "audio" in "audio/basic"). The resulting string will
-     * be in lowercase letters.
+     *  "text/plain", or "audio" in "audio/basic"). The resulting string
+     * will be in lowercase letters.
      * @return The name of this media type's top-level type (such as "text" or
-     * "audio" .
+     *  "audio" .
      */
     public final String getTopLevelType() {
         return this.topLevelType;
       }
 
     /**
-     * Determines whether this object and another object are equal.
-     * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false} .
+     *
+     * @param obj Not documented yet.
+     * @return A Boolean object.
      */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
@@ -80,13 +79,13 @@ import com.upokecenter.text.*;
       if (this.topLevelType != null) {
         for (int i = 0; i < this.topLevelType.length(); ++i) {
           valueHashCode = (valueHashCode + (632580563 *
-                      this.topLevelType.charAt(i)));
+                    this.topLevelType.charAt(i)));
         }
       }
       if (this.subType != null) {
         for (int i = 0; i < this.subType.length(); ++i) {
           valueHashCode = (valueHashCode + (632580563 *
-                      this.subType.charAt(i)));
+                    this.subType.charAt(i)));
         }
       }
       if (this.parameters != null) {
@@ -109,7 +108,7 @@ import com.upokecenter.text.*;
     /**
      * Gets a value indicating whether this is a text media type ("text/&#x2a;").
      * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false} .
+     * false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -118,7 +117,7 @@ import com.upokecenter.text.*;
     /**
      * Gets a value indicating whether this is a multipart media type.
      * @return {@code true} If this is a multipart media type; otherwise, . {@code
-     * false} .
+     * false}.
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
@@ -148,14 +147,14 @@ import com.upokecenter.text.*;
       }
 
     enum QuotedStringRule {
-      /**
-       * Use HTTP rules for quoted strings.
-       */
+    /**
+     * Use HTTP rules for quoted strings.
+     */
       Http,
 
-      /**
-       * Use Internet Message Format rules for quoted strings.
-       */
+    /**
+     * Use Internet Message Format rules for quoted strings.
+     */
       Rfc5322,
     }
 
@@ -240,10 +239,10 @@ import com.upokecenter.text.*;
 
     // quoted-String (RFC5322 sec. 3.2.4)
     static int SkipQuotedString(
-  String s,
-  int index,
-  int endIndex,
-  StringBuilder builder) {
+      String s,
+      int index,
+      int endIndex,
+      StringBuilder builder) {
       return SkipQuotedString(
         s,
         index,
@@ -253,10 +252,10 @@ import com.upokecenter.text.*;
     }
 
     private static int ParseFWSLax(
-  String str,
-  int index,
-  int endIndex,
-  StringBuilder sb) {
+      String str,
+      int index,
+      int endIndex,
+      StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -277,11 +276,11 @@ import com.upokecenter.text.*;
     }
 
     private static int SkipQuotedString(
-  String str,
-  int index,
-  int endIndex,
-  StringBuilder builder, // receives the unescaped version of the String
-  QuotedStringRule rule) {
+      String str,
+      int index,
+      int endIndex,
+      StringBuilder builder, // receives the unescaped version of the String
+      QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.length();
       index = (rule != QuotedStringRule.Rfc5322) ? index :
@@ -361,10 +360,10 @@ import com.upokecenter.text.*;
     }
 
     private static int EncodeContinuation(
-  String str,
-  int startPos,
-  HeaderEncoder sa,
-  boolean uriSafe) {
+      String str,
+      int startPos,
+      HeaderEncoder sa,
+      boolean uriSafe) {
       int column = sa.GetColumn();
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
@@ -376,7 +375,7 @@ import com.upokecenter.text.*;
         int contin = (index == 0) ? 7 : 0;
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
             (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(index + 1) & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
@@ -430,10 +429,10 @@ import com.upokecenter.text.*;
     }
 
     private static void AppendComplexParamValue(
-  String name,
-  String str,
-  HeaderEncoder sa,
-  boolean uriSafe) {
+      String name,
+      String str,
+      HeaderEncoder sa,
+      boolean uriSafe) {
       int column = sa.GetColumn();
       // Check if parameter is short enough for the column that
       // no continuations are needed
@@ -458,10 +457,10 @@ import com.upokecenter.text.*;
     }
 
     private static boolean AppendSimpleParamValue(
-  String name,
-  String str,
-  HeaderEncoder sa,
-  boolean uriSafe) {
+      String name,
+      String str,
+      HeaderEncoder sa,
+      boolean uriSafe) {
       if (str.length() == 0) {
         if (uriSafe) {
           sa.AppendSymbol(name + "*");
@@ -540,9 +539,9 @@ import com.upokecenter.text.*;
     /**
      * Converts this media type to a text string form suitable for inserting in
      * email headers. Notably, the string contains the value of a
-     * Content-Type header field (without the text necessarily starting with
-     * "Content-Type" followed by a space), and consists of one or more
-     * lines.
+     * Content-Type header field (without the text necessarily starting
+     *  with "Content-Type" followed by a space), and consists of one or
+     * more lines.
      * @return A text string form of this media type.
      */
     @Override public String toString() {
@@ -555,11 +554,8 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Converts this media type to a text string form suitable for inserting in
-     * HTTP headers. Notably, the string contains the value of a
-     * Content-Type header field (without the text necessarily starting with
-     * "Content-Type" followed by a space), and consists of a single line.
-     * @return A text string form of this media type.
+     *
+     * @return A string object.
      */
     public String ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
@@ -571,11 +567,11 @@ import com.upokecenter.text.*;
 
     /**
      * Converts this media type to a text string form suitable for data URIs.
-     * Notably, the string contains the value of a Content-Type header field
-     * (without the text necessarily starting with "Content-Type" followed
-     * by a space), consists of a single line, and uses percent-encoding as
-     * necessary or convenient so that the resulting string can validly
-     * appear in a URI path.
+     * Notably, the string contains the value of a Content-Type header
+     *  field (without the text necessarily starting with "Content-Type"
+     * followed by a space), consists of a single line, and uses
+     * percent-encoding as necessary or convenient so that the resulting
+     * string can validly appear in a URI path.
      * @return A text string form of this media type.
      */
     public String ToUriSafeString() {
@@ -587,11 +583,11 @@ import com.upokecenter.text.*;
     }
 
     static int SkipMimeToken(
-  String str,
-  int index,
-  int endIndex,
-  StringBuilder builder,
-  boolean httpRules) {
+      String str,
+      int index,
+      int endIndex,
+      StringBuilder builder,
+      boolean httpRules) {
       int i = index;
       String ValueSpecials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
@@ -678,10 +674,10 @@ import com.upokecenter.text.*;
     }
 
     static int SkipMimeTypeSubtype(
-  String str,
-  int index,
-  int endIndex,
-  StringBuilder builder) {
+      String str,
+      int index,
+      int endIndex,
+      StringBuilder builder) {
       int i = index;
       int count = 0;
       String specials = "!#$&-^_.+";
@@ -775,10 +771,10 @@ import com.upokecenter.text.*;
      * @return If the "charset" parameter is present and non-empty, returns the
      * result of the Encodings.ResolveAliasForEmail method for that
      * parameter, except that result's basic upper-case letters A to Z
-     * (U+0041 to U+005A) are converted to lower case. If the "charset"
+     *  (U+0041 to U+005A) are converted to lower case. If the "charset"
      * parameter is absent or empty, returns the default value, if any, for
-     * that parameter given the media type (e.g., "us-ascii" if the media
-     * type is "text/plain"; see RFC2046), or the empty string if there is
+     *  that parameter given the media type (e.g., "us-ascii" if the media
+     *  type is "text/plain"; see RFC2046), or the empty string if there is
      * none.
      */
 
@@ -943,14 +939,14 @@ import com.upokecenter.text.*;
 
     /**
      * Gets the value of a parameter in this media type, such as "charset" or
-     * "format".
+     *  "format".
      * @param name Name of the parameter to get. The name is compared using a basic
      * case-insensitive comparison. (Two strings are equal in such a
      * comparison, if they match after converting the basic upper-case
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @return The value of the parameter as a string, or null if the parameter
      * doesn't exist.
-     * @throws java.lang.NullPointerException The parameter {@code name} is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException Name is empty.
      */
     public String GetParameter(String name) {
@@ -1028,8 +1024,8 @@ import com.upokecenter.text.*;
     }
 
     private static String DecodeRfc2231Encoding(
-    String value,
-    ICharacterEncoding charset) {
+      String value,
+      ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
@@ -1096,8 +1092,8 @@ import com.upokecenter.text.*;
             if (parameters.containsKey(continEncoded)) {
               // Encoded continuation (checked first)
               String newEnc = DecodeRfc2231Encoding(
-             parameters.get(continEncoded),
-             charsetUsed);
+                parameters.get(continEncoded),
+                charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 break;
@@ -1133,10 +1129,10 @@ import com.upokecenter.text.*;
 
     /**
      * Gets the top level type and subtype of this media type, separated by a
-     * slash; for example, "text/plain". The resulting string will be in
+     *  slash; for example, "text/plain". The resulting string will be in
      * lowercase letters.
      * @return The top level type and subtype of this media type, separated by a
-     * slash; for example, "text/plain".
+     *  slash; for example, "text/plain".
      */
     public final String getTypeAndSubType() {
         return this.getTopLevelType() + "/" + this.getSubType();
@@ -1180,10 +1176,10 @@ import com.upokecenter.text.*;
         ++index;
         index = httpRules ? SkipOws(str, index, endIndex) :
               HeaderParser.ParseCFWS(
-      str,
-      index,
-      endIndex,
-      null);
+                str,
+                index,
+                endIndex,
+                null);
         StringBuilder builder = new StringBuilder();
         // NOTE:
         // 1. RFC6838 restricts the format of parameter names to the same
@@ -1231,10 +1227,10 @@ import com.upokecenter.text.*;
         if (!httpRules) {
           // See note above on whitespace around the equal sign
           index = HeaderParser.ParseCFWS(
-  str,
-  index,
-  endIndex,
-  null);
+            str,
+            index,
+            endIndex,
+            null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -1314,21 +1310,21 @@ import com.upokecenter.text.*;
       }
       index = i2;
       return ParseParameters(
-  str,
-  index,
-  endIndex,
-  HttpRules,
-  parameters) ? new MediaType(topLevelType, subType, parameters) : null;
+        str,
+        index,
+        endIndex,
+        HttpRules,
+        parameters) ? new MediaType(topLevelType, subType, parameters) : null;
     }
 
     /**
      * Specifies the media type "text/plain" and the "charset" parameter
-     * "US-ASCII", used for plain text data.
+     *  "US-ASCII", used for plain text data.
      */
     public static final MediaType TextPlainAscii =
       new MediaTypeBuilder(
-  "text",
-  "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
         "charset",
         "us-ascii").ToMediaType();
 
@@ -1339,8 +1335,8 @@ import com.upokecenter.text.*;
      */
     public static final MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
-  "text",
-  "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
         "charset",
         "utf-8").ToMediaType();
 
@@ -1364,12 +1360,9 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Parses a media type string and returns a media type object. For further
-     * information, see the overload taking a MediaType parameter.
-     * @param mediaTypeValue A text string representing a media type. This media
-     * type can include parameters.
-     * @return A media type object, or MediaType.TextPlainAscii if {@code
-     * mediaTypeValue} is empty or syntactically invalid.
+     *
+     * @param mediaTypeValue Not documented yet.
+     * @return A MediaType object.
      */
     public static MediaType Parse(String mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
@@ -1381,20 +1374,21 @@ import com.upokecenter.text.*;
      * validity of the string, but not whether it has all parameters it's
      * required to have or whether the parameters themselves are set to
      * valid values for the parameter. <p>This method assumes the given
-     * media type string was directly extracted from the Content-Type header
-     * field (as defined for email messages) and follows the syntax given in
-     * RFC 2045. Accordingly, among other things, the media type string can
-     * contain comments (delimited by parentheses). </p> <p>RFC 2231
-     * extensions allow each media type parameter to be associated with a
-     * character encoding and/or language, and support parameter values that
-     * span two or more key-value pairs. Parameters making use of RFC 2231
-     * extensions have names with an asterisk ("&#x2a;"). Such a parameter
-     * will be ignored if it is ill-formed because of RFC 2231's rules
-     * (except for illegal percent-decoding or undecodable sequences for the
-     * given character encoding). Examples of RFC 2231 extensions follow
-     * (both examples encode the same "filename" parameter): </p>
-     * <p><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </p>
-     * <p><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
+     * media type string was directly extracted from the Content-Type
+     * header field (as defined for email messages) and follows the syntax
+     * given in RFC 2045. Accordingly, among other things, the media type
+     * string can contain comments (delimited by parentheses). </p> <p>RFC
+     * 2231 extensions allow each media type parameter to be associated
+     * with a character encoding and/or language, and support parameter
+     * values that span two or more key-value pairs. Parameters making use
+     *  of RFC 2231 extensions have names with an asterisk ("&#x2a;"). Such
+     * a parameter will be ignored if it is ill-formed because of RFC
+     * 2231's rules (except for illegal percent-decoding or undecodable
+     * sequences for the given character encoding). Examples of RFC 2231
+     *  extensions follow (both examples encode the same "filename"
+     * parameter): </p> <p><b>text/example;
+     * filename&#x2a;=utf-8'en'filename.txt</b> </p> <p><b>text/example;
+     * filename&#x2a;0&#x2a;=utf-8'en'file;
      * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
      * ignores keys (in parameter key-value pairs) that appear more than
      * once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
@@ -1405,7 +1399,7 @@ import com.upokecenter.text.*;
      * @param defaultValue The media type to return if the string is syntactically
      * invalid. Can be null.
      * @return A MediaType object.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static MediaType Parse(String str, MediaType defaultValue) {
       if (str == null) {

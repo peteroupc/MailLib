@@ -57,9 +57,9 @@ private MakeFilenameMethod() {
     }
 
     private static String DecodeEncodedWordsLenient(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       int state = 0;
       int markStart = 0;
       int wordStart = 0;
@@ -145,8 +145,8 @@ private MakeFilenameMethod() {
             if (str.charAt(index) == '?' && index + 1 < endIndex &&
             str.charAt(index + 1) == '=') {
               String charset = str.substring(
-           charsetStart, (
-           charsetStart)+(charsetEnd - charsetStart));
+                charsetStart, (
+                charsetStart)+(charsetEnd - charsetStart));
               String data = str.substring(dataStart, (dataStart)+(index - dataStart));
               index += 2;
               int endData = index;
@@ -166,12 +166,12 @@ private MakeFilenameMethod() {
                 (IByteReader)new BEncodingStringTransform(data) :
                 (IByteReader)new QEncodingStringTransform(data);
                 ICharacterEncoding charEncoding = Encodings.GetEncoding(
-                charset,
-                true);
+                  charset,
+                  true);
                 if (charEncoding != null) {
                   decodedWord = Encodings.DecodeToString(
-                  charEncoding,
-                  transform);
+                    charEncoding,
+                    transform);
                 }
               }
               if (decodedWord == null) {
@@ -182,8 +182,8 @@ private MakeFilenameMethod() {
                 if (!haveSpace) {
                   builder.append(
                  str.substring(
-                 markStart, (
-                 markStart)+(wordStart - markStart)));
+                   markStart, (
+                   markStart)+(wordStart - markStart)));
                 }
                 builder.append(decodedWord);
                 haveSpace = false;
@@ -448,8 +448,8 @@ private MakeFilenameMethod() {
         // show unquoted use of this encoding.
         String charset = Encodings.ResolveAliasForEmail(
   str.substring(
-  0, (
-  0)+(index)));
+    0, (
+    0)+(index)));
         if (!((charset) == null || (charset).length() == 0)) {
           String newstr = DecodeRfc2231ExtensionLenient(str);
           if (!((newstr) == null || (newstr).length() == 0)) {
@@ -491,9 +491,9 @@ private MakeFilenameMethod() {
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
         str = MakeFilenameMethod.DecodeEncodedWordsLenient(
-  str,
-  0,
-  str.length());
+          str,
+          0,
+          str.length());
         if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -591,9 +591,9 @@ private MakeFilenameMethod() {
               if (c <= 0xffff) {
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             } else if (builder.length() >= MaxFileNameCodeUnitLength - 1) {
               break;
@@ -613,19 +613,20 @@ private MakeFilenameMethod() {
           "nul.") == 0 || strLower.equals(
           "prn") || strLower.indexOf(
           "prn.") == 0 || strLower.indexOf(
-          "![") >= 0 || strLower.equals(
+            "![") >= 0 || strLower.equals(
           "aux") || strLower.indexOf(
-          "aux.") == 0 || strLower.equals(
+            "aux.") == 0 || strLower.equals(
           "con") || strLower.indexOf(
-          "con.") == 0;
+            "con.") == 0;
         // LPTn, COMn
-        if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
+        if (
+          strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
           strLower.charAt(4) == ' '))) {
           reservedFilename = reservedFilename || (strLower.indexOf(
             "lpt") == 0 && strLower.charAt(3) >= '0' &&
                  strLower.charAt(3) <= '9');
           reservedFilename = reservedFilename || (strLower.indexOf(
-          "com") == 0 && strLower.charAt(3) >= '0' &&
+            "com") == 0 && strLower.charAt(3) >= '0' &&
                 strLower.charAt(3) <= '9');
         }
         boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&

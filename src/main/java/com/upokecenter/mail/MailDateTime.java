@@ -2,10 +2,10 @@ package com.upokecenter.mail;
 
 import com.upokecenter.util.*;
 
-  /**
-   * Contains methods for parsing and generating date-time strings following the
-   * Internet Message Format (RFC 5322).
-   */
+    /**
+     * Contains methods for parsing and generating date-time strings following the
+     * Internet Message Format (RFC 5322).
+     */
   public final class MailDateTime {
 private MailDateTime() {
 }
@@ -23,7 +23,9 @@ private MailDateTime() {
      * 5322) from an 8-element array.
      * @param dateTime The date and time in the form of an 8-element array. See
      * <see
-  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     *
+       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
+       System.String,System.Boolean)'/>
      * for information on the format of this parameter.
      * @return A date-time string.
      * @throws IllegalArgumentException The parameter {@code dateTime} is null or
@@ -36,11 +38,13 @@ private MailDateTime() {
 
     private static int[] totdays = {
       0, 31, 59, 90, 120, 151, 181, 212, 243,
-      273, 304, 334, };
+      273, 304, 334,
+    };
 
     private static int[] numdays = {
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
-      30, 31, };
+      30, 31,
+    };
 
     static boolean IsValidDateTime(int[] dateTime) {
       if (dateTime == null || dateTime.length < 8) {
@@ -200,11 +204,13 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
 
     /**
      * Generates a date-time string following the Internet Message Format (RFC
-     * 5322) from an 8-element array, optionally using a "GMT" time zone
+     *  5322) from an 8-element array, optionally using a "GMT" time zone
      * indicator.
      * @param dateTime The date and time in the form of an 8-element array. See
      * <see
-  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     *
+       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
+       System.String,System.Boolean)'/>
      * for information on the format of this parameter.
      * @param gmt If true, uses the string "GMT" as the time zone offset.
      * @return A date-time string.
@@ -288,15 +294,16 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * minute, from 0 through 60 (this value can go up to 60 to accommodate
      * leap seconds). (Leap seconds are additional seconds added to adjust
      * international atomic time, or TAI, to an approximation of
-     * astronomical time known as coordinated universal time, or UTC.) </li>
-     * <li>6 - Milliseconds of the second, from 0 through 999. Will always
-     * be 0. </li> <li>7 - Number of minutes to subtract from this date and
-     * time to get global time. This number can be positive or negative.
-     * </li> </ul>
+     * astronomical time known as coordinated universal time, or UTC.)
+     * </li> <li>6 - Milliseconds of the second, from 0 through 999. Will
+     * always be 0. </li> <li>7 - Number of minutes to subtract from this
+     * date and time to get global time. This number can be positive or
+     * negative. </li> </ul>
      * @param str A date-time string.
      * @param parseObsoleteZones If set to {@code true} , this method allows
-     * obsolete time zones (single-letter time zones, "GMT", "UT", and
-     * certain three-letter combinations) to appear in the date-time string.
+     *  obsolete time zones (single-letter time zones, "GMT", "UT", and
+     * certain three-letter combinations) to appear in the date-time
+     * string.
      * @return An 8-element array containing the date and time, or {@code null} if
      * {@code str} is null, empty, or syntactically invalid, or if the
      * string's year would overflow the range of a 32-bit signed integer.
@@ -308,11 +315,11 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       int[] ret = new int[8];
       if (
   ParseHeaderExpandedDate(
-  str,
-  0,
-  str.length(),
-  ret,
-  parseObsoleteZones) == str.length()) {
+    str,
+    0,
+    str.length(),
+    ret,
+    parseObsoleteZones) == str.length()) {
         return ret;
       } else {
         return null;
@@ -324,9 +331,13 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * Internet Message Format (RFC 5322). However, this method does not
      * allow obsolete time zone strings to appear in the date-time string.
      * See <see
-  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     *
+       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
+       System.String,System.Boolean)'/>
      * for information on the format of this method's return value.
-     * @param str The parameter {@code str} is not documented yet.
+     * @param str The parameter
+      {@code str}
+       is not documented yet.
      * @return An 8-element array containing the date and time, or {@code null} if
      * {@code str} is null, empty, or syntactically invalid, or if the
      * string's year would overflow the range of a 32-bit signed integer.
@@ -336,11 +347,11 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     static int ParseHeaderExpandedDate(
-  String str,
-  int index,
-  int endIndex,
-  int[] ret,
-  boolean parseObsoleteZones) {
+      String str,
+      int index,
+      int endIndex,
+      int[] ret,
+      boolean parseObsoleteZones) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
         indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
@@ -822,7 +833,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
 
     /**
      * Parses a date string in one of the three formats allowed by HTTP/1.1.
-     * @param v The parameter {@code v} is not documented yet.
+     * @param v A date-time string.
      * @return A 64-bit signed integer.
      */
     public static int[] ParseDateStringHttp(String v) {
@@ -959,8 +970,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     };
 
     private static String[] dowNamesLong = {
-   "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
-   "Saturday",
+      "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+      "Saturday",
     };
 
     private static int ParseMonth(String v, int index, int endIndex) {

@@ -449,10 +449,10 @@ private FormatFlowed() {
     }
 
     private static String FormatParagraph(
-         String str,
-         String delim,
-         String tag,
-         boolean escaped) {
+      String str,
+      String delim,
+      String tag,
+      boolean escaped) {
       if (delim.length() == 1 && str.indexOf(delim.charAt(0)) < 0) {
         return str;
       }

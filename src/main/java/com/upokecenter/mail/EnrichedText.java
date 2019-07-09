@@ -4,9 +4,9 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 
-  /**
-   * This is an internal API.
-   */
+    /**
+     * This is an internal API.
+     */
   final class EnrichedText {
 private EnrichedText() {
 }
@@ -36,14 +36,14 @@ private EnrichedText() {
     }
     private static String ParseColor(String str, int index, int endIndex) {
       String[] colorNames = {
-"yellow",
-"red",
-"green",
-"blue",
-"black",
-"white",
-"cyan",
-"magenta",
+        "yellow",
+        "red",
+        "green",
+        "blue",
+        "black",
+        "white",
+        "cyan",
+        "magenta",
       };
       for (String name : colorNames) {
         if (IsTokenAsciiIgnoreCase(str, index, endIndex, name)) {
@@ -72,8 +72,8 @@ private EnrichedText() {
       return
 ret + str.substring(index, (index)+(2)) + str.substring(index + 5, (index + 5)+(2)) +
   str.substring(
-  index, (
-  index)+(10));
+    index, (
+    index)+(10));
     }
     private static int SkipFont(String str, int index, int endIndex) {
       int indexTemp = index;
@@ -194,9 +194,9 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       return "";
     }
     public static String EnrichedToPlain(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       StringBuilder originalBuilder = new StringBuilder();
       StringBuilder paramBuilder = new StringBuilder();
       StringBuilder currentBuilder = originalBuilder;
@@ -247,8 +247,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               if (index < endIndex && (str.charAt(index) == 62)) {
                 ++index;
                 String command = str.substring(
-  commandStart, (
-  commandStart)+(commandEnd - commandStart)).toLowerCase();
+                  commandStart, (
+                  commandStart)+(commandEnd - commandStart)).toLowerCase();
                 if (command.equals("nofill")) {
                   if (isEndTag && nofillDepth > 0) {
                     --nofillDepth;
@@ -385,16 +385,17 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       return originalBuilder.toString();
     }
     public static String EnrichedToHtml(
-  String str,
-  int index,
-  int endIndex) {
+      String str,
+      int index,
+      int endIndex) {
       StringBuilder originalBuilder = new StringBuilder();
       StringBuilder paramBuilder = new StringBuilder();
       StringBuilder currentBuilder = originalBuilder;
       boolean withinParam = false;
       int nofillDepth = 0;
       originalBuilder.append("<!DOCTYPE html><html><title>Untitled</title>");
-      originalBuilder.append("<style>p { margin-bottom: 0em; margin-top: 0em; }");
+      originalBuilder.append("<style>p { margin-bottom: 0em; ")
+           .append("margin-top: 0em; }");
       originalBuilder.append("</style><body>");
       String lastCommand = "";
       do {
@@ -442,8 +443,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               if (index < endIndex && (str.charAt(index) == 62)) {
                 ++index;
                 String command = str.substring(
-  commandStart, (
-  commandStart)+(commandEnd - commandStart)).toLowerCase();
+                  commandStart, (
+                  commandStart)+(commandEnd - commandStart)).toLowerCase();
                 if (!withinParam) {
                   if (command.equals("bold")) {
                     currentBuilder.append('<');
@@ -552,13 +553,14 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             0,
             p.length());
                       if (p != null) {
-                        currentBuilder.append("<span style='color: " + p + "'>");
+                      currentBuilder.append("<span style='color: " + p +
+                          "'>");
                       } else {
                         currentBuilder.append("<span>");
                       }
                     } else if (lastCommand.equals("lang")) {
                       if (SkipLang(p, 0, p.length()) == p.length()) {
-                        currentBuilder.append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
+    currentBuilder.append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
                                         "'> ");
                       } else {
                         currentBuilder.append("<span>");

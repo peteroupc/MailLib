@@ -45,8 +45,8 @@ namespace PeterO.Mail {
       for (int i = 0; i < appendStr.Length; ++i) {
         if (i == 0 && this.lineCount == 0 && appendStr[i] == '.') {
           output.WriteByte((byte)'=');
-          output.WriteByte((byte)'2');
-          output.WriteByte((byte)'E');
+          output.WriteByte((byte)0x32);
+          output.WriteByte((byte)0x45);
           this.lineCount += 2;
           count += 2;
         } else {
@@ -59,9 +59,9 @@ namespace PeterO.Mail {
     }
 
     private int IncrementAndAppendChars(
-  IWriter output,
-  char b2,
-  char b3) {
+      IWriter output,
+      char b2,
+      char b3) {
       var count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 3 >= MaxLineLength) {
@@ -88,8 +88,10 @@ namespace PeterO.Mail {
           // MaxLineLength including the final '='
           byte[] buf;
           if (ch == '.') {
-            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',
-            (byte)'2', (byte)'E', };
+            buf = new byte[] {
+              0x3d, 0x0d, 0x0a, (byte)'=',
+              (byte)0x32, (byte)0x45,
+            };
           } else {
             buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
           }
@@ -100,8 +102,8 @@ namespace PeterO.Mail {
       }
       if (this.lineCount == 0 && ch == '.') {
         output.WriteByte((byte)'=');
-        output.WriteByte((byte)'2');
-        output.WriteByte((byte)'E');
+        output.WriteByte((byte)0x32);
+        output.WriteByte((byte)0x45);
         this.lineCount += 2;
         count += 2;
       } else {
@@ -203,7 +205,7 @@ namespace PeterO.Mail {
           case 3: {
               // Capital F at beginning of line
               // See page 7-8 of RFC 2049
-              if (c == (byte)'r') {
+              if (c == (byte)0x72) {
                 this.machineState = 4;
                 return count;
               } else {
@@ -214,7 +216,7 @@ namespace PeterO.Mail {
             }
           case 4: {
               // 'Fr' at beginning of line
-              if (c == (byte)'o') {
+              if (c == (byte)0x6f) {
                 this.machineState = 5;
                 return count;
               } else {
@@ -226,7 +228,7 @@ namespace PeterO.Mail {
             }
           case 5: {
               // 'Fro' at beginning of line
-              if (c == (byte)'m') {
+              if (c == (byte)0x6d) {
                 this.machineState = 6;
                 return count;
               } else {

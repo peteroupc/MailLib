@@ -90,8 +90,8 @@ import com.upokecenter.mail.*;
     }
 
     public BoundaryCheckerTransform(
-  IByteReader stream,
-  String initialBoundary) {
+      IByteReader stream,
+      String initialBoundary) {
       this.input = stream;
       this.boundaries = new ArrayList<String>();
       this.started = true;
@@ -295,7 +295,7 @@ import com.upokecenter.mail.*;
     /**
      * Gets a value indicating whether a new body part was detected.
      * @return {@code true} If a new body part was detected; otherwise, . {@code
-     * false} .
+     * false}.
      */
     public final boolean getHasNewBodyPart() {
         return this.hasNewBodyPart;

@@ -12,7 +12,7 @@
 
  <b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type  `multipart`  must be treated as  `multipart/mixed`  and unrecognized media types as the media type  `application/octet-stream`  .
 
-  ### Member Summary
+### Member Summary
 * <code>[public static readonly PeterO.Mail.MediaType ApplicationOctetStream;](#ApplicationOctetStream)</code> - Specifies the media type "application/octet-stream", used for arbitrary binary data.
 * <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
 * <code>[GetCharset()](#GetCharset)</code> - Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
@@ -26,7 +26,7 @@
 * <code>[Parse(string, PeterO.Mail.MediaType)](#Parse_string_PeterO_Mail_MediaType)</code> - Parses a media type string and returns a media type object, or the default value if the string is invalid.
 * <code>[SubType](#SubType)</code> - Gets this media type's subtype (for example, "plain" in "text/plain").
 * <code>[public static readonly PeterO.Mail.MediaType TextPlainAscii;](#TextPlainAscii)</code> - Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
-* <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
+* <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U + 0000 to U + 007F).
 * <code>[TopLevelType](#TopLevelType)</code> - Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic").
 * <code>[ToSingleLineString()](#ToSingleLineString)</code> - Converts this media type to a text string form suitable for inserting in HTTP headers.
 * <code>[ToString()](#ToString)</code> - Converts this media type to a text string form suitable for inserting in email headers.
@@ -53,7 +53,7 @@
 
     public static readonly PeterO.Mail.MediaType TextPlainUtf8;
 
- Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).  <a id="IsMultipart"></a>
+ Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U + 0000 to U + 007F).  <a id="IsMultipart"></a>
 ### IsMultipart
 
     public bool IsMultipart { get; }

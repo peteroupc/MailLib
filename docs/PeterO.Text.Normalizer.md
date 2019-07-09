@@ -8,7 +8,7 @@
 
  NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 
-  ### Member Summary
+### Member Summary
 * <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Returns whether this string is normalized.
 * <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
 * <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
@@ -23,10 +23,10 @@
 
  Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.    <b>Parameters:</b>
 
- * <i>str</i>:  The parameter  <i>str</i>
+ * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>form</i>:  The parameter  <i>form</i>
+ * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
 
 <a id="IsNormalized_string_PeterO_Text_Normalization"></a>

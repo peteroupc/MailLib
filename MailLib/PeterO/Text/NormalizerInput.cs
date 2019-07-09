@@ -12,10 +12,10 @@ namespace PeterO.Text {
     /// path='docs/doc[@name="T:PeterO.Text.NormalizerInput"]/*'/>
   public sealed class NormalizerInput : ICharacterInput {
     internal static int DecompToBufferInternal(
-  int ch,
-  bool compat,
-  int[] buffer,
-  int index) {
+      int ch,
+      bool compat,
+      int[] buffer,
+      int index) {
 #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException(nameof(buffer));
@@ -30,10 +30,10 @@ namespace PeterO.Text {
       }
 #endif
       int offset = UnicodeDatabase.GetDecomposition(
-      ch,
-      compat,
-      buffer,
-      index);
+        ch,
+        compat,
+        buffer,
+        index);
       if (buffer[index] != ch) {
         var copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
@@ -49,10 +49,10 @@ namespace PeterO.Text {
    }
 
     internal static int DecompToBuffer(
-  int ch,
-  bool compat,
-  int[] buffer,
-  int index) {
+      int ch,
+      bool compat,
+      int[] buffer,
+      int index) {
 #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException(nameof(buffer));
@@ -188,94 +188,71 @@ namespace PeterO.Text {
     private int processedIndex;
     private int flushIndex;
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
-    /// <param name='str'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is a text string.
-    /// </param>
+    /// <xmlbegin id='53'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
     public NormalizerInput(
   string str) : this(
   str,
   Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
-    /// <param name='input'>
-    /// The parameter
-    /// <paramref name='input'/>
-    /// is an ICharacterInput object.
-    /// </param>
+    /// <xmlbegin id='54'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='input'>The parameter <paramref name='input'/> is an
+    /// ICharacterInput object.</param>
     public NormalizerInput(
   ICharacterInput input) : this(
   input,
   Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
-    /// <param name='str'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='index'>
-    /// The parameter
-    /// <paramref name='index'/>
-    /// is a 32-bit signed integer.
-    /// </param>
-    /// <param name='length'>
-    /// The parameter
-    /// <paramref name='length'/>
-    /// is a 32-bit signed integer.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
+    /// <xmlbegin id='55'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
+    /// <param name='index'>The parameter <paramref name='index'/> is a
+    /// 32-bit signed integer.</param>
+    /// <param name='length'>The parameter <paramref name='length'/> is a
+    /// 32-bit signed integer.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
     public NormalizerInput(
-  string str,
-  int index,
-  int length,
-  Normalization form) : this(
+      string str,
+      int index,
+      int length,
+      Normalization form) : this(
   new StringCharacterInput2(str, index, length),
   form) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
-    /// <param name='str'>
-    /// The parameter
-    /// <paramref name='str'/>
-    /// is a text string.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
+    /// <xmlbegin id='56'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
     public NormalizerInput(string str, Normalization form)
       : this(new StringCharacterInput2(str), form) {
     }
 
-    /// <summary>Initializes a new instance of the <see cref='NormalizerInput'/> class.</summary>
-    /// <param name='stream'>
-    /// The parameter
-    /// <paramref name='stream'/>
-    /// is an ICharacterInput object.
-    /// </param>
-    /// <param name='form'>
-    /// The parameter
-    /// <paramref name='form'/>
-    /// is a Normalization object.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='stream'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='57'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <param name='stream'>The parameter <paramref name='stream'/> is an
+    /// ICharacterInput object.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is a
+    /// Normalization object.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='stream'/> is null.</exception>
     public NormalizerInput(
-   ICharacterInput stream,
-   Normalization form) {
+      ICharacterInput stream,
+      Normalization form) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
       }
@@ -289,10 +266,10 @@ namespace PeterO.Text {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(
-  ICharacterInput chars,
-  Normalization form) {
+      ICharacterInput chars,
+      Normalization form) {
       if (chars == null) {
         throw new ArgumentNullException(nameof(chars));
       }
@@ -315,10 +292,10 @@ UnicodeDatabase.IsQuickCheckStarter(
         if (isQcs) {
           if (haveNonQcs) {
             if (!NormalizeAndCheck(
-             array,
-             0,
-             listIndex,
-             form)) {
+              array,
+              0,
+              listIndex,
+              form)) {
               return false;
             }
           }
@@ -336,10 +313,10 @@ UnicodeDatabase.IsQuickCheckStarter(
       }
       if (haveNonQcs) {
         if (!NormalizeAndCheck(
-                    array,
-                    0,
-                    listIndex,
-                    form)) {
+          array,
+          0,
+          listIndex,
+          form)) {
           return false;
         }
       }
@@ -347,10 +324,10 @@ UnicodeDatabase.IsQuickCheckStarter(
     }
 
     private static bool NormalizeAndCheck(
-  int[] charArray,
-  int start,
-  int length,
-  Normalization form) {
+      int[] charArray,
+      int start,
+      int length,
+      Normalization form) {
       var i = 0;
       int ch;
       var input = new NormalizerInput(
@@ -369,7 +346,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -382,7 +359,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -396,7 +373,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
             (str[i + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str[i + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           return false;
@@ -419,10 +396,10 @@ UnicodeDatabase.IsQuickCheckStarter(
         if (isQcs) {
           if (haveNonQcs) {
             if (!NormalizeAndCheckString(
-            str,
-            lastQcsIndex,
-            i - lastQcsIndex,
-            form)) {
+              str,
+              lastQcsIndex,
+              i - lastQcsIndex,
+              form)) {
               return false;
             }
           }
@@ -439,10 +416,10 @@ UnicodeDatabase.IsQuickCheckStarter(
       }
       if (haveNonQcs) {
         if (!NormalizeAndCheckString(
-    str,
-    lastQcsIndex,
-    str.Length - lastQcsIndex,
-    form)) {
+          str,
+          lastQcsIndex,
+          str.Length - lastQcsIndex,
+          form)) {
           return false;
         }
       }
@@ -456,10 +433,10 @@ UnicodeDatabase.IsQuickCheckStarter(
       Normalization form) {
       int i = start;
       var norm = new NormalizerInput(
-     charString,
-     start,
-     length,
-     form);
+        charString,
+        start,
+        length,
+        form);
       var ch = 0;
       int endIndex = start + length;
       while ((ch = norm.ReadChar()) >= 0) {
@@ -467,7 +444,7 @@ UnicodeDatabase.IsQuickCheckStarter(
         if ((c & 0x1ffc00) == 0xd800 && i + 1 < endIndex &&
             (charString[i + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (charString[i + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (charString[i + 1] & 0x3ff);
           ++i;
         } else if ((c & 0x1ff800) == 0xd800) {
           // unpaired surrogate
@@ -552,7 +529,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     */
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException(nameof(chars));
@@ -623,8 +600,8 @@ UnicodeDatabase.IsQuickCheckStarter(
       }
       do {
         count = Math.Min(
-   this.processedIndex - this.flushIndex,
-   length - total);
+          this.processedIndex - this.flushIndex,
+          length - total);
         if (count < 0) {
           count = 0;
         }
@@ -690,11 +667,11 @@ UnicodeDatabase.IsQuickCheckStarter(
             }
 #endif
             Array.Copy(
-  this.buffer,
-  this.lastQcsIndex,
-  this.buffer,
-  0,
-  this.buffer.Length - this.lastQcsIndex);
+              this.buffer,
+              this.lastQcsIndex,
+              this.buffer,
+              0,
+              this.buffer.Length - this.lastQcsIndex);
             // Console.WriteLine("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastQcsIndex;
             this.lastQcsIndex = 0;
@@ -732,10 +709,10 @@ UnicodeDatabase.IsQuickCheckStarter(
           }
 
           this.endIndex = DecompToBuffer(
-  c,
-  this.compatMode,
-  this.buffer,
-  this.endIndex);
+            c,
+            this.compatMode,
+            this.buffer,
+            this.endIndex);
         }
         // Check for the last quick-check starter if the
         // end of the string is not reached yet
@@ -747,8 +724,8 @@ UnicodeDatabase.IsQuickCheckStarter(
           for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
             if (
   UnicodeDatabase.IsQuickCheckStarter(
-  this.buffer[i],
-  this.form)) {
+    this.buffer[i],
+    this.form)) {
               // DebugUtility.Log ("" + (EC (buffer [i])) + " is qcs");
               if (decompForm) {
                 this.lastQcsIndex = i;
@@ -756,8 +733,8 @@ UnicodeDatabase.IsQuickCheckStarter(
                 break;
               } else if (i + 1 < this.endIndex && (nextIsQCS ||
          UnicodeDatabase.IsQuickCheckStarter(
-  this.buffer[i + 1],
-  this.form))) {
+           this.buffer[i + 1],
+           this.form))) {
                 // DebugUtility.Log ("" + (EC (buffer [i +
                 // 1])) + " (next) is qcs");
                 this.lastQcsIndex = i;
@@ -801,8 +778,8 @@ UnicodeDatabase.IsQuickCheckStarter(
         // DebugUtility.Log ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");
         this.processedIndex = ComposeBuffer(
-  this.buffer,
-  this.lastQcsIndex);
+          this.buffer,
+          this.lastQcsIndex);
       } else {
         this.processedIndex = this.lastQcsIndex;
       }
@@ -892,8 +869,8 @@ UnicodeDatabase.IsQuickCheckStarter(
       this.str[this.index + 1] >= 0xdc00 && this.str[this.index + 1] <=
               0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (this.str[this.index + 1] -
-              0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (this.str[this.index + 1] &
+0x3ff);
           ++this.index;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate, return

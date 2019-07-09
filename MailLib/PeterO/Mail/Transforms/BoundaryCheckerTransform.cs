@@ -97,8 +97,8 @@ namespace PeterO.Mail.Transforms {
     }
 
     public BoundaryCheckerTransform(
-  IByteReader stream,
-  string initialBoundary) {
+      IByteReader stream,
+      string initialBoundary) {
       this.input = stream;
       this.boundaries = new List<string>();
       this.started = true;
@@ -314,7 +314,7 @@ namespace PeterO.Mail.Transforms {
     }
 
     /// <include file='../../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]/*'/>
+    ///   path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]/*'/>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

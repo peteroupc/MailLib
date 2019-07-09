@@ -11,7 +11,8 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class Base64Transform : IByteReader {
-    internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
+    internal static readonly int[] Alphabet = {
+      -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -19,7 +20,8 @@ namespace PeterO.Mail.Transforms {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, };
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1,
+    };
 
     public const int MaxLineLength = 76;
 
@@ -34,8 +36,8 @@ namespace PeterO.Mail.Transforms {
     private int paddingCount;
 
     public Base64Transform(
-  IByteReader input,
-  bool lenientLineBreaks) : this(
+      IByteReader input,
+      bool lenientLineBreaks) : this(
   input,
   lenientLineBreaks,
   MaxLineLength,
@@ -43,10 +45,10 @@ namespace PeterO.Mail.Transforms {
     }
 
     public Base64Transform(
-  IByteReader input,
-  bool lenientLineBreaks,
-  int maxLineLength,
-  bool checkStrictEncoding) {
+      IByteReader input,
+      bool lenientLineBreaks,
+      int maxLineLength,
+      bool checkStrictEncoding) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;

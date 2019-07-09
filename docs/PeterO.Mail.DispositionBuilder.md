@@ -2,7 +2,9 @@
 
     public class DispositionBuilder
 
- A mutable data type that allows a content disposition to be built.  ### Member Summary
+ A mutable data type that allows a content disposition to be built.
+
+### Member Summary
 * <code>[DispositionType](#DispositionType)</code> - Gets or sets this value's disposition type, such as "inline" or "attachment".
 * <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
 * <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type.
@@ -20,13 +22,13 @@
 
  Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.    <b>Parameters:</b>
 
- * <i>mt</i>:  The parameter  <i>mt</i>
+ * <i>mt</i>: The parameter  <i>mt</i>
  is a ContentDisposition object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>mt</i>
+The parameter  <i>mt</i>
  is null.
 
 <a id="Void_ctor_String"></a>
@@ -35,16 +37,19 @@
     public DispositionBuilder(
         string type);
 
- Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.    <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.     <b>Parameters:</b>
 
- * <i>type</i>:  The parameter  <i>type</i>
+ * <i>type</i>: The parameter  <i>type</i>
  is a text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>type</i>
+The parameter  <i>type</i>
  is null.
+
+ * System.ArgumentException:
+Type is empty.
 
 <a id="Void_ctor"></a>
 ### DispositionBuilder Constructor

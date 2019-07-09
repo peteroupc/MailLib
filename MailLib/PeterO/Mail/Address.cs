@@ -12,13 +12,13 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
   public class Address {
     private readonly string localPart;
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Address.Equals(System.Object)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Address.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as Address;
       return other != null && this.localPart.Equals(other.localPart) &&
@@ -41,10 +41,10 @@ namespace PeterO.Mail {
     }
     internal static string LocalPartToString(string localPart) {
       if (localPart.Length > 0 && HeaderParser.ParseDotAtomText(
-   localPart,
-   0,
-   localPart.Length,
-   null) == localPart.Length) {
+        localPart,
+        0,
+        localPart.Length,
+        null) == localPart.Length) {
         return localPart;
       } else {
         var sb = new StringBuilder();
@@ -136,22 +136,17 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Initializes a new instance of the <see cref='Address'/> class.</summary>
-    /// <param name='addressValue'>
-    /// The parameter
-    /// <paramref name='addressValue'/>
-    /// is a text string.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='addressValue'/>
-    /// is null.
-    /// </exception>
-    /// <exception cref='T:System.ArgumentException'>
-    /// AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local
-    /// part; Expected '@' sign after local part; Expected domain after '@';
-    /// Invalid domain; Address too long.
-    /// </exception>
+    /// <xmlbegin id='0'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='Address'/> class.</summary>
+    /// <param name='addressValue'>The parameter <paramref
+    /// name='addressValue'/> is a text string.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='addressValue'/> is null.</exception>
+    /// <exception cref='T:System.ArgumentException'>AddressValue is
+    /// empty.; Address doesn't contain a '@' sign; Invalid local part;
+    /// Expected '@' sign after local part; Expected domain after '@';
+    /// Invalid domain; Address too long.</exception>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException(nameof(addressValue));
@@ -163,10 +158,10 @@ namespace PeterO.Mail {
         throw new ArgumentException("Address doesn't contain a '@' sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
-  addressValue,
-  0,
-  addressValue.Length,
-  null);
+        addressValue,
+        0,
+        addressValue.Length,
+        null);
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
@@ -178,21 +173,21 @@ namespace PeterO.Mail {
         throw new ArgumentException("Expected domain after '@'");
       }
       int domainEnd = HeaderParser.ParseDomainNoCfws(
-  addressValue,
-  localPartEnd + 1,
-  addressValue.Length,
-  null);
+        addressValue,
+        localPartEnd + 1,
+        addressValue.Length,
+        null);
       if (domainEnd != addressValue.Length) {
         throw new ArgumentException("Invalid domain");
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(
-  addressValue,
-  0,
-  localPartEnd);
+        addressValue,
+        0,
+        localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(
-  addressValue,
-  localPartEnd + 1,
-  addressValue.Length);
+        addressValue,
+        localPartEnd + 1,
+        addressValue.Length);
       // Check length restrictions.
       if (this.IsTooLong()) {
         throw new ArgumentException("Address too long");

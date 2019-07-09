@@ -153,7 +153,7 @@ Assert.assertEquals(
 }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
-na = new NamedAddress("<me@example.com>");
+      na = new NamedAddress("<me@example.com>");
       if (na.getDisplayName() != null) {
  Assert.fail();
  }
@@ -168,7 +168,7 @@ Assert.assertEquals(
   "me@example.com",
   stringTemp);
 }
-    na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
+na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
       Assert.assertEquals("Me", na.getName());
       if (na.isGroup()) {
  Assert.fail();
@@ -196,7 +196,7 @@ Assert.assertEquals(
   "Me <me@example.com>",
   stringTemp);
 }
-   na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
+na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
                   "me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
       if (na.isGroup()) {
@@ -276,7 +276,7 @@ Assert.assertEquals(
   stringTemp);
 }
       //------------
-na = new
+      na = new
         NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
       Assert.assertEquals("Group", na.getName());
       if (!(na.isGroup())) {
@@ -284,8 +284,8 @@ na = new
  }
       {
 String stringTemp = na.toString();
-    String ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";
-        Assert.assertEquals(ValueS1, stringTemp);
+String ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";
+Assert.assertEquals(ValueS1, stringTemp);
 }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());

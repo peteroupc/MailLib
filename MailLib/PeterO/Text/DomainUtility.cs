@@ -27,8 +27,8 @@ namespace PeterO.Text {
           str.Length);
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
-                  "0");
+      throw new ArgumentException("endIndex (" + endIndex +
+          ") is less than " + "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +
@@ -65,7 +65,7 @@ namespace PeterO.Text {
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
             (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           return -1;
@@ -99,7 +99,7 @@ namespace PeterO.Text {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return -1;
@@ -129,7 +129,7 @@ namespace PeterO.Text {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return -1;
@@ -172,7 +172,8 @@ namespace PeterO.Text {
       }
       return outputLength;
     }
-    private static readonly int[] ValueDigitValues = { -1, -1, -1, -1, -1, -1,
+    private static readonly int[] ValueDigitValues = {
+      -1, -1, -1, -1, -1, -1,
       -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1,
@@ -181,7 +182,8 @@ namespace PeterO.Text {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, };
+      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
+    };
 
     internal static string PunycodeDecode(string str, int index, int endIndex) {
       if (str == null) {
@@ -196,8 +198,8 @@ namespace PeterO.Text {
           str.Length);
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
-                  "0");
+      throw new ArgumentException("endIndex (" + endIndex +
+          ") is less than " + "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +
@@ -305,8 +307,8 @@ namespace PeterO.Text {
           chararr[0] = (char)vnum;
           builder.Insert(i, chararr, 0, 1);
         } else if (vnum <= 0x10ffff) {
-          chararr[0] = (char)((((vnum - 0x10000) >> 10) & 0x3ff) + 0xd800);
-          chararr[1] = (char)(((vnum - 0x10000) & 0x3ff) + 0xdc00);
+          chararr[0] = (char)((((vnum - 0x10000) >> 10) & 0x3ff) | 0xd800);
+          chararr[1] = (char)(((vnum - 0x10000) & 0x3ff) | 0xdc00);
           builder.Insert(i, chararr, 0, 2);
         } else {
           return null;
@@ -322,9 +324,9 @@ namespace PeterO.Text {
     }
 
     internal static string ALabelEncodePortion(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
@@ -337,8 +339,8 @@ namespace PeterO.Text {
           str.Length);
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
-                  "0");
+      throw new ArgumentException("endIndex (" + endIndex +
+          ") is less than " + "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +
@@ -383,7 +385,7 @@ namespace PeterO.Text {
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
             (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           return null;
@@ -425,7 +427,7 @@ namespace PeterO.Text {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return null;
@@ -458,7 +460,7 @@ namespace PeterO.Text {
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (str[tmpIndex + 1] - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             return null;

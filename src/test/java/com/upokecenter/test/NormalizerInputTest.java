@@ -36,69 +36,69 @@ import com.upokecenter.text.*;
     }
 
     @Test
-public void TestNormalizationAscii() {
-  RandomGenerator rnd = new RandomGenerator();
-  for (int i = 0; i < 50000; ++i) {
-    String str = RandomAscii(rnd);
-    // ASCII strings are already normalized
-    if (!(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFC))) {
+    public void TestNormalizationAscii() {
+      RandomGenerator rnd = new RandomGenerator();
+      for (int i = 0; i < 50000; ++i) {
+        String str = RandomAscii(rnd);
+        // ASCII strings are already normalized
+        if (!(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFC))) {
  Assert.fail();
  }
-    if (!(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFD))) {
+        if (!(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFD))) {
  Assert.fail();
  }
-    if (!(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFKC))) {
+        if (!(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFKC))) {
  Assert.fail();
  }
-    if (!(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFKD))) {
+        if (!(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFKD))) {
  Assert.fail();
  }
-    // ASCII strings normalize to themselves
-    String str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFC);
-    Assert.assertEquals(str, str2);
-    str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFD);
-    Assert.assertEquals(str, str2);
-    str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFKC);
-    Assert.assertEquals(str, str2);
-    str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFKD);
-    Assert.assertEquals(str, str2);
-  }
-}
+        // ASCII strings normalize to themselves
+        String str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFC);
+        Assert.assertEquals(str, str2);
+        str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFD);
+        Assert.assertEquals(str, str2);
+        str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFKC);
+        Assert.assertEquals(str, str2);
+        str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFKD);
+        Assert.assertEquals(str, str2);
+      }
+    }
 
     @Test
-public void TestNormalizationLatinOne() {
-  RandomGenerator rnd = new RandomGenerator();
-  for (int i = 0; i < 50000; ++i) {
-    String str = RandomLatinOne(rnd);
-    // Latin-1 strings are already normalized in NFC
-    if (!(NormalizerInput.IsNormalized(
-      str,
-      Normalization.NFC))) {
+    public void TestNormalizationLatinOne() {
+      RandomGenerator rnd = new RandomGenerator();
+      for (int i = 0; i < 50000; ++i) {
+        String str = RandomLatinOne(rnd);
+        // Latin-1 strings are already normalized in NFC
+        if (!(NormalizerInput.IsNormalized(
+          str,
+          Normalization.NFC))) {
  Assert.fail();
  }
-    // Latin-1 strings normalize to themselves in NFC
-    String str2 = NormalizerInput.Normalize(
-  str,
-  Normalization.NFC);
-    Assert.assertEquals(str, str2);
-  }
-}
+        // Latin-1 strings normalize to themselves in NFC
+        String str2 = NormalizerInput.Normalize(
+          str,
+          Normalization.NFC);
+        Assert.assertEquals(str, str2);
+      }
+    }
 
     @Test
     public void TestIsNormalized() {
@@ -120,33 +120,33 @@ public void TestNormalizationLatinOne() {
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
 
       if (!(
   NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFC))) {
+    "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+    Normalization.NFC))) {
  Assert.fail();
  }
       if (!(
       NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFD))) {
+        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+        Normalization.NFD))) {
  Assert.fail();
  }
       if (!(
       NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFKC))) {
+        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+        Normalization.NFKC))) {
  Assert.fail();
  }
       if (!(
       NormalizerInput.IsNormalized(
-  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFKD))) {
+        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+        Normalization.NFKD))) {
  Assert.fail();
  }
     }
@@ -158,7 +158,7 @@ public void TestNormalizationLatinOne() {
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -167,7 +167,7 @@ public void TestNormalizationLatinOne() {
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -176,7 +176,7 @@ public void TestNormalizationLatinOne() {
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -185,7 +185,7 @@ public void TestNormalizationLatinOne() {
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -194,7 +194,7 @@ public void TestNormalizationLatinOne() {
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -203,7 +203,7 @@ public void TestNormalizationLatinOne() {
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }

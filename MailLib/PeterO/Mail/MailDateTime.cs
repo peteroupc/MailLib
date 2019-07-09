@@ -3,8 +3,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
   public static class MailDateTime {
     private static string[] valueDaysOfWeek = {
       "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
@@ -16,18 +16,20 @@ namespace PeterO.Mail {
     };
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])"]/*'/>
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
     }
 
     private static int[] totdays = {
       0, 31, 59, 90, 120, 151, 181, 212, 243,
-      273, 304, 334, };
+      273, 304, 334,
+    };
 
     private static int[] numdays = {
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
-      30, 31, };
+      30, 31,
+    };
 
     internal static bool IsValidDateTime(int[] dateTime) {
       if (dateTime == null || dateTime.Length < 8) {
@@ -186,7 +188,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)"]/*'/>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (!IsValidDateTime(dateTime) || dateTime[0] < 0) {
         throw new ArgumentException("Invalid date and time");
@@ -249,7 +251,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)"]/*'/>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
       if (String.IsNullOrEmpty(str)) {
         return null;
@@ -257,11 +259,11 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       var ret = new int[8];
       if (
   ParseHeaderExpandedDate(
-  str,
-  0,
-  str.Length,
-  ret,
-  parseObsoleteZones) == str.Length) {
+    str,
+    0,
+    str.Length,
+    ret,
+    parseObsoleteZones) == str.Length) {
         return ret;
       } else {
         return null;
@@ -269,17 +271,17 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)"]/*'/>
     public static int[] ParseDateString(string str) {
       return ParseDateString(str, false);
     }
 
     internal static int ParseHeaderExpandedDate(
-  string str,
-  int index,
-  int endIndex,
-  int[] ret,
-  bool parseObsoleteZones) {
+      string str,
+      int index,
+      int endIndex,
+      int[] ret,
+      bool parseObsoleteZones) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
         indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
@@ -760,7 +762,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)"]/*'/>
     public static int[] ParseDateStringHttp(string v) {
       if (v == null) {
         return null;
@@ -895,8 +897,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     };
 
     private static string[] dowNamesLong = {
-   "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
-   "Saturday",
+      "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+      "Saturday",
     };
 
     private static int ParseMonth(string v, int index, int endIndex) {

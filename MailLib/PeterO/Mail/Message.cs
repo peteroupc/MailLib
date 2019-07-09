@@ -14,8 +14,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -54,17 +54,13 @@ namespace PeterO.Mail {
 
     private int transferEncoding;
 
-    /// <summary>Initializes a new instance of the <see cref='Message'/> class.</summary>
-    /// <param name='stream'>
-    /// The parameter
-    /// <paramref name='stream'/>
-    /// is a Stream object.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='stream'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='36'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='Message'/> class.</summary>
+    /// <param name='stream'>The parameter <paramref name='stream'/> is a
+    /// Stream object.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='stream'/> is null.</exception>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -76,15 +72,12 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <summary>Initializes a new instance of the <see cref='Message'/> class.</summary>
-    /// <param name='bytes'>
-    /// A byte array.
-    /// </param>
-    /// <exception cref='T:System.ArgumentNullException'>
-    /// The parameter
-    /// <paramref name='bytes'/>
-    /// is null.
-    /// </exception>
+    /// <xmlbegin id='37'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='Message'/> class.</summary>
+    /// <param name='bytes'>A byte array.</param>
+    /// <exception cref='T:System.ArgumentNullException'>The parameter
+    /// <paramref name='bytes'/> is null.</exception>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -96,7 +89,9 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <summary>Initializes a new instance of the <see cref='Message'/> class.</summary>
+    /// <xmlbegin id='38'/>
+    /// <summary>Initializes a new instance of the
+    /// <see cref='Message'/> class.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -152,9 +147,10 @@ namespace PeterO.Mail {
     public string BodyString {
       get {
         if (this.ContentType.IsMultipart) {
-          throw new
-
-  NotSupportedException("This is a multipart message, so it doesn't have its own body text.");
+          string exceptionText = "This is a multipart message, " +
+            "so it doesn't have its " + "own body text.";
+          throw new NotSupportedException(
+              exceptionText);
         }
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.ContentType.GetCharset(),
@@ -178,8 +174,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetFormattedBodyString"]/*'/>
+    /// <xmlbegin id='39'/>
+    /// <returns>A string object.</returns>
     public string GetFormattedBodyString() {
       string text = this.BodyString;
       if (text == null) {
@@ -222,7 +218,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
+    ///   path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
     public ContentDisposition ContentDisposition {
       get {
         return this.contentDisposition;
@@ -277,7 +273,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
     public IList<NamedAddress> GetAddresses(string headerName) {
       if (headerName == null) {
         throw new ArgumentNullException(nameof(headerName));
@@ -310,9 +306,7 @@ namespace PeterO.Mail {
         var list = new List<KeyValuePair<string, string>>();
         for (int i = 0; i < this.headers.Count; i += 2) {
           list.Add(
-            new KeyValuePair<string, string>(
-              this.headers[i],
-              this.headers[i + 1]));
+      new KeyValuePair<string, string>(this.headers[i], this.headers[i + 1]));
         }
         return list;
       }
@@ -348,13 +342,13 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
     public Message AddHeader(KeyValuePair<string, string> header) {
       return this.AddHeader(header.Key, header.Value);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)"]/*'/>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       int index = this.headers.Count / 2;
@@ -392,8 +386,13 @@ namespace PeterO.Mail {
       return (field == null) ? null : MailDateTime.ParseDateString(field, true);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetDate(System.Int32[])"]/*'/>
+    /// <xmlbegin id='40'/>
+    /// <param name='dateTime'>Not documented yet.</param>
+    /// <returns>A Message object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dateTime'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Invalid date and
+    /// time.</exception>
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
@@ -426,8 +425,9 @@ namespace PeterO.Mail {
         new Message(this.body) : null;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.Int32)"]/*'/>
+    /// <xmlbegin id='41'/>
+    /// <param name='index'>Not documented yet.</param>
+    /// <returns>A KeyValuePair(string, string) object.</returns>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -444,7 +444,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]/*'/>
     public string GetHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -460,7 +460,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]/*'/>
     public string[] GetHeaderArray(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -485,7 +485,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
     public Message RemoveHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -508,7 +508,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]/*'/>
     public Message RemoveHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -530,8 +530,11 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetBody(System.Byte[])"]/*'/>
+    /// <xmlbegin id='42'/>
+    /// <param name='bytes'>Not documented yet.</param>
+    /// <returns>A Message object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -541,13 +544,13 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)"]/*'/>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -570,7 +573,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)"]/*'/>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -585,13 +588,13 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)"]/*'/>
     public static string DecodeHeaderValue(string name, string value) {
       return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)"]/*'/>
     public Message SetHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
@@ -614,7 +617,7 @@ namespace PeterO.Mail {
       MediaType.Parse("text/html; charset=utf-8");
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -626,7 +629,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]/*'/>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
         throw new ArgumentNullException(nameof(text));
@@ -639,7 +642,8 @@ namespace PeterO.Mail {
       // this case, the HTML version)
       Message textMessage = NewBodyPart().SetTextBody(text);
       Message htmlMessage = NewBodyPart().SetHtmlBody(html);
-      string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      string mtypestr =
+        "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
       this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
@@ -649,7 +653,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)"]/*'/>
     public Message SetTextAndMarkdown(string text, string markdown) {
       if (markdown == null) {
         throw new ArgumentNullException(nameof(markdown));
@@ -674,7 +678,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -686,36 +690,36 @@ namespace PeterO.Mail {
     }
 
     private Message AddBodyPart(
-         Stream inputStream,
-         MediaType mediaType,
-         string filename,
-         string disposition) {
+      Stream inputStream,
+      MediaType mediaType,
+      string filename,
+      string disposition) {
       return this.AddBodyPart(
-  inputStream,
-  mediaType,
-  filename,
-  disposition,
-  false);
+        inputStream,
+        mediaType,
+        filename,
+        disposition,
+        false);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)"]/*'/>
     public Message AddInline(MediaType mediaType) {
       return this.AddBodyPart(null, mediaType, null, "inline", true);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)"]/*'/>
     public Message AddAttachment(MediaType mediaType) {
       return this.AddBodyPart(null, mediaType, null, "attachment", true);
     }
 
     private Message AddBodyPart(
-             Stream inputStream,
-             MediaType mediaType,
-             string filename,
-             string disposition,
-             bool allowNullStream) {
+      Stream inputStream,
+      MediaType mediaType,
+      string filename,
+      string disposition,
+      bool allowNullStream) {
       if (!allowNullStream && inputStream == null) {
         throw new ArgumentNullException(nameof(inputStream));
       }
@@ -749,8 +753,8 @@ namespace PeterO.Mail {
         string basename = BaseName(filename);
         if (!String.IsNullOrEmpty(basename)) {
           dispBuilder.SetParameter(
-  "filename",
-  basename);
+            "filename",
+            basename);
         }
       }
       bodyPart.ContentDisposition = dispBuilder.ToDisposition();
@@ -866,13 +870,13 @@ ext.Equals(".txt")) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
     public Message AddAttachment(Stream inputStream, string filename) {
       return
   this.AddBodyPart(
@@ -883,26 +887,26 @@ ext.Equals(".txt")) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddAttachment(
-  Stream inputStream,
-  MediaType mediaType,
-  string filename) {
+      Stream inputStream,
+      MediaType mediaType,
+      string filename) {
       return this.AddBodyPart(
-      inputStream,
-      mediaType,
-      filename,
-      "attachment");
+        inputStream,
+        mediaType,
+        filename,
+        "attachment");
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, string filename) {
       return this.AddBodyPart(
   inputStream,
@@ -912,11 +916,11 @@ ext.Equals(".txt")) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddInline(
-  Stream inputStream,
-  MediaType mediaType,
-  string filename) {
+      Stream inputStream,
+      MediaType mediaType,
+      string filename) {
       return this.AddBodyPart(inputStream, mediaType, filename, "inline");
     }
 
@@ -947,14 +951,14 @@ ext.Equals(".txt")) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})"]/*'/>
     public Message SelectLanguageMessage(
        IList<string> languages) {
       return this.SelectLanguageMessage(languages, false);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)"]/*'/>
     public Message SelectLanguageMessage(
        IList<string> languages,
        bool preferOriginals) {
@@ -1014,7 +1018,7 @@ ext.Equals(".txt")) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
     public static Message MakeMultilingualMessage(
   IList<Message> messages,
   IList<string> languages) {
@@ -1065,8 +1069,8 @@ ext.Equals(".txt")) {
         bool langInd = i == languages.Count - 1 && langs.Count == 1 &&
           langs[0].Equals("zxx");
         if (!langInd && LanguageTags.LanguageTagFilter(
-        zxx,
-        langs).Count > 0) {
+          zxx,
+          langs).Count > 0) {
           throw new ArgumentException("zxx tag can only appear at end");
         }
         string subject = messages[i].GetHeader("subject");
@@ -1108,8 +1112,7 @@ ext.Equals(".txt")) {
         MediaType mt = MediaType.Parse("message/rfc822");
         string msgstring = messages[i].Generate();
         if (msgstring.IndexOf("\r\n--", StringComparison.Ordinal) >= 0 || (
-          msgstring.Length >= 2 &&
-             msgstring[0] == '-' &&
+          msgstring.Length >= 2 && msgstring[0] == '-' &&
              msgstring[1] == '-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
@@ -1297,12 +1300,12 @@ ext.Equals(".txt")) {
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                      // CRLF was read
-                      lineStart = true;
+                    // CRLF was read
+                    lineStart = true;
                     } else {
-                      // It's the first part of the line, where the header name
-                      // should be, so the CR here is illegal
-                      throw new MessageDataException("CR not followed by LF");
+                    // It's the first part of the line, where the header name
+                    // should be, so the CR here is illegal
+                    throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -1345,10 +1348,10 @@ ext.Equals(".txt")) {
           var status = new int[1];
           try {
             headerValue = DataUtilities.GetUtf8String(
-            bytes,
-            headerValueStart,
-            headerValueEnd - headerValueStart,
-            false); // throws on invalid UTF-8
+              bytes,
+              headerValueStart,
+              headerValueEnd - headerValueStart,
+              false); // throws on invalid UTF-8
           } catch (ArgumentException) {
             // Invalid UTF-8, so encapsulate
             headerValue = null;
@@ -1371,21 +1374,21 @@ ext.Equals(".txt")) {
             if (status[0] == 1) {
               // Downgraded
               byte[] newBytes = DataUtilities.GetUtf8Bytes(
-                 headerValue,
-                 true);
+                headerValue,
+                true);
               writer.Write(newBytes, 0, newBytes.Length);
             } else {
               // Encapsulated
               string field = origRecipient ? "Downgraded-Original-Recipient" :
                 "Downgraded-Final-Recipient";
               headerValue = DataUtilities.GetUtf8String(
-                  bytes,
-                  headerValueStart,
-                  headerValueEnd - headerValueStart,
-                  true); // replaces invalid UTF-8
+                bytes,
+                headerValueStart,
+                headerValueEnd - headerValueStart,
+                true); // replaces invalid UTF-8
               string newField = HeaderEncoder.EncodeFieldAsEncodedWords(
-  field,
-  headerValue);
+                field,
+                headerValue);
               byte[] newBytes = DataUtilities.GetUtf8Bytes(
                 newField,
                 true);
@@ -1403,8 +1406,8 @@ ext.Equals(".txt")) {
     }
 
     private static HeaderEncoder EncodeCommentsInText(
-  HeaderEncoder enc,
-  string str) {
+      HeaderEncoder enc,
+      string str) {
       var i = 0;
       var begin = 0;
       if (str.IndexOf('(') < 0) {
@@ -1414,10 +1417,10 @@ ext.Equals(".txt")) {
       while (i < str.Length) {
         if (str[i] == '(') {
           int si = HeaderParserUtility.ParseCommentLax(
-  str,
-  i,
-  str.Length,
-  null);
+            str,
+            i,
+            str.Length,
+            null);
           if (si != i) {
             enc.AppendString(str, begin, i);
             Rfc2047.EncodeComment(enc, str, i, si);
@@ -1469,10 +1472,10 @@ ext.Equals(".txt")) {
         // }
         if (index < headerValue.Length && headerValue[atomText] == ';') {
           int addressPart = HeaderParser.ParseCFWS(
-           headerValue,
-           atomText + 1,
-           headerValue.Length,
-           null);
+            headerValue,
+            atomText + 1,
+            headerValue.Length,
+            null);
           var encoder = new HeaderEncoder().AppendFieldName(fieldName);
           if (isUtf8) {
             string typePart = headerValue.Substring(0, addressPart);
@@ -1575,9 +1578,9 @@ ext.Equals(".txt")) {
     }
 
     internal static bool HasTextToEscapeOrEncodedWordStarts(
-  string s,
-  int index,
-  int endIndex) {
+      string s,
+      int index,
+      int endIndex) {
       return HasTextToEscapeOrEncodedWordStarts(s, index, endIndex, true);
     }
 
@@ -1590,10 +1593,10 @@ ext.Equals(".txt")) {
     }
 
     internal static bool HasTextToEscapeOrEncodedWordStarts(
-  string s,
-  int index,
-  int endIndex,
-  bool checkEWStarts) {
+      string s,
+      int index,
+      int endIndex,
+      bool checkEWStarts) {
       int len = endIndex;
       var chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
@@ -1646,9 +1649,9 @@ ext.Equals(".txt")) {
     }
 
     internal static int ParseUnstructuredText(
-  string s,
-  int startIndex,
-  int endIndex) {
+      string s,
+      int startIndex,
+      int endIndex) {
       // Parses "unstructured" in RFC 5322 without obsolete syntax
       // and with non-ASCII characters allowed
       for (int i = startIndex; i < endIndex;) {
@@ -1835,9 +1838,8 @@ ext.Equals(".txt")) {
             }
           }
           if (c == -1) {
-            throw new
-
-  MessageDataException("Premature end of message before all headers were read, while reading header field name");
+            throw new MessageDataException("Premature end of message " +
+               "before all headers were read, while reading header field name");
           }
           ++lineCount;
           if (first && c == '\r') {
@@ -1967,12 +1969,12 @@ ext.Equals(".txt")) {
                   if (c == '\r') {
                     c = stream.ReadByte();
                     if (c == '\n') {
-                      // CRLF was read
-                      lineCount = 0;
+                    // CRLF was read
+                    lineCount = 0;
                     } else {
-                      // It's the first part of the line, where the header name
-                      // should be, so the CR here is illegal
-                      throw new MessageDataException("CR not followed by LF");
+                    // It's the first part of the line, where the header name
+                    // should be, so the CR here is illegal
+                    throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -2037,8 +2039,8 @@ ext.Equals(".txt")) {
             if (c <= 0xffff) {
               sb.Append((char)c);
             } else if (c <= 0x10ffff) {
-              sb.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              sb.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              sb.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }
@@ -2234,7 +2236,7 @@ ext.Equals(".txt")) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-          throw new ArgumentException("Header field value contains invalid text");
+       throw new ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -2480,7 +2482,8 @@ name.Equals("final-recipient")) {
         // reasons not to use local time, despite the SHOULD in RFC 5322
         AppendAscii(
           output,
-          MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
+
+  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
@@ -2497,8 +2500,8 @@ name.Equals("final-recipient")) {
       }
       if (!haveContentEncoding) {
         AppendAscii(
-      output,
-      "Content-Transfer-Encoding: " + encodingString + "\r\n");
+          output,
+          "Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       ICharacterEncoder bodyEncoder = null;
       switch (transferEnc) {
@@ -2631,7 +2634,7 @@ name.Equals("final-recipient")) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
     [Obsolete("Renamed to FromMailtoUri.")]
     public static Message FromMailtoUrl(string url) {
       return MailtoUris.MailtoUriMessage(url);
@@ -2645,7 +2648,7 @@ name.Equals("final-recipient")) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUri(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUri(System.String)"]/*'/>
     public static Message FromMailtoUri(string uri) {
       return MailtoUris.MailtoUriMessage(uri);
     }
@@ -2843,8 +2846,8 @@ name.Equals("final-recipient")) {
       var entry = new MessageStackEntry(this);
       multipartStack.Add(entry);
       var boundaryChecker = new BoundaryCheckerTransform(
-         stream,
-         entry.Boundary);
+        stream,
+        entry.Boundary);
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       IByteReader currentTransform = MakeTransferEncoding(
@@ -3022,12 +3025,12 @@ name.Equals("final-recipient")) {
     }
 
     private class MessageStackEntry {
-      /// <include file='../../docs.xml'
-      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
+    /// <include file='../../docs.xml'
+    ///   path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message { get; private set; }
 
-      /// <include file='../../docs.xml'
-      /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
+    /// <include file='../../docs.xml'
+    ///   path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

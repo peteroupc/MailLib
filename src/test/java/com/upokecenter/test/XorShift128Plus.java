@@ -3,7 +3,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     /**
      * A class that implements a statistically-random byte generator, using
      * Sebastiano Vigna's <a
-     * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
+  * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
      * RNG as the underlying implementation. By default, this class is safe
      * for concurrent use among multiple threads.
      */
@@ -23,7 +23,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
      * Initializes a new instance of the XorShift128Plus class.
      * @param threadSafe A Boolean object.
      */
-        public XorShift128Plus(boolean threadSafe) {
+    public XorShift128Plus(boolean threadSafe) {
       this.threadSafe = threadSafe;
       this.Seed();
     }
@@ -57,7 +57,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
                     --length;
                 }
             }
-      return count;
+            return count;
     }
 
     /**
@@ -110,12 +110,12 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     private long NextValue() {
           long s1 = this.s[0];
           long s0 = this.s[1];
-           this.s[0] = s0;
-           s1 ^= s1 << 23;
-           long t1 = (s1 >> 18) & 0x3fffffffffffL;
-           long t0 = (s0 >> 5) & 0x7ffffffffffffffL;
-           this.s[1] = s1 ^ s0 ^ t1 ^ t0;
-           return this.s[1] + s0;
+          this.s[0] = s0;
+          s1 ^= s1 << 23;
+          long t1 = (s1 >> 18) & 0x3fffffffffffL;
+          long t0 = (s0 >> 5) & 0x7ffffffffffffffL;
+          this.s[1] = s1 ^ s0 ^ t1 ^ t0;
+          return this.s[1] + s0;
     }
 
     private void Seed() {

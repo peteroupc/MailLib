@@ -18,7 +18,8 @@ namespace PeterO.Mail.Transforms {
 
     public const int MaxLineLength = 76;
 
-    private readonly int[] printable = { 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    private readonly int[] printable = {
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -29,7 +30,8 @@ namespace PeterO.Mail.Transforms {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    };
 
     private int lineCharCount;
     private byte[] buffer;
@@ -40,10 +42,10 @@ namespace PeterO.Mail.Transforms {
     private bool unget;
 
     public QuotedPrintableTransform(
-  IByteReader input,
-  bool allowBareLfCr,
-  int maxLineSize,
-  bool checkStrictEncoding) {
+      IByteReader input,
+      bool allowBareLfCr,
+      int maxLineSize,
+      bool checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
       this.allowBareLfCr = allowBareLfCr;
       this.checkStrictEncoding = checkStrictEncoding;
@@ -52,8 +54,8 @@ namespace PeterO.Mail.Transforms {
     }
 
     public QuotedPrintableTransform(
-  IByteReader input,
-  bool allowBareLfCr) : this(
+      IByteReader input,
+      bool allowBareLfCr) : this(
   input,
   allowBareLfCr,
   MaxLineLength,
@@ -61,9 +63,9 @@ namespace PeterO.Mail.Transforms {
     }
 
     public QuotedPrintableTransform(
-  IByteReader input,
-  bool allowBareLfCr,
-  int maxLineLength) : this(
+      IByteReader input,
+      bool allowBareLfCr,
+      int maxLineLength) : this(
   input,
   allowBareLfCr,
   maxLineLength,

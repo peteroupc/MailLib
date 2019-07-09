@@ -13,8 +13,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -37,8 +37,9 @@ namespace PeterO.Mail {
 
     #region Equals and GetHashCode implementation
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Equals(System.Object)"]/*'/>
+    /// <xmlbegin id='22'/>
+    /// <param name='obj'>Not documented yet.</param>
+    /// <returns>A Boolean object.</returns>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
       if (other == null) {
@@ -56,13 +57,13 @@ namespace PeterO.Mail {
       if (this.topLevelType != null) {
         for (var i = 0; i < this.topLevelType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-                      this.topLevelType[i]));
+                    this.topLevelType[i]));
         }
       }
       if (this.subType != null) {
         for (var i = 0; i < this.subType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-                      this.subType[i]));
+                    this.subType[i]));
         }
       }
       if (this.parameters != null) {
@@ -118,10 +119,13 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-      /// <summary>Use HTTP rules for quoted strings.</summary>
+    /// <xmlbegin id='23'/>
+    /// <summary>Use HTTP rules for quoted strings.</summary>
       Http,
 
-      /// <summary>Use Internet Message Format rules for quoted strings.</summary>
+    /// <xmlbegin id='24'/>
+    /// <summary>Use Internet Message Format rules for quoted
+    /// strings.</summary>
       Rfc5322,
     }
 
@@ -206,10 +210,10 @@ namespace PeterO.Mail {
 
     // quoted-string (RFC5322 sec. 3.2.4)
     internal static int SkipQuotedString(
-  string s,
-  int index,
-  int endIndex,
-  StringBuilder builder) {
+      string s,
+      int index,
+      int endIndex,
+      StringBuilder builder) {
       return SkipQuotedString(
         s,
         index,
@@ -219,10 +223,10 @@ namespace PeterO.Mail {
     }
 
     private static int ParseFWSLax(
-  string str,
-  int index,
-  int endIndex,
-  StringBuilder sb) {
+      string str,
+      int index,
+      int endIndex,
+      StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -243,11 +247,11 @@ namespace PeterO.Mail {
     }
 
     private static int SkipQuotedString(
-  string str,
-  int index,
-  int endIndex,
-  StringBuilder builder, // receives the unescaped version of the string
-  QuotedStringRule rule) {
+      string str,
+      int index,
+      int endIndex,
+      StringBuilder builder, // receives the unescaped version of the string
+      QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.Length;
       index = (rule != QuotedStringRule.Rfc5322) ? index :
@@ -327,10 +331,10 @@ namespace PeterO.Mail {
     }
 
     private static int EncodeContinuation(
-  string str,
-  int startPos,
-  HeaderEncoder sa,
-  bool uriSafe) {
+      string str,
+      int startPos,
+      HeaderEncoder sa,
+      bool uriSafe) {
       int column = sa.GetColumn();
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
@@ -342,7 +346,7 @@ namespace PeterO.Mail {
         int contin = (index == 0) ? 7 : 0;
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
             (str[index + 1] & 0xfc00) == 0xdc00) {
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str[index + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
@@ -396,10 +400,10 @@ namespace PeterO.Mail {
     }
 
     private static void AppendComplexParamValue(
-  string name,
-  string str,
-  HeaderEncoder sa,
-  bool uriSafe) {
+      string name,
+      string str,
+      HeaderEncoder sa,
+      bool uriSafe) {
 #if DEBUG
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -439,10 +443,10 @@ namespace PeterO.Mail {
     }
 
     private static bool AppendSimpleParamValue(
-  string name,
-  string str,
-  HeaderEncoder sa,
-  bool uriSafe) {
+      string name,
+      string str,
+      HeaderEncoder sa,
+      bool uriSafe) {
       if (str.Length == 0) {
         if (uriSafe) {
           sa.AppendSymbol(name + "*");
@@ -529,8 +533,8 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToSingleLineString"]/*'/>
+    /// <xmlbegin id='25'/>
+    /// <returns>A string object.</returns>
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -540,7 +544,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToUriSafeString"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MediaType.ToUriSafeString"]/*'/>
     public string ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -550,11 +554,11 @@ namespace PeterO.Mail {
     }
 
     internal static int SkipMimeToken(
-  string str,
-  int index,
-  int endIndex,
-  StringBuilder builder,
-  bool httpRules) {
+      string str,
+      int index,
+      int endIndex,
+      StringBuilder builder,
+      bool httpRules) {
       int i = index;
       const string ValueSpecials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
@@ -641,10 +645,10 @@ namespace PeterO.Mail {
     }
 
     internal static int SkipMimeTypeSubtype(
-  string str,
-  int index,
-  int endIndex,
-  StringBuilder builder) {
+      string str,
+      int index,
+      int endIndex,
+      StringBuilder builder) {
       int i = index;
       var count = 0;
       string specials = "!#$&-^_.+";
@@ -900,7 +904,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetParameter(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MediaType.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -976,8 +980,8 @@ namespace PeterO.Mail {
     }
 
     private static string DecodeRfc2231Encoding(
-    string value,
-    ICharacterEncoding charset) {
+      string value,
+      ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
@@ -1044,8 +1048,8 @@ namespace PeterO.Mail {
             if (parameters.ContainsKey(continEncoded)) {
               // Encoded continuation (checked first)
               string newEnc = DecodeRfc2231Encoding(
-             parameters[continEncoded],
-             charsetUsed);
+                parameters[continEncoded],
+                charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 break;
@@ -1125,10 +1129,10 @@ namespace PeterO.Mail {
         ++index;
         index = httpRules ? SkipOws(str, index, endIndex) :
               HeaderParser.ParseCFWS(
-      str,
-      index,
-      endIndex,
-      null);
+                str,
+                index,
+                endIndex,
+                null);
         var builder = new StringBuilder();
         // NOTE:
         // 1. RFC6838 restricts the format of parameter names to the same
@@ -1176,10 +1180,10 @@ namespace PeterO.Mail {
         if (!httpRules) {
           // See note above on whitespace around the equal sign
           index = HeaderParser.ParseCFWS(
-  str,
-  index,
-  endIndex,
-  null);
+            str,
+            index,
+            endIndex,
+            null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -1259,11 +1263,11 @@ namespace PeterO.Mail {
       }
       index = i2;
       return ParseParameters(
-  str,
-  index,
-  endIndex,
-  HttpRules,
-  parameters) ? new MediaType(topLevelType, subType, parameters) : null;
+        str,
+        index,
+        endIndex,
+        HttpRules,
+        parameters) ? new MediaType(topLevelType, subType, parameters) : null;
     }
 
 #if CODE_ANALYSIS
@@ -1273,12 +1277,13 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <summary>Specifies the media type "text/plain" and the "charset" parameter
-    /// "US-ASCII", used for plain text data.</summary>
+    /// <xmlbegin id='26'/>
+    /// <summary>Specifies the media type "text/plain" and the "charset"
+    /// parameter "US-ASCII", used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
-  "text",
-  "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
         "charset",
         "us-ascii").ToMediaType();
 
@@ -1289,13 +1294,15 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <summary>Specifies the media type "text/plain" and the "charset" parameter "utf-8",
-    /// used for plain text data that may contain characters outside the basic
-    /// Latin range (U+0000 to U+007F).</summary>
+    /// <xmlbegin id='27'/>
+    /// <summary>Specifies the media type "text/plain" and the "charset"
+    /// parameter "utf-8", used for plain text data that may contain
+    /// characters outside the basic Latin range (U + 0000 to U +
+    /// 007F).</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
-  "text",
-  "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
         "charset",
         "utf-8").ToMediaType();
 
@@ -1306,8 +1313,9 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <summary>Specifies the media type "message/rfc822", used for Internet mail
-    /// messages.</summary>
+    /// <xmlbegin id='28'/>
+    /// <summary>Specifies the media type "message/rfc822", used for
+    /// Internet mail messages.</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
@@ -1318,8 +1326,9 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <summary>Specifies the media type "application/octet-stream", used for arbitrary
-    /// binary data.</summary>
+    /// <xmlbegin id='29'/>
+    /// <summary>Specifies the media type "application/octet-stream", used
+    /// for arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
@@ -1329,14 +1338,15 @@ namespace PeterO.Mail {
       this.parameters = new Dictionary<string, string>();
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String)"]/*'/>
+    /// <xmlbegin id='30'/>
+    /// <param name='mediaTypeValue'>Not documented yet.</param>
+    /// <returns>A MediaType object.</returns>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)"]/*'/>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));

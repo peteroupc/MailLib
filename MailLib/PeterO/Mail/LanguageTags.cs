@@ -4,8 +4,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
   public static class LanguageTags {
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
@@ -44,13 +44,13 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)"]/*'/>
     public static bool IsLanguageRange(string str) {
       return IsLanguageRange(str, false);
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)"]/*'/>
     public static bool IsLanguageRange(string str, bool extended) {
       if (String.IsNullOrEmpty(str)) {
         return false;
@@ -123,9 +123,9 @@ namespace PeterO.Mail {
 
     // Parses a comment using the obsolete syntax.
     private static int ParseCommentLax(
-  string str,
-  int index,
-  int endIndex) {
+      string str,
+      int index,
+      int endIndex) {
       int indexStart = index;
       var depth = 0;
       if (index < endIndex && (str[index] == 40)) {
@@ -174,7 +174,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)"]/*'/>
     public static string LanguageTagCase(string str) {
       if (String.IsNullOrEmpty(str)) {
         return str;
@@ -197,8 +197,8 @@ namespace PeterO.Mail {
             sb.Append(
           DataUtilities.ToLowerCaseAscii(
           str.Substring(
-          i - count,
-          count)));
+            i - count,
+            count)));
           }
           lastSubtagLength = count;
           count = 0;
@@ -228,7 +228,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)"]/*'/>
     public static IList<string> GetLanguageList(
       string str) {
       string tag = null;
@@ -241,7 +241,7 @@ namespace PeterO.Mail {
       while (index < str.Length) {
         if (!first) {
           if (index < str.Length && str[index] == ',') {
-            index++;
+            ++index;
           } else {
             return null;
           }
@@ -285,7 +285,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)"]/*'/>
     public static IList<StringAndQuality> GetRangeListWithQuality(
       string str) {
       string tag = null;
@@ -298,7 +298,7 @@ namespace PeterO.Mail {
       while (index < str.Length) {
         if (!first) {
           if (index < str.Length && str[index] == ',') {
-            index++;
+            ++index;
           } else {
             return null;
           }
@@ -337,8 +337,7 @@ namespace PeterO.Mail {
               int[] mults = { 100, 10, 1 };
               for (var i = 0; i < 3; ++i) {
                 if (index < str.Length &&
-                    (str[index] >= '0' ||
-                     str[index] <= '9')) {
+                (str[index] >= '0' || str[index] <= '9')) {
                   qvalue += mults[i] * (str[index] - '0');
                   ++index;
                 } else {
@@ -363,8 +362,8 @@ namespace PeterO.Mail {
     }
 
     private static bool MatchLangTagBasic(
-         string rangeLowerCased,
-         string tagLowerCased) {
+      string rangeLowerCased,
+      string tagLowerCased) {
       if (rangeLowerCased.Equals("*")) {
         return true;
       }
@@ -382,8 +381,8 @@ namespace PeterO.Mail {
     }
 
     private static bool MatchLangTagExtended(
-  string rangeLowerCased,
-  string tagLowerCased) {
+      string rangeLowerCased,
+      string tagLowerCased) {
       string[] rangeSub = SplitAt(rangeLowerCased, "-");
       string[] tagSub = SplitAt(tagLowerCased, "-");
       if (rangeSub.Length == 0 || tagSub.Length == 0) {
@@ -419,7 +418,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)"]/*'/>
     public static IList<string> LanguageTagFilter(
            IList<string> ranges,
            IList<string> languages,
@@ -496,7 +495,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.MatchesLanguageTag(System.String,System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.MatchesLanguageTag(System.String,System.String)"]/*'/>
     public static bool MatchesLanguageTag(string range, string tag) {
       IList<string> tags = LanguageTagFilter(
         new List<string>(new string[] { range }),
@@ -507,7 +506,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String)"]/*'/>
     public static string LanguageTagLookup(
   string range,
   IList<string> languages,
@@ -516,7 +515,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)"]/*'/>
     public static string LanguageTagLookup(
   IList<string> ranges,
   IList<string> languages,
@@ -525,7 +524,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})"]/*'/>
     public static IList<string> LanguageTagFilter(
   IList<string> ranges,
   IList<string> languages) {
@@ -533,7 +532,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
     public static string LanguageTagLookup(
   string range,
   IList<string> languages,
@@ -547,7 +546,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
     public static string LanguageTagLookup(
          IList<string> ranges,
          IList<string> languages,
@@ -596,7 +595,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)"]/*'/>
+    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)"]/*'/>
     public static bool IsPotentiallyValidLanguageTag(string str) {
       if (String.IsNullOrEmpty(str)) {
         return false;

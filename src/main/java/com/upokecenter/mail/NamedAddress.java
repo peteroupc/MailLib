@@ -9,10 +9,10 @@ at: http://peteroupc.github.io/
 
 import java.util.*;
 
-  /**
-   * Represents an email address and a name for that address. Can represent a
-   * group of email addresses instead.
-   */
+    /**
+     * Represents an email address and a name for that address. Can represent a
+     * group of email addresses instead.
+     */
   public class NamedAddress {
     private final String displayName;
 
@@ -72,9 +72,11 @@ import java.util.*;
 
     /**
      * Determines whether this object and another object are equal.
-     * @param obj The parameter {@code obj} is an arbitrary object.
+     * @param obj The parameter
+      {@code obj}
+       is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false} .
+     * {@code false}.
      */
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
@@ -84,14 +86,16 @@ import java.util.*;
    (this.address == null ? other.address == null :
      this.address.equals(other.address)) && this.isGroup == other.isGroup &&
           (!this.isGroup || CollectionUtilities.ListEquals(
-  this.groupAddresses,
-  other.groupAddresses));
+            this.groupAddresses,
+            other.groupAddresses));
     }
 
     /**
      * Not documented yet.
      * @param na A named address object to compare with this one. Can be null.
-     * @return Either {@code true} or {@code false} .
+     * @return Either
+      {@code true} or
+      {@code false} .
      */
     public boolean AddressesEqual(NamedAddress na) {
       if (na == null || this.isGroup != na.isGroup) {
@@ -151,7 +155,7 @@ import java.util.*;
      * Gets a value indicating whether this represents a group of addresses rather
      * than a single address.
      * @return {@code true} If this represents a group of addresses; otherwise, .
-     * {@code false} .
+     * {@code false}.
      */
     public final boolean isGroup() {
         return this.isGroup;
@@ -185,7 +189,7 @@ import java.util.*;
 
     /**
      * Converts this object to a text string. This will generally be the form of
-     * this NamedAddress object as it could appear in a "To" header field.
+     *  this NamedAddress object as it could appear in a "To" header field.
      * @return A string representation of this object.
      */
     @Override public String toString() {
@@ -197,7 +201,7 @@ import java.util.*;
     /**
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param address The parameter {@code address} is a text string.
-     * @throws java.lang.NullPointerException The parameter {@code address} is null.
+     * @throws NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException Address has an invalid syntax.; Address has
      * an invalid syntax.
      */
@@ -228,7 +232,7 @@ import java.util.*;
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param address The parameter {@code address} is a text string.
-     * @throws java.lang.NullPointerException The parameter {@code address} is null.
+     * @throws NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress(String displayName, String address) {
       if (address == null) {
@@ -244,7 +248,7 @@ import java.util.*;
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param address The parameter {@code address} is an Address object.
-     * @throws java.lang.NullPointerException The parameter {@code address} is null.
+     * @throws NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress(String displayName, Address address) {
       if (address == null) {
@@ -261,7 +265,7 @@ import java.util.*;
      * @param displayName The parameter {@code displayName} is a text string.
      * @param localPart The parameter {@code localPart} is a text string.
      * @param domain The parameter {@code domain} is a text string.
-     * @throws java.lang.NullPointerException The parameter {@code localPart} or
+     * @throws NullPointerException The parameter {@code localPart} or
      * {@code domain} is null.
      */
     public NamedAddress(String displayName, String localPart, String domain) {
@@ -281,7 +285,7 @@ import java.util.*;
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param groupName The parameter {@code groupName} is a text string.
      * @param mailboxes The parameter {@code mailboxes} is an List object.
-     * @throws java.lang.NullPointerException The parameter {@code groupName} or
+     * @throws NullPointerException The parameter {@code groupName} or
      * {@code mailboxes} is null.
      * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list
      * is a group.

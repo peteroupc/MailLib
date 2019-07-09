@@ -2,7 +2,9 @@
 
     public sealed class MediaTypeBuilder
 
- A mutable media type object.  ### Member Summary
+ A mutable media type object.
+
+### Member Summary
 * <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
 * <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type.
 * <code>[RemoveParameter(string)](#RemoveParameter_string)</code> - Removes a parameter from this builder object.
@@ -22,13 +24,13 @@
 
  Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.    <b>Parameters:</b>
 
- * <i>mt</i>:  The parameter  <i>mt</i>
+ * <i>mt</i>: The parameter  <i>mt</i>
  is a MediaType object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>mt</i>
+The parameter  <i>mt</i>
  is null.
 
 <a id="Void_ctor_String_String"></a>
@@ -40,10 +42,10 @@
 
  Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.    <b>Parameters:</b>
 
- * <i>type</i>:  The parameter  <i>type</i>
+ * <i>type</i>: The parameter  <i>type</i>
  is a text string.
 
- * <i>subtype</i>:  The parameter  <i>subtype</i>
+ * <i>subtype</i>: The parameter  <i>subtype</i>
  is a text string.
 
 <a id="Void_ctor"></a>
@@ -197,6 +199,6 @@ A MediaType object.
 
     public override string ToString();
 
- Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString`   <b>Return Value:</b>
+ Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString`  .  <b>Return Value:</b>
 
 A string representation of this object.

@@ -30,13 +30,13 @@ import com.upokecenter.text.*;
             strret[0] = str;
             return strret;
           }
-          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
           strings.add(str.substring(index));
           break;
         } else {
           first = false;
           String newstr = str.substring(index, (index)+(index2 - index));
-          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -115,17 +115,17 @@ import com.upokecenter.text.*;
         if (v <= 0xffff) {
           builder.append((char)v);
         } else if (v <= 0x10ffff) {
-          builder.append((char)((((v - 0x10000) >> 10) & 0x3ff) + 0xd800));
-          builder.append((char)(((v - 0x10000) & 0x3ff) + 0xdc00));
+          builder.append((char)((((v - 0x10000) >> 10) & 0x3ff) | 0xd800));
+          builder.append((char)(((v - 0x10000) & 0x3ff) | 0xdc00));
         }
       }
       return builder.toString();
     }
 
     public static void AssertEqual(
-  String expectedStr,
-  String actualStr,
-  String msg) {
+      String expectedStr,
+      String actualStr,
+      String msg) {
       if (!expectedStr.equals(actualStr)) {
                 Assert.fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
@@ -158,7 +158,7 @@ import com.upokecenter.text.*;
       boolean isForm = NormalizerInput.IsNormalized(str, norm);
       String newStr = NormalizerInput.Normalize(str, norm);
       ICharacterInput sci = new CharacterReader(str, false, true);
-            boolean isForm2 = NormalizerInput.IsNormalized(sci, norm);
+      boolean isForm2 = NormalizerInput.IsNormalized(sci, norm);
       if (isForm) {
         AssertEqual(str, newStr, EncodingTest.EscapeString(str));
       }
@@ -182,10 +182,10 @@ import com.upokecenter.text.*;
  System.out.println(i);
 }
         String str = EncodingTest.RandomString(rand);
-                this.TestIdempotent(str, Normalization.NFC);
-                this.TestIdempotent(str, Normalization.NFD);
-                this.TestIdempotent(str, Normalization.NFKC);
-                this.TestIdempotent(str, Normalization.NFKD);
+        this.TestIdempotent(str, Normalization.NFC);
+        this.TestIdempotent(str, Normalization.NFD);
+        this.TestIdempotent(str, Normalization.NFKC);
+        this.TestIdempotent(str, Normalization.NFKD);
 }
 System.out.println("Done");
     }
@@ -193,7 +193,7 @@ System.out.println("Done");
     @Test
     public void NormTestSpecific() {
       String str = "_\ufac7\uc972+67 Tqd R_.";
-            {
+      {
 String stringTemp = NormalizerInput.Normalize(
   str,
   Normalization.NFC);
@@ -206,12 +206,12 @@ Assert.assertEquals(
  Assert.fail();
  }
       this.TestIdempotent(str, Normalization.NFC);
-            str = "_\u96e3\uc972+67 Tqd R_._";
-            if (!(
+      str = "_\u96e3\uc972+67 Tqd R_._";
+      if (!(
         NormalizerInput.IsNormalized(str, Normalization.NFC))) {
  Assert.fail();
  }
-            this.TestIdempotent(str, Normalization.NFC);
+        this.TestIdempotent(str, Normalization.NFC);
     }
 
     private static final class NormResult {
@@ -228,41 +228,41 @@ Assert.assertEquals(
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
         this.nfc = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFC);
+          this.origstr,
+          Normalization.NFC);
         this.nfd = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFD);
+          this.origstr,
+          Normalization.NFD);
         this.nfkc = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFKC);
+          this.origstr,
+          Normalization.NFKC);
         this.nfkd = NormalizerInput.Normalize(
-  this.origstr,
-  Normalization.NFKD);
+          this.origstr,
+          Normalization.NFKD);
         if (!NormalizerInput.IsNormalized(
-            this.nfc,
-            Normalization.NFC)) {
+          this.nfc,
+          Normalization.NFC)) {
           {
             Assert.fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-            this.nfd,
-            Normalization.NFD)) {
+          this.nfd,
+          Normalization.NFD)) {
           {
             Assert.fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-            this.nfkc,
-            Normalization.NFKC)) {
+          this.nfkc,
+          Normalization.NFKC)) {
           {
             Assert.fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-            this.nfkd,
-            Normalization.NFKD)) {
+          this.nfkd,
+          Normalization.NFKD)) {
           {
             Assert.fail(line);
           }
@@ -303,8 +303,9 @@ public void TestNormD() {
         int p1 = pairs[i];
         int p2 = pairs[i + 1];
         int p3 = pairs[i + 2];
-        if (IsSpecialChar(p1) || IsSpecialChar(p2) ||
-           IsSpecialChar(p3)) {
+        if (IsSpecialChar(p1) ||
+IsSpecialChar(p2) ||
+IsSpecialChar(p3)) {
           System.out.println("{0:X4},{1:X4},{2:X4}", p1, p2, p3);
         }
       }
@@ -350,7 +351,7 @@ String nfdfs = NormalizerInput.Normalize(codePointString,
  Assert.fail();
  }
       boolean part1 = false;
-       for (String lineItem : lines) {
+      for (String lineItem : lines) {
         String line = lineItem;
         int hash = line.indexOf("#");
         if (hash >= 0) {
@@ -391,30 +392,30 @@ String nfdfs = NormalizerInput.Normalize(codePointString,
         }
         if (!handled[i]) {
           if (i >= 0x10000) {
-            cptemp[0] = (char)((((i - 0x10000) >> 10) & 0x3ff) + 0xd800);
-            cptemp[1] = (char)(((i - 0x10000) & 0x3ff) + 0xdc00);
+            cptemp[0] = (char)((((i - 0x10000) >> 10) & 0x3ff) | 0xd800);
+            cptemp[1] = (char)(((i - 0x10000) & 0x3ff) | 0xdc00);
           } else {
             cptemp[0] = (char)i;
           }
           String cpstr = new String(cptemp, 0, i >= 0x10000 ? 2 : 1);
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFC)) {
+            cpstr,
+            Normalization.NFC)) {
             Assert.fail(TestCommon.IntToString(i));
           }
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFD)) {
+            cpstr,
+            Normalization.NFD)) {
                     Assert.fail(TestCommon.IntToString(i));
           }
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFKC)) {
+            cpstr,
+            Normalization.NFKC)) {
                     Assert.fail(TestCommon.IntToString(i));
  }
           if (!NormalizerInput.IsNormalized(
-  cpstr,
-  Normalization.NFKD)) {
+            cpstr,
+            Normalization.NFKD)) {
                     Assert.fail(TestCommon.IntToString(i));
         }
           String imsg = TestCommon.IntToString(i);

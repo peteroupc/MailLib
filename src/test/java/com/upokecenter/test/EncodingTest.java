@@ -89,9 +89,9 @@ import com.upokecenter.text.*;
     }
 
     static int IsGoodAsciiMessageFormat(
-  String str,
-  boolean hasMessageType,
-  String fn) {
+      String str,
+      boolean hasMessageType,
+      String fn) {
       int lineLength = 0;
       int wordLength = 0;
       int index = 0;
@@ -268,9 +268,9 @@ import com.upokecenter.text.*;
     }
 
     public static void AssertEqual(
-  byte[] expectedBytes,
-  byte[] actualBytes,
-  String msg) {
+      byte[] expectedBytes,
+      byte[] actualBytes,
+      String msg) {
       if (expectedBytes.length != actualBytes.length) {
         Assert.fail("\nexpected: " + toString(expectedBytes) + "\n" +
                     "\nwas: " + toString(actualBytes) + "\n" + msg);
@@ -353,8 +353,8 @@ import com.upokecenter.text.*;
     }
 
     private static void TestDecodeQuotedPrintable(
-  String input,
-  String expected) {
+      String input,
+      String expected) {
       String msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -383,7 +383,7 @@ import com.upokecenter.text.*;
       TestBase64Decode(new byte[] { 0, 16, 1, 93  }, "ABABXX==");
       TestBase64Decode(
      new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235 },
-          "qazxswedcvfr");
+     "qazxswedcvfr");
       TestBase64Decode(
         new byte[] { (byte)255, (byte)239, (byte)254, 103  }, "/+/+Zz==");
       TestBase64Decode(
@@ -1168,8 +1168,8 @@ import com.upokecenter.text.*;
 
     private static byte[] DowngradeDeliveryStatus(String str) {
       String msgstr =
-
-  "From: xy@x.example\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+        "From: xy@x.example\r\nMIME-Version: 1.0\r\n" +
+        "Content-Type: message/global-delivery-status\r\n"
     +
     "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
       Message msg = MessageTest.MessageFromString(msgstr);
@@ -1252,8 +1252,8 @@ import com.upokecenter.text.*;
     }
 
     private static void TestDowngradeReceivedOne(
-    String input,
-    String expected) {
+      String input,
+      String expected) {
       Message msg = new Message();
       msg.SetHeader("received", input);
       msg = new Message(DataUtilities.GetUtf8Bytes(msg.Generate(), true));
@@ -1285,11 +1285,11 @@ import com.upokecenter.text.*;
     public void TestDowngradeDSN() {
       String ValueHexstart = "\\x" + "{";
       TestDowngradeDSNOne(
-  "utf-8; x@x.example",
-  "utf-8; x@x.example");
+        "utf-8; x@x.example",
+        "utf-8; x@x.example");
       TestDowngradeDSNOne(
-  "utf-8; x@x" + ValueHexstart + "BE}.example",
-  "utf-8; x@x\u00be.example");
+        "utf-8; x@x" + ValueHexstart + "BE}.example",
+        "utf-8; x@x\u00be.example");
       {
         String objectTemp = "utf-8; x@x" + ValueHexstart + "BE}" +
              ValueHexstart + "FF20}.example";
@@ -1302,7 +1302,6 @@ import com.upokecenter.text.*;
       TestDowngradeDSNOne(
   "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
   "(\u00be) rfc822; x@x.example");
-
       {
         String stringTemp =
   "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); e";
@@ -1328,8 +1327,8 @@ import com.upokecenter.text.*;
         TestEncodedWordsOne("x", "=?utf-8*" + str + "?Q?x?=");
       } else {
         TestEncodedWordsOne(
-  "=?utf-8*" + str + "?Q?x?=",
-  "=?utf-8*" + str + "?Q?x?=");
+          "=?utf-8*" + str + "?Q?x?=",
+          "=?utf-8*" + str + "?Q?x?=");
       }
     }
 
@@ -1608,13 +1607,13 @@ import com.upokecenter.text.*;
   " (" + input + ") en");
       TestDecodeStructured(
   ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
- " (comment (cmt " + input + ")comment) en");
+  " (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
      ValuePar + "comment " + ValuePar + "=?bad?= " + expected + ")comment) en",
-        " (comment (=?bad?= " + input + ")comment) en");
+     " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
    ValuePar + "comment " + ValuePar + "" + expected + ")comment) en",
-        " (comment (" + input + ")comment) en");
+   " (comment (" + input + ")comment) en");
       TestDecodeStructured(
   "(" + expected + "()) en",
   " (" + input + "()) en");
@@ -1630,8 +1629,8 @@ import com.upokecenter.text.*;
   "subject",
   "(tes\u00bet) x@x.example");
         Assert.assertEquals(
-  "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
-  stringTemp);
+          "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
+          stringTemp);
       }
     }
 
@@ -1643,8 +1642,8 @@ import com.upokecenter.text.*;
                 "\"X\" <y@example.com>";
         String strparam = "x <x@example.com>, \"X\" <y@example.com>";
         Object objectTemp2 = DowngradeHeaderField(
-  "to",
-  strparam);
+          "to",
+          strparam);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -1652,8 +1651,8 @@ import com.upokecenter.text.*;
             "=?utf-8?Q?=C2=BE?= <y@example.com>";
         String strparam = "x <x@example.com>, \u00be <y@example.com>";
         Object objectTemp2 = DowngradeHeaderField(
-  "to",
-  strparam);
+          "to",
+          strparam);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -1674,9 +1673,8 @@ import com.upokecenter.text.*;
       }
       {
         String stringTemp = DowngradeHeaderField(
-  "to",
-  "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
-
+          "to",
+          "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
         {
           Object objectTemp =
 "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
@@ -1687,9 +1685,8 @@ import com.upokecenter.text.*;
       }
       {
         String stringTemp = DowngradeHeaderField(
-  "to",
-  "g: x@example.com" + ValueSep + "x@\u0300.example;");
-
+          "to",
+          "g: x@example.com" + ValueSep + "x@\u0300.example;");
         {
           Object objectTemp =
 "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
@@ -1702,8 +1699,8 @@ import com.upokecenter.text.*;
         String objectTemp = "g: x@example.com" + ValueSep +
             "x@xn--e-ufa.example;";
         Object objectTemp2 = DowngradeHeaderField(
-  "to",
-  "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
+          "to",
+          "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -1735,8 +1732,8 @@ import com.upokecenter.text.*;
   "sender",
   "x <x\u00e1y@example.com>");
         Assert.assertEquals(
-  "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
-  stringTemp);
+          "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
+          stringTemp);
       }
     }
 
@@ -1773,8 +1770,8 @@ public final void setValueMessage(Message value) {
     }
 
     private static HeaderInfo DowngradeHeaderFieldEx(
-    String name,
-    String value) {
+      String name,
+      String value) {
       String msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.equals("from")) {
@@ -1810,30 +1807,30 @@ public final void setValueMessage(Message value) {
       "to",
       "cc",
       "bcc",
-  "disposition-notification-to",
-      "sender"
+      "disposition-notification-to",
+      "sender",
     };
     @Test
     public void TestDowngradeAddress() {
       for (String valueHeader : addressHeaderFields) {
         TestDowngradeAddressOne(
   valueHeader,
- "down\u00begrade <down@example.com>",
-             "down\u00begrade",
- "down",
- "example.com");
+  "down\u00begrade <down@example.com>",
+  "down\u00begrade",
+  "down",
+  "example.com");
         TestDowngradeAddressOne(
   valueHeader,
- "downgrade <down@example.c\u00e7m>",
-             "downgrade",
- "down",
- "example.c\u00e7m");
+  "downgrade <down@example.c\u00e7m>",
+  "downgrade",
+  "down",
+  "example.c\u00e7m");
         TestDowngradeAddressOne(
   valueHeader,
- "downgrade <down@c\u00e7m.example>",
-             "downgrade",
- "down",
- "c\u00e7m.example");
+  "downgrade <down@c\u00e7m.example>",
+  "downgrade",
+  "down",
+  "c\u00e7m.example");
       }
     }
 
@@ -1879,10 +1876,10 @@ public final void setValueMessage(Message value) {
       Assert.assertEquals("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
       Assert.assertEquals(
   "(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
-                    EncodeComment("(x()y)"));
+  EncodeComment("(x()y)"));
       Assert.assertEquals(
   "(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
-                    EncodeComment("(x(a\\b)y)"));
+  EncodeComment("(x(a\\b)y)"));
       {
         String stringTemp = EncodeComment("()");
         Assert.assertEquals(
@@ -1988,7 +1985,6 @@ public final void setValueMessage(Message value) {
         String stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
-
         {
           Object objectTemp =
             "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>";
@@ -2105,25 +2101,25 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
       TestEncodedWordsPhrase(
-  "\"=?utf-8?q?xyz?=\"",
-  "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
+        "\"=?utf-8?q?xyz?=\"",
+        "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
       TestEncodedWordsPhrase(
-  "\"=?utf-8?q?xyz?=\"",
-  "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
+        "\"=?utf-8?q?xyz?=\"",
+        "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
       TestEncodedWordsPhrase(
   "me (x) \"x:y\"",
   "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
       TestEncodedWordsPhrase(
-  "me \"x:y\"",
-  "=?utf-8?q?me?= \"x:y\"");
+        "me \"x:y\"",
+        "=?utf-8?q?me?= \"x:y\"");
       // Non-special (dollar sign) not allowed in
       // Q-encoded encoded
       // words within a phrase
       TestEncodedWordsPhrase(
-  "=?utf-8?q?$10?=",
-  "=?utf-8?q?$10?=");
+        "=?utf-8?q?$10?=",
+        "=?utf-8?q?$10?=");
     }
 
     @Test
@@ -2148,16 +2144,16 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
-  "=?bad1?= =?bad2?= =?bad3?=",
-  "=?bad1?= =?bad2?= =?bad3?=");
+        "=?bad1?= =?bad2?= =?bad3?=",
+        "=?bad1?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
       TestEncodedWordsPhrase(
-  "\"y =?bad2?= =?bad3?=\"",
-  "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
+        "\"y =?bad2?= =?bad3?=\"",
+        "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
       TestEncodedWordsPhrase(
-  "\"=?bad1?= y =?bad3?=\"",
-  "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
+        "\"=?bad1?= y =?bad3?=\"",
+        "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
   "xy\u0020(sss)",
@@ -2170,20 +2166,20 @@ public final void setValueMessage(Message value) {
   "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
    "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
-                    "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
+   "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
   "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
-                  "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
+  "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
   "=?us-ascii?q?x?=" + ValuePar + "z) y",
-                  "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+  "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
       TestEncodedWordsOne("abcde abcde", "abcde abcde");
       TestEncodedWordsOne("abcde", "abcde");
       TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
       TestEncodedWordsOne(
-  "=?utf-8?Q?abcde?=extra",
-  "=?utf-8?Q?abcde?=extra");
+        "=?utf-8?Q?abcde?=extra",
+        "=?utf-8?Q?abcde?=extra");
       TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
       TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
       TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
@@ -2196,22 +2192,22 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
       TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       TestEncodedWordsOne(
-    "=?x-undefined?q?abcde?=",
-    "=?x-undefined?q?abcde?=");
+        "=?x-undefined?q?abcde?=",
+        "=?x-undefined?q?abcde?=");
       TestEncodedWordsOne(
   "=?utf-8?Q?" + Repeat("x", 200) + "?=",
   "=?utf-8?Q?" + Repeat("x", 200) + "?=");
       TestEncodedWordsPhrase(
-   "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
-   "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+        "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
+        "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
       // Language embedded in encoded word
       TestEncodedWordsOne("x", "=?utf-8*en?Q?x?=");
       TestEncodedWordsOne("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
       TestEncodedWordsOne("x", "=?utf-8*en-us?Q?x?=");
       TestEncodedWordsOne("x", "=?utf-8*i-default?Q?x?=");
       TestEncodedWordsOne(
-    "=?utf-8*i-unknown?Q?x?=",
-    "=?utf-8*i-unknown?Q?x?=");
+        "=?utf-8*i-unknown?Q?x?=",
+        "=?utf-8*i-unknown?Q?x?=");
       TestEncodedWordsOne("=?*en?Q?x?=", "=?*en?Q?x?=");
       TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
@@ -2246,7 +2242,7 @@ public final void setValueMessage(Message value) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      tmp = "<x y@x.invalid>";  // local part is not a dot-atom
+      tmp = "<x y@x.invalid>"; // local part is not a dot-atom
       try {
         msg.SetHeader("to", tmp);
         Assert.fail("Should have failed");
@@ -2342,9 +2338,9 @@ public final void setValueMessage(Message value) {
       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
       {
         byte[] objectTemp = DataUtilities.GetUtf8Bytes(
-  str,
-  true,
-  true);
+          str,
+          true,
+          true);
         TestEncodedBytesRoundTrip(objectTemp, true);
       }
     }
