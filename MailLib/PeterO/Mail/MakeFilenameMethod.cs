@@ -608,18 +608,24 @@ namespace PeterO.Mail {
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
         bool reservedFilename = strLower.Equals(
-          "nul") || strLower.Equals("clock$") || strLower.IndexOf(
+          "nul",
+          StringComparison.Ordinal) || strLower.Equals("clock$",
+  StringComparison.Ordinal) ||
+strLower.IndexOf(
           "nul.",
           StringComparison.Ordinal) == 0 || strLower.Equals(
-          "prn") || strLower.IndexOf(
+            "prn",
+            StringComparison.Ordinal) || strLower.IndexOf(
           "prn.",
           StringComparison.Ordinal) == 0 || strLower.IndexOf(
             "![",
             StringComparison.Ordinal) >= 0 || strLower.Equals(
-          "aux") || strLower.IndexOf(
+          "aux",
+          StringComparison.Ordinal) || strLower.IndexOf(
             "aux.",
             StringComparison.Ordinal) == 0 || strLower.Equals(
-          "con") || strLower.IndexOf(
+          "con",
+          StringComparison.Ordinal) || strLower.IndexOf(
             "con.",
             StringComparison.Ordinal) == 0;
         // LPTn, COMn
@@ -681,7 +687,7 @@ namespace PeterO.Mail {
           // status of the string.
           str += "_";
         }
-      } while (!oldstr.Equals(str));
+      } while (!oldstr.Equals(str, StringComparison.Ordinal));
       return str;
     }
   }

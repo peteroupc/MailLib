@@ -12,8 +12,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.IdentityEncoder"]/*'/>
+    /// <summary>This is an internal API.</summary>
   internal sealed class IdentityEncoder : ICharacterEncoder
   {
     public int Encode(int c, IWriter s) {

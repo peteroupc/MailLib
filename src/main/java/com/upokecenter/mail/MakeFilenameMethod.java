@@ -609,14 +609,20 @@ private MakeFilenameMethod() {
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
         boolean reservedFilename = strLower.equals(
-          "nul") || strLower.equals("clock$") || strLower.indexOf(
+          "nul",
+          StringComparison.Ordinal) || strLower.equals("clock$",
+  StringComparison.Ordinal) ||
+strLower.indexOf(
           "nul.") == 0 || strLower.equals(
-          "prn") || strLower.indexOf(
+            "prn",
+            StringComparison.Ordinal) || strLower.indexOf(
           "prn.") == 0 || strLower.indexOf(
             "![") >= 0 || strLower.equals(
-          "aux") || strLower.indexOf(
+          "aux",
+          StringComparison.Ordinal) || strLower.indexOf(
             "aux.") == 0 || strLower.equals(
-          "con") || strLower.indexOf(
+          "con",
+          StringComparison.Ordinal) || strLower.indexOf(
             "con.") == 0;
         // LPTn, COMn
         if (
@@ -675,7 +681,7 @@ private MakeFilenameMethod() {
           // status of the String.
           str += "_";
         }
-      } while (!oldstr.equals(str));
+      } while (!oldstr.equals(str, StringComparison.Ordinal));
       return str;
     }
   }

@@ -4,8 +4,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.LanguageTags"]/*'/>
+    /// <summary>Contains methods for parsing and matching language
+    /// tags.</summary>
   public static class LanguageTags {
     private static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
@@ -43,14 +43,27 @@ namespace PeterO.Mail {
       return (string[])strings.ToArray();
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)"]/*'/>
+    /// <summary>Returns whether the given string is a basic language range
+    /// under RFC 4647. Examples include "&#x2a;", "en-us", and
+    /// "fr".</summary>
+    /// <param name='str'>The string to check. Can be null.</param>
+    /// <returns><c>true</c> if the given string is a basic language range;
+    /// otherwise, <c>false</c>.</returns>
     public static bool IsLanguageRange(string str) {
       return IsLanguageRange(str, false);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)"]/*'/>
+    /// <summary>Returns whether the given string is a basic or extended
+    /// language range under RFC 4647. Examples of basic (and extended)
+    /// language ranges include "&#x2a;", "en-us", and "fr". Examples of
+    /// extended language ranges include "&#x2a;-de" and
+    /// "it-&#x2a;".</summary>
+    /// <param name='str'>The string to check. Can be null.</param>
+    /// <param name='extended'>Check whether the string is a basic language
+    /// range if "false", or an extended language range if "true".</param>
+    /// <returns><c>true</c> if the given string is a basic language range
+    /// (depending on the <paramref name='extended'/> parameter);
+    /// otherwise, <c>false</c>.</returns>
     public static bool IsLanguageRange(string str, bool extended) {
       if (String.IsNullOrEmpty(str)) {
         return false;
@@ -173,8 +186,12 @@ namespace PeterO.Mail {
       return indexStart;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagCase(System.String)"]/*'/>
+    /// <summary>Sets the given language tag to the case combination
+    /// recommended by RFC 5646. For example, "en-us" becomes "en-US", and
+    /// "zh-hant" becomes "zh-Hant".</summary>
+    /// <param name='str'>A string of a language tag. Can be null.</param>
+    /// <returns>A text string in the recommended case combination, or null
+    /// if <paramref name='str'/> is null.</returns>
     public static string LanguageTagCase(string str) {
       if (String.IsNullOrEmpty(str)) {
         return str;
@@ -227,8 +244,15 @@ namespace PeterO.Mail {
       return index;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetLanguageList(System.String)"]/*'/>
+    /// <summary>Parses a language list from a Content-Language header
+    /// field.</summary>
+    /// <param name='str'>A string following the syntax of a
+    /// Content-Language header field (see RFC 3282). This is a
+    /// comma-separated list of language tags. RFC 5322 comments (in
+    /// parentheses) can appear. This parameter can be null.</param>
+    /// <returns>A list of language tags. Returns an empty list if
+    /// <paramref name='str'/> is null or the empty string, or null if
+    /// <paramref name='str'/> syntactically invalid.</returns>
     public static IList<string> GetLanguageList(
       string str) {
       string tag = null;
@@ -284,8 +308,20 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.GetRangeListWithQuality(System.String)"]/*'/>
+    /// <summary>Parses a language range list from an Accept-Language
+    /// header field.</summary>
+    /// <param name='str'>A string following the syntax of an
+    /// Accept-Language header field (see RFC 3282). This is a
+    /// comma-separated list of language ranges, with an optional "quality"
+    /// after the language tag (examples include "en; q=0.5" or "de-DE").
+    /// RFC 5322 comments (in parentheses) can appear. This parameter can
+    /// be null.</param>
+    /// <returns>A list of language ranges with their associated qualities.
+    /// The list will be sorted in descending order by quality; if two or
+    /// more language ranges have the same quality, they will be sorted in
+    /// the order in which they appeared in the given string. Returns null
+    /// if <paramref name='str'/> is null or syntactically
+    /// invalid.</returns>
     public static IList<StringAndQuality> GetRangeListWithQuality(
       string str) {
       string tag = null;
@@ -364,16 +400,16 @@ namespace PeterO.Mail {
     private static bool MatchLangTagBasic(
       string rangeLowerCased,
       string tagLowerCased) {
-      if (rangeLowerCased.Equals("*")) {
+      if (rangeLowerCased.Equals("*", StringComparison.Ordinal)) {
         return true;
       }
-      if (rangeLowerCased.Equals(tagLowerCased)) {
+      if (rangeLowerCased.Equals(tagLowerCased, StringComparison.Ordinal)) {
         return true;
       }
       if (tagLowerCased.Length > rangeLowerCased.Length &&
           tagLowerCased[rangeLowerCased.Length] == '-') {
         string prefix = tagLowerCased.Substring(0, rangeLowerCased.Length);
-        if (rangeLowerCased.Equals(prefix)) {
+        if (rangeLowerCased.Equals(prefix, StringComparison.Ordinal)) {
           return true;
         }
       }
@@ -388,7 +424,8 @@ namespace PeterO.Mail {
       if (rangeSub.Length == 0 || tagSub.Length == 0) {
         return false;
       }
-      if (!rangeSub[0].Equals("*") && !rangeSub[0].Equals(tagSub[0])) {
+      if (!rangeSub[0].Equals("*", StringComparison.Ordinal) &&
+!rangeSub[0].Equals(tagSub[0], StringComparison.Ordinal)) {
         return false;
       }
       var rangeIndex = 1;
@@ -398,14 +435,14 @@ namespace PeterO.Mail {
         if (range.Length == 0) {
           return false;
         }
-        if (range.Equals("*")) {
+        if (range.Equals("*", StringComparison.Ordinal)) {
           continue;
         }
         if (tagIndex >= tagSub.Length) {
           return false;
         }
         string tag = tagSub[tagIndex];
-        if (range.Equals(tag)) {
+        if (range.Equals(tag, StringComparison.Ordinal)) {
           ++rangeIndex;
           ++tagIndex;
         }
@@ -417,8 +454,27 @@ namespace PeterO.Mail {
       return true;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean)"]/*'/>
+    /// <summary>Finds the language tags that match a priority list of
+    /// language ranges.</summary>
+    /// <param name='ranges'>A list of language ranges (see documentation
+    /// for the "IsLanguageRange" method), which should be given in order
+    /// of descending preference.</param>
+    /// <param name='languages'>A list of language tags, which should be
+    /// given in order of descending preference.</param>
+    /// <param name='extended'>If true, the ranges in "ranges" are extended
+    /// language ranges; otherwise, they are basic language ranges.</param>
+    /// <param name='matchStarAtEnd'>If true, treats any range equaling
+    /// "&#x2a;" as appearing at the end of the language priority list, no
+    /// matter where it appears on that list.</param>
+    /// <returns>A list of language tags that match the given range, in
+    /// descending order of preference.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> or <paramref name='ranges'/> is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='ranges'/> contains a value that is not a basic or extended
+    /// language range, or <paramref name='languages'/> contains a value
+    /// that is not a potentially valid language tag.</exception>
     public static IList<string> LanguageTagFilter(
            IList<string> ranges,
            IList<string> languages,
@@ -441,16 +497,16 @@ namespace PeterO.Mail {
       var langsMatch = new bool[languages.Count];
       foreach (string range in ranges) {
         if (!IsLanguageRange(range, extended)) {
-          throw new ArgumentException("ranges");
+          throw new ArgumentException("ranges is not a language range.");
         }
       }
       foreach (string lang in languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
-          throw new ArgumentException("languages");
+          throw new ArgumentException("languages is not a language tag");
         }
       }
       foreach (string range in ranges) {
-        if (matchStarAtEnd && range.Equals("*")) {
+        if (matchStarAtEnd && range.Equals("*", StringComparison.Ordinal)) {
           hasStar = true;
           continue;
         }
@@ -494,8 +550,16 @@ namespace PeterO.Mail {
       return String.Empty;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.MatchesLanguageTag(System.String,System.String)"]/*'/>
+    /// <summary>Determines whether the given language tag matches the
+    /// given language range.</summary>
+    /// <param name='range'>A basic language range (see the documentation
+    /// for "IsLanguageRange").</param>
+    /// <param name='tag'>A language tag.</param>
+    /// <returns><c>true</c> if the language tag matches the language range
+    /// by the filtering method under RFC 4647; otherwise, <c>false</c>.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='range'/> is not a basic language range, or <paramref
+    /// name='tag'/> is not a potentially valid language tag.</exception>
     public static bool MatchesLanguageTag(string range, string tag) {
       IList<string> tags = LanguageTagFilter(
         new List<string>(new string[] { range }),
@@ -505,8 +569,23 @@ namespace PeterO.Mail {
       return tags.Count > 0;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String)"]/*'/>
+    /// <summary>Does a language tag lookup (under RFC 4647) for a matching
+    /// language tag.</summary>
+    /// <param name='range'>A basic language range (see the documentation
+    /// for "IsLanguageRange").</param>
+    /// <param name='languages'>A list of language tags, which should be
+    /// given in order of descending preference.</param>
+    /// <param name='defaultValue'>The value to return if no matching
+    /// language tag was found.</param>
+    /// <returns>The matching language tag, or the parameter <paramref
+    /// name='defaultValue'/> if there is no matching language
+    /// tag.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='range'/> is not a basic language range, or <paramref
+    /// name='languages'/> contains a value that is not a potentially valid
+    /// language tag.</exception>
     public static string LanguageTagLookup(
   string range,
   IList<string> languages,
@@ -514,8 +593,25 @@ namespace PeterO.Mail {
       return LanguageTagLookup(range, languages, defaultValue, false);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String)"]/*'/>
+    /// <summary>Does a language tag lookup (under RFC 4647) for a matching
+    /// language tag.</summary>
+    /// <param name='ranges'>A list of basic language ranges (see
+    /// documentation for the "IsLanguageRange" method), which should be
+    /// given in order of descending preference.</param>
+    /// <param name='languages'>A list of language tags, which should be
+    /// given in order of descending preference.</param>
+    /// <param name='defaultValue'>The value to return if no matching
+    /// language tag was found.</param>
+    /// <returns>The matching language tag, or the parameter <paramref
+    /// name='defaultValue'/> if there is no matching language
+    /// tag.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> or <paramref name='ranges'/> is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='ranges'/> contains a value that is not a basic language
+    /// range, or <paramref name='languages'/> contains a value that is not
+    /// a potentially valid language tag.</exception>
     public static string LanguageTagLookup(
   IList<string> ranges,
   IList<string> languages,
@@ -523,16 +619,47 @@ namespace PeterO.Mail {
       return LanguageTagLookup(ranges, languages, defaultValue, false);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagFilter(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})"]/*'/>
+    /// <summary>Finds the language tags that match a priority list of
+    /// basic language ranges.</summary>
+    /// <param name='ranges'>A list of basic language ranges (see
+    /// documentation for the "IsLanguageRange" method), which should be
+    /// given in order of descending preference.</param>
+    /// <param name='languages'>A list of language tags, which should be
+    /// given in order of descending preference.</param>
+    /// <returns>A list of language tags that match the given range, in
+    /// descending order of preference.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> or <paramref name='ranges'/> is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='ranges'/> contains a value that is not a basic language
+    /// range, or <paramref name='languages'/> contains a value that is not
+    /// a potentially valid language tag.</exception>
     public static IList<string> LanguageTagFilter(
   IList<string> ranges,
   IList<string> languages) {
       return LanguageTagFilter(ranges, languages, false, false);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.String,System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
+    /// <summary>Does a language tag lookup (under RFC 4647) for a matching
+    /// language tag.</summary>
+    /// <param name='range'>A language range (see the documentation for
+    /// "IsLanguageRange").</param>
+    /// <param name='languages'>A list of language tags, which should be
+    /// given in order of descending preference.</param>
+    /// <param name='defaultValue'>The value to return if no matching
+    /// language tag was found.</param>
+    /// <param name='extended'>If true, "range" is an extended language
+    /// range; otherwise, it's a are basic language range.</param>
+    /// <returns>The matching language tag, or the parameter <paramref
+    /// name='defaultValue'/> if there is no matching language
+    /// tag.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='range'/> is not a basic or extended language range, or
+    /// <paramref name='languages'/> contains a value that is not a
+    /// potentially valid language tag.</exception>
     public static string LanguageTagLookup(
   string range,
   IList<string> languages,
@@ -545,8 +672,27 @@ namespace PeterO.Mail {
         extended);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.LanguageTagLookup(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String},System.String,System.Boolean)"]/*'/>
+    /// <summary>Does a language tag lookup (under RFC 4647) for a matching
+    /// language tag.</summary>
+    /// <param name='ranges'>A list of language ranges (see documentation
+    /// for the "IsLanguageRange" method), which should be given in order
+    /// of descending preference.</param>
+    /// <param name='languages'>A list of language tags, which should be
+    /// given in order of descending preference.</param>
+    /// <param name='defaultValue'>The value to return if no matching
+    /// language tag was found.</param>
+    /// <param name='extended'>If true, the ranges in "ranges" are extended
+    /// language ranges; otherwise, they are basic language ranges.</param>
+    /// <returns>The matching language tag, or the parameter <paramref
+    /// name='defaultValue'/> if there is no matching language
+    /// tag.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> or <paramref name='ranges'/> is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='ranges'/> contains a value that is not a basic or extended
+    /// language range, or <paramref name='languages'/> contains a value
+    /// that is not a potentially valid language tag.</exception>
     public static string LanguageTagLookup(
          IList<string> ranges,
          IList<string> languages,
@@ -566,16 +712,16 @@ namespace PeterO.Mail {
       }
       foreach (string range in ranges) {
         if (!IsLanguageRange(range, extended)) {
-          throw new ArgumentException("ranges");
+          throw new ArgumentException("ranges is not a lnaguage range");
         }
       }
       foreach (string lang in languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
-          throw new ArgumentException("languages");
+          throw new ArgumentException("languages is not a language tag.");
         }
       }
       foreach (string range in ranges) {
-        if (range.Equals("*")) {
+        if (range.Equals("*", StringComparison.Ordinal)) {
           continue;
         }
         string lcrange = DataUtilities.ToLowerCaseAscii(range);
@@ -594,8 +740,15 @@ namespace PeterO.Mail {
       return defaultValue;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.LanguageTags.IsPotentiallyValidLanguageTag(System.String)"]/*'/>
+    /// <summary>Returns true if (1) the given string is a well-formed
+    /// language tag under RFC 5646 (that is, the string follows the syntax
+    /// given in section 2.1 of that RFC), and (2) the language tag
+    /// contains at most one extended language subtag, no variant subtags
+    /// with the same value, and no extension singleton subtags with the
+    /// same value.</summary>
+    /// <param name='str'>The string to check.</param>
+    /// <returns><c>true</c>, if the string meets the conditions given in
+    /// the summary, <c>false</c> otherwise.</returns>
     public static bool IsPotentiallyValidLanguageTag(string str) {
       if (String.IsNullOrEmpty(str)) {
         return false;
@@ -641,11 +794,11 @@ namespace PeterO.Mail {
           // match grandfathered language tags (the last
           // is necessary because it would otherwise be rejected
           // by the code that checks extended language subtags)
-          if (str.Equals("sgn-be-fr") ||
-str.Equals("sgn-be-nl") ||
-str.Equals("sgn-ch-de") ||
-str.Equals("en-gb-oed") ||
-str.Equals("zh-min-nan")) {
+          if (str.Equals("sgn-be-fr", StringComparison.Ordinal) ||
+str.Equals("sgn-be-nl", StringComparison.Ordinal) ||
+str.Equals("sgn-ch-de", StringComparison.Ordinal) ||
+str.Equals("en-gb-oed", StringComparison.Ordinal) ||
+str.Equals("zh-min-nan", StringComparison.Ordinal)) {
             return true;
           }
           // More complex cases
@@ -729,7 +882,7 @@ str.Equals("zh-min-nan")) {
             string curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (LengthIfAllAlphaNum(curString) == 1 &&
-                    !curString.Equals("x")) {
+                    !curString.Equals("x", StringComparison.Ordinal)) {
               variants = variants ?? new List<string>();
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
@@ -761,7 +914,7 @@ str.Equals("zh-min-nan")) {
           // optional private use
           if (splitIndex < splitLength) {
             int curIndex = splitIndex;
-            if (splitString[splitIndex].Equals("x")) {
+            if (splitString[splitIndex].Equals("x", StringComparison.Ordinal)) {
               ++splitIndex;
               var havetoken = false;
               while (splitIndex < splitLength) {
@@ -814,13 +967,19 @@ str.Equals("zh-min-nan")) {
         if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
           // grandfathered language tags
           str = DataUtilities.ToLowerCaseAscii(str);
-          return str.Equals("i-ami") || str.Equals("i-bnn") ||
-          str.Equals("i-default") || str.Equals("i-enochian") ||
-          str.Equals("i-hak") || str.Equals("i-klingon") ||
-          str.Equals("i-lux") || str.Equals("i-navajo") ||
-          str.Equals("i-mingo") || str.Equals("i-pwn") ||
-          str.Equals("i-tao") || str.Equals("i-tay") ||
-          str.Equals("i-tsu");
+          return str.Equals("i-ami", StringComparison.Ordinal) ||
+str.Equals("i-bnn", StringComparison.Ordinal) ||
+          str.Equals("i-default", StringComparison.Ordinal) ||
+str.Equals("i-enochian", StringComparison.Ordinal) ||
+          str.Equals("i-hak", StringComparison.Ordinal) ||
+str.Equals("i-klingon", StringComparison.Ordinal) ||
+          str.Equals("i-lux", StringComparison.Ordinal) ||
+str.Equals("i-navajo", StringComparison.Ordinal) ||
+          str.Equals("i-mingo", StringComparison.Ordinal) ||
+str.Equals("i-pwn", StringComparison.Ordinal) ||
+          str.Equals("i-tao", StringComparison.Ordinal) ||
+str.Equals("i-tay", StringComparison.Ordinal) ||
+          str.Equals("i-tsu", StringComparison.Ordinal);
         }
         return false;
       }

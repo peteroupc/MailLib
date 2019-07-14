@@ -2,7 +2,7 @@
 
     public final class DataUris extends java.lang.Object
 
-Contains methods for parsing and generating Data URIs (uniform resource
+Contains methods for parsing and generating Data URIs (uniform // /resource
  identifiers). Data URIs are described in RFC 2397. Examples for Data
  URIs follow. <pre>data:, hello%20world</pre>
  <pre>data:text/markdown, hello%20world</pre>
@@ -65,8 +65,7 @@ Encodes text as a Data URI (uniform resource identifier).
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>textString</code> is
- null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>textString</code> is null.
 
 ### MakeDataUri
     public static java.lang.String MakeDataUri​(byte[] bytes, MediaType mediaType)

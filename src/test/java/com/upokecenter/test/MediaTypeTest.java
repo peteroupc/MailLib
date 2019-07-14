@@ -217,28 +217,28 @@ import com.upokecenter.mail.*;
           "0",
           "text",
           "0"),
-    DictUtility.MakeDict(
-      "name",
-      "multipart/alternative",
-      "toplevel",
-      "multipart",
-      "subtype",
-      "alternative",
-      "multipart",
-      "1",
-      "text",
-      "0"),
-    DictUtility.MakeDict(
-      "name",
-      "multi-part/example;x=y",
-      "toplevel",
-      "multi-part",
-      "subtype",
-      "example",
-      "multipart",
-      "0",
-      "text",
-      "0"),
+          DictUtility.MakeDict(
+            "name",
+            "multipart/alternative",
+            "toplevel",
+            "multipart",
+            "subtype",
+            "alternative",
+            "multipart",
+            "1",
+            "text",
+            "0"),
+      DictUtility.MakeDict(
+        "name",
+        "multi-part/example;x=y",
+        "toplevel",
+        "multi-part",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "0"),
       DictUtility.MakeDict(
         "name",
         "texb/example",
@@ -316,7 +316,7 @@ import com.upokecenter.mail.*;
         "0",
         "text",
         "1"),
-      DictUtility.MakeDict(,
+      DictUtility.MakeDict(
         "name",
         "TexT/example;x=y",
         "toplevel",
@@ -329,39 +329,39 @@ import com.upokecenter.mail.*;
         "1")
 );
 
-private static MediaType ParseAndTestAspects(String s) {
+    private static MediaType ParseAndTestAspects(String s) {
       MediaType mt = MediaType.Parse(s);
       if (mt == null) {
- TestAspects(mt);
-}
+        TestAspects(mt);
+      }
       return mt;
     }
 
     private static MediaType ParseAndTestAspects(String s, MediaType defvalue) {
       MediaType mt = MediaType.Parse(s, defvalue);
       if (mt == null) {
- TestAspects(mt);
-}
+        TestAspects(mt);
+      }
       return mt;
     }
 
     private static void TestAspects(MediaType mt) {
       if (mt == null) {
- return;
-}
+        return;
+      }
       // Test round-tripping
       String str = mt.toString();
       MediaType mt2 = MediaType.Parse(str, null);
       if (mt2 == null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       Assert.assertEquals(str, mt2.toString());
       TestCommon.AssertEqualsHashCode(mt, mt2);
       str = mt.ToSingleLineString();
       mt2 = MediaType.Parse(str, null);
       if (mt2 == null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       Assert.assertEquals(str, mt2.ToSingleLineString());
       TestCommon.AssertEqualsHashCode(mt, mt2);
     }
@@ -465,12 +465,12 @@ private static MediaType ParseAndTestAspects(String s) {
           stringTemp);
       }
       {
- String stringTemp =
-          ParseAndTestAspects("text/plain; charset (cmt) = (cmt) UTF-8")
-             .GetCharset();
-             Assert.assertEquals(
-               "utf-8",
-               stringTemp);
+        String stringTemp =
+                 ParseAndTestAspects("text/plain; charset (cmt) = (cmt) UTF-8")
+                    .GetCharset();
+        Assert.assertEquals(
+          "utf-8",
+          stringTemp);
       }
       {
         // NOTE: 'UTF-8' (with single quotes) is now treated as unknown
@@ -504,25 +504,26 @@ private static MediaType ParseAndTestAspects(String s) {
           stringTemp);
       }
       {
-    String stringTemp =
-          ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
-       .GetCharset();
-       Assert.assertEquals(
-         "utf-8",
-         stringTemp);
-      }
-      {
-  String stringTemp =
-          ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
+        String stringTemp =
+              ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
            .GetCharset();
-           Assert.assertEquals(
-             "utf-8",
-             stringTemp);
+        Assert.assertEquals(
+          "utf-8",
+          stringTemp);
       }
       {
-     String stringTemp = ParseAndTestAspects("text/plain; charset=\"UTF-\\8\"")
-.GetCharset();
-Assert.assertEquals(
+        String stringTemp =
+                ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
+                 .GetCharset();
+        Assert.assertEquals(
+          "utf-8",
+          stringTemp);
+      }
+      {
+        String stringTemp = ParseAndTestAspects("text/plain;" +
+"\u0020charset=\"UTF-\\8\"")
+   .GetCharset();
+        Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
@@ -533,11 +534,11 @@ Assert.assertEquals(
           stringTemp);
       }
       {
-Object objectTemp = "";
-Object objectTemp2 = ParseAndTestAspects("text/xyz")
-.GetCharset();
-Assert.assertEquals(objectTemp, objectTemp2);
-}
+        Object objectTemp = "";
+        Object objectTemp2 = ParseAndTestAspects("text/xyz")
+        .GetCharset();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/xyz;charset=UTF-8")
@@ -601,8 +602,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
 
-public static final List<Map<String, String>>
-      ValueTestParamTypes = DictUtility.DictList(
+    public static final List<Map<String, String>>
+          ValueTestParamTypes = DictUtility.DictList(
   DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename = x.y", "filename", "x.y"),
@@ -889,35 +890,35 @@ public static final List<Map<String, String>>
       mt =
   ParseAndTestAspects("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
       {
-String stringTemp = mt.GetParameter("charset");
-Assert.assertEquals(
-  "ab",
-  stringTemp);
-}
+        String stringTemp = mt.GetParameter("charset");
+        Assert.assertEquals(
+          "ab",
+          stringTemp);
+      }
       Assert.assertEquals("text/plain", mt.getTypeAndSubType());
       if (mt.GetParameter("charset*0") != null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       if (mt.GetParameter("charset*1*") != null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       mt =
 
-  ParseAndTestAspects("text/plain;
-charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+  ParseAndTestAspects("text/plain;" +
+"\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
-String stringTemp = mt.GetParameter("charset");
-Assert.assertEquals(
-  "a b",
-  stringTemp);
-}
+        String stringTemp = mt.GetParameter("charset");
+        Assert.assertEquals(
+          "a b",
+          stringTemp);
+      }
       Assert.assertEquals("text/plain", mt.getTypeAndSubType());
       if (mt.GetParameter("charset*0") != null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       if (mt.GetParameter("charset*1*") != null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
@@ -939,9 +940,9 @@ Assert.assertEquals(
     }
 
     private static void TestPercentEncodingOne(String expected, String input) {
-   MediaType cd = ParseAndTestAspects("text/plain; filename*=utf-8''" +
-        input);
-        Assert.assertEquals(expected, cd.GetParameter("filename"));
+      MediaType cd = ParseAndTestAspects("text/plain; filename*=utf-8''" +
+           input);
+      Assert.assertEquals(expected, cd.GetParameter("filename"));
     }
 
     @Test

@@ -14,8 +14,108 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
+    /// <summary>
+    /// <para>Represents an email message, and contains methods and
+    /// properties for accessing and modifying email message data. This
+    /// class implements the Internet Message Format (RFC 5322) and
+    /// Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC
+    /// 2049).</para>
+    /// <para><b>Thread safety:</b> This class is mutable; its properties
+    /// can be changed. None of its instance methods are designed to be
+    /// thread safe. Therefore, access to objects from this class must be
+    /// synchronized if multiple threads can access them at the same
+    /// time.</para>
+    /// <para>The following lists known deviations from the mail
+    /// specifications (Internet Message Format and MIME):</para>
+    /// <list type=''>
+    /// <item>The content-transfer-encodings "quoted-printable" and
+    /// "base64" are treated as 7bit instead if they occur in a message or
+    /// body part with content type "multipart/&#x2a;" or "message/&#x2a;"
+    /// (other than "message/global", "message/global-headers",
+    /// "message/global-disposition-notification", or
+    /// "message/global-delivery-status").</item>
+    /// <item>If a message has two or more Content-Type header fields, it
+    /// is treated as having a content type of "application/octet-stream",
+    /// unless one or more of the header fields is syntactically
+    /// invalid.</item>
+    /// <item>Illegal UTF-8 byte sequences appearing in header field values
+    /// are replaced with replacement characters. Moreover, UTF-8 is parsed
+    /// everywhere in header field values, even in those parts of some
+    /// structured header fields where this appears not to be allowed.
+    /// (UTF-8 is a character encoding for the Unicode character
+    /// set.)</item>
+    /// <item>This implementation can parse a message even if that message
+    /// is without a From header field, without a Date header field, or
+    /// without both.</item>
+    /// <item>The To and Cc header fields are allowed to contain only
+    /// comments and whitespace, but these "empty" header fields will be
+    /// omitted when generating.</item>
+    /// <item>There is no line length limit imposed when parsing header
+    /// fields, except header field names.</item>
+    /// <item>There is no line length limit imposed when parsing
+    /// quoted-printable or base64 encoded bodies.</item>
+    /// <item>If the transfer encoding is absent and the content type is
+    /// "message/rfc822", bytes with values greater than 127 (called "8-bit
+    /// bytes" in the rest of this summary) are still allowed, despite the
+    /// default value of "7bit" for "Content-Transfer-Encoding".</item>
+    /// <item>In the following cases, if the transfer encoding is absent,
+    /// declared as 7bit, or treated as 7bit, 8-bit bytes are still
+    /// allowed:</item>
+    /// <item>(a) The preamble and epilogue of multipart messages, which
+    /// will be ignored.</item>
+    /// <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
+    /// <item>(c) If the content type is "text/html" and the charset is
+    /// declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
+    /// "iso-8859-&#x2a;" (all single byte encodings).</item>
+    /// <item>(d) In non-MIME message bodies and in text/plain message
+    /// bodies. Any 8-bit bytes are replaced with the substitute character
+    /// byte (0x1a).</item>
+    /// <item>If the message starts with the word "From" (and no other case
+    /// variations of that word) followed by one or more space (U + 0020)
+    /// not followed by colon, that text and the rest of the text is
+    /// skipped up to and including a line feed (U + 000A). (See also RFC
+    /// 4155, which describes the so-called "mbox" convention with "From"
+    /// lines of this kind.)</item>
+    /// <item>The name <c>ascii</c> is treated as a synonym for
+    /// <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
+    /// name <c>cp1252</c> and <c>utf8</c> are treated as synonyms for
+    /// <c>windows-1252</c> and <c>utf-8</c>, respectively, even though
+    /// they are not IANA registered aliases.</item>
+    /// <item>The following deviations involve encoded words under RFC
+    /// 2047:</item>
+    /// <item>(a) If a sequence of encoded words decodes to a string with a
+    /// CTL character (U + 007F, or a character less than U + 0020 and not
+    /// TAB) after being converted to Unicode, the encoded words are left
+    /// un-decoded.</item>
+    /// <item>(b) This implementation can decode encoded words regardless
+    /// of the character length of the line in which they appear. This
+    /// implementation can generate a header field line with one or more
+    /// encoded words even if that line is more than 76 characters long.
+    /// (This implementation follows the recommendation in RFC 5322 to
+    /// limit header field lines to no more than 78 characters, where
+    /// possible.)</item></list>
+    /// <para>It would be appreciated if users of this library contact the
+    /// author if they find other ways in which this implementation
+    /// deviates from the mail specifications or other applicable
+    /// specifications.</para>
+    /// <para>Note that this class currently doesn't support the "padding"
+    /// parameter for message bodies with the media type
+    /// "application/octet-stream" or treated as that media type (see RFC
+    /// 2046 sec. 4.5.1).</para>
+    /// <para>Note that this implementation can decode an RFC 2047 encoded
+    /// word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that uses
+    /// code switching) even if the encoded word's payload ends in a
+    /// different mode from "ASCII mode". (Each encoded word still starts
+    /// in "ASCII mode", though.) This, however, is not a deviation to RFC
+    /// 2047 because the relevant rule only concerns bringing the output
+    /// device back to "ASCII mode" after the decoded text is displayed
+    /// (see last paragraph of sec. 6.2) -- since the decoded text is
+    /// converted to Unicode rather than kept as ISO-2022-JP or
+    /// ISO-2022-JP-2, this is not applicable since there is no such thing
+    /// as "ASCII mode" in the Unicode Standard.</para>
+    /// <para>Note that this library (the MailLib library) has no
+    /// facilities for sending and receiving email messages, since that's
+    /// outside this library's scope.</para></summary>
   public sealed class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -54,13 +154,12 @@ namespace PeterO.Mail {
 
     private int transferEncoding;
 
-    /// <xmlbegin id='36'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='Message'/> class.</summary>
     /// <param name='stream'>The parameter <paramref name='stream'/> is a
     /// Stream object.</param>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='stream'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='stream'/> is null.</exception>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -72,12 +171,11 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <xmlbegin id='37'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='Message'/> class.</summary>
     /// <param name='bytes'>A byte array.</param>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='bytes'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -89,7 +187,6 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <xmlbegin id='38'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='Message'/> class.</summary>
     public Message() {
@@ -105,8 +202,8 @@ namespace PeterO.Mail {
       this.headers.Add("1.0");
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.NewBodyPart"]/*'/>
+    /// <summary>Creates a message object with no header fields.</summary>
+    /// <returns>A message object with no header fields.</returns>
     public static Message NewBodyPart() {
       var msg = new Message();
       msg.contentType = MediaType.TextPlainAscii;
@@ -115,8 +212,12 @@ namespace PeterO.Mail {
       return msg;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetCurrentDate"]/*'/>
+    /// <summary>Sets this message's Date header field to the current time
+    /// as its value, with an unspecified time zone offset.
+    /// <para>This method can be used when the message is considered
+    /// complete and ready to be generated, for example, using the
+    /// "Generate()" method.</para></summary>
+    /// <returns>This object.</returns>
     public Message SetCurrentDate() {
       // NOTE: Use global rather than local time; there are overriding
       // reasons not to use local time, despite the SHOULD in RFC 5322
@@ -133,8 +234,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
+    /// <summary>Gets a list of addresses found in the BCC header field or
+    /// fields.</summary>
+    /// <value>A list of addresses found in the BCC header field or
+    /// fields.</value>
     [Obsolete("Use GetAddresses(\"Bcc\") instead.")]
     public IList<NamedAddress> BccAddresses {
       get {
@@ -142,8 +245,13 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.BodyString"]/*'/>
+    /// <summary>Gets the body of this message as a text string.</summary>
+    /// <value>The body of this message as a text string.</value>
+    /// <exception cref='System.NotSupportedException'>Either this message
+    /// is a multipart message, so it doesn't have its own body text, or
+    /// this message has no character encoding declared or assumed for it
+    /// (which is usually the case for non-text messages), or the character
+    /// encoding is not supported.</exception>
     public string BodyString {
       get {
         if (this.ContentType.IsMultipart) {
@@ -165,8 +273,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.CCAddresses"]/*'/>
+    /// <summary>Gets a list of addresses found in the CC header field or
+    /// fields.</summary>
+    /// <value>A list of addresses found in the CC header field or
+    /// fields.</value>
     [Obsolete("Use GetAddresses(\"Cc\") instead.")]
     public IList<NamedAddress> CCAddresses {
       get {
@@ -174,8 +284,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <xmlbegin id='39'/>
-    /// <returns>A string object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A text string.</returns>
     public string GetFormattedBodyString() {
       string text = this.BodyString;
       if (text == null) {
@@ -186,18 +296,20 @@ namespace PeterO.Mail {
       string dsp = mt.GetParameter("delsp");
       bool formatFlowed = DataUtilities.ToLowerCaseAscii(
       fmt == null ? "fixed" : fmt)
-    .Equals("flowed");
+    .Equals("flowed",StringComparison.Ordinal);
       bool delSp = DataUtilities.ToLowerCaseAscii(
-          dsp == null ? "no" : dsp).Equals("yes");
-      if (mt.TypeAndSubType.Equals("text/plain")) {
+        dsp == null ? "no" : dsp).Equals("yes",StringComparison.Ordinal);
+      if (mt.TypeAndSubType.Equals("text/plain", StringComparison.Ordinal)) {
         if (formatFlowed) {
           return FormatFlowed.FormatFlowedText(text, delSp);
         } else {
           return FormatFlowed.NonFormatFlowedText(text);
         }
-      } else if (mt.TypeAndSubType.Equals("text/html")) {
+      } else if (mt.TypeAndSubType.Equals("text/html",
+  StringComparison.Ordinal)) {
         return text;
-      } else if (mt.TypeAndSubType.Equals("text/markdown")) {
+      } else if (mt.TypeAndSubType.Equals("text/markdown",
+  StringComparison.Ordinal)) {
         MediaType previewType = MediaType.Parse("text/html");
         if (this.ContentDisposition != null) {
           string pt = this.ContentDisposition.GetParameter("preview-type");
@@ -205,20 +317,27 @@ namespace PeterO.Mail {
             pt == null ? String.Empty : pt,
             previewType);
         }
-        if (previewType.TypeAndSubType.Equals("text/html")) {
+        if (previewType.TypeAndSubType.Equals("text/html",
+  StringComparison.Ordinal)) {
           return FormatFlowed.MarkdownText(text, 0);
         } else {
           return FormatFlowed.NonFormatFlowedText(text);
         }
-      } else if (mt.TypeAndSubType.Equals("text/enriched")) {
+      } else if (mt.TypeAndSubType.Equals("text/enriched",
+  StringComparison.Ordinal)) {
         return EnrichedText.EnrichedToHtml(text, 0, text.Length);
       } else {
         return FormatFlowed.NonFormatFlowedText(text);
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
+    /// <summary>Gets or sets this message's content disposition. The
+    /// content disposition specifies how a user agent should display or
+    /// otherwise handle this message. Can be set to null. If set to a
+    /// disposition or to null, updates the Content-Disposition header
+    /// field as appropriate.</summary>
+    /// <value>This message&#x27;s content disposition, or null if none is
+    /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
         return this.contentDisposition;
@@ -237,8 +356,15 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentType"]/*'/>
+    /// <summary>Gets or sets this message's media type. When getting, the
+    /// media type may differ in certain cases from the value of the
+    /// Content-Type header field, if any, and may have a value even if the
+    /// Content-Type header field is absent from this message. If set to a
+    /// media type, updates the Content-Type header field as appropriate.
+    /// Cannot be set to null.</summary>
+    /// <value>This message&#x27;s media type.</value>
+    /// <exception cref='ArgumentNullException'>This value is being set and
+    /// "value" is null.</exception>
     public MediaType ContentType {
       get {
         return this.contentType;
@@ -260,8 +386,17 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.FileName"]/*'/>
+    /// <summary>
+    /// <para>Gets a file name suggested by this message for saving the
+    /// message's body to a file. For more information on the algorithm,
+    /// see ContentDisposition.MakeFilename.</para>
+    /// <para>This method generates a file name based on the
+    /// <c>filename</c> parameter of the Content-Disposition header field,
+    /// if it exists, or on the <c>name</c> parameter of the Content-Type
+    /// header field, otherwise.</para></summary>
+    /// <value>A suggested name for the file. Returns the empty string if
+    /// there is no filename suggested by the content type or content
+    /// disposition, or if that filename is an empty string.</value>
     public string FileName {
       get {
         ContentDisposition disp = this.contentDisposition;
@@ -272,8 +407,20 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
+    /// <summary>Gets a list of addresses contained in the header fields
+    /// with the given name in this message.</summary>
+    /// <param name='headerName'>The name of the header fields to
+    /// retrieve.</param>
+    /// <returns>A list of addresses, in the order in which they appear in
+    /// this message's header fields of the given name.</returns>
+    /// <exception cref='System.NotSupportedException'>The parameter
+    /// <paramref name='headerName'/> is not supported for this method.
+    /// Currently, the only header fields supported are To, Cc, Bcc,
+    /// Reply-To, Sender, and From.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='headerName'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='headerName'/> is empty.</exception>
     public IList<NamedAddress> GetAddresses(string headerName) {
       if (headerName == null) {
         throw new ArgumentNullException(nameof(headerName));
@@ -290,8 +437,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.FromAddresses"]/*'/>
+    /// <summary>Gets a list of addresses found in the From header field or
+    /// fields.</summary>
+    /// <value>A list of addresses found in the From header field or
+    /// fields.</value>
     [Obsolete("Use GetAddresses(\"From\") instead.")]
     public IList<NamedAddress> FromAddresses {
       get {
@@ -299,8 +448,12 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.HeaderFields"]/*'/>
+    /// <summary>Gets a snapshot of the header fields of this message, in
+    /// the order in which they appear in the message. For each item in the
+    /// list, the key is the header field's name (where any basic
+    /// upper-case letters [U + 0041 to U + 005A] are converted to lower
+    /// case) and the value is the header field's value.</summary>
+    /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
         var list = new List<KeyValuePair<string, string>>();
@@ -312,16 +465,20 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.Parts"]/*'/>
+    /// <summary>Gets a list of all the parts of this message. This list is
+    /// editable. This will only be used if the message is a multipart
+    /// message.</summary>
+    /// <value>A list of all the parts of this message. This list is
+    /// editable. This will only be used if the message is a multipart
+    /// message.</value>
     public IList<Message> Parts {
       get {
         return this.parts;
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.Subject"]/*'/>
+    /// <summary>Gets or sets this message's subject.</summary>
+    /// <value>This message&#x27;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -332,8 +489,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.ToAddresses"]/*'/>
+    /// <summary>Gets a list of addresses found in the To header field or
+    /// fields.</summary>
+    /// <value>A list of addresses found in the To header field or
+    /// fields.</value>
     [Obsolete("Use GetAddresses(\"To\") instead.")]
     public IList<NamedAddress> ToAddresses {
       get {
@@ -341,14 +500,36 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
+    /// <summary>Adds a header field to the end of the message's header.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='header'>A key/value pair. The key is the name of the
+    /// header field, such as "From" or "Content-ID". The value is the
+    /// header field's value.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The key or value of
+    /// <paramref name='header'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The header field name is too
+    /// long or contains an invalid character, or the header field's value
+    /// is syntactically invalid.</exception>
     public Message AddHeader(KeyValuePair<string, string> header) {
       return this.AddHeader(header.Key, header.Value);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)"]/*'/>
+    /// <summary>Adds a header field to the end of the message's header.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='name'>Name of a header field, such as "From" or
+    /// "Content-ID" .</param>
+    /// <param name='value'>Value of the header field.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The header field name is too
+    /// long or contains an invalid character, or the header field's value
+    /// is syntactically invalid.</exception>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       int index = this.headers.Count / 2;
@@ -357,37 +538,66 @@ namespace PeterO.Mail {
       return this.SetHeader(index, name, value);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.Generate"]/*'/>
+    /// <summary>Generates this message's data in text form.
+    /// <para>The generated message will have only Basic Latin code points
+    /// (U + 0000 to U + 007F), and the transfer encoding will always be
+    /// 7bit, quoted-printable, or base64 (the declared transfer encoding
+    /// for this message will be ignored).</para>
+    /// <para>The following applies to the following header fields: From,
+    /// To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
+    /// Resent-Bcc, and Resent-Sender. If the header field exists, but has
+    /// an invalid syntax, has no addresses, or appears more than once,
+    /// this method will generate a synthetic header field with the
+    /// display-name set to the contents of all of the header fields with
+    /// the same name, and the address set to
+    /// <c>me@[header-name]-address.invalid</c> as the address (a
+    /// <c>.invalid</c> address is a reserved address that can never belong
+    /// to anyone). (An exception is that the Resent-&#x2a; header fields
+    /// may appear more than once.) The generated message should always
+    /// have a From header field.</para>
+    /// <para>If a Date and/or Message-ID header field doesn't exist, a
+    /// field with that name will be generated (using the current local
+    /// time for the Date field).</para>
+    /// <para>When encoding the message's body, if the message has a text
+    /// content type ("text/&#x2a;"), the line breaks are a CR byte
+    /// (carriage return, 0x0d) followed by an LF byte (line feed, 0x0a),
+    /// CR alone, or LF alone. If the message has any other content type,
+    /// only CR followed by LF is considered a line break.</para></summary>
+    /// <returns>The generated message.</returns>
+    /// <exception cref='PeterO.Mail.MessageDataException'>The message
+    /// can't be generated.</exception>
     public string Generate() {
       var aw = new ArrayWriter();
       this.Generate(aw, 0);
       return DataUtilities.GetUtf8String(aw.ToArray(), false);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GenerateBytes"]/*'/>
+    /// <summary>Generates this message's data as a byte array, using the
+    /// same algorithm as the Generate method.</summary>
+    /// <returns>The generated message as a byte array.</returns>
     public byte[] GenerateBytes() {
       var aw = new ArrayWriter();
       this.Generate(aw, 0);
       return aw.ToArray();
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBody"]/*'/>
+    /// <summary>Gets the byte array for this message's body. This method
+    /// doesn' t make a copy of that byte array.</summary>
+    /// <returns>A byte array.</returns>
     public byte[] GetBody() {
       return this.body;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]/*'/>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>An array of 32-bit unsigned integers.</returns>
     public int[] GetDate() {
       string field = this.GetHeader("date");
       return (field == null) ? null : MailDateTime.ParseDateString(field, true);
     }
 
-    /// <xmlbegin id='40'/>
-    /// <param name='dateTime'>Not documented yet.</param>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='dateTime'>The parameter <paramref name='dateTime'/> is
+    /// not documented yet.</param>
     /// <returns>A Message object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dateTime'/> is null.</exception>
@@ -409,8 +619,11 @@ namespace PeterO.Mail {
         MailDateTime.GenerateDateString(dateTime));
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBodyMessage"]/*'/>
+    /// <summary>Returns the mail message contained in this message's
+    /// body.</summary>
+    /// <returns>A message object if this object's content type is
+    /// "message/rfc822", "message/news", or "message/global", or null
+    /// otherwise.</returns>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
@@ -418,15 +631,17 @@ namespace PeterO.Mail {
       Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
 #endif
     public Message GetBodyMessage() {
-      return (this.ContentType.TopLevelType.Equals("message") &&
-          (this.ContentType.SubType.Equals("rfc822") ||
-           this.ContentType.SubType.Equals("news") ||
-           this.ContentType.SubType.Equals("global"))) ?
-        new Message(this.body) : null;
+      return (this.ContentType.TopLevelType.Equals("message",
+  StringComparison.Ordinal) && (this.ContentType.SubType.Equals("rfc822",
+  StringComparison.Ordinal) ||
+           this.ContentType.SubType.Equals("news", StringComparison.Ordinal) ||
+           this.ContentType.SubType.Equals("global",
+  StringComparison.Ordinal))) ? new Message(this.body) : null;
     }
 
-    /// <xmlbegin id='41'/>
-    /// <param name='index'>Not documented yet.</param>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='index'>The parameter <paramref name='index'/> is not
+    /// documented yet.</param>
     /// <returns>A KeyValuePair(string, string) object.</returns>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
@@ -443,15 +658,22 @@ namespace PeterO.Mail {
         this.headers[index + 1]);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]/*'/>
+    /// <summary>Gets the first instance of the header field with the
+    /// specified name, using a basic case-insensitive comparison. (Two
+    /// strings are equal in such a comparison, if they match after
+    /// converting the basic upper-case letters A to Z (U + 0041 to U +
+    /// 005A) in both strings to lower case.).</summary>
+    /// <param name='name'>The name of a header field.</param>
+    /// <returns>The value of the first header field with that name, or
+    /// null if there is none.</returns>
+    /// <exception cref='ArgumentNullException'>Name is null.</exception>
     public string GetHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.Count; i += 2) {
-        if (this.headers[i].Equals(name)) {
+        if (this.headers[i].Equals(name, StringComparison.Ordinal)) {
           // Get the first instance of the header field
           return this.headers[i + 1];
         }
@@ -459,8 +681,16 @@ namespace PeterO.Mail {
       return null;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]/*'/>
+    /// <summary>Gets an array with the values of all header fields with
+    /// the specified name, using a basic case-insensitive comparison. (Two
+    /// strings are equal in such a comparison, if they match after
+    /// converting the basic upper-case letters A to Z (U + 0041 to U +
+    /// 005A) in both strings to lower case.).</summary>
+    /// <param name='name'>The name of a header field.</param>
+    /// <returns>An array containing the values of all header fields with
+    /// the given name, in the order they appear in the message. The array
+    /// will be empty if no header field has that name.</returns>
+    /// <exception cref='ArgumentNullException'>Name is null.</exception>
     public string[] GetHeaderArray(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -468,15 +698,17 @@ namespace PeterO.Mail {
       name = DataUtilities.ToLowerCaseAscii(name);
       var list = new List<string>();
       for (int i = 0; i < this.headers.Count; i += 2) {
-        if (this.headers[i].Equals(name)) {
+        if (this.headers[i].Equals(name, StringComparison.Ordinal)) {
           list.Add(this.headers[i + 1]);
         }
       }
       return (string[])list.ToArray();
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.ClearHeaders"]/*'/>
+    /// <summary>Deletes all header fields in this message. Also clears
+    /// this message's content disposition and resets its content type to
+    /// MediaType.TextPlainAscii.</summary>
+    /// <returns>This object.</returns>
     public Message ClearHeaders() {
       this.headers.Clear();
       this.contentType = MediaType.TextPlainAscii;
@@ -484,8 +716,16 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
+    /// <summary>Removes a header field by index.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
+    /// fields.</exception>
     public Message RemoveHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -499,16 +739,27 @@ namespace PeterO.Mail {
       string name = this.headers[index * 2];
       this.headers.RemoveAt(index * 2);
       this.headers.RemoveAt(index * 2);
-      if (name.Equals("content-type")) {
+      if (name.Equals("content-type", StringComparison.Ordinal)) {
         this.contentType = MediaType.TextPlainAscii;
-      } else if (name.Equals("content-disposition")) {
+      } else if (name.Equals("content-disposition", StringComparison.Ordinal)) {
         this.contentDisposition = null;
       }
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]/*'/>
+    /// <summary>Removes all instances of the given header field from this
+    /// message. If this is a multipart message, the header field is not
+    /// removed from its body part headers. A basic case-insensitive
+    /// comparison is used. (Two strings are equal in such a comparison, if
+    /// they match after converting the basic upper-case letters A to Z (U
+    /// + 0041 to U + 005A) in both strings to lower case.).
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='name'>The name of the header field to remove.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public Message RemoveHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -516,22 +767,23 @@ namespace PeterO.Mail {
       name = DataUtilities.ToLowerCaseAscii(name);
       // Remove the header field
       for (int i = 0; i < this.headers.Count; i += 2) {
-        if (this.headers[i].Equals(name)) {
+        if (this.headers[i].Equals(name, StringComparison.Ordinal)) {
           this.headers.RemoveAt(i);
           this.headers.RemoveAt(i);
           i -= 2;
         }
       }
-      if (name.Equals("content-type")) {
+      if (name.Equals("content-type", StringComparison.Ordinal)) {
         this.contentType = MediaType.TextPlainAscii;
-      } else if (name.Equals("content-disposition")) {
+      } else if (name.Equals("content-disposition", StringComparison.Ordinal)) {
         this.contentDisposition = null;
       }
       return this;
     }
 
-    /// <xmlbegin id='42'/>
-    /// <param name='bytes'>Not documented yet.</param>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='bytes'>The parameter <paramref name='bytes'/> is not
+    /// documented yet.</param>
     /// <returns>A Message object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
@@ -543,14 +795,44 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
+    /// <summary>Sets the name and value of a header field by index.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <param name='header'>A key/value pair. The key is the name of the
+    /// header field, such as "From" or "Content-ID". The value is the
+    /// header field's value.</param>
+    /// <returns>A Message object.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
+    /// fields; or, the header field name is too long or contains an
+    /// invalid character, or the header field's value is syntactically
+    /// invalid.</exception>
+    /// <exception cref='ArgumentNullException'>The key or value of
+    /// <paramref name='header'/> is null.</exception>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)"]/*'/>
+    /// <summary>Sets the name and value of a header field by index.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <param name='name'>Name of a header field, such as "From" or
+    /// "Content-ID" .</param>
+    /// <param name='value'>Value of the header field.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
+    /// fields; or, the header field name is too long or contains an
+    /// invalid character, or the header field's value is syntactically
+    /// invalid.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -564,16 +846,30 @@ namespace PeterO.Mail {
       name = ValidateHeaderField(name, value);
       this.headers[index * 2] = name;
       this.headers[(index * 2) + 1] = value;
-      if (name.Equals("content-type")) {
+      if (name.Equals("content-type", StringComparison.Ordinal)) {
         this.contentType = MediaType.Parse(value);
-      } else if (name.Equals("content-disposition")) {
+      } else if (name.Equals("content-disposition", StringComparison.Ordinal)) {
         this.contentDisposition = ContentDisposition.Parse(value);
       }
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)"]/*'/>
+    /// <summary>Sets the value of a header field by index without changing
+    /// its name.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <param name='value'>Value of the header field.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
+    /// fields; or, the header field name is too long or contains an
+    /// invalid character, or the header field's value is syntactically
+    /// invalid.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='value'/> is null.</exception>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -587,20 +883,46 @@ namespace PeterO.Mail {
       return this.SetHeader(index, this.headers[index * 2], value);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)"]/*'/>
+    /// <summary>Decodes RFC 2047 encoded words from the given header field
+    /// value and returns a string with those words decoded. For an example
+    /// of encoded words, see the constructor for
+    /// PeterO.Mail.NamedAddress.</summary>
+    /// <param name='name'>Name of the header field. This determines the
+    /// syntax of the "value" parameter and is necessary to help this
+    /// method interpret encoded words properly.</param>
+    /// <param name='value'>A header field value that could contain encoded
+    /// words. For example, if the name parameter is "From", this parameter
+    /// could be "=?utf-8?q?me?= &lt;me@example.com&gt;".</param>
+    /// <returns>The header field value with valid encoded words
+    /// decoded.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public static string DecodeHeaderValue(string name, string value) {
       return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)"]/*'/>
+    /// <summary>Sets the value of this message's header field. If a header
+    /// field with the same name exists, its value is replaced. If the
+    /// header field's name occurs more than once, only the first instance
+    /// of the header field is replaced.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
+    /// <param name='name'>The name of a header field, such as "from" or
+    /// "subject" .</param>
+    /// <param name='value'>The header field's value.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentException'>The header field name is too
+    /// long or contains an invalid character, or the header field's value
+    /// is syntactically invalid.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
       var index = 0;
       for (int i = 0; i < this.headers.Count; i += 2) {
-        if (this.headers[i].Equals(name)) {
+        if (this.headers[i].Equals(name, StringComparison.Ordinal)) {
           return this.SetHeader(index, name, value);
         }
         ++index;
@@ -616,8 +938,16 @@ namespace PeterO.Mail {
     private static readonly MediaType TextHtmlUtf8 =
       MediaType.Parse("text/html; charset=utf-8");
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
+    /// <summary>Sets the body of this message to the specified string in
+    /// Hypertext Markup Language (HTML) format. The character sequences CR
+    /// (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A), and
+    /// CR/LF will be converted to CR/LF line breaks. Unpaired surrogate
+    /// code points will be replaced with replacement characters.</summary>
+    /// <param name='str'>A string consisting of the message in HTML
+    /// format.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -628,8 +958,19 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]/*'/>
+    /// <summary>Sets the body of this message to a multipart body with
+    /// plain text and Hypertext Markup Language (HTML) versions of the
+    /// same message. The character sequences CR (carriage return, "\r",
+    /// U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted
+    /// to CR/LF line breaks. Unpaired surrogate code points will be
+    /// replaced with replacement characters.</summary>
+    /// <param name='text'>A string consisting of the plain text version of
+    /// the message.</param>
+    /// <param name='html'>A string consisting of the HTML version of the
+    /// message.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='text'/> or <paramref name='html'/> is null.</exception>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
         throw new ArgumentNullException(nameof(text));
@@ -652,8 +993,21 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndMarkdown(System.String,System.String)"]/*'/>
+    /// <summary>Sets the body of this message to a multipart body with
+    /// plain text, Markdown, and Hypertext Markup Language (HTML) versions
+    /// of the same message. The character sequences CR (carriage return,
+    /// "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be
+    /// converted to CR/LF line breaks. Unpaired surrogate code points will
+    /// be replaced with replacement characters.</summary>
+    /// <param name='text'>A string consisting of the plain text version of
+    /// the message. Can be null, in which case the value of the "markdown"
+    /// parameter is used as the plain text version.</param>
+    /// <param name='markdown'>A string consisting of the Markdown version
+    /// of the message. For interoperability, this Markdown version will be
+    /// converted to HTML.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='markdown'/> is null.</exception>
     public Message SetTextAndMarkdown(string text, string markdown) {
       if (markdown == null) {
         throw new ArgumentNullException(nameof(markdown));
@@ -677,8 +1031,17 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
+    /// <summary>Sets the body of this message to the specified plain text
+    /// string. The character sequences CR (carriage return, "\r", U+000D),
+    /// LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF
+    /// line breaks. Unpaired surrogate code points will be replaced with
+    /// replacement characters. This method changes this message's media
+    /// type to plain text.</summary>
+    /// <param name='str'>A string consisting of the message in plain text
+    /// format.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -702,14 +1065,26 @@ namespace PeterO.Mail {
         false);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(PeterO.Mail.MediaType)"]/*'/>
+    /// <summary>Adds an inline body part with an empty body and with the
+    /// given media type to this message. Before the new body part is
+    /// added, if this message isn't already a multipart message, it
+    /// becomes a "multipart/mixed" message with the current body converted
+    /// to an inline body part.</summary>
+    /// <param name='mediaType'>A media type to assign to the body
+    /// part.</param>
+    /// <returns>A Message object for the generated body part.</returns>
     public Message AddInline(MediaType mediaType) {
       return this.AddBodyPart(null, mediaType, null, "inline", true);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)"]/*'/>
+    /// <summary>Adds an attachment with an empty body and with the given
+    /// media type to this message. Before the new attachment is added, if
+    /// this message isn't already a multipart message, it becomes a
+    /// "multipart/mixed" message with the current body converted to an
+    /// inline body part.</summary>
+    /// <param name='mediaType'>A media type to assign to the
+    /// attachment.</param>
+    /// <returns>A Message object for the generated attachment.</returns>
     public Message AddAttachment(MediaType mediaType) {
       return this.AddBodyPart(null, mediaType, null, "attachment", true);
     }
@@ -799,84 +1174,127 @@ namespace PeterO.Mail {
       if (!String.IsNullOrEmpty(filename)) {
         string ext = DataUtilities.ToLowerCaseAscii(
            ExtensionName(filename));
-        if (ext.Equals(".doc") || ext.Equals(".dot")) {
+        if (ext.Equals(".doc", StringComparison.Ordinal) ||
+ext.Equals(".dot", StringComparison.Ordinal)) {
           return MediaType.Parse("application/msword");
         }
-        if (ext.Equals(".pdf")) {
+        if (ext.Equals(".pdf", StringComparison.Ordinal)) {
           return MediaType.Parse("application/pdf");
         }
-        if (ext.Equals(".key")) {
+        if (ext.Equals(".key", StringComparison.Ordinal)) {
           return MediaType.Parse("application/pgp-keys");
         }
-        if (ext.Equals(".sig")) {
+        if (ext.Equals(".sig", StringComparison.Ordinal)) {
           return MediaType.Parse("application/pgp-signature");
         }
-        if (ext.Equals(".rtf")) {
+        if (ext.Equals(".rtf", StringComparison.Ordinal)) {
           return MediaType.Parse("application/rtf");
         }
-        if (ext.Equals(".docx")) {
+        if (ext.Equals(".docx", StringComparison.Ordinal)) {
           return
 
   MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
-        if (ext.Equals(".zip")) {
+        if (ext.Equals(".zip", StringComparison.Ordinal)) {
           return MediaType.Parse("application/zip");
         }
-        if (ext.Equals(".m4a") ||
-ext.Equals(".mp2") ||
-ext.Equals(".mp3") ||
-ext.Equals(".mpega") ||
-ext.Equals(".mpga")) {
+        if (ext.Equals(".m4a", StringComparison.Ordinal) ||
+ext.Equals(".mp2", StringComparison.Ordinal) ||
+ext.Equals(".mp3", StringComparison.Ordinal) ||
+ext.Equals(".mpega", StringComparison.Ordinal) ||
+ext.Equals(".mpga", StringComparison.Ordinal)) {
           return MediaType.Parse("audio/mpeg");
         }
-        if (ext.Equals(".gif")) {
+        if (ext.Equals(".gif", StringComparison.Ordinal)) {
           return MediaType.Parse("image/gif");
         }
-        if (ext.Equals(".jpe") ||
-ext.Equals(".jpeg") ||
-ext.Equals(".jpg")) {
+        if (ext.Equals(".jpe", StringComparison.Ordinal) ||
+ext.Equals(".jpeg", StringComparison.Ordinal) ||
+ext.Equals(".jpg", StringComparison.Ordinal)) {
           return MediaType.Parse("image/jpeg");
         }
-        if (ext.Equals(".png")) {
+        if (ext.Equals(".png", StringComparison.Ordinal)) {
           return MediaType.Parse("image/png");
         }
-        if (ext.Equals(".tif") || ext.Equals(".tiff")) {
+        if (ext.Equals(".tif", StringComparison.Ordinal) ||
+ext.Equals(".tiff", StringComparison.Ordinal)) {
           return MediaType.Parse("image/tiff");
         }
-        if (ext.Equals(".eml")) {
+        if (ext.Equals(".eml", StringComparison.Ordinal)) {
           return MediaType.Parse("message/rfc822");
         }
-        if (ext.Equals(".rst")) {
+        if (ext.Equals(".rst", StringComparison.Ordinal)) {
           return MediaType.Parse("text/prs.fallenstein.rst\u003bcharset=utf-8");
         }
-        if (ext.Equals(".htm") ||
-ext.Equals(".html") ||
-ext.Equals(".shtml")) {
+        if (ext.Equals(".htm", StringComparison.Ordinal) ||
+ext.Equals(".html", StringComparison.Ordinal) ||
+ext.Equals(".shtml", StringComparison.Ordinal)) {
           return MediaType.Parse("text/html\u003bcharset=utf-8");
         }
-        if (ext.Equals(".md") || ext.Equals(".markdown")) {
+        if (ext.Equals(".md", StringComparison.Ordinal) ||
+ext.Equals(".markdown", StringComparison.Ordinal)) {
           return MediaType.Parse("text/markdown\u003bcharset=utf-8");
         }
-        if (ext.Equals(".asc") ||
-ext.Equals(".brf") ||
-ext.Equals(".pot") ||
-ext.Equals(".srt") ||
-ext.Equals(".text") ||
-ext.Equals(".txt")) {
+        if (ext.Equals(".asc", StringComparison.Ordinal) ||
+ext.Equals(".brf", StringComparison.Ordinal) ||
+ext.Equals(".pot", StringComparison.Ordinal) ||
+ext.Equals(".srt", StringComparison.Ordinal) ||
+ext.Equals(".text", StringComparison.Ordinal) ||
+ext.Equals(".txt", StringComparison.Ordinal)) {
           return MediaType.Parse("text/plain\u003bcharset=utf-8");
         }
       }
       return MediaType.ApplicationOctetStream;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
+    /// <summary>Adds an attachment to this message in the form of data
+    /// from the // /given readable stream, and with the given media type.
+    /// Before the new attachment is added, if this message isn't already a
+    /// multipart message, it becomes a "multipart/mixed" message with the
+    /// current body converted to an inline body part.</summary>
+    /// <param name='inputStream'>A readable data stream.</param>
+    /// <param name='mediaType'>A media type to assign to the
+    /// attachment.</param>
+    /// <returns>A Message object for the generated attachment.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
+    /// null.</exception>
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O ///error
+    /// occurred.</exception>
+    /// <example>
+    ///  The following example (written in C# for the.NET
+    /// ///version) is an extension method that adds an
+    /// attachment from a byte array to a message.
+    /// <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
+    /// bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
+    /// return msg.AddAttachment(fs, mediaType); } }</code>
+    ///  .
+    /// </example>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "attachment");
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
+    /// <summary>Adds an attachment to this message in the form of data
+    /// from the given readable stream, and with the given file name.
+    /// Before the new attachment is added, if this message isn't already a
+    /// multipart message, it becomes a "multipart/mixed" message with the
+    /// current body converted to an inline body part.</summary>
+    /// <param name='inputStream'>A readable data stream.</param>
+    /// <param name='filename'>A file name to assign to the attachment. Can
+    /// be null or empty, in which case no file name is assigned. Only the
+    /// file name portion of this parameter is used, which in this case
+    /// means the portion of the string after the last "/" or "\", if
+    /// either character exists, or the entire string otherwise An
+    /// appropriate media type (or "application/octet-stream") will be
+    /// assigned to the attachment based on this file name's extension. If
+    /// the file name has an extension .txt, .text, .htm, .html, .shtml,
+    /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
+    /// will have a "charset" of "utf-8".</param>
+    /// <returns>A Message object for the generated attachment.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> is null.</exception>
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
+    /// occurred.</exception>
     public Message AddAttachment(Stream inputStream, string filename) {
       return
   this.AddBodyPart(
@@ -886,8 +1304,26 @@ ext.Equals(".txt")) {
   "attachment");
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
+    /// <summary>Adds an attachment to this message in the form of data
+    /// from the given readable stream, and with the given media type and
+    /// file name. Before the new attachment is added, if this message
+    /// isn't already a multipart message, it becomes a "multipart/mixed"
+    /// message with the current body converted to an inline body
+    /// part.</summary>
+    /// <param name='inputStream'>A readable data stream.</param>
+    /// <param name='mediaType'>A media type to assign to the
+    /// attachment.</param>
+    /// <param name='filename'>A file name to assign to the attachment. Can
+    /// be null or empty, in which case no file name is assigned. Only the
+    /// file name portion of this parameter is used, which in this case
+    /// means the portion of the string after the last "/" or "\", if
+    /// either character exists, or the entire string otherwise.</param>
+    /// <returns>A Message object for the generated attachment.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
+    /// null.</exception>
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
+    /// occurred.</exception>
     public Message AddAttachment(
       Stream inputStream,
       MediaType mediaType,
@@ -899,14 +1335,55 @@ ext.Equals(".txt")) {
         "attachment");
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
+    /// <summary>Adds an inline body part to this message in the form of
+    /// data from // /the given readable stream, and with the given media
+    /// type. Before the new body part is added, if this message isn't
+    /// already a multipart message, it becomes a "multipart/mixed" message
+    /// with the current body converted to an inline body part.</summary>
+    /// <param name='inputStream'>A readable data ///stream.</param>
+    /// <param name='mediaType'>A media type to assign to the body
+    /// part.</param>
+    /// <returns>A Message object for the generated body part.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
+    /// null.</exception>
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O ///error
+    /// occurred.</exception>
+    /// <example>
+    ///  The following example (written in C# for the.NET
+    /// ///version) is an extension method that adds an inline
+    /// body part from a byte array to a message.
+    /// <code>public static Message AddInlineFromBytes(this Message msg, byte[]
+    /// ///bytes,
+    /// MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
+    /// { return msg.AddInline(fs, mediaType); } }</code>
+    ///  .
+    /// </example>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "inline");
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
+    /// <summary>Adds an inline body part to this message in the form of
+    /// data from the given readable stream, and with the given file name.
+    /// Before the new body part is added, if this message isn't already a
+    /// multipart message, it becomes a "multipart/mixed" message with the
+    /// current body converted to an inline body part.</summary>
+    /// <param name='inputStream'>A readable data stream.</param>
+    /// <param name='filename'>A file name to assign to the inline body
+    /// part. Can be null or empty, in which case no file name is assigned.
+    /// Only the file name portion of this parameter is used, which in this
+    /// case means the portion of the string after the last "/" or "\", if
+    /// either character exists, or the entire string otherwise An
+    /// appropriate media type (or "application/octet-stream") will be
+    /// assigned to the body part based on this file name's extension. If
+    /// the file name has an extension .txt, .text, .htm, .html, .shtml,
+    /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
+    /// will have a "charset" of "utf-8".</param>
+    /// <returns>A Message object for the generated body part.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or "mediaType" is null.</exception>
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
+    /// occurred.</exception>
     public Message AddInline(Stream inputStream, string filename) {
       return this.AddBodyPart(
   inputStream,
@@ -915,8 +1392,23 @@ ext.Equals(".txt")) {
   "inline");
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
+    /// <summary>Adds an inline body part to this message in the form of
+    /// data from the given readable stream, and with the given media type
+    /// and file name. Before the new body part is added, if this message
+    /// isn't already a multipart message, it becomes a "multipart/mixed"
+    /// message with the current body converted to an inline body
+    /// part.</summary>
+    /// <param name='inputStream'>A readable data stream.</param>
+    /// <param name='mediaType'>A media type to assign to the body
+    /// part.</param>
+    /// <param name='filename'>A file name to assign to the body
+    /// part.</param>
+    /// <returns>A Message object for the generated body part.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
+    /// null.</exception>
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
+    /// occurred.</exception>
     public Message AddInline(
       Stream inputStream,
       MediaType mediaType,
@@ -950,20 +1442,48 @@ ext.Equals(".txt")) {
          ctt.Substring(index, cttEnd - index));
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String})"]/*'/>
+    /// <summary>Selects a body part for a multiple-language message (
+    /// <c>multipart/multilingual</c> ) according to the given language
+    /// priority list.</summary>
+    /// <param name='languages'>A list of basic language ranges, sorted in
+    /// descending order of priority (see the
+    /// LanguageTags.LanguageTagFilter method).</param>
+    /// <returns>The best matching body part for the given languages. If
+    /// the body part has no subject, then the top-level subject is used.
+    /// If this message is not a multipart/multilingual message or has
+    /// fewer than two body parts, returns this object. If no body part
+    /// matches the given languages, returns the last body part if its
+    /// language is "zxx", or the second body part otherwise.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> is null.</exception>
     public Message SelectLanguageMessage(
        IList<string> languages) {
       return this.SelectLanguageMessage(languages, false);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.SelectLanguageMessage(System.Collections.Generic.IList{System.String},System.Boolean)"]/*'/>
+    /// <summary>Selects a body part for a multiple-language message (
+    /// <c>multipart/multilingual</c> ) according to the given language
+    /// priority list and original-language preference.</summary>
+    /// <param name='languages'>A list of basic language ranges, sorted in
+    /// descending order of priority (see the
+    /// LanguageTags.LanguageTagFilter method).</param>
+    /// <param name='preferOriginals'>If true, a body part marked as the
+    /// original language version is chosen if it matches one of the given
+    /// language ranges, even if the original language has a lower priority
+    /// than another language with a matching body part.</param>
+    /// <returns>The best matching body part for the given languages. If
+    /// the body part has no subject, then the top-level subject is used.
+    /// If this message is not a multipart/multilingual message or has
+    /// fewer than two body parts, returns this object. If no body part
+    /// matches the given languages, returns the last body part if its
+    /// language is "zxx", or the second body part otherwise.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> is null.</exception>
     public Message SelectLanguageMessage(
        IList<string> languages,
        bool preferOriginals) {
-      if (this.ContentType.TypeAndSubType.Equals("multipart/multilingual") &&
-         this.Parts.Count >= 2) {
+      if (this.ContentType.TypeAndSubType.Equals("multipart/multilingual",
+  StringComparison.Ordinal) && this.Parts.Count >= 2) {
         string subject = this.GetHeader("subject");
         int passes = preferOriginals ? 2 : 1;
         IList<string> clang;
@@ -978,7 +1498,7 @@ ext.Equals(".txt")) {
             if (preferOriginals && i == 0) { // Allow originals only, on first
               string ctt =
   GetContentTranslationType(part.GetHeader("content-translation-type"));
-              if (!ctt.Equals("original")) {
+              if (!ctt.Equals("original", StringComparison.Ordinal)) {
                 continue;
               }
             }
@@ -1017,8 +1537,35 @@ ext.Equals(".txt")) {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.MakeMultilingualMessage(System.Collections.Generic.IList{PeterO.Mail.Message},System.Collections.Generic.IList{System.String})"]/*'/>
+    /// <summary>Generates a multilingual message (see RFC 8255) from a
+    /// list of messages and a list of language strings.</summary>
+    /// <param name='messages'>A list of messages forming the parts of the
+    /// multilingual message object. Each message should have the same
+    /// content, but be in a different language. Each message must have a
+    /// From header field and use the same email address in that field as
+    /// the other messages. The messages should be ordered in descending
+    /// preference of language.</param>
+    /// <param name='languages'>A list of language strings corresponding to
+    /// the messages given in the "messages" parameter. A language string
+    /// at a given index corresponds to the message at the same index. Each
+    /// language string must follow the syntax of the Content-Language
+    /// header field (see LanguageTags.GetLanguageList).</param>
+    /// <returns>A Message object with the content type
+    /// "multipart/multilingual" . It will begin with an explanatory body
+    /// part and be followed by the messages given in the <paramref
+    /// name='messages'/> parameter in the order given.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='messages'/> or <paramref name='languages'/> is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='messages'/> or <paramref name='languages'/> is empty, their
+    /// lengths don't match, at least one message is "null", each message
+    /// doesn't contain the same email addresses in their From header
+    /// fields, <paramref name='languages'/> contains a syntactically
+    /// invalid language tag list, <paramref name='languages'/> contains
+    /// the language tag "zzx" not appearing alone or at the end of the
+    /// language tag list, or the first message contains no From header
+    /// field.</exception>
     public static Message MakeMultilingualMessage(
   IList<Message> messages,
   IList<string> languages) {
@@ -1067,7 +1614,7 @@ ext.Equals(".txt")) {
       for (var i = 0; i < languages.Count; ++i) {
         IList<string> langs = LanguageTags.GetLanguageList(languages[i]);
         bool langInd = i == languages.Count - 1 && langs.Count == 1 &&
-          langs[0].Equals("zxx");
+          langs[0].Equals("zxx", StringComparison.Ordinal);
         if (!langInd && LanguageTags.LanguageTagFilter(
           zxx,
           langs).Count > 0) {
@@ -1268,8 +1815,10 @@ ext.Equals(".txt")) {
             headerNameStart,
             headerNameEnd - headerNameStart,
             true));
-        bool origRecipient = fieldName.Equals("original-recipient");
-        bool finalRecipient = fieldName.Equals("final-recipient");
+        bool origRecipient = fieldName.Equals("original-recipient",
+  StringComparison.Ordinal);
+        bool finalRecipient = fieldName.Equals("final-recipient",
+  StringComparison.Ordinal);
         // Read the header field value using UTF-8 characters
         // rather than bytes
         while (true) {
@@ -2268,27 +2817,35 @@ ext.Equals(".txt")) {
         isMultipart = true;
       }
       if (!isMultipart) {
-        if (builder.TopLevelType.Equals("message")) {
-          if (builder.SubType.Equals("delivery-status") ||
-builder.SubType.Equals("global-delivery-status") ||
-builder.SubType.Equals("disposition-notification") ||
-builder.SubType.Equals("global-disposition-notification")) {
+        if (builder.TopLevelType.Equals("message", StringComparison.Ordinal)) {
+          if (builder.SubType.Equals("delivery-status",
+                     StringComparison.Ordinal) ||
+                     builder.SubType.Equals("global-delivery-status",
+                     StringComparison.Ordinal) ||
+                     builder.SubType.Equals("disposition-notification",
+                     StringComparison.Ordinal) ||
+                     builder.SubType.Equals("global-disposition-notification",
+                     StringComparison.Ordinal)) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           bool msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
-          if ((builder.SubType.Equals("rfc822") || builder.SubType.Equals(
-            "news")) && !msgCanBeUnencoded) {
+          if ((builder.SubType.Equals("rfc822", StringComparison.Ordinal) ||
+builder.SubType.Equals(
+            "news",
+            StringComparison.Ordinal)) && !msgCanBeUnencoded) {
             builder.SetSubType("global");
-          } else if (builder.SubType.Equals("disposition-notification") &&
-                    !msgCanBeUnencoded) {
+          } else if (builder.SubType.Equals("disposition-notification",
+  StringComparison.Ordinal) && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
-          } else if (builder.SubType.Equals("delivery-status") &&
-                    !msgCanBeUnencoded) {
+          } else if (builder.SubType.Equals("delivery-status",
+  StringComparison.Ordinal) && !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
-          } else if (!msgCanBeUnencoded && !builder.SubType.Equals("global") &&
-            !builder.SubType.Equals("global-disposition-notification") &&
-            !builder.SubType.Equals("global-delivery-status") &&
-            !builder.SubType.Equals("global-headers")) {
+          } else if (!msgCanBeUnencoded && !builder.SubType.Equals("global",
+  StringComparison.Ordinal) &&
+            !builder.SubType.Equals("global-disposition-notification",
+  StringComparison.Ordinal) && !builder.SubType.Equals("global-delivery-status",
+  StringComparison.Ordinal) && !builder.SubType.Equals("global-headers",
+  StringComparison.Ordinal)) {
 #if DEBUG
             throw new MessageDataException("Message body can't be encoded: " +
               builder.ToString() + ", " + this.ContentType);
@@ -2303,13 +2860,14 @@ builder.SubType.Equals("global-disposition-notification")) {
       string topLevel = builder.TopLevelType;
       // NOTE: RFC 6532 allows any transfer encoding for the
       // four global message types listed below.
-      transferEnc = topLevel.Equals("message") ||
-        topLevel.Equals("multipart") ? (topLevel.Equals("multipart") || (
-          !builder.SubType.Equals("global") &&
-          !builder.SubType.Equals("global-headers") &&
-          !builder.SubType.Equals("global-disposition-notification") &&
-          !builder.SubType.Equals("global-delivery-status"))) ?
-          EncodingSevenBit : TransferEncodingToUse(
+      transferEnc = topLevel.Equals("message", StringComparison.Ordinal) ||
+        topLevel.Equals("multipart", StringComparison.Ordinal) ?
+(topLevel.Equals("multipart", StringComparison.Ordinal) || (
+          !builder.SubType.Equals("global", StringComparison.Ordinal) &&
+          !builder.SubType.Equals("global-headers", StringComparison.Ordinal) &&
+          !builder.SubType.Equals("global-disposition-notification",
+  StringComparison.Ordinal) && !builder.SubType.Equals("global-delivery-status",
+  StringComparison.Ordinal))) ? EncodingSevenBit : TransferEncodingToUse(
             bodyToWrite,
             depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       string encodingString = "7bit";
@@ -2323,7 +2881,7 @@ builder.SubType.Equals("global-disposition-notification")) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
         string rawField = null;
-        if (name.Equals("content-type")) {
+        if (name.Equals("content-type", StringComparison.Ordinal)) {
           if (haveContentType) {
             // Already outputted, continue
             continue;
@@ -2331,26 +2889,27 @@ builder.SubType.Equals("global-disposition-notification")) {
           haveContentType = true;
           value = builder.ToString();
         }
-        if (name.Equals("content-disposition")) {
+        if (name.Equals("content-disposition", StringComparison.Ordinal)) {
           if (haveContentDisp || contentDisp == null) {
             // Already outputted, continue
             continue;
           }
           haveContentDisp = true;
           value = contentDisp;
-        } else if (name.Equals("content-transfer-encoding")) {
+        } else if (name.Equals("content-transfer-encoding",
+  StringComparison.Ordinal)) {
           if (haveContentEncoding) {
             // Already outputted, continue
             continue;
           }
           haveContentEncoding = true;
           value = encodingString;
-        } else if (name.Equals("date")) {
+        } else if (name.Equals("date", StringComparison.Ordinal)) {
           if (haveDate) {
             continue;
           }
           haveDate = true;
-        } else if (name.Equals("from")) {
+        } else if (name.Equals("from", StringComparison.Ordinal)) {
           if (haveFrom) {
             // Already outputted, continue
             continue;
@@ -2365,13 +2924,13 @@ name.Length >= 2 &&
           // in body parts
           continue;
         }
-        if (name.Equals("mime-version")) {
+        if (name.Equals("mime-version", StringComparison.Ordinal)) {
           if (depth > 0) {
             // Don't output if this is a body part
             continue;
           }
           haveMimeVersion = true;
-        } else if (name.Equals("message-id")) {
+        } else if (name.Equals("message-id", StringComparison.Ordinal)) {
           if (depth > 0) {
             // Don't output if this is a body part
             continue;
@@ -2439,14 +2998,14 @@ name.Length >= 2 &&
               downgraded,
               0,
               downgraded.Length)) {
-            if (name.Equals("message-id") ||
-name.Equals("resent-message-id") ||
-name.Equals(
-                "in-reply-to") ||
-name.Equals("references") ||
-name.Equals(
-                "original-recipient") ||
-name.Equals("final-recipient")) {
+            if (name.Equals("message-id", StringComparison.Ordinal) ||
+              name.Equals("resent-message-id", StringComparison.Ordinal) ||
+              name.Equals("in-reply-to", StringComparison.Ordinal) ||
+              name.Equals("references", StringComparison.Ordinal) ||
+              name.Equals(
+                "original-recipient",
+                StringComparison.Ordinal) ||
+              name.Equals("final-recipient", StringComparison.Ordinal)) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
@@ -2455,9 +3014,9 @@ name.Equals("final-recipient")) {
                   ParserUtility.TrimSpaceAndTab(value));
             } else {
 #if DEBUG
-              throw new
-  MessageDataException("Header field still has non-Ascii or controls: " +
-                    name + "\n" + downgraded);
+              string exText = "Header field still has non-Ascii or controls: " +
+                    name + "\n" + downgraded;
+              throw new MessageDataException(exText);
 #else
                throw new MessageDataException(
                  "Header field still has non-Ascii or controls");
@@ -2480,10 +3039,11 @@ name.Equals("final-recipient")) {
         AppendAscii(output, "Date: ");
         // NOTE: Use global rather than local time; there are overriding
         // reasons not to use local time, despite the SHOULD in RFC 5322
+        string dateString = MailDateTime.GenerateDateString(
+          DateTimeUtilities.GetCurrentGlobalTime());
         AppendAscii(
           output,
-
-  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentGlobalTime()));
+          dateString);
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
@@ -2602,7 +3162,7 @@ name.Equals("final-recipient")) {
       var headerList = new List<string>();
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.Count; i += 2) {
-        if (this.headers[i].Equals(name)) {
+        if (this.headers[i].Equals(name, StringComparison.Ordinal)) {
           headerList.Add(this.headers[i + 1]);
         }
       }
@@ -2613,7 +3173,7 @@ name.Equals("final-recipient")) {
       name = DataUtilities.ToLowerCaseAscii(name);
       var have = false;
       for (int i = 0; i < this.headers.Count; i += 2) {
-        if (this.headers[i].Equals(name)) {
+        if (this.headers[i].Equals(name, StringComparison.Ordinal)) {
           if (have) {
             return false;
           }
@@ -2633,28 +3193,102 @@ name.Equals("final-recipient")) {
       return true;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUrl(System.String)"]/*'/>
+    /// <summary>Creates a message object from a MailTo URI (uniform
+    /// resource identifier). The MailTo URI can contain key-value pairs
+    /// that follow a question-mark, as in the following example:
+    /// "mailto:me@example.com?subject=A%20Subject". In this example,
+    /// "subject" is the subject of the email address. Only certain keys
+    /// are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+    /// "comments", "keywords", and "body". The first seven are header
+    /// field names that will be used to set the returned message's
+    /// corresponding header fields. The last, "body", sets the body of the
+    /// message to the given text. Keys other than these eight will be
+    /// ignored.</summary>
+    /// <param name='url'>A MailTo URI.</param>
+    /// <returns>A Message object created from the given MailTo URI. Returs
+    /// null if <paramref name='url'/> is null, is syntactically invalid,
+    /// or is not a MailTo URI.</returns>
     [Obsolete("Renamed to FromMailtoUri.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Design",
+      "CA1055",
+      Justification = "This is an obsolete API.")]
     public static Message FromMailtoUrl(string url) {
       return MailtoUris.MailtoUriMessage(url);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUrl"]/*'/>
+    /// <summary>Generates a MailTo URI (uniform resource identifier)
+    /// corresponding to this message. The following header fields, and
+    /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
+    /// Subject, Keywords, Comments. The message body is included in the
+    /// URI only if this message has a text media type and uses a supported
+    /// character encoding ("charset" parameter). The To header field is
+    /// included in the URI only if it has display names or group
+    /// syntax.</summary>
+    /// <returns>A MailTo URI corresponding to this message.</returns>
     [Obsolete("Renamed to ToMailtoUri.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Design",
+      "CA1055",
+      Justification = "This is an obsolete API.")]
     public string ToMailtoUrl() {
       return MailtoUris.MessageToMailtoUri(this);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.Message.FromMailtoUri(System.String)"]/*'/>
+    /// <summary>Creates a message object from a string specifying a MailTo
+    /// URI (uniform resource identifier). The MailTo URI can contain
+    /// key-value pairs that follow a question-mark, as in the following
+    /// example: "mailto:me@example.com?subject=A%20Subject". In this
+    /// example, "subject" is the subject of the email address. Only
+    /// certain keys are supported, namely, "to", "cc", "bcc", "subject",
+    /// "in-reply-to", "comments", "keywords", and "body". The first seven
+    /// are header field names that will be used to set the returned
+    /// message's corresponding header fields. The last, "body", sets the
+    /// body of the message to the given text. Keys other than these eight
+    /// will be ignored.</summary>
+    /// <param name='uri'>The parameter <paramref name='uri'/> is a text
+    /// string.</param>
+    /// <returns>A Message object created from the given MailTo URI. Returs
+    /// null if <paramref name='uri'/> is null, is syntactically invalid,
+    /// or is not a MailTo URI.</returns>
     public static Message FromMailtoUri(string uri) {
       return MailtoUris.MailtoUriMessage(uri);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.ToMailtoUri"]/*'/>
+    /// <summary>Creates a message object from a MailTo URI (uniform
+    /// resource identifier). The MailTo URI can contain key-value pairs
+    /// that follow a question-mark, as in the following example:
+    /// "mailto:me@example.com?subject=A%20Subject". In this example,
+    /// "subject" is the subject of the email address. Only certain keys
+    /// are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+    /// "comments", "keywords", and "body". The first seven are header
+    /// field names that will be used to set the returned message's
+    /// corresponding header fields. The last, "body", sets the body of the
+    /// message to the given text. Keys other than these eight will be
+    /// ignored.</summary>
+    /// <param name='uri'>The parameter <paramref name='uri'/> is a text
+    /// string.</param>
+    /// <returns>A Message object created from the given MailTo URI. Returs
+    /// null if <paramref name='uri'/> is null, is syntactically invalid,
+    /// or is not a MailTo URI.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='uri'/> is null.</exception>
+    public static Message FromMailtoUri(Uri uri) {
+      if (uri == null) {
+        throw new ArgumentNullException(nameof(uri));
+      }
+      return MailtoUris.MailtoUriMessage(uri.ToString());
+    }
+
+    /// <summary>Generates a MailTo URI (uniform resource identifier)
+    /// corresponding to this message. The following header fields, and
+    /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
+    /// Subject, Keywords, Comments. The message body is included in the
+    /// URI only if this message has a text media type and uses a supported
+    /// character encoding ("charset" parameter). The To header field is
+    /// included in the URI only if it has display names or group
+    /// syntax.</summary>
+    /// <returns>A MailTo URI corresponding to this message.</returns>
     public string ToMailtoUri() {
       return MailtoUris.MessageToMailtoUri(this);
     }
@@ -2667,7 +3301,8 @@ name.Equals("final-recipient")) {
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
-        if (name.Equals("content-transfer-encoding")) {
+        if (name.Equals("content-transfer-encoding",
+            StringComparison.Ordinal)) {
           int startIndex = HeaderParser.ParseCFWS(value, 0, value.Length, null);
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
@@ -2683,10 +3318,10 @@ name.Equals("final-recipient")) {
               endIndex,
               value.Length,
               null) == value.Length) ? value.Substring(
-  startIndex,
-  endIndex - startIndex) : String.Empty;
+                startIndex,
+                endIndex - startIndex) : String.Empty;
         }
-        mime |= name.Equals("mime-version");
+        mime |= name.Equals("mime-version", StringComparison.Ordinal);
         if (value.IndexOf("=?", StringComparison.Ordinal) >= 0) {
           IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
           // Decode encoded words in the header field where possible
@@ -2701,25 +3336,28 @@ name.Equals("final-recipient")) {
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
-        if (mime && name.Equals("content-transfer-encoding")) {
+        if (mime && name.Equals("content-transfer-encoding",
+  StringComparison.Ordinal)) {
           value = DataUtilities.ToLowerCaseAscii(transferEncodingValue);
           this.headers[i + 1] = value;
-          if (value.Equals("7bit")) {
+          if (value.Equals("7bit", StringComparison.Ordinal)) {
             this.transferEncoding = EncodingSevenBit;
-          } else if (value.Equals("8bit")) {
+          } else if (value.Equals("8bit", StringComparison.Ordinal)) {
             this.transferEncoding = EncodingEightBit;
-          } else if (value.Equals("binary")) {
+          } else if (value.Equals("binary", StringComparison.Ordinal)) {
             this.transferEncoding = EncodingBinary;
-          } else if (value.Equals("quoted-printable")) {
+          } else if (value.Equals("quoted-printable",
+  StringComparison.Ordinal)) {
             this.transferEncoding = EncodingQuotedPrintable;
-          } else if (value.Equals("base64")) {
+          } else if (value.Equals("base64", StringComparison.Ordinal)) {
             this.transferEncoding = EncodingBase64;
           } else {
             // Unrecognized transfer encoding
             this.transferEncoding = EncodingUnknown;
           }
           haveContentEncoding = true;
-        } else if (mime && name.Equals("content-type")) {
+        } else if (mime && name.Equals("content-type",
+  StringComparison.Ordinal)) {
           if (haveContentType) {
             // DEVIATION: If there is already a content type,
             // treat content type as application/octet-stream
@@ -2754,7 +3392,8 @@ name.Equals("final-recipient")) {
             }
             haveContentType = true;
           }
-        } else if (mime && name.Equals("content-disposition")) {
+        } else if (mime && name.Equals("content-disposition",
+  StringComparison.Ordinal)) {
           if (haveContentDisp) {
             string valueExMessage = "Already have this header: " + name;
 #if DEBUG
@@ -2777,22 +3416,25 @@ name.Equals("final-recipient")) {
       // header field, as the setter does
       this.contentType = ctype;
       if (!haveContentEncoding && this.contentType.TypeAndSubType.Equals(
-        "message/rfc822")) {
+        "message/rfc822",
+        StringComparison.Ordinal)) {
         // DEVIATION: Be a little more liberal with rfc822
         // messages with 8-bit bytes
         this.transferEncoding = EncodingEightBit;
       }
       if (this.transferEncoding == EncodingSevenBit) {
         string charset = this.contentType.GetCharset();
-        if (charset.Equals("utf-8")) {
+        if (charset.Equals("utf-8", StringComparison.Ordinal)) {
           // DEVIATION: Be a little more liberal with UTF-8
           this.transferEncoding = EncodingEightBit;
-        } else if (this.contentType.TypeAndSubType.Equals("text/html")) {
-          if (charset.Equals("us-ascii") ||
-              charset.Equals("windows-1252") || charset.Equals(
-                "windows-1251") ||
+        } else if (this.contentType.TypeAndSubType.Equals("text/html",
+            StringComparison.Ordinal)) {
+          if (charset.Equals("us-ascii", StringComparison.Ordinal) ||
+              charset.Equals("windows-1252", StringComparison.Ordinal) ||
+              charset.Equals("windows-1251", StringComparison.Ordinal) ||
               (charset.Length > 9 && charset.Substring(0, 9).Equals(
-                "iso-8859-"))) {
+                "iso-8859-",
+                StringComparison.Ordinal))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
@@ -2803,12 +3445,15 @@ name.Equals("final-recipient")) {
           this.transferEncoding == EncodingBase64 ||
           this.transferEncoding == EncodingUnknown) {
         if (this.contentType.IsMultipart ||
-            (this.contentType.TopLevelType.Equals("message") &&
-             !this.contentType.SubType.Equals("global") &&
-             !this.contentType.SubType.Equals("global-headers") &&
-             !this.contentType.SubType.Equals(
-               "global-disposition-notification") &&
-             !this.contentType.SubType.Equals("global-delivery-status"))) {
+            (this.contentType.TopLevelType.Equals("message",
+  StringComparison.Ordinal) && !this.contentType.SubType.Equals("global",
+  StringComparison.Ordinal) &&
+             !this.contentType.SubType.Equals("global-headers",
+  StringComparison.Ordinal) && !this.contentType.SubType.Equals(
+    "global-disposition-notification",
+    StringComparison.Ordinal) &&
+             !this.contentType.SubType.Equals("global-delivery-status",
+  StringComparison.Ordinal))) {
           if (this.transferEncoding == EncodingQuotedPrintable ||
               this.transferEncoding == EncodingBase64) {
             // DEVIATION: Treat quoted-printable for multipart and message
@@ -2913,12 +3558,12 @@ name.Equals("final-recipient")) {
               while (multipartStack.Count > stackCount) {
                 multipartStack.RemoveAt(stackCount);
               }
-              Message parentMessage = multipartStack[multipartStack.Count -
-                    1].Message;
+              Message parentMessage = multipartStack[
+                    multipartStack.Count - 1].Message;
               boundaryChecker.StartBodyPartHeaders();
               MediaType ctype = parentMessage.ContentType;
-              bool parentIsDigest = ctype.SubType.Equals("digest") &&
-                ctype.IsMultipart;
+              bool parentIsDigest = ctype.SubType.Equals("digest",
+  StringComparison.Ordinal) && ctype.IsMultipart;
               ReadHeaders(stream, msg.headers, false);
               msg.ProcessHeaders(true, parentIsDigest);
               entry = new MessageStackEntry(msg);
@@ -2930,10 +3575,13 @@ name.Equals("final-recipient")) {
               ctype = msg.ContentType;
               leaf = ctype.IsMultipart ? null : msg;
               boundaryChecker.EndBodyPartHeaders(entry.Boundary);
+              bool isTextPlain = ctype.TypeAndSubType.Equals(
+                "text/plain",
+                StringComparison.Ordinal);
               currentTransform = MakeTransferEncoding(
                 boundaryChecker,
                 msg.transferEncoding,
-                ctype.TypeAndSubType.Equals("text/plain"));
+                isTextPlain);
             } else {
               // All body parts were read
               if (leaf != null) {
@@ -2957,10 +3605,13 @@ name.Equals("final-recipient")) {
     }
 
     private void ReadSimpleBody(IByteReader stream) {
+      bool isTextPlain =
+this.ContentType.TypeAndSubType.Equals("text/plain",
+  StringComparison.Ordinal);
       IByteReader transform = MakeTransferEncoding(
         stream,
         this.transferEncoding,
-        this.ContentType.TypeAndSubType.Equals("text/plain"));
+        isTextPlain);
       var buffer = new byte[8192];
       var bufferCount = 0;
       int bufferLength = buffer.Length;
@@ -3011,8 +3662,8 @@ name.Equals("final-recipient")) {
       encoder.AppendSymbol(name + ":");
       encoder.AppendSpace();
       string fullField = ParserUtility.Implode(
-  this.GetMultipleHeaders(name),
-  "\u002c ");
+        this.GetMultipleHeaders(name),
+        "\u002c ");
       string lcname = DataUtilities.ToLowerCaseAscii(name);
       if (fullField.Length == 0) {
         encoder.AppendSymbol("me@" + name + "-address.invalid");
@@ -3025,12 +3676,12 @@ name.Equals("final-recipient")) {
     }
 
     private class MessageStackEntry {
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
+    /// <summary>Gets a value which is used in an internal API.</summary>
+    /// <value>This is an internal API.</value>
       public Message Message { get; private set; }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
+    /// <summary>Gets a value which is used in an internal API.</summary>
+    /// <value>This is an internal API.</value>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

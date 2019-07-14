@@ -138,7 +138,7 @@ namespace PeterO.Mail {
         return null;
       }
 
-      if (parts[0].Equals("mailto")) {
+      if (parts[0].Equals("mailto", StringComparison.Ordinal)) {
         var msg = new Message();
         string emails = String.Empty;
         if (!String.IsNullOrEmpty(parts[2])) {
@@ -193,18 +193,19 @@ namespace PeterO.Mail {
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.
             // Of these, the first four can appear only once in a message
-            if (name.Equals("body")) {
+            if (name.Equals("body", StringComparison.Ordinal)) {
               msg.SetTextBody(value);
-            } else if (name.Equals("keywords") || name.Equals("comments")) {
+            } else if (name.Equals("keywords", StringComparison.Ordinal) ||
+name.Equals("comments", StringComparison.Ordinal)) {
               string decoded = Message.DecodeHeaderValue(name, value);
               msg.AddHeader(name, decoded);
-            } else if (name.Equals("subject") ||
-name.Equals("cc") ||
-name.Equals("bcc") ||
-name.Equals("in-reply-to")) {
+            } else if (name.Equals("subject", StringComparison.Ordinal) ||
+name.Equals("cc", StringComparison.Ordinal) ||
+name.Equals("bcc", StringComparison.Ordinal) ||
+name.Equals("in-reply-to", StringComparison.Ordinal)) {
               string decoded = Message.DecodeHeaderValue(name, value);
               msg.SetHeader(name, decoded);
-            } else if (name.Equals("to")) {
+            } else if (name.Equals("to", StringComparison.Ordinal)) {
               string decoded = Message.DecodeHeaderValue(name, value);
               if (String.IsNullOrEmpty(emails)) {
                 emails = decoded;

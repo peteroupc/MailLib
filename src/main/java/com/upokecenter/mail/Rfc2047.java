@@ -390,9 +390,9 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
                     afterLast,
                     context,
                     encodingChar);
-                    if (
-                      i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' &&
-                str.charAt(i2 + 1) == '=' && i2 + 2 == afterLast) {
+                    if (i2 != index && i2 + 1 < endIndex &&
+                str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
+                      i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -810,8 +810,9 @@ endIndex &&
       }
       int lastIndex = index;
       for (int[] token : tokens) {
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+        if (token[1] < lastIndex || token[1] < index ||
+            token[1] > endIndex || token[2] < index ||
+            token[2] > endIndex) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {

@@ -22,7 +22,9 @@
     public NamedAddress(
         string address);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.     <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
+
+<b>Parameters:</b>
 
  * <i>address</i>: The parameter  <i>address</i>
  is a text string.
@@ -43,7 +45,9 @@ Address has an invalid syntax.; Address has an invalid syntax.
         string displayName,
         PeterO.Mail.Address address);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.     <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
+
+<b>Parameters:</b>
 
  * <i>displayName</i>: The parameter  <i>displayName</i>
  is a text string.
@@ -64,7 +68,9 @@ The parameter  <i>address</i>
         string displayName,
         string address);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.     <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
+
+<b>Parameters:</b>
 
  * <i>displayName</i>: The parameter  <i>displayName</i>
  is a text string.
@@ -86,7 +92,9 @@ The parameter  <i>address</i>
         string localPart,
         string domain);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.      <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
+
+<b>Parameters:</b>
 
  * <i>displayName</i>: The parameter  <i>displayName</i>
  is a text string.
@@ -111,7 +119,9 @@ The parameter  <i>localPart</i>
         string groupName,
         System.Collections.Generic.IList mailboxes);
 
- Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.      <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
+
+<b>Parameters:</b>
 
  * <i>groupName</i>: The parameter  <i>groupName</i>
  is a text string.
@@ -163,7 +173,7 @@ A list of addresses that make up the group, if this object represents a group, o
 
  Gets a value indicating whether this represents a group of addresses rather than a single address.  <b>Returns:</b>
 
- `true`  If this represents a group of addresses; otherwise, .  `false`  .
+ `true`  If this represents a group of addresses; otherwise,.  `false` .
 
 <a id="Name"></a>
 ### Name
@@ -180,13 +190,15 @@ The name for this email address.
     public bool AddressesEqual(
         PeterO.Mail.NamedAddress na);
 
- Not documented yet.  <b>Parameters:</b>
+ Not documented yet.
+
+<b>Parameters:</b>
 
  * <i>na</i>: A named address object to compare with this one. Can be null.
 
 <b>Return Value:</b>
 
-Either  `true`  or  `false`  .
+Either  `true`  or  `false` .
 
 <a id="Equals_object"></a>
 ### Equals
@@ -194,21 +206,25 @@ Either  `true`  or  `false`  .
     public override bool Equals(
         object obj);
 
- Determines whether this object and another object are equal.  <b>Parameters:</b>
+ Determines whether this object and another object are equal.
+
+<b>Parameters:</b>
 
  * <i>obj</i>: The parameter  <i>obj</i>
  is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false`  .
+ `true`  if this object and another object are equal; otherwise,  `false` .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
 
- Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.  <b>Return Value:</b>
+ Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
+
+<b>Return Value:</b>
 
 A 32-bit hash code.
 
@@ -218,7 +234,9 @@ A 32-bit hash code.
     public static System.Collections.Generic.IList ParseAddresses(
         string addressValue);
 
- Generates a list of NamedAddress objects from a comma-separated list of addresses. Each address must follow the syntax accepted by the one-argument constructor of NamedAddress.  <b>Parameters:</b>
+ Generates a list of NamedAddress objects from a comma-separated list of addresses. Each address must follow the syntax accepted by the one-argument constructor of NamedAddress.
+
+<b>Parameters:</b>
 
  * <i>addressValue</i>: A comma-separate list of addresses in the form of a text string.
 
@@ -232,6 +250,8 @@ A list of addresses generated from the  <i>addressValue</i>
 
     public override string ToString();
 
- Converts this object to a text string. This will generally be the form of this NamedAddress object as it could appear in a "To" header field.  <b>Return Value:</b>
+ Converts this object to a text string. This will generally be the form of this NamedAddress object as it could appear in a "To" header field.
+
+<b>Return Value:</b>
 
 A string representation of this object.

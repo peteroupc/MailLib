@@ -10,14 +10,16 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.DispositionBuilder"]/*'/>
+    /// <summary>A mutable data type that allows a content disposition to
+    /// be built.</summary>
   public class DispositionBuilder {
     private readonly IDictionary<string, string> parameters;
     private string type;
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.DispositionType"]/*'/>
+    /// <summary>Gets or sets this value's disposition type, such as
+    /// "inline" or "attachment".</summary>
+    /// <value>This value's disposition type, such as "inline" or
+    /// "attachment" .</value>
     public string DispositionType {
       get {
         return this.type;
@@ -28,7 +30,6 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <xmlbegin id='31'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='DispositionBuilder'/> class.</summary>
     public DispositionBuilder() {
@@ -36,13 +37,12 @@ namespace PeterO.Mail {
       this.type = "attachment";
     }
 
-    /// <xmlbegin id='32'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='DispositionBuilder'/> class.</summary>
     /// <param name='mt'>The parameter <paramref name='mt'/> is a
     /// ContentDisposition object.</param>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='mt'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
@@ -51,15 +51,13 @@ namespace PeterO.Mail {
       this.type = mt.DispositionType;
     }
 
-    /// <xmlbegin id='33'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='DispositionBuilder'/> class.</summary>
     /// <param name='type'>The parameter <paramref name='type'/> is a text
     /// string.</param>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='type'/> is null.</exception>
-    /// <exception cref='T:System.ArgumentException'>Type is
-    /// empty.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='type'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Type is empty.</exception>
     public DispositionBuilder(string type) {
       if (type == null) {
         throw new ArgumentNullException(nameof(type));
@@ -71,34 +69,43 @@ namespace PeterO.Mail {
       this.SetDispositionType(type);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsText"]/*'/>
+    /// <summary>Gets a value indicating whether this is a text media
+    /// type.</summary>
+    /// <value><c>true</c> If this is a text media type; otherwise,.
+    /// <c>false</c>.</value>
     [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsText {
       get {
-        return this.DispositionType.Equals("text");
+        return this.DispositionType.Equals("text", StringComparison.Ordinal);
       }
     }
 
-    /// <xmlbegin id='34'/>
-    /// <value/>
-    [Obsolete(
-      "Irrelevant for content dispositions; will be removed in the future.")]
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
+    [Obsolete("Irrelevant for content dispositions; will be removed in the" +
+"\u0020future.")]
     public bool IsMultipart {
       get {
-        return this.DispositionType.Equals("multipart");
+        return this.DispositionType.Equals("multipart",
+  StringComparison.Ordinal);
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToDisposition"]/*'/>
+    /// <summary>Converts this object to an immutable ContentDisposition
+    /// object.</summary>
+    /// <returns>A MediaType object.</returns>
     public ContentDisposition ToDisposition() {
       return new ContentDisposition(this.type, this.parameters);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)"]/*'/>
+    /// <summary>Sets the disposition type, such as "inline".</summary>
+    /// <param name='str'>The parameter <paramref name='str'/> is a text
+    /// string.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Str is empty.</exception>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -114,8 +121,16 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)"]/*'/>
+    /// <summary>Removes a parameter from this content disposition. Does
+    /// nothing if the parameter's name doesn't exist.</summary>
+    /// <param name='name'>The parameter to remove. The name is compared
+    /// using a basic case-insensitive comparison. (Two strings are equal
+    /// in such a comparison, if they match after converting the basic
+    /// upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+    /// lower case.).</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -124,8 +139,20 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)"]/*'/>
+    /// <summary>Sets a parameter of this content disposition.</summary>
+    /// <param name='name'>Name of the parameter to set. If this name
+    /// already exists (compared using a basic case-insensitive
+    /// comparison), it will be overwritten. (Two strings are equal in a
+    /// basic case-insensitive comparison, if they match after converting
+    /// the basic upper-case letters A to Z (U + 0041 to U + 005A) in both
+    /// strings to lower case.).</param>
+    /// <param name='value'>Value of the parameter to set.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>Either <paramref
+    /// name='value'/> or <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty, or it isn't a well-formed parameter
+    /// name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -145,8 +172,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToString"]/*'/>
+    /// <summary>Converts this object to a text string.</summary>
+    /// <returns>A string representation of this object.</returns>
     public override string ToString() {
       return this.ToDisposition().ToString();
     }

@@ -19,18 +19,9 @@ private MailDateTime() {
     };
 
     /**
-     * Generates a date-time string following the Internet Message Format (RFC
-     * 5322) from an 8-element array.
-     * @param dateTime The date and time in the form of an 8-element array. See
-     * <see
-     *
-       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
-       System.String,System.Boolean)'/>
-     * for information on the format of this parameter.
-     * @return A date-time string.
-     * @throws IllegalArgumentException The parameter {@code dateTime} is null or
-     * invalid, including if the year ({@code dateTime[0]}) is less than
-     * 0.
+     * Not documented yet.
+     * @param dateTime Not documented yet.
+     * @return A string object.
      */
     public static String GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
@@ -203,22 +194,12 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /**
-     * Generates a date-time string following the Internet Message Format (RFC
-     *  5322) from an 8-element array, optionally using a "GMT" time zone
-     * indicator.
-     * @param dateTime The date and time in the form of an 8-element array. See
-     * <see
-     *
-       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
-       System.String,System.Boolean)'/>
-     * for information on the format of this parameter.
-     * @param gmt If true, uses the string "GMT" as the time zone offset.
-     * @return A date-time string.
-     * @throws IllegalArgumentException The parameter {@code dateTime} is null or
-     * invalid, including if the year ({@code dateTime[0]}) is less than
-     * 0.
-     * @throws UnsupportedOperationException The time zone offset is other than 0
-     * and {@code gmt} is true.
+     * Not documented yet.
+     * @param dateTime Not documented yet.
+     * @param gmt Not documented yet.
+     * @return A string object.
+     * @throws IllegalArgumentException Invalid date and time; Invalid date and time;
+     * Invalid year.
      */
     public static String GenerateDateString(int[] dateTime, boolean gmt) {
       if (!IsValidDateTime(dateTime) || dateTime[0] < 0) {
@@ -287,20 +268,20 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * time zone strings to appear in the date-time string. If an array is
      * returned, the elements of that array (starting from 0) are as
      * follows: <ul> <li>0 - The year. For example, the value 2000 means
-     * 2000 C.E. </li> <li>1 - Month of the year, from 1 (January) through
-     * 12 (December). </li> <li>2 - Day of the month, from 1 through 31.
-     * </li> <li>3 - Hour of the day, from 0 through 23. </li> <li>4 -
-     * Minute of the hour, from 0 through 59. </li> <li>5 - Second of the
+     * 2000 C.E.</li> <li>1 - Month of the year, from 1 (January) through
+     * 12 (December).</li> <li>2 - Day of the month, from 1 through
+     * 31.</li> <li>3 - Hour of the day, from 0 through 23.</li> <li>4 -
+     * Minute of the hour, from 0 through 59.</li> <li>5 - Second of the
      * minute, from 0 through 60 (this value can go up to 60 to accommodate
      * leap seconds). (Leap seconds are additional seconds added to adjust
      * international atomic time, or TAI, to an approximation of
-     * astronomical time known as coordinated universal time, or UTC.)
-     * </li> <li>6 - Milliseconds of the second, from 0 through 999. Will
-     * always be 0. </li> <li>7 - Number of minutes to subtract from this
-     * date and time to get global time. This number can be positive or
-     * negative. </li> </ul>
+     * astronomical time known as coordinated universal time, or UTC.)</li>
+     * <li>6 - Milliseconds of the second, from 0 through 999. Will always
+     * be 0.</li> <li>7 - Number of minutes to subtract from this date and
+     * time to get global time. This number can be positive or
+     * negative.</li></ul>
      * @param str A date-time string.
-     * @param parseObsoleteZones If set to {@code true} , this method allows
+     * @param parseObsoleteZones If set to {@code true}, this method allows
      *  obsolete time zones (single-letter time zones, "GMT", "UT", and
      * certain three-letter combinations) to appear in the date-time
      * string.
@@ -327,20 +308,9 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /**
-     * Gets the date and time extracted from a date-time string following the
-     * Internet Message Format (RFC 5322). However, this method does not
-     * allow obsolete time zone strings to appear in the date-time string.
-     * See <see
-     *
-       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
-       System.String,System.Boolean)'/>
-     * for information on the format of this method's return value.
-     * @param str The parameter
-      {@code str}
-       is not documented yet.
-     * @return An 8-element array containing the date and time, or {@code null} if
-     * {@code str} is null, empty, or syntactically invalid, or if the
-     * string's year would overflow the range of a 32-bit signed integer.
+     * Not documented yet.
+     * @param str Not documented yet.
+     * @return An array of 32-bit unsigned integers.
      */
     public static int[] ParseDateString(String str) {
       return ParseDateString(str, false);
@@ -1009,7 +979,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       for (int i = 0; i < 7; ++i) {
         String dowName = dowNamesLong[i];
         if (endIndex - index >= dowName.length() &&
-           v.substring(index, (index)+(dowName.length())).equals(dowName)) {
+           v.substring(index, (index)+(dowName.length())).equals(dowName,
+  StringComparison.Ordinal)) {
           return i;
         }
       }

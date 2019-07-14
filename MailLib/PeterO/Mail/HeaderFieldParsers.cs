@@ -596,7 +596,7 @@ namespace PeterO.Mail {
           return false;
         }
         string checkword = DataUtilities.ToLowerCaseAscii(sb.ToString());
-        if (!checkword.Equals(word)) {
+        if (!checkword.Equals(word, StringComparison.Ordinal)) {
           return false;
         }
         index = HeaderParser.ParseCFWS(
@@ -801,8 +801,8 @@ namespace PeterO.Mail {
         if (cd == null) {
           return index;
         }
-        int ret = (cd.DispositionType.Equals("no") ||
- cd.DispositionType.Equals("yes")) ? endIndex : index;
+        int ret = (cd.DispositionType.Equals("no", StringComparison.Ordinal) ||
+ cd.DispositionType.Equals("yes", StringComparison.Ordinal)) ? endIndex : index;
         if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
             str,

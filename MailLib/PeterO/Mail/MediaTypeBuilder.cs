@@ -10,15 +10,14 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MediaTypeBuilder"]/*'/>
+    /// <summary>A mutable media type object.</summary>
   public sealed class MediaTypeBuilder {
     private readonly IDictionary<string, string> parameters;
     private string type;
     private string subtype;
 
-    /// <xmlbegin id='4'/>
-    /// <value/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
     public string TopLevelType {
       get {
         return this.type;
@@ -29,8 +28,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.SubType"]/*'/>
+    /// <summary>Gets or sets this value's subtype.</summary>
+    /// <value>This value's subtype.</value>
     public string SubType {
       get {
         return this.subtype;
@@ -41,7 +40,6 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <xmlbegin id='5'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='MediaTypeBuilder'/> class.</summary>
     public MediaTypeBuilder() {
@@ -50,13 +48,12 @@ namespace PeterO.Mail {
       this.subtype = "octet-stream";
     }
 
-    /// <xmlbegin id='6'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='MediaTypeBuilder'/> class.</summary>
     /// <param name='mt'>The parameter <paramref name='mt'/> is a MediaType
     /// object.</param>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='mt'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='mt'/> is null.</exception>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
@@ -66,7 +63,6 @@ namespace PeterO.Mail {
       this.subtype = mt.SubType;
     }
 
-    /// <xmlbegin id='7'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='MediaTypeBuilder'/> class.</summary>
     /// <param name='type'>The parameter <paramref name='type'/> is a text
@@ -79,30 +75,38 @@ namespace PeterO.Mail {
       this.SetSubType(subtype);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.IsText"]/*'/>
+    /// <summary>Gets a value indicating whether this is a text media
+    /// type.</summary>
+    /// <value><c>true</c> If this is a text media type; otherwise,.
+    /// <c>false</c>.</value>
     public bool IsText {
       get {
-        return this.TopLevelType.Equals("text");
+        return this.TopLevelType.Equals("text", StringComparison.Ordinal);
       }
     }
 
-    /// <xmlbegin id='8'/>
-    /// <value/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
     public bool IsMultipart {
       get {
-        return this.TopLevelType.Equals("multipart");
+        return this.TopLevelType.Equals("multipart", StringComparison.Ordinal);
       }
     }
 
-    /// <xmlbegin id='9'/>
     /// <returns>A MediaType object.</returns>
     public MediaType ToMediaType() {
       return new MediaType(this.type, this.subtype, this.parameters);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetTopLevelType(System.String)"]/*'/>
+    /// <summary>Sets this media type's top-level type.</summary>
+    /// <param name='str'>A text string naming a top-level type, such as
+    /// "text" or "audio" .</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='str'/> is syntactically invalid for a top-level
+    /// type.</exception>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -118,8 +122,16 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)"]/*'/>
+    /// <summary>Removes a parameter from this builder object. Does nothing
+    /// if the parameter's name doesn't exist.</summary>
+    /// <param name='name'>Name of the parameter to remove. The name is
+    /// compared using a basic case-insensitive comparison. (Two strings
+    /// are equal in such a comparison, if they match after converting the
+    /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
+    /// strings to lower case.).</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public MediaTypeBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -128,8 +140,20 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetParameter(System.String,System.String)"]/*'/>
+    /// <summary>Sets a parameter's name and value for this media
+    /// type.</summary>
+    /// <param name='name'>Name of the parameter to set, such as "charset"
+    /// . The name is compared using a basic case-insensitive comparison.
+    /// (Two strings are equal in such a comparison, if they match after
+    /// converting the basic upper-case letters A to Z (U + 0041 to U +
+    /// 005A) in both strings to lower case.).</param>
+    /// <param name='value'>A text string giving the parameter's
+    /// value.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='value'/> or <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty or syntactically invalid.</exception>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -149,8 +173,14 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetSubType(System.String)"]/*'/>
+    /// <summary>Sets this media type's subtype, such as "plain" or "xml"
+    /// .</summary>
+    /// <param name='str'>A text string naming a media subtype.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='str'/> is empty or syntactically invalid.</exception>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -166,8 +196,9 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.ToString"]/*'/>
+    /// <summary>Converts this object to a text string of the media type it
+    /// represents, in the same form as <c>MediaType.ToString</c>.</summary>
+    /// <returns>A string representation of this object.</returns>
     public override string ToString() {
       return this.ToMediaType().ToString();
     }

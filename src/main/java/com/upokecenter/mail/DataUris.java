@@ -13,10 +13,9 @@ import com.upokecenter.util.*;
 private DataUris() {
 }
     /**
-     * Extracts the media type from a Data URI (uniform resource identifier).
-     * @param uri The parameter
-      {@code uri}
-       is a text string.
+     * Extracts the media type from a string representing a Data URI (uniform
+     * resource identifier).
+     * @param uri A string representing a data URI. It must start with "data:".
      * @return The media type. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a Data URI.
      */
@@ -28,7 +27,7 @@ private DataUris() {
         return null;
       }
       String path = parts[2];
-      if (parts[0].equals("data")) {
+      if (parts[0].equals("data", StringComparison.Ordinal)) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -70,6 +69,16 @@ private DataUris() {
       return null;
     }
 
+    /**
+     * Extracts the media type from a Data URI (uniform resource identifier).
+     * @param uri A data URI. It must have a scheme of "data:".
+     * @return The media type. Returns null if {@code uri} is null, is
+     * syntactically invalid, or is not a Data URI.
+     */
+    public static MediaType DataUriMediaType(java.net.URI uri) {
+return (uri == null) ? null : (DtaUriBytes(uri.toString());
+    }
+
     private static int ToHex(char b1) {
       if (b1 >= '0' && b1 <= '9') {
         return b1 - '0';
@@ -95,9 +104,18 @@ private DataUris() {
     /**
      * Extracts the data from a Data URI (uniform resource identifier) in the form
      * of a byte array.
-     * @param uri The parameter
-      {@code uri}
-       is a text string.
+     * @param uri A data URI. It must have a scheme of "data".
+     * @return The data as a byte array. Returns null if {@code uri} is null, is
+     * syntactically invalid, or is not a data URI.
+     */
+    public static byte[] DataUriBytes(java.net.URI uri) {
+return (uri == null) ? null : (DtaUriBytes(uri.toString());
+    }
+
+    /**
+     * Extracts the data from a string representing a Data URI (uniform resource
+     * identifier) in the form of a byte array.
+     * @param uri A string representing a data URI. It must start with "data:".
      * @return The data as a byte array. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a data URI.
      */
@@ -109,15 +127,15 @@ private DataUris() {
         return null;
       }
       String path = parts[2];
-      if (parts[0].equals("data")) {
+      if (parts[0].equals("data", StringComparison.Ordinal)) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
         }
-        boolean usesBase64 = mediaTypePart >= 7 &&
-          DataUtilities.ToLowerCaseAscii(path.substring(
-            mediaTypePart - 7, (
-            mediaTypePart - 7)+(7))).equals(";base64");
+        boolean usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii(
+            path.substring(
+              mediaTypePart - 7, (
+              mediaTypePart - 7)+(7))).equals(";base64", StringComparison.Ordinal);
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -193,8 +211,8 @@ private DataUris() {
       return null;
     }
 
-    private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
-  "jklmnopqrstuvwxyz0123456789+/";
+    private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef" +
+      "ghijklmnopqrstuvwxyz0123456789+/";
 
     private static void AppendBase64(StringBuilder builder, byte[] bytes) {
       int b1 = 0;
@@ -240,8 +258,7 @@ private DataUris() {
      * Encodes text as a Data URI (uniform resource identifier).
      * @param textString A text string to encode as a data URI.
      * @return A Data URI that encodes the given text.
-     * @throws NullPointerException The parameter {@code textString} is
-     * null.
+     * @throws NullPointerException The parameter {@code textString} is null.
      */
     public static String MakeDataUri(String textString) {
       if (textString == null) {
@@ -271,8 +288,10 @@ private DataUris() {
       StringBuilder builder = new StringBuilder();
       builder.append("data:");
       String mediaTypeString = mediaType.ToUriSafeString();
-      if (mediaType.getTypeAndSubType().equals("text/plain")) {
-        if (mediaTypeString.substring(0,10).equals("text/plain")) {
+      if (mediaType.getTypeAndSubType().equals("text/plain",
+            StringComparison.Ordinal)) {
+        if (mediaTypeString.substring(0,10).equals("text/plain",
+            StringComparison.Ordinal)) {
           // Strip 'text/plain' from the media type String,
           // since that's the default for data URIs
           mediaTypeString = mediaTypeString.substring(10);

@@ -8,8 +8,78 @@
 using System;
 
 namespace PeterO.Text {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.NormalizerInput"]/*'/>
+    /// <summary>
+    /// <para>A character input class that implements the Unicode
+    /// normalization algorithm and contains methods and functionality to
+    /// test and convert text strings for normalization. This is similar to
+    /// the deprecated Normalizer class, except it implements the
+    /// ICharacterInput interface.</para>
+    /// <para>The Unicode Standard includes characters, such as an acute
+    /// accent, that can be combined with other characters to make new
+    /// characters. For example, the letter E combines with an acute accent
+    /// to make E-acute (É). In some cases, the combined form (E-acute)
+    /// should be treated as equivalent to the uncombined form (E plus
+    /// acute). For this reason, the standard defines four
+    /// <i>normalization forms</i> that convert strings to a single
+    /// equivalent form:</para>
+    /// <list>
+    /// <item><b>NFD</b> (Normalization Form D) decomposes combined forms
+    /// to their constituent characters (E plus acute, for example), then
+    /// reorders combining marks to a standardized order. This is called
+    /// canonical decomposition.</item>
+    /// <item><b>NFC</b> does canonical decomposition, then combines
+    /// certain constituent characters to their composites (E-acute, for
+    /// example). This is called canonical composition.</item>
+    /// <item>Two normalization forms, <b>NFKC</b> and <b>NFKD</b>, are
+    /// similar to NFC and NFD, except they also "decompose" certain
+    /// characters, such as ligatures, font or positional variants, and
+    /// subscripts, whose visual distinction can matter in some contexts.
+    /// This is called compatibility decomposition.</item></list>
+    /// <para>For more information, see Standard Annex 15 at
+    /// <c>http://www.unicode.org/reports/tr15/</c>.</para>
+    /// <para><b>Thread safety:</b> This class is mutable; its properties
+    /// can be changed. None of its instance methods are designed to be
+    /// thread safe. Therefore, access to objects from this class must be
+    /// synchronized if multiple threads can access them at the same
+    /// time.</para>
+    /// <para>NOTICE: While this class's source code is in the public
+    /// domain, the class uses an internal class, called NormalizationData,
+    /// that includes data derived from the Unicode Character Database. In
+    /// case doing so is required, the permission notice for the Unicode
+    /// Character Database is given here:</para>
+    /// <para>COPYRIGHT AND PERMISSION NOTICE</para>
+    /// <para>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
+    /// Distributed under the Terms of Use in
+    /// http://www.unicode.org/copyright.html.</para>
+    /// <para>Permission is hereby granted, free of charge, to any person
+    /// obtaining a copy of the Unicode data files and any associated
+    /// documentation (the "Data Files") or Unicode software and any
+    /// associated documentation (the "Software") to deal in the Data Files
+    /// or Software without restriction, including without limitation the
+    /// rights to use, copy, modify, merge, publish, distribute, and/or
+    /// sell copies of the Data Files or Software, and to permit persons to
+    /// whom the Data Files or Software are furnished to do so, provided
+    /// that (a) this copyright and permission notice appear with all
+    /// copies of the Data Files or Software, (b) this copyright and
+    /// permission notice appear in associated documentation, and (c) there
+    /// is clear notice in each modified Data File or in the Software as
+    /// well as in the documentation associated with the Data File(s) or
+    /// Software that the data or software has been modified.</para>
+    /// <para>THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT
+    /// WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    /// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    /// PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT
+    /// SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE
+    /// LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+    /// DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA
+    /// OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+    /// TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    /// PERFORMANCE OF THE DATA FILES OR SOFTWARE.</para>
+    /// <para>Except as contained in this notice, the name of a copyright
+    /// holder shall not be used in advertising or otherwise to promote the
+    /// sale, use or other dealings in these Data Files or Software without
+    /// prior written authorization of the copyright
+    /// holder.</para></summary>
   public sealed class NormalizerInput : ICharacterInput {
     internal static int DecompToBufferInternal(
       int ch,
@@ -188,7 +258,6 @@ namespace PeterO.Text {
     private int processedIndex;
     private int flushIndex;
 
-    /// <xmlbegin id='53'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='NormalizerInput'/> class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
@@ -199,7 +268,6 @@ namespace PeterO.Text {
   Normalization.NFC) {
     }
 
-    /// <xmlbegin id='54'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='NormalizerInput'/> class.</summary>
     /// <param name='input'>The parameter <paramref name='input'/> is an
@@ -210,7 +278,6 @@ namespace PeterO.Text {
   Normalization.NFC) {
     }
 
-    /// <xmlbegin id='55'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='NormalizerInput'/> class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
@@ -230,7 +297,6 @@ namespace PeterO.Text {
   form) {
     }
 
-    /// <xmlbegin id='56'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='NormalizerInput'/> class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
@@ -241,15 +307,14 @@ namespace PeterO.Text {
       : this(new StringCharacterInput2(str), form) {
     }
 
-    /// <xmlbegin id='57'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='NormalizerInput'/> class.</summary>
     /// <param name='stream'>The parameter <paramref name='stream'/> is an
     /// ICharacterInput object.</param>
     /// <param name='form'>The parameter <paramref name='form'/> is a
     /// Normalization object.</param>
-    /// <exception cref='T:System.ArgumentNullException'>The parameter
-    /// <paramref name='stream'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='stream'/> is null.</exception>
     public NormalizerInput(
       ICharacterInput stream,
       Normalization form) {
@@ -265,8 +330,16 @@ namespace PeterO.Text {
           Normalization.NFKD;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Determines whether the text provided by a character input
+    /// is normalized.</summary>
+    /// <param name='chars'>A object that implements a streamable character
+    /// input.</param>
+    /// <param name='form'>Specifies the normalization form to
+    /// check.</param>
+    /// <returns><c>true</c> if the text is normalized; otherwise,
+    /// <c>false</c>.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='chars'/> is null.</exception>
     public static bool IsNormalized(
       ICharacterInput chars,
       Normalization form) {
@@ -345,8 +418,17 @@ UnicodeDatabase.IsQuickCheckStarter(
       return i == length;
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Converts a string to the given Unicode normalization
+    /// form.</summary>
+    /// <param name='str'>An arbitrary string.</param>
+    /// <param name='form'>The Unicode normalization form to convert
+    /// to.</param>
+    /// <returns>The parameter <paramref name='str'/> converted to the
+    /// given normalization form.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='str'/> contains an unpaired surrogate code point.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -358,8 +440,16 @@ UnicodeDatabase.IsQuickCheckStarter(
         new NormalizerInput(str, form));
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
+    /// <summary>Determines whether the given string is in the given
+    /// Unicode normalization form.</summary>
+    /// <param name='str'>An arbitrary string.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
+    /// <returns><c>true</c> if the given string is in the given Unicode
+    /// normalization form; otherwise, <c>false</c>. Returns <c>false</c>
+    /// if the string contains an unpaired surrogate code point.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -460,8 +550,10 @@ UnicodeDatabase.IsQuickCheckStarter(
 
     private readonly int[] readbuffer;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.ReadChar"]/*'/>
+    /// <summary>Reads a Unicode character from a data source.</summary>
+    /// <returns>Either a Unicode code point (from 0-0xd7ff or from 0xe000
+    /// to 0x10ffff), or the value -1 indicating the end of the
+    /// source.</returns>
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;
@@ -528,8 +620,23 @@ UnicodeDatabase.IsQuickCheckStarter(
 
     */
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
+    /// <summary>Reads a sequence of Unicode code points from a data
+    /// source.</summary>
+    /// <param name='chars'>Output buffer.</param>
+    /// <param name='index'>A zero-based index showing where the desired
+    /// portion of <paramref name='chars'/> begins.</param>
+    /// <param name='length'>The number of elements in the desired portion
+    /// of <paramref name='chars'/> (but not more than <paramref
+    /// name='chars'/> 's length).</param>
+    /// <returns>The number of Unicode code points read, or 0 if the end of
+    /// the source is reached.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='chars'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref name='index'/>
+    /// or <paramref name='length'/> is less than 0 or greater than
+    /// <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s
+    /// length minus <paramref name='index'/> is less than <paramref
+    /// name='length'/>.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException(nameof(chars));

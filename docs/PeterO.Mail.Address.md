@@ -17,7 +17,9 @@
     public Address(
         string addressValue);
 
- Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.     <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.
+
+<b>Parameters:</b>
 
  * <i>addressValue</i>: The parameter  <i>addressValue</i>
  is a text string.
@@ -29,7 +31,7 @@ The parameter  <i>addressValue</i>
  is null.
 
  * System.ArgumentException:
-AddressValue is empty.; Address doesn't contain a ' @' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
+AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
 
 <a id="Domain"></a>
 ### Domain
@@ -55,21 +57,25 @@ The local part of this email address (the part before the "@" sign).
     public override bool Equals(
         object obj);
 
- Determines whether this object and another object are equal.  <b>Parameters:</b>
+ Determines whether this object and another object are equal.
+
+<b>Parameters:</b>
 
  * <i>obj</i>: The parameter  <i>obj</i>
  is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false`  .
+ `true`  if this object and another object are equal; otherwise,  `false` .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
 
- Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.  <b>Return Value:</b>
+ Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.
+
+<b>Return Value:</b>
 
 A hash code for this instance.
 
@@ -78,6 +84,8 @@ A hash code for this instance.
 
     public override string ToString();
 
- Converts this address object to a text string.  <b>Return Value:</b>
+ Converts this address object to a text string.
+
+<b>Return Value:</b>
 
 A string representation of this object.

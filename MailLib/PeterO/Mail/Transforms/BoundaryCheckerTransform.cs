@@ -313,8 +313,10 @@ namespace PeterO.Mail.Transforms {
       this.started = true; // in case a boundary delimiter immediately starts
     }
 
-    /// <include file='../../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]/*'/>
+    /// <summary>Gets a value indicating whether a new body part was
+    /// detected.</summary>
+    /// <value><c>true</c> If a new body part was detected; otherwise,.
+    /// <c>false</c>.</value>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

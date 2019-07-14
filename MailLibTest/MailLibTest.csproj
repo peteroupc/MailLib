@@ -84,6 +84,7 @@
     <Compile Include="DataUrlTest.cs" />
     <Compile Include="MarkdownTest.cs" />
     <Compile Include="AppResources.cs" />
+    <Compile Include="ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
 
@@ -98,7 +99,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources.restext" />
+    <EmbeddedResource Include="Resources.restext" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,8 +16,8 @@ import com.upokecenter.text.*;
      * <p>Specifies how a message body should be displayed or handled by a mail
      * user agent. This type is immutable; its contents can't be changed
      * after it's created. To create a changeable disposition object, use
-     *  the DispositionBuilder class. </p> <p><b>About the "filename"
-     *  parameter</b> </p> <p>The "filename" parameter of a content
+     *  the DispositionBuilder class.</p> <p><b>About the "filename"
+     *  parameter</b></p> <p>The "filename" parameter of a content
      * disposition suggests a name to use when saving data to a file. For
      *  the "filename" parameter, the GetParameter method and Parameters
      * property (<code>getParameters</code>) method in Java) do not adapt that
@@ -28,20 +28,20 @@ import com.upokecenter.text.*;
      * like to write out in headers, even though that RFC says encoded
      *  words "MUST NOT appear within a 'quoted-string'"; see
      * ContentDisposition.MakeFilename), or not be usable as is as a file
-     * name. </p> <p><b>Example:</b> An example of RFC 2047 encoded words
-     * is: </p> <p><b>=?UTF-8?Q?test?=</b> </p> <p>Content-Disposition
-     * header fields like the following have appeared in practice: </p>
+     * name.</p> <p><b>Example:</b> An example of RFC 2047 encoded words
+     * is:</p> <p><b>=?UTF-8?Q?test?=</b></p> <p>Content-Disposition header
+     * fields like the following have appeared in practice:</p>
      * <p><b>Content-Disposition: attachment;
-     * filename==?UTF-8?Q?example?=</b> </p> <p><b>Content-Disposition:
-     * attachment; filename==?UTF-8?Q?test.png?=</b> </p>
+     * filename==?UTF-8?Q?example?=</b></p> <p><b>Content-Disposition:
+     * attachment; filename==?UTF-8?Q?test.png?=</b></p>
      * <p><b>Content-Disposition: attachment;
-     *  filename="=?UTF-8?Q?test.png?="</b> </p> <p>In this implementation,
+     *  filename="=?UTF-8?Q?test.png?="</b></p> <p>In this implementation,
      * the first and second of these are syntactically invalid, so they
      * trigger parse errors, while the third of these is syntactically
      *  valid, but the "filename" parameter is treated as
      *  "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047
      * encoded words are not decoded at the moment a content disposition is
-     * parsed (using the Parse method). </p>
+     * parsed (using the Parse method).</p>
      */
   public class ContentDisposition {
     private final String dispositionType;
@@ -60,9 +60,7 @@ import com.upokecenter.text.*;
 
     /**
      * Determines whether this object and another object are equal.
-     * @param obj The parameter
-      {@code obj}
-       is an arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
@@ -70,7 +68,8 @@ import com.upokecenter.text.*;
       if (other == null) {
         return false;
       }
-      return this.dispositionType.equals(other.dispositionType) &&
+      return this.dispositionType.equals(other.dispositionType,
+  StringComparison.Ordinal) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -99,14 +98,16 @@ import com.upokecenter.text.*;
      * false}.
      */
     public final boolean isInline() {
-        return this.dispositionType.equals("inline");
+        return this.dispositionType.equals("inline", StringComparison.Ordinal);
       }
 
     /**
-     *
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
      */
     public final boolean isAttachment() {
-        return this.dispositionType.equals("attachment");
+        return this.dispositionType.equals("attachment",
+  StringComparison.Ordinal);
       }
 
     ContentDisposition(
@@ -127,7 +128,8 @@ import com.upokecenter.text.*;
     private final Map<String, String> parameters;
 
     /**
-     *
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
      */
     public final Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -171,19 +173,19 @@ import com.upokecenter.text.*;
      * Converts a file name from the Content-Disposition header to a suitable name
      * for saving data to a file. This method is idempotent; that is,
      * calling the method again on the result doesn't change that result.
-     *  <p>Examples: </p> <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt;
-     *  "hello.txt"</code> (RFC 2047 encoding). </p>
+     *  <p>Examples:</p> <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt;
+     *  "hello.txt"</code> (RFC 2047 encoding).</p>
      *  <p><code>"=?utf-8?q?long_filename?=" -&gt; "long filename"</code> (RFC
-     *  2047 encoding). </p> <p><code>"utf-8'en'hello%2Etxt" -&gt;
-     *  "hello.txt"</code> (RFC 2231 encoding). </p> <p><code>"nul.txt" -&gt;
-     *  "_nul.txt"</code> (Reserved name). </p> <p><code>"dir1/dir2/file" -&gt;
-     *  "dir1_dir2_file"</code> (Directory separators). </p><p>
-     * <p><b>Remarks:</b> </p> <ul> <li>The exact file name conversion used
+     *  2047 encoding).</p> <p><code>"utf-8'en'hello%2Etxt" -&gt;
+     *  "hello.txt"</code> (RFC 2231 encoding).</p> <p><code>"nul.txt" -&gt;
+     *  "_nul.txt"</code> (Reserved name).</p> <p><code>"dir1/dir2/file" -&gt;
+     *  "dir1_dir2_file"</code> (Directory separators).</p><p>
+     * <p><b>Remarks:</b></p> <ul> <li>The exact file name conversion used
      * by this method is not guaranteed to remain the same between versions
      * of this library, with the exception that the return value will be in
      * normalization form C, will not contain base + slash code points,
      * will not be null, and will be an empty string only if <paramref
-     * name='str'/> is null or empty. </li> <li>The string returned by this
+     * name='str'/> is null or empty.</li> <li>The string returned by this
      * method is normalized using Unicode normalization form C (NFC) (see
      * the {@link com.upokecenter.text.NormalizerInput} class for details).
      * Although most file systems preserve the normalization of file names,
@@ -197,36 +199,35 @@ import com.upokecenter.text.*;
      * the return value with NFD for this purpose (because all base + slash
      * code points were converted beforehand by MakeFilename to an
      *  alternate form). See also Apple's Technical Q&amp;A "Text Encodings
-     *  in VFS" and Technical Note TN1150, "HFS Plus Volume Format". </li>
-     * <li><p>Email and HTTP headers may specify suggested filenames using
+     *  in VFS" and Technical Note TN1150, "HFS Plus Volume Format".</li>
+     * <li> <p>Email and HTTP headers may specify suggested filenames using
      * the Content-Disposition header field's <code>filename</code> parameter or,
-     * in practice, the Content-Type header field's <code>name</code> parameter.
-     * </p> <p>Although RFC 2047 encoded words appearing in both parameters
-     * are written out by some implementations, this practice is often
-     * discouraged (especially since the RFC itself says that encoded words
-     *  "MUST NOT appear within a 'quoted-string'"). Nevertheless, the
+     * in practice, the Content-Type header field's <code>name</code>
+     * parameter.</p> <p>Although RFC 2047 encoded words appearing in both
+     * parameters are written out by some implementations, this practice is
+     * often discouraged (especially since the RFC itself says that encoded
+     *  words "MUST NOT appear within a 'quoted-string'"). Nevertheless, the
      * MakeFilename method has a basis in the RFCs to decode RFC 2047
      * encoded words (and RFC 2231 encoding) in file names passed to this
-     * method. </p> <p>RFC 2046 sec. 4.5.1 (
-     * <code>application/octet-stream</code> subtype in Content-Type header
-     *  field) cites an earlier RFC 1341, which "defined the use of a 'NAME'
-     * parameter which gave a <i> suggested </i> file name to be used if
-     *  the data were written to a file". Also, RFC 2183 sec. 2.3 (
-     * <code>filename</code> parameter in Content-Disposition) confirms that the
-     *  " <i> suggested </i> filename" in the <code>filename</code> parameter
-     *  "should be <i> used as a basis </i> for the actual filename, where
-     *  possible", and that that file name should "not [be] blindly use[d]".
-     * See also RFC 6266, section 4.3, which discusses the use of that
-     * parameter in Hypertext Transfer Protocol (HTTP). </p> <p>To the
-     *  extent that the "name" parameter is not allowed in message bodies
-     *  other than those with the media type "application/octet-stream" or
-     * treated as that media-type, this is a deviation of RFC 2045 and 2046
-     *  (see also RFC 2045 sec. 5, which says that "[t]here are NO globally
-     *  meaningful parameters that apply to all media types"). (Some email
-     *  implementations may still write out the "name" parameter, even for
-     * media types other than <code>application/octet-stream</code> and even
-     * though RFC 2046 has deprecated that parameter.) </p> </li> </ul> .
-     * </p>
+     * method.</p> <p>RFC 2046 sec. 4.5.1 (<code>application/octet-stream</code>
+     * subtype in Content-Type header field) cites an earlier RFC 1341,
+     *  which "defined the use of a 'NAME' parameter which gave a
+     * <i>suggested</i> file name to be used if the data were written to a
+     *  file". Also, RFC 2183 sec. 2.3 (<code>filename</code> parameter in
+     *  Content-Disposition) confirms that the " <i>suggested</i> filename"
+     *  in the <code>filename</code> parameter "should be <i>used as a basis</i>
+     *  for the actual filename, where possible", and that that file name
+     *  should "not.get(be) blindly use.get(d)". See also RFC 6266, section
+     * 4.3, which discusses the use of that parameter in Hypertext Transfer
+     *  Protocol (HTTP).</p> <p>To the extent that the "name" parameter is
+     * not allowed in message bodies other than those with the media type
+     *  "application/octet-stream" or treated as that media-type, this is a
+     * deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says
+     *  that "[t]here are NO globally meaningful parameters that apply to
+     *  all media types"). (Some email implementations may still write out
+     *  the "name" parameter, even for media types other than
+     * <code>application/octet-stream</code> and even though RFC 2046 has
+     * deprecated that parameter.)</p></li></ul>.</p>
      * @param str A string representing a file name. Can be null.
      * @return A string with the converted version of the file name. Among other
      * things, encoded words under RFC 2047 are decoded (since they occur
@@ -247,25 +248,16 @@ import com.upokecenter.text.*;
     }
 
     /**
-     *
-     * @return A string object.
+     * Not documented yet.
+     * @return A text string.
      */
     public String GetFilename() {
       return MakeFilename(this.GetParameter("filename"));
     }
 
     /**
-     * Gets the date and time extracted from this content disposition's
-     *  "creation-date" parameter, which specifies the date of creation of a
-     * file (RFC 2183 sec. 2.4). See <see
-     *
-       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
-       System.String,System.Boolean)'/>
-     * for information on the format of this method's return value.
-     * @return The extracted date and time as an 8-element array, or {@code null}
-     *  if the "creation-date" parameter doesn't exist, is an empty string,
-     * or is syntactically invalid, or if the parameter's year would
-     * overflow a 32-bit signed integer.
+     * Not documented yet.
+     * @return An array of 32-bit unsigned integers.
      */
     public int[] GetCreationDate() {
       return MailDateTime.ParseDateString(
@@ -273,17 +265,8 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Gets the date and time extracted from this content disposition's
-     *  "modification-date" parameter, which specifies the date of last
-     * modification of a file (RFC 2183 sec. 2.5). See <see
-     *
-       cref='M:PeterO.Mail.MailDateTime.ParseDateString(
-       System.String,System.Boolean)'/>
-     * for information on the format of this method's return value.
-     * @return The extracted date and time as an 8-element array, or {@code null}
-     *  if the "modification-date" parameter doesn't exist, is an empty
-     * string, or is syntactically invalid, or if the parameter's year
-     * would overflow a 32-bit signed integer.
+     * Not documented yet.
+     * @return An array of 32-bit unsigned integers.
      */
     public int[] GetModificationDate() {
       return MailDateTime.ParseDateString(
@@ -291,7 +274,7 @@ import com.upokecenter.text.*;
     }
 
     /**
-     *
+     * Not documented yet.
      * @return An array of 32-bit unsigned integers.
      */
     public int[] GetReadDate() {
@@ -394,8 +377,7 @@ import com.upokecenter.text.*;
      * @param dispoValue The parameter {@code dispoValue} is a text string.
      * @return A content disposition object, or ContentDisposition.Attachment" if
      * {@code dispoValue} is empty or syntactically invalid.
-     * @throws NullPointerException The parameter {@code dispoValue} is
-     * null.
+     * @throws NullPointerException The parameter {@code dispoValue} is null.
      */
     public static ContentDisposition Parse(String dispoValue) {
       if (dispoValue == null) {
@@ -414,7 +396,7 @@ import com.upokecenter.text.*;
      * from the Content-Disposition header field (as defined for email
      * messages) and follows the syntax given in RFC 2183. Accordingly,
      * among other things, the content disposition string can contain
-     * comments (delimited by parentheses). </p> <p>RFC 2231 extensions
+     * comments (delimited by parentheses).</p> <p>RFC 2231 extensions
      * allow each content disposition parameter to be associated with a
      * character encoding and/or language, and support parameter values
      * that span two or more key-value pairs. Parameters making use of RFC
@@ -422,21 +404,21 @@ import com.upokecenter.text.*;
      * parameter will be ignored if it is ill-formed because of RFC 2231's
      * rules (except for illegal percent-decoding or undecodable sequences
      * for the given character encoding). Examples of RFC 2231 extensions
-     *  follow (both examples encode the same "filename" parameter): </p>
-     * <p><b>inline; filename&#x2a;=utf-8'en'filename.txt</b> </p>
+     *  follow (both examples encode the same "filename" parameter):</p>
+     * <p><b>inline; filename&#x2a;=utf-8'en'filename.txt</b></p>
      * <p><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt</b> </p> <p>This implementation
+     * filename&#x2a;1&#x2a;=name%2Etxt</b></p> <p>This implementation
      * ignores keys (in parameter key-value pairs) that appear more than
      * once in the content disposition. Nothing in RFCs 2045, 2183, 2231,
      * 6266, or 7231 explicitly disallows such keys, or otherwise specifies
-     * error-handling behavior for such keys. </p>
+     * error-handling behavior for such keys.</p>
      * @param dispositionValue A text string that should be the value of a
      * Content-Disposition header field.
      * @param defaultValue The value to return in case the disposition value is
      * syntactically invalid. Can be null.
      * @return A ContentDisposition object.
-     * @throws NullPointerException The parameter {@code dispositionValue}
-     * is null.
+     * @throws NullPointerException The parameter {@code dispositionValue} is
+     * null.
      */
     public static ContentDisposition Parse(
       String dispositionValue,

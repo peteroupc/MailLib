@@ -16,9 +16,9 @@ A mutable media type object.
 * `java.lang.String getSubType()`<br>
  Gets this value's subtype.
 * `java.lang.String getTopLevelType()`<br>
- Gets this value's top-level type.
+ Gets a value not documented yet.
 * `boolean isMultipart()`<br>
- Gets a value indicating whether this is a multipart media type.
+ Gets a value not documented yet.
 * `boolean isText()`<br>
  Gets a value indicating whether this is a text media type.
 * `MediaTypeBuilder RemoveParameter​(java.lang.String name)`<br>
@@ -33,10 +33,9 @@ A mutable media type object.
 * `MediaTypeBuilder SetTopLevelType​(java.lang.String str)`<br>
  Sets this media type's top-level type.
 * `MediaType ToMediaType()`<br>
- Converts this builder to an immutable media type object.
 * `java.lang.String toString() MediaType.toString`<br>
  Converts this object to a text string of the media type it represents, in
- the same form as MediaType.toString .
+ the same form as MediaType.toString.
 
 ## Constructors
 
@@ -77,11 +76,11 @@ Initializes a new instance of the <code>MediaTypeBuilder</code> class.
 
 ### getTopLevelType
     public final java.lang.String getTopLevelType()
-Gets this value's top-level type.
+Gets a value not documented yet.
 
 **Returns:**
 
-* This value's top-level type.
+* A value not documented yet.
 
 ### setTopLevelType
     public final void setTopLevelType​(java.lang.String value)
@@ -102,20 +101,18 @@ Gets a value indicating whether this is a text media type.
 **Returns:**
 
 * <code>true</code> If this is a text media type; otherwise, . <code>
- false</code> .
+ false</code>.
 
 ### isMultipart
     public final boolean isMultipart()
-Gets a value indicating whether this is a multipart media type.
+Gets a value not documented yet.
 
 **Returns:**
 
-* <code>true</code> If this is a multipart media type; otherwise, . <code>
- false</code> .
+* A value not documented yet.
 
 ### ToMediaType
     public MediaType ToMediaType()
-Converts this builder to an immutable media type object.
 
 **Returns:**
 
@@ -128,7 +125,7 @@ Sets this media type's top-level type.
 **Parameters:**
 
 * <code>str</code> - A text string naming a top-level type, such as "text" or "audio"
- .
+.
 
 **Returns:**
 
@@ -138,8 +135,8 @@ Sets this media type's top-level type.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> is syntactically
- invalid for a top-level type.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> is syntactically invalid
+ for a top-level type.
 
 ### RemoveParameter
     public MediaTypeBuilder RemoveParameter​(java.lang.String name)
@@ -170,8 +167,8 @@ Sets a parameter's name and value for this media type.
 * <code>name</code> - Name of the parameter to set, such as "charset" . The name is
  compared using a basic case-insensitive comparison. (Two strings are
  equal in such a comparison, if they match after converting the basic
- upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower
- case.).
+ upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+ lower case.).
 
 * <code>value</code> - A text string giving the parameter's value.
 
@@ -181,8 +178,8 @@ Sets a parameter's name and value for this media type.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>value</code> or <code>
- name</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>value</code> or <code>name</code> is
+ null.
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty or
  syntactically invalid.
@@ -209,7 +206,7 @@ Sets this media type's subtype, such as "plain" or "xml" .
 ### toString
     public java.lang.String toString()
 Converts this object to a text string of the media type it represents, in
- the same form as <code>MediaType.toString</code> .
+ the same form as <code>MediaType.toString</code>.
 
 **Overrides:**
 

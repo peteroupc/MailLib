@@ -8,19 +8,16 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.EncodedWordContext"]/*'/>
+    /// <summary>Specifies the context where an encoded word under RFC 2047
+    /// can appear.</summary>
   internal enum EncodedWordContext {
-    /// <xmlbegin id='1'/>
     /// <summary>In an unstructured header field's value.</summary>
     Unstructured,
 
-    /// <xmlbegin id='2'/>
     /// <summary>In a "word" element within a "phrase" of a structured
     /// header field.</summary>
     Phrase,
 
-    /// <xmlbegin id='3'/>
     /// <summary>Contains methods for parsing and matching language
     /// tags.</summary>
     Comment,

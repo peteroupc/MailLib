@@ -12,13 +12,51 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]/*'/>
+    /// <summary>
+    /// <para>Specifies how a message body should be displayed or handled
+    /// by a mail user agent. This type is immutable; its contents can't be
+    /// changed after it's created. To create a changeable disposition
+    /// object, use the DispositionBuilder class.</para>
+    /// <para><b>About the "filename" parameter</b></para>
+    /// <para>The "filename" parameter of a content disposition suggests a
+    /// name to use when saving data to a file. For the "filename"
+    /// parameter, the GetParameter method and Parameters property (
+    /// <c>getParameters</c> ) method in Java) do not adapt that
+    /// parameter's value using the ContentDisposition.MakeFilename method.
+    /// Thus, for example, the "filename" parameter, if any, returned by
+    /// this method could have an arbitrary length, be encoded using RFC
+    /// 2047 encoded words (which some email and HTTP implementations still
+    /// like to write out in headers, even though that RFC says encoded
+    /// words "MUST NOT appear within a 'quoted-string'"; see
+    /// ContentDisposition.MakeFilename), or not be usable as is as a file
+    /// name.</para>
+    /// <para><b>Example:</b> An example of RFC 2047 encoded words
+    /// is:</para>
+    /// <para><b>=?UTF-8?Q?test?=</b></para>
+    /// <para>Content-Disposition header fields like the following have
+    /// appeared in practice:</para>
+    /// <para><b>Content-Disposition: attachment;
+    /// filename==?UTF-8?Q?example?=</b></para>
+    /// <para><b>Content-Disposition: attachment;
+    /// filename==?UTF-8?Q?test.png?=</b></para>
+    /// <para><b>Content-Disposition: attachment;
+    /// filename="=?UTF-8?Q?test.png?="</b></para>
+    /// <para>In this implementation, the first and second of these are
+    /// syntactically invalid, so they trigger parse errors, while the
+    /// third of these is syntactically valid, but the "filename" parameter
+    /// is treated as "=?UTF-8?Q?test.png?=", not "test.png" or something
+    /// else -- RFC 2047 encoded words are not decoded at the moment a
+    /// content disposition is parsed (using the Parse
+    /// method).</para></summary>
   public class ContentDisposition {
     private readonly string dispositionType;
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]/*'/>
+    /// <summary>Gets a string containing this object's disposition type,
+    /// such as "inline" or "attachment". Note that under RFC 6266 sec. 4.2
+    /// and RFC 2183 sec. 2.8, unrecognized disposition types should be
+    /// treated as "attachment".</summary>
+    /// <value>A string containing this object's disposition type, such as
+    /// "inline" or "attachment".</value>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -27,18 +65,22 @@ namespace PeterO.Mail {
 
     #region Equals and GetHashCode implementation
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]/*'/>
+    /// <summary>Determines whether this object and another object are
+    /// equal.</summary>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is an
+    /// arbitrary object.</param>
+    /// <returns><c>true</c> if the objects are equal; otherwise,
+    /// <c>false</c>.</returns>
     public override bool Equals(object obj) {
       var other = obj as ContentDisposition;
       if (other == null) {
         return false;
       }
-      return this.dispositionType.Equals(other.dispositionType) &&
+      return this.dispositionType.Equals(other.dispositionType,
+  StringComparison.Ordinal) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
-    /// <xmlbegin id='15'/>
     /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
       var hashCode = 632580499;
@@ -56,19 +98,22 @@ namespace PeterO.Mail {
     }
     #endregion
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]/*'/>
+    /// <summary>Gets a value indicating whether the disposition type is
+    /// inline.</summary>
+    /// <value><c>true</c> If the disposition type is inline; otherwise,.
+    /// <c>false</c>.</value>
     public bool IsInline {
       get {
-        return this.dispositionType.Equals("inline");
+        return this.dispositionType.Equals("inline", StringComparison.Ordinal);
       }
     }
 
-    /// <xmlbegin id='16'/>
-    /// <value/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
     public bool IsAttachment {
       get {
-        return this.dispositionType.Equals("attachment");
+        return this.dispositionType.Equals("attachment",
+  StringComparison.Ordinal);
       }
     }
 
@@ -89,16 +134,20 @@ namespace PeterO.Mail {
 
     private readonly IDictionary<string, string> parameters;
 
-    /// <xmlbegin id='17'/>
-    /// <value/>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
+    /// <summary>Converts this content disposition to a text string form
+    /// suitable for inserting in email headers. Notably, the string
+    /// contains the value of a Content-Disposition header field (without
+    /// the text necessarily starting with "Content-Disposition" followed
+    /// by a space), and consists of one or more lines.</summary>
+    /// <returns>A text string form of this content disposition.</returns>
     public override string ToString() {
       // NOTE: 21 is the length of "Content-Disposition: " (with
       // trailing space).
@@ -108,8 +157,12 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToSingleLineString"]/*'/>
+    /// <summary>Converts this content disposition to a text string form
+    /// suitable for inserting in HTTP headers. Notably, the string
+    /// contains the value of a Content-Disposition header field (without
+    /// the text necessarily starting with "Content-Disposition" followed
+    /// by a space), and consists of a single line.</summary>
+    /// <returns>A text string form of this content disposition.</returns>
     public string ToSingleLineString() {
       // NOTE: 21 is the length of "Content-Disposition: " (with trailing
       // space).
@@ -119,41 +172,139 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]/*'/>
+    /// <summary>Converts a file name from the Content-Disposition header
+    /// to a suitable name for saving data to a file. This method is
+    /// idempotent; that is, calling the method again on the result doesn't
+    /// change that result.
+    /// <para>Examples:</para>
+    /// <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c> (RFC 2047
+    /// encoding).</para>
+    /// <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"</c> (RFC
+    /// 2047 encoding).</para>
+    /// <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</c> (RFC 2231
+    /// encoding).</para>
+    /// <para><c>"nul.txt" -&gt; "_nul.txt"</c> (Reserved name).</para>
+    /// <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"</c> (Directory
+    /// separators).</para></summary>
+    /// <param name='str'>A string representing a file name. Can be
+    /// null.</param>
+    /// <returns>A string with the converted version of the file name.
+    /// Among other things, encoded words under RFC 2047 are decoded (since
+    /// they occur so frequently in Content-Disposition filenames); the
+    /// value is decoded under RFC 2231 if possible; characters unsuitable
+    /// for use in a filename (including the directory separators slash and
+    /// backslash) are replaced with underscores; spaces and tabs are
+    /// collapsed to a single space; leading and trailing spaces and tabs
+    /// are removed; and the filename is truncated if it would otherwise be
+    /// too long. Also, for reasons stated in the remarks, a character that
+    /// is the combined form of a base character and a combining slash is
+    /// replaced with "!" followed by the base character. The returned
+    /// string will be in normalization form C. Returns the empty string if
+    /// <paramref name='str'/> is null or empty.</returns>
+    /// <remarks>
+    /// <para><b>Remarks:</b></para>
+    /// <list>
+    /// <item>The exact file name conversion used by this method is not
+    /// guaranteed to remain the same between versions of this library,
+    /// with the exception that the return value will be in normalization
+    /// form C, will not contain base + slash code points, will not be
+    /// null, and will be an empty string only if <paramref name='str'/> is
+    /// null or empty.</item>
+    /// <item>The string returned by this method is normalized using
+    /// Unicode normalization form C (NFC) (see the
+    /// <see cref='PeterO.Text.NormalizerInput'/> class for details).
+    /// Although most file systems preserve the normalization of file
+    /// names, there is one notable exception: The HFS Plus file system (on
+    /// macOS before High Sierra) stores file names using a modified
+    /// version of normalization form D (NFD) in which certain code points
+    /// are not decomposed, including all base + slash code points, which
+    /// are the only composed code points in Unicode that are decomposed in
+    /// NFD but not in HFS Plus's version of NFD. If the filename will be
+    /// used to save a file to an HFS Plus storage device, it is enough to
+    /// normalize the return value with NFD for this purpose (because all
+    /// base + slash code points were converted beforehand by MakeFilename
+    /// to an alternate form). See also Apple's Technical Q&amp;A "Text
+    /// Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume
+    /// Format".</item>
+    /// <item>
+    /// <para>Email and HTTP headers may specify suggested filenames using
+    /// the Content-Disposition header field's <c>filename</c> parameter
+    /// or, in practice, the Content-Type header field's <c>name</c>
+    /// parameter.</para>
+    /// <para>Although RFC 2047 encoded words appearing in both parameters
+    /// are written out by some implementations, this practice is often
+    /// discouraged (especially since the RFC itself says that encoded
+    /// words "MUST NOT appear within a 'quoted-string'"). Nevertheless,
+    /// the MakeFilename method has a basis in the RFCs to decode RFC 2047
+    /// encoded words (and RFC 2231 encoding) in file names passed to this
+    /// method.</para>
+    /// <para>RFC 2046 sec. 4.5.1 ( <c>application/octet-stream</c> subtype
+    /// in Content-Type header field) cites an earlier RFC 1341, which
+    /// "defined the use of a 'NAME' parameter which gave a
+    /// <i>suggested</i> file name to be used if the data were written to a
+    /// file". Also, RFC 2183 sec. 2.3 ( <c>filename</c> parameter in
+    /// Content-Disposition) confirms that the "
+    /// <i>suggested</i> filename" in the <c>filename</c> parameter "should
+    /// be
+    /// <i>used as a basis</i> for the actual filename, where possible",
+    /// and that that file name should "not [be] blindly use[d]". See also
+    /// RFC 6266, section 4.3, which discusses the use of that parameter in
+    /// Hypertext Transfer Protocol (HTTP).</para>
+    /// <para>To the extent that the "name" parameter is not allowed in
+    /// message bodies other than those with the media type
+    /// "application/octet-stream" or treated as that media-type, this is a
+    /// deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which
+    /// says that "[t]here are NO globally meaningful parameters that apply
+    /// to all media types"). (Some email implementations may still write
+    /// out the "name" parameter, even for media types other than
+    /// <c>application/octet-stream</c> and even though RFC 2046 has
+    /// deprecated that parameter.)</para></item></list>.</remarks>
     public static string MakeFilename(string str) {
       return MakeFilenameMethod.MakeFilename(str);
     }
 
-    /// <xmlbegin id='18'/>
-    /// <returns>A string object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A text string.</returns>
     public string GetFilename() {
       return MakeFilename(this.GetParameter("filename"));
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetCreationDate"]/*'/>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>An array of 32-bit unsigned integers.</returns>
     public int[] GetCreationDate() {
       return MailDateTime.ParseDateString(
         this.GetParameter("creation-date"));
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetModificationDate"]/*'/>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>An array of 32-bit unsigned integers.</returns>
     public int[] GetModificationDate() {
       return MailDateTime.ParseDateString(
         this.GetParameter("modification-date"));
     }
 
-    /// <xmlbegin id='19'/>
+    /// <summary>Not documented yet.</summary>
     /// <returns>An array of 32-bit unsigned integers.</returns>
     public int[] GetReadDate() {
       return MailDateTime.ParseDateString(
         this.GetParameter("read-date"));
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
+    /// <summary>Gets a parameter from this disposition object. For the
+    /// "filename" parameter, the value of that parameter is not adapted
+    /// with the ContentDisposition.MakeFilename method; see the
+    /// documentation for the ContentDisposition class.</summary>
+    /// <param name='name'>The name of the parameter to get. The name will
+    /// be matched using a basic case-insensitive comparison. (Two strings
+    /// are equal in such a comparison, if they match after converting the
+    /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
+    /// strings to lower case.). Can't be null.</param>
+    /// <returns>The value of the parameter, or null if the parameter does
+    /// not exist.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -224,7 +375,6 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <xmlbegin id='20'/>
     /// <summary>The content disposition value "attachment" .</summary>
     public static readonly ContentDisposition Attachment =
       Build("attachment");
@@ -236,13 +386,19 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <xmlbegin id='21'/>
     /// <summary>The content disposition value "inline" .</summary>
     public static readonly ContentDisposition Inline =
       Build("inline");
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]/*'/>
+    /// <summary>Creates a new content disposition object from the value of
+    /// a Content-Disposition header field.</summary>
+    /// <param name='dispoValue'>The parameter <paramref
+    /// name='dispoValue'/> is a text string.</param>
+    /// <returns>A content disposition object, or
+    /// ContentDisposition.Attachment" if <paramref name='dispoValue'/> is
+    /// empty or syntactically invalid.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dispoValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
         throw new ArgumentNullException(nameof(dispoValue));
@@ -250,8 +406,40 @@ namespace PeterO.Mail {
       return Parse(dispoValue, Attachment);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]/*'/>
+    /// <summary>Parses a content disposition string and returns a content
+    /// disposition object, or the default value if the string is invalid.
+    /// This method checks the syntactic validity of the string, but not
+    /// whether it has all parameters it's required to have or whether the
+    /// parameters themselves are set to valid values for the parameter.
+    /// <para>This method assumes the given content disposition string was
+    /// directly extracted from the Content-Disposition header field (as
+    /// defined for email messages) and follows the syntax given in RFC
+    /// 2183. Accordingly, among other things, the content disposition
+    /// string can contain comments (delimited by parentheses).</para>
+    /// <para>RFC 2231 extensions allow each content disposition parameter
+    /// to be associated with a character encoding and/or language, and
+    /// support parameter values that span two or more key-value pairs.
+    /// Parameters making use of RFC 2231 extensions have names with an
+    /// asterisk ("&#x2a;"). Such a parameter will be ignored if it is
+    /// ill-formed because of RFC 2231's rules (except for illegal
+    /// percent-decoding or undecodable sequences for the given character
+    /// encoding). Examples of RFC 2231 extensions follow (both examples
+    /// encode the same "filename" parameter):</para>
+    /// <para><b>inline; filename&#x2a;=utf-8'en'filename.txt</b></para>
+    /// <para><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
+    /// filename&#x2a;1&#x2a;=name%2Etxt</b></para>
+    /// <para>This implementation ignores keys (in parameter key-value
+    /// pairs) that appear more than once in the content disposition.
+    /// Nothing in RFCs 2045, 2183, 2231, 6266, or 7231 explicitly
+    /// disallows such keys, or otherwise specifies error-handling behavior
+    /// for such keys.</para></summary>
+    /// <param name='dispositionValue'>A text string that should be the
+    /// value of a Content-Disposition header field.</param>
+    /// <param name='defaultValue'>The value to return in case the
+    /// disposition value is syntactically invalid. Can be null.</param>
+    /// <returns>A ContentDisposition object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dispositionValue'/> is null.</exception>
     public static ContentDisposition Parse(
       string dispositionValue,
       ContentDisposition defaultValue) {

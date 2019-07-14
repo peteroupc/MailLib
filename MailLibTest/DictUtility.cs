@@ -4,6 +4,8 @@ using System.Text;
 
 namespace MailLibTest {
   public static class DictUtility {
+    private const string HexAlphabet="0123456789ABCDEF";
+
     public static IList<IDictionary<String, String>>
       DictList(
       params IDictionary<String, String>[] dicts) {
@@ -18,8 +20,8 @@ namespace MailLibTest {
       return list;
     }
 
-    public static IDictionary<string, string> MakeDict(params string[]
-  keyvalues) {
+    public static IDictionary<string, string> MakeDict(
+      params string[] keyvalues) {
       if (keyvalues == null) {
         throw new ArgumentNullException(nameof(keyvalues));
       }
@@ -33,43 +35,86 @@ namespace MailLibTest {
       return dict;
     }
 
-
-
+    public static string ToJSON(string[] arr) {
+      var sb=new StringBuilder().Append("[");
+      for (var i = 0; i < arr.Length; ++i) {
+        if (i > 0) {
+          sb.Append(",");
+        }
+        sb.Append("\"");
+        string str = arr[i];
+        for (var j = 0; j < str.Length; ++j) {
+          if ((str[j] & 0xfc00) == 0xdc00 ||
+             ((str[j] & 0xfc00) == 0xd800 && (j == str.Length-1 ||
+             (str[j + 1] & 0xfc00) != 0xdc00))) {
+            throw new ArgumentException("arr is invalid");
+          }
+          if (str[j]=='\"') {
+            sb.Append("\\\"");
+          } else if (str[j]=='\\') {
+   sb.Append("\\\\");
+ } else if (str[j]=='\r') {
+   sb.Append("\\r");
+ } else if (str[j]=='\n') {
+   sb.Append("\\n");
+          } else if (str[j]<0x20 || str[j]>= 0x7f) {
+            int ch=(int)str[j];
+            sb.Append("\\u")
+               .Append(HexAlphabet[(ch >> 12) & 15])
+               .Append(HexAlphabet[(ch >> 8) & 15])
+               .Append(HexAlphabet[(ch >> 4) & 15]).Append(HexAlphabet[ch &
+15]);
+          }
+        }
+        sb.Append("\"");
+      }
+      return sb.Append("]").ToString();
+    }
 
     public static string[] ParseJSONStringArray(string str) {
-      int i = 0;
+      var i = 0;
       var list = new List<string>();
       var sb = new StringBuilder();
       while (i < str.Length && (
-         str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i] == 0x09)) {
-        i++;
+         str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+         str[i] == 0x09)) {
+        ++i;
       }
-      if (i >= str.Length || str[i] != '[') return null;
-      i++;
-      bool endValue = false;
+      if (i >= str.Length || str[i] != '[') {
+        return null;
+      }
+      ++i;
+      var endValue = false;
       while (true) {
         while (i < str.Length && (
-           str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i] == 0x09)) {
-          i++;
+           str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+           str[i] == 0x09)) {
+          ++i;
         }
         if (i >= str.Length || (
-          str[i] != ']' && str[i] != '"' &&
-                                str[i] != ',')) return null;
+          str[i] != ']' && str[i] != '"' && str[i] != 0x2c)) {
+          return null;
+        }
         switch (str[i]) {
           case ']':
-            i++;
+            ++i;
             while (i < str.Length && (
-              str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i] == 0x09)) {
-              i++;
+              str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
+              == 0x09)) {
+              ++i;
             }
             return i == str.Length ? list.ToArray() : null;
-          case ',':
-            if (!endValue) return null;
+          case (char)0x2c:
+            if (!endValue) {
+              return null;
+            }
             endValue = false;
             break;
           case '"':
             i = ParseJSONString(str, i + 1, sb);
-            if (i < 0) return null;
+            if (i < 0) {
+              return null;
+            }
             endValue = true;
             list.Add(sb.ToString());
             break;
@@ -78,16 +123,18 @@ namespace MailLibTest {
     }
 
     private static string ParseJSONString(string str) {
-      if (str == null || str.Length < 2 || str[0] != '"')
+      if (str == null || str.Length < 2 || str[0] != '"') {
         return null;
-      var sb = new StringBuilder();
-      if (ParseJSONString(str, 1, sb) == str.Length) {
-        return sb.ToString();
       }
-      return null;
+      var sb = new StringBuilder();
+      return ParseJSONString(str, 1, sb) ==
+              str.Length ? sb.ToString() : null;
     }
 
-    private static int ParseJSONString(string str, int index, StringBuilder sb) {
+    private static int ParseJSONString(
+      string str,
+      int index,
+      StringBuilder sb) {
       int c;
       sb.Remove(0, sb.Length);
       while (index < str.Length) {

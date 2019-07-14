@@ -1,10 +1,11 @@
 using System;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.StringAndQuality"]/*'/>
+    /// <summary>Stores an arbitrary string and a "quality value" for that
+    /// string. For instance, the string can be a language tag, and the
+    /// "quality value" can be the degree of preference for that
+    /// language.</summary>
     public sealed class StringAndQuality {
-    /// <xmlbegin id='35'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='StringAndQuality'/> class.</summary>
     /// <param name='value'>The parameter <paramref name='value'/> is a
@@ -16,12 +17,12 @@ namespace PeterO.Mail {
         this.Quality = quality;
       }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.StringAndQuality.Value"]/*'/>
+    /// <summary>Gets the arbitrary string stored by this object.</summary>
+    /// <value>The arbitrary string stored by this object.</value>
       public String Value { get; private set; }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.StringAndQuality.Quality"]/*'/>
+    /// <summary>Gets the quality value stored by this object.</summary>
+    /// <value>The quality value stored by this object.</value>
       public int Quality { get; private set; }
     }
 }

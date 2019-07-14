@@ -610,7 +610,7 @@ namespace PeterO.Mail {
       // valid domain literal
       // and begins and ends with opening/closing brackets
       if (symbol.Length == 0) {
-        throw new ArgumentException();
+        throw new ArgumentException("symbol is empty");
       }
       var i = 0;
       var symbolBegin = 0;
@@ -940,11 +940,13 @@ namespace PeterO.Mail {
         afterHyphen = s[i] == '-';
       }
       string ret = builder.ToString();
-      if (ret.Equals("Content-Id")) {
+      if (ret.Equals("Content-Id", StringComparison.Ordinal)) {
         return "Content-ID";
       }
-      return ret.Equals("Mime-Version") ? "MIME-Version" :
-        (ret.Equals("Message-Id") ? "Message-ID" : ret);
+      return ret.Equals("Mime-Version", StringComparison.Ordinal) ?
+"MIME-Version" :
+        (ret.Equals("Message-Id", StringComparison.Ordinal) ? "Message-ID" :
+ret);
     }
 
     public HeaderEncoder AppendFieldName(string fieldName) {

@@ -18,8 +18,7 @@ import com.upokecenter.util.*;
     private String type;
 
     /**
-     * Gets this value's disposition type, such as "inline" or
-      "attachment".
+     * Gets this value's disposition type, such as "inline" or "attachment".
      * @return This value's disposition type, such as "inline" or "attachment" .
      */
     public final String getDispositionType() {
@@ -75,16 +74,18 @@ public final void setDispositionType(String value) {
  */
 @Deprecated
     public final boolean isText() {
-        return this.getDispositionType().equals("text");
+        return this.getDispositionType().equals("text", StringComparison.Ordinal);
       }
 
     /**
-     *
-     * @deprecated Irrelevant for content dispositions; will be removed in the future.
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
+     * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
  */
 @Deprecated
     public final boolean isMultipart() {
-        return this.getDispositionType().equals("multipart");
+        return this.getDispositionType().equals("multipart",
+  StringComparison.Ordinal);
       }
 
     /**
@@ -97,9 +98,7 @@ public final void setDispositionType(String value) {
 
     /**
      * Sets the disposition type, such as "inline".
-     * @param str The parameter
-      {@code str}
-       is a text string.
+     * @param str The parameter {@code str} is a text string.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Str is empty.
@@ -146,10 +145,9 @@ public final void setDispositionType(String value) {
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @param value Value of the parameter to set.
      * @return This instance.
-     * @throws NullPointerException Either {@code value} or {@code name} is
-     * null.
-     * @throws IllegalArgumentException The parameter {@code name} is empty, or it
-     * isn't a well-formed parameter name.
+     * @throws NullPointerException Either {@code value} or {@code name} is null.
+     * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
+     * well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
       if (value == null) {

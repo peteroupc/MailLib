@@ -4,6 +4,7 @@ using System.IO;
 using NUnit.Framework;
 using PeterO;
 using PeterO.Mail;
+using Test;
 
 namespace MailLibTest {
   [TestFixture]
@@ -11,10 +12,10 @@ namespace MailLibTest {
     [Test]
     public void TestPseudoboundary() {
       string msgstr =
-
-  "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed;boundary=BOUNDARY\r\nContent-Encoding: 7bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n"
-    +
-    "-- NOT A BOUNDARY --\r\n--NOT A BOUNDARY EITHER\r\n--BOUNDARY--";
+  "From: me@example.com\r\nMIME-Version: 1.0\r\nContent-Type:" +
+"\u0020multipart/mixed;boundary = BOUNDARY\r\nContent-Encoding:" +
+"\u00207bit\r\n\r\n--BOUNDARY\r\nContent-Type: text/plain\r\n\r\n" +
+"-- NOT A BOUNDARY --\r\n--NOT A BOUNDARY EITHER\r\n--BOUNDARY--";
       Message msg = MessageFromString(msgstr);
       Console.WriteLine(msg.ContentType);
       Assert.AreEqual(1, msg.Parts.Count);
@@ -33,24 +34,24 @@ namespace MailLibTest {
               .SetHeader("subject", "Subject-Lang2").SetTextBody("Body-Lang2"));
       Message msg = Message.MakeMultilingualMessage(messages, languages);
       if (msg == null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       languages = new List<string>(new string[] { "fr" });
       Message msg2 = msg.SelectLanguageMessage(languages);
       {
-string stringTemp = msg2.GetHeader("subject");
-Assert.AreEqual(
-  "Subject-Lang2",
-  stringTemp);
-}
+        string stringTemp = msg2.GetHeader("subject");
+        Assert.AreEqual(
+          "Subject-Lang2",
+          stringTemp);
+      }
       languages = new List<string>(new string[] { "en" });
-       msg2 = msg.SelectLanguageMessage(languages);
+      msg2 = msg.SelectLanguageMessage(languages);
       {
-string stringTemp = msg2.GetHeader("subject");
-Assert.AreEqual(
-  "Subject-Lang1",
-  stringTemp);
-}
+        string stringTemp = msg2.GetHeader("subject");
+        Assert.AreEqual(
+          "Subject-Lang1",
+          stringTemp);
+      }
     }
 
     [Test]
@@ -108,33 +109,32 @@ Assert.AreEqual(
         string stringTemp = MediaType.Parse("x/y;z=1;z*=utf-8''2")
 .GetParameter("z");
         Assert.AreEqual(
-        "2",
-        stringTemp);
+          "2",
+          stringTemp);
       }
     }
 
     internal static Message MessageFromString(string valueMessageString) {
       var msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
-  valueMessageString,
-  true));
+    valueMessageString,
+    true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
     internal static void MessageConstructOnly(string valueMessageString) {
-      if ((new Message(
-  DataUtilities.GetUtf8Bytes(
-  valueMessageString,
-  true))) == null) {
+      if (new Message(DataUtilities.GetUtf8Bytes(
+        valueMessageString,
+        true)) == null) {
         Assert.Fail();
       }
     }
 
     private static void TestMediaTypeRoundTrip(string valueMessageString) {
       string mtstring = new MediaTypeBuilder(
-  "x",
-  "y").SetParameter(
+        "x",
+        "y").SetParameter(
   "z",
   valueMessageString).ToString();
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
@@ -150,9 +150,9 @@ Assert.AreEqual(
       Message mtmessage = MessageFromString(msgstring);
       {
         bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
-                  msgstring,
-                  false,
-                  "TestGenerate") == 2;
+          msgstring,
+          false,
+          "TestGenerate") == 2;
         Assert.IsTrue(boolTemp, msgstring);
       }
       if (MessageGenerate(mtmessage) == null) {
@@ -214,8 +214,8 @@ Assert.AreEqual(
 
     private static byte[] BytesFromString(string str) {
       return DataUtilities.GetUtf8Bytes(
-       str,
-       true);
+        str,
+        true);
     }
 
     [Test]
@@ -346,16 +346,16 @@ Assert.AreEqual(
             }
             Assert.AreEqual("multipart/mixed", msg.ContentType.TypeAndSubType);
             Assert.AreEqual(2, msg.Parts.Count);
-        Assert.AreEqual(
-  "text/plain",
-  msg.Parts[0].ContentType.TypeAndSubType);
-    Assert.AreEqual(
-  "inline",
-  msg.Parts[0].ContentDisposition.DispositionType);
+            Assert.AreEqual(
+              "text/plain",
+              msg.Parts[0].ContentType.TypeAndSubType);
+            Assert.AreEqual(
+              "inline",
+              msg.Parts[0].ContentDisposition.DispositionType);
             Assert.AreEqual(stringBody, msg.Parts[0].BodyString);
-   Assert.AreEqual(
-  mt.TypeAndSubType,
-  msg.Parts[1].ContentType.TypeAndSubType);
+            Assert.AreEqual(
+              mt.TypeAndSubType,
+              msg.Parts[1].ContentType.TypeAndSubType);
             Assert.AreEqual(
                phase < 6 ? "attachment" : "inline",
                msg.Parts[1].ContentDisposition.DispositionType);
@@ -370,7 +370,8 @@ Assert.AreEqual(
 
     [Test]
     public void TestContentTypeDefaults() {
-  const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
+      const string ValueStartCTD = "From: me@example.com\r\nMIME-Version:" +
+"\u00201.0\r\n";
       string msg;
       msg = ValueStartCTD + "\r\n\r\n";
       Assert.AreEqual(
@@ -398,7 +399,8 @@ Assert.AreEqual(
   MessageFromString(msg).ContentType);
       msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n";
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type:" +
+"\u0020image/jpeg\r\nContent-Type: text/html\r\n\r\n";
 
       Assert.AreEqual(
   MediaType.ApplicationOctetStream,
@@ -417,7 +419,8 @@ Assert.AreEqual(
   MessageFromString(msg).ContentType);
       msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n";
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type:" +
+"\u0020image\r\nContent-Type: text/html\r\n\r\n";
 
       Assert.AreEqual(
   MediaType.TextPlainAscii,
@@ -425,7 +428,8 @@ Assert.AreEqual(
       // Third header field is syntactically invalid
       msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n";
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type:" +
+"\u0020image/jpeg\r\nContent-Type: audio\r\n\r\n";
 
       Assert.AreEqual(
   MediaType.TextPlainAscii,
@@ -433,7 +437,8 @@ Assert.AreEqual(
       // Unknown encoding
       msg = ValueStartCTD +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Transfer-Encoding: unknown\r\n\r\n";
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Transfer-Encoding:" +
+"\u0020unknown\r\n\r\n";
       Assert.AreEqual(
   MediaType.ApplicationOctetStream,
   MessageFromString(msg).ContentType);
@@ -467,7 +472,7 @@ Assert.AreEqual(
         "From: me@example.com\r\nDate",
         "From: me@example.com\r\nDate\r",
         "Received: from x",
-        "Received: from x\r"
+        "Received: from x\r",
       };
       foreach (string msgstr in messages) {
         try {
@@ -484,9 +489,9 @@ Assert.AreEqual(
     }
 
     private static void TestRfc2231ExtensionMediaType(
-  string mtype,
-  string param,
-  string expected) {
+      string mtype,
+      string param,
+      string expected) {
       MediaType mt = MediaType.Parse("text/plain" + mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));
       var valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
@@ -497,9 +502,9 @@ Assert.AreEqual(
     }
 
     private static void TestRfc2231ExtensionContentDisposition(
-  string mtype,
-  string param,
-  string expected) {
+      string mtype,
+      string param,
+      string expected) {
       ContentDisposition mt = ContentDisposition.Parse("inline" + mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));
       var valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
@@ -510,152 +515,37 @@ Assert.AreEqual(
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
 
-    public static void TestRfc2231Extension(
-  string mtype,
-  string param,
-  string expected) {
+    private IList<string> exts = new List<string>();
+    [OneTimeTearDown]
+    public void TearDown() {
+      File.WriteAllLines("exts.txt", exts);
+    }
+
+    private void AddExt(string str) {
+      str = str.Replace("\\", "\\\\");
+      str = str.Replace("\n", "\\n");
+      str = str.Replace("\r", "\\r");
+      exts.Add(str);
+    }
+
+    private void TestRfc2231Extension(
+      string mtype,
+      string param,
+      string expected) {
       TestRfc2231ExtensionMediaType(mtype, param, expected);
       TestRfc2231ExtensionContentDisposition(mtype, param, expected);
     }
 
     [Test]
-    public void TestRfc2231ExtensionsEndPercent() {
-      // Tests to check percent encoding at end, ensuring
+    public void TestRfc2231Extensions() {
+      // Includes tests to check percent encoding at end, ensuring
       // that an infinite-decoding-loop bug does not reappear.
       // NOTE: RFC8187 doesn't mandate any particular
-      // error handling behavior here
-      TestRfc2231Extension(";param1*=utf-8''example%", "param1", "example%");
-      TestRfc2231Extension(
-  ";param1*=utf-8''example%;param2=x",
-  "param1",
-  "example%");
-      TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%",
-  "param1",
-  "example%");
-      TestRfc2231Extension(";param1*=utf-8''example%a", "param1", "example%a");
-      TestRfc2231Extension(
-  ";param1*=utf-8''example%a;param2=x",
-  "param1",
-  "example%a");
-      TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%a",
-  "param1",
-  "example%a");
-      TestRfc2231Extension(";param1*=utf-8''example%A", "param1", "example%A");
-      TestRfc2231Extension(
-  ";param1*=utf-8''example%A;param2=x",
-  "param1",
-  "example%A");
-      TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%A",
-  "param1",
-  "example%A");
-      TestRfc2231Extension(";param1*=utf-8''example%9", "param1", "example%9");
-      TestRfc2231Extension(
-  ";param1*=utf-8''example%9;param2=x",
-  "param1",
-  "example%9");
-      TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%9",
-  "param1",
-  "example%9");
-      TestRfc2231Extension(";param1*=utf-8''example%w", "param1", "example%w");
-      TestRfc2231Extension(
-  ";param1*=utf-8''example%w;param2=x",
-  "param1",
-  "example%w");
-      TestRfc2231Extension(
-  ";param2=x;param1*=utf-8''example%w",
-  "param1",
-  "example%w");
-    }
-
-    [Test]
-    public void TestRfc2231Extensions() {
-      TestRfc2231Extension("; charset=\"utf-8\"", "charset", "utf-8");
-      TestRfc2231Extension(
-  "; charset*=us-ascii'en'utf-8",
-  "charset",
-  "utf-8");
-      TestRfc2231Extension(
-  "; charset*=us-ascii''utf-8",
-  "charset",
-  "utf-8");
-      TestRfc2231Extension(
-  "; charset*='en'utf-8",
-  "charset",
-  "utf-8");
-      TestRfc2231Extension("; charset*=''utf-8", "charset", "utf-8");
-      TestRfc2231Extension(
-  "; charset*0=ut;charset*1=f-8",
-  "charset",
-  "utf-8");
-      TestRfc2231Extension(
-        "; charset*0=ut;charset*1=f;charset*2=-8",
-        "charset",
-        "utf-8");
-      TestRfc2231Extension(
-  "; mockcharset*=utf-8''a%20b",
-  "mockcharset",
-  "a b");
-      TestRfc2231Extension(
-  "; mockcharset*=iso-8859-1''a%a0b",
-  "mockcharset",
-  "a\u00a0b");
-      TestRfc2231Extension(
-  "; mockcharset*=utf-8''a%c2%a0b",
-  "mockcharset",
-  "a\u00a0b");
-      TestRfc2231Extension(
-  "; mockcharset*=iso-8859-1''a%a0b",
-  "mockcharset",
-  "a\u00a0b");
-      TestRfc2231Extension(
-  "; mockcharset*=utf-8''a%c2%a0b",
-  "mockcharset",
-  "a\u00a0b");
-      TestRfc2231Extension(
-  "; mockcharset*0=\"a\";mockcharset*1=b",
-  "mockcharset",
-  "ab");
-
-      TestRfc2231Extension(
-      "; mockcharset*0*=utf-8''a%20b;mockcharset*1*=c%20d",
-      "mockcharset",
-      "a bc d");
-      TestRfc2231Extension(
-        "; mockcharset*0=ab;mockcharset*1*=iso-8859-1-en-xyz",
-        "mockcharset",
-        "abiso-8859-1-en-xyz");
-      TestRfc2231Extension(
-        "; mockcharset*0*=utf-8''a%20b;mockcharset*1*=iso-8859-1-en-xyz",
-        "mockcharset",
-        "a biso-8859-1-en-xyz");
-      TestRfc2231Extension(
-        "; mockcharset*0*=utf-8''a%20b;mockcharset*1=a%20b",
-        "mockcharset",
-        "a ba%20b");
-      TestRfc2231Extension(
-         "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=a%20b",
-         "mockcharset",
-         "a ba%20b");
-      TestRfc2231Extension(
-         "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=\"a%20b\"",
-         "mockcharset",
-         "a ba%20b");
-      TestRfc2231Extension(
-        "\r\n (; mockcharset=x;y=\");mockChaRseT*=''a%41b-c(\")",
-        "mockcharset",
-        "aAb-c");
-      TestRfc2231Extension(
-        ";\r\n mockchARSet (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
-        "mockcharset",
-        "abc");
-      TestRfc2231Extension(
-        ";\r\n mockcharsET (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
-        "format",
-        "flowed");
+      // error handling behavior for those tests
+      string[] strings=ResourceUtil.GetStrings("rfc2231exts");
+      for (var i = 0; i < strings.Length; i += 3) {
+        TestRfc2231Extension(strings[i], strings[i + 1], strings[i + 2]);
+      }
     }
 
     private static void SingleTestMediaTypeEncodingMediaType(string value) {
@@ -778,7 +668,7 @@ Assert.AreEqual(
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        if ((new NamedAddress("Me\u00e0 <me@example.com>")) == null) {
+        if (new NamedAddress("Me\u00e0 <me@example.com>") == null) {
           Assert.Fail();
         }
       } catch (Exception ex) {
@@ -786,7 +676,7 @@ Assert.AreEqual(
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        if ((new NamedAddress("\"Me\" <me@example.com>")) == null) {
+        if (new NamedAddress("\"Me\" <me@example.com>") == null) {
           Assert.Fail();
         }
       } catch (Exception ex) {
@@ -794,7 +684,7 @@ Assert.AreEqual(
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        if ((new NamedAddress("\"Me\u00e0\" <me@example.com>")) == null) {
+        if (new NamedAddress("\"Me\u00e0\" <me@example.com>") == null) {
           Assert.Fail();
         }
       } catch (Exception ex) {
@@ -858,8 +748,8 @@ Assert.AreEqual(
         string stringTemp = new NamedAddress(
                 "x@example.com").Address.ToString();
         Assert.AreEqual(
-        "x@example.com",
-        stringTemp);
+          "x@example.com",
+          stringTemp);
       }
       Assert.AreEqual(
   "\"(lo cal)\"@example.com",
@@ -900,8 +790,8 @@ Assert.AreEqual(
       {
         string stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "you@example.com").GetHeader(0).Key;
+            0,
+            "you@example.com").GetHeader(0).Key;
         Assert.AreEqual(
           "from",
           stringTemp);
@@ -909,8 +799,8 @@ Assert.AreEqual(
       {
         string stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "you@example.com").GetHeader(0).Value;
+            0,
+            "you@example.com").GetHeader(0).Value;
         Assert.AreEqual(
           "you@example.com",
           stringTemp);
@@ -918,9 +808,9 @@ Assert.AreEqual(
       {
         string stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "x-comment",
-  "comment").GetHeader(0).Key;
+            0,
+            "x-comment",
+            "comment").GetHeader(0).Key;
         Assert.AreEqual(
           "x-comment",
           stringTemp);
@@ -928,9 +818,9 @@ Assert.AreEqual(
       {
         string stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(
-  0,
-  "x-comment",
-  "comment").GetHeader(0).Value;
+            0,
+            "x-comment",
+            "comment").GetHeader(0).Value;
         Assert.AreEqual(
           "comment",
           stringTemp);
@@ -1009,7 +899,8 @@ Assert.AreEqual(
       string msg;
       msg = ValueMultipart +
 
-  "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--";
+  "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description:" +
+"\u0020description\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1035,7 +926,8 @@ Assert.AreEqual(
       }
       msg =
 
-  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
+  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type:" +
+"\u00208bit\r\n\r\n--b\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1045,7 +937,8 @@ Assert.AreEqual(
       }
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA";
+  "Mime-Version: 1.0\r\nContent-Type: text/plain;" +
+"\u0020charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA";
 
       try {
         MessageFromString(msg);
@@ -1055,7 +948,8 @@ Assert.AreEqual(
       }
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\"" +
+"\u0020<me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1065,7 +959,8 @@ Assert.AreEqual(
       }
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: 7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding:" +
+"\u00207bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1094,9 +989,8 @@ Assert.AreEqual(
       }
       // Message top-level-type with base64
       msg =
-
-  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: base64\r\n--b\r\n\r\n\r\n--b--";
-
+"MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type:" +
+"\u0020base64\r\n--b\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -1135,7 +1029,8 @@ Assert.AreEqual(
       // would be illegal in a 7-bit encoding
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\nX\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\"" +
+"\u0020<me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1147,7 +1042,8 @@ Assert.AreEqual(
       // which is not allowed for this media type
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
+  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding:" +
+"\u0020base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1161,7 +1057,8 @@ Assert.AreEqual(
       // would be illegal in a 7-bit encoding
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--";
+  "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom:" +
+"\u0020\"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1187,7 +1084,8 @@ Assert.AreEqual(
       // would be illegal in a 7-bit encoding
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd";
+  "Mime-Version: 1.0\r\nContent-Type:" +
+"\u0020text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd";
 
       try {
         MessageFromString(msg);
@@ -1211,7 +1109,8 @@ Assert.AreEqual(
       // or included?
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA";
+  "Mime-Version: 1.0\r\nContent-Type: text/plain;" +
+"\u0020charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA";
 
       try {
         MessageFromString(msg);
@@ -1497,7 +1396,7 @@ Assert.AreEqual(
         String.Empty,
         "\u0020",
         "\t", "\u0020\u0020",
-          "\t\u0020", "\u0020\t", "\t\t"
+        "\t\u0020", "\u0020\t", "\t\t",
       };
       foreach (var padding1 in paddings) {
         foreach (var padding2 in paddings) {
@@ -1875,15 +1774,15 @@ Assert.AreEqual(
         string stringTemp = new
                     MediaTypeBuilder(MediaType.TextPlainAscii).TopLevelType;
         Assert.AreEqual(
-        "text",
-        stringTemp);
+          "text",
+          stringTemp);
       }
       {
         string stringTemp = new
                     MediaTypeBuilder(MediaType.TextPlainAscii).SubType;
         Assert.AreEqual(
-        "plain",
-        stringTemp);
+          "plain",
+          stringTemp);
       }
       Assert.AreEqual(
   MediaType.TextPlainAscii,
@@ -2113,22 +2012,24 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestFWSAtSubjectEnd() {
       Message msg;
-   const string ValueStringVar = "From: me@example.com\r\nSubject: Test\r\n " +
-              "\r\nX-Header: Header\r\n\r\nBody";
+      const string ValueStringVar = "From: me@example.com\r\nSubject:" +
+"\u0020Test\r\n " +
+                 "\r\nX-Header: Header\r\n\r\nBody";
       msg = MessageFromString(ValueStringVar);
       {
         string stringTemp = msg.GetHeader("subject");
         Assert.AreEqual(
-        "Test ",
-        stringTemp);
+          "Test ",
+          stringTemp);
       }
     }
 
     [Test]
     public void TestEmptyGroup() {
-    const string ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
-            "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
-            "\r\n\r\nBody";
+      const string ValueStringVar = "From: me@example.com\r\nTo:" +
+"\u0020empty-group:;" +
+              "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
+              "\r\n\r\nBody";
       MessageFromString(ValueStringVar);
     }
 
@@ -2140,8 +2041,8 @@ MessageFromString(MessageFromString(msg).Generate())
         string stringTemp = MediaType.Parse(
                 "example/x ").TypeAndSubType;
         Assert.AreEqual(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
       const string ValueStrtest = "example/x" + "," + " a=b";
       {
@@ -2154,22 +2055,22 @@ MessageFromString(MessageFromString(msg).Generate())
         string stringTemp = MediaType.Parse(
         "example/x ; a=b").TypeAndSubType;
         Assert.AreEqual(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
       {
         string stringTemp = MediaType.Parse(
         "example/x; a=b").TypeAndSubType;
         Assert.AreEqual(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
       {
         string stringTemp = MediaType.Parse(
         "example/x; a=b ").TypeAndSubType;
         Assert.AreEqual(
-        "example/x",
-        stringTemp);
+          "example/x",
+          stringTemp);
       }
     }
     [Test]
@@ -2232,8 +2133,8 @@ MessageFromString(MessageFromString(msg).Generate())
       try {
         MessageConstructOnly("From: x@example.com\r\nX-" +
               EncodingTest.Repeat(
-      "a",
-      2000) + ": Test\r\n\r\nBody");
+                "a",
+                2000) + ": Test\r\n\r\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
         // NOTE: Intentionally empty
@@ -2244,8 +2145,8 @@ MessageFromString(MessageFromString(msg).Generate())
       try {
         MessageConstructOnly("From: x@example.com\r\nX-" +
               EncodingTest.Repeat(
-      "a",
-      996) + ":\r\n Test\r\n\r\nBody");
+                "a",
+                996) + ":\r\n Test\r\n\r\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
         // NOTE: Intentionally empty
@@ -2292,8 +2193,8 @@ MessageFromString(MessageFromString(msg).Generate())
       try {
         MessageFromString(
   "From: x@example.com\r\nX-" + EncodingTest.Repeat(
-  "a",
-  995) + ":\r\n Test\r\n\r\nBody");
+    "a",
+    995) + ":\r\n Test\r\n\r\nBody");
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2310,20 +2211,6 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestAddHeader() {
       // not implemented yet
     }
-    /*
-[Test]
-    public void TestAddAttachment() {
-      var msg = new Message();
-      msg.SetHeader("from", "me@example.com");
-      msg.SetHeader("subject", "Test message");
-      msg.SetTextBody("This is a test body");
-      using (var fs = new System.IO.FileStream(null,
-                    System.IO.FileMode.Open)) {
-        msg.AddAttachment(fs, "test.dat");
-      }
-      File.WriteAllBytes("message.eml",msg.GenerateBytes());
-      Console.WriteLine(msg.Generate());
-    } */
     [Test]
     public void TestBccAddresses() {
       // not implemented yet
@@ -2379,10 +2266,11 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
-   String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-            "Content-Type: text/plain\r\nContent-Disposition: " +
-           new DispositionBuilder("inline").SetParameter("filename", input)
-           .ToString() + "\r\n\r\nEmpty.";
+      String valueMessageString = "From: x@example.com\r\nMIME-Version:" +
+"\u00201.0\r\n" +
+               "Content-Type: text/plain\r\nContent-Disposition: " +
+              new DispositionBuilder("inline").SetParameter("filename", input)
+              .ToString() + "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);
       Assert.AreEqual(expected, msg.FileName, valueMessageString);
       valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
@@ -2392,9 +2280,8 @@ MessageFromString(MessageFromString(msg).Generate())
       msg = MessageFromString(valueMessageString);
       Assert.AreEqual(expected, msg.FileName);
     }
-    [Test]
     public void TestFileName() {
-      string[] fileNames = ContentDispositionTest.FileNames;
+      string[] fileNames = ResourceUtil.GetStrings("filenames");
       for (var i = 0; i < fileNames.Length; i += 2) {
         TestFileNameOne(fileNames[i], fileNames[i + 1]);
       }
@@ -2422,7 +2309,8 @@ MessageFromString(MessageFromString(msg).Generate())
           "me2@example.com",
           stringTemp);
       }
-    msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
+      msgString = "From : me@example.com\r\nX-From:" +
+"\u0020me2@example.com\r\n\r\nBody";
       msg = MessageFromString(msgString);
       {
         string stringTemp = msg.GetHeader("from");
@@ -2646,8 +2534,8 @@ MessageFromString(MessageFromString(msg).Generate())
                     .SetHeader("subject", "my subject")
                     .GetHeader("subject");
         Assert.AreEqual(
-        "my subject",
-        stringTemp);
+          "my subject",
+          stringTemp);
       }
       try {
         new Message().SetHeader(EncodingTest.Repeat("a", 998), "x");
@@ -2710,8 +2598,10 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      var headerNames = new string[] { "from", "to", "cc",
-              "bcc", "reply-to" };
+      var headerNames = new string[] {
+        "from", "to", "cc",
+        "bcc", "reply-to",
+      };
       foreach (string headerName in headerNames) {
         try {
           new Message().SetHeader(headerName, "\"Me\" <x@example.com>");
@@ -2798,17 +2688,17 @@ MessageFromString(MessageFromString(msg).Generate())
     }
 
     private static void TestSetHeaderOne(
-  Message msg,
-  string header,
-  string value) {
+      Message msg,
+      string header,
+      string value) {
       msg.SetHeader(header, value);
       Assert.AreEqual(value, msg.GetHeader(header));
     }
 
     private static void TestSetHeaderInvalid(
-  Message msg,
-  string header,
-  string value) {
+      Message msg,
+      string header,
+      string value) {
       try {
         msg.SetHeader(header, value);
         Assert.Fail("Should have failed");

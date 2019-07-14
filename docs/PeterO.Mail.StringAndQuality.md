@@ -15,7 +15,9 @@
         string value,
         int quality);
 
- Initializes a new instance of the [PeterO.Mail.StringAndQuality](PeterO.Mail.StringAndQuality.md) class.    <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.StringAndQuality](PeterO.Mail.StringAndQuality.md) class.
+
+<b>Parameters:</b>
 
  * <i>value</i>: The parameter  <i>value</i>
  is a text string.

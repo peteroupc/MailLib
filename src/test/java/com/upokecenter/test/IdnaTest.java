@@ -43,23 +43,23 @@ import com.upokecenter.text.*;
     @Test
     public void TestDecodeDomainName() {
       {
-String stringTemp = Idna.DecodeDomainName("xn--e-ufa");
-Assert.assertEquals(
-  "e\u00e1",
-  stringTemp);
-}
+        String stringTemp = Idna.DecodeDomainName("xn--e-ufa");
+        Assert.assertEquals(
+          "e\u00e1",
+          stringTemp);
+      }
       {
-String stringTemp = Idna.DecodeDomainName("xn--e-ufa.example");
-Assert.assertEquals(
-  "e\u00e1.example",
-  stringTemp);
-}
+        String stringTemp = Idna.DecodeDomainName("xn--e-ufa.example");
+        Assert.assertEquals(
+          "e\u00e1.example",
+          stringTemp);
+      }
       {
-String stringTemp = Idna.DecodeDomainName("site.xn--e-ufa.example");
-Assert.assertEquals(
-  "site.e\u00e1.example",
-  stringTemp);
-}
+        String stringTemp = Idna.DecodeDomainName("site.xn--e-ufa.example");
+        Assert.assertEquals(
+          "site.e\u00e1.example",
+          stringTemp);
+      }
     }
 
     @Test
@@ -81,11 +81,11 @@ Assert.assertEquals(
  Assert.fail();
  }
       {
-String stringTemp = ProtocolStrings.UsernameEnforce("Σa");
-Assert.assertEquals(
-  "σa",
-  stringTemp);
-}
+        String stringTemp = ProtocolStrings.UsernameEnforce("Σa");
+        Assert.assertEquals(
+          "σa",
+          stringTemp);
+      }
       if (
        ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&")) {
  Assert.fail();
@@ -95,127 +95,129 @@ Assert.assertEquals(
  Assert.fail();
  }
       {
-String stringTemp = ProtocolStrings.UserpartEnforce("TeSt");
-Assert.assertEquals(
-  "test",
-  stringTemp);
-}
+        String stringTemp = ProtocolStrings.UserpartEnforce("TeSt");
+        Assert.assertEquals(
+          "test",
+          stringTemp);
+      }
       {
-String stringTemp = ProtocolStrings.UserpartEnforce("TeSt", false);
-Assert.assertEquals(
-  "test",
-  stringTemp);
-}
+        String stringTemp = ProtocolStrings.UserpartEnforce("TeSt", false);
+        Assert.assertEquals(
+          "test",
+          stringTemp);
+      }
       {
-String stringTemp = ProtocolStrings.UserpartEnforce("TeSt", true);
-Assert.assertEquals(
-  "TeSt",
-  stringTemp);
-}
+        String stringTemp = ProtocolStrings.UserpartEnforce("TeSt", true);
+        Assert.assertEquals(
+          "TeSt",
+          stringTemp);
+      }
       Assert.assertEquals(
        null,
        ProtocolStrings.UserpartEnforce("Te St", false));
       {
-String stringTemp = ProtocolStrings.UsernameEnforce("Te St", false);
-Assert.assertEquals(
-  "te st",
-  stringTemp);
-}
+        String stringTemp = ProtocolStrings.UsernameEnforce("Te St", false);
+        Assert.assertEquals(
+          "te st",
+          stringTemp);
+      }
       {
-String stringTemp = ProtocolStrings.UsernameEnforce("Te St", true);
-Assert.assertEquals(
-  "Te St",
-  stringTemp);
-}
+        String stringTemp = ProtocolStrings.UsernameEnforce("Te St", true);
+        Assert.assertEquals(
+          "Te St",
+          stringTemp);
+      }
       // Final capital sigma
       {
-String stringTemp = ProtocolStrings.UserpartEnforce("x\u03a3");
-Assert.assertEquals(
-  "x\u03c2",
-  stringTemp);
-}
-Assert.assertEquals(
-  null,
-  ProtocolStrings.UsernameEnforce(null));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.UsernameEnforce(""));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.UserpartEnforce(null));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.UserpartEnforce(""));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.OpaqueStringEnforce(null));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.OpaqueStringEnforce(""));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.NicknameEnforce(null));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.NicknameEnforce(""));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.NicknameForComparison(null));
-  Assert.assertEquals(
-  null,
-  ProtocolStrings.NicknameForComparison(""));
-{
-String stringTemp = ProtocolStrings.OpaqueStringEnforce("a b ccccc test");
-Assert.assertEquals(
-  "a b ccccc test",
-  stringTemp);
-}
-{
-String stringTemp = ProtocolStrings.NicknameEnforce("a b ccccc test");
-Assert.assertEquals(
-  "a b ccccc test",
-  stringTemp);
-}
-{
-String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
-Assert.assertEquals(
-  "a b ccccc test",
-  stringTemp);
-}
-{
-String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
-Assert.assertEquals(
-  "a b ccccc test",
-  stringTemp);
-}
-{
-String stringTemp =
-  ProtocolStrings.NicknameEnforce(" a b\u00a0ccccc test ");
-Assert.assertEquals(
-  "a b ccccc test",
-  stringTemp);
-}
-Assert.assertEquals(
-  null,
-  ProtocolStrings.OpaqueStringEnforce("a\ntest"));
-  {
-String stringTemp = ProtocolStrings.OpaqueStringEnforce("A b Ccccc tEst");
-Assert.assertEquals(
-  "A b Ccccc tEst",
-  stringTemp);
-}
-{
-String stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00e7c");
-Assert.assertEquals(
-  "a\u00e7c",
-  stringTemp);
-}
-{
-String stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00a0c");
-Assert.assertEquals(
-  "a c",
-  stringTemp);
-}
+        String stringTemp = ProtocolStrings.UserpartEnforce("x\u03a3");
+        Assert.assertEquals(
+          "x\u03c2",
+          stringTemp);
+      }
+      Assert.assertEquals(
+        null,
+        ProtocolStrings.UsernameEnforce(null));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.UsernameEnforce(""));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.UserpartEnforce(null));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.UserpartEnforce(""));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.OpaqueStringEnforce(null));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.OpaqueStringEnforce(""));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.NicknameEnforce(null));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.NicknameEnforce(""));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.NicknameForComparison(null));
+      Assert.assertEquals(
+      null,
+      ProtocolStrings.NicknameForComparison(""));
+      {
+        String stringTemp = ProtocolStrings.OpaqueStringEnforce("a b ccccc" +
+"\u0020test");
+        Assert.assertEquals(
+          "a b ccccc test",
+          stringTemp);
+      }
+      {
+        String stringTemp = ProtocolStrings.NicknameEnforce("a b ccccc test");
+        Assert.assertEquals(
+          "a b ccccc test",
+          stringTemp);
+      }
+      {
+        String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
+        Assert.assertEquals(
+          "a b ccccc test",
+          stringTemp);
+      }
+      {
+        String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
+        Assert.assertEquals(
+          "a b ccccc test",
+          stringTemp);
+      }
+      {
+        String stringTemp =
+          ProtocolStrings.NicknameEnforce(" a b\u00a0ccccc test ");
+        Assert.assertEquals(
+          "a b ccccc test",
+          stringTemp);
+      }
+      Assert.assertEquals(
+        null,
+        ProtocolStrings.OpaqueStringEnforce("a\ntest"));
+      {
+        String stringTemp = ProtocolStrings.OpaqueStringEnforce("A b Ccccc" +
+"\u0020tEst");
+        Assert.assertEquals(
+          "A b Ccccc tEst",
+          stringTemp);
+      }
+      {
+        String stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00e7c");
+        Assert.assertEquals(
+          "a\u00e7c",
+          stringTemp);
+      }
+      {
+        String stringTemp = ProtocolStrings.OpaqueStringEnforce("a\u00a0c");
+        Assert.assertEquals(
+          "a c",
+          stringTemp);
+      }
     }
     @Test
     public void TestIsValidDomainName() {
@@ -325,10 +327,10 @@ Assert.assertEquals(
  Assert.fail();
  }
 
-  if (
-  Idna.IsValidDomainName(
-    "\ua840\u0300\u0300\u200d\u0300\u0300\ua840",
-    false)) {
+      if (
+        Idna.IsValidDomainName(
+          "\ua840\u0300\u0300\u200d\u0300\u0300\ua840",
+          false)) {
  Assert.fail();
  }
       // ZWNJ preceded by virama
@@ -349,11 +351,10 @@ Assert.assertEquals(
     false))) {
  Assert.fail();
  }
-
-  if (!(
-  Idna.IsValidDomainName(
-    "\ua840\u0300\u0300\u200c\u0300\u0300\ua840",
-    false))) {
+      if (!(
+        Idna.IsValidDomainName(
+          "\ua840\u0300\u0300\u200c\u0300\u0300\ua840",
+          false))) {
  Assert.fail();
  }
       // Left-joining character (U + A872, the only such character
@@ -361,11 +362,10 @@ Assert.assertEquals(
       if (!(Idna.IsValidDomainName("\ua872\u200c\ua840", false))) {
  Assert.fail();
  }
-
-  if (!(
-  Idna.IsValidDomainName(
-    "\ua872\u0300\u0300\u200c\u0300\u0300\ua840",
-    false))) {
+      if (!(
+        Idna.IsValidDomainName(
+          "\ua872\u0300\u0300\u200c\u0300\u0300\ua840",
+          false))) {
  Assert.fail();
  }
       // Left-joining character on right side
@@ -373,10 +373,10 @@ Assert.assertEquals(
  Assert.fail();
  }
 
-  if (
-  Idna.IsValidDomainName(
-    "\ua840\u0300\u0300\u200c\u0300\u0300\ua872",
-    false)) {
+      if (
+        Idna.IsValidDomainName(
+          "\ua840\u0300\u0300\u200c\u0300\u0300\ua872",
+          false)) {
  Assert.fail();
  }
       // Nonjoining character on right side
@@ -384,10 +384,10 @@ Assert.assertEquals(
  Assert.fail();
  }
 
-  if (
-  Idna.IsValidDomainName(
-    "\ua840\u0300\u0300\u200c\u0300\u0300x",
-    false)) {
+      if (
+        Idna.IsValidDomainName(
+          "\ua840\u0300\u0300\u200c\u0300\u0300x",
+          false)) {
  Assert.fail();
  }
       // Nonjoining character on left side
@@ -395,10 +395,10 @@ Assert.assertEquals(
  Assert.fail();
  }
 
-  if (
-  Idna.IsValidDomainName(
-    "x\u0300\u0300\u200c\u0300\u0300\ua840",
-    false)) {
+      if (
+        Idna.IsValidDomainName(
+          "x\u0300\u0300\u200c\u0300\u0300\ua840",
+          false)) {
  Assert.fail();
  }
       // Consecutive ZWNJs
@@ -447,10 +447,10 @@ Assert.assertEquals(
  Assert.fail();
  }
 
-  if (!(
-  Idna.IsValidDomainName(
-    "\u062d\u0300\u0300\u200c\u0300\u0300\u062f",
-    false))) {
+      if (!(
+        Idna.IsValidDomainName(
+          "\u062d\u0300\u0300\u200c\u0300\u0300\u062f",
+          false))) {
  Assert.fail();
  }
       // Right-joining character on left side
@@ -458,10 +458,10 @@ Assert.assertEquals(
  Assert.fail();
  }
 
-  if (
-  Idna.IsValidDomainName(
-    "\u062f\u0300\u0300\u200c\u0300\u0300\u062d",
-    false)) {
+      if (
+        Idna.IsValidDomainName(
+          "\u062f\u0300\u0300\u200c\u0300\u0300\u062d",
+          false)) {
  Assert.fail();
  }
       // Regression tests: U + 07FA mistakenly allowed (since

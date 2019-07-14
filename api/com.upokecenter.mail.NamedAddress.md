@@ -79,8 +79,8 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>address</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - Address has an invalid syntax.; Address has
- an invalid syntax.
+* <code>java.lang.IllegalArgumentException</code> - Address has an invalid syntax.; Address has an
+ invalid syntax.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String address)
@@ -124,8 +124,8 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>localPart</code> or
- <code>domain</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>localPart</code> or <code>
+ domain</code> is null.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String groupName, java.util.List<NamedAddress> mailboxes)
@@ -139,11 +139,11 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>groupName</code> or
- <code>mailboxes</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>groupName</code> or <code>
+ mailboxes</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - GroupName is empty.; A mailbox in the list
- is a group.
+* <code>java.lang.IllegalArgumentException</code> - GroupName is empty.; A mailbox in the list is a
+ group.
 
 ### ParseAddresses
     public static java.util.List<NamedAddress> ParseAddresses​(java.lang.String addressValue)
@@ -189,7 +189,7 @@ Determines whether this object and another object are equal.
 **Returns:**
 
 * <code>true</code> if this object and another object are equal; otherwise,
- <code>false</code> .
+ <code>false</code>.
 
 ### AddressesEqual
     public boolean AddressesEqual​(NamedAddress na)
@@ -201,7 +201,7 @@ Not documented yet.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code> .
+* Either <code>true</code> or <code>false</code>.
 
 ### getName
     public final java.lang.String getName()
@@ -239,12 +239,12 @@ Gets a value indicating whether this represents a group of addresses rather
 **Returns:**
 
 * <code>true</code> If this represents a group of addresses; otherwise, .
- <code>false</code> .
+ <code>false</code>.
 
 ### toString
     public java.lang.String toString()
 Converts this object to a text string. This will generally be the form of
- this NamedAddress object as it could appear in a "To" header field.
+  this NamedAddress object as it could appear in a "To" header field.
 
 **Overrides:**
 

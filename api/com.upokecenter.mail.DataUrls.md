@@ -70,8 +70,7 @@ Renamed to MakeDataUri.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>textString</code> is
- null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>textString</code> is null.
 
 ### MakeDataUrl
     @Deprecated public static java.lang.String MakeDataUrl​(byte[] bytes, MediaType mediaType)

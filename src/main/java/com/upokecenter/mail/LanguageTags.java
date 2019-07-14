@@ -407,16 +407,16 @@ private LanguageTags() {
     private static boolean MatchLangTagBasic(
       String rangeLowerCased,
       String tagLowerCased) {
-      if (rangeLowerCased.equals("*")) {
+      if (rangeLowerCased.equals("*", StringComparison.Ordinal)) {
         return true;
       }
-      if (rangeLowerCased.equals(tagLowerCased)) {
+      if (rangeLowerCased.equals(tagLowerCased, StringComparison.Ordinal)) {
         return true;
       }
       if (tagLowerCased.length() > rangeLowerCased.length() &&
           tagLowerCased.charAt(rangeLowerCased.length()) == '-') {
         String prefix = tagLowerCased.substring(0, rangeLowerCased.length());
-        if (rangeLowerCased.equals(prefix)) {
+        if (rangeLowerCased.equals(prefix, StringComparison.Ordinal)) {
           return true;
         }
       }
@@ -431,7 +431,8 @@ private LanguageTags() {
       if (rangeSub.length == 0 || tagSub.length == 0) {
         return false;
       }
-      if (!rangeSub[0].equals("*") && !rangeSub[0].equals(tagSub[0])) {
+      if (!rangeSub[0].equals("*", StringComparison.Ordinal) &&
+!rangeSub[0].equals(tagSub[0], StringComparison.Ordinal)) {
         return false;
       }
       int rangeIndex = 1;
@@ -441,14 +442,14 @@ private LanguageTags() {
         if (range.length() == 0) {
           return false;
         }
-        if (range.equals("*")) {
+        if (range.equals("*", StringComparison.Ordinal)) {
           continue;
         }
         if (tagIndex >= tagSub.length) {
           return false;
         }
         String tag = tagSub[tagIndex];
-        if (range.equals(tag)) {
+        if (range.equals(tag, StringComparison.Ordinal)) {
           ++rangeIndex;
           ++tagIndex;
         }
@@ -474,12 +475,11 @@ private LanguageTags() {
      * it appears on that list.
      * @return A list of language tags that match the given range, in descending
      * order of preference.
-     * @throws NullPointerException The parameter {@code languages} or
-     * {@code ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a
-     * value that is not a basic or extended language range, or {@code
-     * languages} contains a value that is not a potentially valid language
-     * tag.
+     * @throws NullPointerException The parameter {@code languages} or {@code
+     * ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
+     * is not a basic or extended language range, or {@code languages}
+     * contains a value that is not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
            List<String> ranges,
@@ -503,16 +503,16 @@ private LanguageTags() {
       boolean[] langsMatch = new boolean[languages.size()];
       for (String range : ranges) {
         if (!IsLanguageRange(range, extended)) {
-          throw new IllegalArgumentException("ranges");
+          throw new IllegalArgumentException("ranges is not a language range.");
         }
       }
       for (String lang : languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
-          throw new IllegalArgumentException("languages");
+          throw new IllegalArgumentException("languages is not a language tag");
         }
       }
       for (String range : ranges) {
-        if (matchStarAtEnd && range.equals("*")) {
+        if (matchStarAtEnd && range.equals("*", StringComparison.Ordinal)) {
           hasStar = true;
           continue;
         }
@@ -586,8 +586,7 @@ private LanguageTags() {
      * found.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} is
-     * null.
+     * @throws NullPointerException The parameter {@code languages} is null.
      * @throws IllegalArgumentException The parameter {@code range} is not a basic
      * language range, or {@code languages} contains a value that is not a
      * potentially valid language tag.
@@ -610,11 +609,11 @@ private LanguageTags() {
      * found.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} or
-     * {@code ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a
-     * value that is not a basic language range, or {@code languages}
-     * contains a value that is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} or {@code
+     * ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
+     * is not a basic language range, or {@code languages} contains a value
+     * that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
   List<String> ranges,
@@ -632,11 +631,11 @@ private LanguageTags() {
      * descending preference.
      * @return A list of language tags that match the given range, in descending
      * order of preference.
-     * @throws NullPointerException The parameter {@code languages} or
-     * {@code ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a
-     * value that is not a basic language range, or {@code languages}
-     * contains a value that is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} or {@code
+     * ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
+     * is not a basic language range, or {@code languages} contains a value
+     * that is not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
   List<String> ranges,
@@ -655,11 +654,10 @@ private LanguageTags() {
      * it's a are basic language range.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} is
-     * null.
-     * @throws IllegalArgumentException The parameter {@code range} is not a basic
-     * or extended language range, or {@code languages} contains a value
-     * that is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} is null.
+     * @throws IllegalArgumentException The parameter {@code range} is not a basic or
+     * extended language range, or {@code languages} contains a value that
+     * is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
   String range,
@@ -686,12 +684,11 @@ private LanguageTags() {
      * ranges; otherwise, they are basic language ranges.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} or
-     * {@code ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a
-     * value that is not a basic or extended language range, or {@code
-     * languages} contains a value that is not a potentially valid language
-     * tag.
+     * @throws NullPointerException The parameter {@code languages} or {@code
+     * ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
+     * is not a basic or extended language range, or {@code languages}
+     * contains a value that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
          List<String> ranges,
@@ -712,16 +709,16 @@ private LanguageTags() {
       }
       for (String range : ranges) {
         if (!IsLanguageRange(range, extended)) {
-          throw new IllegalArgumentException("ranges");
+          throw new IllegalArgumentException("ranges is not a lnaguage range");
         }
       }
       for (String lang : languages) {
         if (!IsPotentiallyValidLanguageTag(lang)) {
-          throw new IllegalArgumentException("languages");
+          throw new IllegalArgumentException("languages is not a language tag.");
         }
       }
       for (String range : ranges) {
-        if (range.equals("*")) {
+        if (range.equals("*", StringComparison.Ordinal)) {
           continue;
         }
         String lcrange = DataUtilities.ToLowerCaseAscii(range);
@@ -747,7 +744,7 @@ private LanguageTags() {
      * language subtag, no variant subtags with the same value, and no
      * extension singleton subtags with the same value.
      * @param str The string to check.
-     * @return {@code true} , if the string meets the conditions given in the
+     * @return {@code true}, if the string meets the conditions given in the
      * summary, {@code false} otherwise.
      */
     public static boolean IsPotentiallyValidLanguageTag(String str) {
@@ -795,11 +792,11 @@ private LanguageTags() {
           // match grandfathered language tags (the last
           // is necessary because it would otherwise be rejected
           // by the code that checks extended language subtags)
-          if (str.equals("sgn-be-fr") ||
-str.equals("sgn-be-nl") ||
-str.equals("sgn-ch-de") ||
-str.equals("en-gb-oed") ||
-str.equals("zh-min-nan")) {
+          if (str.equals("sgn-be-fr", StringComparison.Ordinal) ||
+str.equals("sgn-be-nl", StringComparison.Ordinal) ||
+str.equals("sgn-ch-de", StringComparison.Ordinal) ||
+str.equals("en-gb-oed", StringComparison.Ordinal) ||
+str.equals("zh-min-nan", StringComparison.Ordinal)) {
             return true;
           }
           // More complex cases
@@ -883,7 +880,7 @@ str.equals("zh-min-nan")) {
             String curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (LengthIfAllAlphaNum(curString) == 1 &&
-                    !curString.equals("x")) {
+                    !curString.equals("x", StringComparison.Ordinal)) {
               variants = (variants == null) ? (new ArrayList<String>()) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
@@ -915,7 +912,7 @@ str.equals("zh-min-nan")) {
           // optional private use
           if (splitIndex < splitLength) {
             int curIndex = splitIndex;
-            if (splitString[splitIndex].equals("x")) {
+            if (splitString[splitIndex].equals("x", StringComparison.Ordinal)) {
               ++splitIndex;
               boolean havetoken = false;
               while (splitIndex < splitLength) {
@@ -968,13 +965,19 @@ str.equals("zh-min-nan")) {
         if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
           // grandfathered language tags
           str = DataUtilities.ToLowerCaseAscii(str);
-          return str.equals("i-ami") || str.equals("i-bnn") ||
-          str.equals("i-default") || str.equals("i-enochian") ||
-          str.equals("i-hak") || str.equals("i-klingon") ||
-          str.equals("i-lux") || str.equals("i-navajo") ||
-          str.equals("i-mingo") || str.equals("i-pwn") ||
-          str.equals("i-tao") || str.equals("i-tay") ||
-          str.equals("i-tsu");
+          return str.equals("i-ami", StringComparison.Ordinal) ||
+str.equals("i-bnn", StringComparison.Ordinal) ||
+          str.equals("i-default", StringComparison.Ordinal) ||
+str.equals("i-enochian", StringComparison.Ordinal) ||
+          str.equals("i-hak", StringComparison.Ordinal) ||
+str.equals("i-klingon", StringComparison.Ordinal) ||
+          str.equals("i-lux", StringComparison.Ordinal) ||
+str.equals("i-navajo", StringComparison.Ordinal) ||
+          str.equals("i-mingo", StringComparison.Ordinal) ||
+str.equals("i-pwn", StringComparison.Ordinal) ||
+          str.equals("i-tao", StringComparison.Ordinal) ||
+str.equals("i-tay", StringComparison.Ordinal) ||
+          str.equals("i-tsu", StringComparison.Ordinal);
         }
         return false;
       }

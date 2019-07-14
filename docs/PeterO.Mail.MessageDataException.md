@@ -15,7 +15,9 @@
     public MessageDataException(
         string message);
 
- Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.   <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+
+<b>Parameters:</b>
 
  * <i>message</i>: The parameter  <i>message</i>
  is a text string.
@@ -27,7 +29,9 @@
         string message,
         System.Exception innerException);
 
- Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.    <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+
+<b>Parameters:</b>
 
  * <i>message</i>: The parameter  <i>message</i>
  is a text string.

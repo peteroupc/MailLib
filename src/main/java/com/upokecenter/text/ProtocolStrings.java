@@ -8,24 +8,24 @@ package com.upokecenter.text;
      * Standard. See RFC 8264. Currently there are four profiles for
      * internationalized strings: two for strings serving as user
      * identifiers, one for arbitrary single-line strings (such as
-     * passwords), and one for display names. </p><p> <ul> <li>Other
+     * passwords), and one for display names.</p><p> <ul> <li>Other
      * user-facing internationalized strings not expressly handled by this
      * class include file and directory names, domain names, profile data
      * voluntarily entered by users, and the text of article, post, and
      * message bodies. The preparation and comparison of such strings is
-     * currently outside the scope of this class. </li> <li>The methods in
-     * this class are not well suited for <i> collation </i> , or
+     * currently outside the scope of this class.</li> <li>The methods in
+     * this class are not well suited for <i>collation</i>, or
      * lexicographic ordering, which is a comparison of text strings that
      * is usually language-dependent and goes beyond equality comparison.
      * Further discussion on collation can be found in Unicode Technical
-     *  Standard 10 (UTS 10), "Unicode Collation Algorithm". </li> <li>As
+     *  Standard 10 (UTS 10), "Unicode Collation Algorithm".</li> <li>As
      * explained in UTS 10 sec. 1.6, collation serves the purposes of
      * searching and selection (e.g., searches by name or by title).
      * However, this class is directed more to equality comparisons for
      * authentication or authorization purposes, or to avoid creating
      * multiple items that use the same string, rather than, say, to
      * comparisons of names or parts of names for the purpose of showing
-     * matching records. </li> </ul> </p>
+     * matching records.</li></ul></p>
      */
   public final class ProtocolStrings {
 private ProtocolStrings() {
@@ -38,9 +38,9 @@ private ProtocolStrings() {
      * (U + 0000 to U + 007F).
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
-     * characters allowed in RFC 8264's FreeformClass (in the contexts
-     * required); otherwise, {@code false}. Returns {@code false} if
-     * {@code str} is null.
+     * characters allowed in RFC 8264's IdentifierClass (in the contexts
+     * required); otherwise, {@code false}. Returns {@code false} if {@code
+     * str} is null.
      */
     public static boolean IsInIdentifierClass(String str) {
       return Idna.IsInIdentifierClass(str);
@@ -55,8 +55,8 @@ private ProtocolStrings() {
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
      * characters allowed in RFC 8264's FreeformClass (in the contexts
-     * required); otherwise, {@code false}. Returns {@code false} if
-     * {@code str} is null.
+     * required); otherwise, {@code false}. Returns {@code false} if {@code
+     * str} is null.
      */
     public static boolean IsInFreeformClass(String str) {
       return Idna.IsInFreeformClass(str);

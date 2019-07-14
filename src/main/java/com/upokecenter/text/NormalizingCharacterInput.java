@@ -14,31 +14,31 @@ import java.util.*;
      * algorithm and contains methods and functionality to test and convert
      * text strings for normalization. This is similar to the deprecated
      * Normalizer class, except it implements the ICharacterInput
-     * interface. </p> <ul> <li><b>NFD</b> (Normalization Form D)
-     * decomposes combined forms to their constituent characters (E plus
-     * acute, for example), then reorders combining marks to a standardized
-     * order. This is called canonical decomposition. </li> <li><b>NFC</b>
-     * does canonical decomposition, then combines certain constituent
+     * interface.</p> <ul> <li><b>NFD</b> (Normalization Form D) decomposes
+     * combined forms to their constituent characters (E plus acute, for
+     * example), then reorders combining marks to a standardized order.
+     * This is called canonical decomposition.</li> <li><b>NFC</b> does
+     * canonical decomposition, then combines certain constituent
      * characters to their composites (E-acute, for example). This is
-     * called canonical composition. </li> <li>Two normalization forms,
-     * <b>NFKC</b> and <b>NFKD</b> , are similar to NFC and NFD, except
-     *  they also "decompose" certain characters, such as ligatures, font or
+     * called canonical composition.</li> <li>Two normalization forms,
+     * <b>NFKC</b> and <b>NFKD</b>, are similar to NFC and NFD, except they
+     *  also "decompose" certain characters, such as ligatures, font or
      * positional variants, and subscripts, whose visual distinction can
-     * matter in some contexts. This is called compatibility decomposition.
-     * </li> </ul> <p>For more information, see Standard Annex 15 at
-     * <code>http://www.unicode.org/reports/tr15/</code> . </p> <p><b>Thread
+     * matter in some contexts. This is called compatibility
+     * decomposition.</li></ul> <p>For more information, see Standard Annex
+     * 15 at <code>http://www.unicode.org/reports/tr15/</code>.</p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
      * Therefore, access to objects from this class must be synchronized if
-     * multiple threads can access them at the same time. </p> <p>NOTICE:
+     * multiple threads can access them at the same time.</p> <p>NOTICE:
      * While this class's source code is in the public domain, the class
      * uses an class, called NormalizationData, that includes data
      * derived from the Unicode Character Database. In case doing so is
      * required, the permission notice for the Unicode Character Database
-     * is given here: </p> <p>COPYRIGHT AND PERMISSION NOTICE </p>
+     * is given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p>
      * <p>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
      * Distributed under the Terms of Use in
-     * http://www.unicode.org/copyright.html. </p> <p>Permission is hereby
+     * http://www.unicode.org/copyright.html.</p> <p>Permission is hereby
      * granted, free of charge, to any person obtaining a copy of the
      *  Unicode data files and any associated documentation (the "Data
      *  Files") or Unicode software and any associated documentation (the
@@ -52,7 +52,7 @@ import java.util.*;
      * associated documentation, and (c) there is clear notice in each
      * modified Data File or in the Software as well as in the
      * documentation associated with the Data File(s) or Software that the
-     * data or software has been modified. </p> <p>THE DATA FILES AND
+     * data or software has been modified.</p> <p>THE DATA FILES AND
      *  SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
      * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
      * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -62,11 +62,11 @@ import java.util.*;
      * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
      * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
      * ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-     * OF THE DATA FILES OR SOFTWARE. </p> <p>Except as contained in this
+     * OF THE DATA FILES OR SOFTWARE.</p> <p>Except as contained in this
      * notice, the name of a copyright holder shall not be used in
      * advertising or otherwise to promote the sale, use or other dealings
      * in these Data Files or Software without prior written authorization
-     * of the copyright holder. </p>
+     * of the copyright holder.</p>
      * @deprecated Renamed to NormalizerInput.
  */
 @Deprecated
@@ -171,8 +171,8 @@ import java.util.*;
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
      * @return The parameter {@code str} converted to the given normalization form.
-     * @throws IllegalArgumentException The parameter {@code str} contains an
-     * unpaired surrogate code point.
+     * @throws IllegalArgumentException The parameter {@code str} contains an unpaired
+     * surrogate code point.
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String Normalize(String str, Normalization form) {
@@ -196,9 +196,7 @@ import java.util.*;
 
     /**
      * Gets a list of normalized code points after reading from a string.
-     * @param str The parameter
-      {@code str}
-       is a text string.
+     * @param str The parameter {@code str} is a text string.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return A list of the normalized Unicode characters.
@@ -304,9 +302,9 @@ import java.util.*;
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
      * @throws NullPointerException The parameter {@code chars} is null.
-     * @throws IllegalArgumentException Either {@code index} or {@code length} is
-     * less than 0 or greater than {@code chars} 's length, or {@code
-     * chars} ' s length minus {@code index} is less than {@code length}.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
+     * than 0 or greater than {@code chars} 's length, or {@code chars} ' s
+     * length minus {@code index} is less than {@code length}.
      */
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);

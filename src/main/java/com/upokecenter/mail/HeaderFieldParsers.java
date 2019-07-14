@@ -592,7 +592,7 @@ private HeaderFieldParsers() {
           return false;
         }
         String checkword = DataUtilities.ToLowerCaseAscii(sb.toString());
-        if (!checkword.equals(word)) {
+        if (!checkword.equals(word, StringComparison.Ordinal)) {
           return false;
         }
         index = HeaderParser.ParseCFWS(
@@ -797,8 +797,8 @@ private HeaderFieldParsers() {
         if (cd == null) {
           return index;
         }
-        int ret = (cd.getDispositionType().equals("no") ||
- cd.getDispositionType().equals("yes")) ? endIndex : index;
+        int ret = (cd.getDispositionType().equals("no", StringComparison.Ordinal) ||
+ cd.getDispositionType().equals("yes", StringComparison.Ordinal)) ? endIndex : index;
         if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
             str,

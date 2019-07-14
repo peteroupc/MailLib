@@ -8,16 +8,14 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MessageDataException"]/*'/>
+    /// <summary>Exception thrown when a message has invalid
+    /// syntax.</summary>
   public class MessageDataException : Exception {
-    /// <xmlbegin id='43'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='MessageDataException'/> class.</summary>
     public MessageDataException() {
     }
 
-    /// <xmlbegin id='44'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='MessageDataException'/> class.</summary>
     /// <param name='message'>The parameter <paramref name='message'/> is a
@@ -25,7 +23,6 @@ namespace PeterO.Mail {
     public MessageDataException(string message) : base(message) {
     }
 
-    /// <xmlbegin id='45'/>
     /// <summary>Initializes a new instance of the
     /// <see cref='MessageDataException'/> class.</summary>
     /// <param name='message'>The parameter <paramref name='message'/> is a

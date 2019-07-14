@@ -713,7 +713,7 @@ string ReplaceTwoOrMoreSpacesWithBR(string str) {
 
     private static void HexEscape(StringBuilder sb, char c) {
       if (c >= 0x100) {
-        throw new ArgumentException();
+        throw new ArgumentOutOfRangeException(nameof(c));
       }
       string hex = "0123456789abcdef";
       sb.Append("&#x");

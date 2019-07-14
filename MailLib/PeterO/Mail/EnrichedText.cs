@@ -4,8 +4,7 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.EnrichedText"]/*'/>
+    /// <summary>This is an internal API.</summary>
   internal static class EnrichedText {
     private static bool IsTokenAsciiIgnoreCase(
       string str,
@@ -243,17 +242,17 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               int commandEnd = index;
               if (index < endIndex && (str[index] == 62)) {
                 ++index;
-                string command = str.Substring(
+                string command = DataUtilities.ToLowerCaseAscii(str.Substring(
                   commandStart,
-                  commandEnd - commandStart).ToLowerInvariant();
-                if (command.Equals("nofill")) {
+                  commandEnd - commandStart));
+                if (command.Equals("nofill", StringComparison.Ordinal)) {
                   if (isEndTag && nofillDepth > 0) {
                     --nofillDepth;
                   } else if (!isEndTag) {
                     ++nofillDepth;
                   }
                 }
-                if (command.Equals("param")) {
+                if (command.Equals("param", StringComparison.Ordinal)) {
                   if (isEndTag) {
                     withinParam = false;
                     currentBuilder = originalBuilder;
@@ -439,112 +438,127 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
               int commandEnd = index;
               if (index < endIndex && (str[index] == 62)) {
                 ++index;
-                string command = str.Substring(
+                string command = DataUtilities.ToLowerCaseAscii(str.Substring(
                   commandStart,
-                  commandEnd - commandStart).ToLowerInvariant();
+                  commandEnd - commandStart));
                 if (!withinParam) {
-                  if (command.Equals("bold")) {
+                  if (command.Equals("bold", StringComparison.Ordinal)) {
                     currentBuilder.Append('<');
                     if (isEndTag) {
                       currentBuilder.Append('/');
                     }
                     currentBuilder.Append("b>");
-                  } else if (command.Equals("italic")) {
+                  } else if (command.Equals("italic",
+  StringComparison.Ordinal)) {
                     currentBuilder.Append('<');
                     if (isEndTag) {
                       currentBuilder.Append('/');
                     }
                     currentBuilder.Append("i>");
-                  } else if (command.Equals("fixed")) {
+                  } else if (command.Equals("fixed",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     } else {
                       currentBuilder.Append("<span style='font-family:");
                       currentBuilder.Append("monospaced'>");
                     }
-                  } else if (command.Equals("center")) {
+                  } else if (command.Equals("center",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div style='text-align:center'>");
                     }
-                  } else if (command.Equals("flushleft")) {
+                  } else if (command.Equals("flushleft",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div style='text-align:left'>");
                     }
-                  } else if (command.Equals("flushright")) {
+                  } else if (command.Equals("flushright",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div style='text-align:right'>");
                     }
-                  } else if (command.Equals("flushboth")) {
+                  } else if (command.Equals("flushboth",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div style='text-align:justify'>");
                     }
-                  } else if (command.Equals("fontfamily")) {
+                  } else if (command.Equals("fontfamily",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     }
-                  } else if (command.Equals("color")) {
+                  } else if (command.Equals("color",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     }
-                  } else if (command.Equals("paraindent")) {
+                  } else if (command.Equals("paraindent",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     }
-                  } else if (command.Equals("smaller")) {
+                  } else if (command.Equals("smaller",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     } else {
                       currentBuilder.Append("<span style='font-size:85%'>");
                     }
-                  } else if (command.Equals("nofill")) {
+                  } else if (command.Equals("nofill",
+  StringComparison.Ordinal)) {
                     if (isEndTag && nofillDepth > 0) {
                       --nofillDepth;
                     } else if (!isEndTag) {
                       ++nofillDepth;
                     }
-                  } else if (command.Equals("bigger")) {
+                  } else if (command.Equals("bigger",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     } else {
                       currentBuilder.Append("<span style='font-size:110%'>");
                     }
-                  } else if (command.Equals("lang")) {
+                  } else if (command.Equals("lang", StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     }
-                  } else if (command.Equals("excerpt")) {
+                  } else if (command.Equals("excerpt",
+  StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</blockquote>");
                     } else {
                       currentBuilder.Append("<blockquote>");
                     }
                   }
-                  if (!command.Equals("param")) {
+                  if (!command.Equals("param", StringComparison.Ordinal)) {
                     lastCommand = command;
                   }
                 }
                 bool wasWithinParam = withinParam;
-                if (command.Equals("param")) {
+                if (command.Equals("param", StringComparison.Ordinal)) {
                   if (isEndTag) {
                     withinParam = false;
                     currentBuilder = originalBuilder;
                     string p = TrimSpaces(paramBuilder.ToString());
-                    if (lastCommand.Equals("fontfamily")) {
+                    if (lastCommand.Equals("fontfamily",
+  StringComparison.Ordinal)) {
                       if (SkipFont(p, 0, p.Length) == p.Length) {
                         currentBuilder.Append("<span style='font-family: " + p +
                         "'> ");
                       } else {
                         currentBuilder.Append("<span>");
                       }
-                    } else if (lastCommand.Equals("color")) {
+                    } else if (lastCommand.Equals("color",
+  StringComparison.Ordinal)) {
                       p = ParseColor(
             DataUtilities.ToLowerCaseAscii(p),
             0,
@@ -555,14 +569,16 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                       } else {
                         currentBuilder.Append("<span>");
                       }
-                    } else if (lastCommand.Equals("lang")) {
+                    } else if (lastCommand.Equals("lang",
+  StringComparison.Ordinal)) {
                       if (SkipLang(p, 0, p.Length) == p.Length) {
     currentBuilder.Append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
                                         "'> ");
                       } else {
                         currentBuilder.Append("<span>");
                       }
-                    } else if (lastCommand.Equals("paraindent")) {
+                    } else if (lastCommand.Equals("paraindent",
+  StringComparison.Ordinal)) {
                       p = DataUtilities.ToLowerCaseAscii(p);
                       string[] valuePList = SplitAt(p, ",");
                       var leftFlag = false;
@@ -572,13 +588,17 @@ str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                       var styleBuilder = new StringBuilder();
                       foreach (string valuePItem in valuePList) {
                         string valuePItem2 = TrimSpaces(valuePItem);
-                        if (!leftFlag && valuePItem2.Equals("left")) {
+                        if (!leftFlag && valuePItem2.Equals("left",
+  StringComparison.Ordinal)) {
                           styleBuilder.Append("padding-left: 2em;");
-                        } else if (!rightFlag && valuePItem2.Equals("right")) {
+                        } else if (!rightFlag && valuePItem2.Equals("right",
+  StringComparison.Ordinal)) {
                           styleBuilder.Append("padding-right: 2em;");
-                        } else if (!inFlag && valuePItem2.Equals("in")) {
+                        } else if (!inFlag && valuePItem2.Equals("in",
+  StringComparison.Ordinal)) {
                           styleBuilder.Append("text-indent: 2em;");
-                        } else if (!outFlag && valuePItem2.Equals("out")) {
+                        } else if (!outFlag && valuePItem2.Equals("out",
+  StringComparison.Ordinal)) {
                           styleBuilder.Append("text-indent: -2em;");
                           styleBuilder.Append("margin-left: 2em;");
                         }

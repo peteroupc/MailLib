@@ -4,8 +4,14 @@ namespace PeterO.Text {
   internal sealed class ByteData {
     private readonly byte[] array;
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])"]/*'/>
+    /// <summary>Decompresses a byte array compressed using the LZ4 format
+    /// (see "LZ4 Format Description" by Y Collet for more
+    /// information).</summary>
+    /// <param name='input'>Input byte array.</param>
+    /// <returns>Decompressed output byte array.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter "output" is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>Invalid LZ4.</exception>
     public static byte[] DecompressLz4(byte[] input) {
       var index = 0;
       var copy = new byte[16];

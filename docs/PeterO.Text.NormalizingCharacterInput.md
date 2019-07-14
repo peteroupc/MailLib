@@ -5,15 +5,15 @@
 
 <b>Deprecated.</b> Renamed to NormalizerInput.
 
- A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
+  A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
   * <b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent characters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
 
   * <b>NFC</b> does canonical decomposition, then combines certain constituent characters to their composites (E-acute, for example). This is called canonical composition.
 
-  * Two normalization forms, <b>NFKC</b> and <b>NFKD</b> , are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
+  * Two normalization forms, <b>NFKC</b> and <b>NFKD</b>, are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
 
-  For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/`  .
+ For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/` .
 
  <b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
@@ -46,7 +46,9 @@
     public NormalizingCharacterInput(
         PeterO.Text.ICharacterInput input);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.   <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+
+<b>Parameters:</b>
 
  * <i>input</i>: The parameter  <i>input</i>
  is an ICharacterInput object.
@@ -58,7 +60,9 @@
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.    <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+
+<b>Parameters:</b>
 
  * <i>stream</i>: The parameter  <i>stream</i>
  is an ICharacterInput object.
@@ -72,7 +76,9 @@
     public NormalizingCharacterInput(
         string str);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.   <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -86,7 +92,9 @@
         int length,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.      <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -107,7 +115,9 @@
         string str,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.     <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -127,7 +137,9 @@ The parameter  <i>str</i>
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.   <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+
+<b>Parameters:</b>
 
  * <i>characterList</i>: The parameter  <i>characterList</i>
  is an IList object.
@@ -139,7 +151,9 @@ The parameter  <i>str</i>
         System.Collections.Generic.IList characterList,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.    <b>Parameters:</b>
+ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+
+<b>Parameters:</b>
 
  * <i>characterList</i>: The parameter  <i>characterList</i>
  is an IList object.
@@ -156,7 +170,9 @@ The parameter  <i>str</i>
 
 <b>Deprecated.</b> Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.
 
- Gets a list of normalized code points after reading from a character stream.  <b>Parameters:</b>
+ Gets a list of normalized code points after reading from a character stream.
+
+<b>Parameters:</b>
 
  * <i>chars</i>: An object that implements a stream of Unicode characters.
 
@@ -181,7 +197,9 @@ The parameter  <i>chars</i>
 
 <b>Deprecated.</b> Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.
 
- Gets a list of normalized code points after reading from a string.  <b>Parameters:</b>
+ Gets a list of normalized code points after reading from a string.
+
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -207,7 +225,9 @@ The parameter  <i>str</i>
 
 <b>Deprecated.</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
- Determines whether the given array of characters is in the given Unicode normalization form.  <b>Parameters:</b>
+ Determines whether the given array of characters is in the given Unicode normalization form.
+
+<b>Parameters:</b>
 
  * <i>charArray</i>: An array of Unicode code points.
 
@@ -215,7 +235,7 @@ The parameter  <i>str</i>
 
 <b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false`  .
+ `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -229,7 +249,9 @@ The parameter "charList" is null.
         PeterO.Text.ICharacterInput chars,
         PeterO.Text.Normalization form);
 
- Determines whether the text provided by a character input is normalized.  <b>Parameters:</b>
+ Determines whether the text provided by a character input is normalized.
+
+<b>Parameters:</b>
 
  * <i>chars</i>: A object that implements a streamable character input.
 
@@ -237,7 +259,7 @@ The parameter "charList" is null.
 
 <b>Return Value:</b>
 
- `true`  if the text is normalized; otherwise,  `false`  .
+ `true`  if the text is normalized; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -252,7 +274,9 @@ The parameter  <i>chars</i>
         string str,
         PeterO.Text.Normalization form);
 
- Determines whether the given string is in the given Unicode normalization form.  <b>Parameters:</b>
+ Determines whether the given string is in the given Unicode normalization form.
+
+<b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -260,7 +284,7 @@ The parameter  <i>chars</i>
 
 <b>Return Value:</b>
 
- `true`  if the given string is in the given Unicode normalization form; otherwise,  `false`  . Returns  `false`  if the string contains an unpaired surrogate code point.
+ `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
@@ -277,7 +301,9 @@ The parameter  <i>str</i>
 
 <b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
- Determines whether the given list of characters is in the given Unicode normalization form.  <b>Parameters:</b>
+ Determines whether the given list of characters is in the given Unicode normalization form.
+
+<b>Parameters:</b>
 
  * <i>charList</i>: A list of Unicode code points.
 
@@ -285,7 +311,7 @@ The parameter  <i>str</i>
 
 <b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false`  .
+ `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -300,7 +326,9 @@ The parameter  <i>charList</i>
         string str,
         PeterO.Text.Normalization form);
 
- Converts a string to the given Unicode normalization form.  <b>Parameters:</b>
+ Converts a string to the given Unicode normalization form.
+
+<b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -329,7 +357,9 @@ The parameter  <i>str</i>
         int index,
         int length);
 
- Reads a sequence of Unicode code points from a data source.  <b>Parameters:</b>
+ Reads a sequence of Unicode code points from a data source.
+
+<b>Parameters:</b>
 
  * <i>chars</i>: Output buffer.
 
@@ -357,13 +387,15 @@ Either  <i>index</i>
  's length, or  <i>chars</i>
  ' s length minus  <i>index</i>
  is less than  <i>length</i>
- .
+.
 
 <a id="ReadChar"></a>
 ### ReadChar
 
     public sealed int ReadChar();
 
- Reads a Unicode character from a data source.  <b>Return Value:</b>
+ Reads a Unicode character from a data source.
+
+<b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

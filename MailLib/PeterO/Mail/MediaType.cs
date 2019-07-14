@@ -13,8 +13,26 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
+    /// <summary>
+    /// <para>Specifies what kind of data a message body is.</para>
+    /// <para>A media type consists of a top-level type (the general
+    /// category of the data), a subtype (the specific type), and an
+    /// optional list of parameters. For example, the media type
+    /// <c>text/plain; charset = utf-8</c> is a text media type ("text"),
+    /// namely, a plain text type ("plain"), and the parameters say that
+    /// the data uses UTF-8, a Unicode character encoding ("charset =
+    /// utf-8"). Other top-level types include "audio", "video", and
+    /// "application".</para>
+    /// <para>A media type is sometimes known as a "MIME type", for
+    /// Multipurpose Internet Mail Extensions, the standard that introduced
+    /// media types.</para>
+    /// <para>This type is immutable, meaning its values can't be changed
+    /// once it' s created. To create a changeable media type object, use
+    /// the MediaTypeBuilder class.</para>
+    /// <para><b>Note:</b> According to RFC 2049, unrecognized subtypes of
+    /// the top-level type <c>multipart</c> must be treated as
+    /// <c>multipart/mixed</c> and unrecognized media types as the media
+    /// type <c>application/octet-stream</c>.</para></summary>
   public sealed class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -27,8 +45,11 @@ namespace PeterO.Mail {
     private static readonly ICharacterEncoding USAsciiEncoding =
       Encodings.GetEncoding("us-ascii", true);
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TopLevelType"]/*'/>
+    /// <summary>Gets the name of this media type's top-level type (such as
+    /// "text" in "text/plain", or "audio" in "audio/basic"). The resulting
+    /// string will be in lowercase letters.</summary>
+    /// <value>The name of this media type's top-level type (such as "text"
+    /// or "audio" .</value>
     public string TopLevelType {
       get {
         return this.topLevelType;
@@ -37,21 +58,24 @@ namespace PeterO.Mail {
 
     #region Equals and GetHashCode implementation
 
-    /// <xmlbegin id='22'/>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is not
+    /// documented yet.</param>
+    /// <returns>Either <c>true</c> or <c>false</c>.</returns>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
       if (other == null) {
         return false;
       }
-      return this.topLevelType.Equals(other.topLevelType) &&
-        this.subType.Equals(other.subType) &&
+      return this.topLevelType.Equals(other.topLevelType,
+  StringComparison.Ordinal) &&
+        this.subType.Equals(other.subType, StringComparison.Ordinal) &&
           CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetHashCode"]/*'/>
+    /// <summary>Calculates the hash code of this object. No application or
+    /// process IDs are used in the hash code calculation.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
       var hashCode = 632580499;
       if (this.topLevelType != null) {
@@ -75,27 +99,33 @@ namespace PeterO.Mail {
 
     private readonly string subType;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.SubType"]/*'/>
+    /// <summary>Gets this media type's subtype (for example, "plain" in
+    /// "text/plain"). The resulting string will be in lowercase
+    /// letters.</summary>
+    /// <value>This media type's subtype.</value>
     public string SubType {
       get {
         return this.subType;
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsText"]/*'/>
+    /// <summary>Gets a value indicating whether this is a text media type
+    /// ("text/&#x2a;").</summary>
+    /// <value><c>true</c> If this is a text media type; otherwise,.
+    /// <c>false</c>.</value>
     public bool IsText {
       get {
-        return this.TopLevelType.Equals("text");
+        return this.TopLevelType.Equals("text", StringComparison.Ordinal);
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsMultipart"]/*'/>
+    /// <summary>Gets a value indicating whether this is a multipart media
+    /// type.</summary>
+    /// <value><c>true</c> If this is a multipart media type; otherwise,.
+    /// <c>false</c>.</value>
     public bool IsMultipart {
       get {
-        return this.TopLevelType.Equals("multipart");
+        return this.TopLevelType.Equals("multipart", StringComparison.Ordinal);
       }
     }
 
@@ -110,8 +140,14 @@ namespace PeterO.Mail {
 
     private readonly Dictionary<string, string> parameters;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.Parameters"]/*'/>
+    /// <summary>Gets a list of the parameters contained in this media type
+    /// object.</summary>
+    /// <value>A list of the parameters contained in this media type
+    /// object; the names of each parameter appear in an undefined order.
+    /// NOTE: Previous versions erroneously stated that the list will be
+    /// sorted by name. In fact, the names will not be guaranteed to appear
+    /// in any particular order; this is at least the case in version
+    /// 0.10.0.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -119,11 +155,9 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    /// <xmlbegin id='23'/>
     /// <summary>Use HTTP rules for quoted strings.</summary>
       Http,
 
-    /// <xmlbegin id='24'/>
     /// <summary>Use Internet Message Format rules for quoted
     /// strings.</summary>
       Rfc5322,
@@ -522,8 +556,12 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]/*'/>
+    /// <summary>Converts this media type to a text string form suitable
+    /// for inserting in email headers. Notably, the string contains the
+    /// value of a Content-Type header field (without the text necessarily
+    /// starting with "Content-Type" followed by a space), and consists of
+    /// one or more lines.</summary>
+    /// <returns>A text string form of this media type.</returns>
     public override string ToString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing
       // space).
@@ -533,8 +571,8 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <xmlbegin id='25'/>
-    /// <returns>A string object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A text string.</returns>
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -543,8 +581,13 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaType.ToUriSafeString"]/*'/>
+    /// <summary>Converts this media type to a text string form suitable
+    /// for data URIs. Notably, the string contains the value of a
+    /// Content-Type header field (without the text necessarily starting
+    /// with "Content-Type" followed by a space), consists of a single
+    /// line, and uses percent-encoding as necessary or convenient so that
+    /// the resulting string can validly appear in a URI path.</summary>
+    /// <returns>A text string form of this media type.</returns>
     public string ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -687,57 +730,69 @@ namespace PeterO.Mail {
       // parameter.
       if (this.IsText) {
         string sub = this.SubType;
-        if (sub.Equals("html")) {
+        if (sub.Equals("html", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("javascript")) {
+        if (sub.Equals("javascript", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("ecmascript")) {
+        if (sub.Equals("ecmascript", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("rtf")) {
+        if (sub.Equals("rtf", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("xml")) {
+        if (sub.Equals("xml", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("xml-external-parsed-entity")) {
+        if (sub.Equals("xml-external-parsed-entity",
+  StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.in3d.3dml")) {
+        if (sub.Equals("vnd.in3d.3dml", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.iptc.newsml")) {
+        if (sub.Equals("vnd.iptc.newsml", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.iptc.nitf")) {
+        if (sub.Equals("vnd.iptc.nitf", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.ms-mediapackage")) {
+        if (sub.Equals("vnd.ms-mediapackage", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.net2phone.commcenter.command")) {
+        if (sub.Equals("vnd.net2phone.commcenter.command",
+  StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.radisys.msml-basic-layout")) {
+        if (sub.Equals("vnd.radisys.msml-basic-layout",
+  StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.wap.si")) {
+        if (sub.Equals("vnd.wap.si", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.wap.sl")) {
+        if (sub.Equals("vnd.wap.sl", StringComparison.Ordinal)) {
           return true;
         }
-        if (sub.Equals("vnd.wap.wml")) {
+        if (sub.Equals("vnd.wap.wml", StringComparison.Ordinal)) {
           return true;
         }
       }
       return false;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetCharset"]/*'/>
+    /// <summary>Gets this media type's "charset" parameter, naming a
+    /// character encoding used to represent text in the data that uses
+    /// this media type.</summary>
+    /// <returns>If the "charset" parameter is present and non-empty,
+    /// returns the result of the Encodings.ResolveAliasForEmail method for
+    /// that parameter, except that result's basic upper-case letters A to
+    /// Z (U+0041 to U+005A) are converted to lower case. If the "charset"
+    /// parameter is absent or empty, returns the default value, if any,
+    /// for that parameter given the media type (e.g., "us-ascii" if the
+    /// media type is "text/plain"; see RFC2046), or the empty string if
+    /// there is none.</returns>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
@@ -850,52 +905,52 @@ namespace PeterO.Mail {
         if (this.IsText) {
           string sub = this.SubType;
           // Media types that assume a default of US-ASCII
-          if (sub.Equals("plain") ||
-  sub.Equals("sgml") ||
-  sub.Equals("troff") ||
-  sub.Equals("dns") ||
-  sub.Equals("mizar") ||
-  sub.Equals("prs.prop.logic") ||
-  sub.Equals("vnd.ascii-art") ||
-  sub.Equals("vnd.dmclientscript") ||
-  sub.Equals("prs.lines.tag") ||
-  sub.Equals("vnd.latex-z") ||
-  sub.Equals("rfc822-headers") ||
-  sub.Equals("vnd.dvb.subtitle") ||
-  sub.Equals("vnd.fly") ||
-  sub.Equals("directory") ||
-  sub.Equals("css") ||
-  sub.Equals("richtext") ||
-  sub.Equals("enriched") ||
-  sub.Equals("tab-separated-values") ||
-  sub.Equals("vnd.in3d.spot") ||
-  sub.Equals("vnd.abc") ||
-  sub.Equals("vnd.wap.wmlscript") ||
-  sub.Equals("vnd.curl") ||
-  sub.Equals("vnd.fmi.flexstor") ||
-  sub.Equals("uri-list") ||
-  sub.Equals("vnd.si.uricatalogue")) {
+          if (sub.Equals("plain", StringComparison.Ordinal) ||
+  sub.Equals("sgml", StringComparison.Ordinal) ||
+  sub.Equals("troff", StringComparison.Ordinal) ||
+  sub.Equals("dns", StringComparison.Ordinal) ||
+  sub.Equals("mizar", StringComparison.Ordinal) ||
+  sub.Equals("prs.prop.logic", StringComparison.Ordinal) ||
+  sub.Equals("vnd.ascii-art", StringComparison.Ordinal) ||
+  sub.Equals("vnd.dmclientscript", StringComparison.Ordinal) ||
+  sub.Equals("prs.lines.tag", StringComparison.Ordinal) ||
+  sub.Equals("vnd.latex-z", StringComparison.Ordinal) ||
+  sub.Equals("rfc822-headers", StringComparison.Ordinal) ||
+  sub.Equals("vnd.dvb.subtitle", StringComparison.Ordinal) ||
+  sub.Equals("vnd.fly", StringComparison.Ordinal) ||
+  sub.Equals("directory", StringComparison.Ordinal) ||
+  sub.Equals("css", StringComparison.Ordinal) ||
+  sub.Equals("richtext", StringComparison.Ordinal) ||
+  sub.Equals("enriched", StringComparison.Ordinal) ||
+  sub.Equals("tab-separated-values", StringComparison.Ordinal) ||
+  sub.Equals("vnd.in3d.spot", StringComparison.Ordinal) ||
+  sub.Equals("vnd.abc", StringComparison.Ordinal) ||
+  sub.Equals("vnd.wap.wmlscript", StringComparison.Ordinal) ||
+  sub.Equals("vnd.curl", StringComparison.Ordinal) ||
+  sub.Equals("vnd.fmi.flexstor", StringComparison.Ordinal) ||
+  sub.Equals("uri-list", StringComparison.Ordinal) ||
+  sub.Equals("vnd.si.uricatalogue", StringComparison.Ordinal)) {
             return "us-ascii";
           }
           // Media types that assume a default of UTF-8
-          if (sub.Equals("vcard") ||
-  sub.Equals("jcr-cnd") ||
-  sub.Equals("n3") ||
-  sub.Equals("turtle") ||
-  sub.Equals("strings") ||
-  sub.Equals("vnd.debian.copyright") ||
-  sub.Equals("provenance-notation") ||
-  sub.Equals("csv") ||
-  sub.Equals("calendar") ||
-  sub.Equals("vnd.a") ||
-  sub.Equals("parameters") ||
-  sub.Equals("prs.fallenstein.rst") ||
-  sub.Equals("vnd.esmertec.theme.descriptor") ||
-  sub.Equals("vnd.trolltech.linguist") ||
-  sub.Equals("csv-schema") ||
-  sub.Equals("vnd.graphviz") ||
-  sub.Equals("cache-manifest") ||
-  sub.Equals("vnd.sun.j2me.app-descriptor")) {
+          if (sub.Equals("vcard", StringComparison.Ordinal) ||
+  sub.Equals("jcr-cnd", StringComparison.Ordinal) ||
+  sub.Equals("n3", StringComparison.Ordinal) ||
+  sub.Equals("turtle", StringComparison.Ordinal) ||
+  sub.Equals("strings", StringComparison.Ordinal) ||
+  sub.Equals("vnd.debian.copyright", StringComparison.Ordinal) ||
+  sub.Equals("provenance-notation", StringComparison.Ordinal) ||
+  sub.Equals("csv", StringComparison.Ordinal) ||
+  sub.Equals("calendar", StringComparison.Ordinal) ||
+  sub.Equals("vnd.a", StringComparison.Ordinal) ||
+  sub.Equals("parameters", StringComparison.Ordinal) ||
+  sub.Equals("prs.fallenstein.rst", StringComparison.Ordinal) ||
+  sub.Equals("vnd.esmertec.theme.descriptor", StringComparison.Ordinal) ||
+  sub.Equals("vnd.trolltech.linguist", StringComparison.Ordinal) ||
+  sub.Equals("csv-schema", StringComparison.Ordinal) ||
+  sub.Equals("vnd.graphviz", StringComparison.Ordinal) ||
+  sub.Equals("cache-manifest", StringComparison.Ordinal) ||
+  sub.Equals("vnd.sun.j2me.app-descriptor", StringComparison.Ordinal)) {
             return "utf-8";
           }
         }
@@ -903,8 +958,18 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaType.GetParameter(System.String)"]/*'/>
+    /// <summary>Gets the value of a parameter in this media type, such as
+    /// "charset" or "format".</summary>
+    /// <param name='name'>Name of the parameter to get. The name is
+    /// compared using a basic case-insensitive comparison. (Two strings
+    /// are equal in such a comparison, if they match after converting the
+    /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
+    /// strings to lower case.).</param>
+    /// <returns>The value of the parameter as a string, or null if the
+    /// parameter doesn't exist.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Name is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -1083,8 +1148,11 @@ namespace PeterO.Mail {
       return true;
     }
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TypeAndSubType"]/*'/>
+    /// <summary>Gets the top level type and subtype of this media type,
+    /// separated by a slash; for example, "text/plain". The resulting
+    /// string will be in lowercase letters.</summary>
+    /// <value>The top level type and subtype of this media type, separated
+    /// by a slash; for example, "text/plain".</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -1277,7 +1345,6 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <xmlbegin id='26'/>
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "US-ASCII", used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
@@ -1294,7 +1361,6 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <xmlbegin id='27'/>
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "utf-8", used for plain text data that may contain
     /// characters outside the basic Latin range (U + 0000 to U +
@@ -1313,7 +1379,6 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <xmlbegin id='28'/>
     /// <summary>Specifies the media type "message/rfc822", used for
     /// Internet mail messages.</summary>
     public static readonly MediaType MessageRfc822 =
@@ -1326,7 +1391,6 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
 #endif
 
-    /// <xmlbegin id='29'/>
     /// <summary>Specifies the media type "application/octet-stream", used
     /// for arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =
@@ -1338,15 +1402,49 @@ namespace PeterO.Mail {
       this.parameters = new Dictionary<string, string>();
     }
 
-    /// <xmlbegin id='30'/>
-    /// <param name='mediaTypeValue'>Not documented yet.</param>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='mediaTypeValue'>The parameter <paramref
+    /// name='mediaTypeValue'/> is not documented yet.</param>
     /// <returns>A MediaType object.</returns>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)"]/*'/>
+    /// <summary>Parses a media type string and returns a media type
+    /// object, or the default value if the string is invalid. This method
+    /// checks the syntactic validity of the string, but not whether it has
+    /// all parameters it's required to have or whether the parameters
+    /// themselves are set to valid values for the parameter.
+    /// <para>This method assumes the given media type string was directly
+    /// extracted from the Content-Type header field (as defined for email
+    /// messages) and follows the syntax given in RFC 2045. Accordingly,
+    /// among other things, the media type string can contain comments
+    /// (delimited by parentheses).</para>
+    /// <para>RFC 2231 extensions allow each media type parameter to be
+    /// associated with a character encoding and/or language, and support
+    /// parameter values that span two or more key-value pairs. Parameters
+    /// making use of RFC 2231 extensions have names with an asterisk
+    /// ("&#x2a;"). Such a parameter will be ignored if it is ill-formed
+    /// because of RFC 2231's rules (except for illegal percent-decoding or
+    /// undecodable sequences for the given character encoding). Examples
+    /// of RFC 2231 extensions follow (both examples encode the same
+    /// "filename" parameter):</para>
+    /// <para><b>text/example;
+    /// filename&#x2a;=utf-8'en'filename.txt</b></para>
+    /// <para><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
+    /// filename&#x2a;1&#x2a;=name%2Etxt</b></para>
+    /// <para>This implementation ignores keys (in parameter key-value
+    /// pairs) that appear more than once in the media type. Nothing in
+    /// RFCs 2045, 2183, 2231, 6266, or 7231 explicitly disallows such
+    /// keys, or otherwise specifies error-handling behavior for such
+    /// keys.</para></summary>
+    /// <param name='str'>A text string representing a media type. This
+    /// media type can include parameters.</param>
+    /// <param name='defaultValue'>The media type to return if the string
+    /// is syntactically invalid. Can be null.</param>
+    /// <returns>A MediaType object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));

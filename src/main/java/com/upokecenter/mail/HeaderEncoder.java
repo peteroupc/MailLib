@@ -608,7 +608,7 @@ import com.upokecenter.util.*;
       // valid domain literal
       // and begins and ends with opening/closing brackets
       if (symbol.length() == 0) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("symbol is empty");
       }
       int i = 0;
       int symbolBegin = 0;
@@ -938,11 +938,13 @@ import com.upokecenter.util.*;
         afterHyphen = s.charAt(i) == '-';
       }
       String ret = builder.toString();
-      if (ret.equals("Content-Id")) {
+      if (ret.equals("Content-Id", StringComparison.Ordinal)) {
         return "Content-ID";
       }
-      return ret.equals("Mime-Version") ? "MIME-Version" :
-        (ret.equals("Message-Id") ? "Message-ID" : ret);
+      return ret.equals("Mime-Version", StringComparison.Ordinal) ?
+"MIME-Version" :
+        (ret.equals("Message-Id", StringComparison.Ordinal) ? "Message-ID" :
+ret);
     }
 
     public HeaderEncoder AppendFieldName(String fieldName) {

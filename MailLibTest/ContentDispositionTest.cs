@@ -19,8 +19,8 @@ namespace MailLibTest {
     }
 
     private static ContentDisposition ParseAndTestAspects(
-  string s,
-  ContentDisposition defvalue) {
+      string s,
+      ContentDisposition defvalue) {
       ContentDisposition mt = ContentDisposition.Parse(s, defvalue);
       if (mt == null) {
         TestAspects(mt);
@@ -158,9 +158,9 @@ namespace MailLibTest {
     }
 
     internal static void FailFilename(
-    string filename,
-    string newName,
-    string extra) {
+      string filename,
+      string newName,
+      string extra) {
       string failstr = "original=" + EncodingTest.EscapeString(filename) +
  "\nfilename=" + EncodingTest.EscapeString(newName) + "\n" +
 "AssertGoodFilename(\"" + EncodingTest.EscapeString(filename) +
@@ -278,8 +278,8 @@ namespace MailLibTest {
           }
         }
         if (strLower.IndexOf(
-            "com",
-            StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+          "com",
+          StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
             strLower[3] <= '9') {
           {
             FailFilename(filename, str, strLower);
@@ -339,8 +339,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
         }
       }
       bool finalRet = NormalizerInput.IsNormalized(
-  str,
-  Normalization.NFC);
+        str,
+        Normalization.NFC);
       if (!finalRet) {
         FailFilename(filename, str);
       }
@@ -380,18 +380,17 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       var resources = new AppResources("Resources");
       string[] filenames = DictUtility.ParseJSONStringArray(
         resources.GetString("specificfilenames"));
-      //   "d\ud800e", "d\ufffde",
+      // "d\ud800e", "d\ufffde",
       // "d\udc00e", "d\ufffde",
-      //      "my\ud800file\udc00name\ud800\udc00.txt",
-      //  "my\ufffdfile\ufffdname\ud800\udc00.txt",
-      //  "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
-
+      // "my\ud800file\udc00name\ud800\udc00.txt",
+      // "my\ufffdfile\ufffdname\ud800\udc00.txt",
+      // "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
       for (var i = 0; i < filenames.Length; i += 2) {
         string str = ContentDisposition.MakeFilename(
           filenames[i]);
         Assert.AreEqual(
           filenames[i + 1],
-  str,
+          str,
           filenames[i]);
         AssertGoodFilename(filenames[i]);
         AssertGoodFilename(filenames[i + 1]);
@@ -486,8 +485,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       TestPercentEncodingOne("tesa", "tes%61");
       TestPercentEncodingOne("tes\r\na", "tes%0D%0Aa");
       TestPercentEncodingOne(
-  "tes%xx",
-  "tes%xx");
+        "tes%xx",
+        "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
     }
 
@@ -512,7 +511,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   ";param*0*x*=value",
   ";param*x*0*=value",
   ";param*x*x*=value",
-      "; charset*='i-unknown'utf-8" /* invalid language tag, no charset */,
+  "; charset*='i-unknown'utf-8" /* invalid language tag, no charset */,
   "; charset*=us-ascii'i-unknown'utf-8" /* invalid language tag, defined
   charset */,
   ";param*xx*=utf-8''value",
@@ -521,8 +520,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   ";param*0*0*=utf-8''value",
   ";param*0*x*=utf-8''value",
   ";param*x*0*=utf-8''value",
-  ";param*x*x*=utf-8''value"
-};
+  ";param*x*x*=utf-8''value",
+  };
 
     [Test]
     public void TestParseIDB() {
@@ -575,7 +574,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       mt =
 
-  ParseAndTestAspects("inline; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+  ParseAndTestAspects("inline;" +
+"\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
         string stringTemp = mt.GetParameter("charset");
         Assert.AreEqual(
@@ -595,7 +595,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
 ";x=,y", ";x=x.z,y", ";x=y,", ";x=y,y", ";x=y;",
   ";x=[y", ";x=x.z[y", ";x=y[", ";x=y[y",
   ";x=]y", ";x=x.z]y", ";x=y]", ";x=y]y",
-      ";x *=y", ";x *0=y", ";x *0*=y",
+  ";x *=y", ";x *0=y", ";x *0*=y",
   ";x *=utf-8''y", ";x *0=utf-8''y", ";x *0*=utf-8''y",
 
 ";x=x.z y", ";x=y y", ";x=x_z y",
@@ -603,22 +603,22 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   ";[y=x", ";x.z[y=x", ";y[=x", ";x=y[y=x",
   ";]y=x", ";x.z]y=x", ";y]=x", ";x=y]y=x",
   ";x.z y=x", ";y y=x", ";x_z y=x",
-      ";;x=y", ";x=y;;y=z", ";x=y,z=w", ",x=y", ";x=y,x=z",
+  ";;x=y", ";x=y;;y=z", ";x=y,z=w", ",x=y", ";x=y,x=z",
   ";x==x", ";x==?utf-8?q?x?=", ";x;z=w", ";x;x=y",
   ";x=?utf-8?q?x?=",
   ";x=?x", ";x=?utf-8?q?x?=",
-     ";x=a b;x=y",
+  ";x=a b;x=y",
   ";x=a, b;x=y",
-      ";x=a x=y",
+  ";x=a x=y",
   ";x=a,x=y",
-      "x=y", ":x=y", " x=y", "/x=y",
-      ";x=y;z", "=y;z", "=y",
- ";x==?utf-8*x?q?x?=", "\"x=y\";x=z",
-      "\"x=y;x=z\"", "x=y;\"x=z\"",
-      ";x=\"y", ";x=\"y\"z", ";x=z\"y\"",
-      ";x=z\"y\"z",
-      ";x=z\"y?,\"z",
-      ";x=z\"y?;?\"z"
+  "x=y", ":x=y", " x=y", "/x=y",
+  ";x=y;z", "=y;z", "=y",
+  ";x==?utf-8*x?q?x?=", "\"x=y\";x=z",
+  "\"x=y;x=z\"", "x=y;\"x=z\"",
+  ";x=\"y", ";x=\"y\"z", ";x=z\"y\"",
+  ";x=z\"y\"z",
+  ";x=z\"y?,\"z",
+  ";x=z\"y?;?\"z"
 };
 
     [Test]

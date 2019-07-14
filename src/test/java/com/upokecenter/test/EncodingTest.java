@@ -1167,8 +1167,7 @@ import com.upokecenter.text.*;
     }
 
     private static byte[] DowngradeDeliveryStatus(String str) {
-      String msgstr =
-        "From: xy@x.example\r\nMIME-Version: 1.0\r\n" +
+      String msgstr = "From: xy@x.example\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: message/global-delivery-status\r\n"
     +
     "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;

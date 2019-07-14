@@ -714,7 +714,7 @@ private FormatFlowed() {
 
     private static void HexEscape(StringBuilder sb, char c) {
       if (c >= 0x100) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("c");
       }
       String hex = "0123456789abcdef";
       sb.append("&#x");

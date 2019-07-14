@@ -31,16 +31,16 @@ Renamed to NormalizerInput.
         Normalization form)`<br>
  Deprecated.
 Instead of this method, create a NormalizerInput on the input and call
-ReadChar to get the normalized String's code points.
+ ReadChar to get the normalized String's code points.
  Instead of this method, create a NormalizerInput on the input and call
-ReadChar to get the normalized String's code points.
+ ReadChar to get the normalized String's code points.
 * `static java.util.List<java.lang.Integer> GetChars​(java.lang.String str,
         Normalization form)`<br>
  Deprecated.
 Instead of this method, create a NormalizerInput on the String and call
-ReadChar to get the normalized String's code points.
+ ReadChar to get the normalized String's code points.
  Instead of this method, create a NormalizerInput on the String and call
-ReadChar to get the normalized String's code points.
+ ReadChar to get the normalized String's code points.
 * `static boolean IsNormalized​(int[] charArray,
             Normalization form)`<br>
  Deprecated.
@@ -181,7 +181,7 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> if the text is normalized; otherwise, <code>false</code> .
+* <code>true</code> if the text is normalized; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -203,8 +203,8 @@ Deprecated.
 
 **Throws:**
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> contains an
- unpaired surrogate code point.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> contains an unpaired
+ surrogate code point.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
@@ -222,7 +222,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if the given string is in the given Unicode
- normalization form; otherwise, <code>false</code> . Returns <code>false</code>
+ normalization form; otherwise, <code>false</code>. Returns <code>false</code>
  if the string contains an unpaired surrogate code point.
 
 **Throws:**
@@ -233,7 +233,7 @@ Deprecated.
     @Deprecated public static java.util.List<java.lang.Integer> GetChars​(java.lang.String str, Normalization form)
 Deprecated.
 Instead of this method, create a NormalizerInput on the String and call
-ReadChar to get the normalized String's code points.
+ ReadChar to get the normalized String's code points.
 
 **Parameters:**
 
@@ -254,7 +254,7 @@ ReadChar to get the normalized String's code points.
     @Deprecated public static java.util.List<java.lang.Integer> GetChars​(com.upokecenter.text.ICharacterInput chars, Normalization form)
 Deprecated.
 Instead of this method, create a NormalizerInput on the input and call
-ReadChar to get the normalized String's code points.
+ ReadChar to get the normalized String's code points.
 
 **Parameters:**
 
@@ -287,7 +287,7 @@ Either convert the array to a String or wrap it in an ICharacterInput and
 **Returns:**
 
 * <code>true</code> if the given list of characters is in the given Unicode
- normalization form; otherwise, <code>false</code> .
+ normalization form; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -309,7 +309,7 @@ Either convert the list to a String or wrap it in an ICharacterInput and
 **Returns:**
 
 * <code>true</code> if the given list of characters is in the given Unicode
- normalization form; otherwise, <code>false</code> .
+ normalization form; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -355,6 +355,6 @@ Deprecated.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
- less than 0 or greater than <code>chars</code> 's length, or <code>chars</code>
- ' s length minus <code>index</code> is less than <code>length</code> .
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
+ than 0 or greater than <code>chars</code> 's length, or <code>chars</code> ' s
+ length minus <code>index</code> is less than <code>length</code>.

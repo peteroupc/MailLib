@@ -2,13 +2,15 @@
 
     public static class DataUris
 
- Contains methods for parsing and generating Data URIs (uniform resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
+  Contains methods for parsing and generating Data URIs (uniform // /resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
 
     data:, hello%20world
 
-    data:text/markdown, hello%20world
+    data:text/markdown,
+                ///hello%20world
 
-    data:application/octet-stream;base64, AAAAAA==
+    data:application/octet-stream;base64,
+                ///AAAAAA==
 
  .
 
@@ -24,7 +26,9 @@
     public static byte[] DataUriBytes(
         string uri);
 
- Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.  <b>Parameters:</b>
+ Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
+
+<b>Parameters:</b>
 
  * <i>uri</i>: The parameter  <i>uri</i>
  is a text string.
@@ -40,7 +44,9 @@ The data as a byte array. Returns null if  <i>uri</i>
     public static PeterO.Mail.MediaType DataUriMediaType(
         string uri);
 
- Extracts the media type from a Data URI (uniform resource identifier).  <b>Parameters:</b>
+ Extracts the media type from a Data URI (uniform resource identifier).
+
+<b>Parameters:</b>
 
  * <i>uri</i>: The parameter  <i>uri</i>
  is a text string.
@@ -57,7 +63,9 @@ The media type. Returns null if  <i>uri</i>
         byte[] bytes,
         PeterO.Mail.MediaType mediaType);
 
- Encodes data with the given media type in a Data URI (uniform resource identifier).  <b>Parameters:</b>
+ Encodes data with the given media type in a Data URI (uniform resource identifier).
+
+<b>Parameters:</b>
 
  * <i>bytes</i>: A byte array containing the data to encode in a Data URI.
 
@@ -80,7 +88,9 @@ The parameter  <i>bytes</i>
     public static string MakeDataUri(
         string textString);
 
- Encodes text as a Data URI (uniform resource identifier).  <b>Parameters:</b>
+ Encodes text as a Data URI (uniform resource identifier).
+
+<b>Parameters:</b>
 
  * <i>textString</i>: A text string to encode as a data URI.
 

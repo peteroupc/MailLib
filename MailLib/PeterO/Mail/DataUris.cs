@@ -3,11 +3,22 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.DataUris"]/*'/>
+    /// <summary>
+    ///  Contains methods for parsing and generating Data URIs
+    /// (uniform resource identifiers). Data URIs are described
+    /// in RFC 2397. Examples for Data URIs follow.
+    /// <code>data:, hello%20world</code>
+    /// <code>data:text/markdown, hello%20world</code>
+    /// <code>data:application/octet-stream;base64, AAAAAA==</code>
+    ///  .
+    /// </summary>
   public static class DataUris {
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriMediaType(System.String)"]/*'/>
+    /// <summary>Extracts the media type from a string representing a Data
+    /// URI (uniform resource identifier).</summary>
+    /// <param name='uri'>A string representing a data URI. It must start
+    /// with "data:".</param>
+    /// <returns>The media type. Returns null if <paramref name='uri'/> is
+    /// null, is syntactically invalid, or is not a Data URI.</returns>
     public static MediaType DataUriMediaType(string uri) {
       string url = uri;
       string[] parts = URIUtility.SplitIRIToStrings(
@@ -16,7 +27,7 @@ namespace PeterO.Mail {
         return null;
       }
       string path = parts[2];
-      if (parts[0].Equals("data")) {
+      if (parts[0].Equals("data", StringComparison.Ordinal)) {
         int mediaTypePart = path.IndexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -58,6 +69,16 @@ namespace PeterO.Mail {
       return null;
     }
 
+    /// <summary>Extracts the media type from a Data URI (uniform resource
+    /// identifier).</summary>
+    /// <param name='uri'>A data URI. It must have a scheme of
+    /// "data:".</param>
+    /// <returns>The media type. Returns null if <paramref name='uri'/> is
+    /// null, is syntactically invalid, or is not a Data URI.</returns>
+    public static MediaType DataUriMediaType(Uri uri) {
+return (uri == null) ? null : (DtaUriBytes(uri.ToString());
+    }
+
     private static int ToHex(char b1) {
       if (b1 >= '0' && b1 <= '9') {
         return b1 - '0';
@@ -80,8 +101,25 @@ namespace PeterO.Mail {
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1,
     };
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)"]/*'/>
+    /// <summary>Extracts the data from a Data URI (uniform resource
+    /// identifier) in the form of a byte array.</summary>
+    /// <param name='uri'>A data URI. It must have a scheme of
+    /// "data".</param>
+    /// <returns>The data as a byte array. Returns null if <paramref
+    /// name='uri'/> is null, is syntactically invalid, or is not a data
+    /// URI.</returns>
+    public static byte[] DataUriBytes(Uri uri) {
+return (uri == null) ? null : (DtaUriBytes(uri.ToString());
+    }
+
+    /// <summary>Extracts the data from a string representing a Data URI
+    /// (uniform resource identifier) in the form of a byte
+    /// array.</summary>
+    /// <param name='uri'>A string representing a data URI. It must start
+    /// with "data:".</param>
+    /// <returns>The data as a byte array. Returns null if <paramref
+    /// name='uri'/> is null, is syntactically invalid, or is not a data
+    /// URI.</returns>
     public static byte[] DataUriBytes(string uri) {
       string url = uri;
       string[] parts = URIUtility.SplitIRIToStrings(
@@ -90,15 +128,15 @@ namespace PeterO.Mail {
         return null;
       }
       string path = parts[2];
-      if (parts[0].Equals("data")) {
+      if (parts[0].Equals("data", StringComparison.Ordinal)) {
         int mediaTypePart = path.IndexOf(',');
         if (mediaTypePart == -1) {
           return null;
         }
-        bool usesBase64 = mediaTypePart >= 7 &&
-          DataUtilities.ToLowerCaseAscii(path.Substring(
-            mediaTypePart - 7,
-            7)).Equals(";base64");
+        bool usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii(
+            path.Substring(
+              mediaTypePart - 7,
+              7)).Equals(";base64", StringComparison.Ordinal);
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -174,8 +212,8 @@ namespace PeterO.Mail {
       return null;
     }
 
-    private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
-  "jklmnopqrstuvwxyz0123456789+/";
+    private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef" +
+      "ghijklmnopqrstuvwxyz0123456789+/";
 
     private static void AppendBase64(StringBuilder builder, byte[] bytes) {
       var b1 = 0;
@@ -217,8 +255,13 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.String)"]/*'/>
+    /// <summary>Encodes text as a Data URI (uniform resource
+    /// identifier).</summary>
+    /// <param name='textString'>A text string to encode as a data
+    /// URI.</param>
+    /// <returns>A Data URI that encodes the given text.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='textString'/> is null.</exception>
     public static string MakeDataUri(string textString) {
       if (textString == null) {
         throw new ArgumentNullException(nameof(textString));
@@ -228,8 +271,15 @@ namespace PeterO.Mail {
         MediaType.Parse("text/plain;charset=utf-8"));
     }
 
-    /// <include file='../../docs.xml'
-    ///   path='docs/doc[@name="M:PeterO.Mail.DataUris.MakeDataUri(System.Byte[],PeterO.Mail.MediaType)"]/*'/>
+    /// <summary>Encodes data with the given media type in a Data URI
+    /// (uniform resource identifier).</summary>
+    /// <param name='bytes'>A byte array containing the data to encode in a
+    /// Data URI.</param>
+    /// <param name='mediaType'>A media type to assign to the data.</param>
+    /// <returns>A Data URI that encodes the given data and media
+    /// type.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> or <paramref name='mediaType'/> is null.</exception>
     public static string MakeDataUri(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -240,8 +290,10 @@ namespace PeterO.Mail {
       var builder = new StringBuilder();
       builder.Append("data:");
       string mediaTypeString = mediaType.ToUriSafeString();
-      if (mediaType.TypeAndSubType.Equals("text/plain")) {
-        if (mediaTypeString.Substring(0, 10).Equals("text/plain")) {
+      if (mediaType.TypeAndSubType.Equals("text/plain",
+            StringComparison.Ordinal)) {
+        if (mediaTypeString.Substring(0, 10).Equals("text/plain",
+            StringComparison.Ordinal)) {
           // Strip 'text/plain' from the media type string,
           // since that's the default for data URIs
           mediaTypeString = mediaTypeString.Substring(10);

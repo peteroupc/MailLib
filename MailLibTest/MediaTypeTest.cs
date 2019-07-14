@@ -218,28 +218,28 @@ namespace MailLibTest {
           "0",
           "text",
           "0"),
-    DictUtility.MakeDict(
-      "name",
-      "multipart/alternative",
-      "toplevel",
-      "multipart",
-      "subtype",
-      "alternative",
-      "multipart",
-      "1",
-      "text",
-      "0"),
-    DictUtility.MakeDict(
-      "name",
-      "multi-part/example;x=y",
-      "toplevel",
-      "multi-part",
-      "subtype",
-      "example",
-      "multipart",
-      "0",
-      "text",
-      "0"),
+          DictUtility.MakeDict(
+            "name",
+            "multipart/alternative",
+            "toplevel",
+            "multipart",
+            "subtype",
+            "alternative",
+            "multipart",
+            "1",
+            "text",
+            "0"),
+      DictUtility.MakeDict(
+        "name",
+        "multi-part/example;x=y",
+        "toplevel",
+        "multi-part",
+        "subtype",
+        "example",
+        "multipart",
+        "0",
+        "text",
+        "0"),
       DictUtility.MakeDict(
         "name",
         "texb/example",
@@ -330,39 +330,39 @@ namespace MailLibTest {
         "1")
     };
 
-private static MediaType ParseAndTestAspects(string s) {
+    private static MediaType ParseAndTestAspects(string s) {
       MediaType mt = MediaType.Parse(s);
       if (mt == null) {
- TestAspects(mt);
-}
+        TestAspects(mt);
+      }
       return mt;
     }
 
     private static MediaType ParseAndTestAspects(string s, MediaType defvalue) {
       MediaType mt = MediaType.Parse(s, defvalue);
       if (mt == null) {
- TestAspects(mt);
-}
+        TestAspects(mt);
+      }
       return mt;
     }
 
     private static void TestAspects(MediaType mt) {
       if (mt == null) {
- return;
-}
+        return;
+      }
       // Test round-tripping
       string str = mt.ToString();
       MediaType mt2 = MediaType.Parse(str, null);
       if (mt2 == null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       Assert.AreEqual(str, mt2.ToString());
       TestCommon.AssertEqualsHashCode(mt, mt2);
       str = mt.ToSingleLineString();
       mt2 = MediaType.Parse(str, null);
       if (mt2 == null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       Assert.AreEqual(str, mt2.ToSingleLineString());
       TestCommon.AssertEqualsHashCode(mt, mt2);
     }
@@ -462,12 +462,12 @@ private static MediaType ParseAndTestAspects(string s) {
           stringTemp);
       }
       {
- string stringTemp =
-          ParseAndTestAspects("text/plain; charset (cmt) = (cmt) UTF-8")
-             .GetCharset();
-             Assert.AreEqual(
-               "utf-8",
-               stringTemp);
+        string stringTemp =
+                 ParseAndTestAspects("text/plain; charset (cmt) = (cmt) UTF-8")
+                    .GetCharset();
+        Assert.AreEqual(
+          "utf-8",
+          stringTemp);
       }
       {
         // NOTE: 'UTF-8' (with single quotes) is now treated as unknown
@@ -501,25 +501,26 @@ private static MediaType ParseAndTestAspects(string s) {
           stringTemp);
       }
       {
-    string stringTemp =
-          ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
-       .GetCharset();
-       Assert.AreEqual(
-         "utf-8",
-         stringTemp);
-      }
-      {
-  string stringTemp =
-          ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
+        string stringTemp =
+              ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
            .GetCharset();
-           Assert.AreEqual(
-             "utf-8",
-             stringTemp);
+        Assert.AreEqual(
+          "utf-8",
+          stringTemp);
       }
       {
-     string stringTemp = ParseAndTestAspects("text/plain; charset=\"UTF-\\8\"")
-.GetCharset();
-Assert.AreEqual(
+        string stringTemp =
+                ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
+                 .GetCharset();
+        Assert.AreEqual(
+          "utf-8",
+          stringTemp);
+      }
+      {
+        string stringTemp = ParseAndTestAspects("text/plain;" +
+"\u0020charset=\"UTF-\\8\"")
+   .GetCharset();
+        Assert.AreEqual(
           "utf-8",
           stringTemp);
       }
@@ -530,11 +531,11 @@ Assert.AreEqual(
           stringTemp);
       }
       {
-object objectTemp = String.Empty;
-object objectTemp2 = ParseAndTestAspects("text/xyz")
-.GetCharset();
-Assert.AreEqual(objectTemp, objectTemp2);
-}
+        object objectTemp = String.Empty;
+        object objectTemp2 = ParseAndTestAspects("text/xyz")
+        .GetCharset();
+        Assert.AreEqual(objectTemp, objectTemp2);
+      }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/xyz;charset=UTF-8")
@@ -598,8 +599,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
 
-public static readonly IList<IDictionary<string, string>>
-      ValueTestParamTypes = new List<IDictionary<string, string>> {
+    public static readonly IList<IDictionary<string, string>>
+          ValueTestParamTypes = new List<IDictionary<string, string>> {
   DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename = x.y", "filename", "x.y"),
@@ -737,7 +738,7 @@ public static readonly IList<IDictionary<string, string>>
     "ab\t\u0020"),
   DictUtility.MakeDict("params", ";filename=\"ab\t\t\"", "filename", "ab\t\t"),
   DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename", "\\ab"),
-       };
+           };
 
     [Test]
     public void TestGetParameter() {
@@ -882,34 +883,35 @@ public static readonly IList<IDictionary<string, string>>
       mt =
   ParseAndTestAspects("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
       {
-string stringTemp = mt.GetParameter("charset");
-Assert.AreEqual(
-  "ab",
-  stringTemp);
-}
+        string stringTemp = mt.GetParameter("charset");
+        Assert.AreEqual(
+          "ab",
+          stringTemp);
+      }
       Assert.AreEqual("text/plain", mt.TypeAndSubType);
       if (mt.GetParameter("charset*0") != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       if (mt.GetParameter("charset*1*") != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       mt =
 
-  ParseAndTestAspects("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+  ParseAndTestAspects("text/plain;" +
+"\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
-string stringTemp = mt.GetParameter("charset");
-Assert.AreEqual(
-  "a b",
-  stringTemp);
-}
+        string stringTemp = mt.GetParameter("charset");
+        Assert.AreEqual(
+          "a b",
+          stringTemp);
+      }
       Assert.AreEqual("text/plain", mt.TypeAndSubType);
       if (mt.GetParameter("charset*0") != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       if (mt.GetParameter("charset*1*") != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
@@ -929,9 +931,9 @@ Assert.AreEqual(
     }
 
     private static void TestPercentEncodingOne(string expected, string input) {
-   MediaType cd = ParseAndTestAspects("text/plain; filename*=utf-8''" +
-        input);
-        Assert.AreEqual(expected, cd.GetParameter("filename"));
+      MediaType cd = ParseAndTestAspects("text/plain; filename*=utf-8''" +
+           input);
+      Assert.AreEqual(expected, cd.GetParameter("filename"));
     }
 
     [Test]

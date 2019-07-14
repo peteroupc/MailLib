@@ -72,9 +72,7 @@ import java.util.*;
 
     /**
      * Determines whether this object and another object are equal.
-     * @param obj The parameter
-      {@code obj}
-       is an arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
      * {@code false}.
      */
@@ -82,7 +80,7 @@ import java.util.*;
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
       return other != null &&
       (this.displayName == null ? other.displayName == null :
-        this.displayName.equals(other.displayName)) &&
+        this.displayName.equals(other.displayName, StringComparison.Ordinal)) &&
    (this.address == null ? other.address == null :
      this.address.equals(other.address)) && this.isGroup == other.isGroup &&
           (!this.isGroup || CollectionUtilities.ListEquals(
@@ -93,9 +91,7 @@ import java.util.*;
     /**
      * Not documented yet.
      * @param na A named address object to compare with this one. Can be null.
-     * @return Either
-      {@code true} or
-      {@code false} .
+     * @return Either {@code true} or {@code false}.
      */
     public boolean AddressesEqual(NamedAddress na) {
       if (na == null || this.isGroup != na.isGroup) {
@@ -202,8 +198,8 @@ import java.util.*;
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param address The parameter {@code address} is a text string.
      * @throws NullPointerException The parameter {@code address} is null.
-     * @throws IllegalArgumentException Address has an invalid syntax.; Address has
-     * an invalid syntax.
+     * @throws IllegalArgumentException Address has an invalid syntax.; Address has an
+     * invalid syntax.
      */
     public NamedAddress(String address) {
       if (address == null) {
@@ -265,8 +261,8 @@ import java.util.*;
      * @param displayName The parameter {@code displayName} is a text string.
      * @param localPart The parameter {@code localPart} is a text string.
      * @param domain The parameter {@code domain} is a text string.
-     * @throws NullPointerException The parameter {@code localPart} or
-     * {@code domain} is null.
+     * @throws NullPointerException The parameter {@code localPart} or {@code
+     * domain} is null.
      */
     public NamedAddress(String displayName, String localPart, String domain) {
       if (localPart == null) {
@@ -285,10 +281,10 @@ import java.util.*;
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param groupName The parameter {@code groupName} is a text string.
      * @param mailboxes The parameter {@code mailboxes} is an List object.
-     * @throws NullPointerException The parameter {@code groupName} or
-     * {@code mailboxes} is null.
-     * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list
-     * is a group.
+     * @throws NullPointerException The parameter {@code groupName} or {@code
+     * mailboxes} is null.
+     * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list is a
+     * group.
      */
     public NamedAddress(String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {
