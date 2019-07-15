@@ -64,6 +64,14 @@ import com.upokecenter.text.*;
 
     @Test
     public void TestProtocolStrings() {
+      System.out.println(ProtocolStrings.IsInIdentifierClass("\t"));
+      System.out.println(ProtocolStrings.IsInIdentifierClass("\u0001"));
+      System.out.println(ProtocolStrings.IsInIdentifierClass(" "));
+      System.out.println(ProtocolStrings.IsInIdentifierClass("x"));
+      System.out.println(ProtocolStrings.IsInFreeformClass("\t"));
+      System.out.println(ProtocolStrings.IsInFreeformClass("\u0001"));
+      System.out.println(ProtocolStrings.IsInFreeformClass(" "));
+      System.out.println(ProtocolStrings.IsInFreeformClass("x"));
       if (!(
        ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"))) {
  Assert.fail();

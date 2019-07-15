@@ -71,9 +71,16 @@ at: http://peteroupc.github.io/
      * @param length Maximum number of code points to write.
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
-     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
-     * than 0 or greater than {@code chars} 's length, or {@code chars} ' s
-     * length minus {@code index} is less than {@code length}.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is
+     * less than 0 or greater than {@code chars} 's length, or {@code
+     * chars} ' s length minus {@code index} is less than {@code length}.
+     * @throws NullPointerException The parameter {@code chars} is null.
+     * @throws IllegalArgumentException Either "index" or "length" is less than 0
+     *  or greater than "chars"'s length, or "chars"'s length minus "index"
+     *  is less than "length".
+     * @throws IllegalArgumentException Either "index" or "length" is less than 0 or
+     *  greater than "chars"'s length, or "chars"'s length minus "index" is
+     *  less than "length".
      * @throws NullPointerException The parameter {@code chars} is null.
      */
     public int Read(int[] chars, int index, int length) {

@@ -515,18 +515,13 @@ namespace MailLibTest {
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
 
-    private IList<string> exts = new List<string>();
-    [OneTimeTearDown]
-    public void TearDown() {
-      File.WriteAllLines("exts.txt", exts);
-    }
-
+    /*
     private void AddExt(string str) {
       str = str.Replace("\\", "\\\\");
       str = str.Replace("\n", "\\n");
       str = str.Replace("\r", "\\r");
-      exts.Add(str);
     }
+    */
 
     private void TestRfc2231Extension(
       string mtype,
@@ -542,9 +537,9 @@ namespace MailLibTest {
       // that an infinite-decoding-loop bug does not reappear.
       // NOTE: RFC8187 doesn't mandate any particular
       // error handling behavior for those tests
-      string[] strings=ResourceUtil.GetStrings("rfc2231exts");
+      string[] strings = ResourceUtil.GetStrings("rfc2231exts");
       for (var i = 0; i < strings.Length; i += 3) {
-        TestRfc2231Extension(strings[i], strings[i + 1], strings[i + 2]);
+        this.TestRfc2231Extension(strings[i], strings[i + 1], strings[i + 2]);
       }
     }
 
@@ -1121,11 +1116,16 @@ namespace MailLibTest {
     }
 
     internal static bool HasNestedMessageType(Message message) {
-      if (message.ContentType.TopLevelType.Equals("message")) {
-        return (!message.ContentType.SubType.Equals("global")) &&
-          ((!message.ContentType.SubType.Equals("global-headers")) &&
-           (message.ContentType.SubType.Equals("global-delivery-status") ||
-    message.ContentType.SubType.Equals("global-disposition-notification")));
+      if (message.ContentType.TopLevelType.Equals("message",
+  StringComparison.Ordinal)) {
+        return (!message.ContentType.SubType.Equals("global",
+  StringComparison.Ordinal)) &&
+          ((!message.ContentType.SubType.Equals("global-headers",
+  StringComparison.Ordinal)) &&
+           (message.ContentType.SubType.Equals("global-delivery-status",
+  StringComparison.Ordinal) ||
+    message.ContentType.SubType.Equals("global-disposition-notification",
+  StringComparison.Ordinal)));
       }
       foreach (Message part in message.Parts) {
         if (HasNestedMessageType(part)) {

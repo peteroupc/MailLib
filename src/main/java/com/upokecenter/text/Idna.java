@@ -641,8 +641,8 @@ private Idna() {
       if (IsInPrecisClass(str, true)) {
         str = TrimAndCollapseUnicodeSpaces(str);
         if (forComparison) {
- str = ToLowerCase(str);
-}
+           str = ToLowerCase(str);
+        }
         str = NormalizerInput.Normalize(str, Normalization.NFKC);
         return str.length() == 0 ? null : str;
       }

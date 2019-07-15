@@ -68,8 +68,7 @@ public final void setDispositionType(String value) {
 
     /**
      * Gets a value indicating whether this is a text media type.
-     * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false}.
+     * @return {@code true} If this is a text media type; otherwise, {@code false}.
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated
@@ -78,8 +77,9 @@ public final void setDispositionType(String value) {
       }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a value indicating whether this is a multipart media type.
+     * @return {@code true} If this is a multipart media type; otherwise, {@code
+     * false}.
      * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
  */
 @Deprecated
@@ -145,9 +145,10 @@ public final void setDispositionType(String value) {
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @param value Value of the parameter to set.
      * @return This instance.
-     * @throws NullPointerException Either {@code value} or {@code name} is null.
-     * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
-     * well-formed parameter name.
+     * @throws NullPointerException Either {@code value} or {@code name} is
+     * null.
+     * @throws IllegalArgumentException The parameter {@code name} is empty, or it
+     * isn't a well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
       if (value == null) {

@@ -1239,7 +1239,7 @@ namespace MailLibTest {
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       string actualString = DataUtilities.GetUtf8String(bytes, false);
-      if (!expectedDSN.Equals(actualString)) {
+      if (!expectedDSN.Equals(actualString, StringComparison.Ordinal)) {
         expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
@@ -1783,7 +1783,7 @@ namespace MailLibTest {
       string value) {
       string msgstr;
       msgstr = name + ": " + value + "\r\n";
-      if (!name.Equals("from")) {
+      if (!name.Equals("from", StringComparison.Ordinal)) {
         msgstr += "from: x@example.com\r\n";
       }
       msgstr += "\r\nBody";

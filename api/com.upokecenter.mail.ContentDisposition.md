@@ -49,18 +49,20 @@
  Gets a string containing this object's disposition type, such as "inline" or
   "attachment".
 * `java.lang.String GetFilename()`<br>
- Not documented yet.
+ Gets an adapted version of the "filename" parameter in this content
+  disposition object by using the "MakeFilename" method.
 * `int[] GetModificationDate()`<br>
  Not documented yet.
 * `java.lang.String GetParameter​(java.lang.String name)`<br>
  Gets a parameter from this disposition object.
 * `java.util.Map<java.lang.String,​java.lang.String> getParameters()`<br>
- Gets a value not documented yet.
+ Gets a list of parameter names associated with this object and their values.
 * `int[] GetReadDate()`<br>
  Not documented yet.
 * `int hashCode()`<br>
+ Calculates the hash code of this object.
 * `boolean isAttachment()`<br>
- Gets a value not documented yet.
+ Gets a value indicating whether the disposition type is attachment.
 * `boolean isInline()`<br>
  Gets a value indicating whether the disposition type is inline.
 * `static java.lang.String MakeFilename​(java.lang.String str)`<br>
@@ -120,6 +122,8 @@ Determines whether this object and another object are equal.
 
 ### hashCode
     public int hashCode()
+Calculates the hash code of this object. No application or process IDs are
+ used in the hash code calculation.
 
 **Overrides:**
 
@@ -127,7 +131,7 @@ Determines whether this object and another object are equal.
 
 **Returns:**
 
-* A 32-bit signed integer.
+* A 32-bit hash code.
 
 ### isInline
     public final boolean isInline()
@@ -135,24 +139,32 @@ Gets a value indicating whether the disposition type is inline.
 
 **Returns:**
 
-* <code>true</code> If the disposition type is inline; otherwise, . <code>
+* <code>true</code> If the disposition type is inline; otherwise, <code>
  false</code>.
 
 ### isAttachment
     public final boolean isAttachment()
-Gets a value not documented yet.
+Gets a value indicating whether the disposition type is attachment.
 
 **Returns:**
 
-* A value not documented yet.
+* <code>true</code> If the disposition type is attachment; otherwise,
+ <code>false</code>.
 
 ### getParameters
     public final java.util.Map<java.lang.String,​java.lang.String> getParameters()
-Gets a value not documented yet.
+Gets a list of parameter names associated with this object and their values.
+  <p>For the "filename" parameter, the value of that parameter is not
+ adapted with the ContentDisposition.MakeFilename method; see the
+ documentation for the ContentDisposition class.</p>
 
 **Returns:**
 
-* A value not documented yet.
+* A read-only list of parameter names associated with this object and
+ their values. NOTE: Previous versions erroneously stated that the
+ list will be sorted by name. In fact, the names will not be
+ guaranteed to appear in any particular order; this is at least the
+ case in version 0.10.0.
 
 ### toString
     public java.lang.String toString()
@@ -264,11 +276,14 @@ Converts a file name from the Content-Disposition header to a suitable name
 
 ### GetFilename
     public java.lang.String GetFilename()
-Not documented yet.
+Gets an adapted version of the "filename" parameter in this content
+  disposition object by using the "MakeFilename" method.
 
 **Returns:**
 
-* A text string.
+* The adapted file name in the form of a string. Returns the empty
+  string if there is no "filename" parameter or that parameter is
+ empty.
 
 ### GetCreationDate
     public int[] GetCreationDate()

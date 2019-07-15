@@ -475,11 +475,12 @@ private LanguageTags() {
      * it appears on that list.
      * @return A list of language tags that match the given range, in descending
      * order of preference.
-     * @throws NullPointerException The parameter {@code languages} or {@code
-     * ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic or extended language range, or {@code languages}
-     * contains a value that is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic or extended language range, or {@code
+     * languages} contains a value that is not a potentially valid language
+     * tag.
      */
     public static List<String> LanguageTagFilter(
            List<String> ranges,
@@ -586,7 +587,8 @@ private LanguageTags() {
      * found.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} is null.
+     * @throws NullPointerException The parameter {@code languages} is
+     * null.
      * @throws IllegalArgumentException The parameter {@code range} is not a basic
      * language range, or {@code languages} contains a value that is not a
      * potentially valid language tag.
@@ -609,11 +611,11 @@ private LanguageTags() {
      * found.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} or {@code
-     * ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic language range, or {@code languages} contains a value
-     * that is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic language range, or {@code languages}
+     * contains a value that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
   List<String> ranges,
@@ -631,11 +633,11 @@ private LanguageTags() {
      * descending preference.
      * @return A list of language tags that match the given range, in descending
      * order of preference.
-     * @throws NullPointerException The parameter {@code languages} or {@code
-     * ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic language range, or {@code languages} contains a value
-     * that is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic language range, or {@code languages}
+     * contains a value that is not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
   List<String> ranges,
@@ -654,10 +656,11 @@ private LanguageTags() {
      * it's a are basic language range.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} is null.
-     * @throws IllegalArgumentException The parameter {@code range} is not a basic or
-     * extended language range, or {@code languages} contains a value that
-     * is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} is
+     * null.
+     * @throws IllegalArgumentException The parameter {@code range} is not a basic
+     * or extended language range, or {@code languages} contains a value
+     * that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
   String range,
@@ -684,11 +687,12 @@ private LanguageTags() {
      * ranges; otherwise, they are basic language ranges.
      * @return The matching language tag, or the parameter {@code defaultValue} if
      * there is no matching language tag.
-     * @throws NullPointerException The parameter {@code languages} or {@code
-     * ranges} is null.
-     * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic or extended language range, or {@code languages}
-     * contains a value that is not a potentially valid language tag.
+     * @throws NullPointerException The parameter {@code languages} or
+     * {@code ranges} is null.
+     * @throws IllegalArgumentException The parameter {@code ranges} contains a
+     * value that is not a basic or extended language range, or {@code
+     * languages} contains a value that is not a potentially valid language
+     * tag.
      */
     public static String LanguageTagLookup(
          List<String> ranges,

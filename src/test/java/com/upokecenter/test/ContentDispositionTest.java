@@ -218,12 +218,13 @@ import com.upokecenter.text.*;
       }
       // Reserved filenames on Windows
       if (strLower.equals(
-       "nul")) {
+        "nul",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.equals("clock$")) {
+      if (strLower.equals("clock$", StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -235,7 +236,8 @@ import com.upokecenter.text.*;
         }
       }
       if (strLower.equals(
-        "prn")) {
+        "prn",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -253,7 +255,8 @@ import com.upokecenter.text.*;
         }
       }
       if (strLower.equals(
-        "aux")) {
+        "aux",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -265,7 +268,8 @@ import com.upokecenter.text.*;
         }
       }
       if (strLower.equals(
-        "con")) {
+        "con",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -353,7 +357,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       // Assert that MakeFilename is idempotent
       String newstr = ContentDisposition.MakeFilename(str);
-      if (!newstr.equals(str)) {
+      if (!newstr.equals(str, StringComparison.Ordinal)) {
         FailFilename(
   filename,
   str,

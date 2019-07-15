@@ -22,7 +22,7 @@ namespace MailLibTest {
         if (this.SplitIRIFails(
           cases[i],
           cases[i + 1].Equals("1", StringComparison.Ordinal))) {
-           Assert.Fail(cases[i] + " " + cases[i+1]);
+           Assert.Fail(cases[i] + " " + cases[i + 1]);
         }
       }
     }

@@ -204,12 +204,13 @@ namespace MailLibTest {
       }
       // Reserved filenames on Windows
       if (strLower.Equals(
-       "nul")) {
+        "nul",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.Equals("clock$")) {
+      if (strLower.Equals("clock$", StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -222,7 +223,8 @@ namespace MailLibTest {
         }
       }
       if (strLower.Equals(
-        "prn")) {
+        "prn",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -242,7 +244,8 @@ namespace MailLibTest {
         }
       }
       if (strLower.Equals(
-        "aux")) {
+        "aux",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -255,7 +258,8 @@ namespace MailLibTest {
         }
       }
       if (strLower.Equals(
-        "con")) {
+        "con",
+        StringComparison.Ordinal)) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -346,7 +350,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       // Assert that MakeFilename is idempotent
       string newstr = ContentDisposition.MakeFilename(str);
-      if (!newstr.Equals(str)) {
+      if (!newstr.Equals(str, StringComparison.Ordinal)) {
         FailFilename(
   filename,
   str,

@@ -51,7 +51,8 @@ private ProtocolStrings() {
      * general, the FreeformClass contains most letters, digits, spaces,
      * punctuation, and symbols in the Unicode standard, as well as all
      * basic printable characters (U + 0021 to U + 007E), but excludes control
-     * characters and separators.
+     * characters (including the horizontal tab character, U + 0009) and
+     * separators.
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
      * characters allowed in RFC 8264's FreeformClass (in the contexts

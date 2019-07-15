@@ -36,11 +36,13 @@ Initializes a new instance of the <code>Address</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is
+ null.
 
-* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't contain a
- '@' sign; Invalid local part; Expected '@' sign after local part;
- Expected domain after '@'; Invalid domain; Address too long.
+* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't
+ contain a '@' sign; Invalid local part; Expected '@' sign after
+ local part; Expected domain after '@'; Invalid domain; Address too
+ long.
 
 ### Address
     public Address​(java.lang.String addressValue)
@@ -52,11 +54,13 @@ Initializes a new instance of the <code>Address</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is
+ null.
 
-* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't contain a
- '@' sign; Invalid local part; Expected '@' sign after local part;
- Expected domain after '@'; Invalid domain; Address too long.
+* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't
+ contain a '@' sign; Invalid local part; Expected '@' sign after
+ local part; Expected domain after '@'; Invalid domain; Address too
+ long.
 
 ### equals
     public boolean equals​(java.lang.Object obj)

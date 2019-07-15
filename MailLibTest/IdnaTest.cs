@@ -64,6 +64,14 @@ namespace MailLibTest {
 
     [Test]
     public void TestProtocolStrings() {
+      Console.WriteLine(ProtocolStrings.IsInIdentifierClass("\t"));
+      Console.WriteLine(ProtocolStrings.IsInIdentifierClass("\u0001"));
+      Console.WriteLine(ProtocolStrings.IsInIdentifierClass(" "));
+      Console.WriteLine(ProtocolStrings.IsInIdentifierClass("x"));
+      Console.WriteLine(ProtocolStrings.IsInFreeformClass("\t"));
+      Console.WriteLine(ProtocolStrings.IsInFreeformClass("\u0001"));
+      Console.WriteLine(ProtocolStrings.IsInFreeformClass(" "));
+      Console.WriteLine(ProtocolStrings.IsInFreeformClass("x"));
       Assert.IsTrue(
        ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"));
       Assert.IsTrue(

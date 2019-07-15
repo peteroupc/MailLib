@@ -126,7 +126,7 @@ import com.upokecenter.text.*;
       String expectedStr,
       String actualStr,
       String msg) {
-      if (!expectedStr.equals(actualStr)) {
+      if (!expectedStr.equals(actualStr, StringComparison.Ordinal)) {
                 Assert.fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
             "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);

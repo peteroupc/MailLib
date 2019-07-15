@@ -194,12 +194,16 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /**
-     * Not documented yet.
-     * @param dateTime Not documented yet.
-     * @param gmt Not documented yet.
-     * @return A string object.
-     * @throws IllegalArgumentException Invalid date and time; Invalid date and time;
-     * Invalid year.
+     * Generates a date-time string following the Internet Message Format (RFC
+     * 5322) from an 8-element array.
+     * @param dateTime The date and time in the form of an 8-element array. See
+     * <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+     * System.String,System.Boolean)'/> for information on the format of
+     * this parameter.
+     * @param gmt The parameter {@code gmt} is not documented yet.
+     * @return A date-time string.
+     * @throws IllegalArgumentException The parameter {@code dateTime} is null or invalid,
+     * including if the year ({@code dateTime[0]}) is less than 0.
      */
     public static String GenerateDateString(int[] dateTime, boolean gmt) {
       if (!IsValidDateTime(dateTime) || dateTime[0] < 0) {
@@ -309,7 +313,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
 
     /**
      * Not documented yet.
-     * @param str Not documented yet.
+     * @param str The parameter {@code str} is not documented yet.
      * @return An array of 32-bit unsigned integers.
      */
     public static int[] ParseDateString(String str) {

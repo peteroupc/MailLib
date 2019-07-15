@@ -19,8 +19,8 @@ import com.upokecenter.util.*;
     private String subtype;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets this value's top-level type.
+     * @return This value's top-level type.
      */
     public final String getTopLevelType() {
         return this.type;
@@ -76,23 +76,23 @@ public final void setSubType(String value) {
 
     /**
      * Gets a value indicating whether this is a text media type.
-     * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false}.
+     * @return {@code true} If this is a text media type; otherwise, {@code false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text", StringComparison.Ordinal);
       }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a value indicating whether this is a multipart media type.
+     * @return {@code true} If this is a multipart media type; otherwise, {@code
+     * false}.
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart", StringComparison.Ordinal);
       }
 
     /**
-     *
+     * Converts this builder to an immutable media type object.
      * @return A MediaType object.
      */
     public MediaType ToMediaType() {
@@ -105,8 +105,8 @@ public final void setSubType(String value) {
      *.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException The parameter {@code str} is syntactically invalid
-     * for a top-level type.
+     * @throws IllegalArgumentException The parameter {@code str} is syntactically
+     * invalid for a top-level type.
      */
     public MediaTypeBuilder SetTopLevelType(String str) {
       if (str == null) {
@@ -150,8 +150,8 @@ public final void setSubType(String value) {
      * lower case.).
      * @param value A text string giving the parameter's value.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code value} or {@code name} is
-     * null.
+     * @throws NullPointerException The parameter {@code value} or {@code
+     * name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty or
      * syntactically invalid.
      */

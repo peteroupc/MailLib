@@ -58,10 +58,12 @@ namespace PeterO.Mail {
 
     #region Equals and GetHashCode implementation
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>The parameter <paramref name='obj'/> is not
-    /// documented yet.</param>
-    /// <returns>Either <c>true</c> or <c>false</c>.</returns>
+    /// <summary>Determines whether this object and another object are
+    /// equal.</summary>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is an
+    /// arbitrary object.</param>
+    /// <returns><c>true</c> if this object and another object are equal;
+    /// otherwise, <c>false</c>.</returns>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
       if (other == null) {
@@ -111,7 +113,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a text media type
     /// ("text/&#x2a;").</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise,.
+    /// <value><c>true</c> If this is a text media type; otherwise,
     /// <c>false</c>.</value>
     public bool IsText {
       get {
@@ -121,7 +123,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value><c>true</c> If this is a multipart media type; otherwise,.
+    /// <value><c>true</c> If this is a multipart media type; otherwise,
     /// <c>false</c>.</value>
     public bool IsMultipart {
       get {
@@ -571,8 +573,12 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A text string.</returns>
+    /// <summary>Converts this media type to a text string form suitable
+    /// for inserting in HTTP headers. Notably, the string contains the
+    /// value of a Content-Type header field (without the text necessarily
+    /// starting with "Content-Type" followed by a space), and consists of
+    /// a single line.</summary>
+    /// <returns>A text string form of this media type.</returns>
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -1402,10 +1408,14 @@ namespace PeterO.Mail {
       this.parameters = new Dictionary<string, string>();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='mediaTypeValue'>The parameter <paramref
-    /// name='mediaTypeValue'/> is not documented yet.</param>
-    /// <returns>A MediaType object.</returns>
+    /// <summary>Parses a media type string and returns a media type
+    /// object. For further information, see the overload taking a
+    /// MediaType parameter.</summary>
+    /// <param name='mediaTypeValue'>A text string representing a media
+    /// type. This media type can include parameters.</param>
+    /// <returns>A media type object, or MediaType.TextPlainAscii if
+    /// <paramref name='mediaTypeValue'/> is empty or syntactically
+    /// invalid.</returns>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }

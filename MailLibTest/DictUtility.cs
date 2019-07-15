@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MailLibTest {
   public static class DictUtility {
-    private const string HexAlphabet="0123456789ABCDEF";
+    private const string HexAlphabet = "0123456789ABCDEF";
 
     public static IList<IDictionary<String, String>>
       DictList(
@@ -36,7 +36,7 @@ namespace MailLibTest {
     }
 
     public static string ToJSON(string[] arr) {
-      var sb=new StringBuilder().Append("[");
+      var sb = new StringBuilder().Append("[");
       for (var i = 0; i < arr.Length; ++i) {
         if (i > 0) {
           sb.Append(",");
@@ -45,20 +45,20 @@ namespace MailLibTest {
         string str = arr[i];
         for (var j = 0; j < str.Length; ++j) {
           if ((str[j] & 0xfc00) == 0xdc00 ||
-             ((str[j] & 0xfc00) == 0xd800 && (j == str.Length-1 ||
+             ((str[j] & 0xfc00) == 0xd800 && (j == str.Length - 1 ||
              (str[j + 1] & 0xfc00) != 0xdc00))) {
             throw new ArgumentException("arr is invalid");
           }
-          if (str[j]=='\"') {
+          if (str[j] == '\"') {
             sb.Append("\\\"");
-          } else if (str[j]=='\\') {
+          } else if (str[j] == '\\') {
    sb.Append("\\\\");
- } else if (str[j]=='\r') {
+ } else if (str[j] == '\r') {
    sb.Append("\\r");
- } else if (str[j]=='\n') {
+ } else if (str[j] == '\n') {
    sb.Append("\\n");
-          } else if (str[j]<0x20 || str[j]>= 0x7f) {
-            int ch=(int)str[j];
+          } else if (str[j] < 0x20 || str[j] >= 0x7f) {
+            var ch = (int)str[j];
             sb.Append("\\u")
                .Append(HexAlphabet[(ch >> 12) & 15])
                .Append(HexAlphabet[(ch >> 8) & 15])

@@ -7,11 +7,15 @@ namespace PeterO.Mail {
     ///  Contains methods for parsing and generating Data URIs
     /// (uniform // /resource identifiers). Data URIs are
     /// described in RFC 2397. Examples for Data URIs follow.
-    /// <code>data:, hello%20world</code>
-    /// <code>data:text/markdown,
-    /// ///hello%20world</code>
-    /// <code>data:application/octet-stream;base64,
-    /// ///AAAAAA==</code>
+    /// <code>
+    /// data:, hello%20world
+    /// </code>
+    /// <code>
+    /// data:text/markdown, hello%20world
+    /// </code>
+    /// <code>
+    /// data:application/octet-stream;base64, AAAAAA==
+    /// </code>
     ///  .
     /// </summary>
   [Obsolete("Renamed to DataUris.")]

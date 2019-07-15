@@ -407,40 +407,69 @@
     </summary>
   </doc>
   <doc name='M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32)'>
-    <summary>Not documented yet.
+    <summary>Gets the Unicode code point at the given index of the string.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
-       is not documented yet.
+       is a text string.
     </param>
-    <param name='index'>The parameter
+    <param name='index'>Index of the current position into the string.
+    </param>
+    <returns>The Unicode code point at the given position. Returns -1 if
       <paramref name='index'/>
-       is not documented yet.
-    </param>
-    <returns>A 32-bit signed integer.
-    </returns>
-  </doc>
-  <doc name='M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32,System.Int32)'>
-    <summary>Not documented yet.
-    </summary>
-    <param name='str'>The parameter
-      <paramref name='str'/>
-       is not documented yet.
-    </param>
-    <param name='index'>The parameter
-      <paramref name='index'/>
-       is not documented yet.
-    </param>
-    <param name='surrogateBehavior'>The parameter
-      <paramref name='surrogateBehavior'/>
-       is not documented yet.
-    </param>
-    <returns>A 32-bit signed integer.
+       is less than 0, or is the string's length or greater. Returns the
+      replacement character (U+FFFD) if the current character is an unpaired
+      surrogate code point. If the return value is 65536 (0x10000) or greater,
+      the code point takes up two UTF-16 code units.
     </returns>
     <exception cref='T:System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
+    <example><para>The following example shows how to iterate a text string code point by
+        code point.
+      </para>
+      <code>for (var i = 0;i&lt;str.Length; ++i) { int codePoint =
+        DataUtilities.CodePointAt(str, i);
+        Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;= 0x10000)
+        { i++; /* Supplementary code point */ } }</code> .
+    </example>
+  </doc>
+  <doc name='M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32,System.Int32)'>
+    <summary>Gets the Unicode code point at the given index of the string.
+    </summary>
+    <param name='str'>The parameter
+      <paramref name='str'/>
+       is a text string.
+    </param>
+    <param name='index'>Index of the current position into the string.
+    </param>
+    <param name='surrogateBehavior'>Specifies what kind of value to return if the previous character is an
+      unpaired surrogate code point: if 0, return the replacement character
+      (U+FFFD); if 1, return the value of the surrogate code point; if neither 0
+      nor 1, return -1.
+    </param>
+    <returns>The Unicode code point at the current position. Returns -1 if
+      <paramref name='index'/>
+       is less than 0, or is the string's length or greater. Returns a value as
+      specified under
+      <paramref name='surrogateBehavior'/>
+       if the previous character is an unpaired surrogate code point. If the
+      return value is 65536 (0x10000) or greater, the code point takes up two
+      UTF-16 code units.
+    </returns>
+    <exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
+    <example><para>The following example shows how to iterate a text string code point by
+        code point, terminating the loop when an unpaired surrogate is found.
+      </para>
+      <code>for (var i = 0;i&lt;str.Length; ++i) { int codePoint =
+        DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break; /*
+        Unpaired surrogate */ } Console.WriteLine("codePoint:"+codePoint); if
+        (codePoint &gt;= 0x10000) { i++; /* Supplementary code point */ } }</code> .
+    </example>
   </doc>
   <doc name='M:PeterO.DataUtilities.CodePointBefore(System.String,System.Int32)'>
     <summary>Gets the Unicode code point just before the given index of the string.
@@ -528,7 +557,7 @@
         byte-order mark (U+FEFF) at the beginning of the encoded byte array.
       </para>
       <para>REMARK: It is not recommended to use
-        <c>Encoding.UTF8.GetBytes</c> in .NET, or the
+        <c>Encoding.UTF8.GetBytes</c> in.NET, or the
         <c>getBytes()</c> method in Java to do this. For instance,
         <c>getBytes()</c> encodes text strings in a default (so not fixed) character encoding,
         which can be undesirable.
@@ -558,7 +587,7 @@
         byte-order mark (U+FEFF) at the beginning of the encoded byte array.
       </para>
       <para>REMARK: It is not recommended to use
-        <c>Encoding.UTF8.GetBytes</c> in .NET, or the
+        <c>Encoding.UTF8.GetBytes</c> in.NET, or the
         <c>getBytes()</c> method in Java to do this. For instance,
         <c>getBytes()</c> encodes text strings in a default (so not fixed) character encoding,
         which can be undesirable.
@@ -849,6 +878,14 @@
     </exception>
     <exception cref='T:System.IO.IOException'>An I/O error occurred.
     </exception>
+    <exception cref='T:System.ArgumentException'>Either &quot;offset&quot; or &quot;length&quot; is less than 0 or greater
+      than &quot;str&quot;&apos;s length, or &quot;str&quot;&apos;s length minus
+      &quot;offset&quot; is less than &quot;length&quot;.
+    </exception>
+    <exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.DataUtilities.WriteUtf8(System.String,System.Int32,System.Int32,System.IO.Stream,System.Boolean,System.Boolean)'>
     <summary>Writes a portion of a string in UTF-8 encoding to a data stream.
@@ -891,6 +928,14 @@
     </exception>
     <exception cref='T:System.IO.IOException'>An I/O error occurred.
     </exception>
+    <exception cref='T:System.ArgumentException'>Either &quot;offset&quot; or &quot;length&quot; is less than 0 or greater
+      than &quot;str&quot;&apos;s length, or &quot;str&quot;&apos;s length minus
+      &quot;offset&quot; is less than &quot;length&quot;.
+    </exception>
+    <exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='T:PeterO.Mail.Address'>
     <summary>Represents an email address.
@@ -909,7 +954,7 @@
       <paramref name='addressValue'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>AddressValue is empty.; Address doesn't contain a ' @' sign; Invalid local
+    <exception cref='T:System.ArgumentException'>AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local
       part; Expected '@' sign after local part; Expected domain after '@';
       Invalid domain; Address too long.
     </exception>
@@ -993,7 +1038,7 @@
     </summary>
   </doc>
   <doc name='F:PeterO.Mail.ContentDisposition.Attachment'>
-    <summary>The content disposition value "attachment".
+    <summary>The content disposition value "attachment" .
     </summary>
   </doc>
   <doc name='P:PeterO.Mail.ContentDisposition.DispositionType'>
@@ -1093,20 +1138,20 @@
     </returns>
   </doc>
   <doc name='F:PeterO.Mail.ContentDisposition.Inline'>
-    <summary>The content disposition value "inline".
+    <summary>The content disposition value "inline" .
     </summary>
   </doc>
   <doc name='P:PeterO.Mail.ContentDisposition.IsAttachment'>
     <summary>Gets a value indicating whether the disposition type is attachment.
     </summary>
-    <value><c>true</c> If the disposition type is attachment; otherwise, .
+    <value><c>true</c> If the disposition type is attachment; otherwise,
       <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.ContentDisposition.IsInline'>
     <summary>Gets a value indicating whether the disposition type is inline.
     </summary>
-    <value><c>true</c> If the disposition type is inline; otherwise, .
+    <value><c>true</c> If the disposition type is inline; otherwise,
       <c>false</c> .
     </value>
   </doc>
@@ -1333,6 +1378,16 @@
        is null, is syntactically invalid, or is not a data URI.
     </returns>
   </doc>
+  <doc name='M:PeterO.Mail.DataUris.DataUriBytes(System.Uri)'>
+    <summary>Not documented yet.
+    </summary>
+    <param name='uri'>The parameter
+      <paramref name='uri'/>
+       is not documented yet.
+    </param>
+    <returns>A byte array.
+    </returns>
+  </doc>
   <doc name='M:PeterO.Mail.DataUris.DataUriMediaType(System.String)'>
     <summary>Extracts the media type from a Data URI (uniform resource identifier).
     </summary>
@@ -1343,6 +1398,16 @@
     <returns>The media type. Returns null if
       <paramref name='uri'/>
        is null, is syntactically invalid, or is not a Data URI.
+    </returns>
+  </doc>
+  <doc name='M:PeterO.Mail.DataUris.DataUriMediaType(System.Uri)'>
+    <summary>Not documented yet.
+    </summary>
+    <param name='uri'>The parameter
+      <paramref name='uri'/>
+       is not documented yet.
+    </param>
+    <returns>A MediaType object.
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.MakeDataUri(System.Byte[],PeterO.Mail.MediaType)'>
@@ -1481,14 +1546,14 @@
   <doc name='P:PeterO.Mail.DispositionBuilder.IsMultipart'>
     <summary>Gets a value indicating whether this is a multipart media type.
     </summary>
-    <value><c>true</c> If this is a multipart media type; otherwise, .
+    <value><c>true</c> If this is a multipart media type; otherwise,
       <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.DispositionBuilder.IsText'>
     <summary>Gets a value indicating whether this is a text media type.
     </summary>
-    <value><c>true</c> If this is a text media type; otherwise, .
+    <value><c>true</c> If this is a text media type; otherwise,
       <c>false</c> .
     </value>
   </doc>
@@ -1884,14 +1949,11 @@
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)'>
     <summary>Generates a date-time string following the Internet Message Format (RFC
-      5322) from an 8-element array, optionally using a "GMT" time zone
-      indicator.
+      5322) from an 8-element array.
     </summary>
     <param name='dateTime'>The date and time in the form of an 8-element array. See
       <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
        for information on the format of this parameter.
-    </param>
-    <param name='gmt'>If true, uses the string "GMT" as the time zone offset.
     </param>
     <returns>A date-time string.
     </returns>
@@ -1900,27 +1962,19 @@
        is null or invalid, including if the year (
       <c>dateTime[0]</c> ) is less than 0.
     </exception>
-    <exception cref='T:System.NotSupportedException'>The time zone offset is other than 0 and
+    <param name='gmt'>The parameter
       <paramref name='gmt'/>
-       is true.
-    </exception>
+       is not documented yet.
+    </param>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.ParseDateString(System.String)'>
-    <summary>Gets the date and time extracted from a date-time string following the
-      Internet Message Format (RFC 5322). However, this method does not allow
-      obsolete time zone strings to appear in the date-time string. See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for information on the format of this method's return value.
+    <summary>Not documented yet.
     </summary>
     <param name='str'>The parameter
       <paramref name='str'/>
        is not documented yet.
     </param>
-    <returns>An 8-element array containing the date and time, or
-      <c>null</c> if
-      <paramref name='str'/>
-       is null, empty, or syntactically invalid, or if the string's year would
-      overflow the range of a 32-bit signed integer.
+    <returns>An array of 32-bit unsigned integers.
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'>
@@ -2056,7 +2110,7 @@
   <doc name='P:PeterO.Mail.MediaType.IsMultipart'>
     <summary>Gets a value indicating whether this is a multipart media type.
     </summary>
-    <value><c>true</c> If this is a multipart media type; otherwise, .
+    <value><c>true</c> If this is a multipart media type; otherwise,
       <c>false</c> .
     </value>
   </doc>
@@ -2064,7 +2118,7 @@
     <summary>Gets a value indicating whether this is a text media type ("text/&#x2a;").
 
     </summary>
-    <value><c>true</c> If this is a text media type; otherwise, .
+    <value><c>true</c> If this is a text media type; otherwise,
       <c>false</c> .
     </value>
   </doc>
@@ -2250,14 +2304,14 @@
   <doc name='P:PeterO.Mail.MediaTypeBuilder.IsMultipart'>
     <summary>Gets a value indicating whether this is a multipart media type.
     </summary>
-    <value><c>true</c> If this is a multipart media type; otherwise, .
+    <value><c>true</c> If this is a multipart media type; otherwise,
       <c>false</c> .
     </value>
   </doc>
   <doc name='P:PeterO.Mail.MediaTypeBuilder.IsText'>
     <summary>Gets a value indicating whether this is a text media type.
     </summary>
-    <value><c>true</c> If this is a text media type; otherwise, .
+    <value><c>true</c> If this is a text media type; otherwise,
       <c>false</c> .
     </value>
   </doc>
@@ -2544,7 +2598,7 @@
     </exception>
     <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
-    <example>The following example (written in C# for the .NET version) is an extension
+    <example>The following example (written in C# for the.NET version) is an extension
       method that adds an attachment from a byte array to a message.
       <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
         bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
@@ -2680,7 +2734,7 @@
     </exception>
     <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
-    <example>The following example (written in C# for the .NET version) is an extension
+    <example>The following example (written in C# for the.NET version) is an extension
       method that adds an inline body part from a byte array to a message.
       <code>public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
         MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
@@ -2853,6 +2907,20 @@
        is null, is syntactically invalid, or is not a MailTo URI.
     </returns>
   </doc>
+  <doc name='M:PeterO.Mail.Message.FromMailtoUri(System.Uri)'>
+    <summary>Not documented yet.
+    </summary>
+    <param name='uri'>The parameter
+      <paramref name='uri'/>
+       is not documented yet.
+    </param>
+    <returns>A Message object.
+    </returns>
+    <exception cref='T:System.ArgumentNullException'>The parameter
+      <paramref name='uri'/>
+       is null.
+    </exception>
+  </doc>
   <doc name='M:PeterO.Mail.Message.FromMailtoUrl(System.String)'>
     <summary>Creates a message object from a MailTo URI (uniform resource identifier).
       The MailTo URI can contain key-value pairs that follow a question-mark, as
@@ -2950,16 +3018,9 @@
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.Message.GetDate'>
-    <summary>Gets the date and time extracted from this message's Date header field
-      (the value of which is found as though GetHeader("date") were called). See
-
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for more information on the format of the date-time array returned by
-      this method.
+    <summary>Not documented yet.
     </summary>
-    <returns>An array containing eight elements. Returns null if the Date header
-      doesn't exist, if the Date field is syntactically or semantically invalid,
-      or if the field's year would overflow a 32-bit signed integer.
+    <returns>An array of 32-bit unsigned integers.
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.Message.GetFormattedBodyString'>
@@ -3650,7 +3711,7 @@
     <summary>Gets a value indicating whether this represents a group of addresses
       rather than a single address.
     </summary>
-    <value><c>true</c> If this represents a group of addresses; otherwise, .
+    <value><c>true</c> If this represents a group of addresses; otherwise,
       <c>false</c> .
     </value>
   </doc>
@@ -3744,7 +3805,7 @@
   <doc name='P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart'>
     <summary>Gets a value indicating whether a new body part was detected.
     </summary>
-    <value><c>true</c> If a new body part was detected; otherwise, .
+    <value><c>true</c> If a new body part was detected; otherwise,
       <c>false</c> .
     </value>
   </doc>
@@ -4508,6 +4569,10 @@
       <paramref name='chars'/>
        is null.
     </exception>
+    <exception cref='T:System.ArgumentException'>Either &#x22;index&#x22; or &#x22;length&#x22; is less than 0 or greater
+      than &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
+      minus &#x22;index&#x22; is less than &#x22;length&#x22;.
+    </exception>
   </doc>
   <doc name='M:PeterO.Text.Normalizer.ReadChar'>
     <summary>Reads a Unicode character from a data source.
@@ -4762,6 +4827,10 @@
        is less than
       <paramref name='length'/>
        .
+    </exception>
+    <exception cref='T:System.ArgumentException'>Either &#x22;index&#x22; or &#x22;length&#x22; is less than 0 or greater
+      than &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
+      minus &#x22;index&#x22; is less than &#x22;length&#x22;.
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.ReadChar'>
@@ -5094,6 +5163,10 @@
       <paramref name='length'/>
        .
     </exception>
+    <exception cref='T:System.ArgumentException'>Either &#x22;index&#x22; or &#x22;length&#x22; is less than 0 or greater
+      than &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
+      minus &#x22;index&#x22; is less than &#x22;length&#x22;.
+    </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.ReadChar'>
     <summary>Reads a Unicode character from a data source.
@@ -5209,7 +5282,7 @@
       sequence of characters, such as a passphrase. This checking is done using
       the OpaqueString profile in RFC 8265. (REMARK: Specifying a string as this
       method does is not ideal if the string represents a password or other
-      sensitive data, since strings are immutable in .NET and Java, so that its
+      sensitive data, since strings are immutable in.NET and Java, so that its
       contents cannot be cleared when done. An application concerned about
       security may want to reimplement this method by passing a clearable array
       of characters rather than a text string.).

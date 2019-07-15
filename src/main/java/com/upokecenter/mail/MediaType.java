@@ -55,9 +55,10 @@ import com.upokecenter.text.*;
       }
 
     /**
-     * Not documented yet.
-     * @param obj The parameter {@code obj} is not documented yet.
-     * @return Either {@code true} or {@code false}.
+     * Determines whether this object and another object are equal.
+     * @param obj The parameter {@code obj} is an arbitrary object.
+     * @return {@code true} if this object and another object are equal; otherwise,
+     * {@code false}.
      */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
@@ -108,8 +109,7 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether this is a text media type ("text/&#x2a;").
-     * @return {@code true} If this is a text media type; otherwise, . {@code
-     * false}.
+     * @return {@code true} If this is a text media type; otherwise, {@code false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text", StringComparison.Ordinal);
@@ -117,7 +117,7 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return {@code true} If this is a multipart media type; otherwise, . {@code
+     * @return {@code true} If this is a multipart media type; otherwise, {@code
      * false}.
      */
     public final boolean isMultipart() {
@@ -555,8 +555,12 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @return A text string.
+     * Converts this media type to a text string form suitable for inserting in
+     * HTTP headers. Notably, the string contains the value of a
+     * Content-Type header field (without the text necessarily starting
+     *  with "Content-Type" followed by a space), and consists of a single
+     * line.
+     * @return A text string form of this media type.
      */
     public String ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
@@ -1364,10 +1368,12 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @param mediaTypeValue The parameter {@code mediaTypeValue} is not documented
-     * yet.
-     * @return A MediaType object.
+     * Parses a media type string and returns a media type object. For further
+     * information, see the overload taking a MediaType parameter.
+     * @param mediaTypeValue A text string representing a media type. This media
+     * type can include parameters.
+     * @return A media type object, or MediaType.TextPlainAscii if {@code
+     * mediaTypeValue} is empty or syntactically invalid.
      */
     public static MediaType Parse(String mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);

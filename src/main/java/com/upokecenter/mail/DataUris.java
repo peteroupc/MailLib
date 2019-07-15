@@ -3,19 +3,18 @@ package com.upokecenter.mail;
 import com.upokecenter.util.*;
 
     /**
-     * Contains methods for parsing and generating Data URIs (uniform resource
+     * Contains methods for parsing and generating Data URIs (uniform // /resource
      * identifiers). Data URIs are described in RFC 2397. Examples for Data
-     * URIs follow. <pre>data:, hello%20world</pre>
-     * <pre>data:text/markdown, hello%20world</pre>
-     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
+     * URIs follow. <pre> data:, hello%20world </pre> <pre>
+     * data:text/markdown, hello%20world </pre> <pre>
+     * data:application/octet-stream;base64, AAAAAA== </pre> .
      */
   public final class DataUris {
 private DataUris() {
 }
     /**
-     * Extracts the media type from a string representing a Data URI (uniform
-     * resource identifier).
-     * @param uri A string representing a data URI. It must start with "data:".
+     * Extracts the media type from a Data URI (uniform resource identifier).
+     * @param uri The parameter {@code uri} is a text string.
      * @return The media type. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a Data URI.
      */
@@ -70,13 +69,12 @@ private DataUris() {
     }
 
     /**
-     * Extracts the media type from a Data URI (uniform resource identifier).
-     * @param uri A data URI. It must have a scheme of "data:".
-     * @return The media type. Returns null if {@code uri} is null, is
-     * syntactically invalid, or is not a Data URI.
+     * Not documented yet.
+     * @param uri The parameter {@code uri} is not documented yet.
+     * @return A MediaType object.
      */
     public static MediaType DataUriMediaType(java.net.URI uri) {
-return (uri == null) ? null : (DtaUriBytes(uri.toString());
+return (uri == null) ? null : DataUriMediaType(uri.toString());
     }
 
     private static int ToHex(char b1) {
@@ -102,20 +100,18 @@ return (uri == null) ? null : (DtaUriBytes(uri.toString());
     };
 
     /**
-     * Extracts the data from a Data URI (uniform resource identifier) in the form
-     * of a byte array.
-     * @param uri A data URI. It must have a scheme of "data".
-     * @return The data as a byte array. Returns null if {@code uri} is null, is
-     * syntactically invalid, or is not a data URI.
+     * Not documented yet.
+     * @param uri The parameter {@code uri} is not documented yet.
+     * @return A byte array.
      */
     public static byte[] DataUriBytes(java.net.URI uri) {
-return (uri == null) ? null : (DtaUriBytes(uri.toString());
+return (uri == null) ? null : DataUriBytes(uri.toString());
     }
 
     /**
-     * Extracts the data from a string representing a Data URI (uniform resource
-     * identifier) in the form of a byte array.
-     * @param uri A string representing a data URI. It must start with "data:".
+     * Extracts the data from a Data URI (uniform resource identifier) in the form
+     * of a byte array.
+     * @param uri The parameter {@code uri} is a text string.
      * @return The data as a byte array. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a data URI.
      */

@@ -140,6 +140,8 @@
  a string with those words decoded.
 * `static Message FromMailtoUri​(java.lang.String uri)`<br>
  Creates a message object from a MailTo URI (uniform resource identifier).
+* `static Message FromMailtoUri​(java.net.URI uri)`<br>
+ Not documented yet.
 * `static Message FromMailtoUrl​(java.lang.String url)`<br>
  Deprecated.
 Renamed to FromMailtoUri.
@@ -176,13 +178,14 @@ Use GetAddresses(\Cc\) instead.
  Gets a file name suggested by this message for saving the message's body
  to a file.
 * `java.lang.String GetFormattedBodyString()`<br>
- Not documented yet.
+ Gets a Hypertext Markup Language (HTML) rendering of this message's text
+ body.
 * `java.util.List<NamedAddress> getFromAddresses()`<br>
  Deprecated.
 Use GetAddresses(\From\) instead.
  Use GetAddresses(\From\) instead.
 * `java.util.Map.Entry<java.lang.String,​java.lang.String> GetHeader​(int index)`<br>
- Not documented yet.
+ Gets the name and value of a header field by index.
 * `java.lang.String GetHeader​(java.lang.String name)`<br>
  Gets the first instance of the header field with the specified name, using a
  basic case-insensitive comparison.
@@ -220,14 +223,14 @@ Use GetAddresses(\To\) instead.
  multipart/multilingual) according to the given language
  priority list and original-language preference.
 * `Message SetBody​(byte[] bytes)`<br>
- Not documented yet.
+ Sets the body of this message to the given byte array.
 * `void setContentDisposition​(ContentDisposition value)`<br>
 * `void setContentType​(MediaType value)`<br>
 * `Message SetCurrentDate()`<br>
  Sets this message's Date header field to the current time as its value, with
  an unspecified time zone offset.
 * `Message SetDate​(int[] dateTime)`<br>
- Not documented yet.
+ Sets this message's Date header field to the given date and time.
 * `Message SetHeader​(int index,
          java.lang.String value)`<br>
  Sets the value of a header field by index without changing its name.
@@ -356,11 +359,29 @@ Use GetAddresses(\Cc\) instead.
 
 ### GetFormattedBodyString
     public java.lang.String GetFormattedBodyString()
-Not documented yet.
+<p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
+ body. This method currently supports text/plain, text/plain with
+ format = flowed, text/enriched, and text/markdown (original
+ Markdown).</p><p> </p><p>REMARK: The Markdown implementation currently
+ supports all features of original Markdown, except that the
+ implementation--</p> <ul> <li>does not strictly check the placement
+  of "block-level HTML elements",</li> <li>does not prevent Markdown
+ content from being interpreted as such merely because it's contained
+  in a "block-level HTML element", and</li> <li>does not deliberately
+ use HTML escapes to obfuscate email addresses wrapped in
+ angle-brackets.</li></ul>
 
 **Returns:**
 
-* A text string.
+* An HTML rendering of this message's text.
+
+**Throws:**
+
+* <code>java.lang.UnsupportedOperationException</code> - Either this message is a multipart
+ message, so it doesn't have its own body text, or this message has
+ no character encoding declared or assumed for it (which is usually
+ the case for non-text messages), or the character encoding is not
+ supported.
 
 ### getContentDisposition
     public final ContentDisposition getContentDisposition()
@@ -595,21 +616,37 @@ Not documented yet.
 
 ### SetDate
     public Message SetDate​(int[] dateTime)
-Not documented yet.
+Sets this message's Date header field to the given date and time.
 
 **Parameters:**
 
-* <code>dateTime</code> - The parameter <code>dateTime</code> is not documented yet.
+* <code>dateTime</code> - An array containing eight elements. Each element of the
+ array (starting from 0) is as follows: <ul> <li>0 - The year. For
+ example, the value 2000 means 2000 C.E.</li> <li>1 - Month of the
+ year, from 1 (January) through 12 (December).</li> <li>2 - Day of
+ the month, from 1 through 31.</li> <li>3 - Hour of the day, from 0
+ through 23.</li> <li>4 - Minute of the hour, from 0 through 59.</li>
+ <li>5 - Second of the minute, from 0 through 60 (this value can go
+ up to 60 to accommodate leap seconds). (Leap seconds are additional
+ seconds added to adjust international atomic time, or TAI, to an
+ approximation of astronomical time known as coordinated universal
+ time, or UTC.)</li> <li>6 - Milliseconds of the second, from 0
+ through 999. This value is not used to generate the date string, but
+ must still be valid.</li> <li>7 - Number of minutes to subtract from
+ this date and time to get global time. This number can be positive
+ or negative.</li></ul>.
 
 **Returns:**
 
-* A Message object.
+* This object.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>dateTime</code> is null.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> contains fewer than
+ eight elements, contains invalid values, or contains a year less
+ than 0.
 
-* <code>java.lang.IllegalArgumentException</code> - Invalid date and time.
+* <code>java.lang.NullPointerException</code> - The parameter <code>dateTime</code> is null.
 
 ### GetBodyMessage
     public Message GetBodyMessage()
@@ -622,15 +659,21 @@ Returns the mail message contained in this message's body.
 
 ### GetHeader
     public java.util.Map.Entry<java.lang.String,​java.lang.String> GetHeader​(int index)
-Not documented yet.
+Gets the name and value of a header field by index.
 
 **Parameters:**
 
-* <code>index</code> - The parameter <code>index</code> is not documented yet.
+* <code>index</code> - Zero-based index of the header field to get.
 
 **Returns:**
 
-* A Map.Entry(string, string) object.
+* A key/value pair. The key is the name of the header field, such as
+  "From" or "Content-ID". The value is the header field's value.
+
+**Throws:**
+
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at least as
+ high as the number of header fields.
 
 ### GetHeader
     public java.lang.String GetHeader​(java.lang.String name)
@@ -728,15 +771,16 @@ Removes all instances of the given header field from this message. If this
 
 ### SetBody
     public Message SetBody​(byte[] bytes)
-Not documented yet.
+Sets the body of this message to the given byte array. This method doesn't
+ make a copy of that byte array.
 
 **Parameters:**
 
-* <code>bytes</code> - The parameter <code>bytes</code> is not documented yet.
+* <code>bytes</code> - A byte array.
 
 **Returns:**
 
-* A Message object.
+* This object.
 
 **Throws:**
 
@@ -1004,11 +1048,11 @@ Adds an attachment to this message in the form of data from the // /given
   message, it becomes a "multipart/mixed" message with the current
  body converted to an inline body part.<p> The following example
  (written in C# for the.NET version) is an extension method that adds
- an attachment from a byte array to a message. </p><pre>public static
+ an attachment from a byte array to a message. </p><pre> public static
  Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
  MediaType mediaType) { using(MemoryStream fs = new
- MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); }
- }</pre> .
+ MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); } }
+ </pre> .
 
 **Parameters:**
 
@@ -1098,11 +1142,11 @@ Adds an inline body part to this message in the form of data from // /the
   message, it becomes a "multipart/mixed" message with the current
  body converted to an inline body part.<p> The following example
  (written in C# for the.NET version) is an extension method that adds
- an inline body part from a byte array to a message. </p><pre>public
+ an inline body part from a byte array to a message. </p><pre> public
  static Message AddInlineFromBytes(this Message msg, byte[] bytes,
  MediaType mediaType) { using(MemoryStream fs = new
- MemoryStream(bytes)) { return msg.AddInline(fs, mediaType); }
- }</pre> .
+ MemoryStream(bytes)) { return msg.AddInline(fs, mediaType); } }
+ </pre> .
 
 **Parameters:**
 
@@ -1318,6 +1362,22 @@ Creates a message object from a MailTo URI (uniform resource identifier).
 * A Message object created from the given MailTo URI. Returs null if
  <code>uri</code> is null, is syntactically invalid, or is not a MailTo
  URI.
+
+### FromMailtoUri
+    public static Message FromMailtoUri​(java.net.URI uri)
+Not documented yet.
+
+**Parameters:**
+
+* <code>uri</code> - The parameter <code>uri</code> is not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### ToMailtoUri
     public java.lang.String ToMailtoUri()

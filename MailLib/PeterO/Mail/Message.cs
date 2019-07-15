@@ -284,8 +284,29 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A text string.</returns>
+    /// <summary>
+    /// <para>Gets a Hypertext Markup Language (HTML) rendering of this
+    /// message's text body. This method currently supports text/plain,
+    /// text/plain with format = flowed, text/enriched, and text/markdown
+    /// (original Markdown).</para></summary>
+    /// <returns>An HTML rendering of this message's text.</returns>
+    /// <exception cref='System.NotSupportedException'>Either this message
+    /// is a multipart message, so it doesn't have its own body text, or
+    /// this message has no character encoding declared or assumed for it
+    /// (which is usually the case for non-text messages), or the character
+    /// encoding is not supported.</exception>
+    /// <remarks>
+    /// <para>REMARK: The Markdown implementation currently supports all
+    /// features of original Markdown, except that the
+    /// implementation--</para>
+    /// <list>
+    /// <item>does not strictly check the placement of "block-level HTML
+    /// elements",</item>
+    /// <item>does not prevent Markdown content from being interpreted as
+    /// such merely because it's contained in a "block-level HTML element",
+    /// and</item>
+    /// <item>does not deliberately use HTML escapes to obfuscate email
+    /// addresses wrapped in angle-brackets.</item></list></remarks>
     public string GetFormattedBodyString() {
       string text = this.BodyString;
       if (text == null) {
@@ -595,14 +616,35 @@ namespace PeterO.Mail {
       return (field == null) ? null : MailDateTime.ParseDateString(field, true);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='dateTime'>The parameter <paramref name='dateTime'/> is
-    /// not documented yet.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Sets this message's Date header field to the given date
+    /// and time.</summary>
+    /// <param name='dateTime'>An array containing eight elements. Each
+    /// element of the array (starting from 0) is as follows:
+    /// <list>
+    /// <item>0 - The year. For example, the value 2000 means 2000
+    /// C.E.</item>
+    /// <item>1 - Month of the year, from 1 (January) through 12
+    /// (December).</item>
+    /// <item>2 - Day of the month, from 1 through 31.</item>
+    /// <item>3 - Hour of the day, from 0 through 23.</item>
+    /// <item>4 - Minute of the hour, from 0 through 59.</item>
+    /// <item>5 - Second of the minute, from 0 through 60 (this value can
+    /// go up to 60 to accommodate leap seconds). (Leap seconds are
+    /// additional seconds added to adjust international atomic time, or
+    /// TAI, to an approximation of astronomical time known as coordinated
+    /// universal time, or UTC.)</item>
+    /// <item>6 - Milliseconds of the second, from 0 through 999. This
+    /// value is not used to generate the date string, but must still be
+    /// valid.</item>
+    /// <item>7 - Number of minutes to subtract from this date and time to
+    /// get global time. This number can be positive or
+    /// negative.</item></list>.</param>
+    /// <returns>This object.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> contains fewer than eight elements, contains
+    /// invalid values, or contains a year less than 0.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dateTime'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Invalid date and
-    /// time.</exception>
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
@@ -639,10 +681,16 @@ namespace PeterO.Mail {
   StringComparison.Ordinal))) ? new Message(this.body) : null;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='index'>The parameter <paramref name='index'/> is not
-    /// documented yet.</param>
-    /// <returns>A KeyValuePair(string, string) object.</returns>
+    /// <summary>Gets the name and value of a header field by
+    /// index.</summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// get.</param>
+    /// <returns>A key/value pair. The key is the name of the header field,
+    /// such as "From" or "Content-ID". The value is the header field's
+    /// value.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
+    /// fields.</exception>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -781,10 +829,10 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='bytes'>The parameter <paramref name='bytes'/> is not
-    /// documented yet.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Sets the body of this message to the given byte array.
+    /// This method doesn't make a copy of that byte array.</summary>
+    /// <param name='bytes'>A byte array.</param>
+    /// <returns>This object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
     public Message SetBody(byte[] bytes) {
@@ -1259,15 +1307,17 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='inputStream'/> or <paramref name='mediaType'/> is
     /// null.</exception>
-    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O ///error
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     /// <example>
     ///  The following example (written in C# for the.NET
-    /// ///version) is an extension method that adds an
-    /// attachment from a byte array to a message.
-    /// <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
+    /// version) is an extension method that adds an attachment
+    /// from a byte array to a message.
+    /// <code>
+    /// public static Message AddAttachmentFromBytes(this Message msg, byte[]
     /// bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
-    /// return msg.AddAttachment(fs, mediaType); } }</code>
+    /// return msg.AddAttachment(fs, mediaType); } }
+    /// </code>
     ///  .
     /// </example>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
@@ -1340,23 +1390,24 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// type. Before the new body part is added, if this message isn't
     /// already a multipart message, it becomes a "multipart/mixed" message
     /// with the current body converted to an inline body part.</summary>
-    /// <param name='inputStream'>A readable data ///stream.</param>
+    /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='mediaType'>A media type to assign to the body
     /// part.</param>
     /// <returns>A Message object for the generated body part.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='inputStream'/> or <paramref name='mediaType'/> is
     /// null.</exception>
-    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O ///error
+    /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     /// <example>
     ///  The following example (written in C# for the.NET
-    /// ///version) is an extension method that adds an inline
+    /// version) is an extension method that adds an inline
     /// body part from a byte array to a message.
-    /// <code>public static Message AddInlineFromBytes(this Message msg, byte[]
-    /// ///bytes,
-    /// MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
-    /// { return msg.AddInline(fs, mediaType); } }</code>
+    /// <code>
+    /// public static Message AddInlineFromBytes(this Message msg, byte[]
+    /// bytes, MediaType mediaType) { using(MemoryStream fs = new
+    /// MemoryStream(bytes)) { return msg.AddInline(fs, mediaType); } }
+    /// </code>
     ///  .
     /// </example>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
@@ -3235,26 +3286,6 @@ name.Length >= 2 &&
       return MailtoUris.MessageToMailtoUri(this);
     }
 
-    /// <summary>Creates a message object from a string specifying a MailTo
-    /// URI (uniform resource identifier). The MailTo URI can contain
-    /// key-value pairs that follow a question-mark, as in the following
-    /// example: "mailto:me@example.com?subject=A%20Subject". In this
-    /// example, "subject" is the subject of the email address. Only
-    /// certain keys are supported, namely, "to", "cc", "bcc", "subject",
-    /// "in-reply-to", "comments", "keywords", and "body". The first seven
-    /// are header field names that will be used to set the returned
-    /// message's corresponding header fields. The last, "body", sets the
-    /// body of the message to the given text. Keys other than these eight
-    /// will be ignored.</summary>
-    /// <param name='uri'>The parameter <paramref name='uri'/> is a text
-    /// string.</param>
-    /// <returns>A Message object created from the given MailTo URI. Returs
-    /// null if <paramref name='uri'/> is null, is syntactically invalid,
-    /// or is not a MailTo URI.</returns>
-    public static Message FromMailtoUri(string uri) {
-      return MailtoUris.MailtoUriMessage(uri);
-    }
-
     /// <summary>Creates a message object from a MailTo URI (uniform
     /// resource identifier). The MailTo URI can contain key-value pairs
     /// that follow a question-mark, as in the following example:
@@ -3271,6 +3302,14 @@ name.Length >= 2 &&
     /// <returns>A Message object created from the given MailTo URI. Returs
     /// null if <paramref name='uri'/> is null, is syntactically invalid,
     /// or is not a MailTo URI.</returns>
+    public static Message FromMailtoUri(string uri) {
+      return MailtoUris.MailtoUriMessage(uri);
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='uri'>The parameter <paramref name='uri'/> is not
+    /// documented yet.</param>
+    /// <returns>A Message object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='uri'/> is null.</exception>
     public static Message FromMailtoUri(Uri uri) {

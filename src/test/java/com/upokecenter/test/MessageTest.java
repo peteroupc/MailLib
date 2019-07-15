@@ -542,18 +542,13 @@ try { if (ms != null) {
       Assert.assertEquals(expected, mt.GetParameter(param));
     }
 
-    private List<String> exts = new ArrayList<String>();
-    [OneTimeTearDown]
-    public void TearDown() {
-      File.WriteAllLines("exts.txt", exts);
-    }
-
+    /*
     private void AddExt(String str) {
       str = str.replace("\\", "\\\\");
       str = str.replace("\n", "\\n");
       str = str.replace("\r", "\\r");
-      exts.add(str);
     }
+    */
 
     private void TestRfc2231Extension(
       String mtype,
@@ -569,9 +564,9 @@ try { if (ms != null) {
       // that an infinite-decoding-loop bug does not reappear.
       // NOTE: RFC8187 doesn't mandate any particular
       // error handling behavior for those tests
-      String[] strings=ResourceUtil.GetStrings("rfc2231exts");
+      String[] strings = ResourceUtil.GetStrings("rfc2231exts");
       for (int i = 0; i < strings.length; i += 3) {
-        TestRfc2231Extension(strings[i], strings[i + 1], strings[i + 2]);
+        this.TestRfc2231Extension(strings[i], strings[i + 1], strings[i + 2]);
       }
     }
 
@@ -1144,11 +1139,16 @@ try { if (ms != null) {
     }
 
     static boolean HasNestedMessageType(Message message) {
-      if (message.getContentType().getTopLevelType().equals("message")) {
-        return (!message.getContentType().getSubType().equals("global")) &&
-          ((!message.getContentType().getSubType().equals("global-headers")) &&
-           (message.getContentType().getSubType().equals("global-delivery-status") ||
-    message.getContentType().getSubType().equals("global-disposition-notification")));
+      if (message.getContentType().getTopLevelType().equals("message",
+  StringComparison.Ordinal)) {
+        return (!message.getContentType().getSubType().equals("global",
+  StringComparison.Ordinal)) &&
+          ((!message.getContentType().getSubType().equals("global-headers",
+  StringComparison.Ordinal)) &&
+           (message.getContentType().getSubType().equals("global-delivery-status",
+  StringComparison.Ordinal) ||
+    message.getContentType().getSubType().equals("global-disposition-notification",
+  StringComparison.Ordinal)));
       }
       for (Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {

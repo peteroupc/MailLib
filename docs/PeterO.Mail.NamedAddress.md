@@ -2,7 +2,7 @@
 
     public class NamedAddress
 
- Represents an email address and a name for that address. Can represent a group of email addresses instead.
+  Represents an email address and a name for that address. Can represent a group of email addresses instead.
 
 ### Member Summary
 * <code>[Address](#Address)</code> - Gets the email address associated with this object.
@@ -24,7 +24,7 @@
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
 
-<b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>address</i>: The parameter  <i>address</i>
  is a text string.
@@ -47,7 +47,7 @@ Address has an invalid syntax.; Address has an invalid syntax.
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
 
-<b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>displayName</i>: The parameter  <i>displayName</i>
  is a text string.
@@ -70,7 +70,7 @@ The parameter  <i>address</i>
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
 
-<b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>displayName</i>: The parameter  <i>displayName</i>
  is a text string.
@@ -94,7 +94,7 @@ The parameter  <i>address</i>
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
 
-<b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>displayName</i>: The parameter  <i>displayName</i>
  is a text string.
@@ -121,7 +121,7 @@ The parameter  <i>localPart</i>
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class.
 
-<b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>groupName</i>: The parameter  <i>groupName</i>
  is a text string.
@@ -144,45 +144,59 @@ GroupName is empty.; A mailbox in the list is a group.
 
     public PeterO.Mail.Address Address { get; }
 
- Gets the email address associated with this object.  <b>Returns:</b>
+  Gets the email address associated with this object.
 
-The email address associated with this object. This value is null if this object represents a group of addresses instead.
+ <b>Returns:</b>
+
+ The email address associated with this object. This value is null if this object represents a group of addresses instead.
 
 <a id="DisplayName"></a>
 ### DisplayName
 
     public string DisplayName { get; }
 
- Gets the display name for this email address. Returns null if the display name is absent.  <b>Returns:</b>
+  Gets the display name for this email address. Returns null if the display name is absent.
 
-The display name for this email address.
+ <b>Returns:</b>
+
+ The display name for this email address.
 
 <a id="GroupAddresses"></a>
 ### GroupAddresses
 
     public System.Collections.Generic.IList GroupAddresses { get; }
 
- Gets a read-only list of addresses that make up the group, if this object represents a group, or an empty list otherwise.  <b>Returns:</b>
+  Gets a read-only list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
-A list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
+ <b>Returns:</b>
+
+ A list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
 <a id="IsGroup"></a>
 ### IsGroup
 
     public bool IsGroup { get; }
 
- Gets a value indicating whether this represents a group of addresses rather than a single address.  <b>Returns:</b>
+  Gets a value indicating whether this represents a group of addresses rather than a single address.
 
- `true`  If this represents a group of addresses; otherwise,.  `false` .
+ <b>Returns:</b>
+
+  `
+         true
+      `  If this represents a group of addresses; otherwise,  `
+         false
+      `  .
 
 <a id="Name"></a>
 ### Name
 
     public string Name { get; }
 
- Gets the display name for this email address, or the email address's value if the display name is null. Returns an empty string if the address and display name are null.  <b>Returns:</b>
+  Gets the display name for this email address, or the email address's value if the display name is null. Returns an empty string if the address and display name are null.
 
-The name for this email address.
+ <b>Returns:</b>
+
+ The name for this email address.
 
 <a id="AddressesEqual_PeterO_Mail_NamedAddress"></a>
 ### AddressesEqual
@@ -190,15 +204,19 @@ The name for this email address.
     public bool AddressesEqual(
         PeterO.Mail.NamedAddress na);
 
- Not documented yet.
+  Not documented yet.
 
-<b>Parameters:</b>
+ <b>Parameters:</b>
 
- * <i>na</i>: A named address object to compare with this one. Can be null.
+ * <i>na</i>:  A named address object to compare with this one. Can be null.
 
 <b>Return Value:</b>
 
-Either  `true`  or  `false` .
+ Either  `
+         true
+      `  or  `
+         false
+      `  .
 
 <a id="Equals_object"></a>
 ### Equals
@@ -206,27 +224,31 @@ Either  `true`  or  `false` .
     public override bool Equals(
         object obj);
 
- Determines whether this object and another object are equal.
+  Determines whether this object and another object are equal.
 
-<b>Parameters:</b>
+ <b>Parameters:</b>
 
- * <i>obj</i>: The parameter  <i>obj</i>
+ * <i>obj</i>:  The parameter  <i>obj</i>
  is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false` .
+  `
+         true
+      `  if this object and another object are equal; otherwise,  `
+         false
+      `  .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
 
- Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
+  Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
-<b>Return Value:</b>
+ <b>Return Value:</b>
 
-A 32-bit hash code.
+ A 32-bit hash code.
 
 <a id="ParseAddresses_string"></a>
 ### ParseAddresses
@@ -234,15 +256,15 @@ A 32-bit hash code.
     public static System.Collections.Generic.IList ParseAddresses(
         string addressValue);
 
- Generates a list of NamedAddress objects from a comma-separated list of addresses. Each address must follow the syntax accepted by the one-argument constructor of NamedAddress.
+  Generates a list of NamedAddress objects from a comma-separated list of addresses. Each address must follow the syntax accepted by the one-argument constructor of NamedAddress.
 
-<b>Parameters:</b>
+ <b>Parameters:</b>
 
- * <i>addressValue</i>: A comma-separate list of addresses in the form of a text string.
+ * <i>addressValue</i>:  A comma-separate list of addresses in the form of a text string.
 
 <b>Return Value:</b>
 
-A list of addresses generated from the  <i>addressValue</i>
+ A list of addresses generated from the  <i>addressValue</i>
  parameter.
 
 <a id="ToString"></a>
@@ -250,8 +272,8 @@ A list of addresses generated from the  <i>addressValue</i>
 
     public override string ToString();
 
- Converts this object to a text string. This will generally be the form of this NamedAddress object as it could appear in a "To" header field.
+  Converts this object to a text string. This will generally be the form of this NamedAddress object as it could appear in a "To" header field.
 
-<b>Return Value:</b>
+ <b>Return Value:</b>
 
-A string representation of this object.
+ A string representation of this object.

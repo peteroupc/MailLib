@@ -147,7 +147,7 @@ namespace PeterO.Mail {
     /// <summary>Gets a value indicating whether this represents a group of
     /// addresses rather than a single address.</summary>
     /// <value><c>true</c> If this represents a group of addresses;
-    /// otherwise,. <c>false</c>.</value>
+    /// otherwise, <c>false</c>.</value>
     public bool IsGroup {
       get {
         return this.isGroup;
@@ -194,10 +194,10 @@ namespace PeterO.Mail {
     /// <see cref='NamedAddress'/> class.</summary>
     /// <param name='address'>The parameter <paramref name='address'/> is a
     /// text string.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='address'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Address has an invalid syntax.;
-    /// Address has an invalid syntax.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='address'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>Address has an invalid
+    /// syntax.; Address has an invalid syntax.</exception>
     public NamedAddress(string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -227,8 +227,8 @@ namespace PeterO.Mail {
     /// name='displayName'/> is a text string.</param>
     /// <param name='address'>The parameter <paramref name='address'/> is a
     /// text string.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='address'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='address'/> is null.</exception>
     public NamedAddress(string displayName, string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -245,8 +245,8 @@ namespace PeterO.Mail {
     /// name='displayName'/> is a text string.</param>
     /// <param name='address'>The parameter <paramref name='address'/> is
     /// an Address object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='address'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='address'/> is null.</exception>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -265,8 +265,8 @@ namespace PeterO.Mail {
     /// is a text string.</param>
     /// <param name='domain'>The parameter <paramref name='domain'/> is a
     /// text string.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='localPart'/> or <paramref name='domain'/> is
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='localPart'/> or <paramref name='domain'/> is
     /// null.</exception>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
@@ -287,11 +287,11 @@ namespace PeterO.Mail {
     /// is a text string.</param>
     /// <param name='mailboxes'>The parameter <paramref name='mailboxes'/>
     /// is an IList object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='groupName'/> or <paramref name='mailboxes'/> is
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='groupName'/> or <paramref name='mailboxes'/> is
     /// null.</exception>
-    /// <exception cref='ArgumentException'>GroupName is empty.; A mailbox
-    /// in the list is a group.</exception>
+    /// <exception cref='System.ArgumentException'>GroupName is empty.; A
+    /// mailbox in the list is a group.</exception>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new ArgumentNullException(nameof(groupName));

@@ -1238,7 +1238,7 @@ import com.upokecenter.text.*;
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       String actualString = DataUtilities.GetUtf8String(bytes, false);
-      if (!expectedDSN.equals(actualString)) {
+      if (!expectedDSN.equals(actualString, StringComparison.Ordinal)) {
         expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
@@ -1773,7 +1773,7 @@ public final void setValueMessage(Message value) {
       String value) {
       String msgstr;
       msgstr = name + ": " + value + "\r\n";
-      if (!name.equals("from")) {
+      if (!name.equals("from", StringComparison.Ordinal)) {
         msgstr += "from: x@example.com\r\n";
       }
       msgstr += "\r\nBody";

@@ -81,7 +81,9 @@ namespace PeterO.Mail {
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
-    /// <returns>A 32-bit signed integer.</returns>
+    /// <summary>Calculates the hash code of this object. No application or
+    /// process IDs are used in the hash code calculation.</summary>
+    /// <returns>A 32-bit hash code.</returns>
     public override int GetHashCode() {
       var hashCode = 632580499;
       if (this.dispositionType != null) {
@@ -100,7 +102,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether the disposition type is
     /// inline.</summary>
-    /// <value><c>true</c> If the disposition type is inline; otherwise,.
+    /// <value><c>true</c> If the disposition type is inline; otherwise,
     /// <c>false</c>.</value>
     public bool IsInline {
       get {
@@ -108,8 +110,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value indicating whether the disposition type is
+    /// attachment.</summary>
+    /// <value><c>true</c> If the disposition type is attachment;
+    /// otherwise, <c>false</c>.</value>
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment",
@@ -134,8 +138,17 @@ namespace PeterO.Mail {
 
     private readonly IDictionary<string, string> parameters;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a list of parameter names associated with this object
+    /// and their values.
+    /// <para>For the "filename" parameter, the value of that parameter is
+    /// not adapted with the ContentDisposition.MakeFilename method; see
+    /// the documentation for the ContentDisposition
+    /// class.</para></summary>
+    /// <value>A read-only list of parameter names associated with this
+    /// object and their values. NOTE: Previous versions erroneously stated
+    /// that the list will be sorted by name. In fact, the names will not
+    /// be guaranteed to appear in any particular order; this is at least
+    /// the case in version 0.10.0.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -263,8 +276,12 @@ namespace PeterO.Mail {
       return MakeFilenameMethod.MakeFilename(str);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A text string.</returns>
+    /// <summary>Gets an adapted version of the "filename" parameter in
+    /// this content disposition object by using the "MakeFilename"
+    /// method.</summary>
+    /// <returns>The adapted file name in the form of a string. Returns the
+    /// empty string if there is no "filename" parameter or that parameter
+    /// is empty.</returns>
     public string GetFilename() {
       return MakeFilename(this.GetParameter("filename"));
     }

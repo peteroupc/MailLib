@@ -756,14 +756,16 @@ import com.upokecenter.mail.*;
     public void TestIsMultipart() {
       for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
-        Assert.assertEquals(dict.get("multipart").equals("1"), mt.isMultipart());
+        Assert.assertEquals(dict.get("multipart").equals("1",
+  StringComparison.Ordinal), mt.isMultipart());
       }
     }
     @Test
     public void TestIsText() {
       for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
-        Assert.assertEquals(dict.get("text").equals("1"), mt.isText());
+        Assert.assertEquals(dict.get("text").equals("1", StringComparison.Ordinal),
+  mt.isText());
       }
     }
     @Test

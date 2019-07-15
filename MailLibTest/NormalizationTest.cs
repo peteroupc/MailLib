@@ -127,7 +127,7 @@ namespace MailLibTest {
       string expectedStr,
       string actualStr,
       string msg) {
-      if (!expectedStr.Equals(actualStr)) {
+      if (!expectedStr.Equals(actualStr, StringComparison.Ordinal)) {
                 Assert.Fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
             "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);

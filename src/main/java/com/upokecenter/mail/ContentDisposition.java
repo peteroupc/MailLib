@@ -74,8 +74,9 @@ import com.upokecenter.text.*;
     }
 
     /**
-     *
-     * @return A 32-bit signed integer.
+     * Calculates the hash code of this object. No application or process IDs are
+     * used in the hash code calculation.
+     * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
       int valueHashCode = 632580499;
@@ -94,7 +95,7 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether the disposition type is inline.
-     * @return {@code true} If the disposition type is inline; otherwise, . {@code
+     * @return {@code true} If the disposition type is inline; otherwise, {@code
      * false}.
      */
     public final boolean isInline() {
@@ -102,8 +103,9 @@ import com.upokecenter.text.*;
       }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a value indicating whether the disposition type is attachment.
+     * @return {@code true} If the disposition type is attachment; otherwise,
+     * {@code false}.
      */
     public final boolean isAttachment() {
         return this.dispositionType.equals("attachment",
@@ -128,8 +130,15 @@ import com.upokecenter.text.*;
     private final Map<String, String> parameters;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a list of parameter names associated with this object and their values.
+     *  <p>For the "filename" parameter, the value of that parameter is not
+     * adapted with the ContentDisposition.MakeFilename method; see the
+     * documentation for the ContentDisposition class.</p>
+     * @return A read-only list of parameter names associated with this object and
+     * their values. NOTE: Previous versions erroneously stated that the
+     * list will be sorted by name. In fact, the names will not be
+     * guaranteed to appear in any particular order; this is at least the
+     * case in version 0.10.0.
      */
     public final Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -248,8 +257,11 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @return A text string.
+     * Gets an adapted version of the "filename" parameter in this content
+     *  disposition object by using the "MakeFilename" method.
+     * @return The adapted file name in the form of a string. Returns the empty
+     *  string if there is no "filename" parameter or that parameter is
+     * empty.
      */
     public String GetFilename() {
       return MakeFilename(this.GetParameter("filename"));

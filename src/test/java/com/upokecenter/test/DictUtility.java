@@ -5,7 +5,7 @@ import java.util.*;
   public final class DictUtility {
 private DictUtility() {
 }
-    private static final String HexAlphabet="0123456789ABCDEF";
+    private static final String HexAlphabet = "0123456789ABCDEF";
 
     public static List<Map<String, String>>
       DictList(
@@ -46,20 +46,20 @@ private DictUtility() {
         String str = arr[i];
         for (int j = 0; j < str.length(); ++j) {
           if ((str.charAt(j) & 0xfc00) == 0xdc00 ||
-             ((str.charAt(j) & 0xfc00) == 0xd800 && (j == str.length()-1 ||
+             ((str.charAt(j) & 0xfc00) == 0xd800 && (j == str.length() - 1 ||
              (str.charAt(j + 1) & 0xfc00) != 0xdc00))) {
             throw new IllegalArgumentException("arr is invalid");
           }
-          if (str.charAt(j)=='\"') {
+          if (str.charAt(j) == '\"') {
             sb.append("\\\"");
-          } else if (str.charAt(j)=='\\') {
+          } else if (str.charAt(j) == '\\') {
    sb.append("\\\\");
- } else if (str.charAt(j)=='\r') {
+ } else if (str.charAt(j) == '\r') {
    sb.append("\\r");
- } else if (str.charAt(j)=='\n') {
+ } else if (str.charAt(j) == '\n') {
    sb.append("\\n");
-          } else if (str.charAt(j)<0x20 || str.charAt(j) >= 0x7f) {
-            int ch=(int)str.charAt(j);
+          } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
+            int ch = (int)str.charAt(j);
             sb.append("\\u")
                .append(HexAlphabet.charAt((ch >> 12) & 15))
                .append(HexAlphabet.charAt((ch >> 8) & 15))

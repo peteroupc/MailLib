@@ -188,12 +188,19 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
                     gives the day of week */
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='dateTime'>Not documented yet.</param>
-    /// <param name='gmt'>Not documented yet.</param>
-    /// <returns>A string object.</returns>
-    /// <exception cref='ArgumentException'>Invalid date and time; Invalid
-    /// date and time; Invalid year.</exception>
+    /// <summary>Generates a date-time string following the Internet
+    /// Message Format (RFC 5322) from an 8-element array.</summary>
+    /// <param name='dateTime'>The date and time in the form of an
+    /// 8-element array. See
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+    /// System.String,System.Boolean)'/> for information on the format of
+    /// this parameter.</param>
+    /// <param name='gmt'>The parameter <paramref name='gmt'/> is not
+    /// documented yet.</param>
+    /// <returns>A date-time string.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> is null or invalid, including if the year (
+    /// <c>dateTime[0]</c> ) is less than 0.</exception>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (!IsValidDateTime(dateTime) || dateTime[0] < 0) {
         throw new ArgumentException("Invalid date and time");
@@ -306,7 +313,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='str'>Not documented yet.</param>
+    /// <param name='str'>The parameter <paramref name='str'/> is not
+    /// documented yet.</param>
     /// <returns>An array of 32-bit unsigned integers.</returns>
     public static int[] ParseDateString(string str) {
       return ParseDateString(str, false);

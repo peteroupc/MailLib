@@ -5,18 +5,24 @@ using PeterO;
 namespace PeterO.Mail {
     /// <summary>
     ///  Contains methods for parsing and generating Data URIs
-    /// (uniform resource identifiers). Data URIs are described
-    /// in RFC 2397. Examples for Data URIs follow.
-    /// <code>data:, hello%20world</code>
-    /// <code>data:text/markdown, hello%20world</code>
-    /// <code>data:application/octet-stream;base64, AAAAAA==</code>
+    /// (uniform // /resource identifiers). Data URIs are
+    /// described in RFC 2397. Examples for Data URIs follow.
+    /// <code>
+    /// data:, hello%20world
+    /// </code>
+    /// <code>
+    /// data:text/markdown, hello%20world
+    /// </code>
+    /// <code>
+    /// data:application/octet-stream;base64, AAAAAA==
+    /// </code>
     ///  .
     /// </summary>
   public static class DataUris {
-    /// <summary>Extracts the media type from a string representing a Data
-    /// URI (uniform resource identifier).</summary>
-    /// <param name='uri'>A string representing a data URI. It must start
-    /// with "data:".</param>
+    /// <summary>Extracts the media type from a Data URI (uniform resource
+    /// identifier).</summary>
+    /// <param name='uri'>The parameter <paramref name='uri'/> is a text
+    /// string.</param>
     /// <returns>The media type. Returns null if <paramref name='uri'/> is
     /// null, is syntactically invalid, or is not a Data URI.</returns>
     public static MediaType DataUriMediaType(string uri) {
@@ -69,14 +75,12 @@ namespace PeterO.Mail {
       return null;
     }
 
-    /// <summary>Extracts the media type from a Data URI (uniform resource
-    /// identifier).</summary>
-    /// <param name='uri'>A data URI. It must have a scheme of
-    /// "data:".</param>
-    /// <returns>The media type. Returns null if <paramref name='uri'/> is
-    /// null, is syntactically invalid, or is not a Data URI.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='uri'>The parameter <paramref name='uri'/> is not
+    /// documented yet.</param>
+    /// <returns>A MediaType object.</returns>
     public static MediaType DataUriMediaType(Uri uri) {
-return (uri == null) ? null : (DtaUriBytes(uri.ToString());
+return (uri == null) ? null : DataUriMediaType(uri.ToString());
     }
 
     private static int ToHex(char b1) {
@@ -101,22 +105,18 @@ return (uri == null) ? null : (DtaUriBytes(uri.ToString());
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1,
     };
 
-    /// <summary>Extracts the data from a Data URI (uniform resource
-    /// identifier) in the form of a byte array.</summary>
-    /// <param name='uri'>A data URI. It must have a scheme of
-    /// "data".</param>
-    /// <returns>The data as a byte array. Returns null if <paramref
-    /// name='uri'/> is null, is syntactically invalid, or is not a data
-    /// URI.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='uri'>The parameter <paramref name='uri'/> is not
+    /// documented yet.</param>
+    /// <returns>A byte array.</returns>
     public static byte[] DataUriBytes(Uri uri) {
-return (uri == null) ? null : (DtaUriBytes(uri.ToString());
+return (uri == null) ? null : DataUriBytes(uri.ToString());
     }
 
-    /// <summary>Extracts the data from a string representing a Data URI
-    /// (uniform resource identifier) in the form of a byte
-    /// array.</summary>
-    /// <param name='uri'>A string representing a data URI. It must start
-    /// with "data:".</param>
+    /// <summary>Extracts the data from a Data URI (uniform resource
+    /// identifier) in the form of a byte array.</summary>
+    /// <param name='uri'>The parameter <paramref name='uri'/> is a text
+    /// string.</param>
     /// <returns>The data as a byte array. Returns null if <paramref
     /// name='uri'/> is null, is syntactically invalid, or is not a data
     /// URI.</returns>

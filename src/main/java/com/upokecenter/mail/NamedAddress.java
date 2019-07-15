@@ -150,7 +150,7 @@ import java.util.*;
     /**
      * Gets a value indicating whether this represents a group of addresses rather
      * than a single address.
-     * @return {@code true} If this represents a group of addresses; otherwise, .
+     * @return {@code true} If this represents a group of addresses; otherwise,
      * {@code false}.
      */
     public final boolean isGroup() {
@@ -198,8 +198,8 @@ import java.util.*;
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param address The parameter {@code address} is a text string.
      * @throws NullPointerException The parameter {@code address} is null.
-     * @throws IllegalArgumentException Address has an invalid syntax.; Address has an
-     * invalid syntax.
+     * @throws IllegalArgumentException Address has an invalid syntax.; Address has
+     * an invalid syntax.
      */
     public NamedAddress(String address) {
       if (address == null) {
@@ -261,8 +261,8 @@ import java.util.*;
      * @param displayName The parameter {@code displayName} is a text string.
      * @param localPart The parameter {@code localPart} is a text string.
      * @param domain The parameter {@code domain} is a text string.
-     * @throws NullPointerException The parameter {@code localPart} or {@code
-     * domain} is null.
+     * @throws NullPointerException The parameter {@code localPart} or
+     * {@code domain} is null.
      */
     public NamedAddress(String displayName, String localPart, String domain) {
       if (localPart == null) {
@@ -281,10 +281,10 @@ import java.util.*;
      * Initializes a new instance of the {@link NamedAddress} class.
      * @param groupName The parameter {@code groupName} is a text string.
      * @param mailboxes The parameter {@code mailboxes} is an List object.
-     * @throws NullPointerException The parameter {@code groupName} or {@code
-     * mailboxes} is null.
-     * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list is a
-     * group.
+     * @throws NullPointerException The parameter {@code groupName} or
+     * {@code mailboxes} is null.
+     * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list
+     * is a group.
      */
     public NamedAddress(String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {

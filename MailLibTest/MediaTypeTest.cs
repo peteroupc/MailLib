@@ -753,14 +753,16 @@ namespace MailLibTest {
     public void TestIsMultipart() {
       foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
-        Assert.AreEqual(dict["multipart"].Equals("1"), mt.IsMultipart);
+        Assert.AreEqual(dict["multipart"].Equals("1",
+  StringComparison.Ordinal), mt.IsMultipart);
       }
     }
     [Test]
     public void TestIsText() {
       foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
-        Assert.AreEqual(dict["text"].Equals("1"), mt.IsText);
+        Assert.AreEqual(dict["text"].Equals("1", StringComparison.Ordinal),
+  mt.IsText);
       }
     }
     [Test]

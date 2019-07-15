@@ -41,8 +41,8 @@ namespace PeterO.Mail {
     /// <see cref='DispositionBuilder'/> class.</summary>
     /// <param name='mt'>The parameter <paramref name='mt'/> is a
     /// ContentDisposition object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='mt'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
@@ -55,9 +55,10 @@ namespace PeterO.Mail {
     /// <see cref='DispositionBuilder'/> class.</summary>
     /// <param name='type'>The parameter <paramref name='type'/> is a text
     /// string.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='type'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Type is empty.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='type'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>Type is
+    /// empty.</exception>
     public DispositionBuilder(string type) {
       if (type == null) {
         throw new ArgumentNullException(nameof(type));
@@ -71,7 +72,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a text media
     /// type.</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise,.
+    /// <value><c>true</c> If this is a text media type; otherwise,
     /// <c>false</c>.</value>
     [Obsolete(
       "Irrelevant for content dispositions; will be removed in the future.")]
@@ -81,8 +82,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value indicating whether this is a multipart media
+    /// type.</summary>
+    /// <value><c>true</c> If this is a multipart media type; otherwise,
+    /// <c>false</c>.</value>
     [Obsolete("Irrelevant for content dispositions; will be removed in the" +
 "\u0020future.")]
     public bool IsMultipart {
@@ -103,9 +106,10 @@ namespace PeterO.Mail {
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Str is empty.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>Str is
+    /// empty.</exception>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -129,8 +133,8 @@ namespace PeterO.Mail {
     /// upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
     /// lower case.).</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='name'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='name'/> is null.</exception>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -148,9 +152,9 @@ namespace PeterO.Mail {
     /// strings to lower case.).</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>Either <paramref
+    /// <exception cref='System.ArgumentNullException'>Either <paramref
     /// name='value'/> or <paramref name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// <exception cref='System.ArgumentException'>The parameter <paramref
     /// name='name'/> is empty, or it isn't a well-formed parameter
     /// name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {

@@ -4,17 +4,21 @@
 
 Contains methods for parsing and generating Data URIs (uniform // /resource
  identifiers). Data URIs are described in RFC 2397. Examples for Data
- URIs follow. <pre>data:, hello%20world</pre>
- <pre>data:text/markdown, hello%20world</pre>
- <pre>data:application/octet-stream;base64, AAAAAA==</pre> .
+ URIs follow. <pre> data:, hello%20world </pre> <pre>
+ data:text/markdown, hello%20world </pre> <pre>
+ data:application/octet-stream;base64, AAAAAA== </pre> .
 
 ## Methods
 
 * `static byte[] DataUriBytes​(java.lang.String uri)`<br>
  Extracts the data from a Data URI (uniform resource identifier) in the form
  of a byte array.
+* `static byte[] DataUriBytes​(java.net.URI uri)`<br>
+ Not documented yet.
 * `static MediaType DataUriMediaType​(java.lang.String uri)`<br>
  Extracts the media type from a Data URI (uniform resource identifier).
+* `static MediaType DataUriMediaType​(java.net.URI uri)`<br>
+ Not documented yet.
 * `static java.lang.String MakeDataUri​(byte[] bytes,
            MediaType mediaType)`<br>
  Encodes data with the given media type in a Data URI (uniform resource
@@ -36,6 +40,30 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 * The media type. Returns null if <code>uri</code> is null, is
  syntactically invalid, or is not a Data URI.
+
+### DataUriMediaType
+    public static MediaType DataUriMediaType​(java.net.URI uri)
+Not documented yet.
+
+**Parameters:**
+
+* <code>uri</code> - The parameter <code>uri</code> is not documented yet.
+
+**Returns:**
+
+* A MediaType object.
+
+### DataUriBytes
+    public static byte[] DataUriBytes​(java.net.URI uri)
+Not documented yet.
+
+**Parameters:**
+
+* <code>uri</code> - The parameter <code>uri</code> is not documented yet.
+
+**Returns:**
+
+* A byte array.
 
 ### DataUriBytes
     public static byte[] DataUriBytes​(java.lang.String uri)

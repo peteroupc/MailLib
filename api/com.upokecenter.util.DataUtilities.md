@@ -8,19 +8,19 @@ Contains methods useful for reading and writing strings. It is designed to
  encoding form of the Unicode Standard which uses one byte to encode
  the most basic characters and two to four bytes to encode other
  characters. For example, the <code>GetUtf8</code> method converts a text
- string to an array of bytes in UTF-8.</p> <p>In C# and Java, text
+ string to an array of bytes in UTF-8. </p> <p>In C# and Java, text
  strings are represented as sequences of 16-bit values called
  <code>char</code> s. These sequences are well-formed under UTF-16, a
  16-bit encoding form of Unicode, except if they contain unpaired
  surrogate code points. (A surrogate code point is used to encode
  supplementary characters, those with code points U + 10000 or higher,
- in UTF-16. A surrogate pair is a high surrogate.get(U + D800 to
- U + DBFF) followed by a low surrogate.get(U + DC00 to U + DFFF). An
- unpaired surrogate code point is a surrogate not appearing in a
- surrogate pair.) Many of the methods in this class allow setting the
- behavior to follow when unpaired surrogate code points are found in
- text strings, such as throwing an error or treating the unpaired
- surrogate as a replacement character (U + FFFD).</p>
+ in UTF-16. A surrogate pair is a high surrogate [U + D800 to U + DBFF]
+ followed by a low surrogate [U + DC00 to U + DFFF]. An unpaired
+ surrogate code point is a surrogate not appearing in a surrogate
+ pair.) Many of the methods in this class allow setting the behavior
+ to follow when unpaired surrogate code points are found in text
+ strings, such as throwing an error or treating the unpaired
+ surrogate as a replacement character (U + FFFD). </p>
 
 ## Methods
 
@@ -136,7 +136,9 @@ Finds the number of Unicode code points in the given text string. Unpaired
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 **Returns:**
 
@@ -180,16 +182,18 @@ Generates a text string from a portion of a UTF-8 byte array.
 ### GetUtf8Bytes
     public static byte[] GetUtf8Bytes​(java.lang.String str, boolean replace)
 <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
- byte-order mark (U + FEFF) at the beginning of the encoded byte
- array.</p> <p>REMARK: It is not recommended to use
+ byte-order mark (U + FEFF) at the beginning of the encoded byte array.
+ </p> <p>REMARK: It is not recommended to use
  <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
  method in Java to do this. For instance, <code>getBytes()</code> encodes
  text strings in a default (so not fixed) character encoding, which
- can be undesirable.</p>
+ can be undesirable. </p>
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>replace</code> - If true, replaces unpaired surrogate code points with the
  replacement character (U + FFFD). If false, stops processing when an
@@ -210,16 +214,18 @@ Generates a text string from a portion of a UTF-8 byte array.
 ### GetUtf8Bytes
     public static byte[] GetUtf8Bytes​(java.lang.String str, boolean replace, boolean lenientLineBreaks)
 <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
- byte-order mark (U + FEFF) at the beginning of the encoded byte
- array.</p> <p>REMARK: It is not recommended to use
+ byte-order mark (U + FEFF) at the beginning of the encoded byte array.
+ </p> <p>REMARK: It is not recommended to use
  <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
  method in Java to do this. For instance, <code>getBytes()</code> encodes
  text strings in a default (so not fixed) character encoding, which
- can be undesirable.</p>
+ can be undesirable. </p>
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>replace</code> - If true, replaces unpaired surrogate code points with the
  replacement character (U + FFFD). If false, stops processing when an
@@ -246,7 +252,9 @@ Calculates the number of bytes needed to encode a string in UTF-8.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>replace</code> - If true, treats unpaired surrogate code points as having 3
  UTF-8 bytes (the UTF-8 length of the replacement character U + FFFD).
@@ -267,7 +275,9 @@ Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -289,7 +299,9 @@ Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -313,16 +325,18 @@ Gets the Unicode code point just before the given index of the string.
 
 ### CodePointAt
     public static int CodePointAt​(java.lang.String str, int index)
-Gets the Unicode code point at the given index of the string.<p> </p><p>The
+Gets the Unicode code point at the given index of the string.<p/><p>The
  following example shows how to iterate a text string code point by
- code point.</p> <pre>for (int i = 0;i&lt;str.length(); ++i) { int
+ code point. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
  codePoint = DataUtilities.CodePointAt(str, i);
-  System.out.println("codePoint:"+codePoint); if (codePoint &gt;=
+  Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
  0x10000) { i++; /* Supplementary code point */ } }</pre> .
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -340,18 +354,20 @@ Gets the Unicode code point at the given index of the string.<p> </p><p>The
 
 ### CodePointAt
     public static int CodePointAt​(java.lang.String str, int index, int surrogateBehavior)
-Gets the Unicode code point at the given index of the string.<p> </p><p>The
+Gets the Unicode code point at the given index of the string.<p/><p>The
  following example shows how to iterate a text string code point by
  code point, terminating the loop when an unpaired surrogate is
- found.</p> <pre>for (int i = 0;i&lt;str.length(); ++i) { int
+ found. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
  codePoint = DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt;
  0) { break; /* Unpaired surrogate */ }
-  System.out.println("codePoint:"+codePoint); if (codePoint &gt;=
+  Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
  0x10000) { i++; /* Supplementary code point */ } }</pre> .
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -380,11 +396,15 @@ Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 **Returns:**
 
-* The converted string, or null if <code>str</code> is null.
+* The converted string, or null if
+      <code>str</code>
+       is null.
 
 ### ToUpperCaseAscii
     public static java.lang.String ToUpperCaseAscii​(java.lang.String str)
@@ -393,11 +413,15 @@ Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 **Returns:**
 
-* The converted string, or null if <code>str</code> is null.
+* The converted string, or null if
+      <code>str</code>
+       is null.
 
 ### CodePointCompare
     public static int CodePointCompare​(java.lang.String strA, java.lang.String strB)
@@ -454,6 +478,12 @@ Writes a portion of a string in UTF-8 encoding to a data stream.
 
 * <code>java.io.IOException</code> - An I/O error occurred.
 
+* <code>java.lang.IllegalArgumentException</code> - Either "offset" or "length" is less than 0
+  or greater than "str"'s length, or "str"'s length minus "offset" is
+  less than "length".
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+
 ### WriteUtf8
     public static int WriteUtf8​(java.lang.String str, int offset, int length, java.io.OutputStream stream, boolean replace, boolean lenientLineBreaks) throws java.io.IOException
 Writes a portion of a string in UTF-8 encoding to a data stream.
@@ -491,6 +521,12 @@ Writes a portion of a string in UTF-8 encoding to a data stream.
  length</code> is greater than the string's length.
 
 * <code>java.io.IOException</code> - An I/O error occurred.
+
+* <code>java.lang.IllegalArgumentException</code> - Either "offset" or "length" is less than 0
+  or greater than "str"'s length, or "str"'s length minus "offset" is
+  less than "length".
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### WriteUtf8
     public static int WriteUtf8​(java.lang.String str, java.io.OutputStream stream, boolean replace) throws java.io.IOException

@@ -203,8 +203,8 @@ Deprecated.
 
 **Throws:**
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> contains an unpaired
- surrogate code point.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> contains an
+ unpaired surrogate code point.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
@@ -355,6 +355,16 @@ Deprecated.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
- than 0 or greater than <code>chars</code> 's length, or <code>chars</code> ' s
- length minus <code>index</code> is less than <code>length</code>.
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
+ less than 0 or greater than <code>chars</code> 's length, or <code>
+ chars</code> ' s length minus <code>index</code> is less than <code>length</code>.
+
+* <code>java.lang.IllegalArgumentException</code> - Either "index" or "length" is less than 0
+  or greater than "chars"'s length, or "chars"'s length minus "index"
+  is less than "length".
+
+* <code>java.lang.IllegalArgumentException</code> - Either "index" or "length" is less than 0 or
+  greater than "chars"'s length, or "chars"'s length minus "index" is
+  less than "length".
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.

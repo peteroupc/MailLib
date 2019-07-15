@@ -79,8 +79,8 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>address</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - Address has an invalid syntax.; Address has an
- invalid syntax.
+* <code>java.lang.IllegalArgumentException</code> - Address has an invalid syntax.; Address has
+ an invalid syntax.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String address)
@@ -124,8 +124,8 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>localPart</code> or <code>
- domain</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>localPart</code> or
+ <code>domain</code> is null.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String groupName, java.util.List<NamedAddress> mailboxes)
@@ -139,11 +139,11 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>groupName</code> or <code>
- mailboxes</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>groupName</code> or
+ <code>mailboxes</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - GroupName is empty.; A mailbox in the list is a
- group.
+* <code>java.lang.IllegalArgumentException</code> - GroupName is empty.; A mailbox in the list
+ is a group.
 
 ### ParseAddresses
     public static java.util.List<NamedAddress> ParseAddresses​(java.lang.String addressValue)
@@ -238,7 +238,7 @@ Gets a value indicating whether this represents a group of addresses rather
 
 **Returns:**
 
-* <code>true</code> If this represents a group of addresses; otherwise, .
+* <code>true</code> If this represents a group of addresses; otherwise,
  <code>false</code>.
 
 ### toString

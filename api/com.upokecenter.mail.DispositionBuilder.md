@@ -92,8 +92,7 @@ Irrelevant for content dispositions; will be removed in the future.
 
 **Returns:**
 
-* <code>true</code> If this is a text media type; otherwise, . <code>
- false</code>.
+* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
     @Deprecated public final boolean isMultipart()
@@ -102,7 +101,8 @@ Irrelevant for content dispositions; will be removed in the future.
 
 **Returns:**
 
-* A value not documented yet.
+* <code>true</code> If this is a multipart media type; otherwise, <code>
+ false</code>.
 
 ### ToDisposition
     public ContentDisposition ToDisposition()
@@ -170,10 +170,11 @@ Sets a parameter of this content disposition.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - Either <code>value</code> or <code>name</code> is null.
+* <code>java.lang.NullPointerException</code> - Either <code>value</code> or <code>name</code> is
+ null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it isn't a
- well-formed parameter name.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it
+ isn't a well-formed parameter name.
 
 ### toString
     public java.lang.String toString()

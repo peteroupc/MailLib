@@ -11,7 +11,8 @@ Contains methods for parsing and generating date-time strings following the
  Not documented yet.
 * `static java.lang.String GenerateDateString​(int[] dateTime,
                   boolean gmt)`<br>
- Not documented yet.
+ Generates a date-time string following the Internet Message Format (RFC
+ 5322) from an 8-element array.
 * `static int[] ParseDateString​(java.lang.String str)`<br>
  Not documented yet.
 * `static int[] ParseDateString​(java.lang.String str,
@@ -38,22 +39,25 @@ Not documented yet.
 
 ### GenerateDateString
     public static java.lang.String GenerateDateString​(int[] dateTime, boolean gmt)
-Not documented yet.
+Generates a date-time string following the Internet Message Format (RFC
+ 5322) from an 8-element array.
 
 **Parameters:**
 
-* <code>dateTime</code> - Not documented yet.
+* <code>dateTime</code> - The date and time in the form of an 8-element array. See
+ <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
+ this parameter.
 
-* <code>gmt</code> - Not documented yet.
+* <code>gmt</code> - The parameter <code>gmt</code> is not documented yet.
 
 **Returns:**
 
-* A string object.
+* A date-time string.
 
 **Throws:**
 
-* <code>java.lang.IllegalArgumentException</code> - Invalid date and time; Invalid date and time;
- Invalid year.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or invalid,
+ including if the year (<code>dateTime[0]</code>) is less than 0.
 
 ### ParseDateString
     public static int[] ParseDateString​(java.lang.String str, boolean parseObsoleteZones)
@@ -96,7 +100,7 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>str</code> - Not documented yet.
+* <code>str</code> - The parameter <code>str</code> is not documented yet.
 
 **Returns:**
 

@@ -37,7 +37,7 @@
 ## Methods
 
 * `boolean equals​(java.lang.Object obj)`<br>
- Not documented yet.
+ Determines whether this object and another object are equal.
 * `java.lang.String GetCharset()`<br>
  Gets this media type's "charset" parameter, naming a character encoding used
  to represent text in the data that uses this media type.
@@ -61,13 +61,14 @@
 * `boolean isText()`<br>
  Gets a value indicating whether this is a text media type ("text/*").
 * `static MediaType Parse​(java.lang.String mediaTypeValue)`<br>
- Not documented yet.
+ Parses a media type string and returns a media type object.
 * `static MediaType Parse​(java.lang.String str,
      MediaType defaultValue)`<br>
  Parses a media type string and returns a media type object, or the default
  value if the string is invalid.
 * `java.lang.String ToSingleLineString()`<br>
- Not documented yet.
+ Converts this media type to a text string form suitable for inserting in
+ HTTP headers.
 * `java.lang.String toString()`<br>
  Converts this media type to a text string form suitable for inserting in
  email headers.
@@ -107,7 +108,7 @@ Gets the name of this media type's top-level type (such as "text" in
 
 ### equals
     public boolean equals​(java.lang.Object obj)
-Not documented yet.
+Determines whether this object and another object are equal.
 
 **Overrides:**
 
@@ -115,11 +116,12 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code>.
+* <code>true</code> if this object and another object are equal; otherwise,
+ <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -149,8 +151,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 **Returns:**
 
-* <code>true</code> If this is a text media type; otherwise, . <code>
- false</code>.
+* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
     public final boolean isMultipart()
@@ -158,7 +159,7 @@ Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
-* <code>true</code> If this is a multipart media type; otherwise, . <code>
+* <code>true</code> If this is a multipart media type; otherwise, <code>
  false</code>.
 
 ### getParameters
@@ -191,11 +192,15 @@ Converts this media type to a text string form suitable for inserting in
 
 ### ToSingleLineString
     public java.lang.String ToSingleLineString()
-Not documented yet.
+Converts this media type to a text string form suitable for inserting in
+ HTTP headers. Notably, the string contains the value of a
+ Content-Type header field (without the text necessarily starting
+  with "Content-Type" followed by a space), and consists of a single
+ line.
 
 **Returns:**
 
-* A text string.
+* A text string form of this media type.
 
 ### ToUriSafeString
     public java.lang.String ToUriSafeString()
@@ -262,16 +267,18 @@ Gets the top level type and subtype of this media type, separated by a
 
 ### Parse
     public static MediaType Parse​(java.lang.String mediaTypeValue)
-Not documented yet.
+Parses a media type string and returns a media type object. For further
+ information, see the overload taking a MediaType parameter.
 
 **Parameters:**
 
-* <code>mediaTypeValue</code> - The parameter <code>mediaTypeValue</code> is not documented
- yet.
+* <code>mediaTypeValue</code> - A text string representing a media type. This media
+ type can include parameters.
 
 **Returns:**
 
-* A MediaType object.
+* A media type object, or MediaType.TextPlainAscii if <code>
+ mediaTypeValue</code> is empty or syntactically invalid.
 
 ### Parse
     public static MediaType Parse​(java.lang.String str, MediaType defaultValue)

@@ -16,19 +16,19 @@ import java.io.*;
      * encoding form of the Unicode Standard which uses one byte to encode
      * the most basic characters and two to four bytes to encode other
      * characters. For example, the <code>GetUtf8</code> method converts a text
-     * string to an array of bytes in UTF-8.</p> <p>In C# and Java, text
+     * string to an array of bytes in UTF-8. </p> <p>In C# and Java, text
      * strings are represented as sequences of 16-bit values called
      * <code>char</code> s. These sequences are well-formed under UTF-16, a
      * 16-bit encoding form of Unicode, except if they contain unpaired
      * surrogate code points. (A surrogate code point is used to encode
      * supplementary characters, those with code points U + 10000 or higher,
-     * in UTF-16. A surrogate pair is a high surrogate.get(U + D800 to
-     * U + DBFF) followed by a low surrogate.get(U + DC00 to U + DFFF). An
-     * unpaired surrogate code point is a surrogate not appearing in a
-     * surrogate pair.) Many of the methods in this class allow setting the
-     * behavior to follow when unpaired surrogate code points are found in
-     * text strings, such as throwing an error or treating the unpaired
-     * surrogate as a replacement character (U + FFFD).</p>
+     * in UTF-16. A surrogate pair is a high surrogate [U + D800 to U + DBFF]
+     * followed by a low surrogate [U + DC00 to U + DFFF]. An unpaired
+     * surrogate code point is a surrogate not appearing in a surrogate
+     * pair.) Many of the methods in this class allow setting the behavior
+     * to follow when unpaired surrogate code points are found in text
+     * strings, such as throwing an error or treating the unpaired
+     * surrogate as a replacement character (U + FFFD). </p>
      */
   public final class DataUtilities {
 private DataUtilities() {
@@ -61,7 +61,9 @@ private DataUtilities() {
      * Finds the number of Unicode code points in the given text string. Unpaired
      * surrogate code points increase this number by 1. This is not
      *  necessarily the length of the string in "char" s.
-     * @param str The parameter {@code str} is a text string.
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @return The number of Unicode code points in the given string.
      * @throws NullPointerException The parameter {@code str} is null.
      */
@@ -132,13 +134,15 @@ private DataUtilities() {
 
     /**
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
-     * byte-order mark (U + FEFF) at the beginning of the encoded byte
-     * array.</p> <p>REMARK: It is not recommended to use
+     * byte-order mark (U + FEFF) at the beginning of the encoded byte array.
+     * </p> <p>REMARK: It is not recommended to use
      * <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
      * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
-     * can be undesirable.</p>
-     * @param str The parameter {@code str} is a text string.
+     * can be undesirable. </p>
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
      * unpaired surrogate code point is seen.
@@ -154,13 +158,15 @@ private DataUtilities() {
 
     /**
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
-     * byte-order mark (U + FEFF) at the beginning of the encoded byte
-     * array.</p> <p>REMARK: It is not recommended to use
+     * byte-order mark (U + FEFF) at the beginning of the encoded byte array.
+     * </p> <p>REMARK: It is not recommended to use
      * <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
      * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
-     * can be undesirable.</p>
-     * @param str The parameter {@code str} is a text string.
+     * can be undesirable. </p>
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
      * unpaired surrogate code point is seen.
@@ -240,7 +246,9 @@ try { if (ms != null) {
 
     /**
      * Calculates the number of bytes needed to encode a string in UTF-8.
-     * @param str The parameter {@code str} is a text string.
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param replace If true, treats unpaired surrogate code points as having 3
      * UTF-8 bytes (the UTF-8 length of the replacement character U + FFFD).
      * @return The number of bytes needed to encode the given string in UTF-8, or
@@ -286,7 +294,9 @@ try { if (ms != null) {
 
     /**
      * Gets the Unicode code point just before the given index of the string.
-     * @param str The parameter {@code str} is a text string.
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the previous position. Returns -1 if
      * {@code index} is 0 or less, or is greater than the string's length.
@@ -301,7 +311,9 @@ try { if (ms != null) {
 
     /**
      * Gets the Unicode code point just before the given index of the string.
-     * @param str The parameter {@code str} is a text string.
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
      * previous character is an unpaired surrogate code point: if 0, return
@@ -343,13 +355,15 @@ try { if (ms != null) {
     }
 
     /**
-     * Gets the Unicode code point at the given index of the string.<p> <p>The
+     * Gets the Unicode code point at the given index of the string.<p><p>The
      * following example shows how to iterate a text string code point by
-     * code point.</p> <pre>for (int i = 0;i&lt;str.length(); ++i) { int
+     * code point. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
      * codePoint = DataUtilities.CodePointAt(str, i);
-     *  System.out.println("codePoint:"+codePoint); if (codePoint &gt;=
+     *  Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
      * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }</pre> . </p>
-     * @param str The parameter {@code str} is a text string.
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the given position. Returns -1 if {@code
      * index} is less than 0, or is the string's length or greater. Returns
@@ -363,15 +377,17 @@ try { if (ms != null) {
     }
 
     /**
-     * Gets the Unicode code point at the given index of the string.<p> <p>The
+     * Gets the Unicode code point at the given index of the string.<p><p>The
      * following example shows how to iterate a text string code point by
      * code point, terminating the loop when an unpaired surrogate is
-     * found.</p> <pre>for (int i = 0;i&lt;str.length(); ++i) { int
+     * found. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
      * codePoint = DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt;
      * 0) { break; /* Unpaired surrogate &#x2a;&#x2f; }
-     *  System.out.println("codePoint:"+codePoint); if (codePoint &gt;=
+     *  Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
      * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }</pre> . </p>
-     * @param str The parameter {@code str} is a text string.
+     * @param str The parameter
+      {@code str}
+       is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
      * previous character is an unpaired surrogate code point: if 0, return
@@ -415,8 +431,12 @@ try { if (ms != null) {
     /**
      * Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
      * converted to lower-case. Other characters remain unchanged.
-     * @param str The parameter {@code str} is a text string.
-     * @return The converted string, or null if {@code str} is null.
+     * @param str The parameter
+      {@code str}
+       is a text string.
+     * @return The converted string, or null if
+      {@code str}
+       is null.
      */
     public static String ToLowerCaseAscii(String str) {
       if (str == null) {
@@ -450,8 +470,12 @@ try { if (ms != null) {
     /**
      * Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
      * converted to upper-case. Other characters remain unchanged.
-     * @param str The parameter {@code str} is a text string.
-     * @return The converted string, or null if {@code str} is null.
+     * @param str The parameter
+      {@code str}
+       is a text string.
+     * @return The converted string, or null if
+      {@code str}
+       is null.
      */
     public static String ToUpperCaseAscii(String str) {
       if (str == null) {
@@ -564,6 +588,10 @@ try { if (ms != null) {
      * 0, {@code length} is less than 0, or {@code offset} plus {@code
      * length} is greater than the string's length.
      * @throws java.io.IOException An I/O error occurred.
+     * @throws IllegalArgumentException Either "offset" or "length" is less than 0
+     *  or greater than "str"'s length, or "str"'s length minus "offset" is
+     *  less than "length".
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static int WriteUtf8(
       String str,
@@ -594,6 +622,10 @@ try { if (ms != null) {
      * 0, {@code length} is less than 0, or {@code offset} plus {@code
      * length} is greater than the string's length.
      * @throws java.io.IOException An I/O error occurred.
+     * @throws IllegalArgumentException Either "offset" or "length" is less than 0
+     *  or greater than "str"'s length, or "str"'s length minus "offset" is
+     *  less than "length".
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static int WriteUtf8(
       String str,
