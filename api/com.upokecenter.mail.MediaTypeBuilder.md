@@ -137,8 +137,8 @@ Sets this media type's top-level type.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> is syntactically
- invalid for a top-level type.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> is syntactically invalid
+ for a top-level type.
 
 ### RemoveParameter
     public MediaTypeBuilder RemoveParameter​(java.lang.String name)
@@ -180,8 +180,8 @@ Sets a parameter's name and value for this media type.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>value</code> or <code>
- name</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>value</code> or <code>name</code> is
+ null.
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty or
  syntactically invalid.

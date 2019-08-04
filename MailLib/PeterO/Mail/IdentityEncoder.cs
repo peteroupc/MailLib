@@ -17,11 +17,11 @@ namespace PeterO.Mail {
   {
     public int Encode(int c, IWriter s) {
       if (s == null) {
-  throw new ArgumentNullException(nameof(s));
-}
+        throw new ArgumentNullException(nameof(s));
+      }
       if (c < 0) {
- return -1;
-}
+        return -1;
+      }
       c &= 0xff;
       s.WriteByte((byte)c);
       return 1;

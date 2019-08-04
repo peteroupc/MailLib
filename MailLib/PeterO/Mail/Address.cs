@@ -32,7 +32,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the local part of this email address (the part before
     /// the "@" sign).</summary>
     /// <value>The local part of this email address (the part before the
-    /// &#x22;@&#x22; sign).</value>
+    /// "@" sign).</value>
     public string LocalPart {
       get {
         return this.localPart;
@@ -138,8 +138,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the domain of this email address (the part after the
     /// "@" sign).</summary>
-    /// <value>The domain of this email address (the part after the
-    /// &#x22;@&#x22; sign).</value>
+    /// <value>The domain of this email address (the part after the "@"
+    /// sign).</value>
     public string Domain {
       get {
         return this.domain;
@@ -147,15 +147,15 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='Address'/> class.</summary>
+    /// <see cref='PeterO.Mail.Address'/> class.</summary>
     /// <param name='addressValue'>The parameter <paramref
     /// name='addressValue'/> is a text string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='addressValue'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>AddressValue is empty.;
-    /// Address doesn't contain a '@' sign; Invalid local part; Expected
-    /// '@' sign after local part; Expected domain after '@'; Invalid
-    /// domain; Address too long.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='addressValue'/> is null.</exception>
+    /// <exception cref='ArgumentException'>AddressValue is empty.; Address
+    /// doesn't contain a '@' sign; Invalid local part; Expected '@' sign
+    /// after local part; Expected domain after '@'; Invalid domain;
+    /// Address too long.</exception>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException(nameof(addressValue));

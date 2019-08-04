@@ -170,11 +170,10 @@ Sets a parameter of this content disposition.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - Either <code>value</code> or <code>name</code> is
- null.
+* <code>java.lang.NullPointerException</code> - Either <code>value</code> or <code>name</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it
- isn't a well-formed parameter name.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it isn't a
+ well-formed parameter name.
 
 ### toString
     public java.lang.String toString()

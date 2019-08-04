@@ -19,16 +19,15 @@
  an NR-LDH label.</p> <p>A U-label contains one or more characters
  outside the Basic Latin range (U + 0000 to U + 007F) and meets IDNA2008
  requirements for labels with such characters. An example is
-  "eá".</p> <p>An A-label is an LDH label beginning with "xn--"
- in any combination of case, and is convertible to a U-label. An
-  example is "xn--e-ufa".</p> <p>An XN-label is an LDH label beginning
-  with "xn--" in any combination of case.</p> <p>NOTICE: While this
- class's source code is in the public domain, the class uses two
- internal classes, called <code>NormalizationData</code> and
- <code>IdnaData</code>, that include data derived from the Unicode
- Character Database. See the documentation for the NormalizerInput
- class for the permission notice for the Unicode Character
- Database.</p>
+  "eá".</p> <p>An A-label is an LDH label beginning with "xn--" in any
+ combination of case, and is convertible to a U-label. An example is
+  "xn--e-ufa".</p> <p>An XN-label is an LDH label beginning with
+  "xn--" in any combination of case.</p> <p>NOTICE: While this class's
+ source code is in the public domain, the class uses two internal
+ classes, called <code>NormalizationData</code> and <code>IdnaData</code>, that
+ include data derived from the Unicode Character Database. See the
+ documentation for the NormalizerInput class for the permission
+ notice for the Unicode Character Database.</p>
 
 ## Methods
 
@@ -103,3 +102,7 @@ Determines whether the given string is a domain name containing only
 
 * <code>true</code> if the given string is a syntactically valid domain
  name; otherwise; false.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.

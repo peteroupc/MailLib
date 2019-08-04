@@ -645,8 +645,8 @@ private URIUtility() {
 
     private static String NormalizePath(String path) {
       int len = path.length();
-      if (len == 0 || path.equals("..", StringComparison.Ordinal) ||
-path.equals(".", StringComparison.Ordinal)) {
+      if (len == 0 || path.startsWith("..") ||
+path.startsWith(".")) {
         return "";
       }
       if (path.indexOf(ValueSlashDot) < 0 &&
@@ -1404,10 +1404,10 @@ path.equals(".", StringComparison.Ordinal)) {
         return false;
       }
       path = PercentDecode(path);
-      if (path.equals("..", StringComparison.Ordinal)) {
+      if (path.startsWith("..")) {
         return true;
       }
-      if (path.equals(".", StringComparison.Ordinal)) {
+      if (path.startsWith(".")) {
         return true;
       }
       if (path.indexOf(ValueSlashDot) < 0 &&
@@ -1510,6 +1510,6 @@ path.equals(".", StringComparison.Ordinal)) {
       String absuri = DirectoryPath(absoluteBaseURI);
       String reluri = DirectoryPath(rel);
       return (absuri == null || reluri == null ||
-         !absuri.equals(reluri, StringComparison.Ordinal)) ? null : rel;
+         !absuri.startsWith(reluri)) ? null : rel;
     }
   }

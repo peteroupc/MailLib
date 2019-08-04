@@ -3,11 +3,11 @@ package com.upokecenter.mail;
 import com.upokecenter.util.*;
 
     /**
-     * Contains methods for parsing and generating Data URIs (uniform // /resource
+     * Contains methods for parsing and generating Data URIs (uniform resource
      * identifiers). Data URIs are described in RFC 2397. Examples for Data
-     * URIs follow. <pre> data:, hello%20world </pre> <pre>
-     * data:text/markdown, hello%20world </pre> <pre>
-     * data:application/octet-stream;base64, AAAAAA== </pre> .
+     * URIs follow. <pre>data:, hello%20world</pre>
+     * <pre>data:text/markdown, hello%20world</pre>
+     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
      */
   public final class DataUris {
 private DataUris() {
@@ -17,16 +17,20 @@ private DataUris() {
      * @param uri The parameter {@code uri} is a text string.
      * @return The media type. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a Data URI.
+     * @throws NullPointerException The parameter {@code uri} is null.
      */
     public static MediaType DataUriMediaType(String uri) {
-      String url = uri;
-      String[] parts = URIUtility.SplitIRIToStrings(
+            if (uri == null) {
+              throw new NullPointerException("uri");
+            }
+            String url = uri;
+            String[] parts = URIUtility.SplitIRIToStrings(
             url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
-        return null;
-      }
-      String path = parts[2];
-      if (parts[0].equals("data", StringComparison.Ordinal)) {
+            if (parts == null || parts[0] == null || parts[2] == null) {
+              return null;
+            }
+            String path = parts[2];
+            if (parts[0].startsWith("data")) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -114,16 +118,20 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
      * @param uri The parameter {@code uri} is a text string.
      * @return The data as a byte array. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a data URI.
+     * @throws NullPointerException The parameter {@code uri} is null.
      */
     public static byte[] DataUriBytes(String uri) {
-      String url = uri;
-      String[] parts = URIUtility.SplitIRIToStrings(
+            if (uri == null) {
+              throw new NullPointerException("uri");
+            }
+            String url = uri;
+            String[] parts = URIUtility.SplitIRIToStrings(
             url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
-        return null;
-      }
-      String path = parts[2];
-      if (parts[0].equals("data", StringComparison.Ordinal)) {
+            if (parts == null || parts[0] == null || parts[2] == null) {
+              return null;
+            }
+            String path = parts[2];
+            if (parts[0].startsWith("data")) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -131,7 +139,7 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
         boolean usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii(
             path.substring(
               mediaTypePart - 7, (
-              mediaTypePart - 7)+(7))).equals(";base64", StringComparison.Ordinal);
+              mediaTypePart - 7)+(7))).startsWith(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -167,9 +175,9 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
             b1 = (payload.charAt(i) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i)];
             b2 = (payload.charAt(i + 1) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 1)];
             if (lastBlock && payload.charAt(i + 2) == '=' && payload.charAt(i + 3) == '=') {
-            } else if (lastBlock && path.charAt(i + 3) == '=') {
-              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
-            } else {
+          } else if (lastBlock && path.charAt(i + 3) == '=') {
+            b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
+          } else {
               b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
               b4 = (payload.charAt(i + 3) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 3)];
             }
@@ -284,10 +292,8 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
       StringBuilder builder = new StringBuilder();
       builder.append("data:");
       String mediaTypeString = mediaType.ToUriSafeString();
-      if (mediaType.getTypeAndSubType().equals("text/plain",
-            StringComparison.Ordinal)) {
-        if (mediaTypeString.substring(0,10).equals("text/plain",
-            StringComparison.Ordinal)) {
+      if (mediaType.getTypeAndSubType().startsWith("text/plain")) {
+        if (mediaTypeString.substring(0,10).startsWith("text/plain")) {
           // Strip 'text/plain' from the media type String,
           // since that's the default for data URIs
           mediaTypeString = mediaTypeString.substring(10);

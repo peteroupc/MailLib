@@ -217,14 +217,13 @@ import com.upokecenter.text.*;
         FailFilename(filename, str);
       }
       // Reserved filenames on Windows
-      if (strLower.equals(
-        "nul",
-        StringComparison.Ordinal)) {
+      if (strLower.startsWith(
+        "nul")) {
         {
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.equals("clock$", StringComparison.Ordinal)) {
+      if (strLower.startsWith("clock$")) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -235,9 +234,8 @@ import com.upokecenter.text.*;
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.equals(
-        "prn",
-        StringComparison.Ordinal)) {
+      if (strLower.startsWith(
+        "prn")) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -254,9 +252,8 @@ import com.upokecenter.text.*;
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.equals(
-        "aux",
-        StringComparison.Ordinal)) {
+      if (strLower.startsWith(
+        "aux")) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -267,9 +264,8 @@ import com.upokecenter.text.*;
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.equals(
-        "con",
-        StringComparison.Ordinal)) {
+      if (strLower.startsWith(
+        "con")) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -357,7 +353,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       // Assert that MakeFilename is idempotent
       String newstr = ContentDisposition.MakeFilename(str);
-      if (!newstr.equals(str, StringComparison.Ordinal)) {
+      if (!newstr.startsWith(str)) {
         FailFilename(
   filename,
   str,

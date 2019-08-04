@@ -126,7 +126,7 @@ import com.upokecenter.text.*;
       String expectedStr,
       String actualStr,
       String msg) {
-      if (!expectedStr.equals(actualStr, StringComparison.Ordinal)) {
+      if (!expectedStr.startsWith(actualStr)) {
                 Assert.fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
             "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
@@ -179,8 +179,8 @@ import com.upokecenter.text.*;
       System.out.println("Initialized random");
       for (int i = 0; i < 10000; ++i) {
         if (i % 100 == 0) {
- System.out.println(i);
-}
+          System.out.println(i);
+        }
         String str = EncodingTest.RandomString(rand);
         this.TestIdempotent(str, Normalization.NFC);
         this.TestIdempotent(str, Normalization.NFD);
@@ -194,12 +194,12 @@ System.out.println("Done");
     public void NormTestSpecific() {
       String str = "_\ufac7\uc972+67 Tqd R_.";
       {
-String stringTemp = NormalizerInput.Normalize(
-  str,
-  Normalization.NFC);
-Assert.assertEquals(
-  "_\u96e3\uc972+67 Tqd R_.",
-  stringTemp);
+        String stringTemp = NormalizerInput.Normalize(
+          str,
+          Normalization.NFC);
+          Assert.assertEquals(
+            "_\u96e3\uc972+67 Tqd R_.",
+            stringTemp);
 }
       if (
         NormalizerInput.IsNormalized(str, Normalization.NFC)) {
@@ -271,26 +271,26 @@ Assert.assertEquals(
 
       public void AssertNFC(NormResult... other) {
         for (NormResult o : other) {
- AssertEqual(this.origstr, o.nfc, this.line);
- }
+          AssertEqual(this.origstr, o.nfc, this.line);
+        }
       }
 
       public void AssertNFD(NormResult... other) {
         for (NormResult o : other) {
- AssertEqual(this.origstr, o.nfd, this.line);
- }
+          AssertEqual(this.origstr, o.nfd, this.line);
+        }
       }
 
       public void AssertNFKC(NormResult... other) {
         for (NormResult o : other) {
- AssertEqual(this.origstr, o.nfkc, this.line);
- }
+          AssertEqual(this.origstr, o.nfkc, this.line);
+        }
       }
 
       public void AssertNFKD(NormResult... other) {
         for (NormResult o : other) {
- AssertEqual(this.origstr, o.nfkd, this.line);
- }
+          AssertEqual(this.origstr, o.nfkd, this.line);
+        }
       }
     }
     /*
@@ -310,9 +310,9 @@ IsSpecialChar(p3)) {
         }
       }
   for (int i = 0; i < 0x110000; ++i) {
-          if ((i & 0xf800) == 0xd800) {
- continue;
-}
+    if ((i & 0xf800) == 0xd800) {
+      continue;
+    }
           cp.charAt(0) = i;
           String codePointString = ToCodePointString(cp);
     String nfc = NormalizerInput.Normalize(codePointString,
@@ -326,8 +326,8 @@ String nfdfs = NormalizerInput.Normalize(codePointString,
             EncodingTest.EscapeString(codePointString));
  }
           if (!nfc.equals(codePointString)) {
- continue;
-}
+            continue;
+          }
           if (!nfd.equals(nfdfs)) {
             System.out.println("---");
             System.out.println(EncodingTest.EscapeString(codePointString));
@@ -345,8 +345,8 @@ String nfdfs = NormalizerInput.Normalize(codePointString,
         "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
         "NormalizationTest.txt");
       if (lines == null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       if (!(lines.length > 0)) {
  Assert.fail();
  }
@@ -406,18 +406,18 @@ String nfdfs = NormalizerInput.Normalize(codePointString,
           if (!NormalizerInput.IsNormalized(
             cpstr,
             Normalization.NFD)) {
-                    Assert.fail(TestCommon.IntToString(i));
+            Assert.fail(TestCommon.IntToString(i));
           }
           if (!NormalizerInput.IsNormalized(
             cpstr,
             Normalization.NFKC)) {
-                    Assert.fail(TestCommon.IntToString(i));
- }
+            Assert.fail(TestCommon.IntToString(i));
+          }
           if (!NormalizerInput.IsNormalized(
             cpstr,
             Normalization.NFKD)) {
-                    Assert.fail(TestCommon.IntToString(i));
-        }
+            Assert.fail(TestCommon.IntToString(i));
+          }
           String imsg = TestCommon.IntToString(i);
           AssertEqual(
   cpstr,

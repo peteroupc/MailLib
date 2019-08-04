@@ -44,11 +44,11 @@
       <paramref name='src'/>
        's length).
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='src'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -247,7 +247,7 @@
       <paramref name='s'/>
        is null.
     </returns>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -363,7 +363,7 @@
       pair will be -1 (an index won't be less than 0 in any other case). If the
       string is null or is not a valid IRI, returns null.
     </returns>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -377,7 +377,7 @@
       <paramref name='length'/>
        .
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='s'/>
        is null.
     </exception>
@@ -417,23 +417,15 @@
     </param>
     <returns>The Unicode code point at the given position. Returns -1 if
       <paramref name='index'/>
-       is less than 0, or is the string's length or greater. Returns the
-      replacement character (U+FFFD) if the current character is an unpaired
-      surrogate code point. If the return value is 65536 (0x10000) or greater,
-      the code point takes up two UTF-16 code units.
+       is 0 or less, or is greater than the string's length. Returns the
+      replacement character (U+FFFD) if the code point at that position is an
+      unpaired surrogate code point. If the return value is 65536 (0x10000) or
+      greater, the code point takes up two UTF-16 code units.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
-    <example><para>The following example shows how to iterate a text string code point by
-        code point.
-      </para>
-      <code>for (var i = 0;i&lt;str.Length; ++i) { int codePoint =
-        DataUtilities.CodePointAt(str, i);
-        Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;= 0x10000)
-        { i++; /* Supplementary code point */ } }</code> .
-    </example>
   </doc>
   <doc name='M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32,System.Int32)'>
     <summary>Gets the Unicode code point at the given index of the string.
@@ -444,21 +436,21 @@
     </param>
     <param name='index'>Index of the current position into the string.
     </param>
-    <param name='surrogateBehavior'>Specifies what kind of value to return if the previous character is an
-      unpaired surrogate code point: if 0, return the replacement character
-      (U+FFFD); if 1, return the value of the surrogate code point; if neither 0
-      nor 1, return -1.
+    <param name='surrogateBehavior'>Specifies what kind of value to return if the code point at the given
+      index is an unpaired surrogate code point: if 0, return the replacement
+      character (U+FFFD); if 1, return the value of the surrogate code point; if
+      neither 0 nor 1, return -1.
     </param>
-    <returns>The Unicode code point at the current position. Returns -1 if
+    <returns>The Unicode code point at the given position. Returns -1 if
       <paramref name='index'/>
-       is less than 0, or is the string's length or greater. Returns a value as
+       is 0 or less, or is greater than the string's length. Returns a value as
       specified under
       <paramref name='surrogateBehavior'/>
-       if the previous character is an unpaired surrogate code point. If the
-      return value is 65536 (0x10000) or greater, the code point takes up two
-      UTF-16 code units.
+       if the code point at that position is an unpaired surrogate code point.
+      If the return value is 65536 (0x10000) or greater, the code point takes up
+      two UTF-16 code units.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -483,11 +475,11 @@
     <returns>The Unicode code point at the previous position. Returns -1 if
       <paramref name='index'/>
        is 0 or less, or is greater than the string's length. Returns the
-      replacement character (U+FFFD) if the previous character is an unpaired
-      surrogate code point. If the return value is 65536 (0x10000) or greater,
-      the code point takes up two UTF-16 code units.
+      replacement character (U+FFFD) if the code point at the previous position
+      is an unpaired surrogate code point. If the return value is 65536
+      (0x10000) or greater, the code point takes up two UTF-16 code units.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -501,7 +493,7 @@
     </param>
     <param name='index'>Index of the current position into the string.
     </param>
-    <param name='surrogateBehavior'>Specifies what kind of value to return if the previous character is an
+    <param name='surrogateBehavior'>Specifies what kind of value to return if the previous code point is an
       unpaired surrogate code point: if 0, return the replacement character
       (U+FFFD); if 1, return the value of the surrogate code point; if neither 0
       nor 1, return -1.
@@ -511,11 +503,11 @@
        is 0 or less, or is greater than the string's length. Returns a value as
       specified under
       <paramref name='surrogateBehavior'/>
-       if the previous character is an unpaired surrogate code point. If the
-      return value is 65536 (0x10000) or greater, the code point takes up two
-      UTF-16 code units.
+       if the code point at the previous position is an unpaired surrogate code
+      point. If the return value is 65536 (0x10000) or greater, the code point
+      takes up two UTF-16 code units.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -547,7 +539,7 @@
     </param>
     <returns>The number of Unicode code points in the given string.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -573,11 +565,11 @@
     </param>
     <returns>The string encoded in UTF-8.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The string contains an unpaired surrogate code point and
+    <exception cref='System.ArgumentException'>The string contains an unpaired surrogate code point and
       <paramref name='replace'/>
        is false, or an internal error occurred.
     </exception>
@@ -606,11 +598,11 @@
     </param>
     <returns>The string encoded in UTF-8.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The string contains an unpaired surrogate code point and
+    <exception cref='System.ArgumentException'>The string contains an unpaired surrogate code point and
       <paramref name='replace'/>
        is false, or an internal error occurred.
     </exception>
@@ -630,7 +622,7 @@
       <paramref name='replace'/>
        is false.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -645,11 +637,11 @@
     </param>
     <returns>A string represented by the UTF-8 byte array.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='bytes'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The string is not valid UTF-8 and
+    <exception cref='System.ArgumentException'>The string is not valid UTF-8 and
       <paramref name='replace'/>
        is false.
     </exception>
@@ -668,15 +660,15 @@
     </param>
     <returns>A string represented by the UTF-8 byte array.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='bytes'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The portion of the byte array is not valid UTF-8 and
+    <exception cref='System.ArgumentException'>The portion of the byte array is not valid UTF-8 and
       <paramref name='replace'/>
        is false.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='offset'/>
        is less than 0,
       <paramref name='bytesCount'/>
@@ -706,9 +698,9 @@
       <paramref name='bytesCount'/>
        is 0 or greater).
     </returns>
-    <exception cref='T:System.IO.IOException'>An I/O error occurred.
+    <exception cref='System.IO.IOException'>An I/O error occurred.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='stream'/>
        is null or
       <paramref name='builder'/>
@@ -734,13 +726,13 @@
       <paramref name='replace'/>
        is false.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='data'/>
        is null or
       <paramref name='builder'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='offset'/>
        is less than 0,
       <paramref name='bytesCount'/>
@@ -758,9 +750,9 @@
     </param>
     <returns>The string read.
     </returns>
-    <exception cref='T:System.IO.IOException'>An I/O error occurred.
+    <exception cref='System.IO.IOException'>An I/O error occurred.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='stream'/>
        is null.
     </exception>
@@ -780,11 +772,11 @@
     </param>
     <returns>The string read.
     </returns>
-    <exception cref='T:System.IO.IOException'>An I/O error occurred; or, the string is not valid UTF-8 and
+    <exception cref='System.IO.IOException'>An I/O error occurred; or, the string is not valid UTF-8 and
       <paramref name='replace'/>
        is false.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='stream'/>
        is null.
     </exception>
@@ -831,13 +823,13 @@
       <paramref name='replace'/>
        is false.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null or
       <paramref name='stream'/>
        is null.
     </exception>
-    <exception cref='T:System.IO.IOException'>An I/O error occurred.
+    <exception cref='System.IO.IOException'>An I/O error occurred.
     </exception>
   </doc>
   <doc name='M:PeterO.DataUtilities.WriteUtf8(System.String,System.Int32,System.Int32,System.IO.Stream,System.Boolean)'>
@@ -845,7 +837,7 @@
     </summary>
     <param name='str'>A string to write.
     </param>
-    <param name='offset'>The zero-based index where the string portion to write begins.
+    <param name='offset'>The Index starting at 0 where the string portion to write begins.
     </param>
     <param name='length'>The length of the string portion to write.
     </param>
@@ -860,13 +852,13 @@
       <paramref name='replace'/>
        is false.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null or
       <paramref name='stream'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='offset'/>
        is less than 0,
       <paramref name='length'/>
@@ -876,13 +868,12 @@
       <paramref name='length'/>
        is greater than the string's length.
     </exception>
-    <exception cref='T:System.IO.IOException'>An I/O error occurred.
+    <exception cref='System.IO.IOException'>An I/O error occurred.
     </exception>
-    <exception cref='T:System.ArgumentException'>Either &quot;offset&quot; or &quot;length&quot; is less than 0 or greater
-      than &quot;str&quot;&apos;s length, or &quot;str&quot;&apos;s length minus
-      &quot;offset&quot; is less than &quot;length&quot;.
+    <exception cref='System.ArgumentException'>Either "offset" or "length" is less than 0 or greater than "str"'s length,
+      or "str"'s length minus "offset" is less than "length".
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -892,7 +883,7 @@
     </summary>
     <param name='str'>A string to write.
     </param>
-    <param name='offset'>The zero-based index where the string portion to write begins.
+    <param name='offset'>The Index starting at 0 where the string portion to write begins.
     </param>
     <param name='length'>The length of the string portion to write.
     </param>
@@ -910,13 +901,13 @@
       <paramref name='replace'/>
        is false.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null or
       <paramref name='stream'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='offset'/>
        is less than 0,
       <paramref name='length'/>
@@ -926,13 +917,12 @@
       <paramref name='length'/>
        is greater than the string's length.
     </exception>
-    <exception cref='T:System.IO.IOException'>An I/O error occurred.
+    <exception cref='System.IO.IOException'>An I/O error occurred.
     </exception>
-    <exception cref='T:System.ArgumentException'>Either &quot;offset&quot; or &quot;length&quot; is less than 0 or greater
-      than &quot;str&quot;&apos;s length, or &quot;str&quot;&apos;s length minus
-      &quot;offset&quot; is less than &quot;length&quot;.
+    <exception cref='System.ArgumentException'>Either "offset" or "length" is less than 0 or greater than "str"'s length,
+      or "str"'s length minus "offset" is less than "length".
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -943,18 +933,18 @@
   </doc>
   <doc name='M:PeterO.Mail.Address.#ctor(System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='Address'/>
+      <see cref='PeterO.Mail.Address'/>
        class.
     </summary>
     <param name='addressValue'>The parameter
       <paramref name='addressValue'/>
        is a text string.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='addressValue'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local
+    <exception cref='System.ArgumentException'>AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local
       part; Expected '@' sign after local part; Expected domain after '@';
       Invalid domain; Address too long.
     </exception>
@@ -962,7 +952,7 @@
   <doc name='P:PeterO.Mail.Address.Domain'>
     <summary>Gets the domain of this email address (the part after the "@" sign).
     </summary>
-    <value>The domain of this email address (the part after the &#x22;@&#x22; sign).
+    <value>The domain of this email address (the part after the "@" sign).
     </value>
   </doc>
   <doc name='M:PeterO.Mail.Address.Equals(System.Object)'>
@@ -986,8 +976,7 @@
   <doc name='P:PeterO.Mail.Address.LocalPart'>
     <summary>Gets the local part of this email address (the part before the "@" sign).
     </summary>
-    <value>The local part of this email address (the part before the &#x22;@&#x22;
-      sign).
+    <value>The local part of this email address (the part before the "@" sign).
     </value>
   </doc>
   <doc name='M:PeterO.Mail.Address.ToString'>
@@ -1065,7 +1054,7 @@
     <summary>Gets the date and time extracted from this content disposition's
       "creation-date" parameter, which specifies the date of creation of a file
       (RFC 2183 sec. 2.4). See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
        for information on the format of this method's return value.
     </summary>
     <returns>The extracted date and time as an 8-element array, or
@@ -1093,7 +1082,7 @@
     <summary>Gets the date and time extracted from this content disposition's
       "modification-date" parameter, which specifies the date of last
       modification of a file (RFC 2183 sec. 2.5). See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
        for information on the format of this method's return value.
     </summary>
     <returns>The extracted date and time as an 8-element array, or
@@ -1115,11 +1104,11 @@
     </param>
     <returns>The value of the parameter, or null if the parameter does not exist.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='name'/>
        is empty.
     </exception>
@@ -1128,7 +1117,7 @@
     <summary>Gets the date and time extracted from this content disposition's
       "read-date" parameter, which specifies the date at which a file was last
       read (RFC 2183 sec. 2.6). See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
        for information on the format of this method's return value.
     </summary>
     <returns>The extracted date and time as an 8-element array, or
@@ -1161,15 +1150,15 @@
       calling the method again on the result doesn't change that result.
       <para>Examples:
       </para>
-      <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c> (RFC 2047 encoding).
+      <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt;"hello.txt"</c> (RFC 2047 encoding).
       </para>
-      <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"</c> (RFC 2047 encoding).
+      <para><c>"=?utf-8?q?long_filename?=" -&gt;"long filename"</c> (RFC 2047 encoding).
       </para>
-      <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</c> (RFC 2231 encoding).
+      <para><c>"utf-8'en'hello%2Etxt" -&gt;"hello.txt"</c> (RFC 2231 encoding).
       </para>
-      <para><c>"nul.txt" -&gt; "_nul.txt"</c> (Reserved name).
+      <para><c>"nul.txt" -&gt;"_nul.txt"</c> (Reserved name).
       </para>
-      <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"</c> (Directory separators).
+      <para><c>"dir1/dir2/file" -&gt;"dir1_dir2_file"</c> (Directory separators).
       </para>
     </summary>
     <param name='str'>A string representing a file name. Can be null.
@@ -1201,7 +1190,7 @@
         </item>
         <item>The string returned by this method is normalized using Unicode
           normalization form C (NFC) (see the
-          <see cref='T:PeterO.Text.NormalizerInput'/>
+          <see cref='PeterO.Text.NormalizerInput'/>
            class for details). Although most file systems preserve the
           normalization of file names, there is one notable exception: The HFS
           Plus file system (on macOS before High Sierra) stores file names using
@@ -1290,7 +1279,7 @@
       <paramref name='dispoValue'/>
        is empty or syntactically invalid.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='dispoValue'/>
        is null.
     </exception>
@@ -1310,15 +1299,14 @@
       <para>RFC 2231 extensions allow each content disposition parameter to be
         associated with a character encoding and/or language, and support
         parameter values that span two or more key-value pairs. Parameters
-        making use of RFC 2231 extensions have names with an asterisk
-        ("&#x2a;"). Such a parameter will be ignored if it is ill-formed because
-        of RFC 2231's rules (except for illegal percent-decoding or undecodable
+        making use of RFC 2231 extensions have names with an asterisk ("*").
+        Such a parameter will be ignored if it is ill-formed because of RFC
+        2231's rules (except for illegal percent-decoding or undecodable
         sequences for the given character encoding). Examples of RFC 2231
         extensions follow (both examples encode the same "filename" parameter):
       </para>
-      <para><b>inline; filename&#x2a;=utf-8'en'filename.txt</b> </para>
-      <para><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
-          filename&#x2a;1&#x2a;=name%2Etxt</b> </para>
+      <para><b>inline; filename*=utf-8'en'filename.txt</b> </para>
+      <para><b>inline; filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b> </para>
       <para>This implementation ignores keys (in parameter key-value pairs) that
         appear more than once in the content disposition. Nothing in RFCs 2045,
         2183, 2231, 6266, or 7231 explicitly disallows such keys, or otherwise
@@ -1333,7 +1321,7 @@
     </param>
     <returns>A ContentDisposition object.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='dispositionValue'/>
        is null.
     </exception>
@@ -1377,6 +1365,10 @@
       <paramref name='uri'/>
        is null, is syntactically invalid, or is not a data URI.
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='uri'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.DataUriBytes(System.Uri)'>
     <summary>Not documented yet.
@@ -1399,6 +1391,10 @@
       <paramref name='uri'/>
        is null, is syntactically invalid, or is not a Data URI.
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='uri'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.DataUriMediaType(System.Uri)'>
     <summary>Not documented yet.
@@ -1420,7 +1416,7 @@
     </param>
     <returns>A Data URI that encodes the given data and media type.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='bytes'/>
        or
       <paramref name='mediaType'/>
@@ -1434,7 +1430,7 @@
     </param>
     <returns>A Data URI that encodes the given text.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='textString'/>
        is null.
     </exception>
@@ -1477,7 +1473,7 @@
     </param>
     <returns>A Data URI that encodes the given data and media type.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='bytes'/>
        or
       <paramref name='mediaType'/>
@@ -1491,7 +1487,7 @@
     </param>
     <returns>A Data URI that encodes the given text.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='textString'/>
        is null.
     </exception>
@@ -1502,38 +1498,38 @@
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor'>
     <summary>Initializes a new instance of the
-      <see cref='DispositionBuilder'/>
+      <see cref='PeterO.Mail.DispositionBuilder'/>
        class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)'>
     <summary>Initializes a new instance of the
-      <see cref='DispositionBuilder'/>
+      <see cref='PeterO.Mail.DispositionBuilder'/>
        class.
     </summary>
     <param name='mt'>The parameter
       <paramref name='mt'/>
        is a ContentDisposition object.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='mt'/>
        is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.#ctor(System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='DispositionBuilder'/>
+      <see cref='PeterO.Mail.DispositionBuilder'/>
        class.
     </summary>
     <param name='type'>The parameter
       <paramref name='type'/>
        is a text string.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='type'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Type is empty.
+    <exception cref='System.ArgumentException'>Type is empty.
     </exception>
   </doc>
   <doc name='P:PeterO.Mail.DispositionBuilder.DispositionType'>
@@ -1568,7 +1564,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        is null.
     </exception>
@@ -1582,11 +1578,11 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Str is empty.
+    <exception cref='System.ArgumentException'>Str is empty.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)'>
@@ -1602,13 +1598,13 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>Either
+    <exception cref='System.ArgumentNullException'>Either
       <paramref name='value'/>
        or
       <paramref name='name'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='name'/>
        is empty, or it isn't a well-formed parameter name.
     </exception>
@@ -1686,7 +1682,7 @@
   </doc>
   <doc name='M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String)'>
     <summary>Returns whether the given string is a basic language range under RFC 4647.
-      Examples include "&#x2a;", "en-us", and "fr".
+      Examples include "*", "en-us", and "fr".
     </summary>
     <param name='str'>The string to check. Can be null.
     </param>
@@ -1697,8 +1693,8 @@
   <doc name='M:PeterO.Mail.LanguageTags.IsLanguageRange(System.String,System.Boolean)'>
     <summary>Returns whether the given string is a basic or extended language range
       under RFC 4647. Examples of basic (and extended) language ranges include
-      "&#x2a;", "en-us", and "fr". Examples of extended language ranges include
-      "&#x2a;-de" and "it-&#x2a;".
+      "*", "en-us", and "fr". Examples of extended language ranges include
+      "*-de" and "it-*".
     </summary>
     <param name='str'>The string to check. Can be null.
     </param>
@@ -1750,13 +1746,13 @@
     <returns>A list of language tags that match the given range, in descending order of
       preference.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        or
       <paramref name='ranges'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='ranges'/>
        contains a value that is not a basic language range, or
       <paramref name='languages'/>
@@ -1775,19 +1771,19 @@
     <param name='extended'>If true, the ranges in "ranges" are extended language ranges; otherwise,
       they are basic language ranges.
     </param>
-    <param name='matchStarAtEnd'>If true, treats any range equaling "&#x2a;" as appearing at the end of the
+    <param name='matchStarAtEnd'>If true, treats any range equaling "*" as appearing at the end of the
       language priority list, no matter where it appears on that list.
     </param>
     <returns>A list of language tags that match the given range, in descending order of
       preference.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        or
       <paramref name='ranges'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='ranges'/>
        contains a value that is not a basic or extended language range, or
       <paramref name='languages'/>
@@ -1810,13 +1806,13 @@
       <paramref name='defaultValue'/>
        if there is no matching language tag.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        or
       <paramref name='ranges'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='ranges'/>
        contains a value that is not a basic language range, or
       <paramref name='languages'/>
@@ -1841,13 +1837,13 @@
       <paramref name='defaultValue'/>
        if there is no matching language tag.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        or
       <paramref name='ranges'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='ranges'/>
        contains a value that is not a basic or extended language range, or
       <paramref name='languages'/>
@@ -1868,11 +1864,11 @@
       <paramref name='defaultValue'/>
        if there is no matching language tag.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='range'/>
        is not a basic language range, or
       <paramref name='languages'/>
@@ -1896,11 +1892,11 @@
       <paramref name='defaultValue'/>
        if there is no matching language tag.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='range'/>
        is not a basic or extended language range, or
       <paramref name='languages'/>
@@ -1919,7 +1915,7 @@
       under RFC 4647; otherwise,
       <c>false</c> .
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='range'/>
        is not a basic language range, or
       <paramref name='tag'/>
@@ -1936,12 +1932,12 @@
       5322) from an 8-element array.
     </summary>
     <param name='dateTime'>The date and time in the form of an 8-element array. See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
        for information on the format of this parameter.
     </param>
     <returns>A date-time string.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='dateTime'/>
        is null or invalid, including if the year (
       <c>dateTime[0]</c> ) is less than 0.
@@ -1952,20 +1948,24 @@
       5322) from an 8-element array.
     </summary>
     <param name='dateTime'>The date and time in the form of an 8-element array. See
-      <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
        for information on the format of this parameter.
     </param>
-    <returns>A date-time string.
-    </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
-      <paramref name='dateTime'/>
-       is null or invalid, including if the year (
-      <c>dateTime[0]</c> ) is less than 0.
-    </exception>
     <param name='gmt'>The parameter
       <paramref name='gmt'/>
        is not documented yet.
     </param>
+    <returns>A date-time string.
+    </returns>
+    <exception cref='System.ArgumentException'>The parameter
+      <paramref name='dateTime'/>
+       is null or invalid, including if the year (
+      <c>dateTime[0]</c> ) is less than 0.
+    </exception>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='dateTime'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.ParseDateString(System.String)'>
     <summary>Not documented yet.
@@ -2018,6 +2018,10 @@
        is null, empty, or syntactically invalid, or if the string's year would
       overflow the range of a 32-bit signed integer.
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)'>
     <summary>Parses a date string in one of the three formats allowed by HTTP/1.1.
@@ -2033,7 +2037,7 @@
       <para>A media type consists of a top-level type (the general category of the
         data), a subtype (the specific type), and an optional list of
         parameters. For example, the media type
-        <c>text/plain; charset = utf-8</c> is a text media type ("text"), namely, a plain text type ("plain"), and
+        <c>text/plain;charset=utf-8</c> is a text media type ("text"), namely, a plain text type ("plain"), and
         the parameters say that the data uses UTF-8, a Unicode character
         encoding ("charset = utf-8"). Other top-level types include "audio",
         "video", and "application".
@@ -2100,11 +2104,11 @@
     <returns>The value of the parameter as a string, or null if the parameter doesn't
       exist.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Name is empty.
+    <exception cref='System.ArgumentException'>Name is empty.
     </exception>
   </doc>
   <doc name='P:PeterO.Mail.MediaType.IsMultipart'>
@@ -2115,8 +2119,7 @@
     </value>
   </doc>
   <doc name='P:PeterO.Mail.MediaType.IsText'>
-    <summary>Gets a value indicating whether this is a text media type ("text/&#x2a;").
-
+    <summary>Gets a value indicating whether this is a text media type ("text/*").
     </summary>
     <value><c>true</c> If this is a text media type; otherwise,
       <c>false</c> .
@@ -2163,15 +2166,14 @@
       <para>RFC 2231 extensions allow each media type parameter to be associated
         with a character encoding and/or language, and support parameter values
         that span two or more key-value pairs. Parameters making use of RFC 2231
-        extensions have names with an asterisk ("&#x2a;"). Such a parameter will
-        be ignored if it is ill-formed because of RFC 2231's rules (except for
+        extensions have names with an asterisk ("*"). Such a parameter will be
+        ignored if it is ill-formed because of RFC 2231's rules (except for
         illegal percent-decoding or undecodable sequences for the given
         character encoding). Examples of RFC 2231 extensions follow (both
         examples encode the same "filename" parameter):
       </para>
-      <para><b>text/example; filename&#x2a;=utf-8'en'filename.txt</b> </para>
-      <para><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
-          filename&#x2a;1&#x2a;=name%2Etxt</b> </para>
+      <para><b>text/example; filename*=utf-8'en'filename.txt</b> </para>
+      <para><b>text/example; filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b> </para>
       <para>This implementation ignores keys (in parameter key-value pairs) that
         appear more than once in the media type. Nothing in RFCs 2045, 2183,
         2231, 6266, or 7231 explicitly disallows such keys, or otherwise
@@ -2186,7 +2188,7 @@
     </param>
     <returns>A MediaType object.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -2269,27 +2271,27 @@
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor'>
     <summary>Initializes a new instance of the
-      <see cref='MediaTypeBuilder'/>
+      <see cref='PeterO.Mail.MediaTypeBuilder'/>
        class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)'>
     <summary>Initializes a new instance of the
-      <see cref='MediaTypeBuilder'/>
+      <see cref='PeterO.Mail.MediaTypeBuilder'/>
        class.
     </summary>
     <param name='mt'>The parameter
       <paramref name='mt'/>
        is a MediaType object.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='mt'/>
        is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.MediaTypeBuilder.#ctor(System.String,System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='MediaTypeBuilder'/>
+      <see cref='PeterO.Mail.MediaTypeBuilder'/>
        class.
     </summary>
     <param name='type'>The parameter
@@ -2326,7 +2328,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        is null.
     </exception>
@@ -2343,13 +2345,13 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='value'/>
        or
       <paramref name='name'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='name'/>
        is empty or syntactically invalid.
     </exception>
@@ -2361,11 +2363,11 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='str'/>
        is empty or syntactically invalid.
     </exception>
@@ -2377,11 +2379,11 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='str'/>
        is syntactically invalid for a top-level type.
     </exception>
@@ -2429,7 +2431,7 @@
       <list type=''>
         <item>The content-transfer-encodings "quoted-printable" and "base64" are
           treated as 7bit instead if they occur in a message or body part with
-          content type "multipart/&#x2a;" or "message/&#x2a;" (other than
+          content type "multipart/*" or "message/*" (other than
           "message/global", "message/global-headers",
           "message/global-disposition-notification", or
           "message/global-delivery-status").
@@ -2474,8 +2476,8 @@
         </item>
         <item>(c) If the content type is "text/html" and the charset is declared to
           be
-          <c>us-ascii</c> , "windows-1252", "windows-1251", or "iso-8859-&#x2a;" (all single
-          byte encodings).
+          <c>us-ascii</c> , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
+          encodings).
         </item>
         <item>(d) In non-MIME message bodies and in text/plain message bodies. Any
           8-bit bytes are replaced with the substitute character byte (0x1a).
@@ -2536,32 +2538,32 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor'>
     <summary>Initializes a new instance of the
-      <see cref='Message'/>
+      <see cref='PeterO.Mail.Message'/>
        class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor(System.Byte[])'>
     <summary>Initializes a new instance of the
-      <see cref='Message'/>
+      <see cref='PeterO.Mail.Message'/>
        class.
     </summary>
     <param name='bytes'>A byte array.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='bytes'/>
        is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor(System.IO.Stream)'>
     <summary>Initializes a new instance of the
-      <see cref='Message'/>
+      <see cref='PeterO.Mail.Message'/>
        class.
     </summary>
     <param name='stream'>The parameter
       <paramref name='stream'/>
        is a Stream object.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='stream'/>
        is null.
     </exception>
@@ -2590,18 +2592,18 @@
     </param>
     <returns>A Message object for the generated attachment.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='inputStream'/>
        or
       <paramref name='mediaType'/>
        is null.
     </exception>
-    <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
+    <exception cref='PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
     <example>The following example (written in C# for the.NET version) is an extension
       method that adds an attachment from a byte array to a message.
       <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
-        bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
+        bytes, MediaType mediaType) { using (var fs = new MemoryStream(bytes)) {
         return msg.AddAttachment(fs, mediaType); } }</code> .
     </example>
   </doc>
@@ -2624,13 +2626,13 @@
     </param>
     <returns>A Message object for the generated attachment.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='inputStream'/>
        or
       <paramref name='mediaType'/>
        is null.
     </exception>
-    <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
+    <exception cref='PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)'>
@@ -2654,11 +2656,11 @@
     </param>
     <returns>A Message object for the generated attachment.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='inputStream'/>
        is null.
     </exception>
-    <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
+    <exception cref='PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})'>
@@ -2672,11 +2674,11 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The key or value of
+    <exception cref='System.ArgumentNullException'>The key or value of
       <paramref name='header'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The header field name is too long or contains an invalid character, or the
+    <exception cref='System.ArgumentException'>The header field name is too long or contains an invalid character, or the
       header field's value is syntactically invalid.
     </exception>
   </doc>
@@ -2692,13 +2694,13 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        or
       <paramref name='value'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The header field name is too long or contains an invalid character, or the
+    <exception cref='System.ArgumentException'>The header field name is too long or contains an invalid character, or the
       header field's value is syntactically invalid.
     </exception>
   </doc>
@@ -2726,18 +2728,18 @@
     </param>
     <returns>A Message object for the generated body part.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='inputStream'/>
        or
       <paramref name='mediaType'/>
        is null.
     </exception>
-    <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
+    <exception cref='PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
     <example>The following example (written in C# for the.NET version) is an extension
       method that adds an inline body part from a byte array to a message.
       <code>public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
-        MediaType mediaType) { using(MemoryStream fs = new MemoryStream(bytes))
+        MediaType mediaType) { using (MemoryStream fs = new MemoryStream(bytes))
         { return msg.AddInline(fs, mediaType); } }</code> .
     </example>
   </doc>
@@ -2756,13 +2758,13 @@
     </param>
     <returns>A Message object for the generated body part.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='inputStream'/>
        or
       <paramref name='mediaType'/>
        is null.
     </exception>
-    <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
+    <exception cref='PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)'>
@@ -2786,11 +2788,11 @@
     </param>
     <returns>A Message object for the generated body part.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='inputStream'/>
        or "mediaType" is null.
     </exception>
-    <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.
+    <exception cref='PeterO.Mail.MessageDataException'>An I/O error occurred.
     </exception>
   </doc>
   <doc name='P:PeterO.Mail.Message.BccAddresses'>
@@ -2804,7 +2806,7 @@
     </summary>
     <value>The body of this message as a text string.
     </value>
-    <exception cref='T:System.NotSupportedException'>Either this message is a multipart message, so it doesn't have its own
+    <exception cref='System.NotSupportedException'>Either this message is a multipart message, so it doesn't have its own
       body text, or this message has no character encoding declared or assumed
       for it (which is usually the case for non-text messages), or the character
       encoding is not supported.
@@ -2830,7 +2832,7 @@
       message. Can be set to null. If set to a disposition or to null, updates
       the Content-Disposition header field as appropriate.
     </summary>
-    <value>This message&#x27;s content disposition, or null if none is specified.
+    <value>This message's content disposition, or null if none is specified.
     </value>
   </doc>
   <doc name='P:PeterO.Mail.Message.ContentType'>
@@ -2840,9 +2842,9 @@
       absent from this message. If set to a media type, updates the Content-Type
       header field as appropriate. Cannot be set to null.
     </summary>
-    <value>This message&#x27;s media type.
+    <value>This message's media type.
     </value>
-    <exception cref='T:System.ArgumentNullException'>This value is being set and "value" is null.
+    <exception cref='System.ArgumentNullException'>This value is being set and "value" is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.DecodeHeaderValue(System.String,System.String)'>
@@ -2860,7 +2862,7 @@
     </param>
     <returns>The header field value with valid encoded words decoded.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        is null.
     </exception>
@@ -2916,7 +2918,7 @@
     </param>
     <returns>A Message object.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='uri'/>
        is null.
     </exception>
@@ -2954,15 +2956,15 @@
         of the header fields with the same name, and the address set to
         <c>me@[header-name]-address.invalid</c> as the address (a
         <c>.invalid</c> address is a reserved address that can never belong to anyone). (An
-        exception is that the Resent-&#x2a; header fields may appear more than
-        once.) The generated message should always have a From header field.
+        exception is that the Resent-* header fields may appear more than once.)
+        The generated message should always have a From header field.
       </para>
       <para>If a Date and/or Message-ID header field doesn't exist, a field with
         that name will be generated (using the current local time for the Date
         field).
       </para>
       <para>When encoding the message's body, if the message has a text content type
-        ("text/&#x2a;"), the line breaks are a CR byte (carriage return, 0x0d)
+        ("text/*"), the line breaks are a CR byte (carriage return, 0x0d)
         followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If the
         message has any other content type, only CR followed by LF is considered
         a line break.
@@ -2970,7 +2972,7 @@
     </summary>
     <returns>The generated message.
     </returns>
-    <exception cref='T:PeterO.Mail.MessageDataException'>The message can't be generated.
+    <exception cref='PeterO.Mail.MessageDataException'>The message can't be generated.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.GenerateBytes'>
@@ -2989,16 +2991,16 @@
     <returns>A list of addresses, in the order in which they appear in this message's
       header fields of the given name.
     </returns>
-    <exception cref='T:System.NotSupportedException'>The parameter
+    <exception cref='System.NotSupportedException'>The parameter
       <paramref name='headerName'/>
        is not supported for this method. Currently, the only header fields
       supported are To, Cc, Bcc, Reply-To, Sender, and From.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='headerName'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='headerName'/>
        is empty.
     </exception>
@@ -3031,7 +3033,7 @@
     </summary>
     <returns>An HTML rendering of this message's text.
     </returns>
-    <exception cref='T:System.NotSupportedException'>Either this message is a multipart message, so it doesn't have its own
+    <exception cref='System.NotSupportedException'>Either this message is a multipart message, so it doesn't have its own
       body text, or this message has no character encoding declared or assumed
       for it (which is usually the case for non-text messages), or the character
       encoding is not supported.
@@ -3060,7 +3062,7 @@
     <returns>A key/value pair. The key is the name of the header field, such as "From"
       or "Content-ID". The value is the header field's value.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='index'/>
        is 0 or at least as high as the number of header fields.
     </exception>
@@ -3076,7 +3078,7 @@
     <returns>The value of the first header field with that name, or null if there is
       none.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>Name is null.
+    <exception cref='System.ArgumentNullException'>Name is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.GetHeaderArray(System.String)'>
@@ -3091,7 +3093,7 @@
       in the order they appear in the message. The array will be empty if no
       header field has that name.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>Name is null.
+    <exception cref='System.ArgumentNullException'>Name is null.
     </exception>
   </doc>
   <doc name='P:PeterO.Mail.Message.HeaderFields'>
@@ -3125,13 +3127,13 @@
       <paramref name='messages'/>
        parameter in the order given.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='messages'/>
        or
       <paramref name='languages'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='messages'/>
        or
       <paramref name='languages'/>
@@ -3181,7 +3183,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='index'/>
        is 0 or at least as high as the number of header fields.
     </exception>
@@ -3201,7 +3203,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        is null.
     </exception>
@@ -3219,7 +3221,7 @@
       this object. If no body part matches the given languages, returns the last
       body part if its language is "zxx", or the second body part otherwise.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        is null.
     </exception>
@@ -3242,7 +3244,7 @@
       this object. If no body part matches the given languages, returns the last
       body part if its language is "zxx", or the second body part otherwise.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='languages'/>
        is null.
     </exception>
@@ -3255,7 +3257,7 @@
     </param>
     <returns>This object.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='bytes'/>
        is null.
     </exception>
@@ -3302,12 +3304,12 @@
     </param>
     <returns>This object.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='dateTime'/>
        contains fewer than eight elements, contains invalid values, or contains
       a year less than 0.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='dateTime'/>
        is null.
     </exception>
@@ -3325,13 +3327,13 @@
     </param>
     <returns>A Message object.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='index'/>
        is 0 or at least as high as the number of header fields; or, the header
       field name is too long or contains an invalid character, or the header
       field's value is syntactically invalid.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The key or value of
+    <exception cref='System.ArgumentNullException'>The key or value of
       <paramref name='header'/>
        is null.
     </exception>
@@ -3348,13 +3350,13 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='index'/>
        is 0 or at least as high as the number of header fields; or, the header
       field name is too long or contains an invalid character, or the header
       field's value is syntactically invalid.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='value'/>
        is null.
     </exception>
@@ -3373,13 +3375,13 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='index'/>
        is 0 or at least as high as the number of header fields; or, the header
       field name is too long or contains an invalid character, or the header
       field's value is syntactically invalid.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        or
       <paramref name='value'/>
@@ -3400,10 +3402,10 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentException'>The header field name is too long or contains an invalid character, or the
+    <exception cref='System.ArgumentException'>The header field name is too long or contains an invalid character, or the
       header field's value is syntactically invalid.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='name'/>
        or
       <paramref name='value'/>
@@ -3421,7 +3423,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -3439,7 +3441,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='text'/>
        or
       <paramref name='html'/>
@@ -3463,7 +3465,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='markdown'/>
        is null.
     </exception>
@@ -3479,7 +3481,7 @@
     </param>
     <returns>This instance.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -3487,7 +3489,7 @@
   <doc name='P:PeterO.Mail.Message.Subject'>
     <summary>Gets or sets this message's subject.
     </summary>
-    <value>This message&#x27;s subject.
+    <value>This message's subject.
     </value>
   </doc>
   <doc name='P:PeterO.Mail.Message.ToAddresses'>
@@ -3526,13 +3528,13 @@
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor'>
     <summary>Initializes a new instance of the
-      <see cref='MessageDataException'/>
+      <see cref='PeterO.Mail.MessageDataException'/>
        class.
     </summary>
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor(System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='MessageDataException'/>
+      <see cref='PeterO.Mail.MessageDataException'/>
        class.
     </summary>
     <param name='message'>The parameter
@@ -3542,7 +3544,7 @@
   </doc>
   <doc name='M:PeterO.Mail.MessageDataException.#ctor(System.String,System.Exception)'>
     <summary>Initializes a new instance of the
-      <see cref='MessageDataException'/>
+      <see cref='PeterO.Mail.MessageDataException'/>
        class.
     </summary>
     <param name='message'>The parameter
@@ -3561,23 +3563,23 @@
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='NamedAddress'/>
+      <see cref='PeterO.Mail.NamedAddress'/>
        class.
     </summary>
     <param name='address'>The parameter
       <paramref name='address'/>
        is a text string.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='address'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Address has an invalid syntax.; Address has an invalid syntax.
+    <exception cref='System.ArgumentException'>Address has an invalid syntax.; Address has an invalid syntax.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)'>
     <summary>Initializes a new instance of the
-      <see cref='NamedAddress'/>
+      <see cref='PeterO.Mail.NamedAddress'/>
        class.
     </summary>
     <param name='displayName'>The parameter
@@ -3588,14 +3590,14 @@
       <paramref name='address'/>
        is an Address object.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='address'/>
        is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})'>
     <summary>Initializes a new instance of the
-      <see cref='NamedAddress'/>
+      <see cref='PeterO.Mail.NamedAddress'/>
        class.
     </summary>
     <param name='groupName'>The parameter
@@ -3606,18 +3608,18 @@
       <paramref name='mailboxes'/>
        is an IList object.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='groupName'/>
        or
       <paramref name='mailboxes'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>GroupName is empty.; A mailbox in the list is a group.
+    <exception cref='System.ArgumentException'>GroupName is empty.; A mailbox in the list is a group.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='NamedAddress'/>
+      <see cref='PeterO.Mail.NamedAddress'/>
        class.
     </summary>
     <param name='displayName'>The parameter
@@ -3628,14 +3630,14 @@
       <paramref name='address'/>
        is a text string.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='address'/>
        is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='NamedAddress'/>
+      <see cref='PeterO.Mail.NamedAddress'/>
        class.
     </summary>
     <param name='displayName'>The parameter
@@ -3650,7 +3652,7 @@
       <paramref name='domain'/>
        is a text string.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='localPart'/>
        or
       <paramref name='domain'/>
@@ -3734,6 +3736,10 @@
       <paramref name='addressValue'/>
        parameter.
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='addressValue'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.ToString'>
     <summary>Converts this object to a text string. This will generally be the form of
@@ -3754,7 +3760,7 @@
   </doc>
   <doc name='M:PeterO.Mail.StringAndQuality.#ctor(System.String,System.Int32)'>
     <summary>Initializes a new instance of the
-      <see cref='StringAndQuality'/>
+      <see cref='PeterO.Mail.StringAndQuality'/>
        class.
     </summary>
     <param name='value'>The parameter
@@ -3795,7 +3801,7 @@
       <paramref name='y'/>
        .
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='x'/>
        or
       <paramref name='y'/>
@@ -3942,7 +3948,7 @@
       <paramref name='s'/>
        is null.
     </returns>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -4058,7 +4064,7 @@
       pair will be -1 (an index won't be less than 0 in any other case). If the
       string is null or is not a valid IRI, returns null.
     </returns>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -4072,7 +4078,7 @@
       <paramref name='length'/>
        .
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='s'/>
        is null.
     </exception>
@@ -4179,7 +4185,7 @@
       <paramref name='s'/>
        is null.
     </returns>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -4284,7 +4290,7 @@
       be less than 0 in any other case). If the string is null or is not a valid
       IRI, returns null.
     </returns>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='offset'/>
        or
       <paramref name='length'/>
@@ -4298,7 +4304,7 @@
       <paramref name='length'/>
        .
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='s'/>
        is null.
     </exception>
@@ -4311,9 +4317,9 @@
     </param>
     <returns>Decompressed output byte array.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter "output" is null.
+    <exception cref='System.ArgumentNullException'>The parameter "output" is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Invalid LZ4.
+    <exception cref='System.ArgumentException'>Invalid LZ4.
     </exception>
   </doc>
   <doc name='T:PeterO.Text.DomainUtility'>
@@ -4340,11 +4346,11 @@
       code points, returns the length of the string. Returns -1 if an overflow
       error occurs.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>Either
+    <exception cref='System.ArgumentNullException'>Either
       <paramref name='index'/>
        or
       <paramref name='endIndex'/>
@@ -4382,7 +4388,7 @@
       </para>
       <para>A U-label contains one or more characters outside the Basic Latin range
         (U+0000 to U+007F) and meets IDNA2008 requirements for labels with such
-        characters. An example is "e&#xe1;".
+        characters. An example is "eá".
       </para>
       <para>An A-label is an LDH label beginning with "xn--" in any combination of
         case, and is convertible to a U-label. An example is "xn--e-ufa".
@@ -4409,7 +4415,7 @@
     <returns>The domain name where each XN-label is encoded into Unicode. Labels where
       this is not possible remain unchanged.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='value'/>
        is null.
     </exception>
@@ -4424,7 +4430,7 @@
     <returns>The domain name where each XN-label is encoded into Unicode. Labels where
       this is not possible remain unchanged.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>value" is null.
+    <exception cref='System.ArgumentNullException'>value" is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Text.Idna.EncodeDomainName(System.String)'>
@@ -4438,7 +4444,7 @@
       range (U+0000 to U+007F) is encoded into an XN-label. Labels where this is
       not possible remain unchanged.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='value'/>
        is null.
     </exception>
@@ -4459,6 +4465,10 @@
     <returns><c>true</c> if the given string is a syntactically valid domain name; otherwise;
       false.
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='T:PeterO.Text.Normalization'>
     <summary>Represents a Unicode normalization form.
@@ -4497,7 +4507,7 @@
   </doc>
   <doc name='M:PeterO.Text.Normalizer.#ctor(System.String,PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='Normalizer'/>
+      <see cref='PeterO.Text.Normalizer'/>
        class.
     </summary>
     <param name='str'>The parameter
@@ -4534,7 +4544,7 @@
       <paramref name='str'/>
        converted to the given normalization form.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -4551,7 +4561,7 @@
     <returns>The number of Unicode code points read, or 0 if the end of the source is
       reached.
     </returns>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='index'/>
        or
       <paramref name='length'/>
@@ -4565,13 +4575,12 @@
       <paramref name='length'/>
        .
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Either &#x22;index&#x22; or &#x22;length&#x22; is less than 0 or greater
-      than &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
-      minus &#x22;index&#x22; is less than &#x22;length&#x22;.
+    <exception cref='System.ArgumentException'>Either "index" or "length" is less than 0 or greater than "chars"'s
+      length, or "chars"'s length minus "index" is less than "length".
     </exception>
   </doc>
   <doc name='M:PeterO.Text.Normalizer.ReadChar'>
@@ -4667,7 +4676,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizerInput'/>
+      <see cref='PeterO.Text.NormalizerInput'/>
        class.
     </summary>
     <param name='input'>The parameter
@@ -4677,7 +4686,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizerInput'/>
+      <see cref='PeterO.Text.NormalizerInput'/>
        class.
     </summary>
     <param name='stream'>The parameter
@@ -4688,14 +4697,14 @@
       <paramref name='form'/>
        is a Normalization object.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='stream'/>
        is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizerInput'/>
+      <see cref='PeterO.Text.NormalizerInput'/>
        class.
     </summary>
     <param name='str'>The parameter
@@ -4705,7 +4714,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizerInput'/>
+      <see cref='PeterO.Text.NormalizerInput'/>
        class.
     </summary>
     <param name='str'>The parameter
@@ -4719,7 +4728,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizerInput'/>
+      <see cref='PeterO.Text.NormalizerInput'/>
        class.
     </summary>
     <param name='str'>The parameter
@@ -4749,7 +4758,7 @@
     <returns><c>true</c> if the text is normalized; otherwise,
       <c>false</c> .
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
        is null.
     </exception>
@@ -4767,7 +4776,7 @@
       <c>false</c> . Returns
       <c>false</c> if the string contains an unpaired surrogate code point.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -4783,11 +4792,11 @@
       <paramref name='str'/>
        converted to the given normalization form.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='str'/>
        contains an unpaired surrogate code point.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -4810,11 +4819,11 @@
     <returns>The number of Unicode code points read, or 0 if the end of the source is
       reached.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='index'/>
        or
       <paramref name='length'/>
@@ -4828,9 +4837,8 @@
       <paramref name='length'/>
        .
     </exception>
-    <exception cref='T:System.ArgumentException'>Either &#x22;index&#x22; or &#x22;length&#x22; is less than 0 or greater
-      than &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
-      minus &#x22;index&#x22; is less than &#x22;length&#x22;.
+    <exception cref='System.ArgumentException'>Either "index" or "length" is less than 0 or greater than "chars"'s
+      length, or "chars"'s length minus "index" is less than "length".
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.ReadChar'>
@@ -4915,7 +4923,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizingCharacterInput'/>
+      <see cref='PeterO.Text.NormalizingCharacterInput'/>
        class.
     </summary>
     <param name='input'>The parameter
@@ -4925,7 +4933,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizingCharacterInput'/>
+      <see cref='PeterO.Text.NormalizingCharacterInput'/>
        class.
     </summary>
     <param name='stream'>The parameter
@@ -4939,7 +4947,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizingCharacterInput'/>
+      <see cref='PeterO.Text.NormalizingCharacterInput'/>
        class.
     </summary>
     <param name='characterList'>The parameter
@@ -4949,7 +4957,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizingCharacterInput'/>
+      <see cref='PeterO.Text.NormalizingCharacterInput'/>
        class.
     </summary>
     <param name='characterList'>The parameter
@@ -4963,7 +4971,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizingCharacterInput'/>
+      <see cref='PeterO.Text.NormalizingCharacterInput'/>
        class.
     </summary>
     <param name='str'>The parameter
@@ -4973,7 +4981,7 @@
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizingCharacterInput'/>
+      <see cref='PeterO.Text.NormalizingCharacterInput'/>
        class.
     </summary>
     <param name='str'>The parameter
@@ -4984,14 +4992,14 @@
       <paramref name='form'/>
        is a Normalization object.
     </param>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)'>
     <summary>Initializes a new instance of the
-      <see cref='NormalizingCharacterInput'/>
+      <see cref='PeterO.Text.NormalizingCharacterInput'/>
        class.
     </summary>
     <param name='str'>The parameter
@@ -5021,7 +5029,7 @@
     </param>
     <returns>A list of the normalized Unicode characters.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
        is null.
     </exception>
@@ -5037,7 +5045,7 @@
     </param>
     <returns>A list of the normalized Unicode characters.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -5052,7 +5060,7 @@
     <returns><c>true</c> if the text is normalized; otherwise,
       <c>false</c> .
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
        is null.
     </exception>
@@ -5069,7 +5077,7 @@
       form; otherwise,
       <c>false</c> .
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='charList'/>
        is null.
     </exception>
@@ -5086,7 +5094,7 @@
       form; otherwise,
       <c>false</c> .
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter "charList" is null.
+    <exception cref='System.ArgumentNullException'>The parameter "charList" is null.
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)'>
@@ -5102,7 +5110,7 @@
       <c>false</c> . Returns
       <c>false</c> if the string contains an unpaired surrogate code point.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -5118,11 +5126,11 @@
       <paramref name='str'/>
        converted to the given normalization form.
     </returns>
-    <exception cref='T:System.ArgumentException'>The parameter
+    <exception cref='System.ArgumentException'>The parameter
       <paramref name='str'/>
        contains an unpaired surrogate code point.
     </exception>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
        is null.
     </exception>
@@ -5145,11 +5153,11 @@
     <returns>The number of Unicode code points read, or 0 if the end of the source is
       reached.
     </returns>
-    <exception cref='T:System.ArgumentNullException'>The parameter
+    <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
        is null.
     </exception>
-    <exception cref='T:System.ArgumentException'>Either
+    <exception cref='System.ArgumentException'>Either
       <paramref name='index'/>
        or
       <paramref name='length'/>
@@ -5163,9 +5171,8 @@
       <paramref name='length'/>
        .
     </exception>
-    <exception cref='T:System.ArgumentException'>Either &#x22;index&#x22; or &#x22;length&#x22; is less than 0 or greater
-      than &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
-      minus &#x22;index&#x22; is less than &#x22;length&#x22;.
+    <exception cref='System.ArgumentException'>Either "index" or "length" is less than 0 or greater than "chars"'s
+      length, or "chars"'s length minus "index" is less than "length".
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.ReadChar'>
@@ -5261,6 +5268,10 @@
       comparison purposes (see RFC 8266, sec. 2.3); for such purposes, use the
       NicknameForComparison method instead.
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Text.ProtocolStrings.NicknameForComparison(System.String)'>
     <summary>Prepares for comparison a string serving as a "memorable, human-friendly
@@ -5276,6 +5287,10 @@
        is null or empty). For comparison purposes, return values of this method
       should be compared code point by code point (see RFC 8266, sec. 2.4).
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Text.ProtocolStrings.OpaqueStringEnforce(System.String)'>
     <summary>Checks the validity of a string serving as an arbitrary single-line
@@ -5296,6 +5311,10 @@
        is null or empty). For comparison purposes, return values of this method
       should be compared code point by code point (see RFC 8265, sec. 4.2.3).
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Text.ProtocolStrings.UsernameEnforce(System.String)'>
     <summary>Checks the validity of a string that can serve to identify a user or
@@ -5390,5 +5409,9 @@
        ) should be compared code point by code point (see RFC 8265, secs. 3.3.4
       and 3.4.4).
     </returns>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
 </docs>

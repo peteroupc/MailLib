@@ -259,7 +259,7 @@ namespace PeterO.Text {
     private int flushIndex;
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <see cref='PeterO.Text.NormalizerInput'/> class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
     public NormalizerInput(
@@ -269,7 +269,7 @@ namespace PeterO.Text {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <see cref='PeterO.Text.NormalizerInput'/> class.</summary>
     /// <param name='input'>The parameter <paramref name='input'/> is an
     /// ICharacterInput object.</param>
     public NormalizerInput(
@@ -279,7 +279,7 @@ namespace PeterO.Text {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <see cref='PeterO.Text.NormalizerInput'/> class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
     /// <param name='index'>The parameter <paramref name='index'/> is a
@@ -298,7 +298,7 @@ namespace PeterO.Text {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <see cref='PeterO.Text.NormalizerInput'/> class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
     /// <param name='form'>The parameter <paramref name='form'/> is a
@@ -308,13 +308,13 @@ namespace PeterO.Text {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NormalizerInput'/> class.</summary>
+    /// <see cref='PeterO.Text.NormalizerInput'/> class.</summary>
     /// <param name='stream'>The parameter <paramref name='stream'/> is an
     /// ICharacterInput object.</param>
     /// <param name='form'>The parameter <paramref name='form'/> is a
     /// Normalization object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='stream'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='stream'/> is null.</exception>
     public NormalizerInput(
       ICharacterInput stream,
       Normalization form) {
@@ -338,8 +338,8 @@ namespace PeterO.Text {
     /// check.</param>
     /// <returns><c>true</c> if the text is normalized; otherwise,
     /// <c>false</c>.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='chars'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='chars'/> is null.</exception>
     public static bool IsNormalized(
       ICharacterInput chars,
       Normalization form) {
@@ -425,10 +425,10 @@ UnicodeDatabase.IsQuickCheckStarter(
     /// to.</param>
     /// <returns>The parameter <paramref name='str'/> converted to the
     /// given normalization form.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='str'/> contains an unpaired surrogate code point.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -448,8 +448,8 @@ UnicodeDatabase.IsQuickCheckStarter(
     /// <returns><c>true</c> if the given string is in the given Unicode
     /// normalization form; otherwise, <c>false</c>. Returns <c>false</c>
     /// if the string contains an unpaired surrogate code point.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -630,25 +630,18 @@ UnicodeDatabase.IsQuickCheckStarter(
     /// name='chars'/> 's length).</param>
     /// <returns>The number of Unicode code points read, or 0 if the end of
     /// the source is reached.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='chars'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Either <paramref
-    /// name='index'/> or <paramref name='length'/> is less than 0 or
-    /// greater than <paramref name='chars'/> 's length, or <paramref
-    /// name='chars'/> ' s length minus <paramref name='index'/> is less
-    /// than <paramref name='length'/>.</exception>
-    /// <exception cref='System.ArgumentException'>Either &#x22;index&#x22;
-    /// or &#x22;length&#x22; is less than 0 or greater than
-    /// &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
-    /// minus &#x22;index&#x22; is less than
-    /// &#x22;length&#x22;.</exception>
-    /// <exception cref='ArgumentException'>Either &quot;index&quot; or
-    /// &quot;length&quot; is less than 0 or greater than
-    /// &quot;chars&quot;&apos;s length, or &quot;chars&quot;&apos;s length
-    /// minus &quot;index&quot; is less than
-    /// &quot;length&quot;.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='chars'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref name='index'/>
+    /// or <paramref name='length'/> is less than 0 or greater than
+    /// <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s
+    /// length minus <paramref name='index'/> is less than <paramref
+    /// name='length'/>.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref name='index'/>
+    /// or <paramref name='length'/> is less than 0 or greater than
+    /// <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
+    /// length minus <paramref name='index'/> is less than <paramref
+    /// name='length'/>.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException(nameof(chars));

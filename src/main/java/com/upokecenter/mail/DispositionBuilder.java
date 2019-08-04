@@ -29,7 +29,8 @@ public final void setDispositionType(String value) {
       }
 
     /**
-     * Initializes a new instance of the {@link DispositionBuilder} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.DispositionBuilder} class.
      */
     public DispositionBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -37,7 +38,8 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link DispositionBuilder} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.DispositionBuilder} class.
      * @param mt The parameter {@code mt} is a ContentDisposition object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
@@ -50,7 +52,8 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link DispositionBuilder} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.DispositionBuilder} class.
      * @param type The parameter {@code type} is a text string.
      * @throws NullPointerException The parameter {@code type} is null.
      * @throws IllegalArgumentException Type is empty.
@@ -73,7 +76,7 @@ public final void setDispositionType(String value) {
  */
 @Deprecated
     public final boolean isText() {
-        return this.getDispositionType().equals("text", StringComparison.Ordinal);
+        return this.getDispositionType().startsWith("text");
       }
 
     /**
@@ -84,8 +87,7 @@ public final void setDispositionType(String value) {
  */
 @Deprecated
     public final boolean isMultipart() {
-        return this.getDispositionType().equals("multipart",
-  StringComparison.Ordinal);
+        return this.getDispositionType().startsWith("multipart");
       }
 
     /**
@@ -145,10 +147,9 @@ public final void setDispositionType(String value) {
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @param value Value of the parameter to set.
      * @return This instance.
-     * @throws NullPointerException Either {@code value} or {@code name} is
-     * null.
-     * @throws IllegalArgumentException The parameter {@code name} is empty, or it
-     * isn't a well-formed parameter name.
+     * @throws NullPointerException Either {@code value} or {@code name} is null.
+     * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
+     * well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
       if (value == null) {

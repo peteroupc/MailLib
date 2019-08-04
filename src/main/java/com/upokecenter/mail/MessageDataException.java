@@ -13,13 +13,15 @@ at: http://peteroupc.github.io/
   public class MessageDataException extends RuntimeException {
 private static final long serialVersionUID = 1L;
     /**
-     * Initializes a new instance of the {@link MessageDataException} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MessageDataException} class.
      */
     public MessageDataException() {
     }
 
     /**
-     * Initializes a new instance of the {@link MessageDataException} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MessageDataException} class.
      * @param message The parameter {@code message} is a text string.
      */
     public MessageDataException(String message) {
@@ -27,7 +29,8 @@ private static final long serialVersionUID = 1L;
     }
 
     /**
-     * Initializes a new instance of the {@link MessageDataException} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MessageDataException} class.
      * @param message The parameter {@code message} is a text string.
      * @param innerException The parameter {@code innerException} is an Exception
      * object.

@@ -19,11 +19,11 @@ import com.upokecenter.text.*;
   {
     public int Encode(int c, IWriter s) {
       if (s == null) {
-  throw new NullPointerException("s");
-}
+        throw new NullPointerException("s");
+      }
       if (c < 0) {
- return -1;
-}
+        return -1;
+      }
       c &= 0xff;
       s.write((byte)c);
       return 1;

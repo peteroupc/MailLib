@@ -316,7 +316,7 @@ import com.upokecenter.mail.*;
         "0",
         "text",
         "1"),
-      DictUtility.MakeDict(
+      DictUtility.MakeDict(,
         "name",
         "TexT/example;x=y",
         "toplevel",
@@ -756,15 +756,18 @@ import com.upokecenter.mail.*;
     public void TestIsMultipart() {
       for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
-        Assert.assertEquals(dict.get("multipart").equals("1",
-  StringComparison.Ordinal), mt.isMultipart());
+        {
+          Object objectTemp = dict.get("multipart").startsWith("1");
+  Object objectTemp2 = mt.isMultipart();
+  Assert.assertEquals(objectTemp, objectTemp2);
+}
       }
     }
     @Test
     public void TestIsText() {
       for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
-        Assert.assertEquals(dict.get("text").equals("1", StringComparison.Ordinal),
+        Assert.assertEquals(dict.get("text").startsWith("1"),
   mt.isText());
       }
     }

@@ -44,7 +44,9 @@
 * `boolean equals​(java.lang.Object obj)`<br>
  Determines whether this object and another object are equal.
 * `int[] GetCreationDate()`<br>
- Not documented yet.
+ Gets the date and time extracted from this content disposition's
+  "creation-date" parameter, which specifies the date of creation of a
+ file (RFC 2183 sec.
 * `java.lang.String getDispositionType()`<br>
  Gets a string containing this object's disposition type, such as "inline" or
   "attachment".
@@ -52,13 +54,17 @@
  Gets an adapted version of the "filename" parameter in this content
   disposition object by using the "MakeFilename" method.
 * `int[] GetModificationDate()`<br>
- Not documented yet.
+ Gets the date and time extracted from this content disposition's
+  "modification-date" parameter, which specifies the date of last
+ modification of a file (RFC 2183 sec.
 * `java.lang.String GetParameter​(java.lang.String name)`<br>
  Gets a parameter from this disposition object.
 * `java.util.Map<java.lang.String,​java.lang.String> getParameters()`<br>
  Gets a list of parameter names associated with this object and their values.
 * `int[] GetReadDate()`<br>
- Not documented yet.
+ Gets the date and time extracted from this content disposition's "read-date"
+ parameter, which specifies the date at which a file was last read
+ (RFC 2183 sec.
 * `int hashCode()`<br>
  Calculates the hash code of this object.
 * `boolean isAttachment()`<br>
@@ -199,13 +205,13 @@ Converts this content disposition to a text string form suitable for
 Converts a file name from the Content-Disposition header to a suitable name
  for saving data to a file. This method is idempotent; that is,
  calling the method again on the result doesn't change that result.
-  <p>Examples:</p> <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt;
-  "hello.txt"</code> (RFC 2047 encoding).</p>
-  <p><code>"=?utf-8?q?long_filename?=" -&gt; "long filename"</code> (RFC
-  2047 encoding).</p> <p><code>"utf-8'en'hello%2Etxt" -&gt;
-  "hello.txt"</code> (RFC 2231 encoding).</p> <p><code>"nul.txt" -&gt;
-  "_nul.txt"</code> (Reserved name).</p> <p><code>"dir1/dir2/file" -&gt;
-  "dir1_dir2_file"</code> (Directory separators).</p><p>
+  <p>Examples:</p> <p><code>"=?utf-8?q?hello=2Etxt?="
+  -&gt;"hello.txt"</code> (RFC 2047 encoding).</p>
+  <p><code>"=?utf-8?q?long_filename?=" -&gt;"long filename"</code> (RFC 2047
+  encoding).</p> <p><code>"utf-8'en'hello%2Etxt" -&gt;"hello.txt"</code>
+  (RFC 2231 encoding).</p> <p><code>"nul.txt" -&gt;"_nul.txt"</code>
+  (Reserved name).</p> <p><code>"dir1/dir2/file"
+  -&gt;"dir1_dir2_file"</code> (Directory separators).</p><p>
  </p><p><b>Remarks:</b></p> <ul> <li>The exact file name conversion used
  by this method is not guaranteed to remain the same between versions
  of this library, with the exception that the return value will be in
@@ -287,27 +293,45 @@ Gets an adapted version of the "filename" parameter in this content
 
 ### GetCreationDate
     public int[] GetCreationDate()
-Not documented yet.
+Gets the date and time extracted from this content disposition's
+  "creation-date" parameter, which specifies the date of creation of a
+ file (RFC 2183 sec. 2.4). See <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
+ this method's return value.
 
 **Returns:**
 
-* An array of 32-bit unsigned integers.
+* The extracted date and time as an 8-element array, or <code>null</code>
+  if the "creation-date" parameter doesn't exist, is an empty string,
+ or is syntactically invalid, or if the parameter's year would
+ overflow a 32-bit signed integer.
 
 ### GetModificationDate
     public int[] GetModificationDate()
-Not documented yet.
+Gets the date and time extracted from this content disposition's
+  "modification-date" parameter, which specifies the date of last
+ modification of a file (RFC 2183 sec. 2.5). See <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
+ this method's return value.
 
 **Returns:**
 
-* An array of 32-bit unsigned integers.
+* The extracted date and time as an 8-element array, or <code>null</code>
+  if the "modification-date" parameter doesn't exist, is an empty
+ string, or is syntactically invalid, or if the parameter's year
+ would overflow a 32-bit signed integer.
 
 ### GetReadDate
     public int[] GetReadDate()
-Not documented yet.
+Gets the date and time extracted from this content disposition's "read-date"
+ parameter, which specifies the date at which a file was last read
+ (RFC 2183 sec. 2.6). See <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
+ this method's return value.
 
 **Returns:**
 
-* An array of 32-bit unsigned integers.
+* The extracted date and time as an 8-element array, or <code>null</code>
+  if the "read-date" parameter doesn't exist, is an empty string, or
+ is syntactically invalid, or if the parameter's year would overflow
+ a 32-bit signed integer.
 
 ### GetParameter
     public java.lang.String GetParameter​(java.lang.String name)
@@ -367,18 +391,17 @@ Parses a content disposition string and returns a content disposition
  allow each content disposition parameter to be associated with a
  character encoding and/or language, and support parameter values
  that span two or more key-value pairs. Parameters making use of RFC
-  2231 extensions have names with an asterisk ("*"). Such a
- parameter will be ignored if it is ill-formed because of RFC 2231's
- rules (except for illegal percent-decoding or undecodable sequences
- for the given character encoding). Examples of RFC 2231 extensions
+  2231 extensions have names with an asterisk ("*"). Such a parameter
+ will be ignored if it is ill-formed because of RFC 2231's rules
+ (except for illegal percent-decoding or undecodable sequences for
+ the given character encoding). Examples of RFC 2231 extensions
   follow (both examples encode the same "filename" parameter):</p>
- <p><b>inline; filename*=utf-8'en'filename.txt</b></p>
- <p><b>inline; filename*0*=utf-8'en'file;
- filename*1*=name%2Etxt</b></p> <p>This implementation
- ignores keys (in parameter key-value pairs) that appear more than
- once in the content disposition. Nothing in RFCs 2045, 2183, 2231,
- 6266, or 7231 explicitly disallows such keys, or otherwise specifies
- error-handling behavior for such keys.</p>
+ <p><b>inline; filename*=utf-8'en'filename.txt</b></p> <p><b>inline;
+ filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
+ implementation ignores keys (in parameter key-value pairs) that
+ appear more than once in the content disposition. Nothing in RFCs
+ 2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or
+ otherwise specifies error-handling behavior for such keys.</p>
 
 **Parameters:**
 

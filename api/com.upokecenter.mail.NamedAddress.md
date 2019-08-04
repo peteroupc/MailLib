@@ -8,20 +8,25 @@ Represents an email address and a name for that address. Can represent a
 ## Methods
 
 * `NamedAddress​(java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String displayName,
             Address address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String localPart,
             java.lang.String domain) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String groupName,
             java.util.List<NamedAddress> mailboxes) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `boolean AddressesEqual​(NamedAddress na)`<br>
  Not documented yet.
 * `boolean equals​(java.lang.Object obj)`<br>
@@ -50,26 +55,32 @@ Represents an email address and a name for that address. Can represent a
 ## Constructors
 
 * `NamedAddress​(java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String displayName,
             Address address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String localPart,
             java.lang.String domain) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress​(java.lang.String groupName,
             java.util.List<NamedAddress> mailboxes) NamedAddress`<br>
- Initializes a new instance of the NamedAddress class.
+ Initializes a new instance of the NamedAddress
+ class.
 
 ## Method Details
 
 ### NamedAddress
     public NamedAddress​(java.lang.String address)
-Initializes a new instance of the <code>NamedAddress</code> class.
+Initializes a new instance of the <code>NamedAddress</code>
+ class.
 
 **Parameters:**
 
@@ -79,12 +90,13 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>address</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - Address has an invalid syntax.; Address has
- an invalid syntax.
+* <code>java.lang.IllegalArgumentException</code> - Address has an invalid syntax.; Address has an
+ invalid syntax.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String address)
-Initializes a new instance of the <code>NamedAddress</code> class.
+Initializes a new instance of the <code>NamedAddress</code>
+ class.
 
 **Parameters:**
 
@@ -98,7 +110,8 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, Address address)
-Initializes a new instance of the <code>NamedAddress</code> class.
+Initializes a new instance of the <code>NamedAddress</code>
+ class.
 
 **Parameters:**
 
@@ -112,7 +125,8 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String localPart, java.lang.String domain)
-Initializes a new instance of the <code>NamedAddress</code> class.
+Initializes a new instance of the <code>NamedAddress</code>
+ class.
 
 **Parameters:**
 
@@ -124,12 +138,13 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>localPart</code> or
- <code>domain</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>localPart</code> or <code>
+ domain</code> is null.
 
 ### NamedAddress
     public NamedAddress​(java.lang.String groupName, java.util.List<NamedAddress> mailboxes)
-Initializes a new instance of the <code>NamedAddress</code> class.
+Initializes a new instance of the <code>NamedAddress</code>
+ class.
 
 **Parameters:**
 
@@ -139,11 +154,11 @@ Initializes a new instance of the <code>NamedAddress</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>groupName</code> or
- <code>mailboxes</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>groupName</code> or <code>
+ mailboxes</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - GroupName is empty.; A mailbox in the list
- is a group.
+* <code>java.lang.IllegalArgumentException</code> - GroupName is empty.; A mailbox in the list is a
+ group.
 
 ### ParseAddresses
     public static java.util.List<NamedAddress> ParseAddresses​(java.lang.String addressValue)
@@ -160,6 +175,10 @@ Generates a list of NamedAddress objects from a comma-separated list of
 
 * A list of addresses generated from the <code>addressValue</code>
  parameter.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
 
 ### hashCode
     public int hashCode()

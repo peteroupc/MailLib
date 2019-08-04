@@ -190,14 +190,14 @@ namespace PeterO.Mail {
     /// idempotent; that is, calling the method again on the result doesn't
     /// change that result.
     /// <para>Examples:</para>
-    /// <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c> (RFC 2047
+    /// <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt;"hello.txt"</c> (RFC 2047
     /// encoding).</para>
-    /// <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"</c> (RFC
+    /// <para><c>"=?utf-8?q?long_filename?=" -&gt;"long filename"</c> (RFC
     /// 2047 encoding).</para>
-    /// <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</c> (RFC 2231
+    /// <para><c>"utf-8'en'hello%2Etxt" -&gt;"hello.txt"</c> (RFC 2231
     /// encoding).</para>
-    /// <para><c>"nul.txt" -&gt; "_nul.txt"</c> (Reserved name).</para>
-    /// <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"</c> (Directory
+    /// <para><c>"nul.txt" -&gt;"_nul.txt"</c> (Reserved name).</para>
+    /// <para><c>"dir1/dir2/file" -&gt;"dir1_dir2_file"</c> (Directory
     /// separators).</para></summary>
     /// <param name='str'>A string representing a file name. Can be
     /// null.</param>
@@ -286,22 +286,46 @@ namespace PeterO.Mail {
       return MakeFilename(this.GetParameter("filename"));
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>An array of 32-bit unsigned integers.</returns>
+    /// <summary>Gets the date and time extracted from this content
+    /// disposition's "creation-date" parameter, which specifies the date
+    /// of creation of a file (RFC 2183 sec. 2.4). See
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+    /// System.String,System.Boolean)'/> for information on the format of
+    /// this method's return value.</summary>
+    /// <returns>The extracted date and time as an 8-element array, or
+    /// <c>null</c> if the "creation-date" parameter doesn't exist, is an
+    /// empty string, or is syntactically invalid, or if the parameter's
+    /// year would overflow a 32-bit signed integer.</returns>
     public int[] GetCreationDate() {
       return MailDateTime.ParseDateString(
         this.GetParameter("creation-date"));
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>An array of 32-bit unsigned integers.</returns>
+    /// <summary>Gets the date and time extracted from this content
+    /// disposition's "modification-date" parameter, which specifies the
+    /// date of last modification of a file (RFC 2183 sec. 2.5). See
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+    /// System.String,System.Boolean)'/> for information on the format of
+    /// this method's return value.</summary>
+    /// <returns>The extracted date and time as an 8-element array, or
+    /// <c>null</c> if the "modification-date" parameter doesn't exist, is
+    /// an empty string, or is syntactically invalid, or if the parameter's
+    /// year would overflow a 32-bit signed integer.</returns>
     public int[] GetModificationDate() {
       return MailDateTime.ParseDateString(
         this.GetParameter("modification-date"));
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>An array of 32-bit unsigned integers.</returns>
+    /// <summary>Gets the date and time extracted from this content
+    /// disposition's "read-date" parameter, which specifies the date at
+    /// which a file was last read (RFC 2183 sec. 2.6). See
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+    /// System.String,System.Boolean)'/> for information on the format of
+    /// this method's return value.</summary>
+    /// <returns>The extracted date and time as an 8-element array, or
+    /// <c>null</c> if the "read-date" parameter doesn't exist, is an empty
+    /// string, or is syntactically invalid, or if the parameter's year
+    /// would overflow a 32-bit signed integer.</returns>
     public int[] GetReadDate() {
       return MailDateTime.ParseDateString(
         this.GetParameter("read-date"));
@@ -314,7 +338,7 @@ namespace PeterO.Mail {
     /// <param name='name'>The name of the parameter to get. The name will
     /// be matched using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
+    /// basic upper-case letters A to Z (U + 0041 to U+005A) in both
     /// strings to lower case.). Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
@@ -437,14 +461,14 @@ namespace PeterO.Mail {
     /// to be associated with a character encoding and/or language, and
     /// support parameter values that span two or more key-value pairs.
     /// Parameters making use of RFC 2231 extensions have names with an
-    /// asterisk ("&#x2a;"). Such a parameter will be ignored if it is
+    /// asterisk ("*"). Such a parameter will be ignored if it is
     /// ill-formed because of RFC 2231's rules (except for illegal
     /// percent-decoding or undecodable sequences for the given character
     /// encoding). Examples of RFC 2231 extensions follow (both examples
     /// encode the same "filename" parameter):</para>
-    /// <para><b>inline; filename&#x2a;=utf-8'en'filename.txt</b></para>
-    /// <para><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
-    /// filename&#x2a;1&#x2a;=name%2Etxt</b></para>
+    /// <para><b>inline; filename*=utf-8'en'filename.txt</b></para>
+    /// <para><b>inline; filename*0*=utf-8'en'file;
+    /// filename*1*=name%2Etxt</b></para>
     /// <para>This implementation ignores keys (in parameter key-value
     /// pairs) that appear more than once in the content disposition.
     /// Nothing in RFCs 2045, 2183, 2231, 6266, or 7231 explicitly

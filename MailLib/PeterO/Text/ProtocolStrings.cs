@@ -37,7 +37,7 @@ namespace PeterO.Text {
     /// IdentifierClass. In general, the IdentifierClass contains all code
     /// points in the Freeform class, except certain uncommon letters and
     /// digits, spaces, as well as punctuation and symbols outside the
-    /// Basic Latin range (U + 0000 to U + 007F).</summary>
+    /// Basic Latin range (U + 0000 to U+007F).</summary>
     /// <param name='str'>A string to check.</param>
     /// <returns><c>true</c> if the given string is empty or contains only
     /// characters allowed in RFC 8264's IdentifierClass (in the contexts
@@ -51,8 +51,7 @@ namespace PeterO.Text {
     /// FreeformClass. In general, the FreeformClass contains most letters,
     /// digits, spaces, punctuation, and symbols in the Unicode standard,
     /// as well as all basic printable characters (U + 0021 to U + 007E),
-    /// but excludes control characters (including the horizontal tab
-    /// character, U + 0009) and separators.</summary>
+    /// but excludes control characters and separators.</summary>
     /// <param name='str'>A string to check.</param>
     /// <returns><c>true</c> if the given string is empty or contains only
     /// characters allowed in RFC 8264's FreeformClass (in the contexts
@@ -121,10 +120,18 @@ namespace PeterO.Text {
     /// return values of this method (with the same value for <paramref
     /// name='preserveCase'/> ) should be compared code point by code point
     /// (see RFC 8265, secs. 3.3.4 and 3.4.4).</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static string UserpartEnforce(string str, bool preserveCase) {
       if (preserveCase) {
+        if (str == null) {
+          throw new ArgumentNullException(nameof(str));
+        }
         return Idna.UsernameCasePreservedEnforce(str);
       } else {
+        if (str == null) {
+          throw new ArgumentNullException(nameof(str));
+        }
         return Idna.UsernameCaseMappedEnforce(str);
       }
     }
@@ -219,7 +226,12 @@ namespace PeterO.Text {
     /// comparison purposes, return values of this method should be
     /// compared code point by code point (see RFC 8265, sec.
     /// 4.2.3).</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static string OpaqueStringEnforce(string str) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
       return Idna.OpaqueStringEnforce(str);
     }
 
@@ -236,7 +248,12 @@ namespace PeterO.Text {
     /// empty). Return values of this method should not be used for
     /// comparison purposes (see RFC 8266, sec. 2.3); for such purposes,
     /// use the NicknameForComparison method instead.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static string NicknameEnforce(string str) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
       return Idna.NicknameEnforce(str);
     }
 
@@ -253,7 +270,12 @@ namespace PeterO.Text {
     /// empty). For comparison purposes, return values of this method
     /// should be compared code point by code point (see RFC 8266, sec.
     /// 2.4).</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static string NicknameForComparison(string str) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
       return Idna.NicknameForComparison(str);
     }
   }

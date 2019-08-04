@@ -41,7 +41,8 @@ public final void setSubType(String value) {
       }
 
     /**
-     * Initializes a new instance of the {@link MediaTypeBuilder} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class.
      */
     public MediaTypeBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -50,7 +51,8 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link MediaTypeBuilder} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class.
      * @param mt The parameter {@code mt} is a MediaType object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
@@ -64,7 +66,8 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the {@link MediaTypeBuilder} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class.
      * @param type The parameter {@code type} is a text string.
      * @param subtype The parameter {@code subtype} is a text string.
      */
@@ -79,7 +82,7 @@ public final void setSubType(String value) {
      * @return {@code true} If this is a text media type; otherwise, {@code false}.
      */
     public final boolean isText() {
-        return this.getTopLevelType().equals("text", StringComparison.Ordinal);
+        return this.getTopLevelType().startsWith("text");
       }
 
     /**
@@ -88,7 +91,7 @@ public final void setSubType(String value) {
      * false}.
      */
     public final boolean isMultipart() {
-        return this.getTopLevelType().equals("multipart", StringComparison.Ordinal);
+        return this.getTopLevelType().startsWith("multipart");
       }
 
     /**
@@ -105,8 +108,8 @@ public final void setSubType(String value) {
      *.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException The parameter {@code str} is syntactically
-     * invalid for a top-level type.
+     * @throws IllegalArgumentException The parameter {@code str} is syntactically invalid
+     * for a top-level type.
      */
     public MediaTypeBuilder SetTopLevelType(String str) {
       if (str == null) {
@@ -150,8 +153,8 @@ public final void setSubType(String value) {
      * lower case.).
      * @param value A text string giving the parameter's value.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code value} or {@code
-     * name} is null.
+     * @throws NullPointerException The parameter {@code value} or {@code name} is
+     * null.
      * @throws IllegalArgumentException The parameter {@code name} is empty or
      * syntactically invalid.
      */

@@ -1253,8 +1253,8 @@ private FormatFlowed() {
                .append(">").append(FormatParagraph(stripped, links))
                .append("</h").append((char)('0' + heading))
                .append(">");
-        } else if (IsCodeBlockLine(line)) {
-          isSingleParagraph = false;
+             } else if (IsCodeBlockLine(line)) {
+               isSingleParagraph = false;
           if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");

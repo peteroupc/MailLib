@@ -156,7 +156,7 @@ throw new
            c2,
            (byte)'=',
            (byte)'=');
-        } else {
+         } else {
           count += this.LineAwareAppend(output, c1);
           count += this.LineAwareAppend(output, c2);
         }

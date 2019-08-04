@@ -43,11 +43,11 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
 
     public static <T> boolean ListEquals(List<T> listA, List<T> listB) {
       if (listA == null) {
- return listB == null;
-}
+        return listB == null;
+      }
       if (listA.size() != listB.size()) {
- return false;
-}
+        return false;
+      }
       for (int i = 0; i < listA.size(); ++i) {
         if (!(((listA.get(i)) == null) ? ((listB.get(i)) == null) : (listA.get(i)).equals(listB.get(i)))) {
  return false;

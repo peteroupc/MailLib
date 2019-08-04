@@ -8,7 +8,7 @@ Specifies how a message body should be displayed or handled by a mail
  user agent.
 
 * [com.upokecenter.mail.DataUris](com.upokecenter.mail.DataUris.md) -
-Contains methods for parsing and generating Data URIs (uniform // /resource
+Contains methods for parsing and generating Data URIs (uniform resource
  identifiers).
 
 * [com.upokecenter.mail.DataUrls](com.upokecenter.mail.DataUrls.md) - Deprecated.

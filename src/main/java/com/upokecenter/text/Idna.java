@@ -25,16 +25,15 @@ at: http://peteroupc.github.io/
      * an NR-LDH label.</p> <p>A U-label contains one or more characters
      * outside the Basic Latin range (U + 0000 to U + 007F) and meets IDNA2008
      * requirements for labels with such characters. An example is
-     *  "e&#xe1;".</p> <p>An A-label is an LDH label beginning with "xn--"
-     * in any combination of case, and is convertible to a U-label. An
-     *  example is "xn--e-ufa".</p> <p>An XN-label is an LDH label beginning
-     *  with "xn--" in any combination of case.</p> <p>NOTICE: While this
-     * class's source code is in the public domain, the class uses two
-     * internal classes, called <code>NormalizationData</code> and
-     * <code>IdnaData</code>, that include data derived from the Unicode
-     * Character Database. See the documentation for the NormalizerInput
-     * class for the permission notice for the Unicode Character
-     * Database.</p>
+     *  "eá".</p> <p>An A-label is an LDH label beginning with "xn--" in any
+     * combination of case, and is convertible to a U-label. An example is
+     *  "xn--e-ufa".</p> <p>An XN-label is an LDH label beginning with
+     *  "xn--" in any combination of case.</p> <p>NOTICE: While this class's
+     * source code is in the public domain, the class uses two internal
+     * classes, called <code>NormalizationData</code> and <code>IdnaData</code>, that
+     * include data derived from the Unicode Character Database. See the
+     * documentation for the NormalizerInput class for the permission
+     * notice for the Unicode Character Database.</p>
      */
   public final class Idna {
 private Idna() {
@@ -407,10 +406,14 @@ private Idna() {
      * string as a domain name.
      * @return {@code true} if the given string is a syntactically valid domain
      * name; otherwise; false.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static boolean IsValidDomainName(String str, boolean lookupRules) {
       if (((str) == null || (str).length() == 0)) {
         return false;
+      }
+      if (str == null) {
+        throw new NullPointerException("str");
       }
       boolean bidiRule = HasRtlCharacters(str);
       int lastIndex = 0;
@@ -503,7 +506,7 @@ private Idna() {
         // NOTE: "astr" and "str" will contain only ASCII characters
         // at this point, so a simple null check and
         // binary comparison are enough
-        return (astr != null) && astr.equals(str, StringComparison.Ordinal);
+        return (astr != null) && astr.startsWith(str);
       }
       if (allLDH) {
         if (bidiRule && str.charAt(0) >= '0' && str.charAt(0) <= '9') {
@@ -641,7 +644,7 @@ private Idna() {
       if (IsInPrecisClass(str, true)) {
         str = TrimAndCollapseUnicodeSpaces(str);
         if (forComparison) {
-           str = ToLowerCase(str);
+          str = ToLowerCase(str);
         }
         str = NormalizerInput.Normalize(str, Normalization.NFKC);
         return str.length() == 0 ? null : str;
@@ -656,7 +659,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.equals(newvalue, StringComparison.Ordinal)) {
+        if (oldvalue.startsWith(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -671,7 +674,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.equals(newvalue, StringComparison.Ordinal)) {
+        if (oldvalue.startsWith(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -686,7 +689,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.equals(newvalue, StringComparison.Ordinal)) {
+        if (oldvalue.startsWith(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -715,7 +718,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.equals(newvalue, StringComparison.Ordinal)) {
+        if (oldvalue.startsWith(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -742,7 +745,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.equals(newvalue, StringComparison.Ordinal)) {
+        if (oldvalue.startsWith(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -1070,8 +1073,8 @@ private Idna() {
         first = false;
       }
       if (!nonascii) {
- return false;
-}
+        return false;
+      }
       if (haveContextual) {
         if (!PassesContextChecks(str)) {
           return false;

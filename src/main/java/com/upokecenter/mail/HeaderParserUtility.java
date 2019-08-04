@@ -239,7 +239,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
          str.substring(
          startQuote + 1, (
          startQuote + 1)+(index - (startQuote + 1))));
-            } else {
+       } else {
               ++index;
             }
           } else {
@@ -420,7 +420,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
         if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
           56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
           index += 2;
-   } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 &&
+        } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 &&
           str.charAt(index)
         <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14
             &&
@@ -429,7 +429,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
      >= 42 && str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index) <= 55295) ||
             (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           ++index;
-    } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 &&
+        } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 &&
           str.charAt(index)
           <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           // NOTE: Includes parentheses, which are also handled

@@ -10,7 +10,8 @@ Use NormalizerInput instead; that class is much more flexible than
 
 * `Normalizer​(java.lang.String str,
           Normalization form) Normalizer`<br>
- Deprecated. Initializes a new instance of the Normalizer class.
+ Deprecated. Initializes a new instance of the Normalizer
+ class.
 * `static boolean IsNormalized​(java.lang.String str,
             Normalization form)`<br>
  Deprecated. Returns whether this string is normalized.
@@ -28,7 +29,8 @@ Use NormalizerInput instead; that class is much more flexible than
 
 * `Normalizer​(java.lang.String str,
           Normalization form) Normalizer`<br>
- Deprecated. Initializes a new instance of the Normalizer class.
+ Deprecated. Initializes a new instance of the Normalizer
+ class.
 
 ## Method Details
 
@@ -114,18 +116,12 @@ Deprecated.
 
 **Throws:**
 
-* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
- less than 0 or greater than <code>chars</code> 's length, or <code>
- chars</code> ' s length minus <code>index</code> is less than <code>length</code>.
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
+ than 0 or greater than <code>chars</code> 's length, or <code>chars</code> ' s
+ length minus <code>index</code> is less than <code>length</code>.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - Either "index" or "length" is less than 0
-  or greater than "chars"'s length, or "chars"'s length minus "index"
-  is less than "length".
-
-* <code>java.lang.IllegalArgumentException</code> - Either "index" or "length" is less than 0 or
-  greater than "chars"'s length, or "chars"'s length minus "index" is
-  less than "length".
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
+ than 0 or greater than <code>chars</code> 's length, or <code>chars</code> 's
+ length minus <code>index</code> is less than <code>length</code>.

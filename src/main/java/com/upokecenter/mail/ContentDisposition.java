@@ -68,8 +68,7 @@ import com.upokecenter.text.*;
       if (other == null) {
         return false;
       }
-      return this.dispositionType.equals(other.dispositionType,
-  StringComparison.Ordinal) &&
+      return this.dispositionType.startsWith(other.dispositionType) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -99,7 +98,7 @@ import com.upokecenter.text.*;
      * false}.
      */
     public final boolean isInline() {
-        return this.dispositionType.equals("inline", StringComparison.Ordinal);
+        return this.dispositionType.startsWith("inline");
       }
 
     /**
@@ -108,8 +107,7 @@ import com.upokecenter.text.*;
      * {@code false}.
      */
     public final boolean isAttachment() {
-        return this.dispositionType.equals("attachment",
-  StringComparison.Ordinal);
+        return this.dispositionType.startsWith("attachment");
       }
 
     ContentDisposition(
@@ -182,13 +180,13 @@ import com.upokecenter.text.*;
      * Converts a file name from the Content-Disposition header to a suitable name
      * for saving data to a file. This method is idempotent; that is,
      * calling the method again on the result doesn't change that result.
-     *  <p>Examples:</p> <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt;
-     *  "hello.txt"</code> (RFC 2047 encoding).</p>
-     *  <p><code>"=?utf-8?q?long_filename?=" -&gt; "long filename"</code> (RFC
-     *  2047 encoding).</p> <p><code>"utf-8'en'hello%2Etxt" -&gt;
-     *  "hello.txt"</code> (RFC 2231 encoding).</p> <p><code>"nul.txt" -&gt;
-     *  "_nul.txt"</code> (Reserved name).</p> <p><code>"dir1/dir2/file" -&gt;
-     *  "dir1_dir2_file"</code> (Directory separators).</p><p>
+     *  <p>Examples:</p> <p><code>"=?utf-8?q?hello=2Etxt?="
+     *  -&gt;"hello.txt"</code> (RFC 2047 encoding).</p>
+     *  <p><code>"=?utf-8?q?long_filename?=" -&gt;"long filename"</code> (RFC 2047
+     *  encoding).</p> <p><code>"utf-8'en'hello%2Etxt" -&gt;"hello.txt"</code>
+     *  (RFC 2231 encoding).</p> <p><code>"nul.txt" -&gt;"_nul.txt"</code>
+     *  (Reserved name).</p> <p><code>"dir1/dir2/file"
+     *  -&gt;"dir1_dir2_file"</code> (Directory separators).</p><p>
      * <p><b>Remarks:</b></p> <ul> <li>The exact file name conversion used
      * by this method is not guaranteed to remain the same between versions
      * of this library, with the exception that the return value will be in
@@ -268,8 +266,16 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @return An array of 32-bit unsigned integers.
+     * Gets the date and time extracted from this content disposition's
+     *  "creation-date" parameter, which specifies the date of creation of a
+     * file (RFC 2183 sec. 2.4). See <see
+     * cref='PeterO.Mail.MailDateTime.ParseDateString(
+     * System.String,System.Boolean)'/> for information on the format of
+     * this method's return value.
+     * @return The extracted date and time as an 8-element array, or {@code null}
+     *  if the "creation-date" parameter doesn't exist, is an empty string,
+     * or is syntactically invalid, or if the parameter's year would
+     * overflow a 32-bit signed integer.
      */
     public int[] GetCreationDate() {
       return MailDateTime.ParseDateString(
@@ -277,8 +283,16 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @return An array of 32-bit unsigned integers.
+     * Gets the date and time extracted from this content disposition's
+     *  "modification-date" parameter, which specifies the date of last
+     * modification of a file (RFC 2183 sec. 2.5). See <see
+     * cref='PeterO.Mail.MailDateTime.ParseDateString(
+     * System.String,System.Boolean)'/> for information on the format of
+     * this method's return value.
+     * @return The extracted date and time as an 8-element array, or {@code null}
+     *  if the "modification-date" parameter doesn't exist, is an empty
+     * string, or is syntactically invalid, or if the parameter's year
+     * would overflow a 32-bit signed integer.
      */
     public int[] GetModificationDate() {
       return MailDateTime.ParseDateString(
@@ -286,8 +300,16 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @return An array of 32-bit unsigned integers.
+     * Gets the date and time extracted from this content disposition's "read-date"
+     * parameter, which specifies the date at which a file was last read
+     * (RFC 2183 sec. 2.6). See <see
+     * cref='PeterO.Mail.MailDateTime.ParseDateString(
+     * System.String,System.Boolean)'/> for information on the format of
+     * this method's return value.
+     * @return The extracted date and time as an 8-element array, or {@code null}
+     *  if the "read-date" parameter doesn't exist, is an empty string, or
+     * is syntactically invalid, or if the parameter's year would overflow
+     * a 32-bit signed integer.
      */
     public int[] GetReadDate() {
       return MailDateTime.ParseDateString(
@@ -412,18 +434,17 @@ import com.upokecenter.text.*;
      * allow each content disposition parameter to be associated with a
      * character encoding and/or language, and support parameter values
      * that span two or more key-value pairs. Parameters making use of RFC
-     *  2231 extensions have names with an asterisk ("&#x2a;"). Such a
-     * parameter will be ignored if it is ill-formed because of RFC 2231's
-     * rules (except for illegal percent-decoding or undecodable sequences
-     * for the given character encoding). Examples of RFC 2231 extensions
+     *  2231 extensions have names with an asterisk ("*"). Such a parameter
+     * will be ignored if it is ill-formed because of RFC 2231's rules
+     * (except for illegal percent-decoding or undecodable sequences for
+     * the given character encoding). Examples of RFC 2231 extensions
      *  follow (both examples encode the same "filename" parameter):</p>
-     * <p><b>inline; filename&#x2a;=utf-8'en'filename.txt</b></p>
-     * <p><b>inline; filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt</b></p> <p>This implementation
-     * ignores keys (in parameter key-value pairs) that appear more than
-     * once in the content disposition. Nothing in RFCs 2045, 2183, 2231,
-     * 6266, or 7231 explicitly disallows such keys, or otherwise specifies
-     * error-handling behavior for such keys.</p>
+     * <p><b>inline; filename*=utf-8'en'filename.txt</b></p> <p><b>inline;
+     * filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
+     * implementation ignores keys (in parameter key-value pairs) that
+     * appear more than once in the content disposition. Nothing in RFCs
+     * 2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or
+     * otherwise specifies error-handling behavior for such keys.</p>
      * @param dispositionValue A text string that should be the value of a
      * Content-Disposition header field.
      * @param defaultValue The value to return in case the disposition value is

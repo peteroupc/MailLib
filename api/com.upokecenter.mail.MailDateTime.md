@@ -8,7 +8,8 @@ Contains methods for parsing and generating date-time strings following the
 ## Methods
 
 * `static java.lang.String GenerateDateString​(int[] dateTime)`<br>
- Not documented yet.
+ Generates a date-time string following the Internet Message Format (RFC
+ 5322) from an 8-element array.
 * `static java.lang.String GenerateDateString​(int[] dateTime,
                   boolean gmt)`<br>
  Generates a date-time string following the Internet Message Format (RFC
@@ -27,15 +28,23 @@ Contains methods for parsing and generating date-time strings following the
 
 ### GenerateDateString
     public static java.lang.String GenerateDateString​(int[] dateTime)
-Not documented yet.
+Generates a date-time string following the Internet Message Format (RFC
+ 5322) from an 8-element array.
 
 **Parameters:**
 
-* <code>dateTime</code> - Not documented yet.
+* <code>dateTime</code> - The date and time in the form of an 8-element array. See
+ <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
+ this parameter.
 
 **Returns:**
 
-* A string object.
+* A date-time string.
+
+**Throws:**
+
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or invalid,
+ including if the year (<code>dateTime[0]</code>) is less than 0.
 
 ### GenerateDateString
     public static java.lang.String GenerateDateString​(int[] dateTime, boolean gmt)
@@ -58,6 +67,8 @@ Generates a date-time string following the Internet Message Format (RFC
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or invalid,
  including if the year (<code>dateTime[0]</code>) is less than 0.
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>dateTime</code> is null.
 
 ### ParseDateString
     public static int[] ParseDateString​(java.lang.String str, boolean parseObsoleteZones)
@@ -93,6 +104,10 @@ Gets the date and time extracted from a date-time string following the
 * An 8-element array containing the date and time, or <code>null</code> if
  <code>str</code> is null, empty, or syntactically invalid, or if the
  string's year would overflow the range of a 32-bit signed integer.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### ParseDateString
     public static int[] ParseDateString​(java.lang.String str)

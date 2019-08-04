@@ -74,7 +74,8 @@ import java.util.*;
     private final ICharacterInput nci;
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param str The parameter {@code str} is a text string.
      */
     public NormalizingCharacterInput(
@@ -85,7 +86,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param input The parameter {@code input} is an ICharacterInput object.
      */
     public NormalizingCharacterInput(
@@ -96,7 +98,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param characterList The parameter {@code characterList} is an List object.
      */
     public NormalizingCharacterInput(List<Integer> characterList) {
@@ -104,7 +107,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param characterList The parameter {@code characterList} is an List object.
      * @param form The parameter {@code form} is a Normalization object.
      */
@@ -115,7 +119,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param str The parameter {@code str} is a text string.
      * @param index The parameter {@code index} is a 32-bit signed integer.
      * @param length The parameter {@code length} is a 32-bit signed integer.
@@ -130,7 +135,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param str The parameter {@code str} is a text string.
      * @param form The parameter {@code form} is a Normalization object.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -143,7 +149,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param stream The parameter {@code stream} is an ICharacterInput object.
      * @param form The parameter {@code form} is a Normalization object.
      */
@@ -171,8 +178,8 @@ import java.util.*;
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
      * @return The parameter {@code str} converted to the given normalization form.
-     * @throws IllegalArgumentException The parameter {@code str} contains an
-     * unpaired surrogate code point.
+     * @throws IllegalArgumentException The parameter {@code str} contains an unpaired
+     * surrogate code point.
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String Normalize(String str, Normalization form) {
@@ -302,16 +309,12 @@ import java.util.*;
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
      * @throws NullPointerException The parameter {@code chars} is null.
-     * @throws IllegalArgumentException Either {@code index} or {@code length} is
-     * less than 0 or greater than {@code chars} 's length, or {@code
-     * chars} ' s length minus {@code index} is less than {@code length}.
-     * @throws IllegalArgumentException Either "index" or "length" is less than 0
-     *  or greater than "chars"'s length, or "chars"'s length minus "index"
-     *  is less than "length".
-     * @throws IllegalArgumentException Either "index" or "length" is less than 0 or
-     *  greater than "chars"'s length, or "chars"'s length minus "index" is
-     *  less than "length".
-     * @throws NullPointerException The parameter {@code chars} is null.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
+     * than 0 or greater than {@code chars} 's length, or {@code chars} ' s
+     * length minus {@code index} is less than {@code length}.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
+     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
+     * length minus {@code index} is less than {@code length}.
      */
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);

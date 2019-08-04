@@ -24,12 +24,17 @@ import java.util.*;
      * string.
      * @return A list of addresses generated from the {@code addressValue}
      * parameter.
+     * @throws NullPointerException The parameter {@code addressValue} is null.
      */
     public static List<NamedAddress> ParseAddresses(String addressValue) {
       ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
+
+if (addressValue == null) {
+  return list;
+}
       if (((addressValue) == null || (addressValue).length() == 0)) {
-        return list;
-      }
+  return list;
+}
       Tokener tokener = new Tokener();
       if (
           HeaderParser.ParseHeaderTo(
@@ -80,7 +85,7 @@ import java.util.*;
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
       return other != null &&
       (this.displayName == null ? other.displayName == null :
-        this.displayName.equals(other.displayName, StringComparison.Ordinal)) &&
+        this.displayName.startsWith(other.displayName)) &&
    (this.address == null ? other.address == null :
      this.address.equals(other.address)) && this.isGroup == other.isGroup &&
           (!this.isGroup || CollectionUtilities.ListEquals(
@@ -195,11 +200,12 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NamedAddress} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class.
      * @param address The parameter {@code address} is a text string.
      * @throws NullPointerException The parameter {@code address} is null.
-     * @throws IllegalArgumentException Address has an invalid syntax.; Address has
-     * an invalid syntax.
+     * @throws IllegalArgumentException Address has an invalid syntax.; Address has an
+     * invalid syntax.
      */
     public NamedAddress(String address) {
       if (address == null) {
@@ -225,7 +231,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NamedAddress} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param address The parameter {@code address} is a text string.
      * @throws NullPointerException The parameter {@code address} is null.
@@ -241,7 +248,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NamedAddress} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param address The parameter {@code address} is an Address object.
      * @throws NullPointerException The parameter {@code address} is null.
@@ -257,12 +265,13 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NamedAddress} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class.
      * @param displayName The parameter {@code displayName} is a text string.
      * @param localPart The parameter {@code localPart} is a text string.
      * @param domain The parameter {@code domain} is a text string.
-     * @throws NullPointerException The parameter {@code localPart} or
-     * {@code domain} is null.
+     * @throws NullPointerException The parameter {@code localPart} or {@code
+     * domain} is null.
      */
     public NamedAddress(String displayName, String localPart, String domain) {
       if (localPart == null) {
@@ -278,13 +287,14 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link NamedAddress} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class.
      * @param groupName The parameter {@code groupName} is a text string.
      * @param mailboxes The parameter {@code mailboxes} is an List object.
-     * @throws NullPointerException The parameter {@code groupName} or
-     * {@code mailboxes} is null.
-     * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list
-     * is a group.
+     * @throws NullPointerException The parameter {@code groupName} or {@code
+     * mailboxes} is null.
+     * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list is a
+     * group.
      */
     public NamedAddress(String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {

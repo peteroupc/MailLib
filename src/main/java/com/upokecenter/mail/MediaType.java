@@ -17,7 +17,7 @@ import com.upokecenter.text.*;
      * <p>Specifies what kind of data a message body is.</p> <p>A media type
      * consists of a top-level type (the general category of the data), a
      * subtype (the specific type), and an optional list of parameters. For
-     * example, the media type <code>text/plain; charset = utf-8</code> is a text
+     * example, the media type <code>text/plain;charset = utf-8</code> is a text
      *  media type ("text"), namely, a plain text type ("plain"), and the
      * parameters say that the data uses UTF-8, a Unicode character
      *  encoding ("charset = utf-8"). Other top-level types include "audio",
@@ -65,9 +65,8 @@ import com.upokecenter.text.*;
       if (other == null) {
         return false;
       }
-      return this.topLevelType.equals(other.topLevelType,
-  StringComparison.Ordinal) &&
-        this.subType.equals(other.subType, StringComparison.Ordinal) &&
+      return this.topLevelType.startsWith(other.topLevelType) &&
+        this.subType.startsWith(other.subType) &&
           CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -108,11 +107,11 @@ import com.upokecenter.text.*;
       }
 
     /**
-     * Gets a value indicating whether this is a text media type ("text/&#x2a;").
+     * Gets a value indicating whether this is a text media type ("text/*").
      * @return {@code true} If this is a text media type; otherwise, {@code false}.
      */
     public final boolean isText() {
-        return this.getTopLevelType().equals("text", StringComparison.Ordinal);
+        return this.getTopLevelType().startsWith("text");
       }
 
     /**
@@ -121,7 +120,7 @@ import com.upokecenter.text.*;
      * false}.
      */
     public final boolean isMultipart() {
-        return this.getTopLevelType().equals("multipart", StringComparison.Ordinal);
+        return this.getTopLevelType().startsWith("multipart");
       }
 
     MediaType(
@@ -721,52 +720,49 @@ import com.upokecenter.text.*;
       // parameter.
       if (this.isText()) {
         String sub = this.getSubType();
-        if (sub.equals("html", StringComparison.Ordinal)) {
+        if (sub.startsWith("html")) {
           return true;
         }
-        if (sub.equals("javascript", StringComparison.Ordinal)) {
+        if (sub.startsWith("javascript")) {
           return true;
         }
-        if (sub.equals("ecmascript", StringComparison.Ordinal)) {
+        if (sub.startsWith("ecmascript")) {
           return true;
         }
-        if (sub.equals("rtf", StringComparison.Ordinal)) {
+        if (sub.startsWith("rtf")) {
           return true;
         }
-        if (sub.equals("xml", StringComparison.Ordinal)) {
+        if (sub.startsWith("xml")) {
           return true;
         }
-        if (sub.equals("xml-external-parsed-entity",
-  StringComparison.Ordinal)) {
+        if (sub.startsWith("xml-external-parsed-entity")) {
           return true;
         }
-        if (sub.equals("vnd.in3d.3dml", StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.in3d.3dml")) {
           return true;
         }
-        if (sub.equals("vnd.iptc.newsml", StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.iptc.newsml")) {
           return true;
         }
-        if (sub.equals("vnd.iptc.nitf", StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.iptc.nitf")) {
           return true;
         }
-        if (sub.equals("vnd.ms-mediapackage", StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.ms-mediapackage")) {
           return true;
         }
-        if (sub.equals("vnd.net2phone.commcenter.command",
-  StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.net2phone.commcenter.command")) {
           return true;
         }
-        if (sub.equals("vnd.radisys.msml-basic-layout",
-  StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.radisys.msml-basic-layout")) {
           return true;
         }
-        if (sub.equals("vnd.wap.si", StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.wap.si")) {
           return true;
         }
-        if (sub.equals("vnd.wap.sl", StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.wap.sl")) {
           return true;
         }
-        if (sub.equals("vnd.wap.wml", StringComparison.Ordinal)) {
+        if (sub.startsWith("vnd.wap.wml")) {
           return true;
         }
       }
@@ -892,52 +888,52 @@ import com.upokecenter.text.*;
         if (this.isText()) {
           String sub = this.getSubType();
           // Media types that assume a default of US-ASCII
-          if (sub.equals("plain", StringComparison.Ordinal) ||
-  sub.equals("sgml", StringComparison.Ordinal) ||
-  sub.equals("troff", StringComparison.Ordinal) ||
-  sub.equals("dns", StringComparison.Ordinal) ||
-  sub.equals("mizar", StringComparison.Ordinal) ||
-  sub.equals("prs.prop.logic", StringComparison.Ordinal) ||
-  sub.equals("vnd.ascii-art", StringComparison.Ordinal) ||
-  sub.equals("vnd.dmclientscript", StringComparison.Ordinal) ||
-  sub.equals("prs.lines.tag", StringComparison.Ordinal) ||
-  sub.equals("vnd.latex-z", StringComparison.Ordinal) ||
-  sub.equals("rfc822-headers", StringComparison.Ordinal) ||
-  sub.equals("vnd.dvb.subtitle", StringComparison.Ordinal) ||
-  sub.equals("vnd.fly", StringComparison.Ordinal) ||
-  sub.equals("directory", StringComparison.Ordinal) ||
-  sub.equals("css", StringComparison.Ordinal) ||
-  sub.equals("richtext", StringComparison.Ordinal) ||
-  sub.equals("enriched", StringComparison.Ordinal) ||
-  sub.equals("tab-separated-values", StringComparison.Ordinal) ||
-  sub.equals("vnd.in3d.spot", StringComparison.Ordinal) ||
-  sub.equals("vnd.abc", StringComparison.Ordinal) ||
-  sub.equals("vnd.wap.wmlscript", StringComparison.Ordinal) ||
-  sub.equals("vnd.curl", StringComparison.Ordinal) ||
-  sub.equals("vnd.fmi.flexstor", StringComparison.Ordinal) ||
-  sub.equals("uri-list", StringComparison.Ordinal) ||
-  sub.equals("vnd.si.uricatalogue", StringComparison.Ordinal)) {
+          if (sub.startsWith("plain") ||
+  sub.startsWith("sgml") ||
+  sub.startsWith("troff") ||
+  sub.startsWith("dns") ||
+  sub.startsWith("mizar") ||
+  sub.startsWith("prs.prop.logic") ||
+  sub.startsWith("vnd.ascii-art") ||
+  sub.startsWith("vnd.dmclientscript") ||
+  sub.startsWith("prs.lines.tag") ||
+  sub.startsWith("vnd.latex-z") ||
+  sub.startsWith("rfc822-headers") ||
+  sub.startsWith("vnd.dvb.subtitle") ||
+  sub.startsWith("vnd.fly") ||
+  sub.startsWith("directory") ||
+  sub.startsWith("css") ||
+  sub.startsWith("richtext") ||
+  sub.startsWith("enriched") ||
+  sub.startsWith("tab-separated-values") ||
+  sub.startsWith("vnd.in3d.spot") ||
+  sub.startsWith("vnd.abc") ||
+  sub.startsWith("vnd.wap.wmlscript") ||
+  sub.startsWith("vnd.curl") ||
+  sub.startsWith("vnd.fmi.flexstor") ||
+  sub.startsWith("uri-list") ||
+  sub.startsWith("vnd.si.uricatalogue")) {
             return "us-ascii";
           }
           // Media types that assume a default of UTF-8
-          if (sub.equals("vcard", StringComparison.Ordinal) ||
-  sub.equals("jcr-cnd", StringComparison.Ordinal) ||
-  sub.equals("n3", StringComparison.Ordinal) ||
-  sub.equals("turtle", StringComparison.Ordinal) ||
-  sub.equals("strings", StringComparison.Ordinal) ||
-  sub.equals("vnd.debian.copyright", StringComparison.Ordinal) ||
-  sub.equals("provenance-notation", StringComparison.Ordinal) ||
-  sub.equals("csv", StringComparison.Ordinal) ||
-  sub.equals("calendar", StringComparison.Ordinal) ||
-  sub.equals("vnd.a", StringComparison.Ordinal) ||
-  sub.equals("parameters", StringComparison.Ordinal) ||
-  sub.equals("prs.fallenstein.rst", StringComparison.Ordinal) ||
-  sub.equals("vnd.esmertec.theme.descriptor", StringComparison.Ordinal) ||
-  sub.equals("vnd.trolltech.linguist", StringComparison.Ordinal) ||
-  sub.equals("csv-schema", StringComparison.Ordinal) ||
-  sub.equals("vnd.graphviz", StringComparison.Ordinal) ||
-  sub.equals("cache-manifest", StringComparison.Ordinal) ||
-  sub.equals("vnd.sun.j2me.app-descriptor", StringComparison.Ordinal)) {
+          if (sub.startsWith("vcard") ||
+  sub.startsWith("jcr-cnd") ||
+  sub.startsWith("n3") ||
+  sub.startsWith("turtle") ||
+  sub.startsWith("strings") ||
+  sub.startsWith("vnd.debian.copyright") ||
+  sub.startsWith("provenance-notation") ||
+  sub.startsWith("csv") ||
+  sub.startsWith("calendar") ||
+  sub.startsWith("vnd.a") ||
+  sub.startsWith("parameters") ||
+  sub.startsWith("prs.fallenstein.rst") ||
+  sub.startsWith("vnd.esmertec.theme.descriptor") ||
+  sub.startsWith("vnd.trolltech.linguist") ||
+  sub.startsWith("csv-schema") ||
+  sub.startsWith("vnd.graphviz") ||
+  sub.startsWith("cache-manifest") ||
+  sub.startsWith("vnd.sun.j2me.app-descriptor")) {
             return "utf-8";
           }
         }
@@ -1392,18 +1388,17 @@ import com.upokecenter.text.*;
      * 2231 extensions allow each media type parameter to be associated
      * with a character encoding and/or language, and support parameter
      * values that span two or more key-value pairs. Parameters making use
-     *  of RFC 2231 extensions have names with an asterisk ("&#x2a;"). Such
-     * a parameter will be ignored if it is ill-formed because of RFC
-     * 2231's rules (except for illegal percent-decoding or undecodable
-     * sequences for the given character encoding). Examples of RFC 2231
-     *  extensions follow (both examples encode the same "filename"
-     * parameter):</p> <p><b>text/example;
-     * filename&#x2a;=utf-8'en'filename.txt</b></p> <p><b>text/example;
-     * filename&#x2a;0&#x2a;=utf-8'en'file;
-     * filename&#x2a;1&#x2a;=name%2Etxt</b></p> <p>This implementation
-     * ignores keys (in parameter key-value pairs) that appear more than
-     * once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or
-     * 7231 explicitly disallows such keys, or otherwise specifies
+     *  of RFC 2231 extensions have names with an asterisk ("*"). Such a
+     * parameter will be ignored if it is ill-formed because of RFC 2231's
+     * rules (except for illegal percent-decoding or undecodable sequences
+     * for the given character encoding). Examples of RFC 2231 extensions
+     *  follow (both examples encode the same "filename" parameter):</p>
+     * <p><b>text/example; filename*=utf-8'en'filename.txt</b></p>
+     * <p><b>text/example; filename*0*=utf-8'en'file;
+     * filename*1*=name%2Etxt</b></p> <p>This implementation ignores keys
+     * (in parameter key-value pairs) that appear more than once in the
+     * media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231
+     * explicitly disallows such keys, or otherwise specifies
      * error-handling behavior for such keys.</p>
      * @param str A text string representing a media type. This media type can
      * include parameters.

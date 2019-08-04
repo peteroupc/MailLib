@@ -93,8 +93,7 @@ Determines whether the given string belongs in RFC 8264's FreeformClass. In
  general, the FreeformClass contains most letters, digits, spaces,
  punctuation, and symbols in the Unicode standard, as well as all
  basic printable characters (U + 0021 to U + 007E), but excludes control
- characters (including the horizontal tab character, U + 0009) and
- separators.
+ characters and separators.
 
 **Parameters:**
 
@@ -178,6 +177,10 @@ Checks the validity of a string without spaces that can serve to identify a
  (with the same value for <code>preserveCase</code>) should be compared
  code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
 
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+
 ### UsernameEnforce
     public static java.lang.String UsernameEnforce​(java.lang.String str, boolean preserveCase)
 Checks the validity of a string that can serve to identify a user or account
@@ -234,6 +237,10 @@ Checks the validity of a string serving as an arbitrary single-line sequence
  values of this method should be compared code point by code point
  (see RFC 8265, sec. 4.2.3).
 
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+
 ### NicknameEnforce
     public static java.lang.String NicknameEnforce​(java.lang.String str)
 Checks the validity of a string serving as a "memorable, human-friendly
@@ -255,6 +262,10 @@ Checks the validity of a string serving as a "memorable, human-friendly
  sec. 2.3); for such purposes, use the NicknameForComparison method
  instead.
 
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+
 ### NicknameForComparison
     public static java.lang.String NicknameForComparison​(java.lang.String str)
 Prepares for comparison a string serving as a "memorable, human-friendly
@@ -274,3 +285,7 @@ Prepares for comparison a string serving as a "memorable, human-friendly
  (including if <code>str</code> is null or empty). For comparison
  purposes, return values of this method should be compared code point
  by code point (see RFC 8266, sec. 2.4).
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.

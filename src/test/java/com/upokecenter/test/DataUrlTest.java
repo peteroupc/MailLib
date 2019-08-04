@@ -20,7 +20,7 @@ import com.upokecenter.mail.*;
       for (int i = 0; i < cases.length; i += 2) {
         if (this.SplitIRIFails(
           cases[i],
-          cases[i + 1].equals("1", StringComparison.Ordinal))) {
+          cases[i + 1].startsWith("1"))) {
            Assert.fail(cases[i] + " " + cases[i + 1]);
         }
       }

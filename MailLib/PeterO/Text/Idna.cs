@@ -31,7 +31,7 @@ namespace PeterO.Text {
     /// NR-LDH label.</para>
     /// <para>A U-label contains one or more characters outside the Basic
     /// Latin range (U + 0000 to U + 007F) and meets IDNA2008 requirements
-    /// for labels with such characters. An example is "e&#xe1;".</para>
+    /// for labels with such characters. An example is "eá".</para>
     /// <para>An A-label is an LDH label beginning with "xn--" in any
     /// combination of case, and is convertible to a U-label. An example is
     /// "xn--e-ufa".</para>
@@ -413,9 +413,14 @@ namespace PeterO.Text {
     /// registering the string as a domain name.</param>
     /// <returns><c>true</c> if the given string is a syntactically valid
     /// domain name; otherwise; false.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;
+      }
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
       }
       bool bidiRule = HasRtlCharacters(str);
       var lastIndex = 0;
@@ -646,7 +651,7 @@ namespace PeterO.Text {
       if (IsInPrecisClass(str, true)) {
         str = TrimAndCollapseUnicodeSpaces(str);
         if (forComparison) {
-           str = ToLowerCase(str);
+          str = ToLowerCase(str);
         }
         str = NormalizerInput.Normalize(str, Normalization.NFKC);
         return str.Length == 0 ? null : str;
@@ -1075,8 +1080,8 @@ namespace PeterO.Text {
         first = false;
       }
       if (!nonascii) {
- return false;
-}
+        return false;
+      }
       if (haveContextual) {
         if (!PassesContextChecks(str)) {
           return false;

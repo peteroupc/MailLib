@@ -1212,7 +1212,7 @@ import com.upokecenter.text.*;
                  ("Downgraded-Original-Recipient: " + expected) +
                  "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
                  "\r\nX-Ignore: Y\r\n\r\n";
-      } else {
+               } else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
@@ -1238,7 +1238,7 @@ import com.upokecenter.text.*;
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       String actualString = DataUtilities.GetUtf8String(bytes, false);
-      if (!expectedDSN.equals(actualString, StringComparison.Ordinal)) {
+      if (!expectedDSN.startsWith(actualString)) {
         expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
@@ -1773,7 +1773,7 @@ public final void setValueMessage(Message value) {
       String value) {
       String msgstr;
       msgstr = name + ": " + value + "\r\n";
-      if (!name.equals("from", StringComparison.Ordinal)) {
+      if (!name.startsWith("from")) {
         msgstr += "from: x@example.com\r\n";
       }
       msgstr += "\r\nBody";

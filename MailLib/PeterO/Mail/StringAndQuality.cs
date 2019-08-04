@@ -7,7 +7,7 @@ namespace PeterO.Mail {
     /// language.</summary>
     public sealed class StringAndQuality {
     /// <summary>Initializes a new instance of the
-    /// <see cref='StringAndQuality'/> class.</summary>
+    /// <see cref='PeterO.Mail.StringAndQuality'/> class.</summary>
     /// <param name='value'>The parameter <paramref name='value'/> is a
     /// text string.</param>
     /// <param name='quality'>The parameter <paramref name='quality'/> is a

@@ -43,35 +43,35 @@
  epilogue of multipart messages, which will be ignored.</li> <li>(b)
  If the charset is declared to be <code>utf-8</code>.</li> <li>(c) If the
   content type is "text/html" and the charset is declared to be
-  <code>us-ascii</code>, "windows-1252", "windows-1251", or
-  "iso-8859-*" (all single byte encodings).</li> <li>(d) In
- non-MIME message bodies and in text/plain message bodies. Any 8-bit
- bytes are replaced with the substitute character byte (0x1a).</li>
-  <li>If the message starts with the word "From" (and no other case
- variations of that word) followed by one or more space (U + 0020) not
- followed by colon, that text and the rest of the text is skipped up
- to and including a line feed (U + 000A). (See also RFC 4155, which
-  describes the so-called "mbox" convention with "From" lines of this
- kind.)</li> <li>The name <code>ascii</code> is treated as a synonym for
- <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
- name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
- <code>windows-1252</code> and <code>utf-8</code>, respectively, even though they
- are not IANA registered aliases.</li> <li>The following deviations
- involve encoded words under RFC 2047:</li> <li>(a) If a sequence of
- encoded words decodes to a string with a CTL character (U + 007F, or a
- character less than U + 0020 and not TAB) after being converted to
- Unicode, the encoded words are left un-decoded.</li> <li>(b) This
- implementation can decode encoded words regardless of the character
- length of the line in which they appear. This implementation can
- generate a header field line with one or more encoded words even if
- that line is more than 76 characters long. (This implementation
- follows the recommendation in RFC 5322 to limit header field lines
- to no more than 78 characters, where possible.)</li></ul> <p>It
- would be appreciated if users of this library contact the author if
- they find other ways in which this implementation deviates from the
- mail specifications or other applicable specifications.</p> <p>Note
-  that this class currently doesn't support the "padding" parameter
-  for message bodies with the media type "application/octet-stream" or
+  <code>us-ascii</code>, "windows-1252", "windows-1251", or "iso-8859-*"
+ (all single byte encodings).</li> <li>(d) In non-MIME message bodies
+ and in text/plain message bodies. Any 8-bit bytes are replaced with
+ the substitute character byte (0x1a).</li> <li>If the message starts
+  with the word "From" (and no other case variations of that word)
+ followed by one or more space (U + 0020) not followed by colon, that
+ text and the rest of the text is skipped up to and including a line
+ feed (U + 000A). (See also RFC 4155, which describes the so-called
+  "mbox" convention with "From" lines of this kind.)</li> <li>The name
+ <code>ascii</code> is treated as a synonym for <code>us-ascii</code>, despite
+ being a reserved name under RFC 2046. The name <code>cp1252</code> and
+ <code>utf8</code> are treated as synonyms for <code>windows-1252</code> and
+ <code>utf-8</code>, respectively, even though they are not IANA registered
+ aliases.</li> <li>The following deviations involve encoded words
+ under RFC 2047:</li> <li>(a) If a sequence of encoded words decodes
+ to a string with a CTL character (U + 007F, or a character less than
+ U + 0020 and not TAB) after being converted to Unicode, the encoded
+ words are left un-decoded.</li> <li>(b) This implementation can
+ decode encoded words regardless of the character length of the line
+ in which they appear. This implementation can generate a header
+ field line with one or more encoded words even if that line is more
+ than 76 characters long. (This implementation follows the
+ recommendation in RFC 5322 to limit header field lines to no more
+ than 78 characters, where possible.)</li></ul> <p>It would be
+ appreciated if users of this library contact the author if they find
+ other ways in which this implementation deviates from the mail
+ specifications or other applicable specifications.</p> <p>Note that
+  this class currently doesn't support the "padding" parameter for
+  message bodies with the media type "application/octet-stream" or
  treated as that media type (see RFC 2046 sec. 4.5.1).</p> <p>Note
  that this implementation can decode an RFC 2047 encoded word that
  uses ISO-2022-JP or ISO-2022-JP-2 (encodings that uses code
@@ -90,17 +90,20 @@
 ## Methods
 
 * `Message() Message`<br>
- Initializes a new instance of the Message class.
+ Initializes a new instance of the Message
+ class.
 * `Message​(byte[] bytes) Message`<br>
- Initializes a new instance of the Message class.
+ Initializes a new instance of the Message
+ class.
 * `Message​(java.io.InputStream stream) Message`<br>
- Initializes a new instance of the Message class.
+ Initializes a new instance of the Message
+ class.
 * `Message AddAttachment​(MediaType mediaType)`<br>
  Adds an attachment with an empty body and with the given media type to this
  message.
 * `Message AddAttachment​(java.io.InputStream inputStream,
              MediaType mediaType)`<br>
- Adds an attachment to this message in the form of data from the // /given
+ Adds an attachment to this message in the form of data from the given
  readable stream, and with the given media type.
 * `Message AddAttachment​(java.io.InputStream inputStream,
              MediaType mediaType,
@@ -121,8 +124,8 @@
  this message.
 * `Message AddInline​(java.io.InputStream inputStream,
          MediaType mediaType)`<br>
- Adds an inline body part to this message in the form of data from // /the
- given readable stream, and with the given media type.
+ Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given media type.
 * `Message AddInline​(java.io.InputStream inputStream,
          MediaType mediaType,
          java.lang.String filename)`<br>
@@ -269,17 +272,21 @@ Renamed to ToMailtoUri.
 ## Constructors
 
 * `Message() Message`<br>
- Initializes a new instance of the Message class.
+ Initializes a new instance of the Message
+ class.
 * `Message​(byte[] bytes) Message`<br>
- Initializes a new instance of the Message class.
+ Initializes a new instance of the Message
+ class.
 * `Message​(java.io.InputStream stream) Message`<br>
- Initializes a new instance of the Message class.
+ Initializes a new instance of the Message
+ class.
 
 ## Method Details
 
 ### Message
     public Message​(java.io.InputStream stream)
-Initializes a new instance of the <code>Message</code> class.
+Initializes a new instance of the <code>Message</code>
+ class.
 
 **Parameters:**
 
@@ -291,7 +298,8 @@ Initializes a new instance of the <code>Message</code> class.
 
 ### Message
     public Message​(byte[] bytes)
-Initializes a new instance of the <code>Message</code> class.
+Initializes a new instance of the <code>Message</code>
+ class.
 
 **Parameters:**
 
@@ -303,7 +311,8 @@ Initializes a new instance of the <code>Message</code> class.
 
 ### Message
     public Message()
-Initializes a new instance of the <code>Message</code> class.
+Initializes a new instance of the <code>Message</code>
+ class.
 ### NewBodyPart
     public static Message NewBodyPart()
 Creates a message object with no header fields.
@@ -568,16 +577,16 @@ Generates this message's data in text form. <p>The generated message will
  with the same name, and the address set to
  <code>me@[header-name]-address.invalid</code> as the address (a
  <code>.invalid</code> address is a reserved address that can never belong
- to anyone). (An exception is that the Resent-* header fields
- may appear more than once.) The generated message should always have
- a From header field.</p> <p>If a Date and/or Message-ID header field
+ to anyone). (An exception is that the Resent-* header fields may
+ appear more than once.) The generated message should always have a
+ From header field.</p> <p>If a Date and/or Message-ID header field
  doesn't exist, a field with that name will be generated (using the
  current local time for the Date field).</p> <p>When encoding the
- message's body, if the message has a text content type
-  ("text/*"), the line breaks are a CR byte (carriage return,
- 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or LF
- alone. If the message has any other content type, only CR followed
- by LF is considered a line break.</p>
+  message's body, if the message has a text content type ("text/*"),
+ the line breaks are a CR byte (carriage return, 0x0d) followed by an
+ LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has
+ any other content type, only CR followed by LF is considered a line
+ break.</p>
 
 **Returns:**
 
@@ -1042,17 +1051,17 @@ Adds an attachment with an empty body and with the given media type to this
 
 ### AddAttachment
     public Message AddAttachment​(java.io.InputStream inputStream, MediaType mediaType)
-Adds an attachment to this message in the form of data from the // /given
+Adds an attachment to this message in the form of data from the given
  readable stream, and with the given media type. Before the new
  attachment is added, if this message isn't already a multipart
   message, it becomes a "multipart/mixed" message with the current
  body converted to an inline body part.<p> The following example
  (written in C# for the.NET version) is an extension method that adds
- an attachment from a byte array to a message. </p><pre> public static
+ an attachment from a byte array to a message. </p><pre>public static
  Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
- MediaType mediaType) { using(MemoryStream fs = new
- MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); } }
- </pre> .
+ MediaType mediaType) { using (MemoryStream fs = new
+ MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); }
+ }</pre> .
 
 **Parameters:**
 
@@ -1136,17 +1145,27 @@ Adds an attachment to this message in the form of data from the given
 
 ### AddInline
     public Message AddInline​(java.io.InputStream inputStream, MediaType mediaType)
-Adds an inline body part to this message in the form of data from // /the
- given readable stream, and with the given media type. Before the new
- body part is added, if this message isn't already a multipart
-  message, it becomes a "multipart/mixed" message with the current
- body converted to an inline body part.<p> The following example
- (written in C# for the.NET version) is an extension method that adds
- an inline body part from a byte array to a message. </p><pre> public
- static Message AddInlineFromBytes(this Message msg, byte[] bytes,
- MediaType mediaType) { using(MemoryStream fs = new
- MemoryStream(bytes)) { return msg.AddInline(fs, mediaType); } }
- </pre> .
+Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given media type. Before the new body
+ part is added, if this message isn't already a multipart message, it
+  becomes a "multipart/mixed" message with the current body converted
+ to an inline body part.<p> The following example (written in C# for
+ the.NET version) is an extension method that adds an inline body
+ part from a byte array to a message. </p><pre>public static Message
+ AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
+ mediaType) { {
+java.io.ByteArrayInputStream fs = null;
+try {
+fs = new java.io.ByteArrayInputStream(bytes);
+
+ return msg.AddInline(fs, mediaType);
+}
+finally {
+try { if (fs != null) {
+ fs.close();
+ } } catch (java.io.IOException ex) {}
+}
+} }</pre> .
 
 **Parameters:**
 

@@ -7,7 +7,8 @@ Represents an email address.
 ## Methods
 
 * `Address​(java.lang.String addressValue) Address`<br>
- Initializes a new instance of the Address class.
+ Initializes a new instance of the Address
+ class.
 * `boolean equals​(java.lang.Object obj)`<br>
  Determines whether this object and another object are equal.
 * `java.lang.String getDomain()`<br>
@@ -22,13 +23,15 @@ Represents an email address.
 ## Constructors
 
 * `Address​(java.lang.String addressValue) Address`<br>
- Initializes a new instance of the Address class.
+ Initializes a new instance of the Address
+ class.
 
 ## Method Details
 
 ### Address
     public Address​(java.lang.String addressValue)
-Initializes a new instance of the <code>Address</code> class.
+Initializes a new instance of the <code>Address</code>
+ class.
 
 **Parameters:**
 
@@ -36,17 +39,16 @@ Initializes a new instance of the <code>Address</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is
- null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't
- contain a '@' sign; Invalid local part; Expected '@' sign after
- local part; Expected domain after '@'; Invalid domain; Address too
- long.
+* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't contain a
+ '@' sign; Invalid local part; Expected '@' sign after local part;
+ Expected domain after '@'; Invalid domain; Address too long.
 
 ### Address
     public Address​(java.lang.String addressValue)
-Initializes a new instance of the <code>Address</code> class.
+Initializes a new instance of the <code>Address</code>
+ class.
 
 **Parameters:**
 
@@ -54,13 +56,11 @@ Initializes a new instance of the <code>Address</code> class.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is
- null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't
- contain a '@' sign; Invalid local part; Expected '@' sign after
- local part; Expected domain after '@'; Invalid domain; Address too
- long.
+* <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't contain a
+ '@' sign; Invalid local part; Expected '@' sign after local part;
+ Expected domain after '@'; Invalid domain; Address too long.
 
 ### equals
     public boolean equals​(java.lang.Object obj)

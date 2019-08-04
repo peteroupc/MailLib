@@ -30,8 +30,8 @@ namespace PeterO.Mail {
     /// <list type=''>
     /// <item>The content-transfer-encodings "quoted-printable" and
     /// "base64" are treated as 7bit instead if they occur in a message or
-    /// body part with content type "multipart/&#x2a;" or "message/&#x2a;"
-    /// (other than "message/global", "message/global-headers",
+    /// body part with content type "multipart/*" or "message/*" (other
+    /// than "message/global", "message/global-headers",
     /// "message/global-disposition-notification", or
     /// "message/global-delivery-status").</item>
     /// <item>If a message has two or more Content-Type header fields, it
@@ -66,7 +66,7 @@ namespace PeterO.Mail {
     /// <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
     /// <item>(c) If the content type is "text/html" and the charset is
     /// declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
-    /// "iso-8859-&#x2a;" (all single byte encodings).</item>
+    /// "iso-8859-*" (all single byte encodings).</item>
     /// <item>(d) In non-MIME message bodies and in text/plain message
     /// bodies. Any 8-bit bytes are replaced with the substitute character
     /// byte (0x1a).</item>
@@ -155,7 +155,7 @@ namespace PeterO.Mail {
     private int transferEncoding;
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='Message'/> class.</summary>
+    /// <see cref='PeterO.Mail.Message'/> class.</summary>
     /// <param name='stream'>The parameter <paramref name='stream'/> is a
     /// Stream object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -172,7 +172,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='Message'/> class.</summary>
+    /// <see cref='PeterO.Mail.Message'/> class.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
@@ -188,7 +188,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='Message'/> class.</summary>
+    /// <see cref='PeterO.Mail.Message'/> class.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -357,7 +357,7 @@ namespace PeterO.Mail {
     /// otherwise handle this message. Can be set to null. If set to a
     /// disposition or to null, updates the Content-Disposition header
     /// field as appropriate.</summary>
-    /// <value>This message&#x27;s content disposition, or null if none is
+    /// <value>This message's content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -383,7 +383,7 @@ namespace PeterO.Mail {
     /// Content-Type header field is absent from this message. If set to a
     /// media type, updates the Content-Type header field as appropriate.
     /// Cannot be set to null.</summary>
-    /// <value>This message&#x27;s media type.</value>
+    /// <value>This message's media type.</value>
     /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
@@ -499,7 +499,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&#x27;s subject.</value>
+    /// <value>This message's subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -573,17 +573,17 @@ namespace PeterO.Mail {
     /// the same name, and the address set to
     /// <c>me@[header-name]-address.invalid</c> as the address (a
     /// <c>.invalid</c> address is a reserved address that can never belong
-    /// to anyone). (An exception is that the Resent-&#x2a; header fields
-    /// may appear more than once.) The generated message should always
-    /// have a From header field.</para>
+    /// to anyone). (An exception is that the Resent-* header fields may
+    /// appear more than once.) The generated message should always have a
+    /// From header field.</para>
     /// <para>If a Date and/or Message-ID header field doesn't exist, a
     /// field with that name will be generated (using the current local
     /// time for the Date field).</para>
     /// <para>When encoding the message's body, if the message has a text
-    /// content type ("text/&#x2a;"), the line breaks are a CR byte
-    /// (carriage return, 0x0d) followed by an LF byte (line feed, 0x0a),
-    /// CR alone, or LF alone. If the message has any other content type,
-    /// only CR followed by LF is considered a line break.</para></summary>
+    /// content type ("text/*"), the line breaks are a CR byte (carriage
+    /// return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone,
+    /// or LF alone. If the message has any other content type, only CR
+    /// followed by LF is considered a line break.</para></summary>
     /// <returns>The generated message.</returns>
     /// <exception cref='PeterO.Mail.MessageDataException'>The message
     /// can't be generated.</exception>
@@ -1296,7 +1296,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     }
 
     /// <summary>Adds an attachment to this message in the form of data
-    /// from the // /given readable stream, and with the given media type.
+    /// from the given readable stream, and with the given media type.
     /// Before the new attachment is added, if this message isn't already a
     /// multipart message, it becomes a "multipart/mixed" message with the
     /// current body converted to an inline body part.</summary>
@@ -1313,11 +1313,9 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     ///  The following example (written in C# for the.NET
     /// version) is an extension method that adds an attachment
     /// from a byte array to a message.
-    /// <code>
-    /// public static Message AddAttachmentFromBytes(this Message msg, byte[]
-    /// bytes, MediaType mediaType) { using(var fs = new MemoryStream(bytes)) {
-    /// return msg.AddAttachment(fs, mediaType); } }
-    /// </code>
+    /// <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
+    /// bytes, MediaType mediaType) { using (var fs = new MemoryStream(bytes)) {
+    /// return msg.AddAttachment(fs, mediaType); } }</code>
     ///  .
     /// </example>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
@@ -1386,10 +1384,10 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     }
 
     /// <summary>Adds an inline body part to this message in the form of
-    /// data from // /the given readable stream, and with the given media
-    /// type. Before the new body part is added, if this message isn't
-    /// already a multipart message, it becomes a "multipart/mixed" message
-    /// with the current body converted to an inline body part.</summary>
+    /// data from the given readable stream, and with the given media type.
+    /// Before the new body part is added, if this message isn't already a
+    /// multipart message, it becomes a "multipart/mixed" message with the
+    /// current body converted to an inline body part.</summary>
     /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='mediaType'>A media type to assign to the body
     /// part.</param>
@@ -1403,11 +1401,9 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     ///  The following example (written in C# for the.NET
     /// version) is an extension method that adds an inline
     /// body part from a byte array to a message.
-    /// <code>
-    /// public static Message AddInlineFromBytes(this Message msg, byte[]
-    /// bytes, MediaType mediaType) { using(MemoryStream fs = new
-    /// MemoryStream(bytes)) { return msg.AddInline(fs, mediaType); } }
-    /// </code>
+    /// <code>public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
+    /// MediaType mediaType) { using (MemoryStream fs = new MemoryStream(bytes))
+    /// { return msg.AddInline(fs, mediaType); } }</code>
     ///  .
     /// </example>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
@@ -1902,7 +1898,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
                     if (c == '\n') {
                     // CRLF was read
                     lineStart = true;
-                    } else {
+                  } else {
                     // It's the first part of the line, where the header name
                     // should be, so the CR here is illegal
                     throw new MessageDataException("CR not followed by LF");
@@ -2125,7 +2121,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(typePart + builder));
-          } else {
+} else {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(headerValue));
@@ -2477,7 +2473,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
                 if (c == -1) {
                   throw new MessageDataException(
   "Premature end before all headers were read (Mbox convention)");
-                } else if (c == ':' && possibleMbox) {
+} else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
                   sb.Append("from");
@@ -2571,7 +2567,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
                     if (c == '\n') {
                     // CRLF was read
                     lineCount = 0;
-                    } else {
+                  } else {
                     // It's the first part of the line, where the header name
                     // should be, so the CR here is illegal
                     throw new MessageDataException("CR not followed by LF");
@@ -3063,7 +3059,7 @@ name.Length >= 2 &&
               downgraded = HeaderEncoder.EncodeFieldAsEncodedWords(
                   "downgraded-" + name,
                   ParserUtility.TrimSpaceAndTab(value));
-            } else {
+                } else {
 #if DEBUG
               string exText = "Header field still has non-Ascii or controls: " +
                     name + "\n" + downgraded;

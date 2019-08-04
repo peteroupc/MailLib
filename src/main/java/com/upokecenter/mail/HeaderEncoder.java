@@ -215,11 +215,11 @@ import com.upokecenter.util.*;
             }
     } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t' &&
             symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
-            this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
-            writeSpace = true;
-            i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
-            symbolBegin = i;
-          } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
+      this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
+      writeSpace = true;
+      i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
+      symbolBegin = i;
+    } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
             // DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(// endIndex - i)));
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
@@ -270,7 +270,8 @@ import com.upokecenter.util.*;
               }
             }
             return false;
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t' &&
+          } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) !=
+'\t' &&
             symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             // Single space followed by character other than CR/LF/Tab
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
@@ -662,7 +663,8 @@ import com.upokecenter.util.*;
         return false;
       }
       for (int i = 0; i < str.length(); ++i) {
-   if (str.charAt(i) < 0x80 && str.charAt(i) > 0x20 && ValueAsciiAtext[(int)str.charAt(i) - 0x20]
+        if (str.charAt(i) < 0x80 && str.charAt(i) > 0x20 && ValueAsciiAtext[(int)str.charAt(i) -
+0x20]
           == 1) {
           // not simple if a word begins with "=?", an RFC
           // 2047 encoded word start
@@ -938,12 +940,12 @@ import com.upokecenter.util.*;
         afterHyphen = s.charAt(i) == '-';
       }
       String ret = builder.toString();
-      if (ret.equals("Content-Id", StringComparison.Ordinal)) {
+      if (ret.startsWith("Content-Id")) {
         return "Content-ID";
       }
-      return ret.equals("Mime-Version", StringComparison.Ordinal) ?
+      return ret.startsWith("Mime-Version") ?
 "MIME-Version" :
-        (ret.equals("Message-Id", StringComparison.Ordinal) ? "Message-ID" :
+        (ret.startsWith("Message-Id") ? "Message-ID" :
 ret);
     }
 

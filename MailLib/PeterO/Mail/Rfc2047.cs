@@ -433,7 +433,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                 charset = charset.Substring(0, asterisk);
                 acceptedEncodedWord &=
                   LanguageTags.IsPotentiallyValidLanguageTag(language);
-              } else {
+                } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {

@@ -27,7 +27,7 @@ import com.upokecenter.text.*;
      * (Internet Message Format and MIME):</p> <ul> <li>The
      *  content-transfer-encodings "quoted-printable" and "base64" are
      * treated as 7bit instead if they occur in a message or body part with
-     *  content type "multipart/&#x2a;" or "message/&#x2a;" (other than
+     *  content type "multipart/*" or "message/*" (other than
      *  "message/global", "message/global-headers",
      *  "message/global-disposition-notification", or
      *  "message/global-delivery-status").</li> <li>If a message has two or
@@ -56,35 +56,35 @@ import com.upokecenter.text.*;
      * epilogue of multipart messages, which will be ignored.</li> <li>(b)
      * If the charset is declared to be <code>utf-8</code>.</li> <li>(c) If the
      *  content type is "text/html" and the charset is declared to be
-     *  <code>us-ascii</code>, "windows-1252", "windows-1251", or
-     *  "iso-8859-&#x2a;" (all single byte encodings).</li> <li>(d) In
-     * non-MIME message bodies and in text/plain message bodies. Any 8-bit
-     * bytes are replaced with the substitute character byte (0x1a).</li>
-     *  <li>If the message starts with the word "From" (and no other case
-     * variations of that word) followed by one or more space (U + 0020) not
-     * followed by colon, that text and the rest of the text is skipped up
-     * to and including a line feed (U + 000A). (See also RFC 4155, which
-     *  describes the so-called "mbox" convention with "From" lines of this
-     * kind.)</li> <li>The name <code>ascii</code> is treated as a synonym for
-     * <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
-     * name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
-     * <code>windows-1252</code> and <code>utf-8</code>, respectively, even though they
-     * are not IANA registered aliases.</li> <li>The following deviations
-     * involve encoded words under RFC 2047:</li> <li>(a) If a sequence of
-     * encoded words decodes to a string with a CTL character (U + 007F, or a
-     * character less than U + 0020 and not TAB) after being converted to
-     * Unicode, the encoded words are left un-decoded.</li> <li>(b) This
-     * implementation can decode encoded words regardless of the character
-     * length of the line in which they appear. This implementation can
-     * generate a header field line with one or more encoded words even if
-     * that line is more than 76 characters long. (This implementation
-     * follows the recommendation in RFC 5322 to limit header field lines
-     * to no more than 78 characters, where possible.)</li></ul> <p>It
-     * would be appreciated if users of this library contact the author if
-     * they find other ways in which this implementation deviates from the
-     * mail specifications or other applicable specifications.</p> <p>Note
-     *  that this class currently doesn't support the "padding" parameter
-     *  for message bodies with the media type "application/octet-stream" or
+     *  <code>us-ascii</code>, "windows-1252", "windows-1251", or "iso-8859-*"
+     * (all single byte encodings).</li> <li>(d) In non-MIME message bodies
+     * and in text/plain message bodies. Any 8-bit bytes are replaced with
+     * the substitute character byte (0x1a).</li> <li>If the message starts
+     *  with the word "From" (and no other case variations of that word)
+     * followed by one or more space (U + 0020) not followed by colon, that
+     * text and the rest of the text is skipped up to and including a line
+     * feed (U + 000A). (See also RFC 4155, which describes the so-called
+     *  "mbox" convention with "From" lines of this kind.)</li> <li>The name
+     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>, despite
+     * being a reserved name under RFC 2046. The name <code>cp1252</code> and
+     * <code>utf8</code> are treated as synonyms for <code>windows-1252</code> and
+     * <code>utf-8</code>, respectively, even though they are not IANA registered
+     * aliases.</li> <li>The following deviations involve encoded words
+     * under RFC 2047:</li> <li>(a) If a sequence of encoded words decodes
+     * to a string with a CTL character (U + 007F, or a character less than
+     * U + 0020 and not TAB) after being converted to Unicode, the encoded
+     * words are left un-decoded.</li> <li>(b) This implementation can
+     * decode encoded words regardless of the character length of the line
+     * in which they appear. This implementation can generate a header
+     * field line with one or more encoded words even if that line is more
+     * than 76 characters long. (This implementation follows the
+     * recommendation in RFC 5322 to limit header field lines to no more
+     * than 78 characters, where possible.)</li></ul> <p>It would be
+     * appreciated if users of this library contact the author if they find
+     * other ways in which this implementation deviates from the mail
+     * specifications or other applicable specifications.</p> <p>Note that
+     *  this class currently doesn't support the "padding" parameter for
+     *  message bodies with the media type "application/octet-stream" or
      * treated as that media type (see RFC 2046 sec. 4.5.1).</p> <p>Note
      * that this implementation can decode an RFC 2047 encoded word that
      * uses ISO-2022-JP or ISO-2022-JP-2 (encodings that uses code
@@ -139,7 +139,8 @@ import com.upokecenter.text.*;
     private int transferEncoding;
 
     /**
-     * Initializes a new instance of the {@link Message} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class.
      * @param stream The parameter {@code stream} is a InputStream object.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
@@ -155,7 +156,8 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Initializes a new instance of the {@link Message} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class.
      * @param bytes A byte array.
      * @throws NullPointerException The parameter {@code bytes} is null.
      */
@@ -171,7 +173,8 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Initializes a new instance of the {@link Message} class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class.
      */
     public Message() {
       this.headers = new ArrayList<String>();
@@ -298,20 +301,18 @@ import com.upokecenter.text.*;
       String dsp = mt.GetParameter("delsp");
       boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
       fmt == null ? "fixed" : fmt)
-    .equals("flowed",StringComparison.Ordinal);
+    .startsWith("flowed");
       boolean delSp = DataUtilities.ToLowerCaseAscii(
-        dsp == null ? "no" : dsp).equals("yes",StringComparison.Ordinal);
-      if (mt.getTypeAndSubType().equals("text/plain", StringComparison.Ordinal)) {
+        dsp == null ? "no" : dsp).startsWith("yes");
+      if (mt.getTypeAndSubType().startsWith("text/plain")) {
         if (formatFlowed) {
           return FormatFlowed.FormatFlowedText(text, delSp);
         } else {
           return FormatFlowed.NonFormatFlowedText(text);
         }
-      } else if (mt.getTypeAndSubType().equals("text/html",
-  StringComparison.Ordinal)) {
+      } else if (mt.getTypeAndSubType().startsWith("text/html")) {
         return text;
-      } else if (mt.getTypeAndSubType().equals("text/markdown",
-  StringComparison.Ordinal)) {
+      } else if (mt.getTypeAndSubType().startsWith("text/markdown")) {
         MediaType previewType = MediaType.Parse("text/html");
         if (this.getContentDisposition() != null) {
           String pt = this.getContentDisposition().GetParameter("preview-type");
@@ -319,14 +320,12 @@ import com.upokecenter.text.*;
             pt == null ? "" : pt,
             previewType);
         }
-        if (previewType.getTypeAndSubType().equals("text/html",
-  StringComparison.Ordinal)) {
+        if (previewType.getTypeAndSubType().startsWith("text/html")) {
           return FormatFlowed.MarkdownText(text, 0);
         } else {
           return FormatFlowed.NonFormatFlowedText(text);
         }
-      } else if (mt.getTypeAndSubType().equals("text/enriched",
-  StringComparison.Ordinal)) {
+      } else if (mt.getTypeAndSubType().startsWith("text/enriched")) {
         return EnrichedText.EnrichedToHtml(text, 0, text.length());
       } else {
         return FormatFlowed.NonFormatFlowedText(text);
@@ -540,16 +539,16 @@ public final void setSubject(String value) {
      * with the same name, and the address set to
      * <code>me@[header-name]-address.invalid</code> as the address (a
      * <code>.invalid</code> address is a reserved address that can never belong
-     * to anyone). (An exception is that the Resent-&#x2a; header fields
-     * may appear more than once.) The generated message should always have
-     * a From header field.</p> <p>If a Date and/or Message-ID header field
+     * to anyone). (An exception is that the Resent-* header fields may
+     * appear more than once.) The generated message should always have a
+     * From header field.</p> <p>If a Date and/or Message-ID header field
      * doesn't exist, a field with that name will be generated (using the
      * current local time for the Date field).</p> <p>When encoding the
-     * message's body, if the message has a text content type
-     *  ("text/&#x2a;"), the line breaks are a CR byte (carriage return,
-     * 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or LF
-     * alone. If the message has any other content type, only CR followed
-     * by LF is considered a line break.</p>
+     *  message's body, if the message has a text content type ("text/*"),
+     * the line breaks are a CR byte (carriage return, 0x0d) followed by an
+     * LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has
+     * any other content type, only CR followed by LF is considered a line
+     * break.</p>
      * @return The generated message.
      * @throws com.upokecenter.mail.MessageDataException The message can't be
      * generated.
@@ -635,12 +634,9 @@ public final void setSubject(String value) {
      */
 
     public Message GetBodyMessage() {
-      return (this.getContentType().getTopLevelType().equals("message",
-  StringComparison.Ordinal) && (this.getContentType().getSubType().equals("rfc822",
-  StringComparison.Ordinal) ||
-           this.getContentType().getSubType().equals("news", StringComparison.Ordinal) ||
-           this.getContentType().getSubType().equals("global",
-  StringComparison.Ordinal))) ? new Message(this.body) : null;
+      return (this.getContentType().getTopLevelType().startsWith("message") && (this.getContentType().getSubType().startsWith("rfc822") ||
+           this.getContentType().getSubType().startsWith("news") ||
+           this.getContentType().getSubType().startsWith("global"))) ? new Message(this.body) : null;
     }
 
     /**
@@ -682,7 +678,7 @@ public final void setSubject(String value) {
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
-        if (this.headers.get(i).equals(name, StringComparison.Ordinal)) {
+        if (this.headers.get(i).startsWith(name)) {
           // Get the first instance of the header field
           return this.headers.get(i + 1);
         }
@@ -709,7 +705,7 @@ public final void setSubject(String value) {
       name = DataUtilities.ToLowerCaseAscii(name);
       ArrayList<String> list = new ArrayList<String>();
       for (int i = 0; i < this.headers.size(); i += 2) {
-        if (this.headers.get(i).equals(name, StringComparison.Ordinal)) {
+        if (this.headers.get(i).startsWith(name)) {
           list.add(this.headers.get(i + 1));
         }
       }
@@ -751,9 +747,9 @@ public final void setSubject(String value) {
       String name = this.headers.get(index * 2);
       this.headers.remove(index * 2);
       this.headers.remove(index * 2);
-      if (name.equals("content-type", StringComparison.Ordinal)) {
+      if (name.startsWith("content-type")) {
         this.contentType = MediaType.TextPlainAscii;
-      } else if (name.equals("content-disposition", StringComparison.Ordinal)) {
+      } else if (name.startsWith("content-disposition")) {
         this.contentDisposition = null;
       }
       return this;
@@ -779,15 +775,15 @@ public final void setSubject(String value) {
       name = DataUtilities.ToLowerCaseAscii(name);
       // Remove the header field
       for (int i = 0; i < this.headers.size(); i += 2) {
-        if (this.headers.get(i).equals(name, StringComparison.Ordinal)) {
+        if (this.headers.get(i).startsWith(name)) {
           this.headers.remove(i);
           this.headers.remove(i);
           i -= 2;
         }
       }
-      if (name.equals("content-type", StringComparison.Ordinal)) {
+      if (name.startsWith("content-type")) {
         this.contentType = MediaType.TextPlainAscii;
-      } else if (name.equals("content-disposition", StringComparison.Ordinal)) {
+      } else if (name.startsWith("content-disposition")) {
         this.contentDisposition = null;
       }
       return this;
@@ -855,9 +851,9 @@ public final void setSubject(String value) {
       name = ValidateHeaderField(name, value);
       this.headers.set(index * 2, name);
       this.headers.set((index * 2) + 1, value);
-      if (name.equals("content-type", StringComparison.Ordinal)) {
+      if (name.startsWith("content-type")) {
         this.contentType = MediaType.Parse(value);
-      } else if (name.equals("content-disposition", StringComparison.Ordinal)) {
+      } else if (name.startsWith("content-disposition")) {
         this.contentDisposition = ContentDisposition.Parse(value);
       }
       return this;
@@ -927,7 +923,7 @@ public final void setSubject(String value) {
       // Add the header field
       int index = 0;
       for (int i = 0; i < this.headers.size(); i += 2) {
-        if (this.headers.get(i).equals(name, StringComparison.Ordinal)) {
+        if (this.headers.get(i).startsWith(name)) {
           return this.SetHeader(index, name, value);
         }
         ++index;
@@ -1188,73 +1184,73 @@ try { if (ms != null) {
       if (!((filename) == null || (filename).length() == 0)) {
         String ext = DataUtilities.ToLowerCaseAscii(
            ExtensionName(filename));
-        if (ext.equals(".doc", StringComparison.Ordinal) ||
-ext.equals(".dot", StringComparison.Ordinal)) {
+        if (ext.startsWith(".doc") ||
+ext.startsWith(".dot")) {
           return MediaType.Parse("application/msword");
         }
-        if (ext.equals(".pdf", StringComparison.Ordinal)) {
+        if (ext.startsWith(".pdf")) {
           return MediaType.Parse("application/pdf");
         }
-        if (ext.equals(".key", StringComparison.Ordinal)) {
+        if (ext.startsWith(".key")) {
           return MediaType.Parse("application/pgp-keys");
         }
-        if (ext.equals(".sig", StringComparison.Ordinal)) {
+        if (ext.startsWith(".sig")) {
           return MediaType.Parse("application/pgp-signature");
         }
-        if (ext.equals(".rtf", StringComparison.Ordinal)) {
+        if (ext.startsWith(".rtf")) {
           return MediaType.Parse("application/rtf");
         }
-        if (ext.equals(".docx", StringComparison.Ordinal)) {
+        if (ext.startsWith(".docx")) {
           return
 
   MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
-        if (ext.equals(".zip", StringComparison.Ordinal)) {
+        if (ext.startsWith(".zip")) {
           return MediaType.Parse("application/zip");
         }
-        if (ext.equals(".m4a", StringComparison.Ordinal) ||
-ext.equals(".mp2", StringComparison.Ordinal) ||
-ext.equals(".mp3", StringComparison.Ordinal) ||
-ext.equals(".mpega", StringComparison.Ordinal) ||
-ext.equals(".mpga", StringComparison.Ordinal)) {
+        if (ext.startsWith(".m4a") ||
+ext.startsWith(".mp2") ||
+ext.startsWith(".mp3") ||
+ext.startsWith(".mpega") ||
+ext.startsWith(".mpga")) {
           return MediaType.Parse("audio/mpeg");
         }
-        if (ext.equals(".gif", StringComparison.Ordinal)) {
+        if (ext.startsWith(".gif")) {
           return MediaType.Parse("image/gif");
         }
-        if (ext.equals(".jpe", StringComparison.Ordinal) ||
-ext.equals(".jpeg", StringComparison.Ordinal) ||
-ext.equals(".jpg", StringComparison.Ordinal)) {
+        if (ext.startsWith(".jpe") ||
+ext.startsWith(".jpeg") ||
+ext.startsWith(".jpg")) {
           return MediaType.Parse("image/jpeg");
         }
-        if (ext.equals(".png", StringComparison.Ordinal)) {
+        if (ext.startsWith(".png")) {
           return MediaType.Parse("image/png");
         }
-        if (ext.equals(".tif", StringComparison.Ordinal) ||
-ext.equals(".tiff", StringComparison.Ordinal)) {
+        if (ext.startsWith(".tif") ||
+ext.startsWith(".tiff")) {
           return MediaType.Parse("image/tiff");
         }
-        if (ext.equals(".eml", StringComparison.Ordinal)) {
+        if (ext.startsWith(".eml")) {
           return MediaType.Parse("message/rfc822");
         }
-        if (ext.equals(".rst", StringComparison.Ordinal)) {
+        if (ext.startsWith(".rst")) {
           return MediaType.Parse("text/prs.fallenstein.rst\u003bcharset=utf-8");
         }
-        if (ext.equals(".htm", StringComparison.Ordinal) ||
-ext.equals(".html", StringComparison.Ordinal) ||
-ext.equals(".shtml", StringComparison.Ordinal)) {
+        if (ext.startsWith(".htm") ||
+ext.startsWith(".html") ||
+ext.startsWith(".shtml")) {
           return MediaType.Parse("text/html\u003bcharset=utf-8");
         }
-        if (ext.equals(".md", StringComparison.Ordinal) ||
-ext.equals(".markdown", StringComparison.Ordinal)) {
+        if (ext.startsWith(".md") ||
+ext.startsWith(".markdown")) {
           return MediaType.Parse("text/markdown\u003bcharset=utf-8");
         }
-        if (ext.equals(".asc", StringComparison.Ordinal) ||
-ext.equals(".brf", StringComparison.Ordinal) ||
-ext.equals(".pot", StringComparison.Ordinal) ||
-ext.equals(".srt", StringComparison.Ordinal) ||
-ext.equals(".text", StringComparison.Ordinal) ||
-ext.equals(".txt", StringComparison.Ordinal)) {
+        if (ext.startsWith(".asc") ||
+ext.startsWith(".brf") ||
+ext.startsWith(".pot") ||
+ext.startsWith(".srt") ||
+ext.startsWith(".text") ||
+ext.startsWith(".txt")) {
           return MediaType.Parse("text/plain\u003bcharset=utf-8");
         }
       }
@@ -1262,17 +1258,17 @@ ext.equals(".txt", StringComparison.Ordinal)) {
     }
 
     /**
-     * Adds an attachment to this message in the form of data from the // /given
+     * Adds an attachment to this message in the form of data from the given
      * readable stream, and with the given media type. Before the new
      * attachment is added, if this message isn't already a multipart
      *  message, it becomes a "multipart/mixed" message with the current
      * body converted to an inline body part.<p> The following example
      * (written in C# for the.NET version) is an extension method that adds
-     * an attachment from a byte array to a message. <pre> public static
+     * an attachment from a byte array to a message. <pre>public static
      * Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
-     * MediaType mediaType) { using(MemoryStream fs = new
-     * MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); } }
-     * </pre> . </p>
+     * MediaType mediaType) { using (MemoryStream fs = new
+     * MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); }
+     * }</pre> . </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
@@ -1343,17 +1339,27 @@ ext.equals(".txt", StringComparison.Ordinal)) {
     }
 
     /**
-     * Adds an inline body part to this message in the form of data from // /the
-     * given readable stream, and with the given media type. Before the new
-     * body part is added, if this message isn't already a multipart
-     *  message, it becomes a "multipart/mixed" message with the current
-     * body converted to an inline body part.<p> The following example
-     * (written in C# for the.NET version) is an extension method that adds
-     * an inline body part from a byte array to a message. <pre> public
-     * static Message AddInlineFromBytes(this Message msg, byte[] bytes,
-     * MediaType mediaType) { using(MemoryStream fs = new
-     * MemoryStream(bytes)) { return msg.AddInline(fs, mediaType); } }
-     * </pre> . </p>
+     * Adds an inline body part to this message in the form of data from the given
+     * readable stream, and with the given media type. Before the new body
+     * part is added, if this message isn't already a multipart message, it
+     *  becomes a "multipart/mixed" message with the current body converted
+     * to an inline body part.<p> The following example (written in C# for
+     * the.NET version) is an extension method that adds an inline body
+     * part from a byte array to a message. <pre>public static Message
+     * AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
+     * mediaType) { {
+java.io.ByteArrayInputStream fs = null;
+try {
+fs = new java.io.ByteArrayInputStream(bytes);
+
+     * return msg.AddInline(fs, mediaType);
+}
+finally {
+try { if (fs != null) {
+ fs.close();
+ } } catch (java.io.IOException ex) {}
+}
+} }</pre> . </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @return A Message object for the generated body part.
@@ -1481,8 +1487,7 @@ ext.equals(".txt", StringComparison.Ordinal)) {
     public Message SelectLanguageMessage(
        List<String> languages,
        boolean preferOriginals) {
-      if (this.getContentType().getTypeAndSubType().equals("multipart/multilingual",
-  StringComparison.Ordinal) && this.getParts().size() >= 2) {
+      if (this.getContentType().getTypeAndSubType().startsWith("multipart/multilingual") && this.getParts().size() >= 2) {
         String subject = this.GetHeader("subject");
         int passes = preferOriginals ? 2 : 1;
         List<String> clang;
@@ -1497,7 +1502,7 @@ ext.equals(".txt", StringComparison.Ordinal)) {
             if (preferOriginals && i == 0) { // Allow originals only, on first
               String ctt =
   GetContentTranslationType(part.GetHeader("content-translation-type"));
-              if (!ctt.equals("original", StringComparison.Ordinal)) {
+              if (!ctt.startsWith("original")) {
                 continue;
               }
             }
@@ -1610,7 +1615,7 @@ ext.equals(".txt", StringComparison.Ordinal)) {
       for (int i = 0; i < languages.size(); ++i) {
         List<String> langs = LanguageTags.GetLanguageList(languages.get(i));
         boolean langInd = i == languages.size() - 1 && langs.size() == 1 &&
-          langs.get(0).equals("zxx", StringComparison.Ordinal);
+          langs.get(0).startsWith("zxx");
         if (!langInd && LanguageTags.LanguageTagFilter(
           zxx,
           langs).size() > 0) {
@@ -1810,10 +1815,8 @@ ext.equals(".txt", StringComparison.Ordinal)) {
             headerNameStart,
             headerNameEnd - headerNameStart,
             true));
-        boolean origRecipient = fieldName.equals("original-recipient",
-  StringComparison.Ordinal);
-        boolean finalRecipient = fieldName.equals("final-recipient",
-  StringComparison.Ordinal);
+        boolean origRecipient = fieldName.startsWith("original-recipient");
+        boolean finalRecipient = fieldName.startsWith("final-recipient");
         // Read the header field value using UTF-8 characters
         // rather than bytes
         while (true) {
@@ -1846,7 +1849,7 @@ ext.equals(".txt", StringComparison.Ordinal)) {
                     if (c == '\n') {
                     // CRLF was read
                     lineStart = true;
-                    } else {
+                  } else {
                     // It's the first part of the line, where the header name
                     // should be, so the CR here is illegal
                     throw new MessageDataException("CR not followed by LF");
@@ -2069,7 +2072,7 @@ ext.equals(".txt", StringComparison.Ordinal)) {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(typePart + builder));
-          } else {
+} else {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(headerValue));
@@ -2421,7 +2424,7 @@ ext.equals(".txt", StringComparison.Ordinal)) {
                 if (c == -1) {
                   throw new MessageDataException(
   "Premature end before all headers were read (Mbox convention)");
-                } else if (c == ':' && possibleMbox) {
+} else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
                   sb.append("from");
@@ -2515,7 +2518,7 @@ ext.equals(".txt", StringComparison.Ordinal)) {
                     if (c == '\n') {
                     // CRLF was read
                     lineCount = 0;
-                    } else {
+                  } else {
                     // It's the first part of the line, where the header name
                     // should be, so the CR here is illegal
                     throw new MessageDataException("CR not followed by LF");
@@ -2806,49 +2809,36 @@ ext.equals(".txt", StringComparison.Ordinal)) {
         isMultipart = true;
       }
       if (!isMultipart) {
-        if (builder.getTopLevelType().equals("message", StringComparison.Ordinal)) {
-          if (builder.getSubType().equals("delivery-status",
-                     StringComparison.Ordinal) ||
-                     builder.getSubType().equals("global-delivery-status",
-                     StringComparison.Ordinal) ||
-                     builder.getSubType().equals("disposition-notification",
-                     StringComparison.Ordinal) ||
-                     builder.getSubType().equals("global-disposition-notification",
-                     StringComparison.Ordinal)) {
+        if (builder.getTopLevelType().startsWith("message")) {
+          if (builder.getSubType().startsWith("delivery-status") ||
+                     builder.getSubType().startsWith("global-delivery-status") ||
+                     builder.getSubType().startsWith("disposition-notification") ||
+                     builder.getSubType().startsWith("global-disposition-notification")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
-          if ((builder.getSubType().equals("rfc822", StringComparison.Ordinal) ||
-builder.getSubType().equals(
-            "news",
-            StringComparison.Ordinal)) && !msgCanBeUnencoded) {
+          if ((builder.getSubType().startsWith("rfc822") ||
+builder.getSubType().startsWith(
+            "news")) && !msgCanBeUnencoded) {
             builder.SetSubType("global");
-          } else if (builder.getSubType().equals("disposition-notification",
-  StringComparison.Ordinal) && !msgCanBeUnencoded) {
+          } else if (builder.getSubType().startsWith("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
-          } else if (builder.getSubType().equals("delivery-status",
-  StringComparison.Ordinal) && !msgCanBeUnencoded) {
+          } else if (builder.getSubType().startsWith("delivery-status") && !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
-          } else if (!msgCanBeUnencoded && !builder.getSubType().equals("global",
-  StringComparison.Ordinal) &&
-            !builder.getSubType().equals("global-disposition-notification",
-  StringComparison.Ordinal) && !builder.getSubType().equals("global-delivery-status",
-  StringComparison.Ordinal) && !builder.getSubType().equals("global-headers",
-  StringComparison.Ordinal)) {
+          } else if (!msgCanBeUnencoded && !builder.getSubType().startsWith("global") &&
+            !builder.getSubType().startsWith("global-disposition-notification") && !builder.getSubType().startsWith("global-delivery-status") && !builder.getSubType().startsWith("global-headers")) {
           }
         }
       }
       String topLevel = builder.getTopLevelType();
       // NOTE: RFC 6532 allows any transfer encoding for the
       // four global message types listed below.
-      transferEnc = topLevel.equals("message", StringComparison.Ordinal) ||
-        topLevel.equals("multipart", StringComparison.Ordinal) ?
-(topLevel.equals("multipart", StringComparison.Ordinal) || (
-          !builder.getSubType().equals("global", StringComparison.Ordinal) &&
-          !builder.getSubType().equals("global-headers", StringComparison.Ordinal) &&
-          !builder.getSubType().equals("global-disposition-notification",
-  StringComparison.Ordinal) && !builder.getSubType().equals("global-delivery-status",
-  StringComparison.Ordinal))) ? EncodingSevenBit : TransferEncodingToUse(
+      transferEnc = topLevel.startsWith("message") ||
+        topLevel.startsWith("multipart") ?
+(topLevel.startsWith("multipart") || (
+          !builder.getSubType().startsWith("global") &&
+          !builder.getSubType().startsWith("global-headers") &&
+          !builder.getSubType().startsWith("global-disposition-notification") && !builder.getSubType().startsWith("global-delivery-status"))) ? EncodingSevenBit : TransferEncodingToUse(
             bodyToWrite,
             depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       String encodingString = "7bit";
@@ -2862,7 +2852,7 @@ builder.getSubType().equals(
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
         String rawField = null;
-        if (name.equals("content-type", StringComparison.Ordinal)) {
+        if (name.startsWith("content-type")) {
           if (haveContentType) {
             // Already outputted, continue
             continue;
@@ -2870,27 +2860,26 @@ builder.getSubType().equals(
           haveContentType = true;
           value = builder.toString();
         }
-        if (name.equals("content-disposition", StringComparison.Ordinal)) {
+        if (name.startsWith("content-disposition")) {
           if (haveContentDisp || contentDisp == null) {
             // Already outputted, continue
             continue;
           }
           haveContentDisp = true;
           value = contentDisp;
-        } else if (name.equals("content-transfer-encoding",
-  StringComparison.Ordinal)) {
+        } else if (name.startsWith("content-transfer-encoding")) {
           if (haveContentEncoding) {
             // Already outputted, continue
             continue;
           }
           haveContentEncoding = true;
           value = encodingString;
-        } else if (name.equals("date", StringComparison.Ordinal)) {
+        } else if (name.startsWith("date")) {
           if (haveDate) {
             continue;
           }
           haveDate = true;
-        } else if (name.equals("from", StringComparison.Ordinal)) {
+        } else if (name.startsWith("from")) {
           if (haveFrom) {
             // Already outputted, continue
             continue;
@@ -2905,13 +2894,13 @@ name.length() >= 2 &&
           // in body parts
           continue;
         }
-        if (name.equals("mime-version", StringComparison.Ordinal)) {
+        if (name.startsWith("mime-version")) {
           if (depth > 0) {
             // Don't output if this is a body part
             continue;
           }
           haveMimeVersion = true;
-        } else if (name.equals("message-id", StringComparison.Ordinal)) {
+        } else if (name.startsWith("message-id")) {
           if (depth > 0) {
             // Don't output if this is a body part
             continue;
@@ -2979,21 +2968,20 @@ name.length() >= 2 &&
               downgraded,
               0,
               downgraded.length())) {
-            if (name.equals("message-id", StringComparison.Ordinal) ||
-              name.equals("resent-message-id", StringComparison.Ordinal) ||
-              name.equals("in-reply-to", StringComparison.Ordinal) ||
-              name.equals("references", StringComparison.Ordinal) ||
-              name.equals(
-                "original-recipient",
-                StringComparison.Ordinal) ||
-              name.equals("final-recipient", StringComparison.Ordinal)) {
+            if (name.startsWith("message-id") ||
+              name.startsWith("resent-message-id") ||
+              name.startsWith("in-reply-to") ||
+              name.startsWith("references") ||
+              name.startsWith(
+                "original-recipient") ||
+              name.startsWith("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
               downgraded = HeaderEncoder.EncodeFieldAsEncodedWords(
                   "downgraded-" + name,
                   ParserUtility.TrimSpaceAndTab(value));
-            } else {
+                } else {
             }
           } else {
             AppendAscii(
@@ -3135,7 +3123,7 @@ name.length() >= 2 &&
       ArrayList<String> headerList = new ArrayList<String>();
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
-        if (this.headers.get(i).equals(name, StringComparison.Ordinal)) {
+        if (this.headers.get(i).startsWith(name)) {
           headerList.add(this.headers.get(i + 1));
         }
       }
@@ -3146,7 +3134,7 @@ name.length() >= 2 &&
       name = DataUtilities.ToLowerCaseAscii(name);
       boolean have = false;
       for (int i = 0; i < this.headers.size(); i += 2) {
-        if (this.headers.get(i).equals(name, StringComparison.Ordinal)) {
+        if (this.headers.get(i).startsWith(name)) {
           if (have) {
             return false;
           }
@@ -3261,8 +3249,7 @@ name.length() >= 2 &&
       for (int i = 0; i < this.headers.size(); i += 2) {
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
-        if (name.equals("content-transfer-encoding",
-            StringComparison.Ordinal)) {
+        if (name.startsWith("content-transfer-encoding")) {
           int startIndex = HeaderParser.ParseCFWS(value, 0, value.length(), null);
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
@@ -3281,7 +3268,7 @@ name.length() >= 2 &&
                 startIndex, (
                 startIndex)+(endIndex - startIndex)) : "";
         }
-        mime |= name.equals("mime-version", StringComparison.Ordinal);
+        mime |= name.startsWith("mime-version");
         if (value.indexOf("=?") >= 0) {
           IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
           // Decode encoded words in the header field where possible
@@ -3296,28 +3283,25 @@ name.length() >= 2 &&
       for (int i = 0; i < this.headers.size(); i += 2) {
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
-        if (mime && name.equals("content-transfer-encoding",
-  StringComparison.Ordinal)) {
+        if (mime && name.startsWith("content-transfer-encoding")) {
           value = DataUtilities.ToLowerCaseAscii(transferEncodingValue);
           this.headers.set(i + 1, value);
-          if (value.equals("7bit", StringComparison.Ordinal)) {
+          if (value.startsWith("7bit")) {
             this.transferEncoding = EncodingSevenBit;
-          } else if (value.equals("8bit", StringComparison.Ordinal)) {
+          } else if (value.startsWith("8bit")) {
             this.transferEncoding = EncodingEightBit;
-          } else if (value.equals("binary", StringComparison.Ordinal)) {
+          } else if (value.startsWith("binary")) {
             this.transferEncoding = EncodingBinary;
-          } else if (value.equals("quoted-printable",
-  StringComparison.Ordinal)) {
+          } else if (value.startsWith("quoted-printable")) {
             this.transferEncoding = EncodingQuotedPrintable;
-          } else if (value.equals("base64", StringComparison.Ordinal)) {
+          } else if (value.startsWith("base64")) {
             this.transferEncoding = EncodingBase64;
           } else {
             // Unrecognized transfer encoding
             this.transferEncoding = EncodingUnknown;
           }
           haveContentEncoding = true;
-        } else if (mime && name.equals("content-type",
-  StringComparison.Ordinal)) {
+        } else if (mime && name.startsWith("content-type")) {
           if (haveContentType) {
             // DEVIATION: If there is already a content type,
             // treat content type as application/octet-stream
@@ -3352,8 +3336,7 @@ name.length() >= 2 &&
             }
             haveContentType = true;
           }
-        } else if (mime && name.equals("content-disposition",
-  StringComparison.Ordinal)) {
+        } else if (mime && name.startsWith("content-disposition")) {
           if (haveContentDisp) {
             String valueExMessage = "Already have this header: " + name;
 
@@ -3371,26 +3354,23 @@ name.length() >= 2 &&
       // because it's undesirable here to add a Content-Type
       // header field, as the setter does
       this.contentType = ctype;
-      if (!haveContentEncoding && this.contentType.getTypeAndSubType().equals(
-        "message/rfc822",
-        StringComparison.Ordinal)) {
+      if (!haveContentEncoding && this.contentType.getTypeAndSubType().startsWith(
+        "message/rfc822")) {
         // DEVIATION: Be a little more liberal with rfc822
         // messages with 8-bit bytes
         this.transferEncoding = EncodingEightBit;
       }
       if (this.transferEncoding == EncodingSevenBit) {
         String charset = this.contentType.GetCharset();
-        if (charset.equals("utf-8", StringComparison.Ordinal)) {
+        if (charset.startsWith("utf-8")) {
           // DEVIATION: Be a little more liberal with UTF-8
           this.transferEncoding = EncodingEightBit;
-        } else if (this.contentType.getTypeAndSubType().equals("text/html",
-            StringComparison.Ordinal)) {
-          if (charset.equals("us-ascii", StringComparison.Ordinal) ||
-              charset.equals("windows-1252", StringComparison.Ordinal) ||
-              charset.equals("windows-1251", StringComparison.Ordinal) ||
-              (charset.length() > 9 && charset.substring(0, 9).equals(
-                "iso-8859-",
-                StringComparison.Ordinal))) {
+        } else if (this.contentType.getTypeAndSubType().startsWith("text/html")) {
+          if (charset.startsWith("us-ascii") ||
+              charset.startsWith("windows-1252") ||
+              charset.startsWith("windows-1251") ||
+              (charset.length() > 9 && charset.substring(0, 9).startsWith(
+                "iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
@@ -3401,15 +3381,10 @@ name.length() >= 2 &&
           this.transferEncoding == EncodingBase64 ||
           this.transferEncoding == EncodingUnknown) {
         if (this.contentType.isMultipart() ||
-            (this.contentType.getTopLevelType().equals("message",
-  StringComparison.Ordinal) && !this.contentType.getSubType().equals("global",
-  StringComparison.Ordinal) &&
-             !this.contentType.getSubType().equals("global-headers",
-  StringComparison.Ordinal) && !this.contentType.getSubType().equals(
-    "global-disposition-notification",
-    StringComparison.Ordinal) &&
-             !this.contentType.getSubType().equals("global-delivery-status",
-  StringComparison.Ordinal))) {
+            (this.contentType.getTopLevelType().startsWith("message") && !this.contentType.getSubType().startsWith("global") &&
+             !this.contentType.getSubType().startsWith("global-headers") && !this.contentType.getSubType().startsWith(
+    "global-disposition-notification") &&
+             !this.contentType.getSubType().startsWith("global-delivery-status"))) {
           if (this.transferEncoding == EncodingQuotedPrintable ||
               this.transferEncoding == EncodingBase64) {
             // DEVIATION: Treat quoted-printable for multipart and message
@@ -3495,8 +3470,7 @@ name.length() >= 2 &&
                     multipartStack.size() - 1).getMessage();
               boundaryChecker.StartBodyPartHeaders();
               MediaType ctype = parentMessage.getContentType();
-              boolean parentIsDigest = ctype.getSubType().equals("digest",
-  StringComparison.Ordinal) && ctype.isMultipart();
+              boolean parentIsDigest = ctype.getSubType().startsWith("digest") && ctype.isMultipart();
               ReadHeaders(stream, msg.headers, false);
               msg.ProcessHeaders(true, parentIsDigest);
               entry = new MessageStackEntry(msg);
@@ -3508,9 +3482,8 @@ name.length() >= 2 &&
               ctype = msg.getContentType();
               leaf = ctype.isMultipart() ? null : msg;
               boundaryChecker.EndBodyPartHeaders(entry.getBoundary());
-              boolean isTextPlain = ctype.getTypeAndSubType().equals(
-                "text/plain",
-                StringComparison.Ordinal);
+              boolean isTextPlain = ctype.getTypeAndSubType().startsWith(
+                "text/plain");
               currentTransform = MakeTransferEncoding(
                 boundaryChecker,
                 msg.transferEncoding,
@@ -3539,8 +3512,7 @@ name.length() >= 2 &&
 
     private void ReadSimpleBody(IByteReader stream) {
       boolean isTextPlain =
-this.getContentType().getTypeAndSubType().equals("text/plain",
-  StringComparison.Ordinal);
+this.getContentType().getTypeAndSubType().startsWith("text/plain");
       IByteReader transform = MakeTransferEncoding(
         stream,
         this.transferEncoding,

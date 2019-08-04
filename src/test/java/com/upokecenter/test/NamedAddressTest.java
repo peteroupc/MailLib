@@ -140,33 +140,33 @@ import com.upokecenter.mail.*;
  Assert.fail();
  }
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       {
-String stringTemp = na.toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
       na = new NamedAddress("<me@example.com>");
       if (na.getDisplayName() != null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
       na = new NamedAddress("Me <me@example.com>");
       Assert.assertEquals("Me", na.getName());
       if (na.isGroup()) {
  Assert.fail();
  }
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
 na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
       Assert.assertEquals("Me", na.getName());
@@ -174,10 +174,10 @@ na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
  Assert.fail();
  }
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       na = new NamedAddress("=?utf-8?q?Me?= <me@example.com>");
       Assert.assertEquals("Me", na.getName());
@@ -185,14 +185,14 @@ Assert.assertEquals(
  Assert.fail();
  }
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       {
-String stringTemp = na.toString();
-Assert.assertEquals(
+        String stringTemp = na.toString();
+        Assert.assertEquals(
   "Me <me@example.com>",
   stringTemp);
 }
@@ -203,14 +203,14 @@ na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
  Assert.fail();
  }
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       {
-String stringTemp = na.toString();
-Assert.assertEquals(
+        String stringTemp = na.toString();
+        Assert.assertEquals(
   "John's Office <me@example.com>",
   stringTemp);
 }
@@ -220,14 +220,14 @@ Assert.assertEquals(
  Assert.fail();
  }
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       {
-String stringTemp = na.toString();
-Assert.assertEquals(
+        String stringTemp = na.toString();
+        Assert.assertEquals(
   "Me <me@example.com>",
   stringTemp);
 }
@@ -241,10 +241,10 @@ Assert.assertEquals(
       na = groupAddr.get(0);
       Assert.assertEquals("Me", na.getName());
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       na = new
   NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
@@ -252,8 +252,8 @@ Assert.assertEquals(
  Assert.fail();
  }
       {
-String stringTemp = na.toString();
-String ValueS1 =
+        String stringTemp = na.toString();
+        String ValueS1 =
         "Group: Me <me@example.com>, Fred <fred@example.com>;";
         Assert.assertEquals(ValueS1, stringTemp);
 }
@@ -262,18 +262,18 @@ String ValueS1 =
       na = groupAddr.get(0);
       Assert.assertEquals("Me", na.getName());
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       na = groupAddr.get(1);
       Assert.assertEquals("Fred", na.getName());
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "fred@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "fred@example.com",
+          stringTemp);
 }
       //------------
       na = new
@@ -283,27 +283,28 @@ Assert.assertEquals(
  Assert.fail();
  }
       {
-String stringTemp = na.toString();
-String ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";
-Assert.assertEquals(ValueS1, stringTemp);
+        String stringTemp = na.toString();
+        String ValueS1 = "Group: Me <me@example.com>," +
+"\u0020 somebody@example.com;";
+        Assert.assertEquals(ValueS1, stringTemp);
 }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());
       na = groupAddr.get(0);
       Assert.assertEquals("Me", na.getName());
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "me@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "me@example.com",
+          stringTemp);
 }
       na = groupAddr.get(1);
       Assert.assertEquals("somebody@example.com", na.getName());
       {
-String stringTemp = na.getAddress().toString();
-Assert.assertEquals(
-  "somebody@example.com",
-  stringTemp);
+        String stringTemp = na.getAddress().toString();
+        Assert.assertEquals(
+          "somebody@example.com",
+          stringTemp);
 }
     }
     @Test

@@ -2,7 +2,7 @@
 
     public sealed class MediaTypeBuilder
 
-  A mutable media type object.
+ A mutable media type object.
 
 ### Member Summary
 * <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
@@ -16,7 +16,7 @@
 * <code>[TopLevelType](#TopLevelType)</code> - Gets or sets this value's top-level type.
 * <code>[ToString()](#ToString)</code> - Converts this object to a text string of the media type it represents, in the same form as MediaType.
 
-<a id="Void_ctor_MediaType"></a>
+<a id="Void_ctor_PeterO_Mail_MediaType"></a>
 ### MediaTypeBuilder Constructor
 
     public MediaTypeBuilder(
@@ -35,7 +35,7 @@
 The parameter  <i>mt</i>
  is null.
 
-<a id="Void_ctor_String_String"></a>
+<a id="Void_ctor_System_String_System_String"></a>
 ### MediaTypeBuilder Constructor
 
     public MediaTypeBuilder(
@@ -64,52 +64,44 @@ The parameter  <i>mt</i>
 
     public bool IsMultipart { get; }
 
-  Gets a value indicating whether this is a multipart media type.
+ Gets a value indicating whether this is a multipart media type.
 
  <b>Returns:</b>
 
-  `
-         true
-      `  If this is a multipart media type; otherwise,  `
-         false
-      `  .
+ `true`  If this is a multipart media type; otherwise,  `false`  .
 
 <a id="IsText"></a>
 ### IsText
 
     public bool IsText { get; }
 
-  Gets a value indicating whether this is a text media type.
+ Gets a value indicating whether this is a text media type.
 
  <b>Returns:</b>
 
-  `
-         true
-      `  If this is a text media type; otherwise,  `
-         false
-      `  .
+ `true`  If this is a text media type; otherwise,  `false`  .
 
 <a id="SubType"></a>
 ### SubType
 
     public string SubType { get; set; }
 
-  Gets or sets this value's subtype.
+ Gets or sets this value's subtype.
 
  <b>Returns:</b>
 
- This value's subtype.
+This value's subtype.
 
 <a id="TopLevelType"></a>
 ### TopLevelType
 
     public string TopLevelType { get; set; }
 
-  Gets or sets this value's top-level type.
+ Gets or sets this value's top-level type.
 
  <b>Returns:</b>
 
- This value's top-level type.
+This value's top-level type.
 
 <a id="RemoveParameter_string"></a>
 ### RemoveParameter
@@ -117,20 +109,20 @@ The parameter  <i>mt</i>
     public PeterO.Mail.MediaTypeBuilder RemoveParameter(
         string name);
 
-  Removes a parameter from this builder object. Does nothing if the parameter's name doesn't exist.
+ Removes a parameter from this builder object. Does nothing if the parameter's name doesn't exist.
 
  <b>Parameters:</b>
 
- * <i>name</i>:  Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 
- This instance.
+This instance.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>name</i>
+The parameter  <i>name</i>
  is null.
 
 <a id="SetParameter_string_string"></a>
@@ -140,27 +132,27 @@ The parameter  <i>mt</i>
         string name,
         string value);
 
-  Sets a parameter's name and value for this media type.
+ Sets a parameter's name and value for this media type.
 
  <b>Parameters:</b>
 
- * <i>name</i>:  Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
- * <i>value</i>:  A text string giving the parameter's value.
+ * <i>value</i>: A text string giving the parameter's value.
 
 <b>Return Value:</b>
 
- This instance.
+This instance.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>value</i>
+The parameter  <i>value</i>
  or  <i>name</i>
  is null.
 
  * System.ArgumentException:
- The parameter  <i>name</i>
+The parameter  <i>name</i>
  is empty or syntactically invalid.
 
 <a id="SetSubType_string"></a>
@@ -169,24 +161,24 @@ The parameter  <i>mt</i>
     public PeterO.Mail.MediaTypeBuilder SetSubType(
         string str);
 
-  Sets this media type's subtype, such as "plain" or "xml" .
+ Sets this media type's subtype, such as "plain" or "xml" .
 
  <b>Parameters:</b>
 
- * <i>str</i>:  A text string naming a media subtype.
+ * <i>str</i>: A text string naming a media subtype.
 
 <b>Return Value:</b>
 
- This instance.
+This instance.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>str</i>
+The parameter  <i>str</i>
  is null.
 
  * System.ArgumentException:
- The parameter  <i>str</i>
+The parameter  <i>str</i>
  is empty or syntactically invalid.
 
 <a id="SetTopLevelType_string"></a>
@@ -195,24 +187,24 @@ The parameter  <i>mt</i>
     public PeterO.Mail.MediaTypeBuilder SetTopLevelType(
         string str);
 
-  Sets this media type's top-level type.
+ Sets this media type's top-level type.
 
  <b>Parameters:</b>
 
- * <i>str</i>:  A text string naming a top-level type, such as "text" or "audio" .
+ * <i>str</i>: A text string naming a top-level type, such as "text" or "audio" .
 
 <b>Return Value:</b>
 
- This instance.
+This instance.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
- The parameter  <i>str</i>
+The parameter  <i>str</i>
  is null.
 
  * System.ArgumentException:
- The parameter  <i>str</i>
+The parameter  <i>str</i>
  is syntactically invalid for a top-level type.
 
 <a id="ToMediaType"></a>
@@ -220,21 +212,19 @@ The parameter  <i>mt</i>
 
     public PeterO.Mail.MediaType ToMediaType();
 
-  Converts this builder to an immutable media type object.
+ Converts this builder to an immutable media type object.
 
  <b>Return Value:</b>
 
- A MediaType object.
+A MediaType object.
 
 <a id="ToString"></a>
 ### ToString
 
     public override string ToString();
 
-  Converts this object to a text string of the media type it represents, in the same form as  `
-         MediaType.ToString
-      `  .
+ Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString`  .
 
  <b>Return Value:</b>
 
- A string representation of this object.
+A string representation of this object.

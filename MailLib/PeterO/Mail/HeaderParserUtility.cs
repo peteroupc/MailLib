@@ -238,7 +238,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
          str.Substring(
          startQuote + 1,
          index - (startQuote + 1)));
-            } else {
+       } else {
               ++index;
             }
           } else {
@@ -427,7 +427,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
         if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
           56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           index += 2;
-   } else if (!backslash && index < endIndex && ((str[index] >= 1 &&
+        } else if (!backslash && index < endIndex && ((str[index] >= 1 &&
           str[index]
         <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14
             &&
@@ -436,7 +436,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
      >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 55295) ||
             (str[index] >= 57344 && str[index] <= 65535))) {
           ++index;
-    } else if (backslash && index < endIndex && ((str[index] >= 0 &&
+        } else if (backslash && index < endIndex && ((str[index] >= 0 &&
           str[index]
           <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
           // NOTE: Includes parentheses, which are also handled

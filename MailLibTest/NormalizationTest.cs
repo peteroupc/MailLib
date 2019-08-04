@@ -181,8 +181,8 @@ namespace MailLibTest {
       Console.WriteLine("Initialized random");
       for (var i = 0; i < 10000; ++i) {
         if (i % 100 == 0) {
- Console.WriteLine(i);
-}
+          Console.WriteLine(i);
+        }
         string str = EncodingTest.RandomString(rand);
         this.TestIdempotent(str, Normalization.NFC);
         this.TestIdempotent(str, Normalization.NFD);
@@ -196,12 +196,12 @@ Console.WriteLine("Done");
     public void NormTestSpecific() {
       string str = "_\ufac7\uc972+67 Tqd R_.";
       {
-string stringTemp = NormalizerInput.Normalize(
-  str,
-  Normalization.NFC);
-Assert.AreEqual(
-  "_\u96e3\uc972+67 Tqd R_.",
-  stringTemp);
+        string stringTemp = NormalizerInput.Normalize(
+          str,
+          Normalization.NFC);
+          Assert.AreEqual(
+            "_\u96e3\uc972+67 Tqd R_.",
+            stringTemp);
 }
       Assert.IsFalse(
         NormalizerInput.IsNormalized(str, Normalization.NFC));
@@ -269,26 +269,26 @@ Assert.AreEqual(
 
       public void AssertNFC(params NormResult[] other) {
         foreach (NormResult o in other) {
- AssertEqual(this.origstr, o.nfc, this.line);
- }
+          AssertEqual(this.origstr, o.nfc, this.line);
+        }
       }
 
       public void AssertNFD(params NormResult[] other) {
         foreach (NormResult o in other) {
- AssertEqual(this.origstr, o.nfd, this.line);
- }
+          AssertEqual(this.origstr, o.nfd, this.line);
+        }
       }
 
       public void AssertNFKC(params NormResult[] other) {
         foreach (NormResult o in other) {
- AssertEqual(this.origstr, o.nfkc, this.line);
- }
+          AssertEqual(this.origstr, o.nfkc, this.line);
+        }
       }
 
       public void AssertNFKD(params NormResult[] other) {
         foreach (NormResult o in other) {
- AssertEqual(this.origstr, o.nfkd, this.line);
- }
+          AssertEqual(this.origstr, o.nfkd, this.line);
+        }
       }
     }
     /*
@@ -308,9 +308,9 @@ IsSpecialChar(p3)) {
         }
       }
   for (var i = 0; i < 0x110000; ++i) {
-          if ((i & 0xf800) == 0xd800) {
- continue;
-}
+    if ((i & 0xf800) == 0xd800) {
+      continue;
+    }
           cp[0] = i;
           string codePointString = ToCodePointString(cp);
     string nfc = NormalizerInput.Normalize(codePointString,
@@ -322,8 +322,8 @@ string nfdfs = NormalizerInput.Normalize(codePointString,
    Assert.IsTrue(nfdfs.Length > 0,
             EncodingTest.EscapeString(codePointString));
           if (!nfc.Equals(codePointString)) {
- continue;
-}
+            continue;
+          }
           if (!nfd.Equals(nfdfs)) {
             Console.WriteLine("---");
             Console.WriteLine(EncodingTest.EscapeString(codePointString));
@@ -342,8 +342,8 @@ string nfdfs = NormalizerInput.Normalize(codePointString,
         "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
         "NormalizationTest.txt");
       if (lines == null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       Assert.IsTrue(lines.Length > 0);
       var part1 = false;
       foreach (string lineItem in lines) {
@@ -401,18 +401,18 @@ string nfdfs = NormalizerInput.Normalize(codePointString,
           if (!NormalizerInput.IsNormalized(
             cpstr,
             Normalization.NFD)) {
-                    Assert.Fail(TestCommon.IntToString(i));
+            Assert.Fail(TestCommon.IntToString(i));
           }
           if (!NormalizerInput.IsNormalized(
             cpstr,
             Normalization.NFKC)) {
-                    Assert.Fail(TestCommon.IntToString(i));
- }
+            Assert.Fail(TestCommon.IntToString(i));
+          }
           if (!NormalizerInput.IsNormalized(
             cpstr,
             Normalization.NFKD)) {
-                    Assert.Fail(TestCommon.IntToString(i));
-        }
+            Assert.Fail(TestCommon.IntToString(i));
+          }
           string imsg = TestCommon.IntToString(i);
           AssertEqual(
   cpstr,

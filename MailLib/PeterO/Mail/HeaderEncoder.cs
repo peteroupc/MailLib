@@ -215,11 +215,11 @@ namespace PeterO.Mail {
             }
     } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t' &&
             symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
-            this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
-            writeSpace = true;
-            i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
-            symbolBegin = i;
-          } else if (symbol[i] == ' ' || symbol[i] == '\t') {
+      this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
+      writeSpace = true;
+      i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
+      symbolBegin = i;
+    } else if (symbol[i] == ' ' || symbol[i] == '\t') {
             // DebugUtility.Log("Special whitespace|" + symbol.Substring(i,
             // endIndex - i));
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
@@ -271,7 +271,8 @@ namespace PeterO.Mail {
               }
             }
             return false;
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t' &&
+          } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] !=
+'\t' &&
             symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
             // Single space followed by character other than CR/LF/Tab
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
@@ -664,7 +665,8 @@ namespace PeterO.Mail {
         return false;
       }
       for (var i = 0; i < str.Length; ++i) {
-   if (str[i] < 0x80 && str[i] > 0x20 && ValueAsciiAtext[(int)str[i] - 0x20]
+        if (str[i] < 0x80 && str[i] > 0x20 && ValueAsciiAtext[(int)str[i] -
+0x20]
           == 1) {
           // not simple if a word begins with "=?", an RFC
           // 2047 encoded word start

@@ -19,9 +19,15 @@ private MailDateTime() {
     };
 
     /**
-     * Not documented yet.
-     * @param dateTime Not documented yet.
-     * @return A string object.
+     * Generates a date-time string following the Internet Message Format (RFC
+     * 5322) from an 8-element array.
+     * @param dateTime The date and time in the form of an 8-element array. See
+     * <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+     * System.String,System.Boolean)'/> for information on the format of
+     * this parameter.
+     * @return A date-time string.
+     * @throws IllegalArgumentException The parameter {@code dateTime} is null or invalid,
+     * including if the year ({@code dateTime[0]}) is less than 0.
      */
     public static String GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
@@ -204,8 +210,12 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * @return A date-time string.
      * @throws IllegalArgumentException The parameter {@code dateTime} is null or invalid,
      * including if the year ({@code dateTime[0]}) is less than 0.
+     * @throws NullPointerException The parameter {@code dateTime} is null.
      */
     public static String GenerateDateString(int[] dateTime, boolean gmt) {
+      if (dateTime == null) {
+        throw new NullPointerException("dateTime");
+      }
       if (!IsValidDateTime(dateTime) || dateTime[0] < 0) {
         throw new IllegalArgumentException("Invalid date and time");
       }
@@ -292,21 +302,24 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * @return An 8-element array containing the date and time, or {@code null} if
      * {@code str} is null, empty, or syntactically invalid, or if the
      * string's year would overflow the range of a 32-bit signed integer.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static int[] ParseDateString(String str, boolean parseObsoleteZones) {
-      if (((str) == null || (str).length() == 0)) {
-        return null;
-      }
-      int[] ret = new int[8];
-      if (
-  ParseHeaderExpandedDate(
-    str,
-    0,
-    str.length(),
-    ret,
-    parseObsoleteZones) == str.length()) {
-        return ret;
-      } else {
+    if (str == null) {
+      return null;
+    }
+    if (((str) == null || (str).length() == 0)) {
+      return null;
+    }
+    int[] ret = new int[8];
+    if (ParseHeaderExpandedDate(
+      str,
+      0,
+      str.length(),
+      ret,
+      parseObsoleteZones) == str.length()) {
+      return ret;
+    } else {
         return null;
       }
     }
@@ -983,8 +996,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       for (int i = 0; i < 7; ++i) {
         String dowName = dowNamesLong[i];
         if (endIndex - index >= dowName.length() &&
-           v.substring(index, (index)+(dowName.length())).equals(dowName,
-  StringComparison.Ordinal)) {
+           v.substring(index, (index)+(dowName.length())).startsWith(dowName)) {
           return i;
         }
       }

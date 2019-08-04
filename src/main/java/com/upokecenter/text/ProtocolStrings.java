@@ -51,8 +51,7 @@ private ProtocolStrings() {
      * general, the FreeformClass contains most letters, digits, spaces,
      * punctuation, and symbols in the Unicode standard, as well as all
      * basic printable characters (U + 0021 to U + 007E), but excludes control
-     * characters (including the horizontal tab character, U + 0009) and
-     * separators.
+     * characters and separators.
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
      * characters allowed in RFC 8264's FreeformClass (in the contexts
@@ -119,11 +118,18 @@ private ProtocolStrings() {
      * or empty). For comparison purposes, return values of this method
      * (with the same value for {@code preserveCase}) should be compared
      * code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String UserpartEnforce(String str, boolean preserveCase) {
       if (preserveCase) {
+        if (str == null) {
+          throw new NullPointerException("str");
+        }
         return Idna.UsernameCasePreservedEnforce(str);
       } else {
+        if (str == null) {
+          throw new NullPointerException("str");
+        }
         return Idna.UsernameCaseMappedEnforce(str);
       }
     }
@@ -216,8 +222,12 @@ private ProtocolStrings() {
      * if {@code str} is null or empty). For comparison purposes, return
      * values of this method should be compared code point by code point
      * (see RFC 8265, sec. 4.2.3).
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String OpaqueStringEnforce(String str) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
       return Idna.OpaqueStringEnforce(str);
     }
 
@@ -234,8 +244,12 @@ private ProtocolStrings() {
      * method should not be used for comparison purposes (see RFC 8266,
      * sec. 2.3); for such purposes, use the NicknameForComparison method
      * instead.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String NicknameEnforce(String str) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
       return Idna.NicknameEnforce(str);
     }
 
@@ -251,8 +265,12 @@ private ProtocolStrings() {
      * (including if {@code str} is null or empty). For comparison
      * purposes, return values of this method should be compared code point
      * by code point (see RFC 8266, sec. 2.4).
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String NicknameForComparison(String str) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
       return Idna.NicknameForComparison(str);
     }
   }

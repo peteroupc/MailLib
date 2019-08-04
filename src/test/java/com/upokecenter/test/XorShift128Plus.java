@@ -50,7 +50,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
                 length -= 8;
             }
             if (length != 0) {
-                long nv = this.NextValue();
+              long nv = this.NextValue();
                 while (length > 0) {
                     bytes[offset++] = ((byte)nv);
                     nv >>= 8;

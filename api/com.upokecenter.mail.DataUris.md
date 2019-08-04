@@ -2,11 +2,11 @@
 
     public final class DataUris extends java.lang.Object
 
-Contains methods for parsing and generating Data URIs (uniform // /resource
+Contains methods for parsing and generating Data URIs (uniform resource
  identifiers). Data URIs are described in RFC 2397. Examples for Data
- URIs follow. <pre> data:, hello%20world </pre> <pre>
- data:text/markdown, hello%20world </pre> <pre>
- data:application/octet-stream;base64, AAAAAA== </pre> .
+ URIs follow. <pre>data:, hello%20world</pre>
+ <pre>data:text/markdown, hello%20world</pre>
+ <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
 
 ## Methods
 
@@ -40,6 +40,10 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 * The media type. Returns null if <code>uri</code> is null, is
  syntactically invalid, or is not a Data URI.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### DataUriMediaType
     public static MediaType DataUriMediaType​(java.net.URI uri)
@@ -78,6 +82,10 @@ Extracts the data from a Data URI (uniform resource identifier) in the form
 
 * The data as a byte array. Returns null if <code>uri</code> is null, is
  syntactically invalid, or is not a data URI.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### MakeDataUri
     public static java.lang.String MakeDataUri​(java.lang.String textString)

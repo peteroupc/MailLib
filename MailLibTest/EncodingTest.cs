@@ -1213,7 +1213,7 @@ namespace MailLibTest {
                  ("Downgraded-Original-Recipient: " + expected) +
                  "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
                  "\r\nX-Ignore: Y\r\n\r\n";
-      } else {
+               } else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";

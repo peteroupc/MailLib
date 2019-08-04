@@ -2,7 +2,7 @@
 
     public class Address
 
-  Represents an email address.
+ Represents an email address.
 
 ### Member Summary
 * <code>[Domain](#Domain)</code> - Gets the domain of this email address (the part after the "@" sign).
@@ -11,7 +11,7 @@
 * <code>[LocalPart](#LocalPart)</code> - Gets the local part of this email address (the part before the "@" sign).
 * <code>[ToString()](#ToString)</code> - Converts this address object to a text string.
 
-<a id="Void_ctor_String"></a>
+<a id="Void_ctor_System_String"></a>
 ### Address Constructor
 
     public Address(
@@ -38,22 +38,22 @@ AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; 
 
     public string Domain { get; }
 
-  Gets the domain of this email address (the part after the "@" sign).
+ Gets the domain of this email address (the part after the "@" sign).
 
  <b>Returns:</b>
 
- The domain of this email address (the part after the "@" sign).
+The domain of this email address (the part after the "@" sign).
 
 <a id="LocalPart"></a>
 ### LocalPart
 
     public string LocalPart { get; }
 
-  Gets the local part of this email address (the part before the "@" sign).
+ Gets the local part of this email address (the part before the "@" sign).
 
  <b>Returns:</b>
 
- The local part of this email address (the part before the "@" sign).
+The local part of this email address (the part before the "@" sign).
 
 <a id="Equals_object"></a>
 ### Equals
@@ -61,39 +61,35 @@ AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; 
     public override bool Equals(
         object obj);
 
-  Determines whether this object and another object are equal.
+ Determines whether this object and another object are equal.
 
  <b>Parameters:</b>
 
- * <i>obj</i>:  The parameter  <i>obj</i>
+ * <i>obj</i>: The parameter  <i>obj</i>
  is an arbitrary object.
 
 <b>Return Value:</b>
 
-  `
-         true
-      `  if this object and another object are equal; otherwise,  `
-         false
-      `  .
+ `true`  if this object and another object are equal; otherwise,  `false`  .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
 
-  Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.
+ Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.
 
  <b>Return Value:</b>
 
- A hash code for this instance.
+A hash code for this instance.
 
 <a id="ToString"></a>
 ### ToString
 
     public override string ToString();
 
-  Converts this address object to a text string.
+ Converts this address object to a text string.
 
  <b>Return Value:</b>
 
- A string representation of this object.
+A string representation of this object.

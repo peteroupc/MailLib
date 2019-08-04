@@ -55,7 +55,7 @@ import com.upokecenter.mail.*;
       }
       try {
         {
-Object objectTemp = null;
+          Object objectTemp = null;
 Object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
           "@example.com");
 Assert.assertEquals(objectTemp, objectTemp2);
@@ -132,7 +132,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
     public void TestToString() {
       Address addr = new Address("local.local@example.com");
       {
-String stringTemp = addr.toString();
+        String stringTemp = addr.toString();
 Assert.assertEquals(
   "local.local@example.com",
   stringTemp);

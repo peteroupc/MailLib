@@ -415,7 +415,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
                 charset = charset.substring(0, asterisk);
                 acceptedEncodedWord &=
                   LanguageTags.IsPotentiallyValidLanguageTag(language);
-              } else {
+                } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {

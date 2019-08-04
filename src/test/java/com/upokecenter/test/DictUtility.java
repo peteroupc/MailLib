@@ -58,8 +58,8 @@ private DictUtility() {
    sb.append("\\r");
  } else if (str.charAt(j) == '\n') {
    sb.append("\\n");
-          } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
-            int ch = (int)str.charAt(j);
+ } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
+   int ch = (int)str.charAt(j);
             sb.append("\\u")
                .append(HexAlphabet.charAt((ch >> 12) & 15))
                .append(HexAlphabet.charAt((ch >> 8) & 15))

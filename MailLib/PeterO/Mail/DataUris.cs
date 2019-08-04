@@ -5,17 +5,11 @@ using PeterO;
 namespace PeterO.Mail {
     /// <summary>
     ///  Contains methods for parsing and generating Data URIs
-    /// (uniform // /resource identifiers). Data URIs are
-    /// described in RFC 2397. Examples for Data URIs follow.
-    /// <code>
-    /// data:, hello%20world
-    /// </code>
-    /// <code>
-    /// data:text/markdown, hello%20world
-    /// </code>
-    /// <code>
-    /// data:application/octet-stream;base64, AAAAAA==
-    /// </code>
+    /// (uniform resource identifiers). Data URIs are described
+    /// in RFC 2397. Examples for Data URIs follow.
+    /// <code>data:, hello%20world</code>
+    /// <code>data:text/markdown, hello%20world</code>
+    /// <code>data:application/octet-stream;base64, AAAAAA==</code>
     ///  .
     /// </summary>
   public static class DataUris {
@@ -25,15 +19,20 @@ namespace PeterO.Mail {
     /// string.</param>
     /// <returns>The media type. Returns null if <paramref name='uri'/> is
     /// null, is syntactically invalid, or is not a Data URI.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='uri'/> is null.</exception>
     public static MediaType DataUriMediaType(string uri) {
-      string url = uri;
-      string[] parts = URIUtility.SplitIRIToStrings(
+            if (uri == null) {
+              throw new ArgumentNullException(nameof(uri));
+            }
+            string url = uri;
+            string[] parts = URIUtility.SplitIRIToStrings(
             url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
-        return null;
-      }
-      string path = parts[2];
-      if (parts[0].Equals("data", StringComparison.Ordinal)) {
+            if (parts == null || parts[0] == null || parts[2] == null) {
+              return null;
+            }
+            string path = parts[2];
+            if (parts[0].Equals("data", StringComparison.Ordinal)) {
         int mediaTypePart = path.IndexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -120,15 +119,20 @@ return (uri == null) ? null : DataUriBytes(uri.ToString());
     /// <returns>The data as a byte array. Returns null if <paramref
     /// name='uri'/> is null, is syntactically invalid, or is not a data
     /// URI.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='uri'/> is null.</exception>
     public static byte[] DataUriBytes(string uri) {
-      string url = uri;
-      string[] parts = URIUtility.SplitIRIToStrings(
+            if (uri == null) {
+              throw new ArgumentNullException(nameof(uri));
+            }
+            string url = uri;
+            string[] parts = URIUtility.SplitIRIToStrings(
             url);
-      if (parts == null || parts[0] == null || parts[2] == null) {
-        return null;
-      }
-      string path = parts[2];
-      if (parts[0].Equals("data", StringComparison.Ordinal)) {
+            if (parts == null || parts[0] == null || parts[2] == null) {
+              return null;
+            }
+            string path = parts[2];
+            if (parts[0].Equals("data", StringComparison.Ordinal)) {
         int mediaTypePart = path.IndexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -172,9 +176,9 @@ return (uri == null) ? null : DataUriBytes(uri.ToString());
             b1 = (payload[i] > 0x7f) ? -1 : Alphabet[(int)payload[i]];
             b2 = (payload[i + 1] > 0x7f) ? -1 : Alphabet[(int)payload[i + 1]];
             if (lastBlock && payload[i + 2] == '=' && payload[i + 3] == '=') {
-            } else if (lastBlock && path[i + 3] == '=') {
-              b3 = (payload[i + 2] > 0x7f) ? -1 : Alphabet[(int)payload[i + 2]];
-            } else {
+          } else if (lastBlock && path[i + 3] == '=') {
+            b3 = (payload[i + 2] > 0x7f) ? -1 : Alphabet[(int)payload[i + 2]];
+          } else {
               b3 = (payload[i + 2] > 0x7f) ? -1 : Alphabet[(int)payload[i + 2]];
               b4 = (payload[i + 3] > 0x7f) ? -1 : Alphabet[(int)payload[i + 3]];
             }

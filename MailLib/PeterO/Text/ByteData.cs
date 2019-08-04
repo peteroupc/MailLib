@@ -9,9 +9,9 @@ namespace PeterO.Text {
     /// information).</summary>
     /// <param name='input'>Input byte array.</param>
     /// <returns>Decompressed output byte array.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// "output" is null.</exception>
-    /// <exception cref='System.ArgumentException'>Invalid LZ4.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter "output" is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>Invalid LZ4.</exception>
     public static byte[] DecompressLz4(byte[] input) {
       var index = 0;
       var copy = new byte[16];

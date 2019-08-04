@@ -232,7 +232,7 @@ import com.upokecenter.mail.*;
       byte[] bytesPart = BytesFromString(stringPart);
       try {
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytesPart);
 
@@ -330,7 +330,7 @@ try { if (ms != null) {
 }
         for (int phase = 0; phase < 12; ++phase) {
           {
-java.io.ByteArrayInputStream ms = null;
+            java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytesPart);
 
@@ -1139,16 +1139,11 @@ try { if (ms != null) {
     }
 
     static boolean HasNestedMessageType(Message message) {
-      if (message.getContentType().getTopLevelType().equals("message",
-  StringComparison.Ordinal)) {
-        return (!message.getContentType().getSubType().equals("global",
-  StringComparison.Ordinal)) &&
-          ((!message.getContentType().getSubType().equals("global-headers",
-  StringComparison.Ordinal)) &&
-           (message.getContentType().getSubType().equals("global-delivery-status",
-  StringComparison.Ordinal) ||
-    message.getContentType().getSubType().equals("global-disposition-notification",
-  StringComparison.Ordinal)));
+      if (message.getContentType().getTopLevelType().startsWith("message")) {
+        return (!message.getContentType().getSubType().startsWith("global")) &&
+          ((!message.getContentType().getSubType().startsWith("global-headers")) &&
+           (message.getContentType().getSubType().startsWith("global-delivery-status") ||
+    message.getContentType().getSubType().startsWith("global-disposition-notification")));
       }
       for (Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {

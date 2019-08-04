@@ -370,7 +370,7 @@ private MakeFilenameMethod() {
           if (tss.indexOf((char)0x338) >= 0) {
               builder.append('!');
               builder.append(tss.charAt(0));
-          } else {
+            } else {
             builder.append(c);
           }
           ++i;
@@ -509,8 +509,8 @@ private MakeFilenameMethod() {
         }
         int bracketedText = str.indexOf('[');
         if (bracketedText >= 0) {
- bracketedText = str.indexOf(']',bracketedText);
-}
+          bracketedText = str.indexOf(']',bracketedText);
+        }
         StringBuilder builder = new StringBuilder();
         // Replace unsuitable characters for filenames
         // and make sure the filename's
@@ -608,21 +608,16 @@ private MakeFilenameMethod() {
         String strLower = DataUtilities.ToLowerCaseAscii(str);
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
-        boolean reservedFilename = strLower.equals(
-          "nul",
-          StringComparison.Ordinal) || strLower.equals("clock$",
-  StringComparison.Ordinal) ||
+        boolean reservedFilename = strLower.startsWith(
+          "nul") || strLower.startsWith("clock$") ||
 strLower.indexOf(
-          "nul.") == 0 || strLower.equals(
-            "prn",
-            StringComparison.Ordinal) || strLower.indexOf(
+          "nul.") == 0 || strLower.startsWith(
+            "prn") || strLower.indexOf(
           "prn.") == 0 || strLower.indexOf(
-            "![") >= 0 || strLower.equals(
-          "aux",
-          StringComparison.Ordinal) || strLower.indexOf(
-            "aux.") == 0 || strLower.equals(
-          "con",
-          StringComparison.Ordinal) || strLower.indexOf(
+            "![") >= 0 || strLower.startsWith(
+          "aux") || strLower.indexOf(
+            "aux.") == 0 || strLower.startsWith(
+          "con") || strLower.indexOf(
             "con.") == 0;
         // LPTn, COMn
         if (
@@ -681,7 +676,7 @@ strLower.indexOf(
           // status of the String.
           str += "_";
         }
-      } while (!oldstr.equals(str, StringComparison.Ordinal));
+      } while (!oldstr.startsWith(str));
       return str;
     }
   }

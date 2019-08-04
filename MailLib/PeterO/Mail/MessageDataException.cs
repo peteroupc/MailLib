@@ -12,19 +12,19 @@ namespace PeterO.Mail {
     /// syntax.</summary>
   public class MessageDataException : Exception {
     /// <summary>Initializes a new instance of the
-    /// <see cref='MessageDataException'/> class.</summary>
+    /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
     public MessageDataException() {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='MessageDataException'/> class.</summary>
+    /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
     /// <param name='message'>The parameter <paramref name='message'/> is a
     /// text string.</param>
     public MessageDataException(string message) : base(message) {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='MessageDataException'/> class.</summary>
+    /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
     /// <param name='message'>The parameter <paramref name='message'/> is a
     /// text string.</param>
     /// <param name='innerException'>The parameter <paramref

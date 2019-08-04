@@ -2,11 +2,11 @@
 
     public sealed struct Normalization :
         System.Enum,
+        System.IConvertible,
         System.IFormattable,
-        System.IComparable,
-        System.IConvertible
+        System.IComparable
 
-  Represents a Unicode normalization form.
+ Represents a Unicode normalization form.
 
 ### Member Summary
 * <code>[public static PeterO.Text.Normalization NFC = 0;](#NFC)</code> - Normalization form C: canonical decomposition followed by canonical composition.

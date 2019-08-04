@@ -18,7 +18,7 @@ namespace PeterO.Mail {
     /// <para>A media type consists of a top-level type (the general
     /// category of the data), a subtype (the specific type), and an
     /// optional list of parameters. For example, the media type
-    /// <c>text/plain; charset = utf-8</c> is a text media type ("text"),
+    /// <c>text/plain;charset=utf-8</c> is a text media type ("text"),
     /// namely, a plain text type ("plain"), and the parameters say that
     /// the data uses UTF-8, a Unicode character encoding ("charset =
     /// utf-8"). Other top-level types include "audio", "video", and
@@ -112,7 +112,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets a value indicating whether this is a text media type
-    /// ("text/&#x2a;").</summary>
+    /// ("text/*").</summary>
     /// <value><c>true</c> If this is a text media type; otherwise,
     /// <c>false</c>.</value>
     public bool IsText {
@@ -1434,15 +1434,14 @@ namespace PeterO.Mail {
     /// associated with a character encoding and/or language, and support
     /// parameter values that span two or more key-value pairs. Parameters
     /// making use of RFC 2231 extensions have names with an asterisk
-    /// ("&#x2a;"). Such a parameter will be ignored if it is ill-formed
-    /// because of RFC 2231's rules (except for illegal percent-decoding or
+    /// ("*"). Such a parameter will be ignored if it is ill-formed because
+    /// of RFC 2231's rules (except for illegal percent-decoding or
     /// undecodable sequences for the given character encoding). Examples
     /// of RFC 2231 extensions follow (both examples encode the same
     /// "filename" parameter):</para>
-    /// <para><b>text/example;
-    /// filename&#x2a;=utf-8'en'filename.txt</b></para>
-    /// <para><b>text/example; filename&#x2a;0&#x2a;=utf-8'en'file;
-    /// filename&#x2a;1&#x2a;=name%2Etxt</b></para>
+    /// <para><b>text/example; filename*=utf-8'en'filename.txt</b></para>
+    /// <para><b>text/example; filename*0*=utf-8'en'file;
+    /// filename*1*=name%2Etxt</b></para>
     /// <para>This implementation ignores keys (in parameter key-value
     /// pairs) that appear more than once in the media type. Nothing in
     /// RFCs 2045, 2183, 2231, 6266, or 7231 explicitly disallows such

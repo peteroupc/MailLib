@@ -35,6 +35,26 @@ namespace MailLibTest {
       return dict;
     }
 
+    public static string ToJSON(
+        IList<IDictionary<string, string>> dictlist) {
+      var sb = new StringBuilder().Append("[");
+      for (var i = 0; i < dictlist.Count; ++i) {
+        if (i > 0) {
+          sb.Append(",");
+        }
+        IDictionary<string, string> dict = dictlist[i];
+        var listArray = new string[dict.Count * 2];
+        int k = 0;
+        foreach (string key in dict.Keys) {
+          listArray[k] = key;
+          listArray[k+1] = dict[key];
+          k+=2;
+        }
+        sb.Append(ToJSON(listArray));
+      }
+      return sb.Append("]").ToString();
+    }
+
     public static string ToJSON(string[] arr) {
       var sb = new StringBuilder().Append("[");
       for (var i = 0; i < arr.Length; ++i) {
@@ -52,18 +72,20 @@ namespace MailLibTest {
           if (str[j] == '\"') {
             sb.Append("\\\"");
           } else if (str[j] == '\\') {
-   sb.Append("\\\\");
- } else if (str[j] == '\r') {
-   sb.Append("\\r");
- } else if (str[j] == '\n') {
-   sb.Append("\\n");
+            sb.Append("\\\\");
+          } else if (str[j] == '\r') {
+            sb.Append("\\r");
+          } else if (str[j] == '\n') {
+            sb.Append("\\n");
           } else if (str[j] < 0x20 || str[j] >= 0x7f) {
             var ch = (int)str[j];
             sb.Append("\\u")
                .Append(HexAlphabet[(ch >> 12) & 15])
                .Append(HexAlphabet[(ch >> 8) & 15])
-               .Append(HexAlphabet[(ch >> 4) & 15]).Append(HexAlphabet[ch &
-15]);
+               .Append(HexAlphabet[(ch >> 4) & 15])
+               .Append(HexAlphabet[ch & 15]);
+          } else {
+            sb.Append(str[j]);
           }
         }
         sb.Append("\"");
@@ -71,8 +93,68 @@ namespace MailLibTest {
       return sb.Append("]").ToString();
     }
 
-    public static string[] ParseJSONStringArray(string str) {
+    public static IList<IDictionary<string, string>> 
+         ParseJSONDictList(string str) {
       var i = 0;
+      var list = new List<IDictionary<string, string>>();
+      while (i < str.Length && (
+         str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+         str[i] == 0x09)) {
+        ++i;
+      }
+      if (i >= str.Length || str[i] != '[') {
+        return null;
+      }
+      ++i;
+      var endPos = new int[] { 0 };
+      var endValue = false;
+      string[] stringArray = null;
+      while (true) {
+        while (i < str.Length && (
+           str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+           str[i] == 0x09)) {
+          ++i;
+        }
+        if (i >= str.Length || (
+          str[i] != ']' && str[i] != '[' && str[i] != 0x2c)) {
+          return null;
+        }
+        switch (str[i]) {
+          case ']':
+            ++i;
+            while (i < str.Length && (
+              str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
+              == 0x09)) {
+              ++i;
+            }
+            return i == str.Length ? list.ToArray() : null;
+          case (char)0x2c:
+            if (!endValue) {
+              return null;
+            }
+            endValue = false;
+            break;
+          case '[':
+            endPos[0] = i;
+            stringArray = ParseJSONStringArray(str, endPos);
+            if (stringArray == null) {
+              return null;
+            }
+            i=endPos[0];
+            endValue = true;
+            list.Add(MakeDict(stringArray));
+            break;
+        }
+      }
+    }
+
+    public static string[] ParseJSONStringArray(string str) {
+       int[] endPos = new int[] { 0 };
+       string[] ret = ParseJSONStringArray(str, endPos);
+       return endPos[0] == str.Length ? ret : null;
+    }
+    public static string[] ParseJSONStringArray(string str, int[] endPos) {
+      var i = endPos[0];
       var list = new List<string>();
       var sb = new StringBuilder();
       while (i < str.Length && (
@@ -103,7 +185,8 @@ namespace MailLibTest {
               == 0x09)) {
               ++i;
             }
-            return i == str.Length ? list.ToArray() : null;
+            endPos[0] = i;
+            return list.ToArray();
           case (char)0x2c:
             if (!endValue) {
               return null;

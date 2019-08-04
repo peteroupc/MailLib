@@ -23,11 +23,17 @@ namespace PeterO.Mail {
     /// the form of a text string.</param>
     /// <returns>A list of addresses generated from the <paramref
     /// name='addressValue'/> parameter.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='addressValue'/> is null.</exception>
     public static IList<NamedAddress> ParseAddresses(string addressValue) {
       var list = new List<NamedAddress>();
+
+if (addressValue == null) {
+  return list;
+}
       if (String.IsNullOrEmpty(addressValue)) {
-        return list;
-      }
+  return list;
+}
       var tokener = new Tokener();
       if (
           HeaderParser.ParseHeaderTo(
@@ -191,13 +197,13 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NamedAddress'/> class.</summary>
+    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
     /// <param name='address'>The parameter <paramref name='address'/> is a
     /// text string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='address'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Address has an invalid
-    /// syntax.; Address has an invalid syntax.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Address has an invalid syntax.;
+    /// Address has an invalid syntax.</exception>
     public NamedAddress(string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -222,13 +228,13 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NamedAddress'/> class.</summary>
+    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
     /// <param name='displayName'>The parameter <paramref
     /// name='displayName'/> is a text string.</param>
     /// <param name='address'>The parameter <paramref name='address'/> is a
     /// text string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -240,13 +246,13 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NamedAddress'/> class.</summary>
+    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
     /// <param name='displayName'>The parameter <paramref
     /// name='displayName'/> is a text string.</param>
     /// <param name='address'>The parameter <paramref name='address'/> is
     /// an Address object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -258,15 +264,15 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NamedAddress'/> class.</summary>
+    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
     /// <param name='displayName'>The parameter <paramref
     /// name='displayName'/> is a text string.</param>
     /// <param name='localPart'>The parameter <paramref name='localPart'/>
     /// is a text string.</param>
     /// <param name='domain'>The parameter <paramref name='domain'/> is a
     /// text string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='localPart'/> or <paramref name='domain'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='localPart'/> or <paramref name='domain'/> is
     /// null.</exception>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
@@ -282,16 +288,16 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='NamedAddress'/> class.</summary>
+    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
     /// <param name='groupName'>The parameter <paramref name='groupName'/>
     /// is a text string.</param>
     /// <param name='mailboxes'>The parameter <paramref name='mailboxes'/>
     /// is an IList object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='groupName'/> or <paramref name='mailboxes'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='groupName'/> or <paramref name='mailboxes'/> is
     /// null.</exception>
-    /// <exception cref='System.ArgumentException'>GroupName is empty.; A
-    /// mailbox in the list is a group.</exception>
+    /// <exception cref='ArgumentException'>GroupName is empty.; A mailbox
+    /// in the list is a group.</exception>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new ArgumentNullException(nameof(groupName));
