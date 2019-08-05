@@ -74,7 +74,7 @@ namespace MailLibTest {
     [Test]
     public void TestGetParameter() {
       foreach (IDictionary<string, string> dict in
-           MediaTypeTest.ValueTestParamTypes) {
+           ResourceUtil.GetDictList("paramtypes")) {
         ContentDisposition mt = ParseAndTestAspects("inline" + dict["params"]);
         Assert.AreEqual(
           dict["filename"],
@@ -383,7 +383,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       var resources = new AppResources("Resources");
       string[] filenames = DictUtility.ParseJSONStringArray(
-        resources.GetString("specificfilenames"));
+        resources.GetString("specificfiles"));
       // "d\ud800e", "d\ufffde",
       // "d\udc00e", "d\ufffde",
       // "my\ud800file\udc00name\ud800\udc00.txt",

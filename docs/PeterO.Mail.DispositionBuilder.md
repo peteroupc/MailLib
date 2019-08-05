@@ -69,7 +69,7 @@ Type is empty.
 
  Gets or sets this value's disposition type, such as "inline" or "attachment".
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 This value's disposition type, such as "inline" or "attachment" .
 
@@ -82,9 +82,9 @@ This value's disposition type, such as "inline" or "attachment" .
 
  Gets a value indicating whether this is a multipart media type.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise,  `false`  .
+ `true`  If this is a multipart media type; otherwise,  `false` .
 
 <a id="IsText"></a>
 ### IsText
@@ -95,9 +95,9 @@ This value's disposition type, such as "inline" or "attachment" .
 
  Gets a value indicating whether this is a text media type.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise,  `false`  .
+ `true`  If this is a text media type; otherwise,  `false` .
 
 <a id="RemoveParameter_string"></a>
 ### RemoveParameter
@@ -107,9 +107,9 @@ This value's disposition type, such as "inline" or "attachment" .
 
  Removes a parameter from this content disposition. Does nothing if the parameter's name doesn't exist.
 
- <b>Parameters:</b>
+     <b>Parameters:</b>
 
- * <i>name</i>: The parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: The parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 
@@ -129,7 +129,7 @@ The parameter  <i>name</i>
 
  Sets the disposition type, such as "inline".
 
- <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -156,9 +156,9 @@ Str is empty.
 
  Sets a parameter of this content disposition.
 
- <b>Parameters:</b>
+       <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
  * <i>value</i>: Value of the parameter to set.
 
@@ -184,7 +184,7 @@ The parameter  <i>name</i>
 
  Converts this object to an immutable ContentDisposition object.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A MediaType object.
 
@@ -195,6 +195,6 @@ A MediaType object.
 
  Converts this object to a text string.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A string representation of this object.

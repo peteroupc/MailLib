@@ -44,10 +44,10 @@ namespace MailLibTest {
         }
         IDictionary<string, string> dict = dictlist[i];
         var listArray = new string[dict.Count * 2];
-        int k = 0;
+        var k = 0;
         foreach (string key in dict.Keys) {
           listArray[k] = key;
-          listArray[k+1] = dict[key];
+          listArray[k + 1] = dict[key];
           k+=2;
         }
         sb.Append(ToJSON(listArray));
@@ -84,7 +84,7 @@ namespace MailLibTest {
                .Append(HexAlphabet[(ch >> 8) & 15])
                .Append(HexAlphabet[(ch >> 4) & 15])
                .Append(HexAlphabet[ch & 15]);
-          } else {
+             } else {
             sb.Append(str[j]);
           }
         }
@@ -93,8 +93,11 @@ namespace MailLibTest {
       return sb.Append("]").ToString();
     }
 
-    public static IList<IDictionary<string, string>> 
+    public static IList<IDictionary<string, string>>
          ParseJSONDictList(string str) {
+      if ((str) == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
       var i = 0;
       var list = new List<IDictionary<string, string>>();
       while (i < str.Length && (
@@ -103,7 +106,7 @@ namespace MailLibTest {
         ++i;
       }
       if (i >= str.Length || str[i] != '[') {
-        return null;
+        throw new InvalidOperationException("invalid start of list");
       }
       ++i;
       var endPos = new int[] { 0 };
@@ -130,17 +133,18 @@ namespace MailLibTest {
             return i == str.Length ? list.ToArray() : null;
           case (char)0x2c:
             if (!endValue) {
-              return null;
+              throw new InvalidOperationException("unexpected comma");
             }
+            ++i;
             endValue = false;
             break;
           case '[':
             endPos[0] = i;
             stringArray = ParseJSONStringArray(str, endPos);
             if (stringArray == null) {
-              return null;
+              throw new InvalidOperationException("invalid string array");
             }
-            i=endPos[0];
+            i = endPos[0];
             endValue = true;
             list.Add(MakeDict(stringArray));
             break;
@@ -149,11 +153,17 @@ namespace MailLibTest {
     }
 
     public static string[] ParseJSONStringArray(string str) {
-       int[] endPos = new int[] { 0 };
+       if ((str) == null) {
+         throw new ArgumentNullException(nameof(str));
+       }
+       var endPos = new int[] { 0 };
        string[] ret = ParseJSONStringArray(str, endPos);
        return endPos[0] == str.Length ? ret : null;
     }
     public static string[] ParseJSONStringArray(string str, int[] endPos) {
+      if ((str) == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
       var i = endPos[0];
       var list = new List<string>();
       var sb = new StringBuilder();
@@ -191,6 +201,7 @@ namespace MailLibTest {
             if (!endValue) {
               return null;
             }
+            ++i;
             endValue = false;
             break;
           case '"':
@@ -218,6 +229,15 @@ namespace MailLibTest {
       string str,
       int index,
       StringBuilder sb) {
+#if DEBUG
+      if ((str) == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
+      if ((sb) == null) {
+        throw new ArgumentNullException(nameof(sb));
+      }
+#endif
+
       int c;
       sb.Remove(0, sb.Length);
       while (index < str.Length) {

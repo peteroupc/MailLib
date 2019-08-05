@@ -870,8 +870,27 @@
     </exception>
     <exception cref='System.IO.IOException'>An I/O error occurred.
     </exception>
-    <exception cref='System.ArgumentException'>Either "offset" or "length" is less than 0 or greater than "str"'s length,
-      or "str"'s length minus "offset" is less than "length".
+    <exception cref='System.ArgumentException'>Either
+      <paramref name='offset'/>
+       or
+      <paramref name='length'/>
+       is less than 0 or greater than
+      <paramref name='str'/>
+       's length, or
+      <paramref name='str'/>
+       's length minus
+      <paramref name='offset'/>
+       is less than
+      <paramref name='length'/>
+      .
+    </exception>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
+    <exception cref='System.ArgumentException'>Either &quot;offset&quot; or &quot;length&quot; is less than 0 or greater
+      than &quot;str&quot;&apos;s length, or &quot;str&quot;&apos;s length minus
+      &quot;offset&quot; is less than &quot;length&quot;.
     </exception>
     <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
@@ -919,8 +938,27 @@
     </exception>
     <exception cref='System.IO.IOException'>An I/O error occurred.
     </exception>
-    <exception cref='System.ArgumentException'>Either "offset" or "length" is less than 0 or greater than "str"'s length,
-      or "str"'s length minus "offset" is less than "length".
+    <exception cref='System.ArgumentException'>Either
+      <paramref name='offset'/>
+       or
+      <paramref name='length'/>
+       is less than 0 or greater than
+      <paramref name='str'/>
+       's length, or
+      <paramref name='str'/>
+       's length minus
+      <paramref name='offset'/>
+       is less than
+      <paramref name='length'/>
+      .
+    </exception>
+    <exception cref='System.ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
+    <exception cref='System.ArgumentException'>Either &quot;offset&quot; or &quot;length&quot; is less than 0 or greater
+      than &quot;str&quot;&apos;s length, or &quot;str&quot;&apos;s length minus
+      &quot;offset&quot; is less than &quot;length&quot;.
     </exception>
     <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='str'/>
@@ -1221,18 +1259,18 @@
             <c>application/octet-stream</c> subtype in Content-Type header field) cites an earlier RFC 1341,
             which "defined the use of a 'NAME' parameter which gave a
             <i>
-               suggested
+              suggested
             </i>
              file name to be used if the data were written to a file". Also, RFC
             2183 sec. 2.3 (
             <c>filename</c> parameter in Content-Disposition) confirms that the "
             <i>
-               suggested
+              suggested
             </i>
              filename" in the
             <c>filename</c> parameter "should be
             <i>
-               used as a basis
+              used as a basis
             </i>
              for the actual filename, where possible", and that that file name
             should "not [be] blindly use[d]". See also RFC 6266, section 4.3,
@@ -1250,7 +1288,7 @@
           </para>
         </item>
       </list>
-       .
+      .
     </remarks>
   </doc>
   <doc name='P:PeterO.Mail.ContentDisposition.Parameters'>
@@ -2008,9 +2046,9 @@
     <param name='str'>A date-time string.
     </param>
     <param name='parseObsoleteZones'>If set to
-      <c>true</c> , this method allows obsolete time zones (single-letter time zones,
-      "GMT", "UT", and certain three-letter combinations) to appear in the
-      date-time string.
+      <c>true</c> , this method allows obsolete time zones (single-letter time zones, "GMT",
+      "UT", and certain three-letter combinations) to appear in the date-time
+      string.
     </param>
     <returns>An 8-element array containing the date and time, or
       <c>null</c> if
@@ -3300,7 +3338,7 @@
           global time. This number can be positive or negative.
         </item>
       </list>
-       .
+      .
     </param>
     <returns>This object.
     </returns>
@@ -4399,9 +4437,9 @@
       <para>NOTICE: While this class's source code is in the public domain, the
         class uses two internal classes, called
         <c>NormalizationData</c> and
-        <c>IdnaData</c> , that include data derived from the Unicode Character Database. See
-        the documentation for the NormalizerInput class for the permission
-        notice for the Unicode Character Database.
+        <c>IdnaData</c> , that include data derived from the Unicode Character Database. See the
+        documentation for the NormalizerInput class for the permission notice
+        for the Unicode Character Database.
       </para>
     </summary>
   </doc>
@@ -4573,14 +4611,25 @@
       <paramref name='index'/>
        is less than
       <paramref name='length'/>
-       .
+      .
     </exception>
     <exception cref='System.ArgumentNullException'>The parameter
       <paramref name='chars'/>
        is null.
     </exception>
-    <exception cref='System.ArgumentException'>Either "index" or "length" is less than 0 or greater than "chars"'s
-      length, or "chars"'s length minus "index" is less than "length".
+    <exception cref='System.ArgumentException'>Either
+      <paramref name='index'/>
+       or
+      <paramref name='length'/>
+       is less than 0 or greater than
+      <paramref name='chars'/>
+       's length, or
+      <paramref name='chars'/>
+       's length minus
+      <paramref name='index'/>
+       is less than
+      <paramref name='length'/>
+      .
     </exception>
   </doc>
   <doc name='M:PeterO.Text.Normalizer.ReadChar'>
@@ -4603,7 +4652,7 @@
         equivalent to the uncombined form (E plus acute). For this reason, the
         standard defines four
         <i>
-           normalization forms
+          normalization forms
         </i>
          that convert strings to a single equivalent form:
       </para>
@@ -4835,10 +4884,21 @@
       <paramref name='index'/>
        is less than
       <paramref name='length'/>
-       .
+      .
     </exception>
-    <exception cref='System.ArgumentException'>Either "index" or "length" is less than 0 or greater than "chars"'s
-      length, or "chars"'s length minus "index" is less than "length".
+    <exception cref='System.ArgumentException'>Either
+      <paramref name='index'/>
+       or
+      <paramref name='length'/>
+       is less than 0 or greater than
+      <paramref name='chars'/>
+       's length, or
+      <paramref name='chars'/>
+       's length minus
+      <paramref name='index'/>
+       is less than
+      <paramref name='length'/>
+      .
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizerInput.ReadChar'>
@@ -5169,10 +5229,21 @@
       <paramref name='index'/>
        is less than
       <paramref name='length'/>
-       .
+      .
     </exception>
-    <exception cref='System.ArgumentException'>Either "index" or "length" is less than 0 or greater than "chars"'s
-      length, or "chars"'s length minus "index" is less than "length".
+    <exception cref='System.ArgumentException'>Either
+      <paramref name='index'/>
+       or
+      <paramref name='length'/>
+       is less than 0 or greater than
+      <paramref name='chars'/>
+       's length, or
+      <paramref name='chars'/>
+       's length minus
+      <paramref name='index'/>
+       is less than
+      <paramref name='length'/>
+      .
     </exception>
   </doc>
   <doc name='M:PeterO.Text.NormalizingCharacterInput.ReadChar'>
@@ -5202,9 +5273,9 @@
         </item>
         <item>The methods in this class are not well suited for
           <i>
-             collation
+            collation
           </i>
-           , or lexicographic ordering, which is a comparison of text strings
+          , or lexicographic ordering, which is a comparison of text strings
           that is usually language-dependent and goes beyond equality
           comparison. Further discussion on collation can be found in Unicode
           Technical Standard 10 (UTS 10), "Unicode Collation Algorithm".
@@ -5256,7 +5327,9 @@
     <summary>Checks the validity of a string serving as a "memorable, human-friendly
       name" for something (see RFC 8266), as opposed to that thing's identity
       for authentication or authorization purposes (see sec. 6.1 of that RFC).
-      This checking is done using the Nickname profile in RFC 8266.
+      This checking is done using the Nickname profile in RFC 8266. Such names
+      are not intended to serve as URIs or file paths (see sec. 6.1 of that
+      RFC).
     </summary>
     <param name='str'>A string serving as a nickname for something.
     </param>
@@ -5268,16 +5341,14 @@
       comparison purposes (see RFC 8266, sec. 2.3); for such purposes, use the
       NicknameForComparison method instead.
     </returns>
-    <exception cref='System.ArgumentNullException'>The parameter
-      <paramref name='str'/>
-       is null.
-    </exception>
   </doc>
   <doc name='M:PeterO.Text.ProtocolStrings.NicknameForComparison(System.String)'>
     <summary>Prepares for comparison a string serving as a "memorable, human-friendly
       name" for something (see RFC 8266), as opposed to that thing's identity
       for authentication or authorization purposes (see sec. 6.1 of that RFC).
-      This operation is done using the Nickname profile in RFC 8266.
+      This operation is done using the Nickname profile in RFC 8266. Such names
+      are not intended to serve as URIs or file paths (see sec. 6.1 of that
+      RFC).
     </summary>
     <param name='str'>A string serving as a nickname for something.
     </param>
@@ -5287,10 +5358,6 @@
        is null or empty). For comparison purposes, return values of this method
       should be compared code point by code point (see RFC 8266, sec. 2.4).
     </returns>
-    <exception cref='System.ArgumentNullException'>The parameter
-      <paramref name='str'/>
-       is null.
-    </exception>
   </doc>
   <doc name='M:PeterO.Text.ProtocolStrings.OpaqueStringEnforce(System.String)'>
     <summary>Checks the validity of a string serving as an arbitrary single-line
@@ -5311,10 +5378,6 @@
        is null or empty). For comparison purposes, return values of this method
       should be compared code point by code point (see RFC 8265, sec. 4.2.3).
     </returns>
-    <exception cref='System.ArgumentNullException'>The parameter
-      <paramref name='str'/>
-       is null.
-    </exception>
   </doc>
   <doc name='M:PeterO.Text.ProtocolStrings.UsernameEnforce(System.String)'>
     <summary>Checks the validity of a string that can serve to identify a user or
@@ -5409,9 +5472,5 @@
        ) should be compared code point by code point (see RFC 8265, secs. 3.3.4
       and 3.4.4).
     </returns>
-    <exception cref='System.ArgumentNullException'>The parameter
-      <paramref name='str'/>
-       is null.
-    </exception>
   </doc>
 </docs>

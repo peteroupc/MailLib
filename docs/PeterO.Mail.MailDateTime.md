@@ -19,7 +19,7 @@
 
  Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 
- <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>dateTime</i>: The date and time in the form of an 8-element array. See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this parameter.
 
@@ -42,7 +42,7 @@ The parameter  <i>dateTime</i>
 
  Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 
- <b>Parameters:</b>
+       <b>Parameters:</b>
 
  * <i>dateTime</i>: The date and time in the form of an 8-element array. See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this parameter.
 
@@ -71,7 +71,7 @@ The parameter  <i>dateTime</i>
 
  Not documented yet.
 
- <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is not documented yet.
@@ -105,11 +105,11 @@ An array of 32-bit unsigned integers.
 
   * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative.
 
- <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>str</i>: A date-time string.
 
- * <i>parseObsoleteZones</i>: If set to  `true`  , this method allows obsolete time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations) to appear in the date-time string.
+ * <i>parseObsoleteZones</i>: If set to  `true` , this method allows obsolete time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations) to appear in the date-time string.
 
 <b>Return Value:</b>
 
@@ -130,7 +130,7 @@ The parameter  <i>str</i>
 
  Parses a date string in one of the three formats allowed by HTTP/1.1.
 
- <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>v</i>: A date-time string.
 

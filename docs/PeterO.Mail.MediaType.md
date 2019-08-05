@@ -10,7 +10,7 @@
 
  This type is immutable, meaning its values can't be changed once it' s created. To create a changeable media type object, use the MediaTypeBuilder class.
 
- <b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type  `multipart`  must be treated as  `multipart/mixed`  and unrecognized media types as the media type  `application/octet-stream`  .
+ <b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type  `multipart`  must be treated as  `multipart/mixed`  and unrecognized media types as the media type  `application/octet-stream` .
 
 ### Member Summary
 * <code>[public static readonly PeterO.Mail.MediaType ApplicationOctetStream;](#ApplicationOctetStream)</code> - Specifies the media type "application/octet-stream", used for arbitrary binary data.
@@ -68,9 +68,9 @@
 
  Gets a value indicating whether this is a multipart media type.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise,  `false`  .
+ `true`  If this is a multipart media type; otherwise,  `false` .
 
 <a id="IsText"></a>
 ### IsText
@@ -79,9 +79,9 @@
 
  Gets a value indicating whether this is a text media type ("text/*").
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise,  `false`  .
+ `true`  If this is a text media type; otherwise,  `false` .
 
 <a id="Parameters"></a>
 ### Parameters
@@ -90,7 +90,7 @@
 
  Gets a list of the parameters contained in this media type object.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 A list of the parameters contained in this media type object; the names of each parameter appear in an undefined order. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
@@ -101,7 +101,7 @@ A list of the parameters contained in this media type object; the names of each 
 
  Gets this media type's subtype (for example, "plain" in "text/plain"). The resulting string will be in lowercase letters.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 This media type's subtype.
 
@@ -112,7 +112,7 @@ This media type's subtype.
 
  Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic"). The resulting string will be in lowercase letters.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 The name of this media type's top-level type (such as "text" or "audio" .
 
@@ -123,7 +123,7 @@ The name of this media type's top-level type (such as "text" or "audio" .
 
  Gets the top level type and subtype of this media type, separated by a slash; for example, "text/plain". The resulting string will be in lowercase letters.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 The top level type and subtype of this media type, separated by a slash; for example, "text/plain".
 
@@ -135,14 +135,14 @@ The top level type and subtype of this media type, separated by a slash; for exa
 
  Determines whether this object and another object are equal.
 
- <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>obj</i>: The parameter  <i>obj</i>
  is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false`  .
+ `true`  if this object and another object are equal; otherwise,  `false` .
 
 <a id="GetCharset"></a>
 ### GetCharset
@@ -151,7 +151,7 @@ The top level type and subtype of this media type, separated by a slash; for exa
 
  Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 If the "charset" parameter is present and non-empty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that result's basic upper-case letters A to Z (U+0041 to U+005A) are converted to lower case. If the "charset" parameter is absent or empty, returns the default value, if any, for that parameter given the media type (e.g., "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
 
@@ -162,7 +162,7 @@ If the "charset" parameter is present and non-empty, returns the result of the E
 
  Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A 32-bit signed integer.
 
@@ -174,9 +174,9 @@ A 32-bit signed integer.
 
  Gets the value of a parameter in this media type, such as "charset" or "format".
 
- <b>Parameters:</b>
+      <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 
@@ -199,7 +199,7 @@ Name is empty.
 
  Parses a media type string and returns a media type object. For further information, see the overload taking a MediaType parameter.
 
- <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>mediaTypeValue</i>: A text string representing a media type. This media type can include parameters.
 
@@ -225,7 +225,7 @@ A media type object, or MediaType.TextPlainAscii if  <i>mediaTypeValue</i>
 
  This implementation ignores keys (in parameter key-value pairs) that appear more than once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or otherwise specifies error-handling behavior for such keys.
 
- <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>str</i>: A text string representing a media type. This media type can include parameters.
 
@@ -248,7 +248,7 @@ The parameter  <i>str</i>
 
  Converts this media type to a text string form suitable for inserting in HTTP headers. Notably, the string contains the value of a Content-Type header field (without the text necessarily starting with "Content-Type" followed by a space), and consists of a single line.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A text string form of this media type.
 
@@ -259,7 +259,7 @@ A text string form of this media type.
 
  Converts this media type to a text string form suitable for inserting in email headers. Notably, the string contains the value of a Content-Type header field (without the text necessarily starting with "Content-Type" followed by a space), and consists of one or more lines.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A text string form of this media type.
 
@@ -270,6 +270,6 @@ A text string form of this media type.
 
  Converts this media type to a text string form suitable for data URIs. Notably, the string contains the value of a Content-Type header field (without the text necessarily starting with "Content-Type" followed by a space), consists of a single line, and uses percent-encoding as necessary or convenient so that the resulting string can validly appear in a URI path.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A text string form of this media type.

@@ -146,7 +146,7 @@ GroupName is empty.; A mailbox in the list is a group.
 
  Gets the email address associated with this object.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 The email address associated with this object. This value is null if this object represents a group of addresses instead.
 
@@ -157,7 +157,7 @@ The email address associated with this object. This value is null if this object
 
  Gets the display name for this email address. Returns null if the display name is absent.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 The display name for this email address.
 
@@ -168,7 +168,7 @@ The display name for this email address.
 
  Gets a read-only list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 A list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
@@ -179,9 +179,9 @@ A list of addresses that make up the group, if this object represents a group, o
 
  Gets a value indicating whether this represents a group of addresses rather than a single address.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
- `true`  If this represents a group of addresses; otherwise,  `false`  .
+ `true`  If this represents a group of addresses; otherwise,  `false` .
 
 <a id="Name"></a>
 ### Name
@@ -190,7 +190,7 @@ A list of addresses that make up the group, if this object represents a group, o
 
  Gets the display name for this email address, or the email address's value if the display name is null. Returns an empty string if the address and display name are null.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 The name for this email address.
 
@@ -202,13 +202,13 @@ The name for this email address.
 
  Not documented yet.
 
- <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>na</i>: A named address object to compare with this one. Can be null.
 
 <b>Return Value:</b>
 
-Either  `true`  or  `false`  .
+Either  `true`  or  `false` .
 
 <a id="Equals_object"></a>
 ### Equals
@@ -218,14 +218,14 @@ Either  `true`  or  `false`  .
 
  Determines whether this object and another object are equal.
 
- <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>obj</i>: The parameter  <i>obj</i>
  is an arbitrary object.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false`  .
+ `true`  if this object and another object are equal; otherwise,  `false` .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
@@ -234,7 +234,7 @@ Either  `true`  or  `false`  .
 
  Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A 32-bit hash code.
 
@@ -246,7 +246,7 @@ A 32-bit hash code.
 
  Generates a list of NamedAddress objects from a comma-separated list of addresses. Each address must follow the syntax accepted by the one-argument constructor of NamedAddress.
 
- <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>addressValue</i>: A comma-separate list of addresses in the form of a text string.
 
@@ -268,6 +268,6 @@ The parameter  <i>addressValue</i>
 
  Converts this object to a text string. This will generally be the form of this NamedAddress object as it could appear in a "To" header field.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A string representation of this object.

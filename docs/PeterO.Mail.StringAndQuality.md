@@ -32,7 +32,7 @@
 
  Gets the quality value stored by this object.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 The quality value stored by this object.
 
@@ -43,6 +43,6 @@ The quality value stored by this object.
 
  Gets the arbitrary string stored by this object.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 The arbitrary string stored by this object.

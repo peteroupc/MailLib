@@ -118,19 +118,13 @@ private ProtocolStrings() {
      * or empty). For comparison purposes, return values of this method
      * (with the same value for {@code preserveCase}) should be compared
      * code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
-     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String UserpartEnforce(String str, boolean preserveCase) {
       if (preserveCase) {
-        if (str == null) {
-          throw new NullPointerException("str");
-        }
-        return Idna.UsernameCasePreservedEnforce(str);
+        return (str == null) ? null :
+Idna.UsernameCasePreservedEnforce(str);
       } else {
-        if (str == null) {
-          throw new NullPointerException("str");
-        }
-        return Idna.UsernameCaseMappedEnforce(str);
+        return (str == null) ? null : (Ina.UsernameCaseMappedEnforce(str);
       }
     }
 
@@ -222,13 +216,9 @@ private ProtocolStrings() {
      * if {@code str} is null or empty). For comparison purposes, return
      * values of this method should be compared code point by code point
      * (see RFC 8265, sec. 4.2.3).
-     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String OpaqueStringEnforce(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      return Idna.OpaqueStringEnforce(str);
+      return (str == null) ? null : (Ina.OpaqueStringEnforce(str);
     }
 
     /**
@@ -236,7 +226,8 @@ private ProtocolStrings() {
      *  name" for something (see RFC 8266), as opposed to that thing's
      * identity for authentication or authorization purposes (see sec. 6.1
      * of that RFC). This checking is done using the Nickname profile in
-     * RFC 8266.
+     * RFC 8266. Such names are not intended to serve as URIs or file paths
+     * (see sec. 6.1 of that RFC).
      * @param str A string serving as a nickname for something.
      * @return A nickname prepared for enforcement under the Nickname profile in
      * RFC 8266. Returns null if that string is invalid under that profile
@@ -244,13 +235,9 @@ private ProtocolStrings() {
      * method should not be used for comparison purposes (see RFC 8266,
      * sec. 2.3); for such purposes, use the NicknameForComparison method
      * instead.
-     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String NicknameEnforce(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      return Idna.NicknameEnforce(str);
+      return (str == null) ? null : (Ina.NicknameEnforce(str);
     }
 
     /**
@@ -258,19 +245,16 @@ private ProtocolStrings() {
      *  name" for something (see RFC 8266), as opposed to that thing's
      * identity for authentication or authorization purposes (see sec. 6.1
      * of that RFC). This operation is done using the Nickname profile in
-     * RFC 8266.
+     * RFC 8266. Such names are not intended to serve as URIs or file paths
+     * (see sec. 6.1 of that RFC).
      * @param str A string serving as a nickname for something.
      * @return A nickname prepared for comparison under the Nickname profile in RFC
      * 8266. Returns null if that string is invalid under that profile
      * (including if {@code str} is null or empty). For comparison
      * purposes, return values of this method should be compared code point
      * by code point (see RFC 8266, sec. 2.4).
-     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String NicknameForComparison(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      return Idna.NicknameForComparison(str);
+      return (str == null) ? null : (Ina.NicknameForComparison(str);
     }
   }

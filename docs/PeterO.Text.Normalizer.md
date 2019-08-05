@@ -40,7 +40,7 @@
 
  Returns whether this string is normalized.
 
- <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: The string to check.
 
@@ -49,7 +49,7 @@
 
 <b>Return Value:</b>
 
- `true`  if this string is normalized; otherwise,  `false`  . Returns  `false`  if the string contains an unpaired surrogate code point.
+ `true`  if this string is normalized; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <a id="Normalize_string_PeterO_Text_Normalization"></a>
 ### Normalize
@@ -60,7 +60,7 @@
 
  Converts a string to the given Unicode normalization form.
 
- <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -87,7 +87,7 @@ The parameter  <i>str</i>
 
  Reads a sequence of Unicode code points from a data source.
 
- <b>Parameters:</b>
+         <b>Parameters:</b>
 
  * <i>chars</i>: Output buffer.
 
@@ -108,14 +108,20 @@ Either  <i>index</i>
  's length, or  <i>chars</i>
  ' s length minus  <i>index</i>
  is less than  <i>length</i>
- .
+.
 
  * System.ArgumentNullException:
 The parameter  <i>chars</i>
  is null.
 
  * System.ArgumentException:
-Either "index" or "length" is less than 0 or greater than "chars"'s length, or "chars"'s length minus "index" is less than "length".
+Either  <i>index</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>chars</i>
+ 's length, or  <i>chars</i>
+ 's length minus  <i>index</i>
+ is less than  <i>length</i>
+.
 
 <a id="ReadChar"></a>
 ### ReadChar
@@ -124,6 +130,6 @@ Either "index" or "length" is less than 0 or greater than "chars"'s length, or "
 
  Reads a Unicode character from a data source.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

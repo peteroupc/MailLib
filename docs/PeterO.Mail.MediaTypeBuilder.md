@@ -66,9 +66,9 @@ The parameter  <i>mt</i>
 
  Gets a value indicating whether this is a multipart media type.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
- `true`  If this is a multipart media type; otherwise,  `false`  .
+ `true`  If this is a multipart media type; otherwise,  `false` .
 
 <a id="IsText"></a>
 ### IsText
@@ -77,9 +77,9 @@ The parameter  <i>mt</i>
 
  Gets a value indicating whether this is a text media type.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
- `true`  If this is a text media type; otherwise,  `false`  .
+ `true`  If this is a text media type; otherwise,  `false` .
 
 <a id="SubType"></a>
 ### SubType
@@ -88,7 +88,7 @@ The parameter  <i>mt</i>
 
  Gets or sets this value's subtype.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 This value's subtype.
 
@@ -99,7 +99,7 @@ This value's subtype.
 
  Gets or sets this value's top-level type.
 
- <b>Returns:</b>
+   <b>Returns:</b>
 
 This value's top-level type.
 
@@ -111,9 +111,9 @@ This value's top-level type.
 
  Removes a parameter from this builder object. Does nothing if the parameter's name doesn't exist.
 
- <b>Parameters:</b>
+     <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 
@@ -134,9 +134,9 @@ The parameter  <i>name</i>
 
  Sets a parameter's name and value for this media type.
 
- <b>Parameters:</b>
+       <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
  * <i>value</i>: A text string giving the parameter's value.
 
@@ -163,7 +163,7 @@ The parameter  <i>name</i>
 
  Sets this media type's subtype, such as "plain" or "xml" .
 
- <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>str</i>: A text string naming a media subtype.
 
@@ -189,7 +189,7 @@ The parameter  <i>str</i>
 
  Sets this media type's top-level type.
 
- <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>str</i>: A text string naming a top-level type, such as "text" or "audio" .
 
@@ -214,7 +214,7 @@ The parameter  <i>str</i>
 
  Converts this builder to an immutable media type object.
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A MediaType object.
 
@@ -223,8 +223,8 @@ A MediaType object.
 
     public override string ToString();
 
- Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString`  .
+ Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString` .
 
- <b>Return Value:</b>
+   <b>Return Value:</b>
 
 A string representation of this object.

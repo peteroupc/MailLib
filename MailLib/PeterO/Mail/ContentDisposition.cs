@@ -12,8 +12,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>
-    /// <para>Specifies how a message body should be displayed or handled
+    /// <summary><para>Specifies how a message body should be displayed or handled
     /// by a mail user agent. This type is immutable; its contents can't be
     /// changed after it's created. To create a changeable disposition
     /// object, use the DispositionBuilder class.</para>
@@ -289,8 +288,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from this content
     /// disposition's "creation-date" parameter, which specifies the date
     /// of creation of a file (RFC 2183 sec. 2.4). See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this method's return value.</summary>
     /// <returns>The extracted date and time as an 8-element array, or
     /// <c>null</c> if the "creation-date" parameter doesn't exist, is an
@@ -304,8 +302,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from this content
     /// disposition's "modification-date" parameter, which specifies the
     /// date of last modification of a file (RFC 2183 sec. 2.5). See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this method's return value.</summary>
     /// <returns>The extracted date and time as an 8-element array, or
     /// <c>null</c> if the "modification-date" parameter doesn't exist, is
@@ -319,8 +316,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from this content
     /// disposition's "read-date" parameter, which specifies the date at
     /// which a file was last read (RFC 2183 sec. 2.6). See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this method's return value.</summary>
     /// <returns>The extracted date and time as an 8-element array, or
     /// <c>null</c> if the "read-date" parameter doesn't exist, is an empty
@@ -338,14 +334,12 @@ namespace PeterO.Mail {
     /// <param name='name'>The name of the parameter to get. The name will
     /// be matched using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U + 0041 to U+005A) in both
+    /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
     /// strings to lower case.). Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='name'/> is empty.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='name'/> is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -433,13 +427,11 @@ namespace PeterO.Mail {
 
     /// <summary>Creates a new content disposition object from the value of
     /// a Content-Disposition header field.</summary>
-    /// <param name='dispoValue'>The parameter <paramref
-    /// name='dispoValue'/> is a text string.</param>
+    /// <param name='dispoValue'>The parameter <paramref name='dispoValue'/> is a text string.</param>
     /// <returns>A content disposition object, or
     /// ContentDisposition.Attachment" if <paramref name='dispoValue'/> is
     /// empty or syntactically invalid.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='dispoValue'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='dispoValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
         throw new ArgumentNullException(nameof(dispoValue));
@@ -479,8 +471,7 @@ namespace PeterO.Mail {
     /// <param name='defaultValue'>The value to return in case the
     /// disposition value is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='dispositionValue'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='dispositionValue'/> is null.</exception>
     public static ContentDisposition Parse(
       string dispositionValue,
       ContentDisposition defaultValue) {

@@ -57,8 +57,10 @@ namespace MailLibTest {
       Assert.AreEqual(mt, mt2);
       Assert.IsFalse(mt.Equals(mt3));
       Assert.IsFalse(mt2.Equals(mt3));
-      foreach (IDictionary<string, string> dictI in ResourceUtil.GetDictList("mediatypes")) {
-        foreach (IDictionary<string, string> dictJ in ResourceUtil.GetDictList("mediatypes")) {
+      foreach (IDictionary<string, string> dictI in
+ResourceUtil.GetDictList("mediatypes")) {
+        foreach (IDictionary<string, string> dictJ in
+ResourceUtil.GetDictList("mediatypes")) {
           TestCommon.AssertEqualsHashCode(
             ParseAndTestAspects(dictI["name"]),
             ParseAndTestAspects(dictJ["name"]));
@@ -278,7 +280,8 @@ namespace MailLibTest {
 
     [Test]
     public void TestGetParameter() {
-      foreach (IDictionary<string, string> dict in ResourceUtil.GetDictList("paramtypes")) {
+      foreach (IDictionary<string, string> dict in
+ResourceUtil.GetDictList("paramtypes")) {
         MediaType mt = ParseAndTestAspects("x/x" + dict["params"]);
         Assert.AreEqual(
           dict["filename"],
@@ -287,7 +290,8 @@ namespace MailLibTest {
     }
     [Test]
     public void TestIsMultipart() {
-      foreach (IDictionary<string, string> dict in ResourceUtil.GetDictList("mediatypes")) {
+      foreach (IDictionary<string, string> dict in
+ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         {
           object objectTemp = dict["multipart"].Equals("1",
@@ -299,7 +303,8 @@ namespace MailLibTest {
     }
     [Test]
     public void TestIsText() {
-      foreach (IDictionary<string, string> dict in ResourceUtil.GetDictList("mediatypes")) {
+      foreach (IDictionary<string, string> dict in
+ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(dict["text"].Equals("1", StringComparison.Ordinal),
   mt.IsText);
@@ -480,7 +485,8 @@ namespace MailLibTest {
 
     [Test]
     public void TestSubType() {
-      foreach (IDictionary<string, string> dict in ResourceUtil.GetDictList("mediatypes")) {
+      foreach (IDictionary<string, string> dict in
+ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(
           dict["subtype"],
@@ -489,7 +495,8 @@ namespace MailLibTest {
     }
     [Test]
     public void TestTopLevelType() {
-      foreach (IDictionary<string, string> dict in ResourceUtil.GetDictList("mediatypes")) {
+      foreach (IDictionary<string, string> dict in
+ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(
           dict["toplevel"],
@@ -502,7 +509,8 @@ namespace MailLibTest {
     }
     [Test]
     public void TestToSingleLineString() {
-      foreach (IDictionary<string, string> dict in ResourceUtil.GetDictList("mediatypes")) {
+      foreach (IDictionary<string, string> dict in
+ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         string str = mt.ToSingleLineString();
         Assert.IsFalse(str.IndexOf("\r", StringComparison.Ordinal) >= 0);
@@ -511,7 +519,8 @@ namespace MailLibTest {
     }
     [Test]
     public void TestTypeAndSubType() {
-      foreach (IDictionary<string, string> dict in ResourceUtil.GetDictList("mediatypes")) {
+      foreach (IDictionary<string, string> dict in
+ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(
           dict["toplevel"] + "/" + dict["subtype"],

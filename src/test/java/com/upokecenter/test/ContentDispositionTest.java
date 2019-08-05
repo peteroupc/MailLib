@@ -76,7 +76,7 @@ import com.upokecenter.text.*;
     }
     @Test
     public void TestGetParameter() {
-      for (Map<String, String> dict : MediaTypeTest.ValueTestParamTypes) {
+      for (Map<String, String> dict : ResourceUtil.GetDictList("paramtypes")) {
         ContentDisposition mt = ParseAndTestAspects("inline" + dict.get("params"));
         Assert.assertEquals(
           dict.get("filename"),
@@ -385,7 +385,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       AppResources resources = new AppResources("Resources");
       String[] filenames = DictUtility.ParseJSONStringArray(
-        resources.GetString("specificfilenames"));
+        resources.GetString("specificfiles"));
       // "d\ud800e", "d\ufffde",
       // "d\udc00e", "d\ufffde",
       // "my\ud800file\udc00name\ud800\udc00.txt",

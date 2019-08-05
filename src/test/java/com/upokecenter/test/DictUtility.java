@@ -36,6 +36,26 @@ private DictUtility() {
       return dict;
     }
 
+    public static String ToJSON(
+        List<Map<String, String>> dictlist) {
+      StringBuilder sb = new StringBuilder().append("[");
+      for (int i = 0; i < dictlist.size(); ++i) {
+        if (i > 0) {
+          sb.append(",");
+        }
+        Map<String, String> dict = dictlist.get(i);
+        String[] listArray = new String[dict.size() * 2];
+        int k = 0;
+        for (String key : dict.keySet()) {
+          listArray.set(k, key);
+          listArray.set(k + 1, dict.get(key));
+          k+=2;
+        }
+        sb.append(ToJSON(listArray));
+      }
+      return sb.append("]").toString();
+    }
+
     public static String ToJSON(String[] arr) {
       StringBuilder sb = new StringBuilder().append("[");
       for (int i = 0; i < arr.length; ++i) {
@@ -53,18 +73,20 @@ private DictUtility() {
           if (str.charAt(j) == '\"') {
             sb.append("\\\"");
           } else if (str.charAt(j) == '\\') {
-   sb.append("\\\\");
- } else if (str.charAt(j) == '\r') {
-   sb.append("\\r");
- } else if (str.charAt(j) == '\n') {
-   sb.append("\\n");
- } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
-   int ch = (int)str.charAt(j);
+            sb.append("\\\\");
+          } else if (str.charAt(j) == '\r') {
+            sb.append("\\r");
+          } else if (str.charAt(j) == '\n') {
+            sb.append("\\n");
+          } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
+            int ch = (int)str.charAt(j);
             sb.append("\\u")
                .append(HexAlphabet.charAt((ch >> 12) & 15))
                .append(HexAlphabet.charAt((ch >> 8) & 15))
-               .append(HexAlphabet.charAt((ch >> 4) & 15)).append(HexAlphabet.charAt(ch &
-15));
+               .append(HexAlphabet.charAt((ch >> 4) & 15))
+               .append(HexAlphabet.charAt(ch & 15));
+             } else {
+            sb.append(str.charAt(j));
           }
         }
         sb.append("\"");
@@ -72,8 +94,78 @@ private DictUtility() {
       return sb.append("]").toString();
     }
 
-    public static String[] ParseJSONStringArray(String str) {
+    public static List<Map<String, String>>
+         ParseJSONDictList(String str) {
+      if ((str) == null) {
+        throw new NullPointerException("str");
+      }
       int i = 0;
+      ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
+      while (i < str.length() && (
+         str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+         str.charAt(i) == 0x09)) {
+        ++i;
+      }
+      if (i >= str.length() || str.charAt(i) != '[') {
+        throw new IllegalStateException("invalid start of list");
+      }
+      ++i;
+      int[] endPos = new int[] { 0 };
+      boolean endValue = false;
+      String[] stringArray = null;
+      while (true) {
+        while (i < str.length() && (
+           str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+           str.charAt(i) == 0x09)) {
+          ++i;
+        }
+        if (i >= str.length() || (
+          str.charAt(i) != ']' && str.charAt(i) != '[' && str.charAt(i) != 0x2c)) {
+          return null;
+        }
+        switch (str.charAt(i)) {
+          case ']':
+            ++i;
+            while (i < str.length() && (
+              str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
+              == 0x09)) {
+              ++i;
+            }
+            return i == str.length() ? list.ToArray() : null;
+          case (char)0x2c:
+            if (!endValue) {
+              throw new IllegalStateException("unexpected comma");
+            }
+            ++i;
+            endValue = false;
+            break;
+          case '[':
+            endPos[0] = i;
+            stringArray = ParseJSONStringArray(str, endPos);
+            if (stringArray == null) {
+              throw new IllegalStateException("invalid String array");
+            }
+            i = endPos[0];
+            endValue = true;
+            list.add(MakeDict(stringArray));
+            break;
+        }
+      }
+    }
+
+    public static String[] ParseJSONStringArray(String str) {
+       if ((str) == null) {
+         throw new NullPointerException("str");
+       }
+       int[] endPos = new int[] { 0 };
+       String[] ret = ParseJSONStringArray(str, endPos);
+       return endPos[0] == str.length() ? ret : null;
+    }
+    public static String[] ParseJSONStringArray(String str, int[] endPos) {
+      if ((str) == null) {
+        throw new NullPointerException("str");
+      }
+      var i = endPos[0];
       ArrayList<String> list = new ArrayList<String>();
       StringBuilder sb = new StringBuilder();
       while (i < str.length() && (
@@ -104,11 +196,13 @@ private DictUtility() {
               == 0x09)) {
               ++i;
             }
-            return i == str.length() ? list.ToArray() : null;
+            endPos[0] = i;
+            return list.ToArray();
           case (char)0x2c:
             if (!endValue) {
               return null;
             }
+            ++i;
             endValue = false;
             break;
           case '"':
