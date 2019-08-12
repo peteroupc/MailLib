@@ -39,6 +39,9 @@ private DictUtility() {
     public static String ToJSON(
         List<Map<String, String>> dictlist) {
       StringBuilder sb = new StringBuilder().append("[");
+      if (dictlist == null) {
+        throw new NullPointerException("dictlist");
+      }
       for (int i = 0; i < dictlist.size(); ++i) {
         if (i > 0) {
           sb.append(",");
@@ -49,7 +52,7 @@ private DictUtility() {
         for (String key : dict.keySet()) {
           listArray.set(k, key);
           listArray.set(k + 1, dict.get(key));
-          k+=2;
+          k += 2;
         }
         sb.append(ToJSON(listArray));
       }
@@ -58,6 +61,9 @@ private DictUtility() {
 
     public static String ToJSON(String[] arr) {
       StringBuilder sb = new StringBuilder().append("[");
+      if (arr == null) {
+        throw new NullPointerException("arr");
+      }
       for (int i = 0; i < arr.length; ++i) {
         if (i > 0) {
           sb.append(",");
@@ -96,7 +102,7 @@ private DictUtility() {
 
     public static List<Map<String, String>>
          ParseJSONDictList(String str) {
-      if ((str) == null) {
+      if (str == null) {
         throw new NullPointerException("str");
       }
       int i = 0;
@@ -121,7 +127,7 @@ private DictUtility() {
         }
         if (i >= str.length() || (
           str.charAt(i) != ']' && str.charAt(i) != '[' && str.charAt(i) != 0x2c)) {
-          return null;
+          throw new IllegalStateException("Invalid JSON");
         }
         switch (str.charAt(i)) {
           case ']':
@@ -154,18 +160,25 @@ private DictUtility() {
     }
 
     public static String[] ParseJSONStringArray(String str) {
-       if ((str) == null) {
+       if (str == null) {
          throw new NullPointerException("str");
        }
        int[] endPos = new int[] { 0 };
        String[] ret = ParseJSONStringArray(str, endPos);
-       return endPos[0] == str.length() ? ret : null;
+if (endPos[0]!=str.length()) {
+         throw new IllegalStateException("Invalid JSON");
+       }
+       return ret;
     }
     public static String[] ParseJSONStringArray(String str, int[] endPos) {
-      if ((str) == null) {
+      if (str == null) {
         throw new NullPointerException("str");
       }
+      if (endPos == null) {
+        throw new NullPointerException("endPos");
+      }
       var i = endPos[0];
+      int j = 0;
       ArrayList<String> list = new ArrayList<String>();
       StringBuilder sb = new StringBuilder();
       while (i < str.length() && (
@@ -174,7 +187,7 @@ private DictUtility() {
         ++i;
       }
       if (i >= str.length() || str.charAt(i) != '[') {
-        return null;
+        throw new IllegalStateException("Invalid JSON: "+str.substring(i));
       }
       ++i;
       boolean endValue = false;
@@ -186,7 +199,8 @@ private DictUtility() {
         }
         if (i >= str.length() || (
           str.charAt(i) != ']' && str.charAt(i) != '"' && str.charAt(i) != 0x2c)) {
-          return null;
+          throw new IllegalStateException("Invalid JSON:" +
+"\u0020"+str.substring(i));
         }
         switch (str.charAt(i)) {
           case ']':
@@ -200,15 +214,18 @@ private DictUtility() {
             return list.ToArray();
           case (char)0x2c:
             if (!endValue) {
-              return null;
+              throw new IllegalStateException("Invalid JSON:" +
+"\u0020"+str.substring(i));
             }
             ++i;
             endValue = false;
             break;
           case '"':
+            j = i;
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {
-              return null;
+              throw new IllegalStateException("Invalid JSON: bad String:" +
+"\u0020" +str.substring(j));
             }
             endValue = true;
             list.add(sb.toString());
@@ -219,11 +236,14 @@ private DictUtility() {
 
     private static String ParseJSONString(String str) {
       if (str == null || str.length() < 2 || str.charAt(0) != '"') {
-        return null;
+        throw new IllegalStateException("Invalid JSON");
       }
       StringBuilder sb = new StringBuilder();
-      return ParseJSONString(str, 1, sb) ==
-              str.length() ? sb.toString() : null;
+      int result = ParseJSONString(str, 1, sb);
+if (result != str.length()) {
+        throw new IllegalStateException("Invalid JSON");
+      }
+      return sb.toString();
     }
 
     private static int ParseJSONString(

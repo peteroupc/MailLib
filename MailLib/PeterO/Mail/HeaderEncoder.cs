@@ -170,15 +170,16 @@ namespace PeterO.Mail {
             // May begin quoted-string or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
-         int si = symbol[i] == '"' ? HeaderParserUtility.ParseQuotedStringCore(
-           symbol,
-           i,
-           endIndex) : HeaderParser.ParseDomainLiteralCore(
-     symbol,
-     i,
-     endIndex,
-     null);
-     if (si != i) {
+            int si = symbol[i] == '"' ?
+HeaderParserUtility.ParseQuotedStringCore(
+              symbol,
+              i,
+              endIndex) : HeaderParser.ParseDomainLiteralCore(
+                symbol,
+                i,
+                endIndex,
+                null);
+            if (si != i) {
               writeSpace = this.AppendSpaceAndSymbol(
                 symbol,
                 symbolBegin,
@@ -213,13 +214,14 @@ namespace PeterO.Mail {
             } else {
               ++i;
             }
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t' &&
-            symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
-      this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
-      writeSpace = true;
-      i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
-      symbolBegin = i;
-    } else if (symbol[i] == ' ' || symbol[i] == '\t') {
+          } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] !=
+'\t' &&
+                  symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
+            this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
+            writeSpace = true;
+            i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
+            symbolBegin = i;
+          } else if (symbol[i] == ' ' || symbol[i] == '\t') {
             // DebugUtility.Log("Special whitespace|" + symbol.Substring(i,
             // endIndex - i));
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);

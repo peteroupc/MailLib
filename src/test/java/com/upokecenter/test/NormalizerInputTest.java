@@ -16,6 +16,9 @@ import com.upokecenter.text.*;
     }
 
     public static String RandomAscii(RandomGenerator rnd) {
+      if (rnd == null) {
+        throw new NullPointerException("rnd");
+      }
       int length = rnd.UniformInt(50) + 1;
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; ++i) {
@@ -26,6 +29,9 @@ import com.upokecenter.text.*;
     }
 
     public static String RandomLatinOne(RandomGenerator rnd) {
+      if (rnd == null) {
+        throw new NullPointerException("rnd");
+      }
       int length = rnd.UniformInt(50) + 1;
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; ++i) {

@@ -26,8 +26,8 @@ import com.upokecenter.text.*;
      */
     @Override public boolean equals(Object obj) {
       Address other = ((obj instanceof Address) ? (Address)obj : null);
-      return other != null && this.localPart.startsWith(other.localPart) &&
-        this.domain.startsWith(other.domain);
+      return other != null && this.localPart.equals(other.localPart) &&
+        this.domain.equals(other.domain);
     }
 
     /**

@@ -2270,7 +2270,7 @@ private NormalizationData() {
       return ret;
     }
     public static final int[] ComplexDecompMappings =
-      GetComplexDecompMappings();
+GetComplexDecompMappings();
     private static int[] GetComplexDecompMappings() {
       return new int[] {
         49, 8260, 52, 49, 8260, 50, 51, 8260, 52, 46, 46,
@@ -2892,5 +2892,8 @@ private NormalizationData() {
       (byte)0xd0, 9, 115, 15, (byte)0xee, 0, 77, 15, 110, 0, 91, 15,
       112, 1, 16, 16, 0
      };
- public static final int[] LowerCaseMappings2 = new int[] { 304, 105, 775 };
+    public static final int[] LowerCaseMappings2 = new int[] {
+      304, 105,
+      775
+    };
   }

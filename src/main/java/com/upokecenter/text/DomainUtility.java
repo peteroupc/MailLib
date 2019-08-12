@@ -361,6 +361,7 @@ private DomainUtility() {
       int codePointLength = 0;
       int basicsBeforeFirstNonbasic = 0;
       boolean allBasics = true;
+      boolean hasUpperCase = false;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         if (str.charAt(tmpIndex) >= 0x80) {
@@ -368,16 +369,16 @@ private DomainUtility() {
           break;
         }
         if (str.charAt(tmpIndex) >= 0x41 && str.charAt(tmpIndex) <= 0x5a) {
-          // Treat as having a non-basic in case of an
-          // upper-case ASCII character, since special
-          // handling is required here
-          allBasics = false;
+          // Upper-case basic character
+          hasUpperCase = true;
           break;
         }
         ++tmpIndex;
       }
       if (allBasics) {
-        return str.substring(index, (index)+(endIndex - index));
+        String rv = str.substring(index, (index)+(endIndex - index));
+        // NOTE: Upper-case labels not converted to lower-case here
+        return rv;
       }
       StringBuilder builder = new StringBuilder();
       builder.append("xn--");

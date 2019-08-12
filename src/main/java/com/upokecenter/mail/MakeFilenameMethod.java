@@ -559,6 +559,9 @@ private MakeFilenameMethod() {
           } else if (c == '`') {
             // '`' starts a command in BASH and possibly other shells
             builder.append('_');
+          } else if (c == '&') {
+            // '&' delimits commands
+            builder.append('_');
           } else if (c == '\'') {
             // "'" starts a filename String in BASH and possibly other shells
             builder.append('_');
@@ -583,8 +586,7 @@ private MakeFilenameMethod() {
             // Treat percent ((character instanceof unsuitable) ? (unsuitable)character : null), even though it
             // can occur
             // in a Windows filename, since it's used in MS-DOS and
-            // Windows
-            // in environment variable placeholders
+            // Windows in environment variable placeholders
             builder.append('_');
           } else {
             if (builder.length() < MaxFileNameCodeUnitLength || c < 0x10000) {
@@ -608,15 +610,15 @@ private MakeFilenameMethod() {
         String strLower = DataUtilities.ToLowerCaseAscii(str);
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
-        boolean reservedFilename = strLower.startsWith(
-          "nul") || strLower.startsWith("clock$") ||
+        boolean reservedFilename = strLower.equals(
+          "nul") || strLower.equals("clock$") ||
 strLower.indexOf(
-          "nul.") == 0 || strLower.startsWith(
+          "nul.") == 0 || strLower.equals(
             "prn") || strLower.indexOf(
           "prn.") == 0 || strLower.indexOf(
-            "![") >= 0 || strLower.startsWith(
+            "![") >= 0 || strLower.equals(
           "aux") || strLower.indexOf(
-            "aux.") == 0 || strLower.startsWith(
+            "aux.") == 0 || strLower.equals(
           "con") || strLower.indexOf(
             "con.") == 0;
         // LPTn, COMn
@@ -676,7 +678,7 @@ strLower.indexOf(
           // status of the String.
           str += "_";
         }
-      } while (!oldstr.startsWith(str));
+      } while (!oldstr.equals(str));
       return str;
     }
   }

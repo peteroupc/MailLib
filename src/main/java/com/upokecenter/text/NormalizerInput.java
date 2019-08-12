@@ -598,9 +598,6 @@ UnicodeDatabase.IsQuickCheckStarter(
      * @throws IllegalArgumentException Either {@code index} or {@code length} is less
      * than 0 or greater than {@code chars} 's length, or {@code chars} ' s
      * length minus {@code index} is less than {@code length}.
-     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
-     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
-     * length minus {@code index} is less than {@code length}.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {

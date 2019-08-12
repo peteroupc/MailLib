@@ -70,6 +70,9 @@ namespace MailLibTest {
       if (msg == null) {
         Assert.Fail();
       }
+      if (msg == null) {
+        throw new ArgumentNullException(nameof(msg));
+      }
       string ret = msg.Generate();
       if (ret == null) {
         Assert.Fail();

@@ -17,16 +17,17 @@ at: http://peteroupc.github.io/
      * <p>A domain name is divided into one or more strings separated by
      *  dots ("."), called <b>labels</b>. For IDNA2008's purposes, a valid
      * label can be an <b>NR-LDH label</b>, an <b>A-label</b>, or a
-     * <b>U-label</b>.</p> <p>An LDH label contains only basic letters,
-     *  basic digits, and/or "-", and neither begins nor ends with "-". For
-     *  example, "exa-mple" and "1example" are LDH labels, but not
-     *  "-example".</p> <p>An NR-LDH label is an LDH label whose third and
-     *  fourth characters are not both "-". For example, "ex--ample" is not
-     * an NR-LDH label.</p> <p>A U-label contains one or more characters
-     * outside the Basic Latin range (U + 0000 to U + 007F) and meets IDNA2008
-     * requirements for labels with such characters. An example is
-     *  "eá".</p> <p>An A-label is an LDH label beginning with "xn--" in any
-     * combination of case, and is convertible to a U-label. An example is
+     * <b>U-label</b>.</p> <p>An LDH label contains only basic uppercase
+     *  letters, basic lowercase letters, basic digits, and/or "-", and
+     *  neither begins nor ends with "-". For example, "exa-mple",
+     *  "EXAMPLE", and "1example" are LDH labels, but not "-example".</p>
+     * <p>An NR-LDH label is an LDH label whose third and fourth characters
+     *  are not both "-". For example, "ex--ample" is not an NR-LDH
+     * label.</p> <p>A U-label contains one or more characters outside the
+     * Basic Latin range (U + 0000 to U + 007F) and meets IDNA2008 requirements
+     *  for labels with such characters. An example is "eá".</p> <p>An
+     *  A-label is an LDH label beginning with "xn--" in any combination of
+     * case, and is convertible to a U-label. An example is
      *  "xn--e-ufa".</p> <p>An XN-label is an LDH label beginning with
      *  "xn--" in any combination of case.</p> <p>NOTICE: While this class's
      * source code is in the public domain, the class uses two internal
@@ -506,7 +507,7 @@ private Idna() {
         // NOTE: "astr" and "str" will contain only ASCII characters
         // at this point, so a simple null check and
         // binary comparison are enough
-        return (astr != null) && astr.startsWith(str);
+        return (astr != null) && astr.equals(str);
       }
       if (allLDH) {
         if (bidiRule && str.charAt(0) >= '0' && str.charAt(0) <= '9') {
@@ -659,7 +660,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.startsWith(newvalue)) {
+        if (oldvalue.equals(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -674,7 +675,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.startsWith(newvalue)) {
+        if (oldvalue.equals(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -689,7 +690,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.startsWith(newvalue)) {
+        if (oldvalue.equals(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -718,7 +719,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.startsWith(newvalue)) {
+        if (oldvalue.equals(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;
@@ -745,7 +746,7 @@ private Idna() {
         if (newvalue == null) {
           return null;
         }
-        if (oldvalue.startsWith(newvalue)) {
+        if (oldvalue.equals(newvalue)) {
           return oldvalue;
         }
         oldvalue = newvalue;

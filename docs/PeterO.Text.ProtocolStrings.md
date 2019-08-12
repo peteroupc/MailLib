@@ -2,7 +2,7 @@
 
     public static class ProtocolStrings
 
- Contains methods for preparing user-facing protocol strings (such as user identifiers) for equality comparison and validity checking. Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See RFC 8264. Currently there are four profiles for internationalized strings: two for strings serving as user identifiers, one for arbitrary single-line strings (such as passwords), and one for display names.
+  Contains methods for preparing user-facing protocol strings (such as user identifiers) for equality comparison and validity checking. Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U + 0000 to U + 007F) of the Unicode Standard. See RFC 8264. Currently there are four profiles for internationalized strings: two for strings serving as user identifiers, one for arbitrary single-line strings (such as passwords), and one for display names.
 
   * Other user-facing internationalized strings not expressly handled by this class include file and directory names, domain names, profile data voluntarily entered by users, and the text of article, post, and message bodies. The preparation and comparison of such strings is currently outside the scope of this class.
 
@@ -27,7 +27,7 @@
     public static bool IsInFreeformClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U+0021 to U+007E), but excludes control characters and separators.
+ Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U + 0021 to U + 007E), but excludes control characters and separators.
 
     <b>Parameters:</b>
 
@@ -44,7 +44,7 @@
     public static bool IsInIdentifierClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the Freeform class, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
+ Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the Freeform class, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U + 0000 to U + 007F).
 
     <b>Parameters:</b>
 
@@ -61,9 +61,9 @@
     public static string NicknameEnforce(
         string str);
 
- Checks the validity of a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This checking is done using the Nickname profile in RFC 8266.
+ Checks the validity of a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This checking is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: A string serving as a nickname for something.
 
@@ -72,21 +72,15 @@
 A nickname prepared for enforcement under the Nickname profile in RFC 8266. Returns null if that string is invalid under that profile (including if  <i>str</i>
  is null or empty). Return values of this method should not be used for comparison purposes (see RFC 8266, sec. 2.3); for such purposes, use the NicknameForComparison method instead.
 
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null.
-
 <a id="NicknameForComparison_string"></a>
 ### NicknameForComparison
 
     public static string NicknameForComparison(
         string str);
 
- Prepares for comparison a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This operation is done using the Nickname profile in RFC 8266.
+ Prepares for comparison a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This operation is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: A string serving as a nickname for something.
 
@@ -94,12 +88,6 @@ The parameter  <i>str</i>
 
 A nickname prepared for comparison under the Nickname profile in RFC 8266. Returns null if that string is invalid under that profile (including if  <i>str</i>
  is null or empty). For comparison purposes, return values of this method should be compared code point by code point (see RFC 8266, sec. 2.4).
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null.
 
 <a id="OpaqueStringEnforce_string"></a>
 ### OpaqueStringEnforce
@@ -109,7 +97,7 @@ The parameter  <i>str</i>
 
  Checks the validity of a string serving as an arbitrary single-line sequence of characters, such as a passphrase. This checking is done using the OpaqueString profile in RFC 8265. (REMARK: Specifying a string as this method does is not ideal if the string represents a password or other sensitive data, since strings are immutable in.NET and Java, so that its contents cannot be cleared when done. An application concerned about security may want to reimplement this method by passing a clearable array of characters rather than a text string.).
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents an arbitrary single-line sequence of characters entered by a user.
 
@@ -117,12 +105,6 @@ The parameter  <i>str</i>
 
 A string prepared under the OpaqueString profile in RFC 8265. Returns null if that string is invalid under that profile (including if  <i>str</i>
  is null or empty). For comparison purposes, return values of this method should be compared code point by code point (see RFC 8265, sec. 4.2.3).
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null.
 
 <a id="UsernameEnforce_string"></a>
 ### UsernameEnforce
@@ -189,7 +171,7 @@ A userpart prepared under the UsernameCaseMapped profile in RFC 8265 (among othe
 
  Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is either mapped to lowercase or preserved. This checking is done using the UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 
@@ -201,9 +183,3 @@ A userpart prepared under the UsernameCaseMapped or UsernameCasePreserved profil
  is invalid under that profile (including if  <i>str</i>
  is null or empty). For comparison purposes, return values of this method (with the same value for  <i>preserveCase</i>
  ) should be compared code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null.

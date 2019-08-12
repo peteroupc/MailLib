@@ -124,7 +124,7 @@ private ProtocolStrings() {
         return (str == null) ? null :
 Idna.UsernameCasePreservedEnforce(str);
       } else {
-        return (str == null) ? null : (Ina.UsernameCaseMappedEnforce(str);
+        return (str == null) ? null : Idna.UsernameCaseMappedEnforce(str);
       }
     }
 
@@ -218,7 +218,7 @@ Idna.UsernameCasePreservedEnforce(str);
      * (see RFC 8265, sec. 4.2.3).
      */
     public static String OpaqueStringEnforce(String str) {
-      return (str == null) ? null : (Ina.OpaqueStringEnforce(str);
+      return (str == null) ? null : Idna.OpaqueStringEnforce(str);
     }
 
     /**
@@ -237,7 +237,7 @@ Idna.UsernameCasePreservedEnforce(str);
      * instead.
      */
     public static String NicknameEnforce(String str) {
-      return (str == null) ? null : (Ina.NicknameEnforce(str);
+      return (str == null) ? null : Idna.NicknameEnforce(str);
     }
 
     /**
@@ -255,6 +255,6 @@ Idna.UsernameCasePreservedEnforce(str);
      * by code point (see RFC 8266, sec. 2.4).
      */
     public static String NicknameForComparison(String str) {
-      return (str == null) ? null : (Ina.NicknameForComparison(str);
+      return (str == null) ? null : Idna.NicknameForComparison(str);
     }
   }

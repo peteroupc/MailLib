@@ -17,6 +17,9 @@ import com.upokecenter.text.*;
 
   public class EncodingTest {
     public static String RandomString(RandomGenerator rnd) {
+      if (rnd == null) {
+        throw new NullPointerException("rnd");
+      }
       int count = 10 + rnd.UniformInt(350);
       StringBuilder sb = new StringBuilder(count * 2);
       int ui;
@@ -63,6 +66,9 @@ import com.upokecenter.text.*;
     public static String EscapeString(String str) {
       String ValueHex = "0123456789abcdef";
       StringBuilder sb = new StringBuilder();
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c == 0x09) {
@@ -251,6 +257,9 @@ import com.upokecenter.text.*;
       StringBuilder builder = new StringBuilder();
       boolean first = true;
       builder.append("[");
+      if (array == null) {
+        throw new NullPointerException("array");
+      }
       for (byte v : array) {
         int vi = ((int)v) & 0xff;
         if (!first) {
@@ -271,6 +280,12 @@ import com.upokecenter.text.*;
       byte[] expectedBytes,
       byte[] actualBytes,
       String msg) {
+      if (actualBytes == null) {
+        throw new NullPointerException("actualBytes");
+      }
+      if (expectedBytes == null) {
+        throw new NullPointerException("expectedBytes");
+      }
       if (expectedBytes.length != actualBytes.length) {
         Assert.fail("\nexpected: " + toString(expectedBytes) + "\n" +
                     "\nwas: " + toString(actualBytes) + "\n" + msg);
@@ -1238,7 +1253,7 @@ import com.upokecenter.text.*;
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       String actualString = DataUtilities.GetUtf8String(bytes, false);
-      if (!expectedDSN.startsWith(actualString)) {
+      if (!expectedDSN.equals(actualString)) {
         expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
@@ -1773,7 +1788,7 @@ public final void setValueMessage(Message value) {
       String value) {
       String msgstr;
       msgstr = name + ": " + value + "\r\n";
-      if (!name.startsWith("from")) {
+      if (!name.equals("from")) {
         msgstr += "from: x@example.com\r\n";
       }
       msgstr += "\r\nBody";
@@ -2291,6 +2306,9 @@ public final void setValueMessage(Message value) {
 
     public static String ToQPString(byte[] bytes) {
       StringBuilder builder = new StringBuilder();
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
       for (int i = 0; i < bytes.length; ++i) {
         String ValueHex = "0123456789ABCDEF";
         byte c = bytes[i];

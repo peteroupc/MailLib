@@ -15,12 +15,11 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestMarkdown() {
-      AppResources resources = new AppResources("Resources");
-      String[] strings = DictUtility.ParseJSONStringArray(
-         resources.GetString("markdown"));
+      String[] strings = ResourceUtil.GetStrings("markdown");
       for (int i = 0; i < strings.length; i += 2) {
+        System.out.println(strings[i + 1]);
         Message msg = MarkdownMessage(strings[i + 1]);
-        Assert.assertEquals(strings[i], msg.GetFormattedBodyString());
+        Assert.assertEquals(strings[i + 1], strings[i], msg.GetFormattedBodyString());
       }
     }
   }

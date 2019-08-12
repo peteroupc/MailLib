@@ -369,7 +369,7 @@ namespace PeterO.Mail {
           if (tss.IndexOf((char)0x338) >= 0) {
               builder.Append('!');
               builder.Append(tss[0]);
-          } else {
+            } else {
             builder.Append(c);
           }
           ++i;
@@ -508,8 +508,8 @@ namespace PeterO.Mail {
         }
         int bracketedText = str.IndexOf('[');
         if (bracketedText >= 0) {
- bracketedText = str.IndexOf(']', bracketedText);
-}
+          bracketedText = str.IndexOf(']', bracketedText);
+        }
         var builder = new StringBuilder();
         // Replace unsuitable characters for filenames
         // and make sure the filename's
@@ -558,6 +558,9 @@ namespace PeterO.Mail {
           } else if (c == '`') {
             // '`' starts a command in BASH and possibly other shells
             builder.Append('_');
+          } else if (c == '&') {
+            // '&' delimits commands
+            builder.Append('_');
           } else if (c == '\'') {
             // "'" starts a filename string in BASH and possibly other shells
             builder.Append('_');
@@ -582,8 +585,7 @@ namespace PeterO.Mail {
             // Treat percent character as unsuitable, even though it
             // can occur
             // in a Windows filename, since it's used in MS-DOS and
-            // Windows
-            // in environment variable placeholders
+            // Windows in environment variable placeholders
             builder.Append('_');
           } else {
             if (builder.Length < MaxFileNameCodeUnitLength || c < 0x10000) {

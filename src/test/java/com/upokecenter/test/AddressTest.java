@@ -77,6 +77,20 @@ Assert.assertEquals(objectTemp, objectTemp2);
         throw new IllegalStateException("", ex);
       }
     }
+
+    @Test
+    public void TestUpperCase() {
+      Address addr;
+      addr = new Address("test@EXAMPLE.COM");
+      Assert.assertEquals("EXAMPLE.COM", addr.getDomain());
+      {
+        String stringTemp = addr.toString();
+Assert.assertEquals(
+  "test@EXAMPLE.COM",
+  stringTemp);
+}
+    }
+
     @Test
     public void TestDomain() {
       Address addr = new Address("local.local@example.com");

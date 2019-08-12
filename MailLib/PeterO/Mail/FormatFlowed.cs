@@ -365,11 +365,10 @@ namespace PeterO.Mail {
         return true;
       }
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
-
           str[2] == ' ' && str[3] == ' ') ? true : false;
     }
-    private static
-string ReplaceTwoOrMoreSpacesWithBR(string str) {
+    private static string ReplaceTwoOrMoreSpacesWithBR(
+        string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
       }
@@ -1230,11 +1229,13 @@ string ReplaceTwoOrMoreSpacesWithBR(string str) {
             }
           }
           i = qi - 1;
+          // DebugUtility.Log("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
           string qss = MarkdownText(
   qs.ToString(),
   depth + 1,
   wrapLinesInParas,
   links);
+          // DebugUtility.Log("formatted_listitem = "+qss);
           formatted.Append(qss);
           formatted.Append("</li>");
           formatted.Append(ordered ? "</ol>" : "</ul>");
@@ -1252,9 +1253,9 @@ string ReplaceTwoOrMoreSpacesWithBR(string str) {
                .Append(">").Append(FormatParagraph(stripped, links))
                .Append("</h").Append((char)('0' + heading))
                .Append(">");
-        } else if (IsCodeBlockLine(line)) {
-          isSingleParagraph = false;
-          if (haveParagraph) {
+             } else if (IsCodeBlockLine(line)) {
+               isSingleParagraph = false;
+               if (haveParagraph) {
             haveParagraph = false;
             formatted.Append("<p>");
             formatted.Append(paragraph.ToString());

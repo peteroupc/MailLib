@@ -34,12 +34,12 @@
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
   <PropertyGroup Condition='&apos;$(Configuration)|$(Platform)&apos; == &apos;Debug|AnyCPU&apos;'>
     <Prefer32Bit>false</Prefer32Bit>
-<CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet><CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
+<CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
   <PropertyGroup Condition='&apos;$(Configuration)|$(Platform)&apos; == &apos;Release|AnyCPU&apos;'>
     <Prefer32Bit>false</Prefer32Bit>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
-<CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet><CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
+<CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
   <PropertyGroup>
     <StartupObject/>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>

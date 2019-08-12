@@ -367,10 +367,10 @@ private FormatFlowed() {
         return true;
       }
       return (str.length() >= 4 && str.charAt(0) == ' ' && str.charAt(1) == ' ' &&
-
           str.charAt(2) == ' ' && str.charAt(3) == ' ') ? true : false;
     }
-    private static String ReplaceTwoOrMoreSpacesWithBR(String str) {
+    private static String ReplaceTwoOrMoreSpacesWithBR(
+        String str) {
       if (((str) == null || (str).length() == 0)) {
         return "";
       }
@@ -1231,11 +1231,13 @@ private FormatFlowed() {
             }
           }
           i = qi - 1;
+          // DebugUtility.Log("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
           String qss = MarkdownText(
   qs.toString(),
   depth + 1,
   wrapLinesInParas,
   links);
+          // DebugUtility.Log("formatted_listitem = "+qss);
           formatted.append(qss);
           formatted.append("</li>");
           formatted.append(ordered ? "</ol>" : "</ul>");
@@ -1255,7 +1257,7 @@ private FormatFlowed() {
                .append(">");
              } else if (IsCodeBlockLine(line)) {
                isSingleParagraph = false;
-          if (haveParagraph) {
+               if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");
             formatted.append(paragraph.toString());

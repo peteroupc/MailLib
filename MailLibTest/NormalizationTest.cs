@@ -49,6 +49,9 @@ namespace MailLibTest {
       var index = 0;
       var state = 0;
       var codePoint = 0;
+      if (cp == null) {
+        throw new ArgumentNullException(nameof(cp));
+      }
       var retArray = new int[cp.Length];
       var count = 0;
       while (index <= cp.Length) {
@@ -99,6 +102,9 @@ namespace MailLibTest {
       var builder = new StringBuilder();
       var first = true;
       builder.Append("[");
+      if (array == null) {
+        throw new ArgumentNullException(nameof(array));
+      }
       foreach (int v in array) {
         if (!first) {
           builder.Append(", ");
@@ -112,6 +118,9 @@ namespace MailLibTest {
 
     public static string ToCodePointString(int[] array) {
       var builder = new StringBuilder();
+      if (array == null) {
+        throw new ArgumentNullException(nameof(array));
+      }
       foreach (int v in array) {
         if (v <= 0xffff) {
           builder.Append((char)v);
@@ -127,6 +136,9 @@ namespace MailLibTest {
       string expectedStr,
       string actualStr,
       string msg) {
+      if (expectedStr == null) {
+        throw new ArgumentNullException(nameof(expectedStr));
+      }
       if (!expectedStr.Equals(actualStr, StringComparison.Ordinal)) {
                 Assert.Fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
@@ -142,6 +154,12 @@ namespace MailLibTest {
     }
 
     public static void AssertEqual(int[] expected, int[] actual, string msg) {
+      if (expected == null) {
+        throw new ArgumentNullException(nameof(expected));
+      }
+      if (actual == null) {
+        throw new ArgumentNullException(nameof(actual));
+      }
       if (expected.Length != actual.Length) {
         Assert.Fail(
           "\nexpected: " + ToString(expected) + "\n" + "\nwas: " +

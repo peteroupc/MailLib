@@ -177,10 +177,6 @@ Checks the validity of a string without spaces that can serve to identify a
  (with the same value for <code>preserveCase</code>) should be compared
  code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
 
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
-
 ### UsernameEnforce
     public static java.lang.String UsernameEnforce​(java.lang.String str, boolean preserveCase)
 Checks the validity of a string that can serve to identify a user or account
@@ -237,17 +233,14 @@ Checks the validity of a string serving as an arbitrary single-line sequence
  values of this method should be compared code point by code point
  (see RFC 8265, sec. 4.2.3).
 
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
-
 ### NicknameEnforce
     public static java.lang.String NicknameEnforce​(java.lang.String str)
 Checks the validity of a string serving as a "memorable, human-friendly
   name" for something (see RFC 8266), as opposed to that thing's
  identity for authentication or authorization purposes (see sec. 6.1
  of that RFC). This checking is done using the Nickname profile in
- RFC 8266.
+ RFC 8266. Such names are not intended to serve as URIs or file paths
+ (see sec. 6.1 of that RFC).
 
 **Parameters:**
 
@@ -262,17 +255,14 @@ Checks the validity of a string serving as a "memorable, human-friendly
  sec. 2.3); for such purposes, use the NicknameForComparison method
  instead.
 
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
-
 ### NicknameForComparison
     public static java.lang.String NicknameForComparison​(java.lang.String str)
 Prepares for comparison a string serving as a "memorable, human-friendly
   name" for something (see RFC 8266), as opposed to that thing's
  identity for authentication or authorization purposes (see sec. 6.1
  of that RFC). This operation is done using the Nickname profile in
- RFC 8266.
+ RFC 8266. Such names are not intended to serve as URIs or file paths
+ (see sec. 6.1 of that RFC).
 
 **Parameters:**
 
@@ -285,7 +275,3 @@ Prepares for comparison a string serving as a "memorable, human-friendly
  (including if <code>str</code> is null or empty). For comparison
  purposes, return values of this method should be compared code point
  by code point (see RFC 8266, sec. 2.4).
-
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.

@@ -56,7 +56,7 @@ namespace MailLibTest {
       }
       try {
         {
-object objectTemp = null;
+          object objectTemp = null;
 object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
           "@example.com");
 Assert.AreEqual(objectTemp, objectTemp2);
@@ -78,6 +78,20 @@ Assert.AreEqual(objectTemp, objectTemp2);
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
+
+    [Test]
+    public void TestUpperCase() {
+      Address addr;
+      addr = new Address("test@EXAMPLE.COM");
+      Assert.AreEqual("EXAMPLE.COM", addr.Domain);
+      {
+        string stringTemp = addr.ToString();
+Assert.AreEqual(
+  "test@EXAMPLE.COM",
+  stringTemp);
+}
+    }
+
     [Test]
     public void TestDomain() {
       var addr = new Address("local.local@example.com");
@@ -134,7 +148,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
     public void TestToString() {
       var addr = new Address("local.local@example.com");
       {
-string stringTemp = addr.ToString();
+        string stringTemp = addr.ToString();
 Assert.AreEqual(
   "local.local@example.com",
   stringTemp);

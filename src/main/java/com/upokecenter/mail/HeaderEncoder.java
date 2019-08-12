@@ -170,15 +170,16 @@ import com.upokecenter.util.*;
             // May begin quoted-String or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
-         int si = symbol.charAt(i) == '"' ? HeaderParserUtility.ParseQuotedStringCore(
-           symbol,
-           i,
-           endIndex) : HeaderParser.ParseDomainLiteralCore(
-     symbol,
-     i,
-     endIndex,
-     null);
-     if (si != i) {
+            int si = symbol.charAt(i) == '"' ?
+HeaderParserUtility.ParseQuotedStringCore(
+              symbol,
+              i,
+              endIndex) : HeaderParser.ParseDomainLiteralCore(
+                symbol,
+                i,
+                endIndex,
+                null);
+            if (si != i) {
               writeSpace = this.AppendSpaceAndSymbol(
                 symbol,
                 symbolBegin,
@@ -213,13 +214,14 @@ import com.upokecenter.util.*;
             } else {
               ++i;
             }
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t' &&
-            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
-      this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
-      writeSpace = true;
-      i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
-      symbolBegin = i;
-    } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
+          } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) !=
+'\t' &&
+                  symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+            this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
+            writeSpace = true;
+            i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
+            symbolBegin = i;
+          } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
             // DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(// endIndex - i)));
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
@@ -940,12 +942,12 @@ import com.upokecenter.util.*;
         afterHyphen = s.charAt(i) == '-';
       }
       String ret = builder.toString();
-      if (ret.startsWith("Content-Id")) {
+      if (ret.equals("Content-Id")) {
         return "Content-ID";
       }
-      return ret.startsWith("Mime-Version") ?
+      return ret.equals("Mime-Version") ?
 "MIME-Version" :
-        (ret.startsWith("Message-Id") ? "Message-ID" :
+        (ret.equals("Message-Id") ? "Message-ID" :
 ret);
     }
 

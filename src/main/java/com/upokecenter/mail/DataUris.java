@@ -30,7 +30,7 @@ private DataUris() {
               return null;
             }
             String path = parts[2];
-            if (parts[0].startsWith("data")) {
+            if (parts[0].equals("data")) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -131,7 +131,7 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
               return null;
             }
             String path = parts[2];
-            if (parts[0].startsWith("data")) {
+            if (parts[0].equals("data")) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -139,7 +139,7 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
         boolean usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii(
             path.substring(
               mediaTypePart - 7, (
-              mediaTypePart - 7)+(7))).startsWith(";base64");
+              mediaTypePart - 7)+(7))).equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
@@ -292,8 +292,8 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
       StringBuilder builder = new StringBuilder();
       builder.append("data:");
       String mediaTypeString = mediaType.ToUriSafeString();
-      if (mediaType.getTypeAndSubType().startsWith("text/plain")) {
-        if (mediaTypeString.substring(0,10).startsWith("text/plain")) {
+      if (mediaType.getTypeAndSubType().equals("text/plain")) {
+        if (mediaTypeString.substring(0,10).equals("text/plain")) {
           // Strip 'text/plain' from the media type String,
           // since that's the default for data URIs
           mediaTypeString = mediaTypeString.substring(10);

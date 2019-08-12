@@ -18,6 +18,9 @@ namespace MailLibTest {
     }
 
     public static string RandomAscii(RandomGenerator rnd) {
+      if (rnd == null) {
+        throw new ArgumentNullException(nameof(rnd));
+      }
       int length = rnd.UniformInt(50) + 1;
       var sb = new StringBuilder();
       for (var i = 0; i < length; ++i) {
@@ -28,6 +31,9 @@ namespace MailLibTest {
     }
 
     public static string RandomLatinOne(RandomGenerator rnd) {
+      if (rnd == null) {
+        throw new ArgumentNullException(nameof(rnd));
+      }
       int length = rnd.UniformInt(50) + 1;
       var sb = new StringBuilder();
       for (var i = 0; i < length; ++i) {

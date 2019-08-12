@@ -38,6 +38,9 @@ namespace MailLibTest {
     public static string ToJSON(
         IList<IDictionary<string, string>> dictlist) {
       var sb = new StringBuilder().Append("[");
+      if (dictlist == null) {
+        throw new ArgumentNullException(nameof(dictlist));
+      }
       for (var i = 0; i < dictlist.Count; ++i) {
         if (i > 0) {
           sb.Append(",");
@@ -48,7 +51,7 @@ namespace MailLibTest {
         foreach (string key in dict.Keys) {
           listArray[k] = key;
           listArray[k + 1] = dict[key];
-          k+=2;
+          k += 2;
         }
         sb.Append(ToJSON(listArray));
       }
@@ -57,6 +60,9 @@ namespace MailLibTest {
 
     public static string ToJSON(string[] arr) {
       var sb = new StringBuilder().Append("[");
+      if (arr == null) {
+        throw new ArgumentNullException(nameof(arr));
+      }
       for (var i = 0; i < arr.Length; ++i) {
         if (i > 0) {
           sb.Append(",");
@@ -95,7 +101,7 @@ namespace MailLibTest {
 
     public static IList<IDictionary<string, string>>
          ParseJSONDictList(string str) {
-      if ((str) == null) {
+      if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       var i = 0;
@@ -120,7 +126,7 @@ namespace MailLibTest {
         }
         if (i >= str.Length || (
           str[i] != ']' && str[i] != '[' && str[i] != 0x2c)) {
-          return null;
+          throw new InvalidOperationException("Invalid JSON");
         }
         switch (str[i]) {
           case ']':
@@ -153,18 +159,25 @@ namespace MailLibTest {
     }
 
     public static string[] ParseJSONStringArray(string str) {
-       if ((str) == null) {
+       if (str == null) {
          throw new ArgumentNullException(nameof(str));
        }
        var endPos = new int[] { 0 };
        string[] ret = ParseJSONStringArray(str, endPos);
-       return endPos[0] == str.Length ? ret : null;
+if (endPos[0]!=str.Length) {
+         throw new InvalidOperationException("Invalid JSON");
+       }
+       return ret;
     }
     public static string[] ParseJSONStringArray(string str, int[] endPos) {
-      if ((str) == null) {
+      if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
+      if (endPos == null) {
+        throw new ArgumentNullException(nameof(endPos));
+      }
       var i = endPos[0];
+      var j = 0;
       var list = new List<string>();
       var sb = new StringBuilder();
       while (i < str.Length && (
@@ -173,7 +186,7 @@ namespace MailLibTest {
         ++i;
       }
       if (i >= str.Length || str[i] != '[') {
-        return null;
+        throw new InvalidOperationException("Invalid JSON: "+str.Substring(i));
       }
       ++i;
       var endValue = false;
@@ -185,7 +198,8 @@ namespace MailLibTest {
         }
         if (i >= str.Length || (
           str[i] != ']' && str[i] != '"' && str[i] != 0x2c)) {
-          return null;
+          throw new InvalidOperationException("Invalid JSON:" +
+"\u0020"+str.Substring(i));
         }
         switch (str[i]) {
           case ']':
@@ -199,15 +213,18 @@ namespace MailLibTest {
             return list.ToArray();
           case (char)0x2c:
             if (!endValue) {
-              return null;
+              throw new InvalidOperationException("Invalid JSON:" +
+"\u0020"+str.Substring(i));
             }
             ++i;
             endValue = false;
             break;
           case '"':
+            j = i;
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {
-              return null;
+              throw new InvalidOperationException("Invalid JSON: bad string:" +
+"\u0020" +str.Substring(j));
             }
             endValue = true;
             list.Add(sb.ToString());
@@ -218,11 +235,14 @@ namespace MailLibTest {
 
     private static string ParseJSONString(string str) {
       if (str == null || str.Length < 2 || str[0] != '"') {
-        return null;
+        throw new InvalidOperationException("Invalid JSON");
       }
       var sb = new StringBuilder();
-      return ParseJSONString(str, 1, sb) ==
-              str.Length ? sb.ToString() : null;
+      int result = ParseJSONString(str, 1, sb);
+if (result != str.Length) {
+        throw new InvalidOperationException("Invalid JSON");
+      }
+      return sb.ToString();
     }
 
     private static int ParseJSONString(
@@ -230,10 +250,10 @@ namespace MailLibTest {
       int index,
       StringBuilder sb) {
 #if DEBUG
-      if ((str) == null) {
+      if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
-      if ((sb) == null) {
+      if (sb == null) {
         throw new ArgumentNullException(nameof(sb));
       }
 #endif

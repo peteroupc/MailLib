@@ -5,7 +5,7 @@
 
 <b>Deprecated.</b> Renamed to NormalizerInput.
 
- A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
+  A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
   * <b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent characters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
 
@@ -359,7 +359,7 @@ The parameter  <i>str</i>
 
  Reads a sequence of Unicode code points from a data source.
 
-         <b>Parameters:</b>
+        <b>Parameters:</b>
 
  * <i>chars</i>: Output buffer.
 
@@ -386,15 +386,6 @@ Either  <i>index</i>
  is less than 0 or greater than  <i>chars</i>
  's length, or  <i>chars</i>
  ' s length minus  <i>index</i>
- is less than  <i>length</i>
-.
-
- * System.ArgumentException:
-Either  <i>index</i>
- or  <i>length</i>
- is less than 0 or greater than  <i>chars</i>
- 's length, or  <i>chars</i>
- 's length minus  <i>index</i>
  is less than  <i>length</i>
 .
 

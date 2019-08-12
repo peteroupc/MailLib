@@ -76,7 +76,7 @@ public final void setDispositionType(String value) {
  */
 @Deprecated
     public final boolean isText() {
-        return this.getDispositionType().startsWith("text");
+        return this.getDispositionType().equals("text");
       }
 
     /**
@@ -87,7 +87,7 @@ public final void setDispositionType(String value) {
  */
 @Deprecated
     public final boolean isMultipart() {
-        return this.getDispositionType().startsWith("multipart");
+        return this.getDispositionType().equals("multipart");
       }
 
     /**

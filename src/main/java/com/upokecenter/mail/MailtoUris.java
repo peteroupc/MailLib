@@ -32,8 +32,8 @@ private MailtoUris() {
       boolean first = true;
       for (NamedAddress addr : addresses) {
         if (!first) {
- encoder.AppendSymbol(",");
-}
+          encoder.AppendSymbol(",");
+        }
         addr.AppendThisAddress(encoder);
         first = false;
       }
@@ -140,7 +140,7 @@ private MailtoUris() {
         return null;
       }
 
-      if (parts[0].startsWith("mailto")) {
+      if (parts[0].equals("mailto")) {
         Message msg = new Message();
         String emails = "";
         if (!((parts[2]) == null || (parts[2]).length() == 0)) {
@@ -195,19 +195,19 @@ private MailtoUris() {
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.
             // Of these, the first four can appear only once in a message
-            if (name.startsWith("body")) {
+            if (name.equals("body")) {
               msg.SetTextBody(value);
-            } else if (name.startsWith("keywords") ||
-name.startsWith("comments")) {
+            } else if (name.equals("keywords") ||
+name.equals("comments")) {
               String decoded = Message.DecodeHeaderValue(name, value);
               msg.AddHeader(name, decoded);
-            } else if (name.startsWith("subject") ||
-name.startsWith("cc") ||
-name.startsWith("bcc") ||
-name.startsWith("in-reply-to")) {
+            } else if (name.equals("subject") ||
+name.equals("cc") ||
+name.equals("bcc") ||
+name.equals("in-reply-to")) {
               String decoded = Message.DecodeHeaderValue(name, value);
               msg.SetHeader(name, decoded);
-            } else if (name.startsWith("to")) {
+            } else if (name.equals("to")) {
               String decoded = Message.DecodeHeaderValue(name, value);
               if (((emails) == null || (emails).length() == 0)) {
                 emails = decoded;

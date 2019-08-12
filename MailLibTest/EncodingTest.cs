@@ -18,6 +18,9 @@ namespace MailLibTest {
   [TestFixture]
   public class EncodingTest {
     public static string RandomString(RandomGenerator rnd) {
+      if (rnd == null) {
+        throw new ArgumentNullException(nameof(rnd));
+      }
       int count = 10 + rnd.UniformInt(350);
       var sb = new StringBuilder(count * 2);
       int ui;
@@ -64,6 +67,9 @@ namespace MailLibTest {
     public static string EscapeString(string str) {
       const string ValueHex = "0123456789abcdef";
       var sb = new StringBuilder();
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (c == 0x09) {
@@ -252,6 +258,9 @@ namespace MailLibTest {
       var builder = new StringBuilder();
       var first = true;
       builder.Append("[");
+      if (array == null) {
+        throw new ArgumentNullException(nameof(array));
+      }
       foreach (byte v in array) {
         int vi = ((int)v) & 0xff;
         if (!first) {
@@ -272,6 +281,12 @@ namespace MailLibTest {
       byte[] expectedBytes,
       byte[] actualBytes,
       String msg) {
+      if (actualBytes == null) {
+        throw new ArgumentNullException(nameof(actualBytes));
+      }
+      if (expectedBytes == null) {
+        throw new ArgumentNullException(nameof(expectedBytes));
+      }
       if (expectedBytes.Length != actualBytes.Length) {
         Assert.Fail("\nexpected: " + ToString(expectedBytes) + "\n" +
                     "\nwas: " + ToString(actualBytes) + "\n" + msg);
@@ -2304,6 +2319,9 @@ namespace MailLibTest {
 
     public static string ToQPString(byte[] bytes) {
       var builder = new StringBuilder();
+      if (bytes == null) {
+        throw new ArgumentNullException(nameof(bytes));
+      }
       for (var i = 0; i < bytes.Length; ++i) {
         const string ValueHex = "0123456789ABCDEF";
         byte c = bytes[i];

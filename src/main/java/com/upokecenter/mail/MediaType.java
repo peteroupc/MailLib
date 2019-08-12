@@ -65,8 +65,8 @@ import com.upokecenter.text.*;
       if (other == null) {
         return false;
       }
-      return this.topLevelType.startsWith(other.topLevelType) &&
-        this.subType.startsWith(other.subType) &&
+      return this.topLevelType.equals(other.topLevelType) &&
+        this.subType.equals(other.subType) &&
           CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -111,7 +111,7 @@ import com.upokecenter.text.*;
      * @return {@code true} If this is a text media type; otherwise, {@code false}.
      */
     public final boolean isText() {
-        return this.getTopLevelType().startsWith("text");
+        return this.getTopLevelType().equals("text");
       }
 
     /**
@@ -120,7 +120,7 @@ import com.upokecenter.text.*;
      * false}.
      */
     public final boolean isMultipart() {
-        return this.getTopLevelType().startsWith("multipart");
+        return this.getTopLevelType().equals("multipart");
       }
 
     MediaType(
@@ -720,49 +720,49 @@ import com.upokecenter.text.*;
       // parameter.
       if (this.isText()) {
         String sub = this.getSubType();
-        if (sub.startsWith("html")) {
+        if (sub.equals("html")) {
           return true;
         }
-        if (sub.startsWith("javascript")) {
+        if (sub.equals("javascript")) {
           return true;
         }
-        if (sub.startsWith("ecmascript")) {
+        if (sub.equals("ecmascript")) {
           return true;
         }
-        if (sub.startsWith("rtf")) {
+        if (sub.equals("rtf")) {
           return true;
         }
-        if (sub.startsWith("xml")) {
+        if (sub.equals("xml")) {
           return true;
         }
-        if (sub.startsWith("xml-external-parsed-entity")) {
+        if (sub.equals("xml-external-parsed-entity")) {
           return true;
         }
-        if (sub.startsWith("vnd.in3d.3dml")) {
+        if (sub.equals("vnd.in3d.3dml")) {
           return true;
         }
-        if (sub.startsWith("vnd.iptc.newsml")) {
+        if (sub.equals("vnd.iptc.newsml")) {
           return true;
         }
-        if (sub.startsWith("vnd.iptc.nitf")) {
+        if (sub.equals("vnd.iptc.nitf")) {
           return true;
         }
-        if (sub.startsWith("vnd.ms-mediapackage")) {
+        if (sub.equals("vnd.ms-mediapackage")) {
           return true;
         }
-        if (sub.startsWith("vnd.net2phone.commcenter.command")) {
+        if (sub.equals("vnd.net2phone.commcenter.command")) {
           return true;
         }
-        if (sub.startsWith("vnd.radisys.msml-basic-layout")) {
+        if (sub.equals("vnd.radisys.msml-basic-layout")) {
           return true;
         }
-        if (sub.startsWith("vnd.wap.si")) {
+        if (sub.equals("vnd.wap.si")) {
           return true;
         }
-        if (sub.startsWith("vnd.wap.sl")) {
+        if (sub.equals("vnd.wap.sl")) {
           return true;
         }
-        if (sub.startsWith("vnd.wap.wml")) {
+        if (sub.equals("vnd.wap.wml")) {
           return true;
         }
       }
@@ -774,7 +774,7 @@ import com.upokecenter.text.*;
      * to represent text in the data that uses this media type.
      * @return If the "charset" parameter is present and non-empty, returns the
      * result of the Encodings.ResolveAliasForEmail method for that
-     * parameter, except that result's basic upper-case letters A to Z
+     * parameter, except that the result's basic upper-case letters A to Z
      *  (U+0041 to U+005A) are converted to lower case. If the "charset"
      * parameter is absent or empty, returns the default value, if any, for
      *  that parameter given the media type (e.g., "us-ascii" if the media
@@ -888,52 +888,52 @@ import com.upokecenter.text.*;
         if (this.isText()) {
           String sub = this.getSubType();
           // Media types that assume a default of US-ASCII
-          if (sub.startsWith("plain") ||
-  sub.startsWith("sgml") ||
-  sub.startsWith("troff") ||
-  sub.startsWith("dns") ||
-  sub.startsWith("mizar") ||
-  sub.startsWith("prs.prop.logic") ||
-  sub.startsWith("vnd.ascii-art") ||
-  sub.startsWith("vnd.dmclientscript") ||
-  sub.startsWith("prs.lines.tag") ||
-  sub.startsWith("vnd.latex-z") ||
-  sub.startsWith("rfc822-headers") ||
-  sub.startsWith("vnd.dvb.subtitle") ||
-  sub.startsWith("vnd.fly") ||
-  sub.startsWith("directory") ||
-  sub.startsWith("css") ||
-  sub.startsWith("richtext") ||
-  sub.startsWith("enriched") ||
-  sub.startsWith("tab-separated-values") ||
-  sub.startsWith("vnd.in3d.spot") ||
-  sub.startsWith("vnd.abc") ||
-  sub.startsWith("vnd.wap.wmlscript") ||
-  sub.startsWith("vnd.curl") ||
-  sub.startsWith("vnd.fmi.flexstor") ||
-  sub.startsWith("uri-list") ||
-  sub.startsWith("vnd.si.uricatalogue")) {
+          if (sub.equals("plain") ||
+  sub.equals("sgml") ||
+  sub.equals("troff") ||
+  sub.equals("dns") ||
+  sub.equals("mizar") ||
+  sub.equals("prs.prop.logic") ||
+  sub.equals("vnd.ascii-art") ||
+  sub.equals("vnd.dmclientscript") ||
+  sub.equals("prs.lines.tag") ||
+  sub.equals("vnd.latex-z") ||
+  sub.equals("rfc822-headers") ||
+  sub.equals("vnd.dvb.subtitle") ||
+  sub.equals("vnd.fly") ||
+  sub.equals("directory") ||
+  sub.equals("css") ||
+  sub.equals("richtext") ||
+  sub.equals("enriched") ||
+  sub.equals("tab-separated-values") ||
+  sub.equals("vnd.in3d.spot") ||
+  sub.equals("vnd.abc") ||
+  sub.equals("vnd.wap.wmlscript") ||
+  sub.equals("vnd.curl") ||
+  sub.equals("vnd.fmi.flexstor") ||
+  sub.equals("uri-list") ||
+  sub.equals("vnd.si.uricatalogue")) {
             return "us-ascii";
           }
           // Media types that assume a default of UTF-8
-          if (sub.startsWith("vcard") ||
-  sub.startsWith("jcr-cnd") ||
-  sub.startsWith("n3") ||
-  sub.startsWith("turtle") ||
-  sub.startsWith("strings") ||
-  sub.startsWith("vnd.debian.copyright") ||
-  sub.startsWith("provenance-notation") ||
-  sub.startsWith("csv") ||
-  sub.startsWith("calendar") ||
-  sub.startsWith("vnd.a") ||
-  sub.startsWith("parameters") ||
-  sub.startsWith("prs.fallenstein.rst") ||
-  sub.startsWith("vnd.esmertec.theme.descriptor") ||
-  sub.startsWith("vnd.trolltech.linguist") ||
-  sub.startsWith("csv-schema") ||
-  sub.startsWith("vnd.graphviz") ||
-  sub.startsWith("cache-manifest") ||
-  sub.startsWith("vnd.sun.j2me.app-descriptor")) {
+          if (sub.equals("vcard") ||
+  sub.equals("jcr-cnd") ||
+  sub.equals("n3") ||
+  sub.equals("turtle") ||
+  sub.equals("strings") ||
+  sub.equals("vnd.debian.copyright") ||
+  sub.equals("provenance-notation") ||
+  sub.equals("csv") ||
+  sub.equals("calendar") ||
+  sub.equals("vnd.a") ||
+  sub.equals("parameters") ||
+  sub.equals("prs.fallenstein.rst") ||
+  sub.equals("vnd.esmertec.theme.descriptor") ||
+  sub.equals("vnd.trolltech.linguist") ||
+  sub.equals("csv-schema") ||
+  sub.equals("vnd.graphviz") ||
+  sub.equals("cache-manifest") ||
+  sub.equals("vnd.sun.j2me.app-descriptor")) {
             return "utf-8";
           }
         }

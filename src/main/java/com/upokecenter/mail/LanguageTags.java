@@ -407,16 +407,16 @@ private LanguageTags() {
     private static boolean MatchLangTagBasic(
       String rangeLowerCased,
       String tagLowerCased) {
-      if (rangeLowerCased.startsWith("*")) {
+      if (rangeLowerCased.equals("*")) {
         return true;
       }
-      if (rangeLowerCased.startsWith(tagLowerCased)) {
+      if (rangeLowerCased.equals(tagLowerCased)) {
         return true;
       }
       if (tagLowerCased.length() > rangeLowerCased.length() &&
           tagLowerCased.charAt(rangeLowerCased.length()) == '-') {
         String prefix = tagLowerCased.substring(0, rangeLowerCased.length());
-        if (rangeLowerCased.startsWith(prefix)) {
+        if (rangeLowerCased.equals(prefix)) {
           return true;
         }
       }
@@ -431,8 +431,8 @@ private LanguageTags() {
       if (rangeSub.length == 0 || tagSub.length == 0) {
         return false;
       }
-      if (!rangeSub[0].startsWith("*") &&
-!rangeSub[0].startsWith(tagSub[0])) {
+      if (!rangeSub[0].equals("*") &&
+!rangeSub[0].equals(tagSub[0])) {
         return false;
       }
       int rangeIndex = 1;
@@ -442,14 +442,14 @@ private LanguageTags() {
         if (range.length() == 0) {
           return false;
         }
-        if (range.startsWith("*")) {
+        if (range.equals("*")) {
           continue;
         }
         if (tagIndex >= tagSub.length) {
           return false;
         }
         String tag = tagSub[tagIndex];
-        if (range.startsWith(tag)) {
+        if (range.equals(tag)) {
           ++rangeIndex;
           ++tagIndex;
         }
@@ -512,7 +512,7 @@ private LanguageTags() {
         }
       }
       for (String range : ranges) {
-        if (matchStarAtEnd && range.startsWith("*")) {
+        if (matchStarAtEnd && range.equals("*")) {
           hasStar = true;
           continue;
         }
@@ -718,7 +718,7 @@ private LanguageTags() {
         }
       }
       for (String range : ranges) {
-        if (range.startsWith("*")) {
+        if (range.equals("*")) {
           continue;
         }
         String lcrange = DataUtilities.ToLowerCaseAscii(range);
@@ -792,11 +792,11 @@ private LanguageTags() {
           // match grandfathered language tags (the last
           // is necessary because it would otherwise be rejected
           // by the code that checks extended language subtags)
-          if (str.startsWith("sgn-be-fr") ||
-str.startsWith("sgn-be-nl") ||
-str.startsWith("sgn-ch-de") ||
-str.startsWith("en-gb-oed") ||
-str.startsWith("zh-min-nan")) {
+          if (str.equals("sgn-be-fr") ||
+str.equals("sgn-be-nl") ||
+str.equals("sgn-ch-de") ||
+str.equals("en-gb-oed") ||
+str.equals("zh-min-nan")) {
             return true;
           }
           // More complex cases
@@ -880,7 +880,7 @@ str.startsWith("zh-min-nan")) {
             String curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (LengthIfAllAlphaNum(curString) == 1 &&
-                    !curString.startsWith("x")) {
+                    !curString.equals("x")) {
               variants = (variants == null) ? (new ArrayList<String>()) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
@@ -912,7 +912,7 @@ str.startsWith("zh-min-nan")) {
           // optional private use
           if (splitIndex < splitLength) {
             int curIndex = splitIndex;
-            if (splitString[splitIndex].startsWith("x")) {
+            if (splitString[splitIndex].equals("x")) {
               ++splitIndex;
               boolean havetoken = false;
               while (splitIndex < splitLength) {
@@ -965,19 +965,19 @@ str.startsWith("zh-min-nan")) {
         if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
           // grandfathered language tags
           str = DataUtilities.ToLowerCaseAscii(str);
-          return str.startsWith("i-ami") ||
-str.startsWith("i-bnn") ||
-          str.startsWith("i-default") ||
-str.startsWith("i-enochian") ||
-          str.startsWith("i-hak") ||
-str.startsWith("i-klingon") ||
-          str.startsWith("i-lux") ||
-str.startsWith("i-navajo") ||
-          str.startsWith("i-mingo") ||
-str.startsWith("i-pwn") ||
-          str.startsWith("i-tao") ||
-str.startsWith("i-tay") ||
-          str.startsWith("i-tsu");
+          return str.equals("i-ami") ||
+str.equals("i-bnn") ||
+          str.equals("i-default") ||
+str.equals("i-enochian") ||
+          str.equals("i-hak") ||
+str.equals("i-klingon") ||
+          str.equals("i-lux") ||
+str.equals("i-navajo") ||
+          str.equals("i-mingo") ||
+str.equals("i-pwn") ||
+          str.equals("i-tao") ||
+str.equals("i-tay") ||
+          str.equals("i-tsu");
         }
         return false;
       }

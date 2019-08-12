@@ -9,7 +9,8 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary><para>Contains methods that implement Internationalized Domain
+    /// <summary>
+    /// <para>Contains methods that implement Internationalized Domain
     /// Names in Applications (IDNA). IDNA enables using a wider range of
     /// letters, numbers, and certain other characters in domain names.
     /// This class implements the 2008 revision of IDNA, also known as
@@ -21,15 +22,15 @@ namespace PeterO.Text {
     /// by dots ("."), called <b>labels</b>. For IDNA2008's purposes, a
     /// valid label can be an <b>NR-LDH label</b>, an <b>A-label</b>, or
     /// a <b>U-label</b>.</para>
-    /// <para>An LDH label contains only basic letters, basic digits,
-    /// and/or "-", and neither begins nor ends with "-". For example,
-    /// "exa-mple" and "1example" are LDH labels, but not
-    /// "-example".</para>
+    /// <para>An LDH label contains only basic uppercase letters, basic
+    /// lowercase letters, basic digits, and/or "-", and neither begins nor
+    /// ends with "-". For example, "exa-mple", "EXAMPLE", and "1example"
+    /// are LDH labels, but not "-example".</para>
     /// <para>An NR-LDH label is an LDH label whose third and fourth
     /// characters are not both "-". For example, "ex--ample" is not an
     /// NR-LDH label.</para>
     /// <para>A U-label contains one or more characters outside the Basic
-    /// Latin range (U+0000 to U+007F) and meets IDNA2008 requirements
+    /// Latin range (U + 0000 to U + 007F) and meets IDNA2008 requirements
     /// for labels with such characters. An example is "eá".</para>
     /// <para>An A-label is an LDH label beginning with "xn--" in any
     /// combination of case, and is convertible to a U-label. An example is
@@ -313,7 +314,8 @@ namespace PeterO.Text {
     /// <returns>The domain name where each XN-label is encoded into
     /// Unicode. Labels where this is not possible remain
     /// unchanged.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='value'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='value'/> is null.</exception>
     public static string DecodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -353,7 +355,7 @@ namespace PeterO.Text {
     }
 
     /// <summary>Tries to encode each label of a domain name with code
-    /// points outside the Basic Latin range (U+0000 to U+007F) into an
+    /// points outside the Basic Latin range (U + 0000 to U + 007F) into an
     /// XN-label. This method does not check the syntactic validity of the
     /// domain name before proceeding.</summary>
     /// <param name='value'>A domain name.</param>
@@ -361,7 +363,8 @@ namespace PeterO.Text {
     /// the Basic Latin range (U + 0000 to U + 007F) is encoded into an
     /// XN-label. Labels where this is not possible remain
     /// unchanged.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='value'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='value'/> is null.</exception>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
@@ -410,7 +413,8 @@ namespace PeterO.Text {
     /// registering the string as a domain name.</param>
     /// <returns><c>true</c> if the given string is a syntactically valid
     /// domain name; otherwise; false.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;

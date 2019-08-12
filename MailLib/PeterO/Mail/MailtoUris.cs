@@ -30,8 +30,8 @@ namespace PeterO.Mail {
       var first = true;
       foreach (NamedAddress addr in addresses) {
         if (!first) {
- encoder.AppendSymbol(",");
-}
+          encoder.AppendSymbol(",");
+        }
         addr.AppendThisAddress(encoder);
         first = false;
       }

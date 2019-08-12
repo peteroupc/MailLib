@@ -68,6 +68,9 @@ import com.upokecenter.mail.*;
       if (msg == null) {
         Assert.fail();
       }
+      if (msg == null) {
+        throw new NullPointerException("msg");
+      }
       String ret = msg.Generate();
       if (ret == null) {
         Assert.fail();
@@ -1139,11 +1142,11 @@ try { if (ms != null) {
     }
 
     static boolean HasNestedMessageType(Message message) {
-      if (message.getContentType().getTopLevelType().startsWith("message")) {
-        return (!message.getContentType().getSubType().startsWith("global")) &&
-          ((!message.getContentType().getSubType().startsWith("global-headers")) &&
-           (message.getContentType().getSubType().startsWith("global-delivery-status") ||
-    message.getContentType().getSubType().startsWith("global-disposition-notification")));
+      if (message.getContentType().getTopLevelType().equals("message")) {
+        return (!message.getContentType().getSubType().equals("global")) &&
+          ((!message.getContentType().getSubType().equals("global-headers")) &&
+           (message.getContentType().getSubType().equals("global-delivery-status") ||
+    message.getContentType().getSubType().equals("global-disposition-notification")));
       }
       for (Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {

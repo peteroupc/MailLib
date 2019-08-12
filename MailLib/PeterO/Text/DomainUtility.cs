@@ -359,6 +359,7 @@ namespace PeterO.Text {
       var codePointLength = 0;
       var basicsBeforeFirstNonbasic = 0;
       var allBasics = true;
+      var hasUpperCase = false;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         if (str[tmpIndex] >= 0x80) {
@@ -366,16 +367,16 @@ namespace PeterO.Text {
           break;
         }
         if (str[tmpIndex] >= 0x41 && str[tmpIndex] <= 0x5a) {
-          // Treat as having a non-basic in case of an
-          // upper-case ASCII character, since special
-          // handling is required here
-          allBasics = false;
+          // Upper-case basic character
+          hasUpperCase = true;
           break;
         }
         ++tmpIndex;
       }
       if (allBasics) {
-        return str.Substring(index, endIndex - index);
+        string rv = str.Substring(index, endIndex - index);
+        // NOTE: Upper-case labels not converted to lower-case here
+        return rv;
       }
       var builder = new StringBuilder();
       builder.Append("xn--");

@@ -279,7 +279,3 @@ Reads a sequence of Unicode code points from a data source.
 * <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
  than 0 or greater than <code>chars</code> 's length, or <code>chars</code> ' s
  length minus <code>index</code> is less than <code>length</code>.
-
-* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
- than 0 or greater than <code>chars</code> 's length, or <code>chars</code> 's
- length minus <code>index</code> is less than <code>length</code>.

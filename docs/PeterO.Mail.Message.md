@@ -2,7 +2,7 @@
 
     public sealed class Message
 
- Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049).
+  Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049).
 
  <b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
@@ -34,13 +34,13 @@
 
   * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
 
-  * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U+000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
+  * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U + 0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U + 000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
 
   * The name  `ascii`  is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252`  and  `utf8`  are treated as synonyms for  `windows-1252`  and  `utf-8` , respectively, even though they are not IANA registered aliases.
 
   * The following deviations involve encoded words under RFC 2047:
 
-  * (a) If a sequence of encoded words decodes to a string with a CTL character (U+007F, or a character less than U+0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
+  * (a) If a sequence of encoded words decodes to a string with a CTL character (U + 007F, or a character less than U + 0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
 
   * (b) This implementation can decode encoded words regardless of the character length of the line in which they appear. This implementation can generate a header field line with one or more encoded words even if that line is more than 76 characters long. (This implementation follows the recommendation in RFC 5322 to limit header field lines to no more than 78 characters, where possible.)
 
@@ -227,7 +227,7 @@ This value is being set and "value" is null.
 
     public string FileName { get; }
 
- Gets a file name suggested by this message for saving the message's body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.
+  Gets a file name suggested by this message for saving the message's body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.
 
  This method generates a file name based on the  `filename`  parameter of the Content-Disposition header field, if it exists, or on the  `name`  parameter of the Content-Type header field, otherwise.
 
@@ -253,7 +253,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
- Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U+005A] are converted to lower case) and the value is the header field's value.
+ Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U + 0041 to U + 005A] are converted to lower case) and the value is the header field's value.
 
    <b>Returns:</b>
 
@@ -675,7 +675,7 @@ A Message object created from the given MailTo URI. Returs null if  <i>url</i>
 
     public string Generate();
 
- Generates this message's data in text form. The generated message will have only Basic Latin code points (U+0000 to U+007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
+ Generates this message's data in text form. The generated message will have only Basic Latin code points (U + 0000 to U + 007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
  The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to  `me@[header-name]-address.invalid`  as the address (a  `.invalid`  address is a reserved address that can never belong to anyone). (An exception is that the Resent-* header fields may appear more than once.) The generated message should always have a From header field.
 
@@ -771,7 +771,7 @@ An array of 32-bit unsigned integers.
 
     public string GetFormattedBodyString();
 
- Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports text/plain, text/plain with format = flowed, text/enriched, and text/markdown (original Markdown).
+  Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports text/plain, text/plain with format = flowed, text/enriched, and text/markdown (original Markdown).
 
     REMARK: The Markdown implementation currently supports all features of original Markdown, except that the implementation--
 
@@ -796,7 +796,7 @@ Either this message is a multipart message, so it doesn't have its own body text
     public string GetHeader(
         string name);
 
- Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
      <b>Parameters:</b>
 
@@ -839,7 +839,7 @@ The parameter  <i>index</i>
     public string[] GetHeaderArray(
         string name);
 
- Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+ Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
      <b>Parameters:</b>
 
@@ -927,7 +927,7 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
- Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.). Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+ Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.). Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
      <b>Parameters:</b>
 

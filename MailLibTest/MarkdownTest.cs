@@ -16,12 +16,14 @@ namespace MailLibTest {
 
     [Test]
     public void TestMarkdown() {
-      var resources = new AppResources("Resources");
-      string[] strings = DictUtility.ParseJSONStringArray(
-         resources.GetString("markdown"));
+      string[] strings = ResourceUtil.GetStrings("markdown");
       for (var i = 0; i < strings.Length; i += 2) {
+        Console.WriteLine(strings[i + 1]);
         Message msg = MarkdownMessage(strings[i + 1]);
-        Assert.AreEqual(strings[i], msg.GetFormattedBodyString());
+        Assert.AreEqual(
+          strings[i],
+          msg.GetFormattedBodyString(),
+          strings[i + 1]);
       }
     }
   }

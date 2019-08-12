@@ -98,6 +98,26 @@ namespace MailLibTest {
     public void TestGroupAddresses() {
       // not implemented yet
     }
+
+    [Test]
+    public void TestUpperCaseDomain() {
+      NamedAddress na;
+      na = new NamedAddress("test@EXAMPLE.COM");
+      {
+        string stringTemp = na.ToString();
+Assert.AreEqual(
+  "test@EXAMPLE.COM",
+  stringTemp);
+}
+      na = new NamedAddress("Me <test@EXAMPLE.COM>");
+      {
+        string stringTemp = na.ToString();
+Assert.AreEqual(
+  "Me <test@EXAMPLE.COM>",
+  stringTemp);
+}
+    }
+
     [Test]
     public void TestIsGroup() {
       // not implemented yet
@@ -253,11 +273,10 @@ na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
       Assert.AreEqual("Group", na.Name);
       Assert.IsTrue(na.IsGroup);
       {
-        string stringTemp = na.ToString();
         const string ValueS1 = "Group: Me <me@example.com>," +
-"\u0020 somebody@example.com;";
-        Assert.AreEqual(ValueS1, stringTemp);
-}
+"\u0020somebody@example.com;";
+        Assert.AreEqual(ValueS1, na.ToString());
+      }
       groupAddr = na.GroupAddresses;
       Assert.AreEqual(2, groupAddr.Count);
       na = groupAddr[0];

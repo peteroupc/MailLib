@@ -996,7 +996,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       for (int i = 0; i < 7; ++i) {
         String dowName = dowNamesLong[i];
         if (endIndex - index >= dowName.length() &&
-           v.substring(index, (index)+(dowName.length())).startsWith(dowName)) {
+           v.substring(index, (index)+(dowName.length())).equals(dowName)) {
           return i;
         }
       }

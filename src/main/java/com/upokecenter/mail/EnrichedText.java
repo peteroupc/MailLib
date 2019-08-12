@@ -249,14 +249,14 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                 String command = DataUtilities.ToLowerCaseAscii(str.substring(
                   commandStart, (
                   commandStart)+(commandEnd - commandStart)));
-                if (command.startsWith("nofill")) {
+                if (command.equals("nofill")) {
                   if (isEndTag && nofillDepth > 0) {
                     --nofillDepth;
                   } else if (!isEndTag) {
                     ++nofillDepth;
                   }
                 }
-                if (command.startsWith("param")) {
+                if (command.equals("param")) {
                   if (isEndTag) {
                     withinParam = false;
                     currentBuilder = originalBuilder;
@@ -446,108 +446,108 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                   commandStart, (
                   commandStart)+(commandEnd - commandStart)));
                 if (!withinParam) {
-                  if (command.startsWith("bold")) {
+                  if (command.equals("bold")) {
                     currentBuilder.append('<');
                     if (isEndTag) {
                       currentBuilder.append('/');
                     }
                     currentBuilder.append("b>");
-                  } else if (command.startsWith("italic")) {
+                  } else if (command.equals("italic")) {
                     currentBuilder.append('<');
                     if (isEndTag) {
                       currentBuilder.append('/');
                     }
                     currentBuilder.append("i>");
-                  } else if (command.startsWith("fixed")) {
+                  } else if (command.equals("fixed")) {
                     if (isEndTag) {
                       currentBuilder.append("</span>");
                     } else {
                       currentBuilder.append("<span style='font-family:");
                       currentBuilder.append("monospaced'>");
                     }
-                  } else if (command.startsWith("center")) {
+                  } else if (command.equals("center")) {
                     if (isEndTag) {
                       currentBuilder.append("</div>");
                     } else {
                       currentBuilder.append("<div style='text-align:center'>");
                     }
-                  } else if (command.startsWith("flushleft")) {
+                  } else if (command.equals("flushleft")) {
                     if (isEndTag) {
                       currentBuilder.append("</div>");
                     } else {
                       currentBuilder.append("<div style='text-align:left'>");
                     }
-                  } else if (command.startsWith("flushright")) {
+                  } else if (command.equals("flushright")) {
                     if (isEndTag) {
                       currentBuilder.append("</div>");
                     } else {
                       currentBuilder.append("<div style='text-align:right'>");
                     }
-                  } else if (command.startsWith("flushboth")) {
+                  } else if (command.equals("flushboth")) {
                     if (isEndTag) {
                       currentBuilder.append("</div>");
                     } else {
                       currentBuilder.append("<div style='text-align:justify'>");
                     }
-                  } else if (command.startsWith("fontfamily")) {
+                  } else if (command.equals("fontfamily")) {
                     if (isEndTag) {
                       currentBuilder.append("</span>");
                     }
-                  } else if (command.startsWith("color")) {
+                  } else if (command.equals("color")) {
                     if (isEndTag) {
                       currentBuilder.append("</span>");
                     }
-                  } else if (command.startsWith("paraindent")) {
+                  } else if (command.equals("paraindent")) {
                     if (isEndTag) {
                       currentBuilder.append("</div>");
                     }
-                  } else if (command.startsWith("smaller")) {
+                  } else if (command.equals("smaller")) {
                     if (isEndTag) {
                       currentBuilder.append("</span>");
                     } else {
                       currentBuilder.append("<span style='font-size:85%'>");
                     }
-                  } else if (command.startsWith("nofill")) {
+                  } else if (command.equals("nofill")) {
                     if (isEndTag && nofillDepth > 0) {
                       --nofillDepth;
                     } else if (!isEndTag) {
                       ++nofillDepth;
                     }
-                  } else if (command.startsWith("bigger")) {
+                  } else if (command.equals("bigger")) {
                     if (isEndTag) {
                       currentBuilder.append("</span>");
                     } else {
                       currentBuilder.append("<span style='font-size:110%'>");
                     }
-                  } else if (command.startsWith("lang")) {
+                  } else if (command.equals("lang")) {
                     if (isEndTag) {
                       currentBuilder.append("</span>");
                     }
-                  } else if (command.startsWith("excerpt")) {
+                  } else if (command.equals("excerpt")) {
                     if (isEndTag) {
                       currentBuilder.append("</blockquote>");
                     } else {
                       currentBuilder.append("<blockquote>");
                     }
                   }
-                  if (!command.startsWith("param")) {
+                  if (!command.equals("param")) {
                     lastCommand = command;
                   }
                 }
                 boolean wasWithinParam = withinParam;
-                if (command.startsWith("param")) {
+                if (command.equals("param")) {
                   if (isEndTag) {
                     withinParam = false;
                     currentBuilder = originalBuilder;
                     String p = TrimSpaces(paramBuilder.toString());
-                    if (lastCommand.startsWith("fontfamily")) {
+                    if (lastCommand.equals("fontfamily")) {
                       if (SkipFont(p, 0, p.length()) == p.length()) {
                         currentBuilder.append("<span style='font-family: " + p +
                         "'> ");
                       } else {
                         currentBuilder.append("<span>");
                       }
-                    } else if (lastCommand.startsWith("color")) {
+                    } else if (lastCommand.equals("color")) {
                       p = ParseColor(
             DataUtilities.ToLowerCaseAscii(p),
             0,
@@ -558,14 +558,14 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                       } else {
                         currentBuilder.append("<span>");
                       }
-                    } else if (lastCommand.startsWith("lang")) {
+                    } else if (lastCommand.equals("lang")) {
                       if (SkipLang(p, 0, p.length()) == p.length()) {
     currentBuilder.append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
                                         "'> ");
                       } else {
                         currentBuilder.append("<span>");
                       }
-                    } else if (lastCommand.startsWith("paraindent")) {
+                    } else if (lastCommand.equals("paraindent")) {
                       p = DataUtilities.ToLowerCaseAscii(p);
                       String[] valuePList = SplitAt(p, ",");
                       boolean leftFlag = false;
@@ -575,13 +575,13 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                       StringBuilder styleBuilder = new StringBuilder();
                       for (String valuePItem : valuePList) {
                         String valuePItem2 = TrimSpaces(valuePItem);
-                        if (!leftFlag && valuePItem2.startsWith("left")) {
+                        if (!leftFlag && valuePItem2.equals("left")) {
                           styleBuilder.append("padding-left: 2em;");
-                        } else if (!rightFlag && valuePItem2.startsWith("right")) {
+                        } else if (!rightFlag && valuePItem2.equals("right")) {
                           styleBuilder.append("padding-right: 2em;");
-                        } else if (!inFlag && valuePItem2.startsWith("in")) {
+                        } else if (!inFlag && valuePItem2.equals("in")) {
                           styleBuilder.append("text-indent: 2em;");
-                        } else if (!outFlag && valuePItem2.startsWith("out")) {
+                        } else if (!outFlag && valuePItem2.equals("out")) {
                           styleBuilder.append("text-indent: -2em;");
                           styleBuilder.append("margin-left: 2em;");
                         }

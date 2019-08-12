@@ -85,7 +85,7 @@ if (addressValue == null) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
       return other != null &&
       (this.displayName == null ? other.displayName == null :
-        this.displayName.startsWith(other.displayName)) &&
+        this.displayName.equals(other.displayName)) &&
    (this.address == null ? other.address == null :
      this.address.equals(other.address)) && this.isGroup == other.isGroup &&
           (!this.isGroup || CollectionUtilities.ListEquals(

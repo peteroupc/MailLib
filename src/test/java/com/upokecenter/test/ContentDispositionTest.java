@@ -217,13 +217,13 @@ import com.upokecenter.text.*;
         FailFilename(filename, str);
       }
       // Reserved filenames on Windows
-      if (strLower.startsWith(
+      if (strLower.equals(
         "nul")) {
         {
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.startsWith("clock$")) {
+      if (strLower.equals("clock$")) {
         {
           FailFilename(filename, str, strLower);
         }
@@ -234,7 +234,7 @@ import com.upokecenter.text.*;
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.startsWith(
+      if (strLower.equals(
         "prn")) {
         {
           FailFilename(filename, str, strLower);
@@ -252,7 +252,7 @@ import com.upokecenter.text.*;
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.startsWith(
+      if (strLower.equals(
         "aux")) {
         {
           FailFilename(filename, str, strLower);
@@ -264,7 +264,7 @@ import com.upokecenter.text.*;
           FailFilename(filename, str, strLower);
         }
       }
-      if (strLower.startsWith(
+      if (strLower.equals(
         "con")) {
         {
           FailFilename(filename, str, strLower);
@@ -305,7 +305,7 @@ import com.upokecenter.text.*;
         char c = str.charAt(i);
         if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
           c == '%' || c == 0x2028 || c == 0x2029 ||
-        c == '#' || c == ';' || c == '\'' ||
+        c == '#' || c == ';' || c == '\'' || c=='&' ||
             c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
           c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
 c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
@@ -353,7 +353,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       // Assert that MakeFilename is idempotent
       String newstr = ContentDisposition.MakeFilename(str);
-      if (!newstr.startsWith(str)) {
+      if (!newstr.equals(str)) {
         FailFilename(
   filename,
   str,
@@ -363,10 +363,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
 
     @Test
     public void TestMakeFilenameSpecific() {
-      AppResources resources = new AppResources("Resources");
-      String[] specificFilenames = DictUtility.ParseJSONStringArray(
-        resources.GetString("specificfiles"));
-      for (String str : specificFilenames) {
+      for (String str : ResourceUtil.GetStrings("specificfiles")) {
         AssertGoodFilename(str);
       }
     }
@@ -383,9 +380,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
         }
         AssertGoodFilename(RandomString(rnd));
       }
-      AppResources resources = new AppResources("Resources");
-      String[] filenames = DictUtility.ParseJSONStringArray(
-        resources.GetString("specificfiles"));
+      String[] filenames =  ResourceUtil.GetStrings("specificfiles");
       // "d\ud800e", "d\ufffde",
       // "d\udc00e", "d\ufffde",
       // "my\ud800file\udc00name\ud800\udc00.txt",
@@ -625,8 +620,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   ";x=\"y", ";x=\"y\"z", ";x=z\"y\"",
   ";x=z\"y\"z",
   ";x=z\"y?,\"z",
-  ";x=z\"y?;?\"z"
-};
+  ";x=z\"y?;?\"z",
+  };
 
     @Test
     public void TestParseErrors() {

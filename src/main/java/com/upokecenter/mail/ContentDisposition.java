@@ -68,7 +68,7 @@ import com.upokecenter.text.*;
       if (other == null) {
         return false;
       }
-      return this.dispositionType.startsWith(other.dispositionType) &&
+      return this.dispositionType.equals(other.dispositionType) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -98,7 +98,7 @@ import com.upokecenter.text.*;
      * false}.
      */
     public final boolean isInline() {
-        return this.dispositionType.startsWith("inline");
+        return this.dispositionType.equals("inline");
       }
 
     /**
@@ -107,7 +107,7 @@ import com.upokecenter.text.*;
      * {@code false}.
      */
     public final boolean isAttachment() {
-        return this.dispositionType.startsWith("attachment");
+        return this.dispositionType.equals("attachment");
       }
 
     ContentDisposition(
@@ -177,27 +177,58 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Converts a file name from the Content-Disposition header to a suitable name
-     * for saving data to a file. This method is idempotent; that is,
+     * Converts a file name from the Content-Disposition header (or another string
+     * representing a title and an optional file extension) to a suitable
+     * name for saving data to a file. This method is idempotent; that is,
      * calling the method again on the result doesn't change that result.
-     *  <p>Examples:</p> <p><code>"=?utf-8?q?hello=2Etxt?="
-     *  -&gt;"hello.txt"</code> (RFC 2047 encoding).</p>
-     *  <p><code>"=?utf-8?q?long_filename?=" -&gt;"long filename"</code> (RFC 2047
-     *  encoding).</p> <p><code>"utf-8'en'hello%2Etxt" -&gt;"hello.txt"</code>
-     *  (RFC 2231 encoding).</p> <p><code>"nul.txt" -&gt;"_nul.txt"</code>
-     *  (Reserved name).</p> <p><code>"dir1/dir2/file"
+     * <p>Examples of how this method works follows:</p>
+     *  <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt;"hello.txt"</code> (RFC 2047
+     *  encoding).</p> <p><code>"=?utf-8?q?long_filename?=" -&gt;"long
+     *  filename"</code> (RFC 2047 encoding).</p> <p><code>"utf-8'en'hello%2Etxt"
+     *  -&gt;"hello.txt"</code> (RFC 2231 encoding).</p> <p><code>"nul.txt"
+     *  -&gt;"_nul.txt"</code> (Reserved name).</p> <p><code>"dir1/dir2/file"
      *  -&gt;"dir1_dir2_file"</code> (Directory separators).</p><p>
-     * <p><b>Remarks:</b></p> <ul> <li>The exact file name conversion used
-     * by this method is not guaranteed to remain the same between versions
-     * of this library, with the exception that the return value will be in
+     * <p><b>Remarks:</b></p> <ul> <li>This method should be used only to
+     * prepare a file name for the purpose of suggesting a name by which to
+     * save data. It should not be used to prepare file names of existing
+     * files for the purpose of reading them, since this method may replace
+     * certain characters with other characters in some cases, such that
+     * two different inputs may map to the same output.</li> <li>This
+     * method is intended to prepare strings so that they can be used as is
+     * as file names in most file systems; it avoids characters and
+     * combinations of characters that are problematic to use in certain
+     * file systems, and leaves the vast majority of file names seen in
+     * practice untouched.</li> <li>For example, a word-processing
+     * application could create a file name for a document by taking the
+     * document's title or the first few words of its body and adding a
+     *  file extension like ".document" to those words (e.g., "My
+     *  Report.document"), then pass that name to the MakeFilename method to
+     * get a suggested file name to show a user seeking to save that
+     * document.</li> <li><b>Suggestions for Non-User-Facing Files.</b> To
+     * maximize compatibility with file system conventions, applications
+     * should limit the names of files (files used by the
+     * application only and not exposed to end users) to the following
+     * characters -- basic lower-case letters (U + 0061 to U + 007A), basic
+     *  digits (U+0030 to U+0039), "-", "_", and "." -- and should accept a
+     * name as a file only if the MakeFilename method returns that name
+     * unchanged. (Basic upper-case letters, U + 0041 to U + 005a, are not
+     * suggested here because different file systems have different rules
+     * for case comparisons.) Applications should avoid using non-basic
+     * code points (that is, those outside the 128 code points of the
+     * Unicode Standard's Basic Latin block) in the names of internal files
+     * unless there is a compelling reason to use such characters.</li>
+     * <li><b>Guarantees.</b> The exact file name conversion used by this
+     * method is not guaranteed to remain the same between versions of this
+     * library, with the exception that the return value will be in
      * normalization form C, will not contain base + slash code points,
      * will not be null, and will be an empty string only if <paramref
-     * name='str'/> is null or empty.</li> <li>The string returned by this
-     * method is normalized using Unicode normalization form C (NFC) (see
-     * the {@link com.upokecenter.text.NormalizerInput} class for details).
-     * Although most file systems preserve the normalization of file names,
-     * there is one notable exception: The HFS Plus file system (on macOS
-     * before High Sierra) stores file names using a modified version of
+     * name='str'/> is null or empty.</li> <li><b>Normalization.</b> The
+     * string returned by this method is normalized using Unicode
+     * normalization form C (NFC) (see the {@link
+     * com.upokecenter.text.NormalizerInput} class for details). Although
+     * most file systems preserve the normalization of file names, there is
+     * one notable exception: The HFS Plus file system (on macOS before
+     * High Sierra) stores file names using a modified version of
      * normalization form D (NFD) in which certain code points are not
      * decomposed, including all base + slash code points, which are the
      * only composed code points in Unicode that are decomposed in NFD but
@@ -207,13 +238,14 @@ import com.upokecenter.text.*;
      * code points were converted beforehand by MakeFilename to an
      *  alternate form). See also Apple's Technical Q&amp;A "Text Encodings
      *  in VFS" and Technical Note TN1150, "HFS Plus Volume Format".</li>
-     * <li> <p>Email and HTTP headers may specify suggested filenames using
-     * the Content-Disposition header field's <code>filename</code> parameter or,
-     * in practice, the Content-Type header field's <code>name</code>
-     * parameter.</p> <p>Although RFC 2047 encoded words appearing in both
-     * parameters are written out by some implementations, this practice is
-     * often discouraged (especially since the RFC itself says that encoded
-     *  words "MUST NOT appear within a 'quoted-string'"). Nevertheless, the
+     * <li> <p><b>'Name' and 'Filename' Parameters.</b> Email and HTTP
+     * headers may specify suggested filenames using the
+     * Content-Disposition header field's <code>filename</code> parameter or, in
+     * practice, the Content-Type header field's <code>name</code> parameter.</p>
+     * <p>Although RFC 2047 encoded words appearing in both parameters are
+     * written out by some implementations, this practice is often
+     * discouraged (especially since the RFC itself says that encoded words
+     *  "MUST NOT appear within a 'quoted-string'"). Nevertheless, the
      * MakeFilename method has a basis in the RFCs to decode RFC 2047
      * encoded words (and RFC 2231 encoding) in file names passed to this
      * method.</p> <p>RFC 2046 sec. 4.5.1 (<code>application/octet-stream</code>

@@ -98,6 +98,26 @@ import com.upokecenter.mail.*;
     public void TestGroupAddresses() {
       // not implemented yet
     }
+
+    @Test
+    public void TestUpperCaseDomain() {
+      NamedAddress na;
+      na = new NamedAddress("test@EXAMPLE.COM");
+      {
+        String stringTemp = na.toString();
+Assert.assertEquals(
+  "test@EXAMPLE.COM",
+  stringTemp);
+}
+      na = new NamedAddress("Me <test@EXAMPLE.COM>");
+      {
+        String stringTemp = na.toString();
+Assert.assertEquals(
+  "Me <test@EXAMPLE.COM>",
+  stringTemp);
+}
+    }
+
     @Test
     public void TestIsGroup() {
       // not implemented yet
@@ -283,11 +303,10 @@ na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
  Assert.fail();
  }
       {
-        String stringTemp = na.toString();
         String ValueS1 = "Group: Me <me@example.com>," +
-"\u0020 somebody@example.com;";
-        Assert.assertEquals(ValueS1, stringTemp);
-}
+"\u0020somebody@example.com;";
+        Assert.assertEquals(ValueS1, na.toString());
+      }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());
       na = groupAddr.get(0);

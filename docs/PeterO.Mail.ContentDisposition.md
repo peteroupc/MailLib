@@ -2,7 +2,7 @@
 
     public class ContentDisposition
 
- Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
+  Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
 
  <b>About the "filename" parameter</b>
 
@@ -171,7 +171,7 @@ The extracted date and time as an 8-element array, or  `null`  if the "modificat
 
       <b>Parameters:</b>
 
- * <i>name</i>: The name of the parameter to get. The name will be matched using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U+005A) in both strings to lower case.). Can't be null.
+ * <i>name</i>: The name of the parameter to get. The name will be matched using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.). Can't be null.
 
 <b>Return Value:</b>
 
@@ -218,12 +218,18 @@ The extracted date and time as an 8-element array, or  `null`  if the "read-date
 
     <b>Remarks:</b>
 
-  * The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if  <i>str</i>
+  * This method should be used only to prepare a file name for the purpose of suggesting a name by which to save data. It should not be used to prepare file names of existing files for the purpose of reading them, since this method may replace certain characters with other characters in some cases.
+
+  * This method is intended to prepare strings so that they can be used as is as file names in most file systems; it avoids characters and combinations of characters that are problematic to use in certain file systems, and leaves the vast majority of file names seen in practice untouched.
+
+  * <b>Suggestions for Non-User-Facing Files.</b> To maximize compatibility with file system conventions, applications should limit the names of internal files (files used by the application only and not exposed to end users) to the following characters -- basic lower-case letters (U+0061 to U+007A), basic digits (U+0030 to U+0039), "-", "_", and "." -- and should accept a name as a file only if the MakeFilename method returns that name unchanged. (Basic upper-case letters, U+0041 to U+005a, are not suggested here because different file systems have different rules for case comparisons.) Applications should avoid using non-basic characters (that is, those outside the 128 code points of the Unicode Standard's Basic Latin block) in the names of internal files unless there is a good reason to use such characters.
+
+  * <b>Guarantees.</b> The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if  <i>str</i>
  is null or empty.
 
-  * The string returned by this method is normalized using Unicode normalization form C (NFC) (see the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base + slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base + slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
+  * <b>Normalization.</b> The string returned by this method is normalized using Unicode normalization form C (NFC) (see the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class for details). Although most file systems preserve the normalization of file names, there is one notable exception: The HFS Plus file system (on macOS before High Sierra) stores file names using a modified version of normalization form D (NFD) in which certain code points are not decomposed, including all base + slash code points, which are the only composed code points in Unicode that are decomposed in NFD but not in HFS Plus's version of NFD. If the filename will be used to save a file to an HFS Plus storage device, it is enough to normalize the return value with NFD for this purpose (because all base + slash code points were converted beforehand by MakeFilename to an alternate form). See also Apple's Technical Q&A "Text Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume Format".
 
-  *  Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's  `filename`  parameter or, in practice, the Content-Type header field's  `name`  parameter.
+  *  <b>'Name' and 'Filename' Parameters.</b> Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's  `filename`  parameter or, in practice, the Content-Type header field's  `name`  parameter.
 
  Although RFC 2047 encoded words appearing in both parameters are written out by some implementations, this practice is often discouraged (especially since the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'"). Nevertheless, the MakeFilename method has a basis in the RFCs to decode RFC 2047 encoded words (and RFC 2231 encoding) in file names passed to this method.
 

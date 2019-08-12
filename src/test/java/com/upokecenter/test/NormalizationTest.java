@@ -48,6 +48,9 @@ import com.upokecenter.text.*;
       int index = 0;
       int state = 0;
       int codePoint = 0;
+      if (cp == null) {
+        throw new NullPointerException("cp");
+      }
       int[] retArray = new int[cp.length()];
       int count = 0;
       while (index <= cp.length()) {
@@ -98,6 +101,9 @@ import com.upokecenter.text.*;
       StringBuilder builder = new StringBuilder();
       boolean first = true;
       builder.append("[");
+      if (array == null) {
+        throw new NullPointerException("array");
+      }
       for (int v : array) {
         if (!first) {
           builder.append(", ");
@@ -111,6 +117,9 @@ import com.upokecenter.text.*;
 
     public static String ToCodePointString(int[] array) {
       StringBuilder builder = new StringBuilder();
+      if (array == null) {
+        throw new NullPointerException("array");
+      }
       for (int v : array) {
         if (v <= 0xffff) {
           builder.append((char)v);
@@ -126,7 +135,10 @@ import com.upokecenter.text.*;
       String expectedStr,
       String actualStr,
       String msg) {
-      if (!expectedStr.startsWith(actualStr)) {
+      if (expectedStr == null) {
+        throw new NullPointerException("expectedStr");
+      }
+      if (!expectedStr.equals(actualStr)) {
                 Assert.fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
             "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
@@ -141,6 +153,12 @@ import com.upokecenter.text.*;
     }
 
     public static void AssertEqual(int[] expected, int[] actual, String msg) {
+      if (expected == null) {
+        throw new NullPointerException("expected");
+      }
+      if (actual == null) {
+        throw new NullPointerException("actual");
+      }
       if (expected.length != actual.length) {
         Assert.fail(
           "\nexpected: " + toString(expected) + "\n" + "\nwas: " +
