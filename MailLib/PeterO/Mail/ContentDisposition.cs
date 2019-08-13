@@ -12,8 +12,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>
-    /// <para>Specifies how a message body should be displayed or handled
+    /// <summary><para>Specifies how a message body should be displayed or handled
     /// by a mail user agent. This type is immutable; its contents can't be
     /// changed after it's created. To create a changeable disposition
     /// object, use the DispositionBuilder class.</para>
@@ -186,10 +185,13 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Converts a file name from the Content-Disposition header
-    /// (or another string representing a title and an optional file extension)
-    /// to a suitable name for saving data to a file. This method is
-    /// idempotent; that is, calling the method again on the result doesn't
-    /// change that result.
+    /// (or another string representing a title and an optional file
+    /// extension) to a suitable name for saving data to a file. This
+    /// method is idempotent; that is, calling the method again on the
+    /// result doesn't change that result. The method avoids characters and
+    /// combinations of characters that are problematic to use in certain
+    /// file systems, and leaves the vast majority of file names seen in
+    /// practice untouched.
     /// <para>Examples of how this method works follows:</para>
     /// <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt;"hello.txt"</c> (RFC 2047
     /// encoding).</para>
@@ -222,53 +224,16 @@ namespace PeterO.Mail {
     /// the purpose of suggesting a name by which to save data. It should
     /// not be used to prepare file names of existing files for the purpose
     /// of reading them, since this method may replace certain characters
-    /// with other characters in some cases, such that two different inputs may map to the same output.</item>
-    /// <item>This method is intended to prepare strings so that they can
-    /// be used as is as file names in most file systems; it avoids
-    /// characters and combinations of characters that are problematic to
-    /// use in certain file systems, and leaves the vast majority of file
-    /// names seen in practice untouched.</item>
-    /// <item>For example, a word-processing application could create a
-    /// file name for a document by taking the document's title or the first few words of its
-    /// body and adding a file extension like ".document" to those words
-    /// (e.g., "My Report.document"), then pass that name to the
-    /// MakeFilename method to get a suggested file name to show a
-    /// user seeking to save that document.</item>
-    /// <item><b>Suggestions for Non-User-Facing Files.</b> To maximize
-    /// compatibility with file system conventions, applications should
-    /// limit the names of internal files (files used by the application
-    /// only and not exposed to end users) to the following characters --
-    /// basic lower-case letters (U+0061 to U+007A), basic digits (U+0030
-    /// to U+0039), "-", "_", and "." -- and should accept a name as a file
-    /// only if the MakeFilename method returns that name unchanged. (Basic
-    /// upper-case letters, U + 0041 to U + 005a, are not suggested here
-    /// because different file systems have different rules for case
-    /// comparisons.) Applications should avoid using non-basic code points
-    /// (that is, those outside the 128 code points of the Unicode
-    /// Standard's Basic Latin block) in the names of internal files unless
-    /// there is a compelling reason to use such characters.</item>
+    /// with other characters in some cases, such that two different inputs
+    /// may map to the same output.</item>
+    /// <item><b>File Name Support.</b> For recommendations on file name
+    /// support, see "[File Name Support in
+    /// Applications](https://peteroupc.github.io/filenames.html)".</item>
     /// <item><b>Guarantees.</b> The exact file name conversion used by
     /// this method is not guaranteed to remain the same between versions
     /// of this library, with the exception that the return value will be
     /// in normalization form C, will not contain base + slash code points,
-    /// will not be null, and will be an empty string only if <paramref
-    /// name='str'/> is null or empty.</item>
-    /// <item><b>Normalization.</b> The string returned by this method is
-    /// normalized using Unicode normalization form C (NFC) (see the
-    /// <see cref='PeterO.Text.NormalizerInput'/> class for details).
-    /// Although most file systems preserve the normalization of file
-    /// names, there is one notable exception: The HFS Plus file system (on
-    /// macOS before High Sierra) stores file names using a modified
-    /// version of normalization form D (NFD) in which certain code points
-    /// are not decomposed, including all base + slash code points, which
-    /// are the only composed code points in Unicode that are decomposed in
-    /// NFD but not in HFS Plus's version of NFD. If the filename will be
-    /// used to save a file to an HFS Plus storage device, it is enough to
-    /// normalize the return value with NFD for this purpose (because all
-    /// base + slash code points were converted beforehand by MakeFilename
-    /// to an alternate form). See also Apple's Technical Q&amp;A "Text
-    /// Encodings in VFS" and Technical Note TN1150, "HFS Plus Volume
-    /// Format".</item>
+    /// will not be null, and will be an empty string only if <paramref name='str'/> is null or empty.</item>
     /// <item>
     /// <para><b>'Name' and 'Filename' Parameters.</b> Email and HTTP
     /// headers may specify suggested filenames using the
@@ -320,8 +285,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from this content
     /// disposition's "creation-date" parameter, which specifies the date
     /// of creation of a file (RFC 2183 sec. 2.4). See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this method's return value.</summary>
     /// <returns>The extracted date and time as an 8-element array, or
     /// <c>null</c> if the "creation-date" parameter doesn't exist, is an
@@ -335,8 +299,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from this content
     /// disposition's "modification-date" parameter, which specifies the
     /// date of last modification of a file (RFC 2183 sec. 2.5). See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this method's return value.</summary>
     /// <returns>The extracted date and time as an 8-element array, or
     /// <c>null</c> if the "modification-date" parameter doesn't exist, is
@@ -350,8 +313,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from this content
     /// disposition's "read-date" parameter, which specifies the date at
     /// which a file was last read (RFC 2183 sec. 2.6). See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this method's return value.</summary>
     /// <returns>The extracted date and time as an 8-element array, or
     /// <c>null</c> if the "read-date" parameter doesn't exist, is an empty
@@ -373,10 +335,8 @@ namespace PeterO.Mail {
     /// strings to lower case.). Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='name'/> is empty.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='name'/> is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -464,13 +424,11 @@ namespace PeterO.Mail {
 
     /// <summary>Creates a new content disposition object from the value of
     /// a Content-Disposition header field.</summary>
-    /// <param name='dispoValue'>The parameter <paramref
-    /// name='dispoValue'/> is a text string.</param>
+    /// <param name='dispoValue'>The parameter <paramref name='dispoValue'/> is a text string.</param>
     /// <returns>A content disposition object, or
     /// ContentDisposition.Attachment" if <paramref name='dispoValue'/> is
     /// empty or syntactically invalid.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='dispoValue'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='dispoValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
         throw new ArgumentNullException(nameof(dispoValue));
@@ -510,8 +468,7 @@ namespace PeterO.Mail {
     /// <param name='defaultValue'>The value to return in case the
     /// disposition value is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='dispositionValue'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='dispositionValue'/> is null.</exception>
     public static ContentDisposition Parse(
       string dispositionValue,
       ContentDisposition defaultValue) {

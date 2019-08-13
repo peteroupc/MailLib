@@ -8,6 +8,7 @@ import com.upokecenter.text.*;
 private MakeFilenameMethod() {
 }
     private static final int MaxFileNameCodeUnitLength = 247;
+    private static final int MaxFileNameUtf8Length = 247;
     private static String TrimAndCollapseSpaceAndTab(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;
@@ -472,6 +473,24 @@ private MakeFilenameMethod() {
       return str;
     }
 
+    private static boolean IsAtOrBelowMaxCodeLength(StringBuilder sb) {
+      if (sb.length() > MaxFileNameCodeUnitLength) {
+        return false;
+      }
+      return (str.length() < MaxFileNameUtf8Length / 3) ||
+         DataUtilities.GetUtf8Length(sb.toString(), true) <=
+MaxFileNameUtf8Length;
+    }
+
+    private static boolean IsBelowMaxCodeLength(StringBuilder sb) {
+      if (sb.length() >= MaxFileNameCodeUnitLength) {
+        return false;
+      }
+      return (str.length() < MaxFileNameUtf8Length / 3) ||
+         DataUtilities.GetUtf8Length(sb.toString(), true) <
+MaxFileNameUtf8Length;
+    }
+
     public static String MakeFilename(String str) {
       if (((str) == null || (str).length() == 0)) {
         return "";
@@ -524,7 +543,7 @@ private MakeFilenameMethod() {
         // will be treated as unsuitable characters for filenames
         // and are handled below.
         i = 0;
-        while (i < str.length() && builder.length() < MaxFileNameCodeUnitLength) {
+        while (i < str.length() && IsBelowMaxCodeLength(builder)) {
           int c = DataUtilities.CodePointAt(str, i, 0);
           // NOTE: Unpaired surrogates are replaced with U + FFFD
           if (c >= 0x10000) {
@@ -589,15 +608,16 @@ private MakeFilenameMethod() {
             // Windows in environment variable placeholders
             builder.append('_');
           } else {
-            if (builder.length() < MaxFileNameCodeUnitLength || c < 0x10000) {
-              if (c <= 0xffff) {
-                builder.append((char)c);
-              } else if (c <= 0x10ffff) {
+            int oldLength = builder.length();
+            if (c <= 0xffff) {
+              builder.append((char)c);
+            } else if (c <= 0x10ffff) {
                 builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
 0xd800));
                 builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
-              }
-            } else if (builder.length() >= MaxFileNameCodeUnitLength - 1) {
+            }
+            if (IsAtOrBelowMaxCodeLength(builder)) {
+              builder.delete(oldLength, (oldLength)+(builder.length() - oldLength));
               break;
             }
           }

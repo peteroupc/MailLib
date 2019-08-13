@@ -974,6 +974,20 @@ namespace PeterO.Mail {
       }
     }
 
+    private sealed class HeaderTlsRequired : StructuredHeaderField {
+      public override int Parse(
+        string str,
+        int index,
+        int endIndex,
+        ITokener tokener) {
+        return HeaderParser.ParseHeaderTlsRequired(
+          str,
+          index,
+          endIndex,
+          tokener);
+      }
+    }
+
     private sealed class HeaderX400Originator : StructuredHeaderField {
       public override int Parse(
         string str,
@@ -2275,6 +2289,7 @@ namespace PeterO.Mail {
       fieldMap["sio-label-history"] = new HeaderSioLabel();
       fieldMap["injection-info"] = new HeaderInjectionInfo();
       //------------------ generic ------------------
+      fieldMap["tls-required"] = new HeaderTlsRequired();
       fieldMap["content-return"] = new HeaderX400ContentReturn();
       fieldMap["x400-content-return"] = new HeaderX400ContentReturn();
       fieldMap["delivery-date"] = new HeaderDeliveryDate();

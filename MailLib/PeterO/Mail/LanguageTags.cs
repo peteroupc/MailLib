@@ -466,11 +466,9 @@ namespace PeterO.Mail {
     /// where it appears on that list.</param>
     /// <returns>A list of language tags that match the given range, in
     /// descending order of preference.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='languages'/> or <paramref name='ranges'/> is
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> or <paramref name='ranges'/> is
     /// null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='ranges'/> contains a value that is not a basic or extended
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='ranges'/> contains a value that is not a basic or extended
     /// language range, or <paramref name='languages'/> contains a value
     /// that is not a potentially valid language tag.</exception>
     public static IList<string> LanguageTagFilter(
@@ -555,9 +553,7 @@ namespace PeterO.Mail {
     /// <param name='tag'>A language tag.</param>
     /// <returns><c>true</c> if the language tag matches the language range
     /// by the filtering method under RFC 4647; otherwise, <c>false</c>.</returns>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='range'/> is not a basic language range, or <paramref
-    /// name='tag'/> is not a potentially valid language tag.</exception>
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='range'/> is not a basic language range, or <paramref name='tag'/> is not a potentially valid language tag.</exception>
     public static bool MatchesLanguageTag(string range, string tag) {
       IList<string> tags = LanguageTagFilter(
         new List<string>(new string[] { range }),
@@ -575,14 +571,10 @@ namespace PeterO.Mail {
     /// given in order of descending preference.</param>
     /// <param name='defaultValue'>The value to return if no matching
     /// language tag was found.</param>
-    /// <returns>The matching language tag, or the parameter <paramref
-    /// name='defaultValue'/> if there is no matching language
+    /// <returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
     /// tag.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='languages'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='range'/> is not a basic language range, or <paramref
-    /// name='languages'/> contains a value that is not a potentially valid
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='range'/> is not a basic language range, or <paramref name='languages'/> contains a value that is not a potentially valid
     /// language tag.</exception>
     public static string LanguageTagLookup(
   string range,
@@ -600,14 +592,11 @@ namespace PeterO.Mail {
     /// given in order of descending preference.</param>
     /// <param name='defaultValue'>The value to return if no matching
     /// language tag was found.</param>
-    /// <returns>The matching language tag, or the parameter <paramref
-    /// name='defaultValue'/> if there is no matching language
+    /// <returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
     /// tag.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='languages'/> or <paramref name='ranges'/> is
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> or <paramref name='ranges'/> is
     /// null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='ranges'/> contains a value that is not a basic language
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='ranges'/> contains a value that is not a basic language
     /// range, or <paramref name='languages'/> contains a value that is not
     /// a potentially valid language tag.</exception>
     public static string LanguageTagLookup(
@@ -626,11 +615,9 @@ namespace PeterO.Mail {
     /// given in order of descending preference.</param>
     /// <returns>A list of language tags that match the given range, in
     /// descending order of preference.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='languages'/> or <paramref name='ranges'/> is
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> or <paramref name='ranges'/> is
     /// null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='ranges'/> contains a value that is not a basic language
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='ranges'/> contains a value that is not a basic language
     /// range, or <paramref name='languages'/> contains a value that is not
     /// a potentially valid language tag.</exception>
     public static IList<string> LanguageTagFilter(
@@ -649,13 +636,10 @@ namespace PeterO.Mail {
     /// language tag was found.</param>
     /// <param name='extended'>If true, "range" is an extended language
     /// range; otherwise, it's a are basic language range.</param>
-    /// <returns>The matching language tag, or the parameter <paramref
-    /// name='defaultValue'/> if there is no matching language
+    /// <returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
     /// tag.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='languages'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='range'/> is not a basic or extended language range, or
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='range'/> is not a basic or extended language range, or
     /// <paramref name='languages'/> contains a value that is not a
     /// potentially valid language tag.</exception>
     public static string LanguageTagLookup(
@@ -681,14 +665,11 @@ namespace PeterO.Mail {
     /// language tag was found.</param>
     /// <param name='extended'>If true, the ranges in "ranges" are extended
     /// language ranges; otherwise, they are basic language ranges.</param>
-    /// <returns>The matching language tag, or the parameter <paramref
-    /// name='defaultValue'/> if there is no matching language
+    /// <returns>The matching language tag, or the parameter <paramref name='defaultValue'/> if there is no matching language
     /// tag.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='languages'/> or <paramref name='ranges'/> is
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> or <paramref name='ranges'/> is
     /// null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='ranges'/> contains a value that is not a basic or extended
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='ranges'/> contains a value that is not a basic or extended
     /// language range, or <paramref name='languages'/> contains a value
     /// that is not a potentially valid language tag.</exception>
     public static string LanguageTagLookup(

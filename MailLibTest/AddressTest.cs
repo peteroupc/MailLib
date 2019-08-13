@@ -57,9 +57,9 @@ namespace MailLibTest {
       try {
         {
           object objectTemp = null;
-object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
+          object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
           "@example.com");
-Assert.AreEqual(objectTemp, objectTemp2);
+          Assert.AreEqual(objectTemp, objectTemp2);
 }
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
@@ -86,9 +86,9 @@ Assert.AreEqual(objectTemp, objectTemp2);
       Assert.AreEqual("EXAMPLE.COM", addr.Domain);
       {
         string stringTemp = addr.ToString();
-Assert.AreEqual(
-  "test@EXAMPLE.COM",
-  stringTemp);
+        Assert.AreEqual(
+          "test@EXAMPLE.COM",
+          stringTemp);
 }
     }
 
@@ -149,9 +149,9 @@ Assert.AreEqual(
       var addr = new Address("local.local@example.com");
       {
         string stringTemp = addr.ToString();
-Assert.AreEqual(
-  "local.local@example.com",
-  stringTemp);
+        Assert.AreEqual(
+          "local.local@example.com",
+          stringTemp);
 }
       addr = new Address("local-local@example.com");
       {

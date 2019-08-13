@@ -105,14 +105,14 @@ import com.upokecenter.mail.*;
       na = new NamedAddress("test@EXAMPLE.COM");
       {
         String stringTemp = na.toString();
-Assert.assertEquals(
-  "test@EXAMPLE.COM",
-  stringTemp);
+        Assert.assertEquals(
+          "test@EXAMPLE.COM",
+          stringTemp);
 }
       na = new NamedAddress("Me <test@EXAMPLE.COM>");
       {
         String stringTemp = na.toString();
-Assert.assertEquals(
+        Assert.assertEquals(
   "Me <test@EXAMPLE.COM>",
   stringTemp);
 }

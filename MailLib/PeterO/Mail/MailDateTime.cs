@@ -19,12 +19,10 @@ namespace PeterO.Mail {
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
     /// 8-element array. See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this parameter.</param>
     /// <returns>A date-time string.</returns>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='dateTime'/> is null or invalid, including if the year (
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid, including if the year (
     /// <c>dateTime[0]</c> ) is less than 0.</exception>
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
@@ -200,17 +198,14 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
     /// 8-element array. See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
     /// this parameter.</param>
     /// <param name='gmt'>The parameter <paramref name='gmt'/> is not
     /// documented yet.</param>
     /// <returns>A date-time string.</returns>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='dateTime'/> is null or invalid, including if the year (
+    /// <exception cref='System.ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid, including if the year (
     /// <c>dateTime[0]</c> ) is less than 0.</exception>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='dateTime'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='dateTime'/> is null.</exception>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
@@ -307,8 +302,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// <c>null</c> if <paramref name='str'/> is null, empty, or
     /// syntactically invalid, or if the string's year would overflow the
     /// range of a 32-bit signed integer.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str'/> is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
     if (str == null) {
       return null;

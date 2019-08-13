@@ -56,9 +56,9 @@ import com.upokecenter.mail.*;
       try {
         {
           Object objectTemp = null;
-Object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
+          Object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
           "@example.com");
-Assert.assertEquals(objectTemp, objectTemp2);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
@@ -85,9 +85,9 @@ Assert.assertEquals(objectTemp, objectTemp2);
       Assert.assertEquals("EXAMPLE.COM", addr.getDomain());
       {
         String stringTemp = addr.toString();
-Assert.assertEquals(
-  "test@EXAMPLE.COM",
-  stringTemp);
+        Assert.assertEquals(
+          "test@EXAMPLE.COM",
+          stringTemp);
 }
     }
 
@@ -147,9 +147,9 @@ Assert.assertEquals(
       Address addr = new Address("local.local@example.com");
       {
         String stringTemp = addr.toString();
-Assert.assertEquals(
-  "local.local@example.com",
-  stringTemp);
+        Assert.assertEquals(
+          "local.local@example.com",
+          stringTemp);
 }
       addr = new Address("local-local@example.com");
       {

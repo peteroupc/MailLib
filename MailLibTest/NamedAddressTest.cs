@@ -105,14 +105,14 @@ namespace MailLibTest {
       na = new NamedAddress("test@EXAMPLE.COM");
       {
         string stringTemp = na.ToString();
-Assert.AreEqual(
-  "test@EXAMPLE.COM",
-  stringTemp);
+        Assert.AreEqual(
+          "test@EXAMPLE.COM",
+          stringTemp);
 }
       na = new NamedAddress("Me <test@EXAMPLE.COM>");
       {
         string stringTemp = na.ToString();
-Assert.AreEqual(
+        Assert.AreEqual(
   "Me <test@EXAMPLE.COM>",
   stringTemp);
 }

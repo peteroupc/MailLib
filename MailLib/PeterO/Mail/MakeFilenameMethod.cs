@@ -7,6 +7,7 @@ using PeterO.Text;
 namespace PeterO.Mail {
   internal static class MakeFilenameMethod {
     private const int MaxFileNameCodeUnitLength = 247;
+    private const int MaxFileNameUtf8Length = 247;
     private static string TrimAndCollapseSpaceAndTab(string str) {
       if (String.IsNullOrEmpty(str)) {
         return str;
@@ -471,6 +472,24 @@ namespace PeterO.Mail {
       return str;
     }
 
+    private static bool IsAtOrBelowMaxCodeLength(StringBuilder sb) {
+      if (sb.Length > MaxFileNameCodeUnitLength) {
+        return false;
+      }
+      return (sb.Length < MaxFileNameUtf8Length / 3) ||
+         DataUtilities.GetUtf8Length(sb.ToString(), true) <=
+         MaxFileNameUtf8Length;
+    }
+
+    private static bool IsBelowMaxCodeLength(StringBuilder sb) {
+      if (sb.Length >= MaxFileNameCodeUnitLength) {
+        return false;
+      }
+      return (sb.Length < MaxFileNameUtf8Length / 3) ||
+         DataUtilities.GetUtf8Length(sb.ToString(), true) <
+         MaxFileNameUtf8Length;
+    }
+
     public static string MakeFilename(string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
@@ -523,7 +542,7 @@ namespace PeterO.Mail {
         // will be treated as unsuitable characters for filenames
         // and are handled below.
         i = 0;
-        while (i < str.Length && builder.Length < MaxFileNameCodeUnitLength) {
+        while (i < str.Length && IsBelowMaxCodeLength(builder)) {
           int c = DataUtilities.CodePointAt(str, i, 0);
           // NOTE: Unpaired surrogates are replaced with U + FFFD
           if (c >= 0x10000) {
@@ -588,15 +607,16 @@ namespace PeterO.Mail {
             // Windows in environment variable placeholders
             builder.Append('_');
           } else {
-            if (builder.Length < MaxFileNameCodeUnitLength || c < 0x10000) {
-              if (c <= 0xffff) {
-                builder.Append((char)c);
-              } else if (c <= 0x10ffff) {
+            int oldLength = builder.Length;
+            if (c <= 0xffff) {
+              builder.Append((char)c);
+            } else if (c <= 0x10ffff) {
                 builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
 0xd800));
                 builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
-              }
-            } else if (builder.Length >= MaxFileNameCodeUnitLength - 1) {
+            }
+            if (IsAtOrBelowMaxCodeLength(builder)) {
+              builder.Remove(oldLength, builder.Length - oldLength);
               break;
             }
           }

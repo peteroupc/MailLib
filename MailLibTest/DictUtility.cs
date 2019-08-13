@@ -164,7 +164,7 @@ namespace MailLibTest {
        }
        var endPos = new int[] { 0 };
        string[] ret = ParseJSONStringArray(str, endPos);
-if (endPos[0]!=str.Length) {
+       if (endPos[0] != str.Length) {
          throw new InvalidOperationException("Invalid JSON");
        }
        return ret;
@@ -186,7 +186,8 @@ if (endPos[0]!=str.Length) {
         ++i;
       }
       if (i >= str.Length || str[i] != '[') {
-        throw new InvalidOperationException("Invalid JSON: "+str.Substring(i));
+        throw new InvalidOperationException("Invalid JSON: " +
+str.Substring(i));
       }
       ++i;
       var endValue = false;
@@ -199,7 +200,7 @@ if (endPos[0]!=str.Length) {
         if (i >= str.Length || (
           str[i] != ']' && str[i] != '"' && str[i] != 0x2c)) {
           throw new InvalidOperationException("Invalid JSON:" +
-"\u0020"+str.Substring(i));
+"\u0020" + str.Substring(i));
         }
         switch (str[i]) {
           case ']':
@@ -214,7 +215,7 @@ if (endPos[0]!=str.Length) {
           case (char)0x2c:
             if (!endValue) {
               throw new InvalidOperationException("Invalid JSON:" +
-"\u0020"+str.Substring(i));
+"\u0020" + str.Substring(i));
             }
             ++i;
             endValue = false;
@@ -224,7 +225,7 @@ if (endPos[0]!=str.Length) {
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {
               throw new InvalidOperationException("Invalid JSON: bad string:" +
-"\u0020" +str.Substring(j));
+"\u0020" + str.Substring(j));
             }
             endValue = true;
             list.Add(sb.ToString());
@@ -239,7 +240,7 @@ if (endPos[0]!=str.Length) {
       }
       var sb = new StringBuilder();
       int result = ParseJSONString(str, 1, sb);
-if (result != str.Length) {
+      if (result != str.Length) {
         throw new InvalidOperationException("Invalid JSON");
       }
       return sb.ToString();

@@ -12,7 +12,17 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-      new MailLibTest.DataUrlTest().TestIPv6();
+var strs = new string[] {
+
+};
+
+Console.WriteLine("------");
+foreach (var s in strs) {
+ var sc = PeterO.Mail.ContentDisposition.MakeFilename(s);
+ Console.WriteLine(s);
+ Console.WriteLine(sc);
+ Console.WriteLine(s == sc);
+}
     }
   }
 }

@@ -165,7 +165,7 @@ private DictUtility() {
        }
        int[] endPos = new int[] { 0 };
        String[] ret = ParseJSONStringArray(str, endPos);
-if (endPos[0]!=str.length()) {
+       if (endPos[0] != str.length()) {
          throw new IllegalStateException("Invalid JSON");
        }
        return ret;
@@ -187,7 +187,8 @@ if (endPos[0]!=str.length()) {
         ++i;
       }
       if (i >= str.length() || str.charAt(i) != '[') {
-        throw new IllegalStateException("Invalid JSON: "+str.substring(i));
+        throw new IllegalStateException("Invalid JSON: " +
+str.substring(i));
       }
       ++i;
       boolean endValue = false;
@@ -200,7 +201,7 @@ if (endPos[0]!=str.length()) {
         if (i >= str.length() || (
           str.charAt(i) != ']' && str.charAt(i) != '"' && str.charAt(i) != 0x2c)) {
           throw new IllegalStateException("Invalid JSON:" +
-"\u0020"+str.substring(i));
+"\u0020" + str.substring(i));
         }
         switch (str.charAt(i)) {
           case ']':
@@ -215,7 +216,7 @@ if (endPos[0]!=str.length()) {
           case (char)0x2c:
             if (!endValue) {
               throw new IllegalStateException("Invalid JSON:" +
-"\u0020"+str.substring(i));
+"\u0020" + str.substring(i));
             }
             ++i;
             endValue = false;
@@ -225,7 +226,7 @@ if (endPos[0]!=str.length()) {
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {
               throw new IllegalStateException("Invalid JSON: bad String:" +
-"\u0020" +str.substring(j));
+"\u0020" + str.substring(j));
             }
             endValue = true;
             list.add(sb.toString());
@@ -240,7 +241,7 @@ if (endPos[0]!=str.length()) {
       }
       StringBuilder sb = new StringBuilder();
       int result = ParseJSONString(str, 1, sb);
-if (result != str.length()) {
+      if (result != str.length()) {
         throw new IllegalStateException("Invalid JSON");
       }
       return sb.toString();
