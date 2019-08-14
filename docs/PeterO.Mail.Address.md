@@ -21,8 +21,7 @@
 
      <b>Parameters:</b>
 
- * <i>addressValue</i>: The parameter  <i>addressValue</i>
- is a text string.
+ * <i>addressValue</i>: An email address.
 
 <b>Exceptions:</b>
 

@@ -140,8 +140,8 @@ import com.upokecenter.text.*;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Message}
-     * class.
-     * @param stream The parameter {@code stream} is a InputStream object.
+     * class. Reads from the given InputStream object to initialize the message.
+     * @param stream A readable data stream.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
     public Message(InputStream stream) {
@@ -157,8 +157,8 @@ import com.upokecenter.text.*;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Message}
-     * class.
-     * @param bytes A byte array.
+     * class. Reads from the given byte array to initialize the message.
+     * @param bytes A readable data stream.
      * @throws NullPointerException The parameter {@code bytes} is null.
      */
     public Message(byte[] bytes) {
@@ -174,7 +174,8 @@ import com.upokecenter.text.*;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Message}
-     * class.
+     * class. The message will be plain text and have an artificial From
+     * address.
      */
     public Message() {
       this.headers = new ArrayList<String>();
@@ -237,11 +238,10 @@ import com.upokecenter.text.*;
     /**
      * Gets the body of this message as a text string.
      * @return The body of this message as a text string.
-     * @throws UnsupportedOperationException Either this message is a multipart
-     * message, so it doesn't have its own body text, or this message has
-     * no character encoding declared or assumed for it (which is usually
-     * the case for non-text messages), or the character encoding is not
-     * supported.
+     * @throws UnsupportedOperationException Either this message is a multipart message, so
+     * it doesn't have its own body text, or this message has no character
+     * encoding declared or assumed for it (which is usually the case for
+     * non-text messages), or the character encoding is not supported.
      */
     public final String getBodyString() {
         if (this.getContentType().isMultipart()) {
@@ -288,11 +288,10 @@ import com.upokecenter.text.*;
      * use HTML escapes to obfuscate email addresses wrapped in
      * angle-brackets.</li></ul></p>
      * @return An HTML rendering of this message's text.
-     * @throws UnsupportedOperationException Either this message is a multipart
-     * message, so it doesn't have its own body text, or this message has
-     * no character encoding declared or assumed for it (which is usually
-     * the case for non-text messages), or the character encoding is not
-     * supported.
+     * @throws UnsupportedOperationException Either this message is a multipart message, so
+     * it doesn't have its own body text, or this message has no character
+     * encoding declared or assumed for it (which is usually the case for
+     * non-text messages), or the character encoding is not supported.
      */
     public String GetFormattedBodyString() {
       String text = this.getBodyString();
@@ -583,7 +582,11 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Not documented yet.
+     * Gets the date and time extracted from this message's Date header field (the
+     *  value of which is found as though GetHeader("date") were called).
+     * See <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+     * System.String,System.Boolean)'/> for more information on the format
+     * of the date-time array returned by this method.
      * @return An array of 32-bit unsigned integers.
      */
     public int[] GetDate() {

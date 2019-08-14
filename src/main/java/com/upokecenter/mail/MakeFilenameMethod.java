@@ -477,18 +477,18 @@ private MakeFilenameMethod() {
       if (sb.length() > MaxFileNameCodeUnitLength) {
         return false;
       }
-      return (str.length() < MaxFileNameUtf8Length / 3) ||
+      return (sb.length() < MaxFileNameUtf8Length / 3) ||
          DataUtilities.GetUtf8Length(sb.toString(), true) <=
-MaxFileNameUtf8Length;
+         MaxFileNameUtf8Length;
     }
 
     private static boolean IsBelowMaxCodeLength(StringBuilder sb) {
       if (sb.length() >= MaxFileNameCodeUnitLength) {
         return false;
       }
-      return (str.length() < MaxFileNameUtf8Length / 3) ||
+      return (sb.length() < MaxFileNameUtf8Length / 3) ||
          DataUtilities.GetUtf8Length(sb.toString(), true) <
-MaxFileNameUtf8Length;
+         MaxFileNameUtf8Length;
     }
 
     public static String MakeFilename(String str) {
@@ -569,10 +569,10 @@ MaxFileNameUtf8Length;
             // '![ ... ]' may be interpreted in BASH as an evaluator;
             // replace '!' with underscore
             builder.append('_');
-          } else if (bracketedText >= 0 && str.charAt(i) == '[') {
+          } else if (bracketedText >= 0 && c == '[') {
             // Avoid glob bracket pattern
             builder.append('(');
-          } else if (bracketedText >= 0 && str.charAt(i) == ']') {
+          } else if (bracketedText >= 0 && c == ']') {
             // Avoid glob bracket pattern
             builder.append(')');
           } else if (c == '`') {
@@ -616,7 +616,7 @@ MaxFileNameUtf8Length;
 0xd800));
                 builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
-            if (IsAtOrBelowMaxCodeLength(builder)) {
+            if (!IsAtOrBelowMaxCodeLength(builder)) {
               builder.delete(oldLength, (oldLength)+(builder.length() - oldLength));
               break;
             }

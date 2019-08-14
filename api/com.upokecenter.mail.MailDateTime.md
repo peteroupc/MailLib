@@ -57,7 +57,7 @@ Generates a date-time string following the Internet Message Format (RFC
  <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
  this parameter.
 
-* <code>gmt</code> - The parameter <code>gmt</code> is not documented yet.
+* <code>gmt</code> - If true, uses the string "GMT" as the time zone offset.
 
 **Returns:**
 

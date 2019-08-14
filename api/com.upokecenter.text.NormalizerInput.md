@@ -70,12 +70,14 @@
 ## Methods
 
 * `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
- Initializes a new instance of the NormalizerInput class.
+ Initializes a new instance of the NormalizerInput class using Normalization Form
+ C.
 * `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
 * `NormalizerInput​(java.lang.String str) NormalizerInput`<br>
- Initializes a new instance of the NormalizerInput class.
+ Initializes a new instance of the NormalizerInput class using Normalization Form
+ C.
 * `NormalizerInput​(java.lang.String str,
                int index,
                int length,
@@ -104,12 +106,14 @@
 ## Constructors
 
 * `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
- Initializes a new instance of the NormalizerInput class.
+ Initializes a new instance of the NormalizerInput class using Normalization Form
+ C.
 * `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
 * `NormalizerInput​(java.lang.String str) NormalizerInput`<br>
- Initializes a new instance of the NormalizerInput class.
+ Initializes a new instance of the NormalizerInput class using Normalization Form
+ C.
 * `NormalizerInput​(java.lang.String str,
                int index,
                int length,
@@ -123,15 +127,17 @@
 
 ### NormalizerInput
     public NormalizerInput​(java.lang.String str)
-Initializes a new instance of the <code>NormalizerInput</code> class.
+Initializes a new instance of the <code>NormalizerInput</code> class using Normalization Form
+ C.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - A string specifying the text to normalize.
 
 ### NormalizerInput
     public NormalizerInput​(com.upokecenter.text.ICharacterInput input)
-Initializes a new instance of the <code>NormalizerInput</code> class.
+Initializes a new instance of the <code>NormalizerInput</code> class using Normalization Form
+ C.
 
 **Parameters:**
 
@@ -139,17 +145,21 @@ Initializes a new instance of the <code>NormalizerInput</code> class.
 
 ### NormalizerInput
     public NormalizerInput​(java.lang.String str, int index, int length, Normalization form)
-Initializes a new instance of the <code>NormalizerInput</code> class.
+Initializes a new instance of the <code>NormalizerInput</code> class. Uses a portion of a
+ string as the input.
 
 **Parameters:**
 
 * <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>index</code> - The parameter <code>index</code> is a 32-bit signed integer.
+* <code>index</code> - A zero-based index showing where the desired portion of <code>
+ str</code> begins.
 
-* <code>length</code> - The parameter <code>length</code> is a 32-bit signed integer.
+* <code>length</code> - The number of elements in the desired portion of <code>str</code>
+ (but not more than <code>str</code> 's length).
 
-* <code>form</code> - The parameter <code>form</code> is a Normalization object.
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
 
 ### NormalizerInput
     public NormalizerInput​(java.lang.String str, Normalization form)
@@ -159,7 +169,8 @@ Initializes a new instance of the <code>NormalizerInput</code> class.
 
 * <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>form</code> - The parameter <code>form</code> is a Normalization object.
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
 
 ### NormalizerInput
     public NormalizerInput​(com.upokecenter.text.ICharacterInput stream, Normalization form)
@@ -169,7 +180,8 @@ Initializes a new instance of the <code>NormalizerInput</code> class.
 
 * <code>stream</code> - The parameter <code>stream</code> is an ICharacterInput object.
 
-* <code>form</code> - The parameter <code>form</code> is a Normalization object.
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
 
 **Throws:**
 

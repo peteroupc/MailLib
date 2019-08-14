@@ -46,8 +46,7 @@ The parameter  <i>dateTime</i>
 
  * <i>dateTime</i>: The date and time in the form of an 8-element array. See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this parameter.
 
- * <i>gmt</i>: The parameter  <i>gmt</i>
- is not documented yet.
+ * <i>gmt</i>: If true, uses the string "GMT" as the time zone offset.
 
 <b>Return Value:</b>
 

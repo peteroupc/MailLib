@@ -20,7 +20,7 @@
     public DispositionBuilder(
         PeterO.Mail.ContentDisposition mt);
 
- Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the data from the given content disposition.
 
     <b>Parameters:</b>
 
@@ -39,7 +39,7 @@ The parameter  <i>mt</i>
     public DispositionBuilder(
         string type);
 
- Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the given disposition type.
 
      <b>Parameters:</b>
 
@@ -60,7 +60,7 @@ Type is empty.
 
     public DispositionBuilder();
 
- Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class.
+ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the disposition type "attachment" .
 
   <a id="DispositionType"></a>
 ### DispositionType

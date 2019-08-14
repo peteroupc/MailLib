@@ -31,17 +31,20 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.DispositionBuilder'/> class.</summary>
+    /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the
+    /// disposition type "attachment" .</summary>
     public DispositionBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "attachment";
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.DispositionBuilder'/> class.</summary>
+    /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the data
+    /// from the given content disposition.</summary>
     /// <param name='mt'>The parameter <paramref name='mt'/> is a
     /// ContentDisposition object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='mt'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
@@ -51,11 +54,13 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.DispositionBuilder'/> class.</summary>
+    /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the given
+    /// disposition type.</summary>
     /// <param name='type'>The parameter <paramref name='type'/> is a text
     /// string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='type'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Type is empty.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='type'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Type is empty.</exception>
     public DispositionBuilder(string type) {
       if (type == null) {
         throw new ArgumentNullException(nameof(type));
@@ -103,8 +108,9 @@ namespace PeterO.Mail {
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Str is empty.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Str is empty.</exception>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -128,7 +134,8 @@ namespace PeterO.Mail {
     /// upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
     /// lower case.).</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -146,8 +153,10 @@ namespace PeterO.Mail {
     /// strings to lower case.).</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>Either <paramref name='value'/> or <paramref name='name'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='name'/> is empty, or it isn't a well-formed parameter
+    /// <exception cref='ArgumentNullException'>Either <paramref
+    /// name='value'/> or <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty, or it isn't a well-formed parameter
     /// name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {

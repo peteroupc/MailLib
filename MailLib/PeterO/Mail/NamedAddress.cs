@@ -21,8 +21,10 @@ namespace PeterO.Mail {
     /// NamedAddress.</summary>
     /// <param name='addressValue'>A comma-separate list of addresses in
     /// the form of a text string.</param>
-    /// <returns>A list of addresses generated from the <paramref name='addressValue'/> parameter.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='addressValue'/> is null.</exception>
+    /// <returns>A list of addresses generated from the <paramref
+    /// name='addressValue'/> parameter.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='addressValue'/> is null.</exception>
     public static IList<NamedAddress> ParseAddresses(string addressValue) {
       var list = new List<NamedAddress>();
 
@@ -195,11 +197,34 @@ if (addressValue == null) {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
-    /// <param name='address'>The parameter <paramref name='address'/> is a
-    /// text string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='address'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Address has an invalid syntax.;
+    /// <see cref='PeterO.Mail.NamedAddress'/> class. Examples:
+    /// <list>
+    /// <item><c>john@example.com</c></item>
+    /// <item><c>"John Doe" &lt;john@example.com&gt;</c></item>
+    ///
+    ///   <item><c>=?utf-8?q?John</c><c>=</c><c>27s_Office?=&lt;john@example.com&gt;</c></item>
+    /// <item><c>John &lt;john@example.com&gt;</c></item>
+    /// <item><c>"Group" : Tom &lt;tom@example.com&gt;, Jane
+    /// &lt;jane@example.com&gt;;</c></item></list></summary>
+    /// <param name='address'>A text string identifying a single email
+    /// address or a group of email addresses. Comments, or text within
+    /// parentheses, can appear. Multiple email addresses are not allowed
+    /// unless they appear in the group syntax given above. Encoded words
+    /// under RFC 2047 that appear within comments or display names will be
+    /// decoded.
+    /// <para>An RFC 2047 encoded word consists of "=?", a character
+    /// encoding name, such as <c>utf-8</c>, either "?B?" or "?Q?" (in
+    /// upper or lower case), a series of bytes in the character encoding,
+    /// further encoded using B or Q encoding, and finally "?=". B encoding
+    /// uses Base64, while in Q encoding, spaces are changed to "_", equals
+    /// are changed to "=3D", and most bytes other than the basic digits 0
+    /// to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a,
+    /// 0x61 to 0x7a) are changed to "=" followed by their 2-digit
+    /// hexadecimal form. An encoded word's maximum length is 75
+    /// characters. See the third example.</para>.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Address has an invalid syntax.;
     /// Address has an invalid syntax.</exception>
     public NamedAddress(string address) {
       if (address == null) {
@@ -225,11 +250,14 @@ if (addressValue == null) {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
-    /// <param name='displayName'>The parameter <paramref name='displayName'/> is a text string.</param>
-    /// <param name='address'>The parameter <paramref name='address'/> is a
-    /// text string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='address'/> is null.</exception>
+    /// <see cref='PeterO.Mail.NamedAddress'/> class using the given
+    /// display name and email address.</summary>
+    /// <param name='displayName'>The display name of the email address.
+    /// Can be null or empty. Encoded words under RFC 2047 will not be
+    /// decoded.</param>
+    /// <param name='address'>An email address.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -241,11 +269,14 @@ if (addressValue == null) {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
-    /// <param name='displayName'>The parameter <paramref name='displayName'/> is a text string.</param>
-    /// <param name='address'>The parameter <paramref name='address'/> is
-    /// an Address object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='address'/> is null.</exception>
+    /// <see cref='PeterO.Mail.NamedAddress'/> class using the given
+    /// display name and email address.</summary>
+    /// <param name='displayName'>The display name of the email address.
+    /// Can be null or empty. Encoded words under RFC 2047 will not be
+    /// decoded.</param>
+    /// <param name='address'>An email address.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -257,13 +288,17 @@ if (addressValue == null) {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
-    /// <param name='displayName'>The parameter <paramref name='displayName'/> is a text string.</param>
-    /// <param name='localPart'>The parameter <paramref name='localPart'/>
-    /// is a text string.</param>
-    /// <param name='domain'>The parameter <paramref name='domain'/> is a
-    /// text string.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='localPart'/> or <paramref name='domain'/> is
+    /// <see cref='PeterO.Mail.NamedAddress'/> class using the given name
+    /// and an email address made up of its local part and
+    /// domain.</summary>
+    /// <param name='displayName'>The display name of the email address.
+    /// Can be null or empty.</param>
+    /// <param name='localPart'>The local part of the email address (before
+    /// the "@").</param>
+    /// <param name='domain'>The domain of the email address (before the
+    /// "@").</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='localPart'/> or <paramref name='domain'/> is
     /// null.</exception>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
@@ -279,14 +314,16 @@ if (addressValue == null) {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class.</summary>
-    /// <param name='groupName'>The parameter <paramref name='groupName'/>
-    /// is a text string.</param>
-    /// <param name='mailboxes'>The parameter <paramref name='mailboxes'/>
-    /// is an IList object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='groupName'/> or <paramref name='mailboxes'/> is
+    /// <see cref='PeterO.Mail.NamedAddress'/> class. Takes a group name
+    /// and several named email addresses as parameters, and forms a group
+    /// with them.</summary>
+    /// <param name='groupName'>The group's name.</param>
+    /// <param name='mailboxes'>A list of named addresses that make up the
+    /// group.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='groupName'/> or <paramref name='mailboxes'/> is
     /// null.</exception>
-    /// <exception cref='System.ArgumentException'>GroupName is empty.; A mailbox
+    /// <exception cref='ArgumentException'>GroupName is empty.; A mailbox
     /// in the list is a group.</exception>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {

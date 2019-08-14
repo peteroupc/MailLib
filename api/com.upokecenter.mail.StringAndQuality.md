@@ -30,9 +30,9 @@ Initializes a new instance of the <code>StringAndQuality</code> class.
 
 **Parameters:**
 
-* <code>value</code> - The parameter <code>value</code> is a text string.
+* <code>value</code> - An arbitrary text string.
 
-* <code>quality</code> - The parameter <code>quality</code> is a 32-bit signed integer.
+* <code>quality</code> - A 32-bit signed integer serving as the "quality" value.
 
 ### StringAndQuality
     public StringAndQuality​(java.lang.String value, int quality)
@@ -40,9 +40,9 @@ Initializes a new instance of the <code>StringAndQuality</code> class.
 
 **Parameters:**
 
-* <code>value</code> - The parameter <code>value</code> is a text string.
+* <code>value</code> - An arbitrary text string.
 
-* <code>quality</code> - The parameter <code>quality</code> is a 32-bit signed integer.
+* <code>quality</code> - A 32-bit signed integer serving as the "quality" value.
 
 ### getValue
     public final java.lang.String getValue()

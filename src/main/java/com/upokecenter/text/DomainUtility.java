@@ -361,24 +361,17 @@ private DomainUtility() {
       int codePointLength = 0;
       int basicsBeforeFirstNonbasic = 0;
       boolean allBasics = true;
-      boolean hasUpperCase = false;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         if (str.charAt(tmpIndex) >= 0x80) {
           allBasics = false;
           break;
         }
-        if (str.charAt(tmpIndex) >= 0x41 && str.charAt(tmpIndex) <= 0x5a) {
-          // Upper-case basic character
-          hasUpperCase = true;
-          break;
-        }
         ++tmpIndex;
       }
       if (allBasics) {
-        String rv = str.substring(index, (index)+(endIndex - index));
         // NOTE: Upper-case labels not converted to lower-case here
-        return rv;
+        return str.substring(index, (index)+(endIndex - index));
       }
       StringBuilder builder = new StringBuilder();
       builder.append("xn--");

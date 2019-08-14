@@ -176,7 +176,8 @@ Use GetAddresses(\Cc\) instead.
 * `MediaType getContentType()`<br>
  Gets this message's media type.
 * `int[] GetDate()`<br>
- Not documented yet.
+ Gets the date and time extracted from this message's Date header field (the
+  value of which is found as though GetHeader("date") were called).
 * `java.lang.String getFileName()`<br>
  Gets a file name suggested by this message for saving the message's body
  to a file.
@@ -286,11 +287,11 @@ Renamed to ToMailtoUri.
 ### Message
     public Message​(java.io.InputStream stream)
 Initializes a new instance of the <code>Message</code>
- class.
+ class. Reads from the given InputStream object to initialize the message.
 
 **Parameters:**
 
-* <code>stream</code> - The parameter <code>stream</code> is a InputStream object.
+* <code>stream</code> - A readable data stream.
 
 **Throws:**
 
@@ -299,11 +300,11 @@ Initializes a new instance of the <code>Message</code>
 ### Message
     public Message​(byte[] bytes)
 Initializes a new instance of the <code>Message</code>
- class.
+ class. Reads from the given byte array to initialize the message.
 
 **Parameters:**
 
-* <code>bytes</code> - A byte array.
+* <code>bytes</code> - A readable data stream.
 
 **Throws:**
 
@@ -312,7 +313,8 @@ Initializes a new instance of the <code>Message</code>
 ### Message
     public Message()
 Initializes a new instance of the <code>Message</code>
- class.
+ class. The message will be plain text and have an artificial From
+ address.
 ### NewBodyPart
     public static Message NewBodyPart()
 Creates a message object with no header fields.
@@ -351,11 +353,10 @@ Gets the body of this message as a text string.
 
 **Throws:**
 
-* <code>java.lang.UnsupportedOperationException</code> - Either this message is a multipart
- message, so it doesn't have its own body text, or this message has
- no character encoding declared or assumed for it (which is usually
- the case for non-text messages), or the character encoding is not
- supported.
+* <code>java.lang.UnsupportedOperationException</code> - Either this message is a multipart message, so
+ it doesn't have its own body text, or this message has no character
+ encoding declared or assumed for it (which is usually the case for
+ non-text messages), or the character encoding is not supported.
 
 ### getCCAddresses
     @Deprecated public final java.util.List<NamedAddress> getCCAddresses()
@@ -386,11 +387,10 @@ Use GetAddresses(\Cc\) instead.
 
 **Throws:**
 
-* <code>java.lang.UnsupportedOperationException</code> - Either this message is a multipart
- message, so it doesn't have its own body text, or this message has
- no character encoding declared or assumed for it (which is usually
- the case for non-text messages), or the character encoding is not
- supported.
+* <code>java.lang.UnsupportedOperationException</code> - Either this message is a multipart message, so
+ it doesn't have its own body text, or this message has no character
+ encoding declared or assumed for it (which is usually the case for
+ non-text messages), or the character encoding is not supported.
 
 ### getContentDisposition
     public final ContentDisposition getContentDisposition()
@@ -617,7 +617,10 @@ Gets the byte array for this message's body. This method doesn' t make a
 
 ### GetDate
     public int[] GetDate()
-Not documented yet.
+Gets the date and time extracted from this message's Date header field (the
+  value of which is found as though GetHeader("date") were called).
+ See <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for more information on the format
+ of the date-time array returned by this method.
 
 **Returns:**
 

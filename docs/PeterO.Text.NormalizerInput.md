@@ -3,7 +3,7 @@
     public sealed class NormalizerInput :
         PeterO.Text.ICharacterInput
 
-  A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
+ A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
  The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines four <i>normalization forms</i> that convert strings to a single equivalent form:
 
@@ -42,7 +42,7 @@
     public NormalizerInput(
         PeterO.Text.ICharacterInput input);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
    <b>Parameters:</b>
 
@@ -63,8 +63,7 @@
  * <i>stream</i>: The parameter  <i>stream</i>
  is an ICharacterInput object.
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Exceptions:</b>
 
@@ -78,12 +77,11 @@ The parameter  <i>stream</i>
     public NormalizerInput(
         string str);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
    <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is a text string.
+ * <i>str</i>: A string specifying the text to normalize.
 
 <a id="Void_ctor_System_String_Int32_Int32_PeterO_Text_Normalization"></a>
 ### NormalizerInput Constructor
@@ -94,21 +92,21 @@ The parameter  <i>stream</i>
         int length,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
+ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class. Uses a portion of a string as the input.
 
       <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>index</i>: The parameter  <i>index</i>
- is a 32-bit signed integer.
+ * <i>index</i>: A zero-based index showing where the desired portion of  <i>str</i>
+ begins.
 
- * <i>length</i>: The parameter  <i>length</i>
- is a 32-bit signed integer.
+ * <i>length</i>: The number of elements in the desired portion of  <i>str</i>
+ (but not more than  <i>str</i>
+ 's length).
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <a id="Void_ctor_System_String_PeterO_Text_Normalization"></a>
 ### NormalizerInput Constructor
@@ -124,8 +122,7 @@ The parameter  <i>stream</i>
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>form</i>: The parameter  <i>form</i>
- is a Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <a id="IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization"></a>
 ### IsNormalized

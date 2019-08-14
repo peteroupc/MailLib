@@ -35,7 +35,7 @@ Initializes a new instance of the <code>Address</code>
 
 **Parameters:**
 
-* <code>addressValue</code> - The parameter <code>addressValue</code> is a text string.
+* <code>addressValue</code> - An email address.
 
 **Throws:**
 
@@ -52,7 +52,7 @@ Initializes a new instance of the <code>Address</code>
 
 **Parameters:**
 
-* <code>addressValue</code> - The parameter <code>addressValue</code> is a text string.
+* <code>addressValue</code> - An email address.
 
 **Throws:**
 

@@ -2,7 +2,7 @@
 
     public static class DataUris
 
-  Contains methods for parsing and generating Data URIs (uniform resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
+ Contains methods for parsing and generating Data URIs (uniform resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
 
     data:, hello%20world
 

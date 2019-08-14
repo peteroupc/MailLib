@@ -8,10 +8,9 @@ namespace PeterO.Mail {
     public sealed class StringAndQuality {
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.StringAndQuality'/> class.</summary>
-    /// <param name='value'>The parameter <paramref name='value'/> is a
-    /// text string.</param>
-    /// <param name='quality'>The parameter <paramref name='quality'/> is a
-    /// 32-bit signed integer.</param>
+    /// <param name='value'>An arbitrary text string.</param>
+    /// <param name='quality'>A 32-bit signed integer serving as the
+    /// "quality" value.</param>
       public StringAndQuality(string value, int quality) {
         this.Value = value;
         this.Quality = quality;

@@ -688,7 +688,7 @@ namespace PeterO.Mail {
           receivedPart = TrimFWSFromRight(receivedPart);
           return new HeaderEncoder().AppendFieldName(name)
              .AppendString(receivedPart + datePart).ToString();
-        } else {
+           } else {
           return new HeaderEncoder().AppendFieldName(name).ToString() +
              str;
         }

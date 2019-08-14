@@ -206,7 +206,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
      * <see cref='PeterO.Mail.MailDateTime.ParseDateString(
      * System.String,System.Boolean)'/> for information on the format of
      * this parameter.
-     * @param gmt The parameter {@code gmt} is not documented yet.
+     * @param gmt If true, uses the string "GMT" as the time zone offset.
      * @return A date-time string.
      * @throws IllegalArgumentException The parameter {@code dateTime} is null or invalid,
      * including if the year ({@code dateTime[0]}) is less than 0.
@@ -905,7 +905,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       }
       // RFC 850
       int dowLong = ParseDOWLong(v, index, endIndex);
-      index += dowNamesLong[dowLong].length;
+      String dowNameLong = dowNamesLong[dowLong];
+      index += dowNameLong.length();
       if (endIndex - index > 23 && (endIndex - index > 1 && v.charAt(index) == 44 &&
         v.charAt(index + 1) == 32) && ((v.charAt(index + 2) >= 48 && v.charAt(index + 2) <=
         57) && (v.charAt(index + 3) >= 48 && v.charAt(index + 3) <= 57)) && (v.charAt(index + 4)
@@ -934,8 +935,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         int hour = ((v.charAt(index + 10) - '0') * 10) + (v.charAt(index + 11) - '0');
         int minute = ((v.charAt(index + 13) - '0') * 10) + (v.charAt(index + 14) - '0');
         int second = ((v.charAt(index + 16) - '0') * 10) + (v.charAt(index + 17) - '0');
-        java.util.Date dt = java.util.Date.UtcNow;
-        int thisyear = dt.getYear();
+        int thisyear = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("GMT")).get(java.util.Calendar.YEAR);
         int this2digityear = thisyear % 100;
         int convertedYear = year + (thisyear - this2digityear);
         if (year - this2digityear > 50) {

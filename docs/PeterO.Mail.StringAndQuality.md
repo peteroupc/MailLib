@@ -19,11 +19,9 @@
 
     <b>Parameters:</b>
 
- * <i>value</i>: The parameter  <i>value</i>
- is a text string.
+ * <i>value</i>: An arbitrary text string.
 
- * <i>quality</i>: The parameter  <i>quality</i>
- is a 32-bit signed integer.
+ * <i>quality</i>: A 32-bit signed integer serving as the "quality" value.
 
 <a id="Quality"></a>
 ### Quality

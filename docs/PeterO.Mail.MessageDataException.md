@@ -19,8 +19,7 @@
 
    <b>Parameters:</b>
 
- * <i>message</i>: The parameter  <i>message</i>
- is a text string.
+ * <i>message</i>: A string to use as the exception message.
 
 <a id="Void_ctor_System_String_System_Exception"></a>
 ### MessageDataException Constructor
@@ -33,8 +32,7 @@
 
     <b>Parameters:</b>
 
- * <i>message</i>: The parameter  <i>message</i>
- is a text string.
+ * <i>message</i>: A string to use as the exception message.
 
  * <i>innerException</i>: The parameter  <i>innerException</i>
  is an Exception object.

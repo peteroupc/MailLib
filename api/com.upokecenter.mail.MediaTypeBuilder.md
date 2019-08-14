@@ -7,9 +7,11 @@ A mutable media type object.
 ## Methods
 
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
- Initializes a new instance of the MediaTypeBuilder class.
+ Initializes a new instance of the MediaTypeBuilder class, using the type
+  "application/octet-stream" .
 * `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
- Initializes a new instance of the MediaTypeBuilder class.
+ Initializes a new instance of the MediaTypeBuilder class using the data from
+ another media type.
 * `MediaTypeBuilder​(java.lang.String type,
                 java.lang.String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
@@ -41,9 +43,11 @@ A mutable media type object.
 ## Constructors
 
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
- Initializes a new instance of the MediaTypeBuilder class.
+ Initializes a new instance of the MediaTypeBuilder class, using the type
+  "application/octet-stream" .
 * `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
- Initializes a new instance of the MediaTypeBuilder class.
+ Initializes a new instance of the MediaTypeBuilder class using the data from
+ another media type.
 * `MediaTypeBuilder​(java.lang.String type,
                 java.lang.String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
@@ -52,10 +56,12 @@ A mutable media type object.
 
 ### MediaTypeBuilder
     public MediaTypeBuilder()
-Initializes a new instance of the <code>MediaTypeBuilder</code> class.
+Initializes a new instance of the <code>MediaTypeBuilder</code> class, using the type
+  "application/octet-stream" .
 ### MediaTypeBuilder
     public MediaTypeBuilder​(MediaType mt)
-Initializes a new instance of the <code>MediaTypeBuilder</code> class.
+Initializes a new instance of the <code>MediaTypeBuilder</code> class using the data from
+ another media type.
 
 **Parameters:**
 
@@ -71,9 +77,9 @@ Initializes a new instance of the <code>MediaTypeBuilder</code> class.
 
 **Parameters:**
 
-* <code>type</code> - The parameter <code>type</code> is a text string.
+* <code>type</code> - The media type's top-level type.
 
-* <code>subtype</code> - The parameter <code>subtype</code> is a text string.
+* <code>subtype</code> - The media type's subtype.
 
 ### getTopLevelType
     public final java.lang.String getTopLevelType()

@@ -226,8 +226,9 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
-     * @param str The parameter {@code str} is a text string.
+     * com.upokecenter.text.NormalizerInput} class using Normalization Form
+     * C.
+     * @param str A string specifying the text to normalize.
      */
     public NormalizerInput(
   String str) {
@@ -238,7 +239,8 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * com.upokecenter.text.NormalizerInput} class using Normalization Form
+     * C.
      * @param input The parameter {@code input} is an ICharacterInput object.
      */
     public NormalizerInput(
@@ -250,11 +252,15 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * com.upokecenter.text.NormalizerInput} class. Uses a portion of a
+     * string as the input.
      * @param str The parameter {@code str} is a text string.
-     * @param index The parameter {@code index} is a 32-bit signed integer.
-     * @param length The parameter {@code length} is a 32-bit signed integer.
-     * @param form The parameter {@code form} is a Normalization object.
+     * @param index A zero-based index showing where the desired portion of {@code
+     * str} begins.
+     * @param length The number of elements in the desired portion of {@code str}
+     * (but not more than {@code str} 's length).
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      */
     public NormalizerInput(
       String str,
@@ -270,7 +276,8 @@ package com.upokecenter.text;
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizerInput} class.
      * @param str The parameter {@code str} is a text string.
-     * @param form The parameter {@code form} is a Normalization object.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      */
     public NormalizerInput(String str, Normalization form) {
  this(new StringCharacterInput2(str), form);
@@ -280,7 +287,8 @@ package com.upokecenter.text;
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizerInput} class.
      * @param stream The parameter {@code stream} is an ICharacterInput object.
-     * @param form The parameter {@code form} is a Normalization object.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
     public NormalizerInput(

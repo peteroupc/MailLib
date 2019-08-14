@@ -12,6 +12,7 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
+new ContentDispositionTest().TestMakeFilename();
 var strs = new string[] {
 
 };

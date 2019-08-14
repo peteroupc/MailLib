@@ -14,7 +14,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary><para>Represents an email message, and contains methods and
+    /// <summary>
+    /// <para>Represents an email message, and contains methods and
     /// properties for accessing and modifying email message data. This
     /// class implements the Internet Message Format (RFC 5322) and
     /// Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC
@@ -70,9 +71,9 @@ namespace PeterO.Mail {
     /// bodies. Any 8-bit bytes are replaced with the substitute character
     /// byte (0x1a).</item>
     /// <item>If the message starts with the word "From" (and no other case
-    /// variations of that word) followed by one or more space (U+0020)
+    /// variations of that word) followed by one or more space (U + 0020)
     /// not followed by colon, that text and the rest of the text is
-    /// skipped up to and including a line feed (U+000A). (See also RFC
+    /// skipped up to and including a line feed (U + 000A). (See also RFC
     /// 4155, which describes the so-called "mbox" convention with "From"
     /// lines of this kind.)</item>
     /// <item>The name <c>ascii</c> is treated as a synonym for
@@ -83,7 +84,7 @@ namespace PeterO.Mail {
     /// <item>The following deviations involve encoded words under RFC
     /// 2047:</item>
     /// <item>(a) If a sequence of encoded words decodes to a string with a
-    /// CTL character (U+007F, or a character less than U+0020 and not
+    /// CTL character (U + 007F, or a character less than U + 0020 and not
     /// TAB) after being converted to Unicode, the encoded words are left
     /// un-decoded.</item>
     /// <item>(b) This implementation can decode encoded words regardless
@@ -154,10 +155,11 @@ namespace PeterO.Mail {
     private int transferEncoding;
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.Message'/> class.</summary>
-    /// <param name='stream'>The parameter <paramref name='stream'/> is a
-    /// Stream object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='stream'/> is null.</exception>
+    /// <see cref='PeterO.Mail.Message'/> class. Reads from the given
+    /// Stream object to initialize the message.</summary>
+    /// <param name='stream'>A readable data stream.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='stream'/> is null.</exception>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -170,9 +172,11 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.Message'/> class.</summary>
-    /// <param name='bytes'>A byte array.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='bytes'/> is null.</exception>
+    /// <see cref='PeterO.Mail.Message'/> class. Reads from the given byte
+    /// array to initialize the message.</summary>
+    /// <param name='bytes'>A readable data stream.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -185,7 +189,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.Message'/> class.</summary>
+    /// <see cref='PeterO.Mail.Message'/> class. The message will be plain
+    /// text and have an artificial From address.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -244,10 +249,10 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the body of this message as a text string.</summary>
     /// <value>The body of this message as a text string.</value>
-    /// <exception cref='System.NotSupportedException'>Either this message
-    /// is a multipart message, so it doesn't have its own body text, or
-    /// this message has no character encoding declared or assumed for it
-    /// (which is usually the case for non-text messages), or the character
+    /// <exception cref='NotSupportedException'>Either this message is a
+    /// multipart message, so it doesn't have its own body text, or this
+    /// message has no character encoding declared or assumed for it (which
+    /// is usually the case for non-text messages), or the character
     /// encoding is not supported.</exception>
     public string BodyString {
       get {
@@ -294,15 +299,16 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary><para>Gets a Hypertext Markup Language (HTML) rendering of this
+    /// <summary>
+    /// <para>Gets a Hypertext Markup Language (HTML) rendering of this
     /// message's text body. This method currently supports text/plain,
     /// text/plain with format = flowed, text/enriched, and text/markdown
     /// (original Markdown).</para></summary>
     /// <returns>An HTML rendering of this message's text.</returns>
-    /// <exception cref='System.NotSupportedException'>Either this message
-    /// is a multipart message, so it doesn't have its own body text, or
-    /// this message has no character encoding declared or assumed for it
-    /// (which is usually the case for non-text messages), or the character
+    /// <exception cref='NotSupportedException'>Either this message is a
+    /// multipart message, so it doesn't have its own body text, or this
+    /// message has no character encoding declared or assumed for it (which
+    /// is usually the case for non-text messages), or the character
     /// encoding is not supported.</exception>
     /// <remarks>
     /// <para>REMARK: The Markdown implementation currently supports all
@@ -393,7 +399,7 @@ namespace PeterO.Mail {
     /// media type, updates the Content-Type header field as appropriate.
     /// Cannot be set to null.</summary>
     /// <value>This message's media type.</value>
-    /// <exception cref='System.ArgumentNullException'>This value is being set and
+    /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
       get {
@@ -416,7 +422,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary><para>Gets a file name suggested by this message for saving the
+    /// <summary>
+    /// <para>Gets a file name suggested by this message for saving the
     /// message's body to a file. For more information on the algorithm,
     /// see ContentDisposition.MakeFilename.</para>
     /// <para>This method generates a file name based on the
@@ -442,12 +449,14 @@ namespace PeterO.Mail {
     /// retrieve.</param>
     /// <returns>A list of addresses, in the order in which they appear in
     /// this message's header fields of the given name.</returns>
-    /// <exception cref='System.NotSupportedException'>The parameter
-    /// <paramref name='headerName'/> is not supported for this method.
-    /// Currently, the only header fields supported are To, Cc, Bcc,
-    /// Reply-To, Sender, and From.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='headerName'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='headerName'/> is empty.</exception>
+    /// <exception cref='NotSupportedException'>The parameter <paramref
+    /// name='headerName'/> is not supported for this method. Currently,
+    /// the only header fields supported are To, Cc, Bcc, Reply-To, Sender,
+    /// and From.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='headerName'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='headerName'/> is empty.</exception>
     public IList<NamedAddress> GetAddresses(string headerName) {
       if (headerName == null) {
         throw new ArgumentNullException(nameof(headerName));
@@ -478,7 +487,7 @@ namespace PeterO.Mail {
     /// <summary>Gets a snapshot of the header fields of this message, in
     /// the order in which they appear in the message. For each item in the
     /// list, the key is the header field's name (where any basic
-    /// upper-case letters [U+0041 to U+005A] are converted to lower
+    /// upper-case letters [U + 0041 to U + 005A] are converted to lower
     /// case) and the value is the header field's value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
@@ -535,9 +544,9 @@ namespace PeterO.Mail {
     /// header field, such as "From" or "Content-ID". The value is the
     /// header field's value.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The key or value of
+    /// <exception cref='ArgumentNullException'>The key or value of
     /// <paramref name='header'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>The header field name is too
+    /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value
     /// is syntactically invalid.</exception>
     public Message AddHeader(KeyValuePair<string, string> header) {
@@ -552,8 +561,9 @@ namespace PeterO.Mail {
     /// "Content-ID" .</param>
     /// <param name='value'>Value of the header field.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> or <paramref name='value'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>The header field name is too
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value
     /// is syntactically invalid.</exception>
     public Message AddHeader(string name, string value) {
@@ -566,7 +576,7 @@ namespace PeterO.Mail {
 
     /// <summary>Generates this message's data in text form.
     /// <para>The generated message will have only Basic Latin code points
-    /// (U+0000 to U+007F), and the transfer encoding will always be
+    /// (U + 0000 to U + 007F), and the transfer encoding will always be
     /// 7bit, quoted-printable, or base64 (the declared transfer encoding
     /// for this message will be ignored).</para>
     /// <para>The following applies to the following header fields: From,
@@ -614,7 +624,12 @@ namespace PeterO.Mail {
       return this.body;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Gets the date and time extracted from this message's Date
+    /// header field (the value of which is found as though
+    /// GetHeader("date") were called). See
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+    /// System.String,System.Boolean)'/> for more information on the format
+    /// of the date-time array returned by this method.</summary>
     /// <returns>An array of 32-bit unsigned integers.</returns>
     public int[] GetDate() {
       string field = this.GetHeader("date");
@@ -645,9 +660,11 @@ namespace PeterO.Mail {
     /// get global time. This number can be positive or
     /// negative.</item></list>.</param>
     /// <returns>This object.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='dateTime'/> contains fewer than eight elements, contains
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> contains fewer than eight elements, contains
     /// invalid values, or contains a year less than 0.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='dateTime'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dateTime'/> is null.</exception>
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
@@ -691,7 +708,8 @@ namespace PeterO.Mail {
     /// <returns>A key/value pair. The key is the name of the header field,
     /// such as "From" or "Content-ID". The value is the header field's
     /// value.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='index'/> is 0 or at least as high as the number of header
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
     /// fields.</exception>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
@@ -711,11 +729,12 @@ namespace PeterO.Mail {
     /// <summary>Gets the first instance of the header field with the
     /// specified name, using a basic case-insensitive comparison. (Two
     /// strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).</summary>
+    /// converting the basic upper-case letters A to Z (U + 0041 to U +
+    /// 005A) in both strings to lower case.).</summary>
     /// <param name='name'>The name of a header field.</param>
     /// <returns>The value of the first header field with that name, or
     /// null if there is none.</returns>
-    /// <exception cref='System.ArgumentNullException'>Name is null.</exception>
+    /// <exception cref='ArgumentNullException'>Name is null.</exception>
     public string GetHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -733,12 +752,13 @@ namespace PeterO.Mail {
     /// <summary>Gets an array with the values of all header fields with
     /// the specified name, using a basic case-insensitive comparison. (Two
     /// strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).</summary>
+    /// converting the basic upper-case letters A to Z (U + 0041 to U +
+    /// 005A) in both strings to lower case.).</summary>
     /// <param name='name'>The name of a header field.</param>
     /// <returns>An array containing the values of all header fields with
     /// the given name, in the order they appear in the message. The array
     /// will be empty if no header field has that name.</returns>
-    /// <exception cref='System.ArgumentNullException'>Name is null.</exception>
+    /// <exception cref='ArgumentNullException'>Name is null.</exception>
     public string[] GetHeaderArray(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -771,7 +791,8 @@ namespace PeterO.Mail {
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='index'/> is 0 or at least as high as the number of header
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
     /// fields.</exception>
     public Message RemoveHeader(int index) {
       if (index < 0) {
@@ -798,13 +819,15 @@ namespace PeterO.Mail {
     /// message. If this is a multipart message, the header field is not
     /// removed from its body part headers. A basic case-insensitive
     /// comparison is used. (Two strings are equal in such a comparison, if
-    /// they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+    /// they match after converting the basic upper-case letters A to Z (U
+    /// + 0041 to U + 005A) in both strings to lower case.).
     /// <para>Updates the ContentType and ContentDisposition properties if
     /// those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='name'>The name of the header field to remove.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public Message RemoveHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
@@ -830,7 +853,8 @@ namespace PeterO.Mail {
     /// This method doesn't make a copy of that byte array.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <returns>This object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='bytes'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -849,11 +873,12 @@ namespace PeterO.Mail {
     /// header field, such as "From" or "Content-ID". The value is the
     /// header field's value.</param>
     /// <returns>A Message object.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='index'/> is 0 or at least as high as the number of header
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
     /// fields; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
-    /// <exception cref='System.ArgumentNullException'>The key or value of
+    /// <exception cref='ArgumentNullException'>The key or value of
     /// <paramref name='header'/> is null.</exception>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
@@ -869,11 +894,13 @@ namespace PeterO.Mail {
     /// "Content-ID" .</param>
     /// <param name='value'>Value of the header field.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='index'/> is 0 or at least as high as the number of header
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
     /// fields; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> or <paramref name='value'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -904,11 +931,13 @@ namespace PeterO.Mail {
     /// set.</param>
     /// <param name='value'>Value of the header field.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='index'/> is 0 or at least as high as the number of header
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least as high as the number of header
     /// fields; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='value'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='value'/> is null.</exception>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -934,7 +963,8 @@ namespace PeterO.Mail {
     /// could be "=?utf-8?q?me?= &lt;me@example.com&gt;".</param>
     /// <returns>The header field value with valid encoded words
     /// decoded.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public static string DecodeHeaderValue(string name, string value) {
       return HeaderFieldParsers.GetParser(name).DecodeEncodedWords(value);
     }
@@ -950,10 +980,11 @@ namespace PeterO.Mail {
     /// "subject" .</param>
     /// <param name='value'>The header field's value.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentException'>The header field name is too
+    /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value
     /// is syntactically invalid.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='name'/> or <paramref name='value'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
@@ -983,7 +1014,8 @@ namespace PeterO.Mail {
     /// <param name='str'>A string consisting of the message in HTML
     /// format.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -1005,7 +1037,8 @@ namespace PeterO.Mail {
     /// <param name='html'>A string consisting of the HTML version of the
     /// message.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='text'/> or <paramref name='html'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='text'/> or <paramref name='html'/> is null.</exception>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
         throw new ArgumentNullException(nameof(text));
@@ -1041,7 +1074,8 @@ namespace PeterO.Mail {
     /// of the message. For interoperability, this Markdown version will be
     /// converted to HTML.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='markdown'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='markdown'/> is null.</exception>
     public Message SetTextAndMarkdown(string text, string markdown) {
       if (markdown == null) {
         throw new ArgumentNullException(nameof(markdown));
@@ -1074,7 +1108,8 @@ namespace PeterO.Mail {
     /// <param name='str'>A string consisting of the message in plain text
     /// format.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
@@ -1289,18 +1324,19 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// <param name='mediaType'>A media type to assign to the
     /// attachment.</param>
     /// <returns>A Message object for the generated attachment.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
     /// null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     /// <example>
-    /// The following example (written in C# for the.NET
+    ///  The following example (written in C# for the.NET
     /// version) is an extension method that adds an attachment
     /// from a byte array to a message.
     /// <code>public static Message AddAttachmentFromBytes(this Message msg, byte[]
     /// bytes, MediaType mediaType) { using (var fs = new MemoryStream(bytes)) {
     /// return msg.AddAttachment(fs, mediaType); } }</code>
-    /// .
+    ///  .
     /// </example>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "attachment");
@@ -1323,7 +1359,8 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
     /// will have a "charset" of "utf-8".</param>
     /// <returns>A Message object for the generated attachment.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='inputStream'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> is null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     public Message AddAttachment(Stream inputStream, string filename) {
@@ -1350,7 +1387,8 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// means the portion of the string after the last "/" or "\", if
     /// either character exists, or the entire string otherwise.</param>
     /// <returns>A Message object for the generated attachment.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
     /// null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
@@ -1374,18 +1412,19 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// <param name='mediaType'>A media type to assign to the body
     /// part.</param>
     /// <returns>A Message object for the generated body part.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
     /// null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     /// <example>
-    /// The following example (written in C# for the.NET
+    ///  The following example (written in C# for the.NET
     /// version) is an extension method that adds an inline
     /// body part from a byte array to a message.
     /// <code>public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
     /// MediaType mediaType) { using (MemoryStream fs = new MemoryStream(bytes))
     /// { return msg.AddInline(fs, mediaType); } }</code>
-    /// .
+    ///  .
     /// </example>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
       return this.AddBodyPart(inputStream, mediaType, null, "inline");
@@ -1408,7 +1447,8 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// .asc, .brf, .pot, .rst, .md, .markdown, or .srt, the media type
     /// will have a "charset" of "utf-8".</param>
     /// <returns>A Message object for the generated body part.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='inputStream'/> or "mediaType" is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or "mediaType" is null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     public Message AddInline(Stream inputStream, string filename) {
@@ -1431,7 +1471,8 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// <param name='filename'>A file name to assign to the body
     /// part.</param>
     /// <returns>A Message object for the generated body part.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='inputStream'/> or <paramref name='mediaType'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='inputStream'/> or <paramref name='mediaType'/> is
     /// null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
@@ -1480,7 +1521,8 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// fewer than two body parts, returns this object. If no body part
     /// matches the given languages, returns the last body part if its
     /// language is "zxx", or the second body part otherwise.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> is null.</exception>
     public Message SelectLanguageMessage(
        IList<string> languages) {
       return this.SelectLanguageMessage(languages, false);
@@ -1502,7 +1544,8 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// fewer than two body parts, returns this object. If no body part
     /// matches the given languages, returns the last body part if its
     /// language is "zxx", or the second body part otherwise.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='languages'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='languages'/> is null.</exception>
     public Message SelectLanguageMessage(
        IList<string> languages,
        bool preferOriginals) {
@@ -1576,10 +1619,13 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
     /// header field (see LanguageTags.GetLanguageList).</param>
     /// <returns>A Message object with the content type
     /// "multipart/multilingual" . It will begin with an explanatory body
-    /// part and be followed by the messages given in the <paramref name='messages'/> parameter in the order given.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='messages'/> or <paramref name='languages'/> is
+    /// part and be followed by the messages given in the <paramref
+    /// name='messages'/> parameter in the order given.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='messages'/> or <paramref name='languages'/> is
     /// null.</exception>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='messages'/> or <paramref name='languages'/> is empty, their
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='messages'/> or <paramref name='languages'/> is empty, their
     /// lengths don't match, at least one message is "null", each message
     /// doesn't contain the same email addresses in their From header
     /// fields, <paramref name='languages'/> contains a syntactically
@@ -3280,7 +3326,8 @@ name.Length >= 2 &&
     /// <param name='uri'>The parameter <paramref name='uri'/> is not
     /// documented yet.</param>
     /// <returns>A Message object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='uri'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='uri'/> is null.</exception>
     public static Message FromMailtoUri(Uri uri) {
       if (uri == null) {
         throw new ArgumentNullException(nameof(uri));

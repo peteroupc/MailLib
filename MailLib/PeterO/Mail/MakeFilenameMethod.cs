@@ -568,10 +568,10 @@ namespace PeterO.Mail {
             // '![ ... ]' may be interpreted in BASH as an evaluator;
             // replace '!' with underscore
             builder.Append('_');
-          } else if (bracketedText >= 0 && str[i] == '[') {
+          } else if (bracketedText >= 0 && c == '[') {
             // Avoid glob bracket pattern
             builder.Append('(');
-          } else if (bracketedText >= 0 && str[i] == ']') {
+          } else if (bracketedText >= 0 && c == ']') {
             // Avoid glob bracket pattern
             builder.Append(')');
           } else if (c == '`') {
@@ -615,7 +615,7 @@ namespace PeterO.Mail {
 0xd800));
                 builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
-            if (IsAtOrBelowMaxCodeLength(builder)) {
+            if (!IsAtOrBelowMaxCodeLength(builder)) {
               builder.Remove(oldLength, builder.Length - oldLength);
               break;
             }

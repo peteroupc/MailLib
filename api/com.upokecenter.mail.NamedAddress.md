@@ -9,20 +9,21 @@ Represents an email address and a name for that address. Can represent a
 
 * `NamedAddress​(java.lang.String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+  class.
 * `NamedAddress​(java.lang.String displayName,
             Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given display name and email address.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given display name and email address.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String localPart,
             java.lang.String domain) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given name and an email address made up of its local
+ part and domain.
 * `NamedAddress​(java.lang.String groupName,
             java.util.List<NamedAddress> mailboxes) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
@@ -56,20 +57,21 @@ Represents an email address and a name for that address. Can represent a
 
 * `NamedAddress​(java.lang.String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+  class.
 * `NamedAddress​(java.lang.String displayName,
             Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given display name and email address.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given display name and email address.
 * `NamedAddress​(java.lang.String displayName,
             java.lang.String localPart,
             java.lang.String domain) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given name and an email address made up of its local
+ part and domain.
 * `NamedAddress​(java.lang.String groupName,
             java.util.List<NamedAddress> mailboxes) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
@@ -80,11 +82,31 @@ Represents an email address and a name for that address. Can represent a
 ### NamedAddress
     public NamedAddress​(java.lang.String address)
 Initializes a new instance of the <code>NamedAddress</code>
- class.
+  class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
+  Doe" &lt;john@example.com&gt;</code></li>
+
+  <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=&lt;john@example.com&gt;</code></li>
+  <li><code>John &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
+ &lt;tom@example.com&gt;, Jane
+ &lt;jane@example.com&gt;;</code></li></ul>
 
 **Parameters:**
 
-* <code>address</code> - The parameter <code>address</code> is a text string.
+* <code>address</code> - A text string identifying a single email address or a group
+ of email addresses. Comments, or text within parentheses, can
+ appear. Multiple email addresses are not allowed unless they appear
+ in the group syntax given above. Encoded words under RFC 2047 that
+ appear within comments or display names will be decoded. <p>An RFC
+  2047 encoded word consists of "=?", a character encoding name, such
+  as <code>utf-8</code>, either "?B?" or "?Q?" (in upper or lower case), a
+ series of bytes in the character encoding, further encoded using B
+  or Q encoding, and finally "?=". B encoding uses Base64, while in Q
+  encoding, spaces are changed to "_", equals are changed to "=3D",
+ and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and
+ the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are
+  changed to "=" followed by their 2-digit hexadecimal form. An
+ encoded word's maximum length is 75 characters. See the third
+ example.</p>.
 
 **Throws:**
 
@@ -96,13 +118,14 @@ Initializes a new instance of the <code>NamedAddress</code>
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String address)
 Initializes a new instance of the <code>NamedAddress</code>
- class.
+ class using the given display name and email address.
 
 **Parameters:**
 
-* <code>displayName</code> - The parameter <code>displayName</code> is a text string.
+* <code>displayName</code> - The display name of the email address. Can be null or
+ empty. Encoded words under RFC 2047 will not be decoded.
 
-* <code>address</code> - The parameter <code>address</code> is a text string.
+* <code>address</code> - An email address.
 
 **Throws:**
 
@@ -111,13 +134,14 @@ Initializes a new instance of the <code>NamedAddress</code>
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, Address address)
 Initializes a new instance of the <code>NamedAddress</code>
- class.
+ class using the given display name and email address.
 
 **Parameters:**
 
-* <code>displayName</code> - The parameter <code>displayName</code> is a text string.
+* <code>displayName</code> - The display name of the email address. Can be null or
+ empty. Encoded words under RFC 2047 will not be decoded.
 
-* <code>address</code> - The parameter <code>address</code> is an Address object.
+* <code>address</code> - An email address.
 
 **Throws:**
 
@@ -126,15 +150,17 @@ Initializes a new instance of the <code>NamedAddress</code>
 ### NamedAddress
     public NamedAddress​(java.lang.String displayName, java.lang.String localPart, java.lang.String domain)
 Initializes a new instance of the <code>NamedAddress</code>
- class.
+ class using the given name and an email address made up of its local
+ part and domain.
 
 **Parameters:**
 
-* <code>displayName</code> - The parameter <code>displayName</code> is a text string.
+* <code>displayName</code> - The display name of the email address. Can be null or
+ empty.
 
-* <code>localPart</code> - The parameter <code>localPart</code> is a text string.
+* <code>localPart</code> - The local part of the email address (before the "@").
 
-* <code>domain</code> - The parameter <code>domain</code> is a text string.
+* <code>domain</code> - The domain of the email address (before the "@").
 
 **Throws:**
 
@@ -144,13 +170,14 @@ Initializes a new instance of the <code>NamedAddress</code>
 ### NamedAddress
     public NamedAddress​(java.lang.String groupName, java.util.List<NamedAddress> mailboxes)
 Initializes a new instance of the <code>NamedAddress</code>
- class.
+ class. Takes a group name and several named email addresses as
+ parameters, and forms a group with them.
 
 **Parameters:**
 
-* <code>groupName</code> - The parameter <code>groupName</code> is a text string.
+* <code>groupName</code> - The group's name.
 
-* <code>mailboxes</code> - The parameter <code>mailboxes</code> is an List object.
+* <code>mailboxes</code> - A list of named addresses that make up the group.
 
 **Throws:**
 

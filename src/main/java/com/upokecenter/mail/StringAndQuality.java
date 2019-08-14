@@ -9,8 +9,8 @@ package com.upokecenter.mail;
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.StringAndQuality} class.
-     * @param value The parameter {@code value} is a text string.
-     * @param quality The parameter {@code quality} is a 32-bit signed integer.
+     * @param value An arbitrary text string.
+     * @param quality A 32-bit signed integer serving as the "quality" value.
      */
       public StringAndQuality(String value, int quality) {
         this.propVarvalue = value;

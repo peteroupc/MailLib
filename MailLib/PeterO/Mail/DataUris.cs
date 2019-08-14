@@ -3,13 +3,15 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Contains methods for parsing and generating Data URIs
+    /// <summary>
+    ///  Contains methods for parsing and generating Data URIs
     /// (uniform resource identifiers). Data URIs are described
     /// in RFC 2397. Examples for Data URIs follow.
     /// <code>data:, hello%20world</code>
     /// <code>data:text/markdown, hello%20world</code>
     /// <code>data:application/octet-stream;base64, AAAAAA==</code>
-    /// .</summary>
+    ///  .
+    /// </summary>
   public static class DataUris {
     /// <summary>Extracts the media type from a Data URI (uniform resource
     /// identifier).</summary>
@@ -17,7 +19,8 @@ namespace PeterO.Mail {
     /// string.</param>
     /// <returns>The media type. Returns null if <paramref name='uri'/> is
     /// null, is syntactically invalid, or is not a Data URI.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='uri'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='uri'/> is null.</exception>
     public static MediaType DataUriMediaType(string uri) {
             if (uri == null) {
               throw new ArgumentNullException(nameof(uri));
@@ -113,9 +116,11 @@ return (uri == null) ? null : DataUriBytes(uri.ToString());
     /// identifier) in the form of a byte array.</summary>
     /// <param name='uri'>The parameter <paramref name='uri'/> is a text
     /// string.</param>
-    /// <returns>The data as a byte array. Returns null if <paramref name='uri'/> is null, is syntactically invalid, or is not a data
+    /// <returns>The data as a byte array. Returns null if <paramref
+    /// name='uri'/> is null, is syntactically invalid, or is not a data
     /// URI.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='uri'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='uri'/> is null.</exception>
     public static byte[] DataUriBytes(string uri) {
             if (uri == null) {
               throw new ArgumentNullException(nameof(uri));
@@ -259,7 +264,8 @@ return (uri == null) ? null : DataUriBytes(uri.ToString());
     /// <param name='textString'>A text string to encode as a data
     /// URI.</param>
     /// <returns>A Data URI that encodes the given text.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='textString'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='textString'/> is null.</exception>
     public static string MakeDataUri(string textString) {
       if (textString == null) {
         throw new ArgumentNullException(nameof(textString));
@@ -276,7 +282,8 @@ return (uri == null) ? null : DataUriBytes(uri.ToString());
     /// <param name='mediaType'>A media type to assign to the data.</param>
     /// <returns>A Data URI that encodes the given data and media
     /// type.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='bytes'/> or <paramref name='mediaType'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> or <paramref name='mediaType'/> is null.</exception>
     public static string MakeDataUri(byte[] bytes, MediaType mediaType) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));

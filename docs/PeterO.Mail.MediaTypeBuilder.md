@@ -22,7 +22,7 @@
     public MediaTypeBuilder(
         PeterO.Mail.MediaType mt);
 
- Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.
+ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class using the data from another media type.
 
     <b>Parameters:</b>
 
@@ -46,18 +46,16 @@ The parameter  <i>mt</i>
 
     <b>Parameters:</b>
 
- * <i>type</i>: The parameter  <i>type</i>
- is a text string.
+ * <i>type</i>: The media type's top-level type.
 
- * <i>subtype</i>: The parameter  <i>subtype</i>
- is a text string.
+ * <i>subtype</i>: The media type's subtype.
 
 <a id="Void_ctor"></a>
 ### MediaTypeBuilder Constructor
 
     public MediaTypeBuilder();
 
- Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.
+ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class, using the type "application/octet-stream" .
 
   <a id="IsMultipart"></a>
 ### IsMultipart

@@ -19,10 +19,12 @@ namespace PeterO.Mail {
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
     /// 8-element array. See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+    /// System.String,System.Boolean)'/> for information on the format of
     /// this parameter.</param>
     /// <returns>A date-time string.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid, including if the year (
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> is null or invalid, including if the year (
     /// <c>dateTime[0]</c> ) is less than 0.</exception>
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
@@ -198,14 +200,17 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
     /// 8-element array. See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for information on the format of
+    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
+    /// System.String,System.Boolean)'/> for information on the format of
     /// this parameter.</param>
-    /// <param name='gmt'>The parameter <paramref name='gmt'/> is not
-    /// documented yet.</param>
+    /// <param name='gmt'>If true, uses the string "GMT" as the time zone
+    /// offset.</param>
     /// <returns>A date-time string.</returns>
-    /// <exception cref='System.ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid, including if the year (
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> is null or invalid, including if the year (
     /// <c>dateTime[0]</c> ) is less than 0.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='dateTime'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dateTime'/> is null.</exception>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
@@ -302,7 +307,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// <c>null</c> if <paramref name='str'/> is null, empty, or
     /// syntactically invalid, or if the string's year would overflow the
     /// range of a 32-bit signed integer.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
     if (str == null) {
       return null;
@@ -902,7 +908,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
       }
       // RFC 850
       int dowLong = ParseDOWLong(v, index, endIndex);
-      index += dowNamesLong[dowLong].Length;
+      string dowNameLong = dowNamesLong[dowLong];
+      index += dowNameLong.Length;
       if (endIndex - index > 23 && (endIndex - index > 1 && v[index] == 44 &&
         v[index + 1] == 32) && ((v[index + 2] >= 48 && v[index + 2] <=
         57) && (v[index + 3] >= 48 && v[index + 3] <= 57)) && (v[index + 4]
@@ -931,8 +938,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         int hour = ((v[index + 10] - '0') * 10) + (v[index + 11] - '0');
         int minute = ((v[index + 13] - '0') * 10) + (v[index + 14] - '0');
         int second = ((v[index + 16] - '0') * 10) + (v[index + 17] - '0');
-        DateTime dt = DateTime.UtcNow;
-        int thisyear = dt.Year;
+        int thisyear = DateTime.UtcNow.Year;
         int this2digityear = thisyear % 100;
         int convertedYear = year + (thisyear - this2digityear);
         if (year - this2digityear > 50) {

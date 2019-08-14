@@ -201,8 +201,28 @@ if (addressValue == null) {
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
-     * @param address The parameter {@code address} is a text string.
+     *  class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
+     *  Doe" &lt;john@example.com&gt;</code></li>
+     *
+  <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=&lt;john@example.com&gt;</code></li>
+     *  <li><code>John &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
+     * &lt;tom@example.com&gt;, Jane
+     * &lt;jane@example.com&gt;;</code></li></ul>
+     * @param address A text string identifying a single email address or a group
+     * of email addresses. Comments, or text within parentheses, can
+     * appear. Multiple email addresses are not allowed unless they appear
+     * in the group syntax given above. Encoded words under RFC 2047 that
+     * appear within comments or display names will be decoded. <p>An RFC
+     *  2047 encoded word consists of "=?", a character encoding name, such
+     *  as {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
+     * series of bytes in the character encoding, further encoded using B
+     *  or Q encoding, and finally "?=". B encoding uses Base64, while in Q
+     *  encoding, spaces are changed to "_", equals are changed to "=3D",
+     * and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and
+     * the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are
+     *  changed to "=" followed by their 2-digit hexadecimal form. An
+     * encoded word's maximum length is 75 characters. See the third
+     * example.</p>.
      * @throws NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException Address has an invalid syntax.; Address has an
      * invalid syntax.
@@ -232,9 +252,10 @@ if (addressValue == null) {
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
-     * @param displayName The parameter {@code displayName} is a text string.
-     * @param address The parameter {@code address} is a text string.
+     * class using the given display name and email address.
+     * @param displayName The display name of the email address. Can be null or
+     * empty. Encoded words under RFC 2047 will not be decoded.
+     * @param address An email address.
      * @throws NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress(String displayName, String address) {
@@ -249,9 +270,10 @@ if (addressValue == null) {
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
-     * @param displayName The parameter {@code displayName} is a text string.
-     * @param address The parameter {@code address} is an Address object.
+     * class using the given display name and email address.
+     * @param displayName The display name of the email address. Can be null or
+     * empty. Encoded words under RFC 2047 will not be decoded.
+     * @param address An email address.
      * @throws NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress(String displayName, Address address) {
@@ -266,10 +288,12 @@ if (addressValue == null) {
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
-     * @param displayName The parameter {@code displayName} is a text string.
-     * @param localPart The parameter {@code localPart} is a text string.
-     * @param domain The parameter {@code domain} is a text string.
+     * class using the given name and an email address made up of its local
+     * part and domain.
+     * @param displayName The display name of the email address. Can be null or
+     * empty.
+     * @param localPart The local part of the email address (before the "@").
+     * @param domain The domain of the email address (before the "@").
      * @throws NullPointerException The parameter {@code localPart} or {@code
      * domain} is null.
      */
@@ -288,9 +312,10 @@ if (addressValue == null) {
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
-     * @param groupName The parameter {@code groupName} is a text string.
-     * @param mailboxes The parameter {@code mailboxes} is an List object.
+     * class. Takes a group name and several named email addresses as
+     * parameters, and forms a group with them.
+     * @param groupName The group's name.
+     * @param mailboxes A list of named addresses that make up the group.
      * @throws NullPointerException The parameter {@code groupName} or {@code
      * mailboxes} is null.
      * @throws IllegalArgumentException GroupName is empty.; A mailbox in the list is a

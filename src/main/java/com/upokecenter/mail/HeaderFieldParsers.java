@@ -970,6 +970,20 @@ private HeaderFieldParsers() {
       }
     }
 
+    private static final class HeaderTlsRequired extends StructuredHeaderField {
+      @Override public int Parse(
+        String str,
+        int index,
+        int endIndex,
+        ITokener tokener) {
+        return HeaderParser.ParseHeaderTlsRequired(
+          str,
+          index,
+          endIndex,
+          tokener);
+      }
+    }
+
     private static final class HeaderX400Originator extends StructuredHeaderField {
       @Override public int Parse(
         String str,
@@ -2258,6 +2272,7 @@ private HeaderFieldParsers() {
       fieldMap.put("sio-label-history",new HeaderSioLabel());
       fieldMap.put("injection-info",new HeaderInjectionInfo());
       //------------------ generic ------------------
+      fieldMap.put("tls-required",new HeaderTlsRequired());
       fieldMap.put("content-return",new HeaderX400ContentReturn());
       fieldMap.put("x400-content-return",new HeaderX400ContentReturn());
       fieldMap.put("delivery-date",new HeaderDeliveryDate());
