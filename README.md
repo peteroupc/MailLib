@@ -70,6 +70,15 @@ An example of reading an email message from a file:
 Release Notes
 ---------
 
+Version 0.14.0:
+
+- Message class can now convert Markdown to HTML, with new method SetTextAndMarkdown
+- Unicode data updated to latest version of Unicode
+- Date headers in generated messages (Generate()) are in global time
+- DataUrls class is now called DataUris; DataUrls is now deprecated.
+- Changes in algorithm used by ContentDisposition.MakeFilename
+- Bug fixes
+
 Version 0.13.1:
 
 - Java version only: Make Java version depend on Encoding library 0.5.0.

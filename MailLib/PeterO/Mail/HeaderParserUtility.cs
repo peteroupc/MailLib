@@ -117,7 +117,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             if (si < endIndex && str[si] == (char)0x22) {
               // Note that quoted-string starts with optional CFWS
               tokener.RestoreState(state);
-              si = HeaderParser.ParseQuotedString(str, index, endIndex,
+              si = HeaderParser.ParseQuotedString(
+                str,
+                index,
+                endIndex,
                 tokener);
               if (si == index) {
                 throw new InvalidOperationException("Internal error: " + str);

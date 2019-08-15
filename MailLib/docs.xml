@@ -1179,8 +1179,11 @@
           in some cases, such that two different inputs may map to the same
           output.
         </item>
-        <item><b>File Name Support.</b> For recommendations on file name support, see "[File Name Support in
-          Applications](https://peteroupc.github.io/filenames.html)".
+        <item><b>File Name Support.</b> For recommendations on file name support, see "
+          <a href='https://peteroupc.github.io/filenames.html'>
+            File Name Support in Applications
+          </a>
+          ".
         </item>
         <item><b>Guarantees.</b> The exact file name conversion used by this method is not guaranteed
           to remain the same between versions of this library, with the
@@ -1357,21 +1360,25 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.DataUriBytes(System.Uri)'>
-    <summary>Not documented yet.
+    <summary>Extracts the data from a Data URI (uniform resource identifier) in the
+      form of a byte array, where the Data URI is given as a URI object.
     </summary>
-    <param name='uri'>The parameter
-      <paramref name='uri'/>
-       is not documented yet.
+    <param name='uri'>The Data URI in the form of a URI object.
     </param>
-    <returns>A byte array.
+    <returns>The data as a byte array. Returns null if
+      <paramref name='uri'/>
+       is null, is syntactically invalid, or is not a data URI.
     </returns>
+    <exception cref='ArgumentNullException'>The parameter
+      <paramref name='uri'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.DataUriMediaType(System.String)'>
-    <summary>Extracts the media type from a Data URI (uniform resource identifier).
+    <summary>Extracts the media type from a Data URI (uniform resource identifier) in
+      the form of a text string.
     </summary>
-    <param name='uri'>The parameter
-      <paramref name='uri'/>
-       is a text string.
+    <param name='uri'>A data URI in the form of a text string.
     </param>
     <returns>The media type. Returns null if
       <paramref name='uri'/>
@@ -1383,14 +1390,19 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.DataUriMediaType(System.Uri)'>
-    <summary>Not documented yet.
+    <summary>Extracts the media type from a Data URI (uniform resource identifier) in
+      the form of a URI object.
     </summary>
-    <param name='uri'>The parameter
-      <paramref name='uri'/>
-       is not documented yet.
+    <param name='uri'>A data URI in the form of a URI object.
     </param>
-    <returns>A MediaType object.
+    <returns>The media type. Returns null if
+      <paramref name='uri'/>
+       is null, is syntactically invalid, or is not a Data URI.
     </returns>
+    <exception cref='ArgumentNullException'>The parameter
+      <paramref name='uri'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.DataUris.MakeDataUri(System.Byte[],PeterO.Mail.MediaType)'>
     <summary>Encodes data with the given media type in a Data URI (uniform resource
@@ -1918,8 +1930,7 @@
       5322) from an 8-element array.
     </summary>
     <param name='dateTime'>The date and time in the form of an 8-element array. See
-      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for information on the format of this parameter.
+      <c>ParseDateString(bool)</c> for information on the format of this parameter.
     </param>
     <returns>A date-time string.
     </returns>
@@ -1934,8 +1945,7 @@
       5322) from an 8-element array.
     </summary>
     <param name='dateTime'>The date and time in the form of an 8-element array. See
-      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for information on the format of this parameter.
+      <c>ParseDateString(bool)</c> for information on the format of this parameter.
     </param>
     <param name='gmt'>If true, uses the string "GMT" as the time zone offset.
     </param>
@@ -1952,14 +1962,23 @@
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.ParseDateString(System.String)'>
-    <summary>Not documented yet.
+    <summary>Gets the date and time extracted from a date-time string following the
+      Internet Message Format (RFC 5322). Obsolete time zone strings are not
+      allowed to appear in the date-time string. See
+      <c>ParseDateString(bool)</c> for information on this method's return value.
     </summary>
-    <param name='str'>The parameter
-      <paramref name='str'/>
-       is not documented yet.
+    <param name='str'>A date-time string.
     </param>
-    <returns>An array of 32-bit unsigned integers.
+    <returns>An 8-element array containing the date and time, or
+      <c>null</c> if
+      <paramref name='str'/>
+       is null, empty, or syntactically invalid, or if the string's year would
+      overflow the range of a 32-bit signed integer.
     </returns>
+    <exception cref='ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'>
     <summary>Gets the date and time extracted from a date-time string following the
@@ -2889,18 +2908,23 @@
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.Message.FromMailtoUri(System.Uri)'>
-    <summary>Not documented yet.
+    <summary>Creates a message object from a MailTo URI (uniform resource identifier)
+      in the form of a URI object. The MailTo URI can contain key-value pairs
+      that follow a question-mark, as in the following example:
+      "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is
+      the subject of the email address. Only certain keys are supported, namely,
+      "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and
+      "body". The first seven are header field names that will be used to set
+      the returned message's corresponding header fields. The last, "body", sets
+      the body of the message to the given text. Keys other than these eight
+      will be ignored.
     </summary>
-    <param name='uri'>The parameter
-      <paramref name='uri'/>
-       is not documented yet.
+    <param name='uri'>The MailTo URI in the form of a URI object.
     </param>
-    <returns>A Message object.
-    </returns>
-    <exception cref='ArgumentNullException'>The parameter
+    <returns>A Message object created from the given MailTo URI. Returs null if
       <paramref name='uri'/>
-       is null.
-    </exception>
+       is null, is syntactically invalid, or is not a MailTo URI.
+    </returns>
   </doc>
   <doc name='M:PeterO.Mail.Message.FromMailtoUrl(System.String)'>
     <summary>Creates a message object from a MailTo URI (uniform resource identifier).
@@ -3655,7 +3679,10 @@
     </value>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.AddressesEqual(PeterO.Mail.NamedAddress)'>
-    <summary>Not documented yet.
+    <summary>Determines whether the email addresses stored this object are the same
+      between this object and the given object, regardless of the display names
+      they store. For groups, the email addresses must be equal and in the same
+      order in both objects.
     </summary>
     <param name='na'>A named address object to compare with this one. Can be null.
     </param>
@@ -3665,26 +3692,28 @@
     </returns>
   </doc>
   <doc name='P:PeterO.Mail.NamedAddress.DisplayName'>
-    <summary>Gets the display name for this email address. Returns null if the display
-      name is absent.
+    <summary>Gets the display name for this email address.
     </summary>
-    <value>The display name for this email address.
+    <value>The display name for this email address. Returns null if the display name
+      is absent.
     </value>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.Equals(System.Object)'>
-    <summary>Determines whether this object and another object are equal.
+    <summary>Determines whether this object and another object are equal. For groups,
+      the named addresses (display name/email address pairs) must be equal and
+      in the same order in both objects.
     </summary>
-    <param name='obj'>The parameter
-      <paramref name='obj'/>
-       is an arbitrary object.
+    <param name='obj'>An arbitrary object to compare with this one.
     </param>
-    <returns><c>true</c> if this object and another object are equal; otherwise,
+    <returns><c>true</c> if this object and another object are equal and have the same type;
+      otherwise,
       <c>false</c> .
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.NamedAddress.GetHashCode'>
-    <summary>Calculates the hash code of this object. No application or process IDs are
-      used in the hash code calculation.
+    <summary>Calculates the hash code of this object. The exact algorithm used by this
+      method is not guaranteed to be the same between versions of this library,
+      and no application or process IDs are used in the hash code calculation.
     </summary>
     <returns>A 32-bit hash code.
     </returns>

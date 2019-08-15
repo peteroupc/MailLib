@@ -318,7 +318,7 @@ HeaderParserUtility.ParseQuotedStringCore(
       // NOTE: Assumes 'symbol' is a syntactically valid 'comment'
       // and begins and ends with parentheses
       if (symbol.Length == 0 || symbol[0] != '(') {
-        throw new ArgumentException();
+        throw new InvalidOperationException();
       }
       var i = 0;
       var symbolBegin = 0;

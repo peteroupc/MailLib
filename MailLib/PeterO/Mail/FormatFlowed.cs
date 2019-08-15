@@ -811,8 +811,9 @@ namespace PeterO.Mail {
           while (qi < str.Length) {
             if (str[qi] == '`') {
               ++backTicks;
-            } else { break;
-}
+            } else {
+              break;
+            }
             ++qi;
           }
           while (qi < str.Length) {
@@ -826,8 +827,9 @@ namespace PeterO.Mail {
                     qi = qi2;
                     break;
                   }
-                } else { break;
-}
+                } else {
+                  break;
+                }
                 ++qi2;
               }
               if (endBackTicks >= backTicks) {
@@ -1253,9 +1255,9 @@ namespace PeterO.Mail {
                .Append(">").Append(FormatParagraph(stripped, links))
                .Append("</h").Append((char)('0' + heading))
                .Append(">");
-             } else if (IsCodeBlockLine(line)) {
-               isSingleParagraph = false;
-               if (haveParagraph) {
+        } else if (IsCodeBlockLine(line)) {
+          isSingleParagraph = false;
+          if (haveParagraph) {
             haveParagraph = false;
             formatted.Append("<p>");
             formatted.Append(paragraph.ToString());

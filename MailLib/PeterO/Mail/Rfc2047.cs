@@ -408,7 +408,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                     afterLast,
                     context,
                     encodingChar);
-                    if (i2 != index && i2 + 1 < endIndex &&
+                  if (i2 != index &&
+                      i2 + 1 < endIndex &&
                 str[i2] == '?' && str[i2 + 1] == '=' &&
                       i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;

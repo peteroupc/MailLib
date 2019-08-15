@@ -225,7 +225,7 @@ name.Equals("in-reply-to", StringComparison.Ordinal)) {
           }
           try {
             msg.SetHeader("to", emails);
-          } catch (Exception) {
+          } catch (ArgumentException) {
             return null;
           }
         }

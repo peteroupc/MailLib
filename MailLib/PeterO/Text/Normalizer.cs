@@ -8,8 +8,7 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Text {
-    /// <summary>
-    /// <para>Implements the Unicode normalization algorithm and contains
+    /// <summary><para>Implements the Unicode normalization algorithm and contains
     /// methods and functionality to test and convert Unicode strings for
     /// Unicode normalization.</para>
     /// <para>NOTICE: While this class's source code is in the public
@@ -28,8 +27,7 @@ namespace PeterO.Text {
     /// to.</param>
     /// <returns>The parameter <paramref name='str'/> converted to the
     /// given normalization form.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
     public static string Normalize(string str, Normalization form) {
       return NormalizerInput.Normalize(str, form);
     }
@@ -77,10 +75,8 @@ namespace PeterO.Text {
     /// <exception cref='ArgumentException'>Either <paramref name='index'/>
     /// or <paramref name='length'/> is less than 0 or greater than
     /// <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s
-    /// length minus <paramref name='index'/> is less than <paramref
-    /// name='length'/>.</exception>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='chars'/> is null.</exception>
+    /// length minus <paramref name='index'/> is less than <paramref name='length'/>.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='chars'/> is null.</exception>
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);
     }
