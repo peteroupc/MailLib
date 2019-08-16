@@ -166,9 +166,21 @@ namespace MailLibTest {
           }
           continue;
         }
-        if (c == '\r' || c == '\n') {
-          Console.WriteLine(fn + ":\n--Bare CR or bare LF");
-          return 0;
+        if (c == '\r') {
+            test = str.Substring(
+              Math.Max(index + 2 - 30, 0),
+              Math.Min(index + 2, 30));
+            Console.WriteLine(fn +
+              ":\n--Bare CR: [" + test + "] index = " + index);
+              return 0;
+        }
+        if (c == '\n') {
+            test = str.Substring(
+              Math.Max(index + 2 - 30, 0),
+              Math.Min(index + 2, 30));
+            Console.WriteLine(fn +
+              ":\n--Bare LF: [" + test + "] index = " + index);
+              return 0;
         }
         if (c == ':' && headers && !colon && !startsWithSpace) {
           if (index + 1 >= endIndex) {
@@ -178,7 +190,7 @@ namespace MailLibTest {
           if (index == 0 || str[index - 1] == 0x20 || str[index - 1] == 0x09 ||
             str[index - 1] == 0x0d) {
             Console.WriteLine(fn +
-  ":\n--End of line, whitespace, or start of valueMessage before colon");
+  ":\n--End of line, whitespace, or start of message before colon");
             return 0;
           }
           if (str[index + 1] != 0x20 &&
@@ -188,8 +200,8 @@ namespace MailLibTest {
   Math.Max(index + 2 - 30, 0),
   Math.Min(index + 2, 30));
             Console.WriteLine(fn +
-              ":\n--No space/line break after valueHeader name and colon: (" +
-              str[index + 1] + ") [" + test + "] " + index);
+              ":\n--No space/line break after header name and colon: (" +
+              str[index + 1] + ") [" + test + "] index = " + index);
             return 0;
           }
           colon = true;
@@ -197,7 +209,7 @@ namespace MailLibTest {
         if (c == 0 || c == 0x7f) {
           var builder = new StringBuilder();
           const string ValueHex = "0123456789ABCDEF";
-          builder.Append(fn + ": CTL in valueMessage (0x");
+          builder.Append(fn + ": CTL in message (0x");
           builder.Append(ValueHex[((int)c >> 4) & 15]);
           builder.Append(ValueHex[((int)c) & 15]);
           builder.Append(")");
@@ -207,7 +219,7 @@ namespace MailLibTest {
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           var builder = new StringBuilder();
           const string ValueHex = "0123456789ABCDEF";
-          builder.Append(fn + ": CTL in valueHeader (0x");
+          builder.Append(fn + ": CTL in header (0x");
           builder.Append(ValueHex[((int)c >> 4) & 15]);
           builder.Append(ValueHex[((int)c) & 15]);
           builder.Append(")");

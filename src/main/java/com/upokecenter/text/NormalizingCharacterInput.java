@@ -35,7 +35,7 @@ import java.util.*;
      * uses an class, called NormalizationData, that includes data
      * derived from the Unicode Character Database. In case doing so is
      * required, the permission notice for the Unicode Character Database
-     * is given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p>
+     * is given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE.</p>
      * <p>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
      * Distributed under the Terms of Use in
      * http://www.unicode.org/copyright.html.</p> <p>Permission is hereby

@@ -578,6 +578,7 @@ import com.upokecenter.text.*;
      * string can validly appear in a URI path.
      * @return A text string form of this media type.
      */
+
     public String ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       HeaderEncoder sa = new HeaderEncoder(-1, 14);

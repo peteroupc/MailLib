@@ -21,15 +21,17 @@ namespace PeterO.Mail {
     /// NamedAddress.</summary>
     /// <param name='addressValue'>A comma-separate list of addresses in
     /// the form of a text string.</param>
-    /// <returns>A list of addresses generated from the <paramref name='addressValue'/> parameter.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='addressValue'/> is null.</exception>
+    /// <returns>A list of addresses generated from the <paramref
+    /// name='addressValue'/> parameter.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='addressValue'/> is null.</exception>
     public static IList<NamedAddress> ParseAddresses(string addressValue) {
       var list = new List<NamedAddress>();
       if (addressValue == null) {
-         return list;
+        return list;
       }
       if (String.IsNullOrEmpty(addressValue)) {
-         return list;
+        return list;
       }
       var tokener = new Tokener();
       if (
@@ -50,8 +52,10 @@ namespace PeterO.Mail {
       return list;
     }
 
-    /// <summary>Calculates the hash code of this object. The exact algorithm used by this method is not guaranteed to be the same between versions of this library, and no application or
-    /// process IDs are used in the hash code calculation.</summary>
+    /// <summary>Calculates the hash code of this object. The exact
+    /// algorithm used by this method is not guaranteed to be the same
+    /// between versions of this library, and no application or process IDs
+    /// are used in the hash code calculation.</summary>
     /// <returns>A 32-bit hash code.</returns>
     public override int GetHashCode() {
       var hashCode = -1524613162;
@@ -70,10 +74,13 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Determines whether this object and another object are
-    /// equal.  For groups, the named addresses (display name/email address pairs) must be equal and in the same order in both objects.</summary>
-    /// <param name='obj'>An arbitrary object to compare with this one.</param>
-    /// <returns><c>true</c> if this object and another object are equal and have the same type;
-    /// otherwise, <c>false</c>.</returns>
+    /// equal. For groups, the named addresses (display name/email address
+    /// pairs) must be equal and in the same order in both
+    /// objects.</summary>
+    /// <param name='obj'>An arbitrary object to compare with this
+    /// one.</param>
+    /// <returns><c>true</c> if this object and another object are equal
+    /// and have the same type; otherwise, <c>false</c>.</returns>
     public override bool Equals(object obj) {
       var other = obj as NamedAddress;
       return other != null &&
@@ -86,8 +93,10 @@ namespace PeterO.Mail {
             other.groupAddresses));
     }
 
-    /// <summary>Determines whether the email addresses stored this object are the same between this object and the given object, regardless of the display names they store.
-    /// For groups, the email addresses must be equal and in the same order in both objects.</summary>
+    /// <summary>Determines whether the email addresses stored this object
+    /// are the same between this object and the given object, regardless
+    /// of the display names they store. For groups, the email addresses
+    /// must be equal and in the same order in both objects.</summary>
     /// <param name='na'>A named address object to compare with this one.
     /// Can be null.</param>
     /// <returns>Either <c>true</c> or <c>false</c>.</returns>
@@ -124,8 +133,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets the display name for this email address.</summary>
-    /// <value>The display name for this email address.  Returns null
-    /// if the display name is absent.</value>
+    /// <value>The display name for this email address. Returns null if the
+    /// display name is absent.</value>
     public string DisplayName {
       get {
         return this.displayName;
@@ -198,7 +207,8 @@ namespace PeterO.Mail {
     /// <list>
     /// <item><c>john@example.com</c></item>
     /// <item><c>"John Doe" &lt;john@example.com&gt;</c></item>
-    /// <item><c>=?utf-8?q?John</c><c>=</c><c>27s_Office?=&lt;john@example.com&gt;</c></item>
+    ///
+    ///   <item><c>=?utf-8?q?John</c><c>=</c><c>27s_Office?=&lt;john@example.com&gt;</c></item>
     /// <item><c>John &lt;john@example.com&gt;</c></item>
     /// <item><c>"Group" : Tom &lt;tom@example.com&gt;, Jane
     /// &lt;jane@example.com&gt;;</c></item></list></summary>
@@ -218,7 +228,8 @@ namespace PeterO.Mail {
     /// 0x61 to 0x7a) are changed to "=" followed by their 2-digit
     /// hexadecimal form. An encoded word's maximum length is 75
     /// characters. See the third example.</para>.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     /// <exception cref='ArgumentException'>Address has an invalid syntax.;
     /// Address has an invalid syntax.</exception>
     public NamedAddress(string address) {
@@ -251,7 +262,8 @@ namespace PeterO.Mail {
     /// Can be null or empty. Encoded words under RFC 2047 will not be
     /// decoded.</param>
     /// <param name='address'>An email address.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, string address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -269,7 +281,8 @@ namespace PeterO.Mail {
     /// Can be null or empty. Encoded words under RFC 2047 will not be
     /// decoded.</param>
     /// <param name='address'>An email address.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException(nameof(address));
@@ -290,7 +303,8 @@ namespace PeterO.Mail {
     /// the "@").</param>
     /// <param name='domain'>The domain of the email address (before the
     /// "@").</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='localPart'/> or <paramref name='domain'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='localPart'/> or <paramref name='domain'/> is
     /// null.</exception>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
@@ -312,7 +326,8 @@ namespace PeterO.Mail {
     /// <param name='groupName'>The group's name.</param>
     /// <param name='mailboxes'>A list of named addresses that make up the
     /// group.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='groupName'/> or <paramref name='mailboxes'/> is
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='groupName'/> or <paramref name='mailboxes'/> is
     /// null.</exception>
     /// <exception cref='ArgumentException'>GroupName is empty.; A mailbox
     /// in the list is a group.</exception>

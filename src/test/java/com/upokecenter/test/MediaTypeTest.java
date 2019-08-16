@@ -473,7 +473,7 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestParseErrors() {
-      for (String str : ContentDispositionTest.ParseErrors) {
+      for (String str : ResourceUtil.GetStrings("parseerrors")) {
         if ((ParseAndTestAspects("text/plain" + str, null))!=null) {
  Assert.fail(str);
  }

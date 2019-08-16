@@ -28,13 +28,12 @@ import java.util.*;
      */
     public static List<NamedAddress> ParseAddresses(String addressValue) {
       ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
-
-if (addressValue == null) {
-  return list;
-}
+      if (addressValue == null) {
+        return list;
+      }
       if (((addressValue) == null || (addressValue).length() == 0)) {
-  return list;
-}
+        return list;
+      }
       Tokener tokener = new Tokener();
       if (
           HeaderParser.ParseHeaderTo(
@@ -55,8 +54,10 @@ if (addressValue == null) {
     }
 
     /**
-     * Calculates the hash code of this object. No application or process IDs are
-     * used in the hash code calculation.
+     * Calculates the hash code of this object. The exact algorithm used by this
+     * method is not guaranteed to be the same between versions of this
+     * library, and no application or process IDs are used in the hash code
+     * calculation.
      * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
@@ -76,10 +77,12 @@ if (addressValue == null) {
     }
 
     /**
-     * Determines whether this object and another object are equal.
-     * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * Determines whether this object and another object are equal. For groups, the
+     * named addresses (display name/email address pairs) must be equal and
+     * in the same order in both objects.
+     * @param obj An arbitrary object to compare with this one.
+     * @return {@code true} if this object and another object are equal and have
+     * the same type; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
@@ -94,7 +97,10 @@ if (addressValue == null) {
     }
 
     /**
-     * Not documented yet.
+     * Determines whether the email addresses stored this object are the same
+     * between this object and the given object, regardless of the display
+     * names they store. For groups, the email addresses must be equal and
+     * in the same order in both objects.
      * @param na A named address object to compare with this one. Can be null.
      * @return Either {@code true} or {@code false}.
      */
@@ -131,9 +137,9 @@ if (addressValue == null) {
       }
 
     /**
-     * Gets the display name for this email address. Returns null if the display
+     * Gets the display name for this email address.
+     * @return The display name for this email address. Returns null if the display
      * name is absent.
-     * @return The display name for this email address.
      */
     public final String getDisplayName() {
         return this.displayName;

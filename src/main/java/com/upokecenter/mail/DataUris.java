@@ -2,35 +2,36 @@ package com.upokecenter.mail;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Contains methods for parsing and generating Data URIs (uniform resource
-     * identifiers). Data URIs are described in RFC 2397. Examples for Data
-     * URIs follow. <pre>data:, hello%20world</pre>
-     * <pre>data:text/markdown, hello%20world</pre>
-     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
-     */
+  /**
+   * Contains methods for parsing and generating Data URIs (uniform resource
+   * identifiers). Data URIs are described in RFC 2397. Examples for Data
+   * URIs follow. <pre>data:, hello%20world</pre>
+   * <pre>data:text/markdown, hello%20world</pre>
+   * <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
+   */
   public final class DataUris {
 private DataUris() {
 }
     /**
-     * Extracts the media type from a Data URI (uniform resource identifier).
-     * @param uri The parameter {@code uri} is a text string.
+     * Extracts the media type from a Data URI (uniform resource identifier) in the
+     * form of a text string.
+     * @param uri A data URI in the form of a text string.
      * @return The media type. Returns null if {@code uri} is null, is
      * syntactically invalid, or is not a Data URI.
      * @throws NullPointerException The parameter {@code uri} is null.
      */
     public static MediaType DataUriMediaType(String uri) {
-            if (uri == null) {
-              throw new NullPointerException("uri");
-            }
-            String url = uri;
-            String[] parts = URIUtility.SplitIRIToStrings(
-            url);
-            if (parts == null || parts[0] == null || parts[2] == null) {
-              return null;
-            }
-            String path = parts[2];
-            if (parts[0].equals("data")) {
+      if (uri == null) {
+        throw new NullPointerException("uri");
+      }
+      String url = uri;
+      String[] parts = URIUtility.SplitIRIToStrings(
+      url);
+      if (parts == null || parts[0] == null || parts[2] == null) {
+        return null;
+      }
+      String path = parts[2];
+      if (parts[0].equals("data")) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -73,12 +74,15 @@ private DataUris() {
     }
 
     /**
-     * Not documented yet.
-     * @param uri The parameter {@code uri} is not documented yet.
-     * @return A MediaType object.
+     * Extracts the media type from a Data URI (uniform resource identifier) in the
+     * form of a URI object.
+     * @param uri A data URI in the form of a URI object.
+     * @return The media type. Returns null if {@code uri} is null, is
+     * syntactically invalid, or is not a Data URI.
+     * @throws NullPointerException The parameter {@code uri} is null.
      */
     public static MediaType DataUriMediaType(java.net.URI uri) {
-return (uri == null) ? null : DataUriMediaType(uri.toString());
+      return (uri == null) ? null : DataUriMediaType(uri.toString());
     }
 
     private static int ToHex(char b1) {
@@ -104,12 +108,15 @@ return (uri == null) ? null : DataUriMediaType(uri.toString());
     };
 
     /**
-     * Not documented yet.
-     * @param uri The parameter {@code uri} is not documented yet.
-     * @return A byte array.
+     * Extracts the data from a Data URI (uniform resource identifier) in the form
+     * of a byte array, where the Data URI is given as a URI object.
+     * @param uri The Data URI in the form of a URI object.
+     * @return The data as a byte array. Returns null if {@code uri} is null, is
+     * syntactically invalid, or is not a data URI.
+     * @throws NullPointerException The parameter {@code uri} is null.
      */
     public static byte[] DataUriBytes(java.net.URI uri) {
-return (uri == null) ? null : DataUriBytes(uri.toString());
+      return (uri == null) ? null : DataUriBytes(uri.toString());
     }
 
     /**
@@ -121,17 +128,17 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
      * @throws NullPointerException The parameter {@code uri} is null.
      */
     public static byte[] DataUriBytes(String uri) {
-            if (uri == null) {
-              throw new NullPointerException("uri");
-            }
-            String url = uri;
-            String[] parts = URIUtility.SplitIRIToStrings(
-            url);
-            if (parts == null || parts[0] == null || parts[2] == null) {
-              return null;
-            }
-            String path = parts[2];
-            if (parts[0].equals("data")) {
+      if (uri == null) {
+        throw new NullPointerException("uri");
+      }
+      String url = uri;
+      String[] parts = URIUtility.SplitIRIToStrings(
+      url);
+      if (parts == null || parts[0] == null || parts[2] == null) {
+        return null;
+      }
+      String path = parts[2];
+      if (parts[0].equals("data")) {
         int mediaTypePart = path.indexOf(',');
         if (mediaTypePart == -1) {
           return null;
@@ -161,8 +168,9 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
           }
           if (hasPercent) {
             payload = URIUtility.PercentDecode(
-         path.substring(mediaTypePart + 1, (mediaTypePart + 1)+(path.length() - (mediaTypePart +
-                1))));
+         path.substring(
+                mediaTypePart + 1, (
+                mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
             payloadIndex = 0;
           }
           base64Length = payload.length() - payloadIndex;
@@ -175,9 +183,9 @@ return (uri == null) ? null : DataUriBytes(uri.toString());
             b1 = (payload.charAt(i) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i)];
             b2 = (payload.charAt(i + 1) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 1)];
             if (lastBlock && payload.charAt(i + 2) == '=' && payload.charAt(i + 3) == '=') {
-          } else if (lastBlock && path.charAt(i + 3) == '=') {
-            b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
-          } else {
+            } else if (lastBlock && path.charAt(i + 3) == '=') {
+              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
+            } else {
               b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
               b4 = (payload.charAt(i + 3) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 3)];
             }

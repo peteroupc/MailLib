@@ -59,17 +59,7 @@ private DictUtility() {
       return sb.append("]").toString();
     }
 
-    public static String ToJSON(String[] arr) {
-      StringBuilder sb = new StringBuilder().append("[");
-      if (arr == null) {
-        throw new NullPointerException("arr");
-      }
-      for (int i = 0; i < arr.length; ++i) {
-        if (i > 0) {
-          sb.append(",");
-        }
-        sb.append("\"");
-        String str = arr[i];
+    private static void JSONEscape(String str, StringBuilder sb) {
         for (int j = 0; j < str.length(); ++j) {
           if ((str.charAt(j) & 0xfc00) == 0xdc00 ||
              ((str.charAt(j) & 0xfc00) == 0xd800 && (j == str.length() - 1 ||
@@ -84,6 +74,10 @@ private DictUtility() {
             sb.append("\\r");
           } else if (str.charAt(j) == '\n') {
             sb.append("\\n");
+          } else if (str.charAt(j) == '\t') {
+            sb.append("\\t");
+          } else if (str.charAt(j) == 0x20 && j + 1 < str.length() && str.charAt(j + 1) == 0x20) {
+            sb.append("\\u0020");
           } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
             int ch = (int)str.charAt(j);
             sb.append("\\u")
@@ -95,6 +89,71 @@ private DictUtility() {
             sb.append(str.charAt(j));
           }
         }
+    }
+
+    public static void SetResource(String name, String value) {
+      if (resourceFile == null) {
+        throw new NullPointerException("resourceFile");
+      }
+      if (name == null) {
+        throw new NullPointerException("name");
+      }
+      if (value == null) {
+        throw new NullPointerException("value");
+      }
+      var
+  sf =
+  System.IO.File.ReadAllLines("/home/rooster/Documents/SharpDevelopProjects/MailLib/MailLibTest/Resources.restext");
+      sf = SetResource(sf, name, value);
+
+  System.IO.File.WriteAllLines("/home/rooster/Documents/SharpDevelopProjects/MailLib/MailLibTest/Resources.restext",
+  sf);
+    }
+
+    public static String[] SetResource(String[] resources, String name,
+  String value) {
+      if (resources == null) {
+        throw new NullPointerException("resources");
+      }
+      if (name == null) {
+        throw new NullPointerException("name");
+      }
+      if (value == null) {
+        throw new NullPointerException("value");
+      }
+      if (!(-1).equals(name.indexOf("="))) {
+        throw new IllegalArgumentException("-1 (" + (-1) + ") is not equal to " +
+(name.indexOf("="))); }
+      StringBuilder sb = new StringBuilder();
+      JSONEscape(value, sb);
+      ArrayList<String> list = new ArrayList<String>();
+      String resourceLine = name + "=" + sb.toString();
+      boolean added = false;
+      for (Object resource : resources) {
+        if (resource.indexOf(name + "=") == 0) {
+          list.add(resourceLine);
+          added = true;
+        } else {
+          list.add(resource);
+        }
+      }
+      if (!added) {
+        list.add(resourceLine);
+      }
+      return list.toArray(new String[] { });
+    }
+
+    public static String ToJSON(String[] arr) {
+      StringBuilder sb = new StringBuilder().append("[");
+      if (arr == null) {
+        throw new NullPointerException("arr");
+      }
+      for (int i = 0; i < arr.length; ++i) {
+        if (i > 0) {
+          sb.append(",");
+        }
+        sb.append("\"");
+        JSONEscape(arr[i], sb);
         sb.append("\"");
       }
       return sb.append("]").toString();

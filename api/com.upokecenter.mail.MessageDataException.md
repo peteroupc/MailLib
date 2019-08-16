@@ -1,6 +1,6 @@
 # com.upokecenter.mail.MessageDataException
 
-    public class MessageDataException extends java.lang.RuntimeException
+    public final class MessageDataException extends java.lang.RuntimeException
 
 Exception thrown when a message has invalid syntax.
 

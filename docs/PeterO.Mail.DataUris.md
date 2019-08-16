@@ -14,9 +14,9 @@
 
 ### Member Summary
 * <code>[DataUriBytes(string)](#DataUriBytes_string)</code> - Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
-* <code>[DataUriBytes(System.Uri)](#DataUriBytes_System_Uri)</code> - Not documented yet.
-* <code>[DataUriMediaType(string)](#DataUriMediaType_string)</code> - Extracts the media type from a Data URI (uniform resource identifier).
-* <code>[DataUriMediaType(System.Uri)](#DataUriMediaType_System_Uri)</code> - Not documented yet.
+* <code>[DataUriBytes(System.Uri)](#DataUriBytes_System_Uri)</code> - Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array, where the Data URI is given as a URI object.
+* <code>[DataUriMediaType(string)](#DataUriMediaType_string)</code> - Extracts the media type from a Data URI (uniform resource identifier) in the form of a text string.
+* <code>[DataUriMediaType(System.Uri)](#DataUriMediaType_System_Uri)</code> - Extracts the media type from a Data URI (uniform resource identifier) in the form of a URI object.
 * <code>[MakeDataUri(byte[], PeterO.Mail.MediaType)](#MakeDataUri_byte_PeterO_Mail_MediaType)</code> - Encodes data with the given media type in a Data URI (uniform resource identifier).
 * <code>[MakeDataUri(string)](#MakeDataUri_string)</code> - Encodes text as a Data URI (uniform resource identifier).
 
@@ -50,16 +50,22 @@ The parameter  <i>uri</i>
     public static byte[] DataUriBytes(
         System.Uri uri);
 
- Not documented yet.
+ Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array, where the Data URI is given as a URI object.
 
-    <b>Parameters:</b>
+     <b>Parameters:</b>
 
- * <i>uri</i>: The parameter  <i>uri</i>
- is not documented yet.
+ * <i>uri</i>: The Data URI in the form of a URI object.
 
 <b>Return Value:</b>
 
-A byte array.
+The data as a byte array. Returns null if  <i>uri</i>
+ is null, is syntactically invalid, or is not a data URI.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>uri</i>
+ is null.
 
 <a id="DataUriMediaType_string"></a>
 ### DataUriMediaType
@@ -67,12 +73,11 @@ A byte array.
     public static PeterO.Mail.MediaType DataUriMediaType(
         string uri);
 
- Extracts the media type from a Data URI (uniform resource identifier).
+ Extracts the media type from a Data URI (uniform resource identifier) in the form of a text string.
 
      <b>Parameters:</b>
 
- * <i>uri</i>: The parameter  <i>uri</i>
- is a text string.
+ * <i>uri</i>: A data URI in the form of a text string.
 
 <b>Return Value:</b>
 
@@ -91,16 +96,22 @@ The parameter  <i>uri</i>
     public static PeterO.Mail.MediaType DataUriMediaType(
         System.Uri uri);
 
- Not documented yet.
+ Extracts the media type from a Data URI (uniform resource identifier) in the form of a URI object.
 
-    <b>Parameters:</b>
+     <b>Parameters:</b>
 
- * <i>uri</i>: The parameter  <i>uri</i>
- is not documented yet.
+ * <i>uri</i>: A data URI in the form of a URI object.
 
 <b>Return Value:</b>
 
-A MediaType object.
+The media type. Returns null if  <i>uri</i>
+ is null, is syntactically invalid, or is not a Data URI.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>uri</i>
+ is null.
 
 <a id="MakeDataUri_byte_PeterO_Mail_MediaType"></a>
 ### MakeDataUri

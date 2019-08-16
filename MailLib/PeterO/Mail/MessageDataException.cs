@@ -10,7 +10,7 @@ using System;
 namespace PeterO.Mail {
     /// <summary>Exception thrown when a message has invalid
     /// syntax.</summary>
-  public class MessageDataException : Exception {
+  public sealed class MessageDataException : Exception {
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
     public MessageDataException() {
@@ -27,7 +27,8 @@ namespace PeterO.Mail {
     /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
     /// <param name='message'>A string to use as the exception
     /// message.</param>
-    /// <param name='innerException'>The parameter <paramref name='innerException'/> is an Exception object.</param>
+    /// <param name='innerException'>The parameter <paramref
+    /// name='innerException'/> is an Exception object.</param>
     public MessageDataException(string message, Exception innerException)
       : base(message, innerException) {
     }

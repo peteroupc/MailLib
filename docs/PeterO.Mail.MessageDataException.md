@@ -1,6 +1,6 @@
 ## PeterO.Mail.MessageDataException
 
-    public class MessageDataException :
+    public sealed class MessageDataException :
         System.Exception,
         System.Runtime.Serialization.ISerializable,
         System.Runtime.InteropServices._Exception

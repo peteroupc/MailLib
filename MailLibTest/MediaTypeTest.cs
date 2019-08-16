@@ -472,7 +472,7 @@ ResourceUtil.GetDictList("mediatypes")) {
 
     [Test]
     public void TestParseErrors() {
-      foreach (string str in ContentDispositionTest.ParseErrors) {
+      foreach (string str in ResourceUtil.GetStrings("parseerrors")) {
         Assert.IsNull(ParseAndTestAspects("text/plain" + str, null), str);
       }
     }

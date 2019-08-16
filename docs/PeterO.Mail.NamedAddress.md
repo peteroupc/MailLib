@@ -6,7 +6,7 @@
 
 ### Member Summary
 * <code>[Address](#Address)</code> - Gets the email address associated with this object.
-* <code>[AddressesEqual(PeterO.Mail.NamedAddress)](#AddressesEqual_PeterO_Mail_NamedAddress)</code> - Not documented yet.
+* <code>[AddressesEqual(PeterO.Mail.NamedAddress)](#AddressesEqual_PeterO_Mail_NamedAddress)</code> - Determines whether the email addresses stored this object are the same between this object and the given object, regardless of the display names they store.
 * <code>[DisplayName](#DisplayName)</code> - Gets the display name for this email address.
 * <code>[Equals(object)](#Equals_object)</code> - Determines whether this object and another object are equal.
 * <code>[GetHashCode()](#GetHashCode)</code> - Calculates the hash code of this object.
@@ -158,11 +158,11 @@ The email address associated with this object. This value is null if this object
 
     public string DisplayName { get; }
 
- Gets the display name for this email address. Returns null if the display name is absent.
+ Gets the display name for this email address.
 
    <b>Returns:</b>
 
-The display name for this email address.
+The display name for this email address. Returns null if the display name is absent.
 
 <a id="GroupAddresses"></a>
 ### GroupAddresses
@@ -203,7 +203,7 @@ The name for this email address.
     public bool AddressesEqual(
         PeterO.Mail.NamedAddress na);
 
- Not documented yet.
+ Determines whether the email addresses stored this object are the same between this object and the given object, regardless of the display names they store. For groups, the email addresses must be equal and in the same order in both objects.
 
     <b>Parameters:</b>
 
@@ -219,23 +219,22 @@ Either  `true`  or  `false` .
     public override bool Equals(
         object obj);
 
- Determines whether this object and another object are equal.
+ Determines whether this object and another object are equal. For groups, the named addresses (display name/email address pairs) must be equal and in the same order in both objects.
 
     <b>Parameters:</b>
 
- * <i>obj</i>: The parameter  <i>obj</i>
- is an arbitrary object.
+ * <i>obj</i>: An arbitrary object to compare with this one.
 
 <b>Return Value:</b>
 
- `true`  if this object and another object are equal; otherwise,  `false` .
+ `true`  if this object and another object are equal and have the same type; otherwise,  `false` .
 
 <a id="GetHashCode"></a>
 ### GetHashCode
 
     public override int GetHashCode();
 
- Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
+ Calculates the hash code of this object. The exact algorithm used by this method is not guaranteed to be the same between versions of this library, and no application or process IDs are used in the hash code calculation.
 
    <b>Return Value:</b>
 

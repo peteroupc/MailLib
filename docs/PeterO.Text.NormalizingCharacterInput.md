@@ -19,7 +19,7 @@
 
  NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. In case doing so is required, the permission notice for the Unicode Character Database is given here:
 
- COPYRIGHT AND PERMISSION NOTICE
+ COPYRIGHT AND PERMISSION NOTICE.
 
  Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
 

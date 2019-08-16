@@ -2,10 +2,10 @@
 
     public final class Message extends java.lang.Object
 
-<p>Represents an email message, and contains methods and properties for
+Represents an email message, and contains methods and properties for
  accessing and modifying email message data. This class implements
  the Internet Message Format (RFC 5322) and Multipurpose Internet
- Mail Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
+ Mail Extensions (MIME; RFC 2045-2047, RFC 2049).<p> </p><p><b>Thread
  safety:</b> This class is mutable; its properties can be changed.
  None of its instance methods are designed to be thread safe.
  Therefore, access to objects from this class must be synchronized if
@@ -36,56 +36,57 @@
  quoted-printable or base64 encoded bodies.</li> <li>If the transfer
   encoding is absent and the content type is "message/rfc822", bytes
   with values greater than 127 (called "8-bit bytes" in the rest of
-  this summary) are still allowed, despite the default value of "7bit"
-  for "Content-Transfer-Encoding".</li> <li>In the following cases, if
- the transfer encoding is absent, declared as 7bit, or treated as
- 7bit, 8-bit bytes are still allowed:</li> <li>(a) The preamble and
- epilogue of multipart messages, which will be ignored.</li> <li>(b)
- If the charset is declared to be <code>utf-8</code>.</li> <li>(c) If the
-  content type is "text/html" and the charset is declared to be
-  <code>us-ascii</code>, "windows-1252", "windows-1251", or "iso-8859-*"
- (all single byte encodings).</li> <li>(d) In non-MIME message bodies
- and in text/plain message bodies. Any 8-bit bytes are replaced with
- the substitute character byte (0x1a).</li> <li>If the message starts
-  with the word "From" (and no other case variations of that word)
- followed by one or more space (U + 0020) not followed by colon, that
- text and the rest of the text is skipped up to and including a line
- feed (U + 000A). (See also RFC 4155, which describes the so-called
-  "mbox" convention with "From" lines of this kind.)</li> <li>The name
- <code>ascii</code> is treated as a synonym for <code>us-ascii</code>, despite
- being a reserved name under RFC 2046. The name <code>cp1252</code> and
- <code>utf8</code> are treated as synonyms for <code>windows-1252</code> and
- <code>utf-8</code>, respectively, even though they are not IANA registered
- aliases.</li> <li>The following deviations involve encoded words
- under RFC 2047:</li> <li>(a) If a sequence of encoded words decodes
- to a string with a CTL character (U + 007F, or a character less than
- U + 0020 and not TAB) after being converted to Unicode, the encoded
- words are left un-decoded.</li> <li>(b) This implementation can
- decode encoded words regardless of the character length of the line
- in which they appear. This implementation can generate a header
- field line with one or more encoded words even if that line is more
- than 76 characters long. (This implementation follows the
- recommendation in RFC 5322 to limit header field lines to no more
- than 78 characters, where possible.)</li></ul> <p>It would be
- appreciated if users of this library contact the author if they find
- other ways in which this implementation deviates from the mail
- specifications or other applicable specifications.</p> <p>Note that
-  this class currently doesn't support the "padding" parameter for
-  message bodies with the media type "application/octet-stream" or
- treated as that media type (see RFC 2046 sec. 4.5.1).</p> <p>Note
- that this implementation can decode an RFC 2047 encoded word that
- uses ISO-2022-JP or ISO-2022-JP-2 (encodings that uses code
- switching) even if the encoded word's payload ends in a different
-  mode from "ASCII mode". (Each encoded word still starts in "ASCII
-  mode", though.) This, however, is not a deviation to RFC 2047
- because the relevant rule only concerns bringing the output device
-  back to "ASCII mode" after the decoded text is displayed (see last
- paragraph of sec. 6.2) -- since the decoded text is converted to
- Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is
-  not applicable since there is no such thing as "ASCII mode" in the
- Unicode Standard.</p> <p>Note that this library (the MailLib
- library) has no facilities for sending and receiving email messages,
- since that's outside this library's scope.</p>
+ these remarks) are still allowed, despite the default value of
+  "7bit" for "Content-Transfer-Encoding".</li> <li>In the following
+ cases, if the transfer encoding is absent, declared as 7bit, or
+ treated as 7bit, 8-bit bytes are still allowed:</li> <li>(a) The
+ preamble and epilogue of multipart messages, which will be
+ ignored.</li> <li>(b) If the charset is declared to be
+  <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and
+  the charset is declared to be <code>us-ascii</code>, "windows-1252",
+  "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
+ <li>(d) In non-MIME message bodies and in text/plain message bodies.
+ Any 8-bit bytes are replaced with the substitute character byte
+  (0x1a).</li> <li>If the message starts with the word "From" (and no
+ other case variations of that word) followed by one or more space
+ (U + 0020) not followed by colon, that text and the rest of the text
+ is skipped up to and including a line feed (U + 000A). (See also RFC
+  4155, which describes the so-called "mbox" convention with "From"
+ lines of this kind.)</li> <li>The name <code>ascii</code> is treated as a
+ synonym for <code>us-ascii</code>, despite being a reserved name under RFC
+ 2046. The name <code>cp1252</code> and <code>utf8</code> are treated as synonyms
+ for <code>windows-1252</code> and <code>utf-8</code>, respectively, even though
+ they are not IANA registered aliases.</li> <li>The following
+ deviations involve encoded words under RFC 2047:</li> <li>(a) If a
+ sequence of encoded words decodes to a string with a CTL character
+ (U + 007F, or a character less than U + 0020 and not TAB) after being
+ converted to Unicode, the encoded words are left un-decoded.</li>
+ <li>(b) This implementation can decode encoded words regardless of
+ the character length of the line in which they appear. This
+ implementation can generate a header field line with one or more
+ encoded words even if that line is more than 76 characters long.
+ (This implementation follows the recommendation in RFC 5322 to limit
+ header field lines to no more than 78 characters, where
+ possible.)</li></ul> <p>It would be appreciated if users of this
+ library contact the author if they find other ways in which this
+ implementation deviates from the mail specifications or other
+ applicable specifications.</p> <p>Note that this class currently
+  doesn't support the "padding" parameter for message bodies with the
+  media type "application/octet-stream" or treated as that media type
+ (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
+ decode an RFC 2047 encoded word that uses ISO-2022-JP or
+ ISO-2022-JP-2 (encodings that use code switching) even if the
+  encoded word's payload ends in a different mode from "ASCII mode".
+  (Each encoded word still starts in "ASCII mode", though.) This,
+ however, is not a deviation to RFC 2047 because the relevant rule
+  only concerns bringing the output device back to "ASCII mode" after
+ the decoded text is displayed (see last paragraph of sec. 6.2) --
+ since the decoded text is converted to Unicode rather than kept as
+ ISO-2022-JP or ISO-2022-JP-2, this is not applicable since there is
+  no such thing as "ASCII mode" in the Unicode Standard.</p> <p>Note
+ that this library (the MailLib library) has no facilities for
+ sending and receiving email messages, since that's outside this
+ library's scope.</p>
 
 ## Methods
 
@@ -141,10 +142,15 @@
                  java.lang.String value)`<br>
  Decodes RFC 2047 encoded words from the given header field value and returns
  a string with those words decoded.
+* `static java.lang.String ExtractField​(byte[] bytes,
+            java.lang.String headerFieldName)`<br>
+ Extracts the value of a header field from a byte array representing an email
+ message.
 * `static Message FromMailtoUri​(java.lang.String uri)`<br>
  Creates a message object from a MailTo URI (uniform resource identifier).
 * `static Message FromMailtoUri​(java.net.URI uri)`<br>
- Not documented yet.
+ Creates a message object from a MailTo URI (uniform resource identifier) in
+ the form of a URI object.
 * `static Message FromMailtoUrl​(java.lang.String url)`<br>
  Deprecated.
 Renamed to FromMailtoUri.
@@ -287,7 +293,21 @@ Renamed to ToMailtoUri.
 ### Message
     public Message​(java.io.InputStream stream)
 Initializes a new instance of the <code>Message</code>
- class. Reads from the given InputStream object to initialize the message.
+ class. Reads from the given InputStream object to initialize the email
+ message.<p><b>Remarks:</b> This constructor parses an email message,
+ and extracts its header fields and body, and throws a
+ MessageDataException if the message is malformed. However, even if a
+ MessageDataException is thrown, it can still be possible to display
+ the message, especially because most email malformations seen in
+ practice are benign in nature (such as the use of very long lines in
+ the message). One way an application can handle the exception is to
+ read all the bytes from the stream, to display the message, or part
+ of it, as raw text (using <code>DataUtilities.GetUtf8String(bytes,
+ true)</code>), and to optionally extract important header fields, such
+ as From, To, Date, and Subject, from the message's text using the
+ <code>ExtractHeaderField</code> method. Even so, though, any message for
+ which this constructor throws a MessageDataException ought to be
+ treated with suspicion.</p>
 
 **Parameters:**
 
@@ -297,10 +317,27 @@ Initializes a new instance of the <code>Message</code>
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>stream</code> is null.
 
+* <code>MessageDataException</code> - The message is malformed.
+ See the remarks.
+
 ### Message
     public Message​(byte[] bytes)
 Initializes a new instance of the <code>Message</code>
- class. Reads from the given byte array to initialize the message.
+ class. Reads from the given byte array to initialize the email
+ message.<p><b>Remarks:</b> This constructor parses an email message,
+ and extracts its header fields and body, and throws a
+ MessageDataException if the message is malformed. However, even if a
+ MessageDataException is thrown, it can still be possible to display
+ the message, especially because most email malformations seen in
+ practice are benign in nature (such as the use of very long lines in
+ the message). One way an application can handle the exception is to
+ display the message, or part of it, as raw text (using
+ <code>DataUtilities.GetUtf8String(bytes, true)</code>), and to optionally
+ extract important header fields, such as From, To, Date, and
+ Subject, from the message's text using the <code>ExtractHeaderField</code>
+ method. Even so, though, any message for which this constructor
+ throws a MessageDataException ought to be treated with
+ suspicion.</p>
 
 **Parameters:**
 
@@ -310,11 +347,38 @@ Initializes a new instance of the <code>Message</code>
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
 
+* <code>MessageDataException</code> - The message is malformed.
+ See the remarks.
+
 ### Message
     public Message()
 Initializes a new instance of the <code>Message</code>
  class. The message will be plain text and have an artificial From
  address.
+### ExtractField
+    public static java.lang.String ExtractField​(byte[] bytes, java.lang.String headerFieldName)
+Extracts the value of a header field from a byte array representing an email
+ message. The return value is intended for display purposes, not for
+ further processing, and this method is intended to be used as an
+ error handling tool for email messages that are slightly malformed.
+ (Note that malformed email messages ought to be treated with greater
+ suspicion than well-formed email messages.).
+
+**Parameters:**
+
+* <code>bytes</code> - A byte array representing an email message.
+
+* <code>headerFieldName</code> - A string object.
+
+**Returns:**
+
+* The value of the first instance of the header field with the given
+ name. Returns null if <code>bytes</code> is null, if <code>
+ headerFieldName</code> is null, is more than 997 characters long, or has a
+ character less than U + 0021 or greater than U + 007E in the Unicode
+ Standard, if a header field with that name does not exist, or if a
+ body (even an empty one) does not follow the header fields.
+
 ### NewBodyPart
     public static Message NewBodyPart()
 Creates a message object with no header fields.
@@ -374,7 +438,7 @@ Use GetAddresses(\Cc\) instead.
  format = flowed, text/enriched, and text/markdown (original
  Markdown).</p><p> </p><p>REMARK: The Markdown implementation currently
  supports all features of original Markdown, except that the
- implementation--</p> <ul> <li>does not strictly check the placement
+ implementation:</p> <ul> <li>does not strictly check the placement
   of "block-level HTML elements",</li> <li>does not prevent Markdown
  content from being interpreted as such merely because it's contained
   in a "block-level HTML element", and</li> <li>does not deliberately
@@ -634,19 +698,20 @@ Sets this message's Date header field to the given date and time.
 
 * <code>dateTime</code> - An array containing eight elements. Each element of the
  array (starting from 0) is as follows: <ul> <li>0 - The year. For
- example, the value 2000 means 2000 C.E.</li> <li>1 - Month of the
- year, from 1 (January) through 12 (December).</li> <li>2 - Day of
- the month, from 1 through 31.</li> <li>3 - Hour of the day, from 0
- through 23.</li> <li>4 - Minute of the hour, from 0 through 59.</li>
- <li>5 - Second of the minute, from 0 through 60 (this value can go
- up to 60 to accommodate leap seconds). (Leap seconds are additional
- seconds added to adjust international atomic time, or TAI, to an
- approximation of astronomical time known as coordinated universal
- time, or UTC.)</li> <li>6 - Milliseconds of the second, from 0
- through 999. This value is not used to generate the date string, but
- must still be valid.</li> <li>7 - Number of minutes to subtract from
- this date and time to get global time. This number can be positive
- or negative.</li></ul>.
+ example, the value 2000 means 2000 C.E. Cannot be less than 0.</li>
+ <li>1 - Month of the year, from 1 (January) through 12
+ (December).</li> <li>2 - Day of the month, from 1 through 31.</li>
+ <li>3 - Hour of the day, from 0 through 23.</li> <li>4 - Minute of
+ the hour, from 0 through 59.</li> <li>5 - Second of the minute, from
+ 0 through 60 (this value can go up to 60 to accommodate leap
+ seconds). (Leap seconds are additional seconds added to adjust
+ international atomic time, or TAI, to an approximation of
+ astronomical time known as coordinated universal time, or UTC.)</li>
+ <li>6 - Milliseconds of the second, from 0 through 999. This value
+ is not used to generate the date string, but cannot be less than
+ 0.</li> <li>7 - Number of minutes to subtract from this date and
+ time to get global time. This number can be positive or negative,
+ but cannot be less than -1439 or greater than 1439.</li></ul>.
 
 **Returns:**
 
@@ -981,7 +1046,14 @@ Sets the body of this message to a multipart body with plain text, Markdown,
   The character sequences CR (carriage return, "\r", U+000D), LF (line
   feed, "\n", U+000A), and CR/LF will be converted to CR/LF line
  breaks. Unpaired surrogate code points will be replaced with
- replacement characters.
+ replacement characters.<p> </p><p>REMARK: The Markdown-to-HTML
+ implementation currently supports all features of original Markdown,
+ except that the implementation:</p> <ul> <li>does not strictly check
+  the placement of "block-level HTML elements",</li> <li>does not
+ prevent Markdown content from being interpreted as such merely
+  because it's contained in a "block-level HTML element", and</li>
+ <li>does not deliberately use HTML escapes to obfuscate email
+ addresses wrapped in angle-brackets.</li></ul>
 
 **Parameters:**
 
@@ -991,7 +1063,8 @@ Sets the body of this message to a multipart body with plain text, Markdown,
 
 * <code>markdown</code> - A string consisting of the Markdown version of the message.
  For interoperability, this Markdown version will be converted to
- HTML.
+ HTML, where the Markdown text is assumed to be in the original
+ Markdown flavor.
 
 **Returns:**
 
@@ -1387,15 +1460,26 @@ Creates a message object from a MailTo URI (uniform resource identifier).
 
 ### FromMailtoUri
     public static Message FromMailtoUri​(java.net.URI uri)
-Not documented yet.
+Creates a message object from a MailTo URI (uniform resource identifier) in
+ the form of a URI object. The MailTo URI can contain key-value pairs
+ that follow a question-mark, as in the following example:
+  "mailto:me@example.com?subject=A%20Subject". In this example,
+  "subject" is the subject of the email address. Only certain keys are
+  supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
+  "comments", "keywords", and "body". The first seven are header field
+ names that will be used to set the returned message's corresponding
+  header fields. The last, "body", sets the body of the message to the
+ given text. Keys other than these eight will be ignored.
 
 **Parameters:**
 
-* <code>uri</code> - The parameter <code>uri</code> is not documented yet.
+* <code>uri</code> - The MailTo URI in the form of a URI object.
 
 **Returns:**
 
-* A Message object.
+* A Message object created from the given MailTo URI. Returs null if
+ <code>uri</code> is null, is syntactically invalid, or is not a MailTo
+ URI.
 
 **Throws:**
 

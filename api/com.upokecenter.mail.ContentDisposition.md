@@ -223,19 +223,18 @@ Converts a file name from the Content-Disposition header (or another string
  files for the purpose of reading them, since this method may replace
  certain characters with other characters in some cases, such that
  two different inputs may map to the same output.</li> <li><b>File
- Name Support.</b> For recommendations on file name support, see
-  "[File Name Support in
-  Applications](https://peteroupc.github.io/filenames.html)".</li>
- <li><b>Guarantees.</b> The exact file name conversion used by this
- method is not guaranteed to remain the same between versions of this
- library, with the exception that the return value will be in
- normalization form C, will not contain base + slash code points,
- will not be null, and will be an empty string only if <paramref name='str'/> is null or empty.</li> <li> <p><b>'Name' and 'Filename'
- Parameters.</b> Email and HTTP headers may specify suggested
- filenames using the Content-Disposition header field's
- <code>filename</code> parameter or, in practice, the Content-Type header
- field's <code>name</code> parameter.</p> <p>Although RFC 2047 encoded
- words appearing in both parameters are written out by some
+  Name Support.</b> For recommendations on file name support, see " File Name Support
+  in Applications ".</li> <li><b>Guarantees.</b> The exact file
+ name conversion used by this method is not guaranteed to remain the
+ same between versions of this library, with the exception that the
+ return value will be in normalization form C, will not contain base
+ + slash code points, will not be null, and will be an empty string
+ only if <paramref name='str'/> is null or empty.</li> <li>
+ <p><b>'Name' and 'Filename' Parameters.</b> Email and HTTP headers
+ may specify suggested filenames using the Content-Disposition header
+ field's <code>filename</code> parameter or, in practice, the Content-Type
+ header field's <code>name</code> parameter.</p> <p>Although RFC 2047
+ encoded words appearing in both parameters are written out by some
  implementations, this practice is often discouraged (especially
   since the RFC itself says that encoded words "MUST NOT appear within
   a 'quoted-string'"). Nevertheless, the MakeFilename method has a
@@ -296,8 +295,10 @@ Gets an adapted version of the "filename" parameter in this content
     public int[] GetCreationDate()
 Gets the date and time extracted from this content disposition's
   "creation-date" parameter, which specifies the date of creation of a
- file (RFC 2183 sec. 2.4). See <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
- this method's return value.
+ file (RFC 2183 sec. 2.4). The parameter is parsed as though by
+ <code>MailDateTime.ParseDateString</code> with obsolete time zones
+  (including "GMT") allowed. See that method's documentation for
+ information on the format of this method's return value.
 
 **Returns:**
 
@@ -310,8 +311,10 @@ Gets the date and time extracted from this content disposition's
     public int[] GetModificationDate()
 Gets the date and time extracted from this content disposition's
   "modification-date" parameter, which specifies the date of last
- modification of a file (RFC 2183 sec. 2.5). See <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
- this method's return value.
+ modification of a file (RFC 2183 sec. 2.5). The parameter is parsed
+ as though by <code>MailDateTime.ParseDateString</code> with obsolete time
+  zones (including "GMT") allowed. See that method's documentation for
+ information on the format of this method's return value.
 
 **Returns:**
 
@@ -324,8 +327,10 @@ Gets the date and time extracted from this content disposition's
     public int[] GetReadDate()
 Gets the date and time extracted from this content disposition's "read-date"
  parameter, which specifies the date at which a file was last read
- (RFC 2183 sec. 2.6). See <see cref='PeterO.Mail.MailDateTime.ParseDateString(&#10; System.String,System.Boolean)'/> for information on the format of
- this method's return value.
+ (RFC 2183 sec. 2.6). The parameter is parsed as though by
+ <code>MailDateTime.ParseDateString</code> with obsolete time zones
+  (including "GMT") allowed. See that method's documentation for
+ information on the format of this method's return value.
 
 **Returns:**
 

@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public class MarkdownTest {
-    public Message MarkdownMessage(String str) {
+    public static Message MarkdownMessage(String str) {
       Message msg = new Message();
       msg.SetTextBody(str);
       msg.setContentType(MediaType.Parse("text/markdown\u003bcharset=utf-8"));
@@ -16,7 +16,7 @@ import com.upokecenter.mail.*;
     public void TestMarkdownOne(
       String expectedOutput,
       String input) {
-      Message msg = this.MarkdownMessage(input);
+      Message msg = MarkdownMessage(input);
       Assert.assertEquals(expectedOutput, msg.GetFormattedBodyString());
     }
 
@@ -272,31 +272,42 @@ import com.upokecenter.mail.*;
       this.TestMarkdownOne(
   "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
   "[Linktext] \u005bTeSt]\r\n\r\n \u005btest]: http://www.example.com (Title)");
-      this.TestMarkdownOne(
-  "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-
-  "[Linktext] \u005bTeSt]\r\n\r\n\u0020 \u005btest]: http://www.example.com
-(Title)");
-      this.TestMarkdownOne(
-  "<p><a href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>",
-
-  "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n(No" +
-"t a title)");
-      this.TestMarkdownOne(
-  "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-
-  "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n
-(Title)");
-      this.TestMarkdownOne(
-  "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-
-  "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n" +
-" \"Title\"");
+      {
+        Object objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+Object objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u0020 \u005btest]: " +
+        "http://www.example.com (Title)";
+        this.TestMarkdownOne(objectTemp, objectTemp2);
+}
+      {
+        Object objectTemp = "<p><a" +
+"\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>";
+Object objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n(No" +
+"t a title)";
+this.TestMarkdownOne(objectTemp, objectTemp2);
+}
       {
         Object objectTemp = "<p><a href=\"http://www.example.com\"
 title=\"Title\">Linktext</a></p>";
 Object objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:
 http://www.example.com\r\n" +
+"\u0020(Title)";
+this.TestMarkdownOne(objectTemp, objectTemp2);
+}
+      {
+        Object objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+Object objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n" +
+" \"Title\"";
+this.TestMarkdownOne(objectTemp, objectTemp2);
+}
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+            " title=\"Title\">Linktext</a></p>";
+            String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+" http://www.example.com\r\n" +
 " 'Title'";
 this.TestMarkdownOne(objectTemp, objectTemp2);
 }

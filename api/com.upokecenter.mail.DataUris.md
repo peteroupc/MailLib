@@ -14,11 +14,14 @@ Contains methods for parsing and generating Data URIs (uniform resource
  Extracts the data from a Data URI (uniform resource identifier) in the form
  of a byte array.
 * `static byte[] DataUriBytes​(java.net.URI uri)`<br>
- Not documented yet.
+ Extracts the data from a Data URI (uniform resource identifier) in the form
+ of a byte array, where the Data URI is given as a URI object.
 * `static MediaType DataUriMediaType​(java.lang.String uri)`<br>
- Extracts the media type from a Data URI (uniform resource identifier).
+ Extracts the media type from a Data URI (uniform resource identifier) in the
+ form of a text string.
 * `static MediaType DataUriMediaType​(java.net.URI uri)`<br>
- Not documented yet.
+ Extracts the media type from a Data URI (uniform resource identifier) in the
+ form of a URI object.
 * `static java.lang.String MakeDataUri​(byte[] bytes,
            MediaType mediaType)`<br>
  Encodes data with the given media type in a Data URI (uniform resource
@@ -30,11 +33,12 @@ Contains methods for parsing and generating Data URIs (uniform resource
 
 ### DataUriMediaType
     public static MediaType DataUriMediaType​(java.lang.String uri)
-Extracts the media type from a Data URI (uniform resource identifier).
+Extracts the media type from a Data URI (uniform resource identifier) in the
+ form of a text string.
 
 **Parameters:**
 
-* <code>uri</code> - The parameter <code>uri</code> is a text string.
+* <code>uri</code> - A data URI in the form of a text string.
 
 **Returns:**
 
@@ -47,27 +51,39 @@ Extracts the media type from a Data URI (uniform resource identifier).
 
 ### DataUriMediaType
     public static MediaType DataUriMediaType​(java.net.URI uri)
-Not documented yet.
+Extracts the media type from a Data URI (uniform resource identifier) in the
+ form of a URI object.
 
 **Parameters:**
 
-* <code>uri</code> - The parameter <code>uri</code> is not documented yet.
+* <code>uri</code> - A data URI in the form of a URI object.
 
 **Returns:**
 
-* A MediaType object.
+* The media type. Returns null if <code>uri</code> is null, is
+ syntactically invalid, or is not a Data URI.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### DataUriBytes
     public static byte[] DataUriBytes​(java.net.URI uri)
-Not documented yet.
+Extracts the data from a Data URI (uniform resource identifier) in the form
+ of a byte array, where the Data URI is given as a URI object.
 
 **Parameters:**
 
-* <code>uri</code> - The parameter <code>uri</code> is not documented yet.
+* <code>uri</code> - The Data URI in the form of a URI object.
 
 **Returns:**
 
-* A byte array.
+* The data as a byte array. Returns null if <code>uri</code> is null, is
+ syntactically invalid, or is not a data URI.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### DataUriBytes
     public static byte[] DataUriBytes​(java.lang.String uri)

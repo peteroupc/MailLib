@@ -77,6 +77,7 @@ Version 0.14.0:
 - Date headers in generated messages (Generate()) are in global time
 - DataUrls class is now called DataUris; DataUrls is now deprecated.
 - Changes in algorithm used by ContentDisposition.MakeFilename
+- Add Message.ExtractHeaderField method
 - Bug fixes
 
 Version 0.13.1:

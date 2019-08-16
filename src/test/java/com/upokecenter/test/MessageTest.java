@@ -20,6 +20,38 @@ import com.upokecenter.mail.*;
       Assert.assertEquals(1, msg.getParts().size());
     }
 
+public void TestExtractFieldOne(String expected, String msg, String name) {
+if (msg == null) {
+  Assert.assertEquals(expected, Message.ExtractHeaderField(null, name));
+} else {
+  byte[] bytes = DataUtilities.GetUtf8Bytes(expected, true);
+  Assert.assertEquals(expected, Message.ExtractHeaderField(bytes, name));
+}
+}
+
+@Test
+public void TestExtractField() {
+this.TestExtractFieldOne(null,null,"From");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
+this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
+this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
+this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y","from");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n","from");
+this.TestExtractFieldOne("x","X-Header: w\r\nFrom: x\r\nDate:
+y\r\n\r\nBody","from");
+this.TestExtractFieldOne("x","X-Header: w\r\nFrom: x\r\nDate:
+y\r\n\r\nBody","From");
+this.TestExtractFieldOne("x","X-Header: w\r\nFrom: x\r\nDate:
+y\r\n\r\nBody","fRoM");
+this.TestExtractFieldOne("xyz","X-Header: w\r\nFrom: x\r\n y\r\n" +
+"\u0020z\r\n\r\nBody","from");
+this.TestExtractFieldOne("x yz","X-Header: w\r\nFrom: x\r\n \u0020y\r\n" +
+"\u0020z\r\n\r\nBody","from");
+}
+
     @Test
     public void TestMultilingual() {
       List<String> languages = Arrays.asList(new String[] { "en", "fr" });
@@ -2248,7 +2280,7 @@ MessageFromString(MessageFromString(msg).Generate())
       String mtype = "text/plain;charset=x-unknown";
       msg.setContentType(MediaType.Parse(mtype));
       try {
-        msg.getBodyString().toString();
+        System.out.print(msg.getBodyString());
         Assert.fail("Should have failed");
       } catch (UnsupportedOperationException ex) {
         // NOTE: Intentionally empty
@@ -2306,6 +2338,7 @@ MessageFromString(MessageFromString(msg).Generate())
       msg = MessageFromString(valueMessageString);
       Assert.assertEquals(expected, msg.getFileName());
     }
+    @Test
     public void TestFileName() {
       String[] fileNames = ResourceUtil.GetStrings("filenames");
       for (int i = 0; i < fileNames.length; i += 2) {
@@ -2787,5 +2820,59 @@ MessageFromString(MessageFromString(msg).Generate())
     @Test
     public void TestToAddresses() {
       // not implemented yet
+    }
+
+    @Test
+    public void TestParseDateStringNull() {
+if (MailDateTime.ParseDateString(null) != null) {
+  Assert.fail();
+}
+if (MailDateTime.ParseDateString(null, true) != null) {
+  Assert.fail();
+}
+if (MailDateTime.ParseDateString(null, false) != null) {
+  Assert.fail();
+}
+if (MailDateTime.ParseDateString("") != null) {
+  Assert.fail();
+}
+if (MailDateTime.ParseDateString("", true) != null) {
+  Assert.fail();
+}
+if (MailDateTime.ParseDateString("", false) != null) {
+  Assert.fail();
+}
+    }
+
+    @Test
+    public void TestParseDateStringTrue() {
+if ((MailDateTime.ParseDateString(
+   "Wed,
+  " + "\u0020 07 Jan 2015 23:23:23 GMT",
+  true)) == null) {
+  Assert.fail();
+}
+}
+    @Test
+    public void TestNamedAddressNoThrow() {
+      Message msg = new Message();
+      NamedAddress na = new NamedAddress("abc \"def\" ghi <me@example.com>");
+      System.out.println(na);
+      na = new NamedAddress("abc \"def\" ghi<me@example.com>");
+      System.out.println(na);
+      na =new NamedAddress("abc \"def\" ghi<m=e@example.com>");
+      System.out.println(na);
+      na =new NamedAddress("abc\"def\"ghi<m=e@example.com>");
+      System.out.println(na);
+      na =new NamedAddress("abc\"a=20b=20c\"ghi<m=e@example.com>");
+      System.out.println(na);
+      na =new NamedAddress("abc\"a=20b=20c\"?=<m=e@example.com>");
+      System.out.println(na);
+      na =new NamedAddress("?abc?\"a=20b=20c\"?=<m=e@example.com>");
+      System.out.println(na);
+      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      System.out.println(na);
+      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      System.out.println(na);
     }
   }

@@ -13,7 +13,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary><para>Specifies what kind of data a message body is.</para>
+    /// <summary>
+    /// <para>Specifies what kind of data a message body is.</para>
     /// <para>A media type consists of a top-level type (the general
     /// category of the data), a subtype (the specific type), and an
     /// optional list of parameters. For example, the media type
@@ -976,7 +977,8 @@ namespace PeterO.Mail {
     /// strings to lower case.).</param>
     /// <returns>The value of the parameter as a string, or null if the
     /// parameter doesn't exist.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     /// <exception cref='ArgumentException'>Name is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -1371,7 +1373,8 @@ namespace PeterO.Mail {
 
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "utf-8", used for plain text data that may contain
-    /// characters outside the basic Latin range (U+0000 to U+007F).</summary>
+    /// characters outside the basic Latin range (U + 0000 to U +
+    /// 007F).</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
         "text",
@@ -1453,7 +1456,8 @@ namespace PeterO.Mail {
     /// <param name='defaultValue'>The media type to return if the string
     /// is syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));

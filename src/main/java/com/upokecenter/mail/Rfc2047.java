@@ -391,8 +391,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
                     context,
                     encodingChar);
                     if (i2 != index && i2 + 1 < endIndex &&
-                str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
-                      i2 + 2 == afterLast) {
+                str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' && i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }

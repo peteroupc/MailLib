@@ -58,17 +58,7 @@ namespace MailLibTest {
       return sb.Append("]").ToString();
     }
 
-    public static string ToJSON(string[] arr) {
-      var sb = new StringBuilder().Append("[");
-      if (arr == null) {
-        throw new ArgumentNullException(nameof(arr));
-      }
-      for (var i = 0; i < arr.Length; ++i) {
-        if (i > 0) {
-          sb.Append(",");
-        }
-        sb.Append("\"");
-        string str = arr[i];
+    private static void JSONEscape(string str, StringBuilder sb) {
         for (var j = 0; j < str.Length; ++j) {
           if ((str[j] & 0xfc00) == 0xdc00 ||
              ((str[j] & 0xfc00) == 0xd800 && (j == str.Length - 1 ||
@@ -83,6 +73,10 @@ namespace MailLibTest {
             sb.Append("\\r");
           } else if (str[j] == '\n') {
             sb.Append("\\n");
+          } else if (str[j] == '\t') {
+            sb.Append("\\t");
+          } else if (str[j] ==0x20 && j + 1 < str.Length && str[j + 1]==0x20) {
+            sb.Append("\\u0020");
           } else if (str[j] < 0x20 || str[j] >= 0x7f) {
             var ch = (int)str[j];
             sb.Append("\\u")
@@ -94,6 +88,52 @@ namespace MailLibTest {
             sb.Append(str[j]);
           }
         }
+    }
+
+    public static string[] SetResource(string[] resources, string name,
+  string value) {
+      if (resources == null) {
+        throw new ArgumentNullException(nameof(resources));
+      }
+      if (name == null) {
+        throw new ArgumentNullException(nameof(name));
+      }
+      if (value == null) {
+        throw new ArgumentNullException(nameof(value));
+      }
+      if (!(-1).Equals(name.IndexOf("="), StringComparison.Ordinal)) {
+        throw new ArgumentException("-1 (" + (-1) + ") is not equal to " +
+(name.IndexOf("="))); }
+      var sb = new StringBuilder();
+      JSONEscape(value, sb);
+      var list = new List<string>();
+      string resourceLine = name + "=" + sb.ToString();
+      var added = false;
+      foreach (var resource in resources) {
+        if (resource.IndexOf(name + "=") == 0) {
+          list.Add(resourceLine);
+          added = true;
+        } else {
+          list.Add(resource);
+        }
+      }
+      if (!added) {
+        list.Add(resourceLine);
+      }
+      return (string[])list.ToArray();
+    }
+
+    public static string ToJSON(string[] arr) {
+      var sb = new StringBuilder().Append("[");
+      if (arr == null) {
+        throw new ArgumentNullException(nameof(arr));
+      }
+      for (var i = 0; i < arr.Length; ++i) {
+        if (i > 0) {
+          sb.Append(",");
+        }
+        sb.Append("\"");
+        JSONEscape(arr[i], sb);
         sb.Append("\"");
       }
       return sb.Append("]").ToString();

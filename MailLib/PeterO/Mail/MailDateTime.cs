@@ -18,11 +18,11 @@ namespace PeterO.Mail {
     /// <summary>Generates a date-time string following the Internet
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
-    /// 8-element array. See
-    /// <c>ParseDateString(bool)</c> for information on the format of
-    /// this parameter.</param>
+    /// 8-element array. See <c>ParseDateString(bool)</c> for information
+    /// on the format of this parameter.</param>
     /// <returns>A date-time string.</returns>
-    /// <exception cref='ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid, including if the year (
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> is null or invalid, including if the year (
     /// <c>dateTime[0]</c> ) is less than 0.</exception>
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
@@ -62,8 +62,7 @@ namespace PeterO.Mail {
       }
       return !(dateTime[3] < 0 || dateTime[4] < 0 || dateTime[5] < 0 ||
 dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||
-dateTime[6] < 0 ||
-dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
+dateTime[6] < 0 || dateTime[7] <= -1440 ||
         dateTime[7] >= 1440);
     }
 
@@ -197,15 +196,17 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// <summary>Generates a date-time string following the Internet
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
-    /// 8-element array. See
-    /// <c>ParseDateString(bool)</c> for information on the format of
-    /// this parameter.</param>
+    /// 8-element array. See <c>ParseDateString(bool)</c> for information
+    /// on the format of this parameter.</param>
     /// <param name='gmt'>If true, uses the string "GMT" as the time zone
     /// offset.</param>
     /// <returns>A date-time string.</returns>
-    /// <exception cref='ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid, including if the year (
-    /// <c>dateTime[0]</c> ) is less than 0.</exception>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='dateTime'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> is null or invalid, including if the year (
+    /// <c>dateTime[0]</c> ) or fractional seconds ( <c>dateTime[6]</c> )
+    /// are less than 0.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dateTime'/> is null.</exception>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (dateTime == null) {
         throw new ArgumentNullException(nameof(dateTime));
@@ -276,8 +277,8 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// If an array is returned, the elements of that array (starting from
     /// 0) are as follows:
     /// <list>
-    /// <item>0 - The year. For example, the value 2000 means 2000
-    /// C.E.</item>
+    /// <item>0 - The year. For example, the value 2000 means 2000 C.E.
+    /// This value cannot be less than 0.</item>
     /// <item>1 - Month of the year, from 1 (January) through 12
     /// (December).</item>
     /// <item>2 - Day of the month, from 1 through 31.</item>
@@ -288,11 +289,13 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// additional seconds added to adjust international atomic time, or
     /// TAI, to an approximation of astronomical time known as coordinated
     /// universal time, or UTC.)</item>
-    /// <item>6 - Milliseconds of the second, from 0 through 999. Will
-    /// always be 0.</item>
+    /// <item>6 - Fractional seconds. The return value will always have
+    /// this value set to 0, since fractional seconds cannot be expressed
+    /// in the date-time format. This value cannot be less than 0.</item>
     /// <item>7 - Number of minutes to subtract from this date and time to
-    /// get global time. This number can be positive or
-    /// negative.</item></list></summary>
+    /// get global time. This number can be positive or negative, but
+    /// cannot be less than -1439 or greater than
+    /// 1439.</item></list></summary>
     /// <param name='str'>A date-time string.</param>
     /// <param name='parseObsoleteZones'>If set to <c>true</c>, this
     /// method allows obsolete time zones (single-letter time zones, "GMT",
@@ -302,11 +305,7 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     /// <c>null</c> if <paramref name='str'/> is null, empty, or
     /// syntactically invalid, or if the string's year would overflow the
     /// range of a 32-bit signed integer.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
-    if (str == null) {
-      return null;
-    }
     if (String.IsNullOrEmpty(str)) {
       return null;
     }
@@ -324,13 +323,15 @@ dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
     }
 
     /// <summary>Gets the date and time extracted from a date-time string
-    /// following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string.  See <c>ParseDateString(bool)</c> for information on this method's return value.</summary>
+    /// following the Internet Message Format (RFC 5322). Obsolete time
+    /// zone strings are not allowed to appear in the date-time string. See
+    /// <c>ParseDateString(bool)</c> for information on this method's
+    /// return value.</summary>
     /// <param name='str'>A date-time string.</param>
     /// <returns>An 8-element array containing the date and time, or
     /// <c>null</c> if <paramref name='str'/> is null, empty, or
     /// syntactically invalid, or if the string's year would overflow the
     /// range of a 32-bit signed integer.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
     public static int[] ParseDateString(string str) {
       return ParseDateString(str, false);
     }

@@ -60,10 +60,10 @@ import com.upokecenter.mail.*;
           return '?';
         }
         if (c == '%') {
-        int b1 = (this.inputIndex < endIndex) ?
+          int b1 = (this.inputIndex < endIndex) ?
             this.input.charAt(this.inputIndex++) : -1;
-            c = 0;
-            if (b1 >= '0' && b1 <= '9') {
+          c = 0;
+          if (b1 >= '0' && b1 <= '9') {
             c <<= 4;
             c |= b1 - '0';
           } else if (b1 >= 'A' && b1 <= 'F') {
@@ -78,9 +78,9 @@ import com.upokecenter.mail.*;
             --this.inputIndex;
             return '%';
           }
-        int b2 = (this.inputIndex < endIndex) ? this.input.charAt(this.inputIndex++) :
-                  -1;
-                  if (b2 >= '0' && b2 <= '9') {
+          int b2 = (this.inputIndex < endIndex) ?
+            this.input.charAt(this.inputIndex++) : -1;
+          if (b2 >= '0' && b2 <= '9') {
             c <<= 4;
             c |= b2 - '0';
           } else if (b2 >= 'A' && b2 <= 'F') {

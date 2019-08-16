@@ -316,7 +316,7 @@ HeaderParserUtility.ParseQuotedStringCore(
       // NOTE: Assumes 'symbol' is a syntactically valid 'comment'
       // and begins and ends with parentheses
       if (symbol.length() == 0 || symbol.charAt(0) != '(') {
-        throw new IllegalArgumentException();
+        throw new IllegalStateException();
       }
       int i = 0;
       int symbolBegin = 0;

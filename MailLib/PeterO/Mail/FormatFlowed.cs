@@ -1255,9 +1255,9 @@ namespace PeterO.Mail {
                .Append(">").Append(FormatParagraph(stripped, links))
                .Append("</h").Append((char)('0' + heading))
                .Append(">");
-        } else if (IsCodeBlockLine(line)) {
-          isSingleParagraph = false;
-          if (haveParagraph) {
+             } else if (IsCodeBlockLine(line)) {
+               isSingleParagraph = false;
+               if (haveParagraph) {
             haveParagraph = false;
             formatted.Append("<p>");
             formatted.Append(paragraph.ToString());

@@ -7,7 +7,7 @@
 ### Member Summary
 * <code>[GenerateDateString(int[])](#GenerateDateString_int)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 * <code>[GenerateDateString(int[], bool)](#GenerateDateString_int_bool)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
-* <code>[ParseDateString(string)](#ParseDateString_string)</code> - Not documented yet.
+* <code>[ParseDateString(string)](#ParseDateString_string)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322).
 * <code>[ParseDateString(string, bool)](#ParseDateString_string_bool)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string.
 * <code>[ParseDateStringHttp(string)](#ParseDateStringHttp_string)</code> - Parses a date string in one of the three formats allowed by HTTP/1.
 
@@ -21,7 +21,7 @@
 
      <b>Parameters:</b>
 
- * <i>dateTime</i>: The date and time in the form of an 8-element array. See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this parameter.
+ * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
 
 <b>Return Value:</b>
 
@@ -44,7 +44,7 @@ The parameter  <i>dateTime</i>
 
        <b>Parameters:</b>
 
- * <i>dateTime</i>: The date and time in the form of an 8-element array. See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this parameter.
+ * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
 
  * <i>gmt</i>: If true, uses the string "GMT" as the time zone offset.
 
@@ -56,7 +56,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid, including if the year (  `dateTime[0]`  ) is less than 0.
+ is null or invalid, including if the year (  `dateTime[0]`  ) or fractional seconds ( `dateTime[6]` ) are less than 0.
 
  * System.ArgumentNullException:
 The parameter  <i>dateTime</i>
@@ -68,16 +68,16 @@ The parameter  <i>dateTime</i>
     public static int[] ParseDateString(
         string str);
 
- Not documented yet.
+ Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(bool)`  for information on this method's return value.
 
     <b>Parameters:</b>
 
- * <i>str</i>: The parameter  <i>str</i>
- is not documented yet.
+ * <i>str</i>: A date-time string.
 
 <b>Return Value:</b>
 
-An array of 32-bit unsigned integers.
+An 8-element array containing the date and time, or  `null`  if  <i>str</i>
+ is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
 
 <a id="ParseDateString_string_bool"></a>
 ### ParseDateString
@@ -88,7 +88,7 @@ An array of 32-bit unsigned integers.
 
  Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string. If an array is returned, the elements of that array (starting from 0) are as follows:
 
-  * 0 - The year. For example, the value 2000 means 2000 C.E.
+  * 0 - The year. For example, the value 2000 means 2000 C.E. This value cannot be less than 0.
 
   * 1 - Month of the year, from 1 (January) through 12 (December).
 
@@ -100,11 +100,11 @@ An array of 32-bit unsigned integers.
 
   * 5 - Second of the minute, from 0 through 60 (this value can go up to 60 to accommodate leap seconds). (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
 
-  * 6 - Milliseconds of the second, from 0 through 999. Will always be 0.
+  * 6 - Fractional seconds. The return value will always have this value set to 0, since fractional seconds cannot be expressed in the date-time format. This value cannot be less than 0.
 
-  * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative.
+  * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative, but cannot be less than -1439 or greater than 1439.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: A date-time string.
 
@@ -114,12 +114,6 @@ An array of 32-bit unsigned integers.
 
 An 8-element array containing the date and time, or  `null`  if  <i>str</i>
  is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null.
 
 <a id="ParseDateStringHttp_string"></a>
 ### ParseDateStringHttp

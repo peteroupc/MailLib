@@ -813,8 +813,9 @@ private FormatFlowed() {
           while (qi < str.length()) {
             if (str.charAt(qi) == '`') {
               ++backTicks;
-            } else { break;
-}
+            } else {
+              break;
+            }
             ++qi;
           }
           while (qi < str.length()) {
@@ -828,8 +829,9 @@ private FormatFlowed() {
                     qi = qi2;
                     break;
                   }
-                } else { break;
-}
+                } else {
+                  break;
+                }
                 ++qi2;
               }
               if (endBackTicks >= backTicks) {

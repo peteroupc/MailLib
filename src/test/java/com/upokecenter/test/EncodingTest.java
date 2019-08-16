@@ -165,9 +165,21 @@ import com.upokecenter.text.*;
           }
           continue;
         }
-        if (c == '\r' || c == '\n') {
-          System.out.println(fn + ":\n--Bare CR or bare LF");
-          return 0;
+        if (c == '\r') {
+            test = str.substring(
+              Math.max(index + 2 - 30, 0), (
+              Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+            System.out.println(fn +
+              ":\n--Bare CR: [" + test + "] index = " + index);
+              return 0;
+        }
+        if (c == '\n') {
+            test = str.substring(
+              Math.max(index + 2 - 30, 0), (
+              Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+            System.out.println(fn +
+              ":\n--Bare LF: [" + test + "] index = " + index);
+              return 0;
         }
         if (c == ':' && headers && !colon && !startsWithSpace) {
           if (index + 1 >= endIndex) {
@@ -177,7 +189,7 @@ import com.upokecenter.text.*;
           if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
             str.charAt(index - 1) == 0x0d) {
             System.out.println(fn +
-  ":\n--End of line, whitespace, or start of valueMessage before colon");
+  ":\n--End of line, whitespace, or start of message before colon");
             return 0;
           }
           if (str.charAt(index + 1) != 0x20 &&
@@ -187,8 +199,8 @@ import com.upokecenter.text.*;
   Math.max(index + 2 - 30, 0), (
   Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
             System.out.println(fn +
-              ":\n--No space/line break after valueHeader name and colon: (" +
-              str.charAt(index + 1) + ") [" + test + "] " + index);
+              ":\n--No space/line break after header name and colon: (" +
+              str.charAt(index + 1) + ") [" + test + "] index = " + index);
             return 0;
           }
           colon = true;
@@ -196,7 +208,7 @@ import com.upokecenter.text.*;
         if (c == 0 || c == 0x7f) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
-          builder.append(fn + ": CTL in valueMessage (0x");
+          builder.append(fn + ": CTL in message (0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
@@ -206,7 +218,7 @@ import com.upokecenter.text.*;
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
-          builder.append(fn + ": CTL in valueHeader (0x");
+          builder.append(fn + ": CTL in header (0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");

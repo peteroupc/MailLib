@@ -21,6 +21,43 @@ namespace MailLibTest {
       Assert.AreEqual(1, msg.Parts.Count);
     }
 
+public void TestExtractFieldOne(string expected, string msg, string name) {
+if (msg == null) {
+  Assert.AreEqual(expected, Message.ExtractHeaderField(null, name));
+} else {
+  byte[] bytes = DataUtilities.GetUtf8Bytes(expected, true);
+  Assert.AreEqual(expected, Message.ExtractHeaderField(bytes, name));
+}
+}
+
+[Test]
+public void TestExtractField() {
+this.TestExtractFieldOne(null,null,"From");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
+this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
+this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
+this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y","from");
+this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n","from");
+this.TestExtractFieldOne(
+ "x",
+ "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
+ "from");
+this.TestExtractFieldOne("x",
+ "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+ "From");
+this.TestExtractFieldOne(
+ "x",
+ "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+ "fRoM");
+this.TestExtractFieldOne("xyz","X-Header: w\r\nFrom: x\r\n y\r\n" +
+"\u0020z\r\n\r\nBody","from");
+this.TestExtractFieldOne("x yz","X-Header: w\r\nFrom: x\r\n \u0020y\r\n" +
+"\u0020z\r\n\r\nBody","from");
+}
+
     [Test]
     public void TestMultilingual() {
       IList<string> languages =
@@ -2224,7 +2261,7 @@ MessageFromString(MessageFromString(msg).Generate())
       string mtype = "text/plain;charset=x-unknown";
       msg.ContentType = MediaType.Parse(mtype);
       try {
-        msg.BodyString.ToString();
+        Console.Write(msg.BodyString);
         Assert.Fail("Should have failed");
       } catch (NotSupportedException) {
         // NOTE: Intentionally empty
@@ -2283,6 +2320,7 @@ MessageFromString(MessageFromString(msg).Generate())
       msg = MessageFromString(valueMessageString);
       Assert.AreEqual(expected, msg.FileName);
     }
+    [Test]
     public void TestFileName() {
       string[] fileNames = ResourceUtil.GetStrings("filenames");
       for (var i = 0; i < fileNames.Length; i += 2) {
@@ -2764,6 +2802,59 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestToAddresses() {
       // not implemented yet
+    }
+
+    [Test]
+    public void TestParseDateStringNull() {
+if (MailDateTime.ParseDateString(null) != null) {
+  Assert.Fail();
+}
+if (MailDateTime.ParseDateString(null, true) != null) {
+  Assert.Fail();
+}
+if (MailDateTime.ParseDateString(null, false) != null) {
+  Assert.Fail();
+}
+if (MailDateTime.ParseDateString(String.Empty) != null) {
+  Assert.Fail();
+}
+if (MailDateTime.ParseDateString(String.Empty, true) != null) {
+  Assert.Fail();
+}
+if (MailDateTime.ParseDateString(String.Empty, false) != null) {
+  Assert.Fail();
+}
+    }
+
+    [Test]
+    public void TestParseDateStringTrue() {
+      if (MailDateTime.ParseDateString(
+       "Wed,\u0020 07 Jan 2015 23:23:23 GMT",
+       true) == null) {
+       Assert.Fail();
+      }
+    }
+    [Test]
+    public void TestNamedAddressNoThrow() {
+      var msg = new Message();
+      var na = new NamedAddress("abc \"def\" ghi <me@example.com>");
+      Console.WriteLine(na);
+      na = new NamedAddress("abc \"def\" ghi<me@example.com>");
+      Console.WriteLine(na);
+      na =new NamedAddress("abc \"def\" ghi<m=e@example.com>");
+      Console.WriteLine(na);
+      na =new NamedAddress("abc\"def\"ghi<m=e@example.com>");
+      Console.WriteLine(na);
+      na =new NamedAddress("abc\"a=20b=20c\"ghi<m=e@example.com>");
+      Console.WriteLine(na);
+      na =new NamedAddress("abc\"a=20b=20c\"?=<m=e@example.com>");
+      Console.WriteLine(na);
+      na =new NamedAddress("?abc?\"a=20b=20c\"?=<m=e@example.com>");
+      Console.WriteLine(na);
+      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      Console.WriteLine(na);
+      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      Console.WriteLine(na);
     }
   }
 }

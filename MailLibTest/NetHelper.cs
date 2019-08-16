@@ -5,6 +5,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
+using System;
 using System.IO;
 using System.Net;
 
@@ -14,7 +15,8 @@ namespace MailLibTest {
       string location,
       string cachedPath) {
       if (!File.Exists(cachedPath)) {
-        var request = WebRequest.Create(location);
+        var request = WebRequest.Create(
+          new Uri(location));
         var response = request.GetResponse();
         using (var stream = response.GetResponseStream()) {
           using (var output = new FileStream(cachedPath, FileMode.Create)) {

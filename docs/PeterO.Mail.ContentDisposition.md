@@ -122,7 +122,7 @@ A read-only list of parameter names associated with this object and their values
 
     public int[] GetCreationDate();
 
- Gets the date and time extracted from this content disposition's "creation-date" parameter, which specifies the date of creation of a file (RFC 2183 sec. 2.4). See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this method's return value.
+ Gets the date and time extracted from this content disposition's "creation-date" parameter, which specifies the date of creation of a file (RFC 2183 sec. 2.4). The parameter is parsed as though by  `MailDateTime.ParseDateString`  with obsolete time zones (including "GMT") allowed. See that method's documentation for information on the format of this method's return value.
 
    <b>Return Value:</b>
 
@@ -155,7 +155,7 @@ A 32-bit hash code.
 
     public int[] GetModificationDate();
 
- Gets the date and time extracted from this content disposition's "modification-date" parameter, which specifies the date of last modification of a file (RFC 2183 sec. 2.5). See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this method's return value.
+ Gets the date and time extracted from this content disposition's "modification-date" parameter, which specifies the date of last modification of a file (RFC 2183 sec. 2.5). The parameter is parsed as though by  `MailDateTime.ParseDateString`  with obsolete time zones (including "GMT") allowed. See that method's documentation for information on the format of this method's return value.
 
    <b>Return Value:</b>
 
@@ -192,7 +192,7 @@ The parameter  <i>name</i>
 
     public int[] GetReadDate();
 
- Gets the date and time extracted from this content disposition's "read-date" parameter, which specifies the date at which a file was last read (RFC 2183 sec. 2.6). See **M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for information on the format of this method's return value.
+ Gets the date and time extracted from this content disposition's "read-date" parameter, which specifies the date at which a file was last read (RFC 2183 sec. 2.6). The parameter is parsed as though by  `MailDateTime.ParseDateString`  with obsolete time zones (including "GMT") allowed. See that method's documentation for information on the format of this method's return value.
 
    <b>Return Value:</b>
 
@@ -220,7 +220,7 @@ The extracted date and time as an 8-element array, or  `null`  if the "read-date
 
   * This method should be used only to prepare a file name for the purpose of suggesting a name by which to save data. It should not be used to prepare file names of existing files for the purpose of reading them, since this method may replace certain characters with other characters in some cases, such that two different inputs may map to the same output.
 
-  * <b>File Name Support.</b> For recommendations on file name support, see "[File Name Support in Applications](https://peteroupc.github.io/filenames.html)".
+  * <b>File Name Support.</b> For recommendations on file name support, see "<a href="https://peteroupc.github.io/filenames.html">File Name Support in Applications</a>".
 
   * <b>Guarantees.</b> The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if  <i>str</i>
  is null or empty.

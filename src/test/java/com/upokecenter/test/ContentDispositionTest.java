@@ -593,39 +593,9 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
     }
 
-    static final String[] ParseErrors = {
-";x=,y", ";x=x.z,y", ";x=y,", ";x=y,y", ";x=y;",
-  ";x=[y", ";x=x.z[y", ";x=y[", ";x=y[y",
-  ";x=]y", ";x=x.z]y", ";x=y]", ";x=y]y",
-  ";x *=y", ";x *0=y", ";x *0*=y",
-  ";x *=utf-8''y", ";x *0=utf-8''y", ";x *0*=utf-8''y",
-
-";x=x.z y", ";x=y y", ";x=x_z y",
-  ";,y=x", ";x.z,y=x", ";y=x,", ";x=y,y=x",
-  ";[y=x", ";x.z[y=x", ";y[=x", ";x=y[y=x",
-  ";]y=x", ";x.z]y=x", ";y]=x", ";x=y]y=x",
-  ";x.z y=x", ";y y=x", ";x_z y=x",
-  ";;x=y", ";x=y;;y=z", ";x=y,z=w", ",x=y", ";x=y,x=z",
-  ";x==x", ";x==?utf-8?q?x?=", ";x;z=w", ";x;x=y",
-  ";x=?utf-8?q?x?=",
-  ";x=?x", ";x=?utf-8?q?x?=",
-  ";x=a b;x=y",
-  ";x=a, b;x=y",
-  ";x=a x=y",
-  ";x=a,x=y",
-  "x=y", ":x=y", " x=y", "/x=y",
-  ";x=y;z", "=y;z", "=y",
-  ";x==?utf-8*x?q?x?=", "\"x=y\";x=z",
-  "\"x=y;x=z\"", "x=y;\"x=z\"",
-  ";x=\"y", ";x=\"y\"z", ";x=z\"y\"",
-  ";x=z\"y\"z",
-  ";x=z\"y?,\"z",
-  ";x=z\"y?;?\"z",
-  };
-
     @Test
     public void TestParseErrors() {
-      for (String str : ContentDispositionTest.ParseErrors) {
+      for (String str : ResourceUtil.GetStrings("parseerrors")) {
         if ((ParseAndTestAspects("inline" + str, null))!=null) {
  Assert.fail(str);
  }

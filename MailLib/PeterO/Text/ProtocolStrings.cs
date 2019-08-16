@@ -2,10 +2,11 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary><para>Contains methods for preparing user-facing protocol strings
+    /// <summary>
+    /// <para>Contains methods for preparing user-facing protocol strings
     /// (such as user identifiers) for equality comparison and validity
     /// checking. Such strings can be _internationalized_, that is, contain
-    /// characters beyond the Basic Latin block (U+0000 to U+007F) of
+    /// characters beyond the Basic Latin block (U + 0000 to U + 007F) of
     /// the Unicode Standard. See RFC 8264. Currently there are four
     /// profiles for internationalized strings: two for strings serving as
     /// user identifiers, one for arbitrary single-line strings (such as
@@ -39,7 +40,7 @@ namespace PeterO.Text {
     /// IdentifierClass. In general, the IdentifierClass contains all code
     /// points in the Freeform class, except certain uncommon letters and
     /// digits, spaces, as well as punctuation and symbols outside the
-    /// Basic Latin range (U+0000 to U+007F).</summary>
+    /// Basic Latin range (U + 0000 to U + 007F).</summary>
     /// <param name='str'>A string to check.</param>
     /// <returns><c>true</c> if the given string is empty or contains only
     /// characters allowed in RFC 8264's IdentifierClass (in the contexts
@@ -52,7 +53,7 @@ namespace PeterO.Text {
     /// <summary>Determines whether the given string belongs in RFC 8264's
     /// FreeformClass. In general, the FreeformClass contains most letters,
     /// digits, spaces, punctuation, and symbols in the Unicode standard,
-    /// as well as all basic printable characters (U+0021 to U+007E),
+    /// as well as all basic printable characters (U + 0021 to U + 007E),
     /// but excludes control characters and separators.</summary>
     /// <param name='str'>A string to check.</param>
     /// <returns><c>true</c> if the given string is empty or contains only
@@ -91,7 +92,8 @@ namespace PeterO.Text {
     /// <returns>A username where each of its parts is prepared under the
     /// UsernameCaseMapped profile in RFC 8265 (among other things, the
     /// string will be converted to lowercase). Returns null if any of
-    /// those parts is invalid under that profile (including if <paramref name='str'/> is null or empty). Note that there will be as many
+    /// those parts is invalid under that profile (including if <paramref
+    /// name='str'/> is null or empty). Note that there will be as many
     /// spaces of separation between parts of the return value as between
     /// parts of the input; this method will not collapse multiple spaces
     /// (U + 0020) into a single space. If such space collapsing on a
@@ -118,7 +120,8 @@ namespace PeterO.Text {
     /// UsernameCasePreserved profile in RFC 8265. Returns null if
     /// <paramref name='str'/> is invalid under that profile (including if
     /// <paramref name='str'/> is null or empty). For comparison purposes,
-    /// return values of this method (with the same value for <paramref name='preserveCase'/> ) should be compared code point by code point
+    /// return values of this method (with the same value for <paramref
+    /// name='preserveCase'/> ) should be compared code point by code point
     /// (see RFC 8265, secs. 3.3.4 and 3.4.4).</returns>
     public static string UserpartEnforce(string str, bool preserveCase) {
       if (preserveCase) {
@@ -151,7 +154,8 @@ Idna.UsernameCasePreservedEnforce(str);
     /// space collapsing on a string (or rejection of strings with multiple
     /// consecutive spaces) is desired, it should be done before that
     /// string is passed to this method. For comparison purposes, return
-    /// values of this method (with the same value for <paramref name='preserveCase'/> ) should be compared code point by code point
+    /// values of this method (with the same value for <paramref
+    /// name='preserveCase'/> ) should be compared code point by code point
     /// (see RFC 8265, secs. 3.3.4 and 3.4.4).</returns>
     public static string UsernameEnforce(string str, bool preserveCase) {
       if (String.IsNullOrEmpty(str)) {

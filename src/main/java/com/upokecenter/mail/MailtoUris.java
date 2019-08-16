@@ -227,7 +227,7 @@ name.equals("in-reply-to")) {
           }
           try {
             msg.SetHeader("to", emails);
-          } catch (Exception ex) {
+          } catch (IllegalArgumentException ex) {
             return null;
           }
         }
