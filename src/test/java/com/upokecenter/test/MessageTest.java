@@ -2923,6 +2923,26 @@ public void TestDateStringHttp() {
  Assert.assertEquals(0, dtime[6]);
  Assert.assertEquals(0, dtime[7]);
  dtime = MailDateTime.ParseDateStringHttp(
+  "Tue\u002c 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Mon 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Fun\u002c 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Monday\u002c 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
    "Monday\u002c 06-May-19 01:23:45 GMT");
  Assert.assertEquals(2019, dtime[0]);
  Assert.assertEquals(5, dtime[1]);
@@ -2932,6 +2952,21 @@ public void TestDateStringHttp() {
  Assert.assertEquals(45, dtime[5]);
  Assert.assertEquals(0, dtime[6]);
  Assert.assertEquals(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Tuesday\u002c 06-May-19 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Funday\u002c 06-May-19 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Mon\u002c 06-May-19 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
  dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
  Assert.assertEquals(2019, dtime[0]);
  Assert.assertEquals(5, dtime[1]);
@@ -2950,6 +2985,19 @@ public void TestDateStringHttp() {
  Assert.assertEquals(45, dtime[5]);
  Assert.assertEquals(0, dtime[6]);
  Assert.assertEquals(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Mon\u002c May 13 01:23:45 2019");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp("Fun May 13 01:23:45 2019");
+ if ((dtime) != null) {
+   Assert.fail();
+ }
 }
     @Test
     public void TestNamedAddressNoThrow() {

@@ -1,8 +1,7 @@
-package com.upokecenter.test;
+package com.upokecenter.test; import com.upokecenter.util.*;
 
 import java.util.*;
 import java.io.*;
-using MailLibTest;
 
   public final class ResourceUtil {
 private ResourceUtil() {

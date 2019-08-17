@@ -47,14 +47,14 @@ private DictUtility() {
           sb.append(",");
         }
         Map<String, String> dict = dictlist.get(i);
-        String[] listArray = new String[dict.size() * 2];
+        String[] larray = new String[dict.size() * 2];
         int k = 0;
         for (String key : dict.keySet()) {
-          listArray.set(k, key);
-          listArray.set(k + 1, dict.get(key));
+          larray[k] = key;
+          larray[k + 1] = dict.get(key);
           k += 2;
         }
-        sb.append(ToJSON(listArray));
+        sb.append(ToJSON(larray));
       }
       return sb.append("]").toString();
     }
@@ -111,7 +111,7 @@ private DictUtility() {
       ArrayList<String> list = new ArrayList<String>();
       String resourceLine = name + "=" + sb.toString();
       boolean added = false;
-      for (Object resource : resources) {
+      for (String resource : resources) {
         if (resource.indexOf(name + "=") == 0) {
           list.add(resourceLine);
           added = true;
@@ -178,7 +178,7 @@ private DictUtility() {
               == 0x09)) {
               ++i;
             }
-            return i == str.length() ? list.ToArray() : null;
+            return i == str.length() ? list : null;
           case (char)0x2c:
             if (!endValue) {
               throw new IllegalStateException("unexpected comma");
@@ -218,7 +218,7 @@ private DictUtility() {
       if (endPos == null) {
         throw new NullPointerException("endPos");
       }
-      var i = endPos[0];
+      int i = endPos[0];
       int j = 0;
       ArrayList<String> list = new ArrayList<String>();
       StringBuilder sb = new StringBuilder();
@@ -244,8 +244,10 @@ str.substring(i));
           throw new IllegalStateException("Invalid JSON:" +
 "\u0020" + str.substring(i));
         }
-        switch (str.charAt(i)) {
-          case ']':
+        int si = (int)str.charAt(i);
+        switch (si) {
+          case 0x5d:
+            // right square bracket
             ++i;
             while (i < str.length() && (
               str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
@@ -254,7 +256,8 @@ str.substring(i));
             }
             endPos[0] = i;
             return list.ToArray();
-          case (char)0x2c:
+          case 0x2c:
+            // comma
             if (!endValue) {
               throw new IllegalStateException("Invalid JSON:" +
 "\u0020" + str.substring(i));
@@ -262,7 +265,8 @@ str.substring(i));
             ++i;
             endValue = false;
             break;
-          case '"':
+          case 0x22:
+            // double quote
             j = i;
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {

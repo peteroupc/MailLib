@@ -46,14 +46,14 @@ namespace MailLibTest {
           sb.Append(",");
         }
         IDictionary<string, string> dict = dictlist[i];
-        var listArray = new string[dict.Count * 2];
+        var larray = new string[dict.Count * 2];
         var k = 0;
         foreach (string key in dict.Keys) {
-          listArray[k] = key;
-          listArray[k + 1] = dict[key];
+          larray[k] = key;
+          larray[k + 1] = dict[key];
           k += 2;
         }
-        sb.Append(ToJSON(listArray));
+        sb.Append(ToJSON(larray));
       }
       return sb.Append("]").ToString();
     }
@@ -110,7 +110,7 @@ namespace MailLibTest {
       var list = new List<string>();
       string resourceLine = name + "=" + sb.ToString();
       var added = false;
-      foreach (var resource in resources) {
+      foreach (string resource in resources) {
         if (resource.IndexOf(name + "=") == 0) {
           list.Add(resourceLine);
           added = true;
@@ -177,7 +177,7 @@ namespace MailLibTest {
               == 0x09)) {
               ++i;
             }
-            return i == str.Length ? list.ToArray() : null;
+            return i == str.Length ? list : null;
           case (char)0x2c:
             if (!endValue) {
               throw new InvalidOperationException("unexpected comma");
@@ -217,7 +217,7 @@ namespace MailLibTest {
       if (endPos == null) {
         throw new ArgumentNullException(nameof(endPos));
       }
-      var i = endPos[0];
+      int i = endPos[0];
       var j = 0;
       var list = new List<string>();
       var sb = new StringBuilder();
@@ -243,8 +243,10 @@ str.Substring(i));
           throw new InvalidOperationException("Invalid JSON:" +
 "\u0020" + str.Substring(i));
         }
-        switch (str[i]) {
-          case ']':
+        var si = (int)str[i];
+        switch (si) {
+          case 0x5d:
+            // right square bracket
             ++i;
             while (i < str.Length && (
               str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
@@ -253,7 +255,8 @@ str.Substring(i));
             }
             endPos[0] = i;
             return list.ToArray();
-          case (char)0x2c:
+          case 0x2c:
+            // comma
             if (!endValue) {
               throw new InvalidOperationException("Invalid JSON:" +
 "\u0020" + str.Substring(i));
@@ -261,7 +264,8 @@ str.Substring(i));
             ++i;
             endValue = false;
             break;
-          case '"':
+          case 0x22:
+            // double quote
             j = i;
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {

@@ -2901,6 +2901,26 @@ public void TestDateStringHttp() {
  Assert.AreEqual(0, dtime[6]);
  Assert.AreEqual(0, dtime[7]);
  dtime = MailDateTime.ParseDateStringHttp(
+  "Tue\u002c 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Mon 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Fun\u002c 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Monday\u002c 06 May 2019 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
    "Monday\u002c 06-May-19 01:23:45 GMT");
  Assert.AreEqual(2019, dtime[0]);
  Assert.AreEqual(5, dtime[1]);
@@ -2910,6 +2930,21 @@ public void TestDateStringHttp() {
  Assert.AreEqual(45, dtime[5]);
  Assert.AreEqual(0, dtime[6]);
  Assert.AreEqual(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Tuesday\u002c 06-May-19 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Funday\u002c 06-May-19 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Mon\u002c 06-May-19 01:23:45 GMT");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
  dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
  Assert.AreEqual(2019, dtime[0]);
  Assert.AreEqual(5, dtime[1]);
@@ -2928,6 +2963,19 @@ public void TestDateStringHttp() {
  Assert.AreEqual(45, dtime[5]);
  Assert.AreEqual(0, dtime[6]);
  Assert.AreEqual(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Mon\u002c May 13 01:23:45 2019");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
+ dtime = MailDateTime.ParseDateStringHttp("Fun May 13 01:23:45 2019");
+ if ((dtime) != null) {
+   Assert.Fail();
+ }
 }
     [Test]
     public void TestNamedAddressNoThrow() {

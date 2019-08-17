@@ -91,14 +91,14 @@ import com.upokecenter.mail.*;
     }
 
     private static void TestEmptyPathOne(String uri) {
-      int[] iri = URIUtility.SplitIRI(uri);
-      if (iri == null) {
+      int[] iriPositions = URIUtility.SplitIRI(uri);
+      if (iriPositions == null) {
         Assert.fail();
       }
-      if (!(iri.charAt(4) >= 0)) {
+      if (!(iriPositions[4] >= 0)) {
  Assert.fail();
  }
-      Assert.assertEquals(iri.charAt(4), iri.charAt(5));
+      Assert.assertEquals(iriPositions[4], iriPositions[5]);
     }
 
     @Test

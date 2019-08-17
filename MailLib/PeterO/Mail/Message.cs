@@ -208,7 +208,7 @@ namespace PeterO.Mail {
     }
 
     private static int EndOfLine(byte[] bytes, int index) {
-       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index-2] ==
+       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index - 2] ==
 0x0d) ?
 (index - 2) : index;
     }

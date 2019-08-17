@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using MailLibTest;
-namespace Test {
+using Test;
+
+namespace MailLibTest {
   public static class ResourceUtil {
     public static string[] GetStrings(string name) {
       var resources = new AppResources("Resources");

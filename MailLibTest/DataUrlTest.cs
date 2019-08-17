@@ -86,12 +86,12 @@ namespace MailLibTest {
     }
 
     private static void TestEmptyPathOne(string uri) {
-      int[] iri = URIUtility.SplitIRI(uri);
-      if (iri == null) {
+      int[] iriPositions = URIUtility.SplitIRI(uri);
+      if (iriPositions == null) {
         Assert.Fail();
       }
-      Assert.IsTrue(iri[4] >= 0);
-      Assert.AreEqual(iri[4], iri[5]);
+      Assert.IsTrue(iriPositions[4] >= 0);
+      Assert.AreEqual(iriPositions[4], iriPositions[5]);
     }
 
     [Test]

@@ -7,9 +7,7 @@
     <Title>MailLib Library</Title>
     <Owners>Peter Occil</Owners>
     <Authors>Peter Occil</Authors>
-<!-- TODO
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
--->
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
     <Description>A .NET library for parsing and generating Internet email messages.</Description>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
@@ -45,6 +43,7 @@ Version 0.14.0:
     <DocumentationFile>bin\Release\netstandard1.0\MailLib.xml</DocumentationFile>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
   <ItemGroup>
+    <None Pack="true" Include="../LICENSE.md" PackagePath="LICENSE.md" />
     <EmbeddedResource Condition=' &apos;$(EnableDefaultEmbeddedResourceItems)&apos; == &apos;true&apos; ' Update='PeterO.Text.Encoders.AppResources.resx'>
       <LogicalName>PeterO.Text.Encoders.AppResources.resources</LogicalName>
     </EmbeddedResource>
