@@ -7,9 +7,8 @@
     <Title>MailLib Library</Title>
     <Owners>Peter Occil</Owners>
     <Authors>Peter Occil</Authors>
-<!-- TODO -->
-<!--
-    <PackageLicenseFile>../LICENSE.md</PackageLicenseFile>
+<!-- TODO
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 -->
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
     <Description>A .NET library for parsing and generating Internet email messages.</Description>

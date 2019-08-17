@@ -874,8 +874,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         23) <= 57) && (v.charAt(index + 24) >= 48 && v.charAt(index + 24) <= 57)) &&
         (v.charAt(index + 25) == 32) && (v.charAt(index + 26) == 71) && (v.charAt(index + 27) ==
         77) && (v.charAt(index + 28) == 84)) {
-        index += 29;
-        if (index != endIndex) {
+        if (index + 29 != endIndex) {
           return null;
         }
         int dow = ParseDOW(v, index, endIndex);
@@ -913,8 +912,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         ((v.charAt(index + 20) >= 48 && v.charAt(index + 20) <= 57) && (v.charAt(index + 21) >=
         48 && v.charAt(index + 21) <= 57) && (v.charAt(index + 22) >= 48 && v.charAt(index + 22)
         <= 57) && (v.charAt(index + 23) >= 48 && v.charAt(index + 23) <= 57))) {
-        index += 24;
-        if (index != endIndex) {
+        if (index + 24 != endIndex) {
           return null;
         }
         int dow = ParseDOW(v, index, endIndex);
@@ -955,19 +953,20 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         19) >= 48 && v.charAt(index + 19) <= 57)) && (v.charAt(index + 20) == 32) &&
         (v.charAt(index + 21) == 71) && (v.charAt(index + 22) == 77) && (v.charAt(index + 23) ==
         84)) {
+        int idx = index + 2;
         index += 24;
         if (index != endIndex) {
           return null;
         }
-        int month = ParseMonth(v, index + 3, endIndex);
+        int month = ParseMonth(v, idx + 3, endIndex);
         if (dowLong < 0 || month < 0) {
           return null;
         }
-        int day = ((v.charAt(index) - '0') * 10) + (v.charAt(index + 1) - '0');
-        int year = ((v.charAt(index + 7) - '0') * 10) + (v.charAt(index + 8) - '0');
-        int hour = ((v.charAt(index + 10) - '0') * 10) + (v.charAt(index + 11) - '0');
-        int minute = ((v.charAt(index + 13) - '0') * 10) + (v.charAt(index + 14) - '0');
-        int second = ((v.charAt(index + 16) - '0') * 10) + (v.charAt(index + 17) - '0');
+        int day = ((v.charAt(idx) - '0') * 10) + (v.charAt(idx + 1) - '0');
+        int year = ((v.charAt(idx + 7) - '0') * 10) + (v.charAt(idx + 8) - '0');
+        int hour = ((v.charAt(idx + 10) - '0') * 10) + (v.charAt(idx + 11) - '0');
+        int minute = ((v.charAt(idx + 13) - '0') * 10) + (v.charAt(idx + 14) - '0');
+        int second = ((v.charAt(idx + 16) - '0') * 10) + (v.charAt(idx + 17) - '0');
         int thisyear = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("GMT")).get(java.util.Calendar.YEAR);
         int this2digityear = thisyear % 100;
         int convertedYear = year + (thisyear - this2digityear);

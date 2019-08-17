@@ -75,7 +75,8 @@ namespace MailLibTest {
             sb.Append("\\n");
           } else if (str[j] == '\t') {
             sb.Append("\\t");
-          } else if (str[j] == 0x20 && j + 1 < str.Length && str[j + 1]==0x20) {
+          } else if (str[j] == 0x20 && j + 1 < str.Length && str[j + 1] ==
+0x20) {
             sb.Append("\\u0020");
           } else if (str[j] < 0x20 || str[j] >= 0x7f) {
             var ch = (int)str[j];

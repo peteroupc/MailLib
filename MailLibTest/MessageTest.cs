@@ -2861,12 +2861,74 @@ if (MailDateTime.ParseDateString(String.Empty, false) != null) {
     [Test]
     public void TestParseDateStringTrue() {
       if (MailDateTime.ParseDateString(
-       "Wed,
-  " + "\u0020 \u0020 07 Jan 2015 23:23:23 GMT",
-  true) == null) {
+        "Wed\u002c 07 Jan 2015 23:23:23 GMT",
+        true) == null) {
         Assert.Fail();
       }
     }
+
+[Test]
+public void TestEmptyBody() {
+var msg = new Message();
+msg = new Message(msg.GenerateBytes());
+byte[] bytes = msg.GetBody();
+Assert.AreEqual(0, bytes.Length);
+}
+
+[Test]
+public void TestTwoToFields() {
+var msg = new Message();
+msg.AddHeader("to", "a@example.com");
+msg.AddHeader("to", "b@example.com");
+string msggen = msg.Generate();
+int io = msggen.IndexOf(
+    "To: a@example.com\u002c b@example.com",
+    StringComparison.Ordinal);
+Assert.AreEqual(-1, io);
+}
+
+[Test]
+public void TestDateStringHttp() {
+ int[] dtime;
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Mon\u002c 06 May 2019 01:23:45 GMT");
+ Assert.AreEqual(2019, dtime[0]);
+ Assert.AreEqual(5, dtime[1]);
+ Assert.AreEqual(6, dtime[2]);
+ Assert.AreEqual(1, dtime[3]);
+ Assert.AreEqual(23, dtime[4]);
+ Assert.AreEqual(45, dtime[5]);
+ Assert.AreEqual(0, dtime[6]);
+ Assert.AreEqual(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Monday\u002c 06-May-19 01:23:45 GMT");
+ Assert.AreEqual(2019, dtime[0]);
+ Assert.AreEqual(5, dtime[1]);
+ Assert.AreEqual(6, dtime[2]);
+ Assert.AreEqual(1, dtime[3]);
+ Assert.AreEqual(23, dtime[4]);
+ Assert.AreEqual(45, dtime[5]);
+ Assert.AreEqual(0, dtime[6]);
+ Assert.AreEqual(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
+ Assert.AreEqual(2019, dtime[0]);
+ Assert.AreEqual(5, dtime[1]);
+ Assert.AreEqual(6, dtime[2]);
+ Assert.AreEqual(1, dtime[3]);
+ Assert.AreEqual(23, dtime[4]);
+ Assert.AreEqual(45, dtime[5]);
+ Assert.AreEqual(0, dtime[6]);
+ Assert.AreEqual(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
+ Assert.AreEqual(2019, dtime[0]);
+ Assert.AreEqual(5, dtime[1]);
+ Assert.AreEqual(13, dtime[2]);
+ Assert.AreEqual(1, dtime[3]);
+ Assert.AreEqual(23, dtime[4]);
+ Assert.AreEqual(45, dtime[5]);
+ Assert.AreEqual(0, dtime[6]);
+ Assert.AreEqual(0, dtime[7]);
+}
     [Test]
     public void TestNamedAddressNoThrow() {
       var msg = new Message();

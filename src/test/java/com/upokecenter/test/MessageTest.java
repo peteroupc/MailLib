@@ -2884,12 +2884,73 @@ if (MailDateTime.ParseDateString("", false) != null) {
     @Test
     public void TestParseDateStringTrue() {
       if (MailDateTime.ParseDateString(
-       "Wed,
-  " + "\u0020 \u0020 07 Jan 2015 23:23:23 GMT",
-  true) == null) {
+        "Wed\u002c 07 Jan 2015 23:23:23 GMT",
+        true) == null) {
         Assert.fail();
       }
     }
+
+@Test
+public void TestEmptyBody() {
+Message msg = new Message();
+msg = new Message(msg.GenerateBytes());
+byte[] bytes = msg.GetBody();
+Assert.assertEquals(0, bytes.length);
+}
+
+@Test
+public void TestTwoToFields() {
+Message msg = new Message();
+msg.AddHeader("to", "a@example.com");
+msg.AddHeader("to", "b@example.com");
+String msggen = msg.Generate();
+int io = msggen.indexOf(
+    "To: a@example.com\u002c b@example.com");
+Assert.assertEquals(-1, io);
+}
+
+@Test
+public void TestDateStringHttp() {
+ int[] dtime;
+ dtime = MailDateTime.ParseDateStringHttp(
+  "Mon\u002c 06 May 2019 01:23:45 GMT");
+ Assert.assertEquals(2019, dtime[0]);
+ Assert.assertEquals(5, dtime[1]);
+ Assert.assertEquals(6, dtime[2]);
+ Assert.assertEquals(1, dtime[3]);
+ Assert.assertEquals(23, dtime[4]);
+ Assert.assertEquals(45, dtime[5]);
+ Assert.assertEquals(0, dtime[6]);
+ Assert.assertEquals(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp(
+   "Monday\u002c 06-May-19 01:23:45 GMT");
+ Assert.assertEquals(2019, dtime[0]);
+ Assert.assertEquals(5, dtime[1]);
+ Assert.assertEquals(6, dtime[2]);
+ Assert.assertEquals(1, dtime[3]);
+ Assert.assertEquals(23, dtime[4]);
+ Assert.assertEquals(45, dtime[5]);
+ Assert.assertEquals(0, dtime[6]);
+ Assert.assertEquals(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
+ Assert.assertEquals(2019, dtime[0]);
+ Assert.assertEquals(5, dtime[1]);
+ Assert.assertEquals(6, dtime[2]);
+ Assert.assertEquals(1, dtime[3]);
+ Assert.assertEquals(23, dtime[4]);
+ Assert.assertEquals(45, dtime[5]);
+ Assert.assertEquals(0, dtime[6]);
+ Assert.assertEquals(0, dtime[7]);
+ dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
+ Assert.assertEquals(2019, dtime[0]);
+ Assert.assertEquals(5, dtime[1]);
+ Assert.assertEquals(13, dtime[2]);
+ Assert.assertEquals(1, dtime[3]);
+ Assert.assertEquals(23, dtime[4]);
+ Assert.assertEquals(45, dtime[5]);
+ Assert.assertEquals(0, dtime[6]);
+ Assert.assertEquals(0, dtime[7]);
+}
     @Test
     public void TestNamedAddressNoThrow() {
       Message msg = new Message();

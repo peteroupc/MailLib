@@ -162,21 +162,21 @@ namespace PeterO.Mail {
     /// name='stream'/> is null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>The message is
     /// malformed. See the remarks.</exception>
-    /// <remarks><b>Remarks:</b> This constructor parses an email message,
-    /// and extracts its header fields and body, and throws a
-    /// MessageDataException if the message is malformed. However, even if
-    /// a MessageDataException is thrown, it can still be possible to
-    /// display the message, especially because most email malformations
-    /// seen in practice are benign in nature (such as the use of very long
-    /// lines in the message). One way an application can handle the
-    /// exception is to read all the bytes from the stream, to display the
-    /// message, or part of it, as raw text (using
-    /// <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to
+    /// <remarks><b>Remarks:</b>
+    /// <para>This constructor parses an email message, and extracts its
+    /// header fields and body, and throws a MessageDataException if the
+    /// message is malformed. However, even if a MessageDataException is
+    /// thrown, it can still be possible to display the message, especially
+    /// because most email malformations seen in practice are benign in
+    /// nature (such as the use of very long lines in the message). One way
+    /// an application can handle the exception is to read all the bytes
+    /// from the stream, to display the message, or part of it, as raw text
+    /// (using <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to
     /// optionally extract important header fields, such as From, To, Date,
     /// and Subject, from the message's text using the <c>ExtractHeader</c>
     /// method. Even so, though, any message for which this constructor
     /// throws a MessageDataException ought to be treated with
-    /// suspicion.</remarks>
+    /// suspicion.</para></remarks>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -208,7 +208,8 @@ namespace PeterO.Mail {
     }
 
     private static int EndOfLine(byte[] bytes, int index) {
-       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index-2]==0x0d) ?
+       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index-2] ==
+0x0d) ?
 (index - 2) : index;
     }
 
@@ -320,20 +321,21 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     /// name='bytes'/> is null.</exception>
     /// <exception cref='PeterO.Mail.MessageDataException'>The message is
     /// malformed. See the remarks.</exception>
-    /// <remarks><b>Remarks:</b> This constructor parses an email message,
-    /// and extracts its header fields and body, and throws a
-    /// MessageDataException if the message is malformed. However, even if
-    /// a MessageDataException is thrown, it can still be possible to
-    /// display the message, especially because most email malformations
-    /// seen in practice are benign in nature (such as the use of very long
-    /// lines in the message). One way an application can handle the
-    /// exception is to display the message, or part of it, as raw text
-    /// (using <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to
+    /// <remarks><b>Remarks:</b>
+    /// <para>This constructor parses an email message, and extracts its
+    /// header fields and body, and throws a MessageDataException if the
+    /// message is malformed. However, even if a MessageDataException is
+    /// thrown, it can still be possible to display the message, especially
+    /// because most email malformations seen in practice are benign in
+    /// nature (such as the use of very long lines in the message). One way
+    /// an application can handle the exception is to display the message,
+    /// or part of it, as raw text (using
+    /// <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to
     /// optionally extract important header fields, such as From, To, Date,
     /// and Subject, from the message's text using the <c>ExtractHeader</c>
     /// method. Even so, though, any message for which this constructor
     /// throws a MessageDataException ought to be treated with
-    /// suspicion.</remarks>
+    /// suspicion.</para></remarks>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -692,13 +694,10 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
         return this.GetAddresses("to");
       }
     }
-    // TODO: Don't allow From/Sender fields to be added if they exist
-    // TODO: Don't consolidate multiple From/Sender fields (they allow
-    // only one mailbox/group)
 
     /// <summary>Adds a header field to the end of the message's header.
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='header'>A key/value pair. The key is the name of the
     /// header field, such as "From" or "Content-ID". The value is the
@@ -714,8 +713,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     }
 
     /// <summary>Adds a header field to the end of the message's header.
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='name'>Name of a header field, such as "From" or
     /// "Content-ID" .</param>
@@ -743,7 +742,9 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     /// To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc,
     /// Resent-Bcc, and Resent-Sender. If the header field exists, but has
     /// an invalid syntax, has no addresses, or appears more than once,
-    /// this method will generate a synthetic header field with the
+    /// this method will combine the addresses into one header field if
+    /// possible (in the case of all fields given other than From and
+    /// Sender), and otherwise generate a synthetic header field with the
     /// display-name set to the contents of all of the header fields with
     /// the same name, and the address set to
     /// <c>me@[header-name]-address.invalid</c> as the address (a
@@ -929,8 +930,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     }
 
     /// <summary>Removes a header field by index.
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
@@ -965,8 +966,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     /// comparison is used. (Two strings are equal in such a comparison, if
     /// they match after converting the basic upper-case letters A to Z (U
     /// + 0041 to U + 005A) in both strings to lower case.).
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='name'>The name of the header field to remove.</param>
     /// <returns>This instance.</returns>
@@ -1008,8 +1009,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     }
 
     /// <summary>Sets the name and value of a header field by index.
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
@@ -1029,8 +1030,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     }
 
     /// <summary>Sets the name and value of a header field by index.
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
@@ -1068,8 +1069,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
 
     /// <summary>Sets the value of a header field by index without changing
     /// its name.
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
@@ -1117,8 +1118,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
     /// field with the same name exists, its value is replaced. If the
     /// header field's name occurs more than once, only the first instance
     /// of the header field is replaced.
-    /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this
+    /// <para>This method updates the ContentType and ContentDisposition
+    /// properties if those header fields have been modified by this
     /// method.</para></summary>
     /// <param name='name'>The name of a header field, such as "from" or
     /// "subject" .</param>
@@ -3178,7 +3179,9 @@ name.Length >= 2 &&
               }
               bool isValidAddressing = this.IsValidAddressingField(name);
               haveHeaders[headerIndex] = true;
-              /*DebugUtility.Log (name+" "+isValidAddressing);
+/*
+#if DEBUG
+                DebugUtility.Log (name+" "+isValidAddressing);
                 {
                   var ssb = new StringBuilder();
                   foreach (var mhs in this.GetMultipleHeaders (name)) {
@@ -3190,12 +3193,18 @@ name.Length >= 2 &&
                  }
                   }
                   DebugUtility.Log (ssb.ToString());
-                }*/
+                }
+#endif
+*/
               if (!isValidAddressing) {
-                value = GenerateAddressList(
-    ParseAddresses(this.GetMultipleHeaders(name)));
+                value = String.Empty;
+                if (!name.Equals("from", StringComparison.Ordinal) &&
+!name.Equals("sender", StringComparison.Ordinal)) {
+                  value = GenerateAddressList(
+                    NamedAddress.ParseAddresses(value));
+                }
                 if (value.Length == 0) {
-                  // No addresses, synthesize a field
+                  // Synthesize a field
                   rawField = this.SynthesizeField(name);
                 }
               }
@@ -3886,9 +3895,7 @@ this.ContentType.TypeAndSubType.Equals("text/plain",
     }
 
     private string SynthesizeField(string name) {
-      var encoder = new HeaderEncoder(76, 0);
-      encoder.AppendSymbol(name + ":");
-      encoder.AppendSpace();
+      var encoder = new HeaderEncoder(76, 0).AppendFieldName(name);
       string fullField = ParserUtility.Implode(
         this.GetMultipleHeaders(name),
         "\u002c ");

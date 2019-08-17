@@ -294,8 +294,8 @@ Renamed to ToMailtoUri.
     public Message​(java.io.InputStream stream)
 Initializes a new instance of the <code>Message</code>
  class. Reads from the given InputStream object to initialize the email
- message.<p><b>Remarks:</b> This constructor parses an email message,
- and extracts its header fields and body, and throws a
+ message.<p><b>Remarks:</b> </p><p>This constructor parses an email
+ message, and extracts its header fields and body, and throws a
  MessageDataException if the message is malformed. However, even if a
  MessageDataException is thrown, it can still be possible to display
  the message, especially because most email malformations seen in
@@ -324,8 +324,8 @@ Initializes a new instance of the <code>Message</code>
     public Message​(byte[] bytes)
 Initializes a new instance of the <code>Message</code>
  class. Reads from the given byte array to initialize the email
- message.<p><b>Remarks:</b> This constructor parses an email message,
- and extracts its header fields and body, and throws a
+ message.<p><b>Remarks:</b> </p><p>This constructor parses an email
+ message, and extracts its header fields and body, and throws a
  MessageDataException if the message is malformed. However, even if a
  MessageDataException is thrown, it can still be possible to display
  the message, especially because most email malformations seen in
@@ -584,9 +584,9 @@ Use GetAddresses(\To\) instead.
 
 ### AddHeader
     public Message AddHeader​(java.util.Map.Entry<java.lang.String,​java.lang.String> header)
-Adds a header field to the end of the message's header. <p>Updates the
- ContentType and ContentDisposition properties if those header fields
- have been modified by this method.</p>
+Adds a header field to the end of the message's header. <p>This method
+ updates the ContentType and ContentDisposition properties if those
+ header fields have been modified by this method.</p>
 
 **Parameters:**
 
@@ -608,9 +608,9 @@ Adds a header field to the end of the message's header. <p>Updates the
 
 ### AddHeader
     public Message AddHeader​(java.lang.String name, java.lang.String value)
-Adds a header field to the end of the message's header. <p>Updates the
- ContentType and ContentDisposition properties if those header fields
- have been modified by this method.</p>
+Adds a header field to the end of the message's header. <p>This method
+ updates the ContentType and ContentDisposition properties if those
+ header fields have been modified by this method.</p>
 
 **Parameters:**
 
@@ -641,7 +641,9 @@ Generates this message's data in text form. <p>The generated message will
  fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From,
  Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field
  exists, but has an invalid syntax, has no addresses, or appears more
- than once, this method will generate a synthetic header field with
+ than once, this method will combine the addresses into one header
+ field if possible (in the case of all fields given other than From
+ and Sender), and otherwise generate a synthetic header field with
  the display-name set to the contents of all of the header fields
  with the same name, and the address set to
  <code>me@[header-name]-address.invalid</code> as the address (a
@@ -799,7 +801,7 @@ Deletes all header fields in this message. Also clears this message's
 
 ### RemoveHeader
     public Message RemoveHeader​(int index)
-Removes a header field by index. <p>Updates the ContentType and
+Removes a header field by index. <p>This method updates the ContentType and
  ContentDisposition properties if those header fields have been
  modified by this method.</p>
 
@@ -823,8 +825,8 @@ Removes all instances of the given header field from this message. If this
  body part headers. A basic case-insensitive comparison is used. (Two
  strings are equal in such a comparison, if they match after
  converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
- both strings to lower case.). <p>Updates the ContentType and
- ContentDisposition properties if those header fields have been
+ both strings to lower case.). <p>This method updates the ContentType
+ and ContentDisposition properties if those header fields have been
  modified by this method.</p>
 
 **Parameters:**
@@ -858,9 +860,9 @@ Sets the body of this message to the given byte array. This method doesn't
 
 ### SetHeader
     public Message SetHeader​(int index, java.util.Map.Entry<java.lang.String,​java.lang.String> header)
-Sets the name and value of a header field by index. <p>Updates the
- ContentType and ContentDisposition properties if those header fields
- have been modified by this method.</p>
+Sets the name and value of a header field by index. <p>This method updates
+ the ContentType and ContentDisposition properties if those header
+ fields have been modified by this method.</p>
 
 **Parameters:**
 
@@ -885,9 +887,9 @@ Sets the name and value of a header field by index. <p>Updates the
 
 ### SetHeader
     public Message SetHeader​(int index, java.lang.String name, java.lang.String value)
-Sets the name and value of a header field by index. <p>Updates the
- ContentType and ContentDisposition properties if those header fields
- have been modified by this method.</p>
+Sets the name and value of a header field by index. <p>This method updates
+ the ContentType and ContentDisposition properties if those header
+ fields have been modified by this method.</p>
 
 **Parameters:**
 
@@ -913,8 +915,8 @@ Sets the name and value of a header field by index. <p>Updates the
 
 ### SetHeader
     public Message SetHeader​(int index, java.lang.String value)
-Sets the value of a header field by index without changing its name.
- <p>Updates the ContentType and ContentDisposition properties if
+Sets the value of a header field by index without changing its name. <p>This
+ method updates the ContentType and ContentDisposition properties if
  those header fields have been modified by this method.</p>
 
 **Parameters:**
@@ -965,9 +967,9 @@ Decodes RFC 2047 encoded words from the given header field value and returns
 Sets the value of this message's header field. If a header field with the
  same name exists, its value is replaced. If the header field's name
  occurs more than once, only the first instance of the header field
- is replaced. <p>Updates the ContentType and ContentDisposition
- properties if those header fields have been modified by this
- method.</p>
+ is replaced. <p>This method updates the ContentType and
+ ContentDisposition properties if those header fields have been
+ modified by this method.</p>
 
 **Parameters:**
 

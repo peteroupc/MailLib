@@ -873,8 +873,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         23] <= 57) && (v[index + 24] >= 48 && v[index + 24] <= 57)) &&
         (v[index + 25] == 32) && (v[index + 26] == 71) && (v[index + 27] ==
         77) && (v[index + 28] == 84)) {
-        index += 29;
-        if (index != endIndex) {
+        if (index + 29 != endIndex) {
           return null;
         }
         int dow = ParseDOW(v, index, endIndex);
@@ -912,8 +911,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         ((v[index + 20] >= 48 && v[index + 20] <= 57) && (v[index + 21] >=
         48 && v[index + 21] <= 57) && (v[index + 22] >= 48 && v[index + 22]
         <= 57) && (v[index + 23] >= 48 && v[index + 23] <= 57))) {
-        index += 24;
-        if (index != endIndex) {
+        if (index + 24 != endIndex) {
           return null;
         }
         int dow = ParseDOW(v, index, endIndex);

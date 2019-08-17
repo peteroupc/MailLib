@@ -142,8 +142,8 @@ import com.upokecenter.text.*;
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Message}
      * class. Reads from the given InputStream object to initialize the email
-     * message.<p><b>Remarks:</b> This constructor parses an email message,
-     * and extracts its header fields and body, and throws a
+     * message.<p><b>Remarks:</b> <p>This constructor parses an email
+     * message, and extracts its header fields and body, and throws a
      * MessageDataException if the message is malformed. However, even if a
      * MessageDataException is thrown, it can still be possible to display
      * the message, especially because most email malformations seen in
@@ -155,7 +155,7 @@ import com.upokecenter.text.*;
      * as From, To, Date, and Subject, from the message's text using the
      * <code>ExtractHeader</code> method. Even so, though, any message for which
      * this constructor throws a MessageDataException ought to be treated
-     * with suspicion.</p>
+     * with suspicion.</p></p>
      * @param stream A readable data stream.
      * @throws NullPointerException The parameter {@code stream} is null.
      * @throws com.upokecenter.mail.MessageDataException The message is malformed.
@@ -192,7 +192,8 @@ import com.upokecenter.text.*;
     }
 
     private static int EndOfLine(byte[] bytes, int index) {
-       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index-2]==0x0d) ?
+       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index-2] ==
+0x0d) ?
 (index - 2) : index;
     }
 
@@ -306,8 +307,8 @@ try { if (ms != null) {
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Message}
      * class. Reads from the given byte array to initialize the email
-     * message.<p><b>Remarks:</b> This constructor parses an email message,
-     * and extracts its header fields and body, and throws a
+     * message.<p><b>Remarks:</b> <p>This constructor parses an email
+     * message, and extracts its header fields and body, and throws a
      * MessageDataException if the message is malformed. However, even if a
      * MessageDataException is thrown, it can still be possible to display
      * the message, especially because most email malformations seen in
@@ -319,7 +320,7 @@ try { if (ms != null) {
      * Subject, from the message's text using the <code>ExtractHeader</code>
      * method. Even so, though, any message for which this constructor
      * throws a MessageDataException ought to be treated with
-     * suspicion.</p>
+     * suspicion.</p></p>
      * @param bytes A readable data stream.
      * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws com.upokecenter.mail.MessageDataException The message is malformed.
@@ -652,14 +653,11 @@ public final void setSubject(String value) {
     public final List<NamedAddress> getToAddresses() {
         return this.GetAddresses("to");
       }
-    // TODO: Don't allow From/Sender fields to be added if they exist
-    // TODO: Don't consolidate multiple From/Sender fields (they allow
-    // only one mailbox/group)
 
     /**
-     * Adds a header field to the end of the message's header. <p>Updates the
-     * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method.</p>
+     * Adds a header field to the end of the message's header. <p>This method
+     * updates the ContentType and ContentDisposition properties if those
+     * header fields have been modified by this method.</p>
      * @param header A key/value pair. The key is the name of the header field,
      *  such as "From" or "Content-ID". The value is the header field's
      * value.
@@ -674,9 +672,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Adds a header field to the end of the message's header. <p>Updates the
-     * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method.</p>
+     * Adds a header field to the end of the message's header. <p>This method
+     * updates the ContentType and ContentDisposition properties if those
+     * header fields have been modified by this method.</p>
      * @param name Name of a header field, such as "From" or "Content-ID" .
      * @param value Value of the header field.
      * @return This instance.
@@ -703,7 +701,9 @@ public final void setSubject(String value) {
      * fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From,
      * Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field
      * exists, but has an invalid syntax, has no addresses, or appears more
-     * than once, this method will generate a synthetic header field with
+     * than once, this method will combine the addresses into one header
+     * field if possible (in the case of all fields given other than From
+     * and Sender), and otherwise generate a synthetic header field with
      * the display-name set to the contents of all of the header fields
      * with the same name, and the address set to
      * <code>me@[header-name]-address.invalid</code> as the address (a
@@ -887,7 +887,7 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Removes a header field by index. <p>Updates the ContentType and
+     * Removes a header field by index. <p>This method updates the ContentType and
      * ContentDisposition properties if those header fields have been
      * modified by this method.</p>
      * @param index Zero-based index of the header field to set.
@@ -922,8 +922,8 @@ public final void setSubject(String value) {
      * body part headers. A basic case-insensitive comparison is used. (Two
      * strings are equal in such a comparison, if they match after
      * converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
-     * both strings to lower case.). <p>Updates the ContentType and
-     * ContentDisposition properties if those header fields have been
+     * both strings to lower case.). <p>This method updates the ContentType
+     * and ContentDisposition properties if those header fields have been
      * modified by this method.</p>
      * @param name The name of the header field to remove.
      * @return This instance.
@@ -966,9 +966,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets the name and value of a header field by index. <p>Updates the
-     * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method.</p>
+     * Sets the name and value of a header field by index. <p>This method updates
+     * the ContentType and ContentDisposition properties if those header
+     * fields have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param header A key/value pair. The key is the name of the header field,
      *  such as "From" or "Content-ID". The value is the header field's
@@ -985,9 +985,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets the name and value of a header field by index. <p>Updates the
-     * ContentType and ContentDisposition properties if those header fields
-     * have been modified by this method.</p>
+     * Sets the name and value of a header field by index. <p>This method updates
+     * the ContentType and ContentDisposition properties if those header
+     * fields have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param name Name of a header field, such as "From" or "Content-ID" .
      * @param value Value of the header field.
@@ -1021,8 +1021,8 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets the value of a header field by index without changing its name.
-     * <p>Updates the ContentType and ContentDisposition properties if
+     * Sets the value of a header field by index without changing its name. <p>This
+     * method updates the ContentType and ContentDisposition properties if
      * those header fields have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param value Value of the header field.
@@ -1067,9 +1067,9 @@ public final void setSubject(String value) {
      * Sets the value of this message's header field. If a header field with the
      * same name exists, its value is replaced. If the header field's name
      * occurs more than once, only the first instance of the header field
-     * is replaced. <p>Updates the ContentType and ContentDisposition
-     * properties if those header fields have been modified by this
-     * method.</p>
+     * is replaced. <p>This method updates the ContentType and
+     * ContentDisposition properties if those header fields have been
+     * modified by this method.</p>
      * @param name The name of a header field, such as "from" or "subject" .
      * @param value The header field's value.
      * @return This instance.
@@ -3093,24 +3093,18 @@ name.length() >= 2 &&
               }
               boolean isValidAddressing = this.IsValidAddressingField(name);
               haveHeaders[headerIndex] = true;
-              /*DebugUtility.Log (name+" "+isValidAddressing);
-                {
-                  StringBuilder ssb = new StringBuilder();
-                  for (Object mhs : this.GetMultipleHeaders (name)) {
-                    ssb.append (mhs + " ");
-                 if (isValidAddressing && name=="sender") {
-                    DebugUtility.Log(""+new NamedAddress(mhs));
-                    DebugUtility.Log("" + new NamedAddress(mhs).getDisplayName());
-                    DebugUtility.Log("" + new NamedAddress(mhs).getAddress());
-                 }
-                  }
-                  DebugUtility.Log (ssb.toString());
-                }*/
+/*
+
+*/
               if (!isValidAddressing) {
-                value = GenerateAddressList(
-    ParseAddresses(this.GetMultipleHeaders(name)));
+                value = "";
+                if (!name.equals("from") &&
+!name.equals("sender")) {
+                  value = GenerateAddressList(
+                    NamedAddress.ParseAddresses(value));
+                }
                 if (value.length() == 0) {
-                  // No addresses, synthesize a field
+                  // Synthesize a field
                   rawField = this.SynthesizeField(name);
                 }
               }
@@ -3728,9 +3722,7 @@ this.getContentType().getTypeAndSubType().equals("text/plain");
     }
 
     private String SynthesizeField(String name) {
-      HeaderEncoder encoder = new HeaderEncoder(76, 0);
-      encoder.AppendSymbol(name + ":");
-      encoder.AppendSpace();
+      HeaderEncoder encoder = new HeaderEncoder(76, 0).AppendFieldName(name);
       String fullField = ParserUtility.Implode(
         this.GetMultipleHeaders(name),
         "\u002c ");

@@ -76,7 +76,8 @@ private DictUtility() {
             sb.append("\\n");
           } else if (str.charAt(j) == '\t') {
             sb.append("\\t");
-          } else if (str.charAt(j) == 0x20 && j + 1 < str.length() && str.charAt(j + 1) == 0x20) {
+          } else if (str.charAt(j) == 0x20 && j + 1 < str.length() && str.charAt(j + 1) ==
+0x20) {
             sb.append("\\u0020");
           } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
             int ch = (int)str.charAt(j);
