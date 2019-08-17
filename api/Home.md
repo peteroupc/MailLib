@@ -67,4 +67,4 @@ Contains methods for preparing user-facing protocol strings (such as user
 Represents a Unicode normalization form.
 
 * [com.upokecenter.util.DataUtilities](com.upokecenter.util.DataUtilities.md) -
-Contains methods useful for reading and writing strings.
+Contains methods useful for reading and writing text strings.

@@ -75,7 +75,7 @@ namespace MailLibTest {
             sb.Append("\\n");
           } else if (str[j] == '\t') {
             sb.Append("\\t");
-          } else if (str[j] ==0x20 && j + 1 < str.Length && str[j + 1]==0x20) {
+          } else if (str[j] == 0x20 && j + 1 < str.Length && str[j + 1]==0x20) {
             sb.Append("\\u0020");
           } else if (str[j] < 0x20 || str[j] >= 0x7f) {
             var ch = (int)str[j];
@@ -101,9 +101,9 @@ namespace MailLibTest {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
       }
-      if (!(-1).Equals(name.IndexOf("="), StringComparison.Ordinal)) {
-        throw new ArgumentException("-1 (" + (-1) + ") is not equal to " +
-(name.IndexOf("="))); }
+      if (name.IndexOf('=') != -1) {
+        throw new ArgumentException("name has an equal sign");
+      }
       var sb = new StringBuilder();
       JSONEscape(value, sb);
       var list = new List<string>();

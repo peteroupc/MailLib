@@ -383,8 +383,9 @@
     </exception>
   </doc>
   <doc name='T:PeterO.DataUtilities'>
-    <summary>Contains methods useful for reading and writing strings. It is designed to
-      have no dependencies other than the basic runtime class library.
+    <summary>Contains methods useful for reading and writing text strings. It is
+      designed to have no dependencies other than the basic runtime class
+      library.
       <para>Many of these methods work with text encoded in UTF-8, an encoding form
         of the Unicode Standard which uses one byte to encode the most basic
         characters and two to four bytes to encode other characters. For
@@ -397,12 +398,12 @@
         of Unicode, except if they contain unpaired surrogate code points. (A
         surrogate code point is used to encode supplementary characters, those
         with code points U+10000 or higher, in UTF-16. A surrogate pair is a
-        high surrogate [U+D800 to U+DBFF] followed by a low surrogate [U+DC00 to
-        U+DFFF]. An unpaired surrogate code point is a surrogate not appearing
-        in a surrogate pair.) Many of the methods in this class allow setting
-        the behavior to follow when unpaired surrogate code points are found in
-        text strings, such as throwing an error or treating the unpaired
-        surrogate as a replacement character (U+FFFD).
+        high surrogate, U+D800 to U+DBFF, followed by a low surrogate, U+DC00 to
+        U+DFFF. An unpaired surrogate code point is a surrogate not appearing in
+        a surrogate pair.) Many of the methods in this class allow setting the
+        behavior to follow when unpaired surrogate code points are found in text
+        strings, such as throwing an error or treating the unpaired surrogate as
+        a replacement character (U+FFFD).
       </para>
     </summary>
   </doc>
@@ -1184,7 +1185,7 @@
           <a href='https://peteroupc.github.io/filenames.html'>
             File Name Support in Applications
           </a>
-          ".
+           ".
         </item>
         <item><b>Guarantees.</b> The exact file name conversion used by this method is not guaranteed
           to remain the same between versions of this library, with the
@@ -1937,8 +1938,8 @@
     </returns>
     <exception cref='ArgumentException'>The parameter
       <paramref name='dateTime'/>
-       is null or invalid, including if the year (
-      <c>dateTime[0]</c> ) is less than 0.
+       is null or invalid (see
+      <c>ParseDateString(bool)</c> ).
     </exception>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)'>
@@ -1954,9 +1955,8 @@
     </returns>
     <exception cref='ArgumentException'>The parameter
       <paramref name='dateTime'/>
-       is null or invalid, including if the year (
-      <c>dateTime[0]</c> ) or fractional seconds (
-      <c>dateTime[6]</c> ) are less than 0.
+       is null or invalid (see
+      <c>ParseDateString(bool)</c> ).
     </exception>
     <exception cref='ArgumentNullException'>The parameter
       <paramref name='dateTime'/>
@@ -1985,7 +1985,7 @@
       the elements of that array (starting from 0) are as follows:
       <list>
         <item>0 - The year. For example, the value 2000 means 2000 C.E. This value
-          cannot be less than 0.
+          cannot be less than 1900 (a restriction specified by RFC 5322).
         </item>
         <item>1 - Month of the year, from 1 (January) through 12 (December).
         </item>
@@ -2002,13 +2002,18 @@
         </item>
         <item>6 - Fractional seconds. The return value will always have this value
           set to 0, since fractional seconds cannot be expressed in the
-          date-time format. This value cannot be less than 0.
+          date-time format specified by RFC 5322. This value cannot be less than
+          0.
         </item>
         <item>7 - Number of minutes to subtract from this date and time to get
           global time. This number can be positive or negative, but cannot be
           less than -1439 or greater than 1439.
         </item>
       </list>
+      <para>If a method or property uses an array of this format and refers to this
+        method's documentation, that array may have any number of elements 8 or
+        greater.
+      </para>
     </summary>
     <param name='str'>A date-time string.
     </param>
@@ -2025,11 +2030,13 @@
     </returns>
   </doc>
   <doc name='M:PeterO.Mail.MailDateTime.ParseDateStringHttp(System.String)'>
-    <summary>Parses a date string in one of the three formats allowed by HTTP/1.1.
+    <summary>Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC
+      7231).
     </summary>
     <param name='v'>A date-time string.
     </param>
-    <returns>A 64-bit signed integer.
+    <returns>An array of 8 elements as specified in the
+      <c>ParseDateString(bool)</c> method.
     </returns>
   </doc>
   <doc name='T:PeterO.Mail.MediaType'>
@@ -2564,7 +2571,7 @@
       exception is to display the message, or part of it, as raw text (using
       <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to optionally extract important header fields, such as From, To,
       Date, and Subject, from the message's text using the
-      <c>ExtractHeaderField</c> method. Even so, though, any message for which this constructor throws a
+      <c>ExtractHeader</c> method. Even so, though, any message for which this constructor throws a
       MessageDataException ought to be treated with suspicion.
     </remarks>
   </doc>
@@ -2593,7 +2600,7 @@
       message, or part of it, as raw text (using
       <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to optionally extract important header fields, such as From, To,
       Date, and Subject, from the message's text using the
-      <c>ExtractHeaderField</c> method. Even so, though, any message for which this constructor throws a
+      <c>ExtractHeader</c> method. Even so, though, any message for which this constructor throws a
       MessageDataException ought to be treated with suspicion.
     </remarks>
   </doc>
@@ -2916,6 +2923,31 @@
       fields.
     </returns>
   </doc>
+  <doc name='M:PeterO.Mail.Message.ExtractHeader(System.Byte[],System.String)'>
+    <summary>Extracts the value of a header field from a byte array representing an
+      email message. The return value is intended for display purposes, not for
+      further processing, and this method is intended to be used as an error
+      handling tool for email messages that are slightly malformed. (Note that
+      malformed email messages ought to be treated with greater suspicion than
+      well-formed email messages.).
+    </summary>
+    <param name='bytes'>A byte array representing an email message.
+    </param>
+    <param name='headerFieldName'>The parameter
+      <paramref name='headerFieldName'/>
+       is a text string.
+    </param>
+    <returns>The value of the first instance of the header field with the given name.
+      Returns null if
+      <paramref name='bytes'/>
+       is null, if
+      <paramref name='headerFieldName'/>
+       is null, is more than 997 characters long, or has a character less than
+      U+0021 or greater than U+007E in the Unicode Standard, if a header field
+      with that name does not exist, or if a body (even an empty one) does not
+      follow the header fields.
+    </returns>
+  </doc>
   <doc name='P:PeterO.Mail.Message.FileName'>
     <summary><para>Gets a file name suggested by this message for saving the message's body
         to a file. For more information on the algorithm, see
@@ -2976,6 +3008,10 @@
       <paramref name='uri'/>
        is null, is syntactically invalid, or is not a MailTo URI.
     </returns>
+    <exception cref='ArgumentNullException'>The parameter
+      <paramref name='uri'/>
+       is null.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.Message.FromMailtoUrl(System.String)'>
     <summary>Creates a message object from a MailTo URI (uniform resource identifier).
@@ -3077,8 +3113,7 @@
     <summary>Gets the date and time extracted from this message's Date header field
       (the value of which is found as though GetHeader("date") were called). See
 
-      <see cref='PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
-       for more information on the format of the date-time array returned by
+      <b>MailDateTime.ParseDateString(bool)</b> for more information on the format of the date-time array returned by
       this method.
     </summary>
     <returns>An array of 32-bit unsigned integers.
@@ -3334,41 +3369,16 @@
   <doc name='M:PeterO.Mail.Message.SetDate(System.Int32[])'>
     <summary>Sets this message's Date header field to the given date and time.
     </summary>
-    <param name='dateTime'>An array containing eight elements. Each element of the array (starting
-      from 0) is as follows:
-      <list>
-        <item>0 - The year. For example, the value 2000 means 2000 C.E. Cannot be
-          less than 0.
-        </item>
-        <item>1 - Month of the year, from 1 (January) through 12 (December).
-        </item>
-        <item>2 - Day of the month, from 1 through 31.
-        </item>
-        <item>3 - Hour of the day, from 0 through 23.
-        </item>
-        <item>4 - Minute of the hour, from 0 through 59.
-        </item>
-        <item>5 - Second of the minute, from 0 through 60 (this value can go up to
-          60 to accommodate leap seconds). (Leap seconds are additional seconds
-          added to adjust international atomic time, or TAI, to an approximation
-          of astronomical time known as coordinated universal time, or UTC.)
-        </item>
-        <item>6 - Milliseconds of the second, from 0 through 999. This value is not
-          used to generate the date string, but cannot be less than 0.
-        </item>
-        <item>7 - Number of minutes to subtract from this date and time to get
-          global time. This number can be positive or negative, but cannot be
-          less than -1439 or greater than 1439.
-        </item>
-      </list>
-      .
+    <param name='dateTime'>An array containing at least eight elements expressing a date and time.
+      See
+      <b>MailDateTime.ParseDateString(bool)</b> for more information on this parameter.
     </param>
     <returns>This object.
     </returns>
     <exception cref='ArgumentException'>The parameter
       <paramref name='dateTime'/>
-       contains fewer than eight elements, contains invalid values, or contains
-      a year less than 0.
+       contains fewer than eight elements or contains invalid values (see
+      <b>MailDateTime.ParseString(bool)</b> ).
     </exception>
     <exception cref='ArgumentNullException'>The parameter
       <paramref name='dateTime'/>

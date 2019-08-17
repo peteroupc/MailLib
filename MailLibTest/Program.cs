@@ -12,7 +12,8 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-new ContentDispositionTest().TestMakeFilename();
+new MessageTest().TestParseDateStringTrue();
+new MessageTest().TestSetDate();
 var strs = new string[] {
 
 };

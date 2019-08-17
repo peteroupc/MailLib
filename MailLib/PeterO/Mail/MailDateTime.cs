@@ -22,8 +22,8 @@ namespace PeterO.Mail {
     /// on the format of this parameter.</param>
     /// <returns>A date-time string.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='dateTime'/> is null or invalid, including if the year (
-    /// <c>dateTime[0]</c> ) is less than 0.</exception>
+    /// name='dateTime'/> is null or invalid (see
+    /// <c>ParseDateString(bool)</c> ).</exception>
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
     }
@@ -46,6 +46,10 @@ namespace PeterO.Mail {
         return false;
       }
       bool leap = IsLeapYear(dateTime[0]);
+      if (dateTime[0] < 1900) {
+         // NOTE: RFC 5322 allows for only years 1900 or greater.
+         return false;
+      }
       if (dateTime[1] == 4 || dateTime[1] == 6 || dateTime[1] == 9 ||
         dateTime[1] == 11) {
         if (dateTime[2] > 30) {
@@ -202,9 +206,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
     /// offset.</param>
     /// <returns>A date-time string.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='dateTime'/> is null or invalid, including if the year (
-    /// <c>dateTime[0]</c> ) or fractional seconds ( <c>dateTime[6]</c> )
-    /// are less than 0.</exception>
+    /// name='dateTime'/> is null or invalid (see
+    /// <c>ParseDateString(bool)</c> ).</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dateTime'/> is null.</exception>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
@@ -278,7 +281,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
     /// 0) are as follows:
     /// <list>
     /// <item>0 - The year. For example, the value 2000 means 2000 C.E.
-    /// This value cannot be less than 0.</item>
+    /// This value cannot be less than 1900 (a restriction specified by RFC
+    /// 5322).</item>
     /// <item>1 - Month of the year, from 1 (January) through 12
     /// (December).</item>
     /// <item>2 - Day of the month, from 1 through 31.</item>
@@ -291,11 +295,14 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
     /// universal time, or UTC.)</item>
     /// <item>6 - Fractional seconds. The return value will always have
     /// this value set to 0, since fractional seconds cannot be expressed
-    /// in the date-time format. This value cannot be less than 0.</item>
+    /// in the date-time format specified by RFC 5322. This value cannot be
+    /// less than 0.</item>
     /// <item>7 - Number of minutes to subtract from this date and time to
     /// get global time. This number can be positive or negative, but
-    /// cannot be less than -1439 or greater than
-    /// 1439.</item></list></summary>
+    /// cannot be less than -1439 or greater than 1439.</item></list>
+    /// <para>If a method or property uses an array of this format and
+    /// refers to this method's documentation, that array may have any
+    /// number of elements 8 or greater.</para></summary>
     /// <param name='str'>A date-time string.</param>
     /// <param name='parseObsoleteZones'>If set to <c>true</c>, this
     /// method allows obsolete time zones (single-letter time zones, "GMT",
@@ -348,6 +355,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         = -1, second = -1, offset = -1, yearDigits = 0;
       indexStart = index;
       indexTemp = index;
+// DebugUtility.Log("zone " + (str.Substring(index)));
       do {
         do {
           indexTemp2 = index;
@@ -433,15 +441,14 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             break;
           }
         } while (false);
+// DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         day = 0;
+        // NOTE: Day can have a leading zero (e.g., 05).
         for (i = 0; i < 2; ++i) {
           if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
             day *= 10;
             day += ((int)str[index]) - 48;
-            if (day == 0) {
-              return indexStart;
-            }
             ++index;
           } else if (i < 1) {
             index = indexStart;
@@ -449,6 +456,10 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           } else {
             break;
           }
+        }
+        if (day == 0) {
+          // Day parsed was 0
+          return indexStart;
         }
         if (index == indexStart) {
           break;
@@ -523,6 +534,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             break;
           }
         } while (false);
+// DebugUtility.Log("zone " + (str.Substring(index)));
         if (index == indexStart) {
           break;
         }
@@ -541,6 +553,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           index = indexStart;
           break;
         }
+// DebugUtility.Log("zone " + (str.Substring(index)));
         while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
           yearDigits = Math.Min(yearDigits + 1, 4);
           if (year > Int32.MaxValue / 10) {
@@ -555,10 +568,15 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           year += ((int)str[index]) - 48;
           ++index;
         }
+// DebugUtility.Log("zone " + (str.Substring(index)));
         if (yearDigits == 3 || (yearDigits == 2 && year >= 50)) {
           year += 1900;
         } else if (yearDigits == 2) {
           year += 2000;
+        }
+        if (year < 1900) {
+          // Year is less than 1900
+          return indexStart;
         }
         bool leap = year % 4 == 0 && (year % 100 != 0 || year %
           400 == 0);
@@ -575,6 +593,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             return indexStart;
           }
         }
+// DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         hour = minute = second = 0;
         if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
@@ -591,6 +610,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           index = indexStart;
           break;
         }
+// DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index < endIndex && (str[index] == 58)) {
           ++index;
@@ -598,6 +618,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           index = indexStart;
           break;
         }
+// DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
           (str[index + 1] >= 48 && str[index + 1] <= 57))) {
@@ -615,6 +636,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           break;
         }
         second = 0;
+// DebugUtility.Log("zone " + (str.Substring(index)));
         do {
           indexTemp2 = index;
           do {
@@ -650,6 +672,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             break;
           }
         } while (false);
+// DebugUtility.Log("zone " + (str.Substring(index)));
         do {
           indexTemp2 = index;
           do {
@@ -822,9 +845,10 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
     }
 
     /// <summary>Parses a date string in one of the three formats allowed
-    /// by HTTP/1.1.</summary>
+    /// by HTTP/1.1 (RFC 7231).</summary>
     /// <param name='v'>A date-time string.</param>
-    /// <returns>A 64-bit signed integer.</returns>
+    /// <returns>An array of 8 elements as specified in the
+    /// <c>ParseDateString(bool)</c> method.</returns>
     public static int[] ParseDateStringHttp(string v) {
       if (v == null) {
         return null;
@@ -862,6 +886,9 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int year = ((v[index + 12] - '0') * 1000) +
               ((v[index + 13] - '0') * 100) + ((v[index + 14] - '0') * 10) +
               (v[index + 15] - '0');
+        if (year < 1900) {
+          return null;
+        }
         int hour = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
         int minute = ((v[index + 20] - '0') * 10) + (v[index + 21] - '0');
         int second = ((v[index + 23] - '0') * 10) + (v[index + 24] - '0');
@@ -899,6 +926,9 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int year = ((v[index + 20] - '0') * 1000) +
     ((v[index + 21] - '0') * 100) + ((v[index + 22] - '0') * 10) +
     (v[index + 23] - '0');
+        if (year < 1900) {
+          return null;
+        }
         int hour = ((v[index + 11] - '0') * 10) + (v[index + 12] - '0');
         int minute = ((v[index + 14] - '0') * 10) + (v[index + 15] - '0');
         int second = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
@@ -924,26 +954,30 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         19] >= 48 && v[index + 19] <= 57)) && (v[index + 20] == 32) &&
         (v[index + 21] == 71) && (v[index + 22] == 77) && (v[index + 23] ==
         84)) {
+        int idx = index + 2;
         index += 24;
         if (index != endIndex) {
           return null;
         }
-        int month = ParseMonth(v, index + 3, endIndex);
+        int month = ParseMonth(v, idx + 3, endIndex);
         if (dowLong < 0 || month < 0) {
           return null;
         }
-        int day = ((v[index] - '0') * 10) + (v[index + 1] - '0');
-        int year = ((v[index + 7] - '0') * 10) + (v[index + 8] - '0');
-        int hour = ((v[index + 10] - '0') * 10) + (v[index + 11] - '0');
-        int minute = ((v[index + 13] - '0') * 10) + (v[index + 14] - '0');
-        int second = ((v[index + 16] - '0') * 10) + (v[index + 17] - '0');
+        int day = ((v[idx] - '0') * 10) + (v[idx + 1] - '0');
+        int year = ((v[idx + 7] - '0') * 10) + (v[idx + 8] - '0');
+        int hour = ((v[idx + 10] - '0') * 10) + (v[idx + 11] - '0');
+        int minute = ((v[idx + 13] - '0') * 10) + (v[idx + 14] - '0');
+        int second = ((v[idx + 16] - '0') * 10) + (v[idx + 17] - '0');
         int thisyear = DateTime.UtcNow.Year;
         int this2digityear = thisyear % 100;
         int convertedYear = year + (thisyear - this2digityear);
         if (year - this2digityear > 50) {
           convertedYear -= 100;
         }
-        int[] ret = { year, month, day, hour, minute, second, 0, 0 };
+        if (convertedYear < 1900) {
+          return null;
+        }
+        int[] ret = { convertedYear, month, day, hour, minute, second, 0, 0 };
         return (dowLong == GetDayOfWeek(ret)) ? ret : null;
       }
       return null;

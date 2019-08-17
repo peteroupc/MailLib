@@ -2,7 +2,7 @@
 
     public class ContentDisposition
 
- Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
+  Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
 
  <b>About the "filename" parameter</b>
 
@@ -220,7 +220,7 @@ The extracted date and time as an 8-element array, or  `null`  if the "read-date
 
   * This method should be used only to prepare a file name for the purpose of suggesting a name by which to save data. It should not be used to prepare file names of existing files for the purpose of reading them, since this method may replace certain characters with other characters in some cases, such that two different inputs may map to the same output.
 
-  * <b>File Name Support.</b> For recommendations on file name support, see "<a href="https://peteroupc.github.io/filenames.html">File Name Support in Applications</a>".
+  * <b>File Name Support.</b> For recommendations on file name support, see " <a href="https://peteroupc.github.io/filenames.html">File Name Support in Applications</a> ".
 
   * <b>Guarantees.</b> The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if  <i>str</i>
  is null or empty.

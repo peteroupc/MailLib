@@ -173,10 +173,10 @@ namespace PeterO.Mail {
     /// message, or part of it, as raw text (using
     /// <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to
     /// optionally extract important header fields, such as From, To, Date,
-    /// and Subject, from the message's text using the
-    /// <c>ExtractHeaderField</c> method. Even so, though, any message for
-    /// which this constructor throws a MessageDataException ought to be
-    /// treated with suspicion.</remarks>
+    /// and Subject, from the message's text using the <c>ExtractHeader</c>
+    /// method. Even so, though, any message for which this constructor
+    /// throws a MessageDataException ought to be treated with
+    /// suspicion.</remarks>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException(nameof(stream));
@@ -197,25 +197,25 @@ namespace PeterO.Mail {
         if (b >= 0x41 && b <= 0x5a) {
           b += 0x20;
         }
-if (c >= 0x41 && c <= 0x5a) {
+        if (c >= 0x41 && c <= 0x5a) {
           c += 0x20;
         }
-if (index + 1 >= bytes.Length || b != c) {
-  return start;
-}
+        if (index + 1 >= bytes.Length || b != c) {
+          return start;
+        }
       }
       return index + value.Length;
     }
 
     private static int EndOfLine(byte[] bytes, int index) {
-       return (index >= 2 && bytes[index-1] == 0x0a && bytes[index-2]==0x0d) ?
+       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index-2]==0x0d) ?
 (index - 2) : index;
     }
 
     private static int SkipLine(byte[] bytes, int index) {
       while (index < bytes.Length) {
-        if (bytes[index] == 0x0d && index + 1 < bytes.Length && bytes[index+
-1]==0x0a) {
+        if (bytes[index] == 0x0d && index + 1 < bytes.Length && bytes[index +
+1] == 0x0a) {
           return index + 2;
         }
         ++index;
@@ -225,7 +225,7 @@ if (index + 1 >= bytes.Length || b != c) {
 
     private static int SkipWsp(byte[] bytes, int index) {
       while (index < bytes.Length) {
-        if (bytes[index] != 0x09 && bytes[index]!=0x20) {
+        if (bytes[index] != 0x09 && bytes[index] != 0x20) {
           return index;
         }
         ++index;
@@ -244,13 +244,18 @@ if (index + 1 >= bytes.Length || b != c) {
     /// message.</param>
     /// <param name='headerFieldName'>A string object.</param>
     /// <returns>The value of the first instance of the header field with
-    /// the given name. Returns null if <paramref name='bytes'/> is null,
-    /// if <paramref name='headerFieldName'/> is null, is more than 997
+    /// the given name. Leading space and/or tab bytes (0x20 and/or 0x09)
+    /// and CR/LF (0x0d/0x0a) pairs will be removed from the header field
+    /// value, and the value is treated as encoded in UTF-8 (an 8-bit
+    /// encoding form of the Unicode Standard) where illegally encoded
+    /// UTF-8 is replaced as appropriate with replacement characters
+    /// (U+FFFD). Returns null if <paramref name='bytes'/> is null, if
+    /// <paramref name='headerFieldName'/> is null, is more than 997
     /// characters long, or has a character less than U + 0021 or greater
     /// than U + 007E in the Unicode Standard, if a header field with that
     /// name does not exist, or if a body (even an empty one) does not
     /// follow the header fields.</returns>
-    public static string ExtractField(byte[] bytes, string headerFieldName) {
+    public static string ExtractHeader(byte[] bytes, string headerFieldName) {
 if (bytes == null) {
   return null;
 }
@@ -266,10 +271,11 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
       var index = 0;
       string ret = null;
       while (index < bytes.Length) {
-        if (index + 1 < bytes.Length && bytes[index] ==0x0d && bytes[index +
-1]==0x0a) {
-            // End of headers reached
-            break;
+        if (index + 1 < bytes.Length && bytes[index] == 0x0d &&
+           bytes[index + 1] == 0x0a) {
+            // End of headers reached, so output the header field
+            // found if any
+            return ret;
          }
          if (ret != null) {
             // Already have a header field, so skip the line
@@ -288,22 +294,23 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
            index = SkipLine(bytes, index);
            continue;
          }
-         n = SkipWsp(bytes, n);
+         n = SkipWsp(bytes, n + 1);
          using (var ms = new MemoryStream()) {
-            int endLine = SkipLine(bytes, index);
-            ms.Write(bytes, index, EndOfLine(bytes, endLine) - index);
-            while (endLine < bytes.Length && (bytes[endLine] == 0x09 ||
-bytes[endLine] == 0x20)) {
-              ++endLine;
+            int endLine = SkipLine(bytes, n);
+            ms.Write(bytes, n, EndOfLine(bytes, endLine) - n);
+            index = endLine;
+            while (endLine < bytes.Length &&
+                 (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
               int s = endLine;
-              endLine = SkipLine(bytes, index);
+              endLine = SkipLine(bytes, endLine);
+              index = endLine;
               ms.Write(bytes, s, EndOfLine(bytes, endLine) - s);
             }
             ret = DataUtilities.GetUtf8String(ms.ToArray(), true);
          }
       }
-      return ret;
-    }
+      return null;
+      }
 
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.Message'/> class. Reads from the given byte
@@ -323,10 +330,10 @@ bytes[endLine] == 0x20)) {
     /// exception is to display the message, or part of it, as raw text
     /// (using <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to
     /// optionally extract important header fields, such as From, To, Date,
-    /// and Subject, from the message's text using the
-    /// <c>ExtractHeaderField</c> method. Even so, though, any message for
-    /// which this constructor throws a MessageDataException ought to be
-    /// treated with suspicion.</remarks>
+    /// and Subject, from the message's text using the <c>ExtractHeader</c>
+    /// method. Even so, though, any message for which this constructor
+    /// throws a MessageDataException ought to be treated with
+    /// suspicion.</remarks>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException(nameof(bytes));
@@ -780,9 +787,9 @@ bytes[endLine] == 0x20)) {
     /// <summary>Gets the date and time extracted from this message's Date
     /// header field (the value of which is found as though
     /// GetHeader("date") were called). See
-    /// <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-    /// System.String,System.Boolean)'/> for more information on the format
-    /// of the date-time array returned by this method.</summary>
+    /// <b>MailDateTime.ParseDateString(bool)</b> for more information on
+    /// the format of the date-time array returned by this
+    /// method.</summary>
     /// <returns>An array of 32-bit unsigned integers.</returns>
     public int[] GetDate() {
       string field = this.GetHeader("date");
@@ -791,31 +798,15 @@ bytes[endLine] == 0x20)) {
 
     /// <summary>Sets this message's Date header field to the given date
     /// and time.</summary>
-    /// <param name='dateTime'>An array containing eight elements. Each
-    /// element of the array (starting from 0) is as follows:
-    /// <list>
-    /// <item>0 - The year. For example, the value 2000 means 2000 C.E.
-    /// Cannot be less than 0.</item>
-    /// <item>1 - Month of the year, from 1 (January) through 12
-    /// (December).</item>
-    /// <item>2 - Day of the month, from 1 through 31.</item>
-    /// <item>3 - Hour of the day, from 0 through 23.</item>
-    /// <item>4 - Minute of the hour, from 0 through 59.</item>
-    /// <item>5 - Second of the minute, from 0 through 60 (this value can
-    /// go up to 60 to accommodate leap seconds). (Leap seconds are
-    /// additional seconds added to adjust international atomic time, or
-    /// TAI, to an approximation of astronomical time known as coordinated
-    /// universal time, or UTC.)</item>
-    /// <item>6 - Milliseconds of the second, from 0 through 999. This
-    /// value is not used to generate the date string, but cannot be less
-    /// than 0.</item>
-    /// <item>7 - Number of minutes to subtract from this date and time to
-    /// get global time. This number can be positive or negative, but
-    /// cannot be less than -1439 or greater than 1439.</item></list>.</param>
+    /// <param name='dateTime'>An array containing at least eight elements
+    /// expressing a date and time. See
+    /// <b>MailDateTime.ParseDateString(bool)</b> for more information on
+    /// this parameter.</param>
     /// <returns>This object.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='dateTime'/> contains fewer than eight elements, contains
-    /// invalid values, or contains a year less than 0.</exception>
+    /// name='dateTime'/> contains fewer than eight elements or contains
+    /// invalid values (see <b>MailDateTime.ParseString(bool)</b>
+    /// ).</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dateTime'/> is null.</exception>
     public Message SetDate(int[] dateTime) {

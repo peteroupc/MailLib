@@ -20,36 +20,49 @@ import com.upokecenter.mail.*;
       Assert.assertEquals(1, msg.getParts().size());
     }
 
-public void TestExtractFieldOne(String expected, String msg, String name) {
+public void TestExtractHeaderOne(String expected, String msg, String name) {
 if (msg == null) {
-  Assert.assertEquals(expected, Message.ExtractHeaderField(null, name));
+  Assert.assertEquals(expected, Message.ExtractHeader(null, name));
 } else {
-  byte[] bytes = DataUtilities.GetUtf8Bytes(expected, true);
-  Assert.assertEquals(expected, Message.ExtractHeaderField(bytes, name));
+  byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
+  Assert.assertEquals(expected, Message.ExtractHeader(bytes, name));
 }
 }
 
 @Test
-public void TestExtractField() {
-this.TestExtractFieldOne(null,null,"From");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
-this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
-this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
-this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y","from");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n","from");
-this.TestExtractFieldOne("x","X-Header: w\r\nFrom: x\r\nDate:
-y\r\n\r\nBody","from");
-this.TestExtractFieldOne("x","X-Header: w\r\nFrom: x\r\nDate:
-y\r\n\r\nBody","From");
-this.TestExtractFieldOne("x","X-Header: w\r\nFrom: x\r\nDate:
-y\r\n\r\nBody","fRoM");
-this.TestExtractFieldOne("xyz","X-Header: w\r\nFrom: x\r\n y\r\n" +
-"\u0020z\r\n\r\nBody","from");
-this.TestExtractFieldOne("x yz","X-Header: w\r\nFrom: x\r\n \u0020y\r\n" +
-"\u0020z\r\n\r\nBody","from");
+public void TestExtractHeader() {
+this.TestExtractHeaderOne(null,null,"From");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
+this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
+this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
+this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y","from");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n","from");
+this.TestExtractHeaderOne(
+ "x",
+ "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
+ "from");
+this.TestExtractHeaderOne("x",
+ "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+ "From");
+this.TestExtractHeaderOne(
+ "x",
+ "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+ "fRoM");
+this.TestExtractHeaderOne(
+  "x y z",
+  "X-Header: w\r\nFrom: x\r\n y\r\n\u0020z\r\n\r\nBody",
+  "from");
+this.TestExtractHeaderOne(
+  "x \u0020y z",
+  "X-Header: w\r\nFrom: x\r\n \u0020y\r\n\u0020z\r\n\r\nBody",
+  "from");
+this.TestExtractHeaderOne(
+    null,
+    "X-Header: w\r\n\r\nFrom: x\r\n\r\nBody",
+    "from");
 }
 
     @Test
@@ -1412,14 +1425,38 @@ try { if (ms != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 1899, 1, 1, 0, 0, 0, 0, 0 });
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 1, 1, 1, 0, 0, 0, 0, 0 });
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       try {
         msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
         Assert.fail("Should have failed");
@@ -2846,13 +2883,13 @@ if (MailDateTime.ParseDateString("", false) != null) {
 
     @Test
     public void TestParseDateStringTrue() {
-if ((MailDateTime.ParseDateString(
-   "Wed,
-  " + "\u0020 07 Jan 2015 23:23:23 GMT",
-  true)) == null) {
-  Assert.fail();
-}
-}
+      if (MailDateTime.ParseDateString(
+       "Wed,
+  " + "\u0020 \u0020 07 Jan 2015 23:23:23 GMT",
+  true) == null) {
+        Assert.fail();
+      }
+    }
     @Test
     public void TestNamedAddressNoThrow() {
       Message msg = new Message();
@@ -2860,19 +2897,19 @@ if ((MailDateTime.ParseDateString(
       System.out.println(na);
       na = new NamedAddress("abc \"def\" ghi<me@example.com>");
       System.out.println(na);
-      na =new NamedAddress("abc \"def\" ghi<m=e@example.com>");
+      na = new NamedAddress("abc \"def\" ghi<m=e@example.com>");
       System.out.println(na);
-      na =new NamedAddress("abc\"def\"ghi<m=e@example.com>");
+      na = new NamedAddress("abc\"def\"ghi<m=e@example.com>");
       System.out.println(na);
-      na =new NamedAddress("abc\"a=20b=20c\"ghi<m=e@example.com>");
+      na = new NamedAddress("abc\"a=20b=20c\"ghi<m=e@example.com>");
       System.out.println(na);
-      na =new NamedAddress("abc\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("abc\"a=20b=20c\"?=<m=e@example.com>");
       System.out.println(na);
-      na =new NamedAddress("?abc?\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("?abc?\"a=20b=20c\"?=<m=e@example.com>");
       System.out.println(na);
-      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
       System.out.println(na);
-      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
       System.out.println(na);
     }
   }

@@ -91,25 +91,6 @@ private DictUtility() {
         }
     }
 
-    public static void SetResource(String name, String value) {
-      if (resourceFile == null) {
-        throw new NullPointerException("resourceFile");
-      }
-      if (name == null) {
-        throw new NullPointerException("name");
-      }
-      if (value == null) {
-        throw new NullPointerException("value");
-      }
-      var
-  sf =
-  System.IO.File.ReadAllLines("/home/rooster/Documents/SharpDevelopProjects/MailLib/MailLibTest/Resources.restext");
-      sf = SetResource(sf, name, value);
-
-  System.IO.File.WriteAllLines("/home/rooster/Documents/SharpDevelopProjects/MailLib/MailLibTest/Resources.restext",
-  sf);
-    }
-
     public static String[] SetResource(String[] resources, String name,
   String value) {
       if (resources == null) {
@@ -121,9 +102,9 @@ private DictUtility() {
       if (value == null) {
         throw new NullPointerException("value");
       }
-      if (!(-1).equals(name.indexOf("="))) {
-        throw new IllegalArgumentException("-1 (" + (-1) + ") is not equal to " +
-(name.indexOf("="))); }
+      if (name.indexOf('=') != -1) {
+        throw new IllegalArgumentException("name has an equal sign");
+      }
       StringBuilder sb = new StringBuilder();
       JSONEscape(value, sb);
       ArrayList<String> list = new ArrayList<String>();

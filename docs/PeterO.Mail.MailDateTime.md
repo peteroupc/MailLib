@@ -31,7 +31,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid, including if the year (  `dateTime[0]`  ) is less than 0.
+ is null or invalid (see  `ParseDateString(bool)` ).
 
 <a id="GenerateDateString_int_bool"></a>
 ### GenerateDateString
@@ -56,7 +56,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid, including if the year (  `dateTime[0]`  ) or fractional seconds ( `dateTime[6]` ) are less than 0.
+ is null or invalid (see  `ParseDateString(bool)` ).
 
  * System.ArgumentNullException:
 The parameter  <i>dateTime</i>
@@ -88,7 +88,7 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
 
  Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string. If an array is returned, the elements of that array (starting from 0) are as follows:
 
-  * 0 - The year. For example, the value 2000 means 2000 C.E. This value cannot be less than 0.
+  * 0 - The year. For example, the value 2000 means 2000 C.E. This value cannot be less than 1900 (a restriction specified by RFC 5322).
 
   * 1 - Month of the year, from 1 (January) through 12 (December).
 
@@ -100,9 +100,11 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
 
   * 5 - Second of the minute, from 0 through 60 (this value can go up to 60 to accommodate leap seconds). (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
 
-  * 6 - Fractional seconds. The return value will always have this value set to 0, since fractional seconds cannot be expressed in the date-time format. This value cannot be less than 0.
+  * 6 - Fractional seconds. The return value will always have this value set to 0, since fractional seconds cannot be expressed in the date-time format specified by RFC 5322. This value cannot be less than 0.
 
   * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative, but cannot be less than -1439 or greater than 1439.
+
+If a method or property uses an array of this format and refers to this method's documentation, that array may have any number of elements 8 or greater.
 
      <b>Parameters:</b>
 
@@ -121,7 +123,7 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
     public static int[] ParseDateStringHttp(
         string v);
 
- Parses a date string in one of the three formats allowed by HTTP/1.1.
+ Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC 7231).
 
     <b>Parameters:</b>
 
@@ -129,4 +131,4 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
 
 <b>Return Value:</b>
 
-A 64-bit signed integer.
+An array of 8 elements as specified in the  `ParseDateString(bool)`  method.

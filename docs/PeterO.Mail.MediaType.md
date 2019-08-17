@@ -2,7 +2,7 @@
 
     public sealed class MediaType
 
- Specifies what kind of data a message body is.
+  Specifies what kind of data a message body is.
 
  A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type  `text/plain;charset=utf-8`  is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that the data uses UTF-8, a Unicode character encoding ("charset = utf-8"). Other top-level types include "audio", "video", and "application".
 
@@ -26,7 +26,7 @@
 * <code>[Parse(string, PeterO.Mail.MediaType)](#Parse_string_PeterO_Mail_MediaType)</code> - Parses a media type string and returns a media type object, or the default value if the string is invalid.
 * <code>[SubType](#SubType)</code> - Gets this media type's subtype (for example, "plain" in "text/plain").
 * <code>[public static readonly PeterO.Mail.MediaType TextPlainAscii;](#TextPlainAscii)</code> - Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
-* <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
+* <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U + 0000 to U + 007F).
 * <code>[TopLevelType](#TopLevelType)</code> - Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic").
 * <code>[ToSingleLineString()](#ToSingleLineString)</code> - Converts this media type to a text string form suitable for inserting in HTTP headers.
 * <code>[ToString()](#ToString)</code> - Converts this media type to a text string form suitable for inserting in email headers.
@@ -59,7 +59,7 @@
 
     public static readonly PeterO.Mail.MediaType TextPlainUtf8;
 
- Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
+ Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U + 0000 to U + 007F).
 
   <a id="IsMultipart"></a>
 ### IsMultipart

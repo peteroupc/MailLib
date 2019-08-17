@@ -21,41 +21,49 @@ namespace MailLibTest {
       Assert.AreEqual(1, msg.Parts.Count);
     }
 
-public void TestExtractFieldOne(string expected, string msg, string name) {
+public void TestExtractHeaderOne(string expected, string msg, string name) {
 if (msg == null) {
-  Assert.AreEqual(expected, Message.ExtractHeaderField(null, name));
+  Assert.AreEqual(expected, Message.ExtractHeader(null, name));
 } else {
-  byte[] bytes = DataUtilities.GetUtf8Bytes(expected, true);
-  Assert.AreEqual(expected, Message.ExtractHeaderField(bytes, name));
+  byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
+  Assert.AreEqual(expected, Message.ExtractHeader(bytes, name));
 }
 }
 
 [Test]
-public void TestExtractField() {
-this.TestExtractFieldOne(null,null,"From");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
-this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
-this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
-this.TestExtractFieldOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y","from");
-this.TestExtractFieldOne(null,"From: x\r\nDate: y\r\n","from");
-this.TestExtractFieldOne(
+public void TestExtractHeader() {
+this.TestExtractHeaderOne(null,null,"From");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
+this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
+this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
+this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y","from");
+this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n","from");
+this.TestExtractHeaderOne(
  "x",
  "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
  "from");
-this.TestExtractFieldOne("x",
+this.TestExtractHeaderOne("x",
  "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
  "From");
-this.TestExtractFieldOne(
+this.TestExtractHeaderOne(
  "x",
  "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
  "fRoM");
-this.TestExtractFieldOne("xyz","X-Header: w\r\nFrom: x\r\n y\r\n" +
-"\u0020z\r\n\r\nBody","from");
-this.TestExtractFieldOne("x yz","X-Header: w\r\nFrom: x\r\n \u0020y\r\n" +
-"\u0020z\r\n\r\nBody","from");
+this.TestExtractHeaderOne(
+  "x y z",
+  "X-Header: w\r\nFrom: x\r\n y\r\n\u0020z\r\n\r\nBody",
+  "from");
+this.TestExtractHeaderOne(
+  "x \u0020y z",
+  "X-Header: w\r\nFrom: x\r\n \u0020y\r\n\u0020z\r\n\r\nBody",
+  "from");
+this.TestExtractHeaderOne(
+    null,
+    "X-Header: w\r\n\r\nFrom: x\r\n\r\nBody",
+    "from");
 }
 
     [Test]
@@ -1399,14 +1407,38 @@ this.TestExtractFieldOne("x yz","X-Header: w\r\nFrom: x\r\n \u0020y\r\n" +
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
-        Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
+ Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+ throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 1899, 1, 1, 0, 0, 0, 0, 0 });
+ Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+ throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 1, 1, 1, 0, 0, 0, 0, 0 });
+ Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+ throw new InvalidOperationException(String.Empty, ex);
+}
       try {
         msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
         Assert.Fail("Should have failed");
@@ -2829,9 +2861,10 @@ if (MailDateTime.ParseDateString(String.Empty, false) != null) {
     [Test]
     public void TestParseDateStringTrue() {
       if (MailDateTime.ParseDateString(
-       "Wed,\u0020 07 Jan 2015 23:23:23 GMT",
-       true) == null) {
-       Assert.Fail();
+       "Wed,
+  " + "\u0020 \u0020 07 Jan 2015 23:23:23 GMT",
+  true) == null) {
+        Assert.Fail();
       }
     }
     [Test]
@@ -2841,19 +2874,19 @@ if (MailDateTime.ParseDateString(String.Empty, false) != null) {
       Console.WriteLine(na);
       na = new NamedAddress("abc \"def\" ghi<me@example.com>");
       Console.WriteLine(na);
-      na =new NamedAddress("abc \"def\" ghi<m=e@example.com>");
+      na = new NamedAddress("abc \"def\" ghi<m=e@example.com>");
       Console.WriteLine(na);
-      na =new NamedAddress("abc\"def\"ghi<m=e@example.com>");
+      na = new NamedAddress("abc\"def\"ghi<m=e@example.com>");
       Console.WriteLine(na);
-      na =new NamedAddress("abc\"a=20b=20c\"ghi<m=e@example.com>");
+      na = new NamedAddress("abc\"a=20b=20c\"ghi<m=e@example.com>");
       Console.WriteLine(na);
-      na =new NamedAddress("abc\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("abc\"a=20b=20c\"?=<m=e@example.com>");
       Console.WriteLine(na);
-      na =new NamedAddress("?abc?\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("?abc?\"a=20b=20c\"?=<m=e@example.com>");
       Console.WriteLine(na);
-      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
       Console.WriteLine(na);
-      na =new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
+      na = new NamedAddress("=?utf-8?q?\"a=20b=20c\"?=<m=e@example.com>");
       Console.WriteLine(na);
     }
   }

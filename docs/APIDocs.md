@@ -1,6 +1,6 @@
 ## API Documentation
 
- * [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing strings.
+ * [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing text strings.
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) - Specifies how a message body should be displayed or handled by a mail user agent.
  * [PeterO.Mail.DataUris](PeterO.Mail.DataUris.md) - Contains methods for parsing and generating Data URIs (uniform resource identifiers).

@@ -153,9 +153,9 @@ import com.upokecenter.text.*;
      * of it, as raw text (using <code>DataUtilities.GetUtf8String(bytes,
      * true)</code>), and to optionally extract important header fields, such
      * as From, To, Date, and Subject, from the message's text using the
-     * <code>ExtractHeaderField</code> method. Even so, though, any message for
-     * which this constructor throws a MessageDataException ought to be
-     * treated with suspicion.</p>
+     * <code>ExtractHeader</code> method. Even so, though, any message for which
+     * this constructor throws a MessageDataException ought to be treated
+     * with suspicion.</p>
      * @param stream A readable data stream.
      * @throws NullPointerException The parameter {@code stream} is null.
      * @throws com.upokecenter.mail.MessageDataException The message is malformed.
@@ -181,25 +181,25 @@ import com.upokecenter.text.*;
         if (b >= 0x41 && b <= 0x5a) {
           b += 0x20;
         }
-if (c >= 0x41 && c <= 0x5a) {
+        if (c >= 0x41 && c <= 0x5a) {
           c += 0x20;
         }
-if (index + 1 >= bytes.length || b != c) {
-  return start;
-}
+        if (index + 1 >= bytes.length || b != c) {
+          return start;
+        }
       }
       return index + value.length();
     }
 
     private static int EndOfLine(byte[] bytes, int index) {
-       return (index >= 2 && bytes[index-1] == 0x0a && bytes[index-2]==0x0d) ?
+       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index-2]==0x0d) ?
 (index - 2) : index;
     }
 
     private static int SkipLine(byte[] bytes, int index) {
       while (index < bytes.length) {
-        if (bytes[index] == 0x0d && index + 1 < bytes.length && bytes[index+
-1]==0x0a) {
+        if (bytes[index] == 0x0d && index + 1 < bytes.length && bytes[index +
+1] == 0x0a) {
           return index + 2;
         }
         ++index;
@@ -209,7 +209,7 @@ if (index + 1 >= bytes.length || b != c) {
 
     private static int SkipWsp(byte[] bytes, int index) {
       while (index < bytes.length) {
-        if (bytes[index] != 0x09 && bytes[index]!=0x20) {
+        if (bytes[index] != 0x09 && bytes[index] != 0x20) {
           return index;
         }
         ++index;
@@ -227,13 +227,18 @@ if (index + 1 >= bytes.length || b != c) {
      * @param bytes A byte array representing an email message.
      * @param headerFieldName A string object.
      * @return The value of the first instance of the header field with the given
-     * name. Returns null if {@code bytes} is null, if {@code
-     * headerFieldName} is null, is more than 997 characters long, or has a
-     * character less than U + 0021 or greater than U + 007E in the Unicode
-     * Standard, if a header field with that name does not exist, or if a
-     * body (even an empty one) does not follow the header fields.
+     * name. Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF
+     * (0x0d/0x0a) pairs will be removed from the header field value, and
+     * the value is treated as encoded in UTF-8 (an 8-bit encoding form of
+     * the Unicode Standard) where illegally encoded UTF-8 is replaced as
+     * appropriate with replacement characters (U + FFFD). Returns null if
+     * {@code bytes} is null, if {@code headerFieldName} is null, is more
+     * than 997 characters long, or has a character less than U + 0021 or
+     * greater than U + 007E in the Unicode Standard, if a header field with
+     * that name does not exist, or if a body (even an empty one) does not
+     * follow the header fields.
      */
-    public static String ExtractField(byte[] bytes, String headerFieldName) {
+    public static String ExtractHeader(byte[] bytes, String headerFieldName) {
 if (bytes == null) {
   return null;
 }
@@ -249,10 +254,11 @@ for (int i = 0; i < headerFieldName.length(); ++i) {
       int index = 0;
       String ret = null;
       while (index < bytes.length) {
-        if (index + 1 < bytes.length && bytes[index] ==0x0d && bytes[index +
-1]==0x0a) {
-            // End of headers reached
-            break;
+        if (index + 1 < bytes.length && bytes[index] == 0x0d &&
+           bytes[index + 1] == 0x0a) {
+            // End of headers reached, so output the header field
+            // found if any
+            return ret;
          }
          if (ret != null) {
             // Already have a header field, so skip the line
@@ -271,18 +277,19 @@ for (int i = 0; i < headerFieldName.length(); ++i) {
            index = SkipLine(bytes, index);
            continue;
          }
-         n = SkipWsp(bytes, n);
+         n = SkipWsp(bytes, n + 1);
          java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-            int endLine = SkipLine(bytes, index);
-            ms.write(bytes, index, EndOfLine(bytes, endLine) - index);
-            while (endLine < bytes.length && (bytes[endLine] == 0x09 ||
-bytes[endLine] == 0x20)) {
-              ++endLine;
+            int endLine = SkipLine(bytes, n);
+            ms.write(bytes, n, EndOfLine(bytes, endLine) - n);
+            index = endLine;
+            while (endLine < bytes.length &&
+                 (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
               int s = endLine;
-              endLine = SkipLine(bytes, index);
+              endLine = SkipLine(bytes, endLine);
+              index = endLine;
               ms.write(bytes, s, EndOfLine(bytes, endLine) - s);
             }
             ret = DataUtilities.GetUtf8String(ms.toByteArray(), true);
@@ -293,8 +300,8 @@ try { if (ms != null) {
  } } catch (java.io.IOException ex) {}
 }
       }
-      return ret;
-    }
+      return null;
+      }
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Message}
@@ -309,7 +316,7 @@ try { if (ms != null) {
      * display the message, or part of it, as raw text (using
      * <code>DataUtilities.GetUtf8String(bytes, true)</code>), and to optionally
      * extract important header fields, such as From, To, Date, and
-     * Subject, from the message's text using the <code>ExtractHeaderField</code>
+     * Subject, from the message's text using the <code>ExtractHeader</code>
      * method. Even so, though, any message for which this constructor
      * throws a MessageDataException ought to be treated with
      * suspicion.</p>
@@ -744,9 +751,9 @@ public final void setSubject(String value) {
     /**
      * Gets the date and time extracted from this message's Date header field (the
      *  value of which is found as though GetHeader("date") were called).
-     * See <see cref='PeterO.Mail.MailDateTime.ParseDateString(
-     * System.String,System.Boolean)'/> for more information on the format
-     * of the date-time array returned by this method.
+     * See <b>MailDateTime.ParseDateString(boolean)</b> for more
+     * information on the format of the date-time array returned by this
+     * method.
      * @return An array of 32-bit unsigned integers.
      */
     public int[] GetDate() {
@@ -756,26 +763,13 @@ public final void setSubject(String value) {
 
     /**
      * Sets this message's Date header field to the given date and time.
-     * @param dateTime An array containing eight elements. Each element of the
-     * array (starting from 0) is as follows: <ul> <li>0 - The year. For
-     * example, the value 2000 means 2000 C.E. Cannot be less than 0.</li>
-     * <li>1 - Month of the year, from 1 (January) through 12
-     * (December).</li> <li>2 - Day of the month, from 1 through 31.</li>
-     * <li>3 - Hour of the day, from 0 through 23.</li> <li>4 - Minute of
-     * the hour, from 0 through 59.</li> <li>5 - Second of the minute, from
-     * 0 through 60 (this value can go up to 60 to accommodate leap
-     * seconds). (Leap seconds are additional seconds added to adjust
-     * international atomic time, or TAI, to an approximation of
-     * astronomical time known as coordinated universal time, or UTC.)</li>
-     * <li>6 - Milliseconds of the second, from 0 through 999. This value
-     * is not used to generate the date string, but cannot be less than
-     * 0.</li> <li>7 - Number of minutes to subtract from this date and
-     * time to get global time. This number can be positive or negative,
-     * but cannot be less than -1439 or greater than 1439.</li></ul>.
+     * @param dateTime An array containing at least eight elements expressing a
+     * date and time. See <b>MailDateTime.ParseDateString(boolean)</b> for
+     * more information on this parameter.
      * @return This object.
      * @throws IllegalArgumentException The parameter {@code dateTime} contains fewer than
-     * eight elements, contains invalid values, or contains a year less
-     * than 0.
+     * eight elements or contains invalid values (see
+     * MailDateTime.ParseString(boolean)).
      * @throws NullPointerException The parameter {@code dateTime} is null.
      */
     public Message SetDate(int[] dateTime) {
