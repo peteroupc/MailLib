@@ -129,7 +129,8 @@ public final void setDispositionType(String value) {
      * @param name The parameter to remove. The name is compared using a basic
      * case-insensitive comparison. (Two strings are equal in such a
      * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+     * letters A to Z (U + 0041 to U + 005A) in both strings to basic
+     * lower-case letters.).
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
      */
@@ -147,7 +148,8 @@ public final void setDispositionType(String value) {
      * (compared using a basic case-insensitive comparison), it will be
      * overwritten. (Two strings are equal in a basic case-insensitive
      * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+     * letters A to Z (U + 0041 to U + 005A) in both strings to basic
+     * lower-case letters.).
      * @param value Value of the parameter to set.
      * @return This instance.
      * @throws NullPointerException Either {@code value} or {@code name} is null.

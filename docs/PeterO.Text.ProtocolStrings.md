@@ -27,7 +27,7 @@
     public static bool IsInFreeformClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U + 0021 to U + 007E), but excludes control characters and separators.
+ Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U + 0021 to U + 007E), but excludes control characters and separators. Horizontal tab, U+0009, and other code points in the range U+0000 to U+001F, are among the excluded characters.
 
     <b>Parameters:</b>
 
@@ -44,7 +44,7 @@
     public static bool IsInIdentifierClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the Freeform class, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U + 0000 to U + 007F).
+ Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U + 0000 to U + 007F).
 
     <b>Parameters:</b>
 

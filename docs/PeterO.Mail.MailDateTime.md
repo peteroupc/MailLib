@@ -31,7 +31,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid (see  `ParseDateString(bool)` ).
+ is null or invalid (see  `ParseDateString(bool)`  ).
 
 <a id="GenerateDateString_int_bool"></a>
 ### GenerateDateString
@@ -56,7 +56,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid (see  `ParseDateString(bool)` ).
+ is null or invalid (see  `ParseDateString(bool)`  ).
 
  * System.ArgumentNullException:
 The parameter  <i>dateTime</i>
@@ -104,7 +104,7 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
 
   * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative, but cannot be less than -1439 or greater than 1439.
 
-If a method or property uses an array of this format and refers to this method's documentation, that array may have any number of elements 8 or greater.
+ If a method or property uses an array of this format and refers to this method's documentation, that array may have any number of elements 8 or greater.
 
      <b>Parameters:</b>
 

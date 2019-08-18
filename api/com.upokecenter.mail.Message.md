@@ -368,7 +368,12 @@ Extracts the value of a header field from a byte array representing an email
 
 * <code>bytes</code> - A byte array representing an email message.
 
-* <code>headerFieldName</code> - A string object.
+* <code>headerFieldName</code> - The name of the header field to extract. This name
+ will be compared with the names of header fields in the given
+ message using a basic case-insensitive comparison. (Two strings are
+ equal in such a comparison, if they match after converting the basic
+ upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+ basic lower-case letters.).
 
 **Returns:**
 
@@ -1441,7 +1446,17 @@ Creates a message object from a MailTo URI (uniform resource identifier).
   "comments", "keywords", and "body". The first seven are header field
  names that will be used to set the returned message's corresponding
   header fields. The last, "body", sets the body of the message to the
- given text. Keys other than these eight will be ignored.
+ given text. Keys other than these eight will be ignored. (Keys are
+ compared using a basic case-sensitive comparison, in which two
+ strings are equal if they match after converting the basic
+ upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+ basic lower-case letters.) The same key (matched using a basic
+ case-insensitive comparison) can appear more than once; for
+  "subject", "cc", "bcc", and "in-reply-to", the last value with the
+  given key is used; for "to", all header field values as well as the
+  path are combined to a single To header field; for "keywords" and
+  "comments", each value adds another header field of the given key;
+  and for "body", the last value with that key is used as the body..
 
 **Parameters:**
 
@@ -1456,15 +1471,8 @@ Creates a message object from a MailTo URI (uniform resource identifier).
 ### FromMailtoUri
     public static Message FromMailtoUri​(java.net.URI uri)
 Creates a message object from a MailTo URI (uniform resource identifier) in
- the form of a URI object. The MailTo URI can contain key-value pairs
- that follow a question-mark, as in the following example:
-  "mailto:me@example.com?subject=A%20Subject". In this example,
-  "subject" is the subject of the email address. Only certain keys are
-  supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
-  "comments", "keywords", and "body". The first seven are header field
- names that will be used to set the returned message's corresponding
-  header fields. The last, "body", sets the body of the message to the
- given text. Keys other than these eight will be ignored.
+ the form of a URI object. For more information, see
+ <b>FromMailtoUri(string)</b>.
 
 **Parameters:**
 

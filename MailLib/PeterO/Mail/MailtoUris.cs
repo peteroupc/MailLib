@@ -192,7 +192,7 @@ namespace PeterO.Mail {
             value = URIUtility.PercentDecode(value);
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.
-            // Of these, the first four can appear only once in a message
+            // Of these, the first five can appear only once in a message
             if (name.Equals("body", StringComparison.Ordinal)) {
               msg.SetTextBody(value);
             } else if (name.Equals("keywords", StringComparison.Ordinal) ||

@@ -974,7 +974,7 @@ namespace PeterO.Mail {
     /// compared using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
     /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
-    /// strings to lower case.).</param>
+    /// strings to basic lower-case letters.).</param>
     /// <returns>The value of the parameter as a string, or null if the
     /// parameter doesn't exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

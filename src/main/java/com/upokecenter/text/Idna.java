@@ -764,6 +764,9 @@ private Idna() {
         if (ch >= 0x10000) {
           ++i;
         }
+        if (ch < 0) {
+          return false;
+        }
         int category = UnicodeDatabase.GetPrecisCategory(ch);
         if (category == Disallowed || category == Unassigned) {
           return false;

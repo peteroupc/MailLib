@@ -1090,7 +1090,7 @@
     <param name='name'>The name of the parameter to get. The name will be matched using a basic
       case-insensitive comparison. (Two strings are equal in such a comparison,
       if they match after converting the basic upper-case letters A to Z (U+0041
-      to U+005A) in both strings to lower case.). Can't be null.
+      to U+005A) in both strings to basic lower-case letters.). Can't be null.
     </param>
     <returns>The value of the parameter, or null if the parameter does not exist.
     </returns>
@@ -1560,7 +1560,7 @@
     <param name='name'>The parameter to remove. The name is compared using a basic
       case-insensitive comparison. (Two strings are equal in such a comparison,
       if they match after converting the basic upper-case letters A to Z (U+0041
-      to U+005A) in both strings to lower case.).
+      to U+005A) in both strings to basic lower-case letters.).
     </param>
     <returns>This instance.
     </returns>
@@ -1592,7 +1592,7 @@
       a basic case-insensitive comparison), it will be overwritten. (Two strings
       are equal in a basic case-insensitive comparison, if they match after
       converting the basic upper-case letters A to Z (U+0041 to U+005A) in both
-      strings to lower case.).
+      strings to basic lower-case letters.).
     </param>
     <param name='value'>Value of the parameter to set.
     </param>
@@ -2107,7 +2107,7 @@
     <param name='name'>Name of the parameter to get. The name is compared using a basic
       case-insensitive comparison. (Two strings are equal in such a comparison,
       if they match after converting the basic upper-case letters A to Z (U+0041
-      to U+005A) in both strings to lower case.).
+      to U+005A) in both strings to basic lower-case letters.).
     </param>
     <returns>The value of the parameter as a string, or null if the parameter doesn't
       exist.
@@ -2328,7 +2328,7 @@
     <param name='name'>Name of the parameter to remove. The name is compared using a basic
       case-insensitive comparison. (Two strings are equal in such a comparison,
       if they match after converting the basic upper-case letters A to Z (U+0041
-      to U+005A) in both strings to lower case.).
+      to U+005A) in both strings to basic lower-case letters.).
     </param>
     <returns>This instance.
     </returns>
@@ -2343,7 +2343,7 @@
     <param name='name'>Name of the parameter to set, such as "charset" . The name is compared
       using a basic case-insensitive comparison. (Two strings are equal in such
       a comparison, if they match after converting the basic upper-case letters
-      A to Z (U+0041 to U+005A) in both strings to lower case.).
+      A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
     </param>
     <param name='value'>A text string giving the parameter's value.
     </param>
@@ -2562,17 +2562,18 @@
     <exception cref='PeterO.Mail.MessageDataException'>The message is malformed. See the remarks.
     </exception>
     <remarks>
-      <b>Remarks:</b> This constructor parses an email message, and extracts its header fields
-      and body, and throws a MessageDataException if the message is malformed.
-      However, even if a MessageDataException is thrown, it can still be
-      possible to display the message, especially because most email
-      malformations seen in practice are benign in nature (such as the use of
-      very long lines in the message). One way an application can handle the
-      exception is to display the message, or part of it, as raw text (using
-      <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to optionally extract important header fields, such as From, To,
-      Date, and Subject, from the message's text using the
-      <c>ExtractHeader</c> method. Even so, though, any message for which this constructor throws a
-      MessageDataException ought to be treated with suspicion.
+      <b>Remarks:</b> <para>This constructor parses an email message, and extracts its header fields
+        and body, and throws a MessageDataException if the message is malformed.
+        However, even if a MessageDataException is thrown, it can still be
+        possible to display the message, especially because most email
+        malformations seen in practice are benign in nature (such as the use of
+        very long lines in the message). One way an application can handle the
+        exception is to display the message, or part of it, as raw text (using
+        <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to optionally extract important header fields, such as From, To,
+        Date, and Subject, from the message's text using the
+        <c>ExtractHeader</c> method. Even so, though, any message for which this constructor throws
+        a MessageDataException ought to be treated with suspicion.
+      </para>
     </remarks>
   </doc>
   <doc name='M:PeterO.Mail.Message.#ctor(System.IO.Stream)'>
@@ -2590,18 +2591,19 @@
     <exception cref='PeterO.Mail.MessageDataException'>The message is malformed. See the remarks.
     </exception>
     <remarks>
-      <b>Remarks:</b> This constructor parses an email message, and extracts its header fields
-      and body, and throws a MessageDataException if the message is malformed.
-      However, even if a MessageDataException is thrown, it can still be
-      possible to display the message, especially because most email
-      malformations seen in practice are benign in nature (such as the use of
-      very long lines in the message). One way an application can handle the
-      exception is to read all the bytes from the stream, to display the
-      message, or part of it, as raw text (using
-      <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to optionally extract important header fields, such as From, To,
-      Date, and Subject, from the message's text using the
-      <c>ExtractHeader</c> method. Even so, though, any message for which this constructor throws a
-      MessageDataException ought to be treated with suspicion.
+      <b>Remarks:</b> <para>This constructor parses an email message, and extracts its header fields
+        and body, and throws a MessageDataException if the message is malformed.
+        However, even if a MessageDataException is thrown, it can still be
+        possible to display the message, especially because most email
+        malformations seen in practice are benign in nature (such as the use of
+        very long lines in the message). One way an application can handle the
+        exception is to read all the bytes from the stream, to display the
+        message, or part of it, as raw text (using
+        <c>DataUtilities.GetUtf8String(bytes, true)</c> ), and to optionally extract important header fields, such as From, To,
+        Date, and Subject, from the message's text using the
+        <c>ExtractHeader</c> method. Even so, though, any message for which this constructor throws
+        a MessageDataException ought to be treated with suspicion.
+      </para>
     </remarks>
   </doc>
   <doc name='M:PeterO.Mail.Message.AddAttachment(PeterO.Mail.MediaType)'>
@@ -2701,8 +2703,8 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})'>
     <summary>Adds a header field to the end of the message's header.
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='header'>A key/value pair. The key is the name of the header field, such as "From"
@@ -2720,8 +2722,8 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.AddHeader(System.String,System.String)'>
     <summary>Adds a header field to the end of the message's header.
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='name'>Name of a header field, such as "From" or "Content-ID" .
@@ -2933,12 +2935,18 @@
     </summary>
     <param name='bytes'>A byte array representing an email message.
     </param>
-    <param name='headerFieldName'>The parameter
-      <paramref name='headerFieldName'/>
-       is a text string.
+    <param name='headerFieldName'>The name of the header field to extract. This name will be compared with
+      the names of header fields in the given message using a basic
+      case-insensitive comparison. (Two strings are equal in such a comparison,
+      if they match after converting the basic upper-case letters A to Z (U+0041
+      to U+005A) in both strings to basic lower-case letters.)
     </param>
     <returns>The value of the first instance of the header field with the given name.
-      Returns null if
+      Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF (0x0d/0x0a)
+      pairs will be removed from the header field value, and the value is
+      treated as encoded in UTF-8 (an 8-bit encoding form of the Unicode
+      Standard) where illegally encoded UTF-8 is replaced as appropriate with
+      replacement characters (U+FFFD). Returns null if
       <paramref name='bytes'/>
        is null, if
       <paramref name='headerFieldName'/>
@@ -3041,7 +3049,9 @@
       <para>The following applies to the following header fields: From, To, Cc, Bcc,
         Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and
         Resent-Sender. If the header field exists, but has an invalid syntax,
-        has no addresses, or appears more than once, this method will generate a
+        has no addresses, or appears more than once, this method will combine
+        the addresses into one header field if possible (in the case of all
+        fields given other than From and Sender), and otherwise generate a
         synthetic header field with the display-name set to the contents of all
         of the header fields with the same name, and the address set to
         <c>me@[header-name]-address.invalid</c> as the address (a
@@ -3269,8 +3279,8 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.RemoveHeader(System.Int32)'>
     <summary>Removes a header field by index.
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='index'>Zero-based index of the header field to set.
@@ -3289,8 +3299,8 @@
       equal in such a comparison, if they match after converting the basic
       upper-case letters A to Z (U+0041 to U+005A) in both strings to lower
       case.).
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='name'>The name of the header field to remove.
@@ -3387,8 +3397,8 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})'>
     <summary>Sets the name and value of a header field by index.
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='index'>Zero-based index of the header field to set.
@@ -3411,8 +3421,8 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)'>
     <summary>Sets the value of a header field by index without changing its name.
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='index'>Zero-based index of the header field to set.
@@ -3434,8 +3444,8 @@
   </doc>
   <doc name='M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)'>
     <summary>Sets the name and value of a header field by index.
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='index'>Zero-based index of the header field to set.
@@ -3463,8 +3473,8 @@
     <summary>Sets the value of this message's header field. If a header field with the
       same name exists, its value is replaced. If the header field's name occurs
       more than once, only the first instance of the header field is replaced.
-      <para>Updates the ContentType and ContentDisposition properties if those
-        header fields have been modified by this method.
+      <para>This method updates the ContentType and ContentDisposition properties if
+        those header fields have been modified by this method.
       </para>
     </summary>
     <param name='name'>The name of a header field, such as "from" or "subject" .
@@ -5311,7 +5321,8 @@
       In general, the FreeformClass contains most letters, digits, spaces,
       punctuation, and symbols in the Unicode standard, as well as all basic
       printable characters (U+0021 to U+007E), but excludes control characters
-      and separators.
+      and separators. Horizontal tab, U+0009, and other code points in the range
+      U+0000 to U+001F, are among the excluded characters.
     </summary>
     <param name='str'>A string to check.
     </param>
@@ -5325,9 +5336,10 @@
   </doc>
   <doc name='M:PeterO.Text.ProtocolStrings.IsInIdentifierClass(System.String)'>
     <summary>Determines whether the given string belongs in RFC 8264's IdentifierClass.
-      In general, the IdentifierClass contains all code points in the Freeform
-      class, except certain uncommon letters and digits, spaces, as well as
-      punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
+      In general, the IdentifierClass contains all code points in the
+      FreeformClass, except certain uncommon letters and digits, spaces, as well
+      as punctuation and symbols outside the Basic Latin range (U+0000 to
+      U+007F).
     </summary>
     <param name='str'>A string to check.
     </param>

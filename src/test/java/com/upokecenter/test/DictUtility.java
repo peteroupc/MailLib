@@ -255,7 +255,7 @@ str.substring(i));
               ++i;
             }
             endPos[0] = i;
-            return list.ToArray();
+            return list.toArray(new String[] { });
           case 0x2c:
             // comma
             if (!endValue) {

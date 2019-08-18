@@ -254,7 +254,7 @@ str.Substring(i));
               ++i;
             }
             endPos[0] = i;
-            return list.ToArray();
+            return (string[])list.ToArray();
           case 0x2c:
             // comma
             if (!endValue) {

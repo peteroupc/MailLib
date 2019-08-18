@@ -326,8 +326,8 @@ import com.upokecenter.text.*;
      * @param name The name of the parameter to get. The name will be matched using
      * a basic case-insensitive comparison. (Two strings are equal in such
      * a comparison, if they match after converting the basic upper-case
-     * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
-     * Can't be null.
+     * letters A to Z (U + 0041 to U + 005A) in both strings to basic
+     * lower-case letters.). Can't be null.
      * @return The value of the parameter, or null if the parameter does not exist.
      * @throws NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty.

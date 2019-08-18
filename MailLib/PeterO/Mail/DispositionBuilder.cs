@@ -132,7 +132,7 @@ namespace PeterO.Mail {
     /// using a basic case-insensitive comparison. (Two strings are equal
     /// in such a comparison, if they match after converting the basic
     /// upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
-    /// lower case.).</param>
+    /// basic lower-case letters.).</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -150,7 +150,7 @@ namespace PeterO.Mail {
     /// comparison), it will be overwritten. (Two strings are equal in a
     /// basic case-insensitive comparison, if they match after converting
     /// the basic upper-case letters A to Z (U + 0041 to U + 005A) in both
-    /// strings to lower case.).</param>
+    /// strings to basic lower-case letters.).</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>Either <paramref
