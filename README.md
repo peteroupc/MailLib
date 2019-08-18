@@ -78,6 +78,7 @@ Version 0.14.0:
 - DataUrls class is now called DataUris; DataUrls is now deprecated.
 - Changes in algorithm used by ContentDisposition.MakeFilename
 - Add Message.ExtractHeaderField method
+- Deprecated IsText and IsMultipart in MediaTypeBuilder
 - Changed ParseDateString and GenerateDateString to allow only years 1900 or greater and to fix bugs.
 - Bug fixes
 

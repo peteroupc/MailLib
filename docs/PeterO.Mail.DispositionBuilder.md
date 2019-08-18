@@ -69,9 +69,17 @@ Type is empty.
 
  Gets or sets this value's disposition type, such as "inline" or "attachment".
 
-   <b>Returns:</b>
+     <b>Returns:</b>
 
 This value's disposition type, such as "inline" or "attachment" .
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The property is being set and the value is null.
+
+ * System.ArgumentException:
+The property is being set and the value is an empty string.
 
 <a id="IsMultipart"></a>
 ### IsMultipart
@@ -109,7 +117,7 @@ This value's disposition type, such as "inline" or "attachment" .
 
      <b>Parameters:</b>
 
- * <i>name</i>: The parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+ * <i>name</i>: The parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
 
 <b>Return Value:</b>
 
@@ -127,9 +135,9 @@ The parameter  <i>name</i>
     public PeterO.Mail.DispositionBuilder SetDispositionType(
         string str);
 
- Sets the disposition type, such as "inline".
+ Sets the disposition type, such as "inline". This method enables the pattern of method chaining (e.g.,  `new ...().Set...().Set...()` ) unlike with the DispositionType property in .NET or the setDispositionType method (with small s) in Java.
 
-      <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -137,15 +145,6 @@ The parameter  <i>name</i>
 <b>Return Value:</b>
 
 This instance.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null.
-
- * System.ArgumentException:
-Str is empty.
 
 <a id="SetParameter_string_string"></a>
 ### SetParameter
@@ -158,7 +157,7 @@ Str is empty.
 
        <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
 
  * <i>value</i>: Value of the parameter to set.
 

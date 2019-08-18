@@ -21,6 +21,7 @@ Version 0.14.0:
 - Changes in algorithm used by ContentDisposition.MakeFilename
 - Add Message.ExtractHeaderField method
 - Changed ParseDateString and GenerateDateString to allow only years 1900 or greater and to fix bugs.
+- Deprecated IsText and IsMultipart in MediaTypeBuilder
 - Bug fixes
 
 </PackageReleaseNotes>
@@ -28,8 +29,8 @@ Version 0.14.0:
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See
        https://github.com/peteroupc/MailLib/LICENSE.md for more information.)</Copyright>
     <PackOnBuild>true</PackOnBuild>
-    <Version>0.13.0</Version>
-    <PackageVersion>0.13.0</PackageVersion>
+    <Version>0.14.0</Version>
+    <PackageVersion>0.14.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>

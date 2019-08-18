@@ -454,6 +454,10 @@ namespace PeterO.Mail {
                 enc.AppendSpaceIfNeeded();
                 enc.AppendAsEncodedWords(addrSpec);
                 enc.AppendSpace();
+                // NOTE: Here, the ":;" symbol is atomic and is
+                // not separated into ":", which separates the group
+                // name and the addresses, and ";", which ends
+                // the group
                 enc.AppendSymbol(":;");
               }
               lastIndex = endIndex;
@@ -501,7 +505,7 @@ namespace PeterO.Mail {
         if (endIndex != str.Length) {
           // The header field is syntactically invalid,
           // so don't decode any encoded words
-          // Console.WriteLine("Invalid syntax: " + this.GetType().Name +
+          // DebugUtility.Log("Invalid syntax: " + this.GetType().Name +
           // ", " + str);
           return str;
         }
@@ -509,7 +513,7 @@ namespace PeterO.Mail {
         // Get each relevant token sorted by starting index
         IList<int[]> tokens = tokener.GetTokens();
         foreach (int[] token in tokens) {
-          // Console.WriteLine("" + token[0] + " [" +
+          // DebugUtility.Log("" + token[0] + " [" +
           // (str.Substring(token[1],token[2]-token[1])) + "]");
           if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
                    lastIndex) {
@@ -714,6 +718,268 @@ namespace PeterO.Mail {
       }
     }
 
+    internal static string DowngradeListHeaderIfNo(HeaderEncoder enc, string
+str) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
+      int index = HeaderParser.ParseCFWS(str, index, str.Length, null);
+      int noIndex = index;
+      if (index +1 < str.Length && str[index]=='N' && str[index+1]=='O') {
+        index = HeaderParser.ParseCFWS(str, index + 2, str.Length, null);
+        if (index != str.Length) {
+          return null;
+        }
+        string sstr = str.Substring(0, noIndex);
+        DowngradeCFWS(enc, sstr, false);
+        enc.AppendSymbol("NO");
+        noIndex += 2;
+        sstr = str.Substring(noIndex, str.Length - noIndex);
+        DowngradeCFWS(enc, sstr, false);
+        return enc.ToString();
+      } else {
+        return null;
+      }
+    }
+
+    internal static string DowngradeListHeader(HeaderEncoder enc, string str) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
+      if (str.Length == 0) {
+        return str;
+      }
+      var list = new List<string>();
+      var sb = new StringBuilder();
+      var index = 0;
+      int index2 = HeaderParser.ParseCFWS(str, index, str.Length, null);
+      string sstr = str.Substring(index, index2 - index);
+      DowngradeCFWS(enc, sstr, false);
+      index = index2;
+      while (index < str.Length) {
+        if (index >= str.Length || str[index] != '<') {
+             // Downgrade rest of string
+             sstr = str.Substring(index, str.Length - index);
+             DowngradeCFWS(enc, sstr, true);
+             return enc.ToString();
+        }
+        var found = false;
+        enc.AppendSymbol("<");
+        ++index;
+        while (index < str.Length) {
+           index = HeaderParser.ParseFWS(str, index, str.Length, null);
+           int c = str[index];
+           if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length && (c &
+0xfc00) == 0xdc00) {
+             sstr = str.Substring(index, 2);
+             enc.AppendSymbol(sstr);
+             index += 2;
+           } else if ((c & 0xf800) == 0xd800) {
+             // Downgrade rest of string
+             sstr = str.Substring(index, str.Length - index);
+             DowngradeCFWS(enc, sstr, true);
+             return enc.ToString();
+           } else if (c == 0x3e) {
+             // Right angle bracket '>'
+             string uri = sb.ToString();
+             enc.AppendSymbol(">");
+             ++index;
+             if (!URIUtility.IsValidIRI(uri)) {
+               // Downgrade rest of string
+               sstr = str.Substring(index, str.Length - index);
+               DowngradeCFWS(enc, sstr, true);
+               return enc.ToString();
+             }
+             list.Add(uri);
+             found = true;
+             break;
+           } else {
+             sstr = str.Substring(index, 1);
+             enc.AppendSymbol(sstr);
+             ++index;
+           }
+        }
+        if (!found) {
+          break;
+        }
+        index2 = HeaderParser.ParseCFWS(str, index, str.Length, null);
+        sstr = str.Substring(index, index2 - index);
+        DowngradeCFWS(enc, sstr, false);
+        index = index2;
+        if (index >= str.Length || str[index] != ',') {
+               sstr = str.Substring(index, str.Length - index);
+               DowngradeCFWS(enc, sstr, true);
+               return enc.ToString();
+        }
+        enc.AppendSymbol(",");
+        index2 = HeaderParser.ParseCFWS(str, index + 1, str.Length, null);
+        sstr = str.Substring(index, index2 - index);
+        DowngradeCFWS(enc, sstr, false);
+        index = index2;
+      }
+      return enc.ToString();
+    }
+
+    internal static void DowngradeCFWS(
+      HeaderEncoder enc,
+      string str,
+      bool multiple) {
+        if (str.IndexOf('(') < 0 ||
+          !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+          // Contains no comments, or no text needs to be encoded
+          enc.AppendString(str, 0, str.Length);
+          return;
+        }
+        var tokener = new Tokener();
+        int endIndex;
+        if (multiple) {
+           endIndex = str.Length;
+           HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, 0,
+  str.Length, tokener);
+        } else {
+           endIndex = HeaderParser.ParseCFWS(str, 0, str.Length, tokener);
+        }
+        if (endIndex != str.Length) {
+          // The CFWS is syntactically invalid,
+          // so downgrading is not possible
+          enc.AppendString(str, 0, str.Length);
+          return;
+        }
+        var lastIndex = 0;
+        // Get each relevant token sorted by starting index
+        IList<int[]> tokens = tokener.GetTokens();
+        enc.Reset();
+        foreach (int[] token in tokens) {
+          if (token[1] < lastIndex) {
+            continue;
+          }
+          if (token[0] == HeaderParserUtility.TokenComment) {
+            int startIndex = token[1];
+            endIndex = token[2];
+            if (Message.HasTextToEscape(str, startIndex, endIndex)) {
+              enc.AppendString(str, lastIndex, startIndex);
+              Rfc2047.EncodeComment(
+                enc,
+                str,
+                startIndex,
+                endIndex);
+              lastIndex = endIndex;
+            }
+          }
+        }
+        enc.AppendString(str, lastIndex, str.Length);
+      }
+
+    // Determines whether a List-Post field value contains "NO" in that
+    // combination of case, and optional CFWS before or after the "NO"
+    internal static bool IsListPostNo(string str, int index, int endIndex) {
+        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
+        if (index +1 < endIndex && str[index]=='N' && str[index+1]=='O') {
+          index = HeaderParser.ParseCFWS(str, index + 2, endIndex, null);
+          return index == endIndex;
+        }
+        return false;
+    }
+
+    // NOTE: See RFC 2369 section 2
+    // NOTE: Applies to List-Help, List-Archive, List-Unsubscribe,
+    // List-Owner, List-Subscribe, List-Post
+    internal static string[] GetListHeaderUris(string str, int index, int
+endIndex, ITokener tokener) {
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
+      var list = new List<string>();
+      index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+      while (index < endIndex) {
+        if (index >= endIndex || str[index] != '<') {
+          break;
+        }
+        ++index;
+        var found = false;
+        var sb = new StringBuilder();
+        while (index < endIndex) {
+           index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
+           int c = str[index];
+           if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex && (c &
+0xfc00) == 0xdc00) {
+             sb.Append(str[index]);
+             sb.Append(str[index + 1]);
+             index += 2;
+           } else if ((c & 0xf800) == 0xd800) {
+             break;
+           }
+           if (c == 0x3e) {
+             // Right angle bracket '>'
+             string uri = sb.ToString();
+             if (!URIUtility.IsValidIRI(uri)) {
+               break;
+             }
+             list.Add(uri);
+             ++index;
+             found = true;
+             break;
+           } else {
+             sb.Append(str[index]);
+             ++index;
+           }
+        }
+        if (!found) {
+          break;
+        }
+        index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+        if (index >= endIndex || str[index] != ',') {
+           break;
+        }
+        index = HeaderParser.ParseCFWS(str, index + 1, endIndex, tokener);
+      }
+      return (string[])list.ToArray();
+    }
+
+    // Applies to List-Help, List-Archive, List-Unsubscribe,
+    // List-Owner, List-Subscribe, List-Post
+    private sealed class HeaderListRfc2369 : StructuredHeaderField {
+      public override string DowngradeHeaderField(string name, string str) {
+        // The 2 below is for the colon and space after the header field name
+        // TODO: Handle special case of List-Post "NO"
+        // NOTE: May introduce spaces within URLs; even though message
+        // transport agents (MTAs) must not introduce such spaces, this is not
+        // a deviation from RFC 2369, however, because this method is not
+        // being called in the context of sending already generated messages,
+        // where MTAs are generally not allowed to modify the messages
+        // they send (especially to add or remove whitespace in header
+        // field values) except to add certain header fields at the top of
+        // the message.
+        // DebugUtility.Log("before = "+str);
+        var lcname = DataUtilities.ToLowerCaseAscii(name);
+        var enc = new HeaderEncoder(
+          Message.MaxRecHeaderLineLength,
+          name.Length + 2);
+        str = HeaderEncoder.TrimLeadingFWS(str);
+        if (lcname.Equals("list-post", StringComparison.Ordinal)) {
+          string s2 = DowngradeListHeaderIfNo(enc, str);
+          str = s2 ?? HeaderFieldParsers.DowngradeListHeader(enc, str);
+        } else {
+          str = HeaderFieldParsers.DowngradeListHeader(enc, str);
+        }
+        // DebugUtility.Log("after = "+str);
+        return new HeaderEncoder().AppendFieldName(name) + str;
+      }
+
+      public override int Parse(
+        string str,
+        int index,
+        int endIndex,
+        ITokener tokener) {
+          HeaderParserUtility.TraverseCFWSAndQuotedStrings(
+            str,
+            index,
+            endIndex,
+            tokener);
+          return endIndex;
+      }
+    }
+
     private sealed class HeaderContentType : StructuredHeaderField {
       public override int Parse(
         string str,
@@ -791,8 +1057,7 @@ namespace PeterO.Mail {
         ITokener tokener) {
         // NOTE: Almost the same syntax as Content-Disposition, except
         // first character must be a space (since this is a Netnews header
-        // field),
-        // and a limited selection of "disposition types" is valid;
+        // field), and a limited selection of "disposition types" is valid;
         // however, the initial space is not checked here, a behavior
         // allowed by RFC
         // 5536 sec. 2.2
@@ -822,10 +1087,8 @@ namespace PeterO.Mail {
         ITokener tokener) {
         // NOTE: Under the syntax of InjectionInfo, the
         // first character must be a space (since this is a Netnews header
-        // field);
-        // however, the initial space is not checked here, a behavior
-        // allowed by RFC
-        // 5536 sec. 2.2
+        // field); however, the initial space is not checked here, a behavior
+        // allowed by RFC 5536 sec. 2.2
         int indexStart, indexTemp, state, tx2;
         indexStart = index;
         state = (tokener != null) ? tokener.GetState() : 0;
@@ -1732,30 +1995,6 @@ namespace PeterO.Mail {
       }
     }
 
-    private sealed class HeaderListArchive : StructuredHeaderField {
-      public override int Parse(
-        string str,
-        int index,
-        int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderListArchive(
-          str,
-          index,
-          endIndex,
-          tokener);
-      }
-    }
-
-    private sealed class HeaderListHelp : StructuredHeaderField {
-      public override int Parse(
-        string str,
-        int index,
-        int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderListHelp(str, index, endIndex, tokener);
-      }
-    }
-
     private sealed class HeaderListId : StructuredHeaderField {
       public override int Parse(
         string str,
@@ -1763,54 +2002,6 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
-      }
-    }
-
-    private sealed class HeaderListOwner : StructuredHeaderField {
-      public override int Parse(
-        string str,
-        int index,
-        int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderListOwner(str, index, endIndex, tokener);
-      }
-    }
-
-    private sealed class HeaderListPost : StructuredHeaderField {
-      public override int Parse(
-        string str,
-        int index,
-        int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderListPost(str, index, endIndex, tokener);
-      }
-    }
-
-    private sealed class HeaderListSubscribe : StructuredHeaderField {
-      public override int Parse(
-        string str,
-        int index,
-        int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderListSubscribe(
-          str,
-          index,
-          endIndex,
-          tokener);
-      }
-    }
-
-    private sealed class HeaderListUnsubscribe : StructuredHeaderField {
-      public override int Parse(
-        string str,
-        int index,
-        int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderListUnsubscribe(
-          str,
-          index,
-          endIndex,
-          tokener);
       }
     }
 
@@ -2285,7 +2476,12 @@ namespace PeterO.Mail {
       fieldMap["auto-submitted"] = new HeaderAutoSubmitted();
       fieldMap["archive"] = new HeaderArchive();
       fieldMap["autosubmitted"] = new HeaderAutoforwarded(); // same syntax
-      fieldMap["sio-label"] = new HeaderSioLabel();
+      fieldMap["list-archive"] = new HeaderListRfc2369();
+      fieldMap["list-help"] = new HeaderListRfc2369();
+      fieldMap["list-post"] = new HeaderListRfc2369();
+      fieldMap["list-owner"] = new HeaderListRfc2369();
+      fieldMap["list-subscribe"] = new HeaderListRfc2369();
+      fieldMap["list-unsubscribe"] = new HeaderListRfc2369();
       fieldMap["sio-label-history"] = new HeaderSioLabel();
       fieldMap["injection-info"] = new HeaderInjectionInfo();
       //------------------ generic ------------------
@@ -2369,13 +2565,7 @@ namespace PeterO.Mail {
       fieldMap["keywords"] = new HeaderKeywords();
       fieldMap["language"] = new HeaderLanguage();
       fieldMap["latest-delivery-time"] = new HeaderLatestDeliveryTime();
-      fieldMap["list-archive"] = new HeaderListArchive();
-      fieldMap["list-help"] = new HeaderListHelp();
       fieldMap["list-id"] = new HeaderListId();
-      fieldMap["list-owner"] = new HeaderListOwner();
-      fieldMap["list-post"] = new HeaderListPost();
-      fieldMap["list-subscribe"] = new HeaderListSubscribe();
-      fieldMap["list-unsubscribe"] = new HeaderListUnsubscribe();
       fieldMap["list-unsubscribe-post"] = new HeaderListUnsubscribePost();
       fieldMap["message-context"] = new HeaderMessageContext();
       fieldMap["message-id"] = new HeaderMessageId();

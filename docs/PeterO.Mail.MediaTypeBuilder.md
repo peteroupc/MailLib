@@ -62,6 +62,8 @@ The parameter  <i>mt</i>
 
     public bool IsMultipart { get; }
 
+<b>Deprecated.</b> Instead of using this property, use the TopLevelType property and compare the result with the exact string 'multipart'.
+
  Gets a value indicating whether this is a multipart media type.
 
    <b>Returns:</b>
@@ -72,6 +74,8 @@ The parameter  <i>mt</i>
 ### IsText
 
     public bool IsText { get; }
+
+<b>Deprecated.</b> Instead of using this property, use the TopLevelType property and compare the result with the exact string 'text'.
 
  Gets a value indicating whether this is a text media type.
 
@@ -86,9 +90,17 @@ The parameter  <i>mt</i>
 
  Gets or sets this value's subtype.
 
-   <b>Returns:</b>
+     <b>Returns:</b>
 
-This value's subtype.
+A text string naming this object's subtype, such as "plain" or "xml".
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The property is being set and the value is null.
+
+ * System.ArgumentException:
+The property is being set and the value is syntactically invalid for a subtype.
 
 <a id="TopLevelType"></a>
 ### TopLevelType
@@ -97,9 +109,17 @@ This value's subtype.
 
  Gets or sets this value's top-level type.
 
-   <b>Returns:</b>
+     <b>Returns:</b>
 
-This value's top-level type.
+A text string naming this object's top-level type, such as "text" or "audio" .
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The property is being set and the value is null.
+
+ * System.ArgumentException:
+The property is being set and the value is syntactically invalid for a top-level type.
 
 <a id="RemoveParameter_string"></a>
 ### RemoveParameter
@@ -111,7 +131,7 @@ This value's top-level type.
 
      <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
 
 <b>Return Value:</b>
 
@@ -134,7 +154,7 @@ The parameter  <i>name</i>
 
        <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
 
  * <i>value</i>: A text string giving the parameter's value.
 
@@ -159,7 +179,7 @@ The parameter  <i>name</i>
     public PeterO.Mail.MediaTypeBuilder SetSubType(
         string str);
 
- Sets this media type's subtype, such as "plain" or "xml" .
+ Sets this media type's subtype, such as "plain" or "xml" . This method enables the pattern of method chaining (e.g.,  `new ...().Set...().Set...()` ) unlike with the SubType property in .NET or the setSubType method (with small s) in Java.
 
       <b>Parameters:</b>
 
@@ -185,7 +205,7 @@ The parameter  <i>str</i>
     public PeterO.Mail.MediaTypeBuilder SetTopLevelType(
         string str);
 
- Sets this media type's top-level type.
+ Sets this media type's top-level type. This method enables the pattern of method chaining (e.g.,  `new ...().Set...().Set...()` ) unlike with the TopLevelType property in .NET or the setTopLevelType method (with small s) in Java.
 
       <b>Parameters:</b>
 

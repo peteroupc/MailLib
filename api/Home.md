@@ -43,26 +43,6 @@ Stores an arbitrary string and a "quality value" for that string.
 * [com.upokecenter.mail.MessageDataException](com.upokecenter.mail.MessageDataException.md) -
 Exception thrown when a message has invalid syntax.
 
-* [com.upokecenter.mail.transforms.Base64Transform](com.upokecenter.mail.transforms.Base64Transform.md) -  
-
-* [com.upokecenter.mail.transforms.BEncodingStringTransform](com.upokecenter.mail.transforms.BEncodingStringTransform.md) -  
-
-* [com.upokecenter.mail.transforms.BoundaryCheckerTransform](com.upokecenter.mail.transforms.BoundaryCheckerTransform.md) -  
-
-* [com.upokecenter.mail.transforms.EightBitTransform](com.upokecenter.mail.transforms.EightBitTransform.md) -  
-
-* [com.upokecenter.mail.transforms.LiberalSevenBitTransform](com.upokecenter.mail.transforms.LiberalSevenBitTransform.md) -  
-
-* [com.upokecenter.mail.transforms.PercentEncodingStringTransform](com.upokecenter.mail.transforms.PercentEncodingStringTransform.md) -  
-
-* [com.upokecenter.mail.transforms.QEncodingStringTransform](com.upokecenter.mail.transforms.QEncodingStringTransform.md) -  
-
-* [com.upokecenter.mail.transforms.QuotedPrintableTransform](com.upokecenter.mail.transforms.QuotedPrintableTransform.md) -  
-
-* [com.upokecenter.mail.transforms.SevenBitTransform](com.upokecenter.mail.transforms.SevenBitTransform.md) -  
-
-* [com.upokecenter.mail.transforms.TransformWithUnget](com.upokecenter.mail.transforms.TransformWithUnget.md) -  
-
 * [com.upokecenter.text.Idna](com.upokecenter.text.Idna.md) -
 Contains methods that implement Internationalized Domain Names in
  Applications (IDNA).

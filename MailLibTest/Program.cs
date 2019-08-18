@@ -12,7 +12,6 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-new MessageTest().TestDateStringHttp();
 var strs = new string[] {
 
 };

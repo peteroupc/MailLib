@@ -20,6 +20,10 @@ namespace PeterO.Mail {
     /// "inline" or "attachment".</summary>
     /// <value>This value's disposition type, such as "inline" or
     /// "attachment" .</value>
+    /// <exception cref='ArgumentNullException'>The property is being set
+    /// and the value is null.</exception>
+    /// <exception cref='ArgumentException'>The property is being set and
+    /// the value is an empty string.</exception>
     public string DispositionType {
       get {
         return this.type;
@@ -104,7 +108,11 @@ namespace PeterO.Mail {
       return new ContentDisposition(this.type, this.parameters);
     }
 
-    /// <summary>Sets the disposition type, such as "inline".</summary>
+    /// <summary>Sets the disposition type, such as "inline". This method
+    /// enables the pattern of method chaining (e.g., <c>new
+    /// ...().Set...().Set...()</c> ) unlike with the DispositionType
+    /// property in .NET or the setDispositionType method (with small s) in
+    /// Java.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
     /// <returns>This instance.</returns>

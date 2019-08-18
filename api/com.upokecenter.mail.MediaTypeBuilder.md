@@ -20,9 +20,17 @@ A mutable media type object.
 * `java.lang.String getTopLevelType()`<br>
  Gets this value's top-level type.
 * `boolean isMultipart()`<br>
- Gets a value indicating whether this is a multipart media type.
+ Deprecated.
+Instead of using this property, use the TopLevelType property and compare
+ the result with the exact String 'multipart'.
+ Instead of using this property, use the TopLevelType property and compare
+ the result with the exact String 'multipart'.
 * `boolean isText()`<br>
- Gets a value indicating whether this is a text media type.
+ Deprecated.
+Instead of using this property, use the TopLevelType property and compare
+ the result with the exact String 'text'.
+ Instead of using this property, use the TopLevelType property and compare
+ the result with the exact String 'text'.
 * `MediaTypeBuilder RemoveParameter​(java.lang.String name)`<br>
  Removes a parameter from this builder object.
 * `MediaTypeBuilder SetParameter​(java.lang.String name,
@@ -87,7 +95,16 @@ Gets this value's top-level type.
 
 **Returns:**
 
-* This value's top-level type.
+* A text string naming this object's top-level type, such as "text" or
+  "audio" .
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The property is being set and the value is
+ null.
+
+* <code>java.lang.IllegalArgumentException</code> - The property is being set and the value is
+ syntactically invalid for a top-level type.
 
 ### setTopLevelType
     public final void setTopLevelType​(java.lang.String value)
@@ -97,21 +114,34 @@ Gets this value's subtype.
 
 **Returns:**
 
-* This value's subtype.
+* A text string naming this object's subtype, such as "plain" or
+  "xml".
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The property is being set and the value is
+ null.
+
+* <code>java.lang.IllegalArgumentException</code> - The property is being set and the value is
+ syntactically invalid for a subtype.
 
 ### setSubType
     public final void setSubType​(java.lang.String value)
 ### isText
-    public final boolean isText()
-Gets a value indicating whether this is a text media type.
+    @Deprecated public final boolean isText()
+Deprecated.
+Instead of using this property, use the TopLevelType property and compare
+ the result with the exact String 'text'.
 
 **Returns:**
 
 * <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
-    public final boolean isMultipart()
-Gets a value indicating whether this is a multipart media type.
+    @Deprecated public final boolean isMultipart()
+Deprecated.
+Instead of using this property, use the TopLevelType property and compare
+ the result with the exact String 'multipart'.
 
 **Returns:**
 
@@ -128,7 +158,10 @@ Converts this builder to an immutable media type object.
 
 ### SetTopLevelType
     public MediaTypeBuilder SetTopLevelType​(java.lang.String str)
-Sets this media type's top-level type.
+Sets this media type's top-level type. This method enables the pattern of
+ method chaining (e.g., <code>new...().getSet()...().getSet()...()</code>) unlike
+ with the TopLevelType property in.NET or the setTopLevelType method
+ (with small s) in Java.
 
 **Parameters:**
 
@@ -195,7 +228,10 @@ Sets a parameter's name and value for this media type.
 
 ### SetSubType
     public MediaTypeBuilder SetSubType​(java.lang.String str)
-Sets this media type's subtype, such as "plain" or "xml" .
+Sets this media type's subtype, such as "plain" or "xml" . This method
+ enables the pattern of method chaining (e.g.,
+ <code>new...().getSet()...().getSet()...()</code>) unlike with the SubType property
+ in.NET or the setSubType method (with small s) in Java.
 
 **Parameters:**
 

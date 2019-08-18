@@ -20,7 +20,12 @@ import com.upokecenter.util.*;
 
     /**
      * Gets this value's top-level type.
-     * @return This value's top-level type.
+     * @return A text string naming this object's top-level type, such as "text" or
+     *  "audio" .
+     * @throws NullPointerException The property is being set and the value is
+     * null.
+     * @throws IllegalArgumentException The property is being set and the value is
+     * syntactically invalid for a top-level type.
      */
     public final String getTopLevelType() {
         return this.type;
@@ -31,7 +36,12 @@ public final void setTopLevelType(String value) {
 
     /**
      * Gets this value's subtype.
-     * @return This value's subtype.
+     * @return A text string naming this object's subtype, such as "plain" or
+     *  "xml".
+     * @throws NullPointerException The property is being set and the value is
+     * null.
+     * @throws IllegalArgumentException The property is being set and the value is
+     * syntactically invalid for a subtype.
      */
     public final String getSubType() {
         return this.subtype;
@@ -82,7 +92,10 @@ public final void setSubType(String value) {
     /**
      * Gets a value indicating whether this is a text media type.
      * @return {@code true} If this is a text media type; otherwise, {@code false}.
-     */
+     * @deprecated Instead of using this property, use the TopLevelType property and compare
+ * the result with the exact String 'text'.
+ */
+@Deprecated
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
       }
@@ -91,7 +104,10 @@ public final void setSubType(String value) {
      * Gets a value indicating whether this is a multipart media type.
      * @return {@code true} If this is a multipart media type; otherwise, {@code
      * false}.
-     */
+     * @deprecated Instead of using this property, use the TopLevelType property and compare
+ * the result with the exact String 'multipart'.
+ */
+@Deprecated
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
       }
@@ -105,7 +121,10 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Sets this media type's top-level type.
+     * Sets this media type's top-level type. This method enables the pattern of
+     * method chaining (e.g., <code>new...().getSet()...().getSet()...()</code>) unlike
+     * with the TopLevelType property in.NET or the setTopLevelType method
+     * (with small s) in Java.
      * @param str A text string naming a top-level type, such as "text" or "audio"
      *.
      * @return This instance.
@@ -181,7 +200,10 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Sets this media type's subtype, such as "plain" or "xml" .
+     * Sets this media type's subtype, such as "plain" or "xml" . This method
+     * enables the pattern of method chaining (e.g.,
+     * <code>new...().getSet()...().getSet()...()</code>) unlike with the SubType property
+     * in.NET or the setSubType method (with small s) in Java.
      * @param str A text string naming a media subtype.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.

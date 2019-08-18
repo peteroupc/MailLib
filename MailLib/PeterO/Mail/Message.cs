@@ -435,15 +435,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
             // HACK
             charset = Encodings.GetEncoding("gb2312", false);
           } else {
-#if DEBUG
-           throw new
-             NotSupportedException("Not in a supported character encoding: " +
-               "\nct =" +
-"\u0020" + this.ContentType + "\ncharset=" + this.ContentType.GetCharset());
-#else
            throw new
              NotSupportedException("Not in a supported character encoding.");
-#endif
           }
         }
         return Encodings.DecodeToString(
@@ -3039,14 +3032,14 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
       string contentDisp = (this.ContentDisposition == null) ? null :
         this.ContentDisposition.ToString();
       var transferEnc = 0;
-      var isMultipart = false;
+      var isMultipart = builder.TopLevelType.Equals(
+        "multipart",
+        StringComparison.Ordinal);
       string boundary = String.Empty;
-      if (builder.IsMultipart) {
+      if (isMultipart) {
         boundary = GenerateBoundary(depth);
         builder.SetParameter("boundary", boundary);
-        isMultipart = true;
-      }
-      if (!isMultipart) {
+      } else {
         if (builder.TopLevelType.Equals("message", StringComparison.Ordinal)) {
           if (builder.SubType.Equals("delivery-status",
                      StringComparison.Ordinal) ||
@@ -3302,13 +3295,18 @@ name.Length >= 2 &&
           "Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       ICharacterEncoder bodyEncoder = null;
+      bool isText = builder.TopLevelType.Equals("text",
+  StringComparison.Ordinal);
       switch (transferEnc) {
         case EncodingBase64:
-          bodyEncoder = new Base64Encoder(true, builder.IsText, false);
+          bodyEncoder = new Base64Encoder(
+            true,
+            isText,
+            false);
           break;
         case EncodingQuotedPrintable:
           bodyEncoder = new QuotedPrintableEncoder(
-            builder.IsText ? 2 : 0,
+            isText ? 2 : 0,
             false);
           break;
         default:
@@ -3489,7 +3487,7 @@ name.Length >= 2 &&
     /// as well as the path are combined to a single To header field; for
     /// "keywords" and "comments", each value adds another header field of
     /// the given key; and for "body", the last value with that key is used
-    /// as the body..</summary>
+    /// as the body.</summary>
     /// <param name='uri'>The parameter <paramref name='uri'/> is a text
     /// string.</param>
     /// <returns>A Message object created from the given MailTo URI. Returs

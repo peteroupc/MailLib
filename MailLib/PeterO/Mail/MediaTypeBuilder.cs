@@ -17,7 +17,13 @@ namespace PeterO.Mail {
     private string subtype;
 
     /// <summary>Gets or sets this value's top-level type.</summary>
-    /// <value>This value's top-level type.</value>
+    /// <value>A text string naming this object's top-level type, such as
+    /// "text" or "audio" .</value>
+    /// <exception cref='ArgumentNullException'>The property is being set
+    /// and the value is null.</exception>
+    /// <exception cref='ArgumentException'>The property is being set and
+    /// the value is syntactically invalid for a top-level
+    /// type.</exception>
     public string TopLevelType {
       get {
         return this.type;
@@ -29,7 +35,12 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this value's subtype.</summary>
-    /// <value>This value's subtype.</value>
+    /// <value>A text string naming this object's subtype, such as "plain"
+    /// or "xml".</value>
+    /// <exception cref='ArgumentNullException'>The property is being set
+    /// and the value is null.</exception>
+    /// <exception cref='ArgumentException'>The property is being set and
+    /// the value is syntactically invalid for a subtype.</exception>
     public string SubType {
       get {
         return this.subtype;
@@ -79,6 +90,8 @@ namespace PeterO.Mail {
     /// type.</summary>
     /// <value><c>true</c> If this is a text media type; otherwise,
     /// <c>false</c>.</value>
+    [Obsolete("Instead of using this property, use the TopLevelType " +
+     "property and compare the result with the exact string 'text'.")]
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text", StringComparison.Ordinal);
@@ -89,6 +102,8 @@ namespace PeterO.Mail {
     /// type.</summary>
     /// <value><c>true</c> If this is a multipart media type; otherwise,
     /// <c>false</c>.</value>
+    [Obsolete("Instead of using this property, use the TopLevelType " +
+     "property and compare the result with the exact string 'multipart'.")]
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart", StringComparison.Ordinal);
@@ -102,7 +117,11 @@ namespace PeterO.Mail {
       return new MediaType(this.type, this.subtype, this.parameters);
     }
 
-    /// <summary>Sets this media type's top-level type.</summary>
+    /// <summary>Sets this media type's top-level type. This method enables
+    /// the pattern of method chaining (e.g.,
+    /// <c>new...().Set...().Set...()</c> ) unlike with the TopLevelType
+    /// property in.NET or the setTopLevelType method (with small s) in
+    /// Java.</summary>
     /// <param name='str'>A text string naming a top-level type, such as
     /// "text" or "audio" .</param>
     /// <returns>This instance.</returns>
@@ -177,8 +196,11 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Sets this media type's subtype, such as "plain" or "xml"
-    /// .</summary>
+    /// <summary>Sets this media type's subtype, such as "plain" or "xml" .
+    /// This method enables the pattern of method chaining (e.g.,
+    /// <c>new...().Set...().Set...()</c> ) unlike with the SubType
+    /// property in.NET or the setSubType method (with small s) in
+    /// Java.</summary>
     /// <param name='str'>A text string naming a media subtype.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

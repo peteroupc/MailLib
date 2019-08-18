@@ -428,6 +428,8 @@ try { if (ms != null) {
             // HACK
             charset = Encodings.GetEncoding("gb2312", false);
           } else {
+           throw new
+             UnsupportedOperationException("Not in a supported character encoding.");
           }
         }
         return Encodings.DecodeToString(
@@ -2975,14 +2977,13 @@ try { if (fs != null) {
       String contentDisp = (this.getContentDisposition() == null) ? null :
         this.getContentDisposition().toString();
       int transferEnc = 0;
-      boolean isMultipart = false;
+      var isMultipart = builder.getTopLevelType().equals(
+        "multipart");
       String boundary = "";
-      if (builder.isMultipart()) {
+      if (isMultipart) {
         boundary = GenerateBoundary(depth);
         builder.SetParameter("boundary", boundary);
-        isMultipart = true;
-      }
-      if (!isMultipart) {
+      } else {
         if (builder.getTopLevelType().equals("message")) {
           if (builder.getSubType().equals("delivery-status") ||
                      builder.getSubType().equals("global-delivery-status") ||
@@ -3193,13 +3194,17 @@ name.length() >= 2 &&
           "Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       ICharacterEncoder bodyEncoder = null;
+      boolean isText = builder.getTopLevelType().equals("text");
       switch (transferEnc) {
         case EncodingBase64:
-          bodyEncoder = new Base64Encoder(true, builder.isText(), false);
+          bodyEncoder = new Base64Encoder(
+            true,
+            isText,
+            false);
           break;
         case EncodingQuotedPrintable:
           bodyEncoder = new QuotedPrintableEncoder(
-            builder.isText() ? 2 : 0,
+            isText ? 2 : 0,
             false);
           break;
         default:
@@ -3374,7 +3379,7 @@ name.length() >= 2 &&
      *  given key is used; for "to", all header field values as well as the
      *  path are combined to a single To header field; for "keywords" and
      *  "comments", each value adds another header field of the given key;
-     *  and for "body", the last value with that key is used as the body..
+     *  and for "body", the last value with that key is used as the body.
      * @param uri The parameter {@code uri} is a text string.
      * @return A Message object created from the given MailTo URI. Returs null if
      * {@code uri} is null, is syntactically invalid, or is not a MailTo

@@ -935,6 +935,9 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       }
       // RFC 850
       int dowLong = ParseDOWLong(v, index, endIndex);
+      if (dowLong < 0) {
+        return null;
+      }
       string dowNameLong = dowNamesLong[dowLong];
       index += dowNameLong.Length;
       if (endIndex - index > 23 && (endIndex - index > 1 && v[index] == 44 &&

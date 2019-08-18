@@ -633,7 +633,7 @@ The parameter  <i>name</i>
 
  * <i>bytes</i>: A byte array representing an email message.
 
- * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.)
+ * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
 
 <b>Return Value:</b>
 
@@ -647,7 +647,7 @@ The value of the first instance of the header field with the given name. Leading
     public static PeterO.Mail.Message FromMailtoUri(
         string uri);
 
- Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored.
+ Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored. (Keys are compared using a basic case-sensitive comparison, in which two strings are equal if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.) The same key (matched using a basic case-insensitive comparison) can appear more than once; for "subject", "cc", "bcc", and "in-reply-to", the last value with the given key is used; for "to", all header field values as well as the path are combined to a single To header field; for "keywords" and "comments", each value adds another header field of the given key; and for "body", the last value with that key is used as the body..
 
     <b>Parameters:</b>
 
@@ -665,7 +665,7 @@ A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
     public static PeterO.Mail.Message FromMailtoUri(
         System.Uri uri);
 
- Creates a message object from a MailTo URI (uniform resource identifier) in the form of a URI object. The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored.
+ Creates a message object from a MailTo URI (uniform resource identifier) in the form of a URI object. For more information, see <b>FromMailtoUri(string)</b>.
 
      <b>Parameters:</b>
 
@@ -690,7 +690,7 @@ The parameter  <i>uri</i>
 
 <b>Deprecated.</b> Renamed to FromMailtoUri.
 
- Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored.
+ Creates a message object from a MailTo URI (uniform resource identifier). For more information, see <b>FromMailtoUri(string)</b>.
 
     <b>Parameters:</b>
 

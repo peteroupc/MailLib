@@ -92,6 +92,14 @@ Gets this value's disposition type, such as "inline" or "attachment".
 
 * This value's disposition type, such as "inline" or "attachment" .
 
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The property is being set and the value is
+ null.
+
+* <code>java.lang.IllegalArgumentException</code> - The property is being set and the value is an
+ empty string.
+
 ### setDispositionType
     public final void setDispositionType​(java.lang.String value)
 ### isText
@@ -123,7 +131,10 @@ Converts this object to an immutable ContentDisposition object.
 
 ### SetDispositionType
     public DispositionBuilder SetDispositionType​(java.lang.String str)
-Sets the disposition type, such as "inline".
+Sets the disposition type, such as "inline". This method enables the pattern
+ of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
+ unlike with the DispositionType property in .NET or the
+ setDispositionType method (with small s) in Java.
 
 **Parameters:**
 

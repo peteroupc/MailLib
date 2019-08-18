@@ -20,6 +20,10 @@ import com.upokecenter.util.*;
     /**
      * Gets this value's disposition type, such as "inline" or "attachment".
      * @return This value's disposition type, such as "inline" or "attachment" .
+     * @throws NullPointerException The property is being set and the value is
+     * null.
+     * @throws IllegalArgumentException The property is being set and the value is an
+     * empty string.
      */
     public final String getDispositionType() {
         return this.type;
@@ -102,7 +106,10 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Sets the disposition type, such as "inline".
+     * Sets the disposition type, such as "inline". This method enables the pattern
+     * of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
+     * unlike with the DispositionType property in .NET or the
+     * setDispositionType method (with small s) in Java.
      * @param str The parameter {@code str} is a text string.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.

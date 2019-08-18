@@ -1456,7 +1456,7 @@ Creates a message object from a MailTo URI (uniform resource identifier).
   given key is used; for "to", all header field values as well as the
   path are combined to a single To header field; for "keywords" and
   "comments", each value adds another header field of the given key;
-  and for "body", the last value with that key is used as the body..
+  and for "body", the last value with that key is used as the body.
 
 **Parameters:**
 
