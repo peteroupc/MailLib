@@ -167,20 +167,20 @@ namespace MailLibTest {
           continue;
         }
         if (c == '\r') {
-            test = str.Substring(
-              Math.Max(index + 2 - 30, 0),
-              Math.Min(index + 2, 30));
-            Console.WriteLine(fn +
-              ":\n--Bare CR: [" + test + "] index = " + index);
-              return 0;
+          test = str.Substring(
+            Math.Max(index + 2 - 30, 0),
+            Math.Min(index + 2, 30));
+          Console.WriteLine(fn +
+            ":\n--Bare CR: [" + test + "] index = " + index);
+          return 0;
         }
         if (c == '\n') {
-            test = str.Substring(
-              Math.Max(index + 2 - 30, 0),
-              Math.Min(index + 2, 30));
-            Console.WriteLine(fn +
-              ":\n--Bare LF: [" + test + "] index = " + index);
-              return 0;
+          test = str.Substring(
+            Math.Max(index + 2 - 30, 0),
+            Math.Min(index + 2, 30));
+          Console.WriteLine(fn +
+            ":\n--Bare LF: [" + test + "] index = " + index);
+          return 0;
         }
         if (c == ':' && headers && !colon && !startsWithSpace) {
           if (index + 1 >= endIndex) {

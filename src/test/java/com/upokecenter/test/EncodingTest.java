@@ -166,20 +166,20 @@ import com.upokecenter.text.*;
           continue;
         }
         if (c == '\r') {
-            test = str.substring(
-              Math.max(index + 2 - 30, 0), (
-              Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
-            System.out.println(fn +
-              ":\n--Bare CR: [" + test + "] index = " + index);
-              return 0;
+          test = str.substring(
+            Math.max(index + 2 - 30, 0), (
+            Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+          System.out.println(fn +
+            ":\n--Bare CR: [" + test + "] index = " + index);
+          return 0;
         }
         if (c == '\n') {
-            test = str.substring(
-              Math.max(index + 2 - 30, 0), (
-              Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
-            System.out.println(fn +
-              ":\n--Bare LF: [" + test + "] index = " + index);
-              return 0;
+          test = str.substring(
+            Math.max(index + 2 - 30, 0), (
+            Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+          System.out.println(fn +
+            ":\n--Bare LF: [" + test + "] index = " + index);
+          return 0;
         }
         if (c == ':' && headers && !colon && !startsWithSpace) {
           if (index + 1 >= endIndex) {

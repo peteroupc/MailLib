@@ -29,7 +29,7 @@
 
  Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U + 0021 to U + 007E), but excludes control characters and separators. Horizontal tab, U + 0009, and other code points in the range U + 0000 to U + 001F, are among the excluded characters.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string to check.
 
@@ -46,7 +46,7 @@
 
  Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U + 0000 to U + 007F).
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string to check.
 
@@ -63,7 +63,7 @@
 
  Checks the validity of a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This checking is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string serving as a nickname for something.
 
@@ -80,7 +80,7 @@ A nickname prepared for enforcement under the Nickname profile in RFC 8266. Retu
 
  Prepares for comparison a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This operation is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string serving as a nickname for something.
 
@@ -97,7 +97,7 @@ A nickname prepared for comparison under the Nickname profile in RFC 8266. Retur
 
  Checks the validity of a string serving as an arbitrary single-line sequence of characters, such as a passphrase. This checking is done using the OpaqueString profile in RFC 8265. (REMARK: Specifying a string as this method does is not ideal if the string represents a password or other sensitive data, since strings are immutable in.NET and Java, so that its contents cannot be cleared when done. An application concerned about security may want to reimplement this method by passing a clearable array of characters rather than a text string.).
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents an arbitrary single-line sequence of characters entered by a user.
 
@@ -114,7 +114,7 @@ A string prepared under the OpaqueString profile in RFC 8265. Returns null if th
 
  Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 
@@ -132,7 +132,7 @@ A username where each of its parts is prepared under the UsernameCaseMapped prof
 
  Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is either mapped to lowercase or preserved. This checking is done using the UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 
@@ -152,7 +152,7 @@ A username where each of its parts is prepared under the UsernameCaseMapped or U
 
  Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 
@@ -171,7 +171,7 @@ A userpart prepared under the UsernameCaseMapped profile in RFC 8265 (among othe
 
  Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is either mapped to lowercase or preserved. This checking is done using the UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 

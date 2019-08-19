@@ -33,7 +33,7 @@
 
  Tries to encode each XN-label of the given domain name into Unicode. This method does not check the syntactic validity of the domain name before proceeding.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>value</i>: A domain name.
 
@@ -55,7 +55,7 @@ The parameter  <i>value</i>
 
  Tries to encode each label of a domain name with code points outside the Basic Latin range (U + 0000 to U + 007F) into an XN-label. This method does not check the syntactic validity of the domain name before proceeding.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>value</i>: A domain name.
 
@@ -78,7 +78,7 @@ The parameter  <i>value</i>
 
  Determines whether the given string is a domain name containing only U-labels, A-labels, NR-LDH labels, or any combination of these, separated by dots (".").
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.

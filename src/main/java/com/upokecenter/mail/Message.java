@@ -14,93 +14,90 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
-    /**
-     * Represents an email message, and contains methods and properties for
-     * accessing and modifying email message data. This class implements
-     * the Internet Message Format (RFC 5322) and Multipurpose Internet
-     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049).<p> <p><b>Thread
-     * safety:</b> This class is mutable; its properties can be changed.
-     * None of its instance methods are designed to be thread safe.
-     * Therefore, access to objects from this class must be synchronized if
-     * multiple threads can access them at the same time.</p> <p>The
-     * following lists known deviations from the mail specifications
-     * (Internet Message Format and MIME):</p> <ul> <li>The
-     *  content-transfer-encodings "quoted-printable" and "base64" are
-     * treated as 7bit instead if they occur in a message or body part with
-     *  content type "multipart/*" or "message/*" (other than
-     *  "message/global", "message/global-headers",
-     *  "message/global-disposition-notification", or
-     *  "message/global-delivery-status").</li> <li>If a message has two or
-     * more Content-Type header fields, it is treated as having a content
-     *  type of "application/octet-stream", unless one or more of the header
-     * fields is syntactically invalid.</li> <li>Illegal UTF-8 byte
-     * sequences appearing in header field values are replaced with
-     * replacement characters. Moreover, UTF-8 is parsed everywhere in
-     * header field values, even in those parts of some structured header
-     * fields where this appears not to be allowed. (UTF-8 is a character
-     * encoding for the Unicode character set.)</li> <li>This
-     * implementation can parse a message even if that message is without a
-     * From header field, without a Date header field, or without
-     * both.</li> <li>The To and Cc header fields are allowed to contain
-     *  only comments and whitespace, but these "empty" header fields will
-     * be omitted when generating.</li> <li>There is no line length limit
-     * imposed when parsing header fields, except header field names.</li>
-     * <li>There is no line length limit imposed when parsing
-     * quoted-printable or base64 encoded bodies.</li> <li>If the transfer
-     *  encoding is absent and the content type is "message/rfc822", bytes
-     *  with values greater than 127 (called "8-bit bytes" in the rest of
-     * these remarks) are still allowed, despite the default value of
-     *  "7bit" for "Content-Transfer-Encoding".</li> <li>In the following
-     * cases, if the transfer encoding is absent, declared as 7bit, or
-     * treated as 7bit, 8-bit bytes are still allowed:</li> <li>(a) The
-     * preamble and epilogue of multipart messages, which will be
-     * ignored.</li> <li>(b) If the charset is declared to be
-     *  <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and
-     *  the charset is declared to be <code>us-ascii</code>, "windows-1252",
-     *  "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
-     * <li>(d) In non-MIME message bodies and in text/plain message bodies.
-     * Any 8-bit bytes are replaced with the substitute character byte
-     *  (0x1a).</li> <li>If the message starts with the word "From" (and no
-     * other case variations of that word) followed by one or more space
-     * (U + 0020) not followed by colon, that text and the rest of the text
-     * is skipped up to and including a line feed (U + 000A). (See also RFC
-     *  4155, which describes the so-called "mbox" convention with "From"
-     * lines of this kind.)</li> <li>The name <code>ascii</code> is treated as a
-     * synonym for <code>us-ascii</code>, despite being a reserved name under RFC
-     * 2046. The name <code>cp1252</code> and <code>utf8</code> are treated as synonyms
-     * for <code>windows-1252</code> and <code>utf-8</code>, respectively, even though
-     * they are not IANA registered aliases.</li> <li>The following
-     * deviations involve encoded words under RFC 2047:</li> <li>(a) If a
-     * sequence of encoded words decodes to a string with a CTL character
-     * (U + 007F, or a character less than U + 0020 and not TAB) after being
-     * converted to Unicode, the encoded words are left un-decoded.</li>
-     * <li>(b) This implementation can decode encoded words regardless of
-     * the character length of the line in which they appear. This
-     * implementation can generate a header field line with one or more
-     * encoded words even if that line is more than 76 characters long.
-     * (This implementation follows the recommendation in RFC 5322 to limit
-     * header field lines to no more than 78 characters, where
-     * possible.)</li></ul> <p>It would be appreciated if users of this
-     * library contact the author if they find other ways in which this
-     * implementation deviates from the mail specifications or other
-     * applicable specifications.</p> <p>Note that this class currently
-     *  doesn't support the "padding" parameter for message bodies with the
-     *  media type "application/octet-stream" or treated as that media type
-     * (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
-     * decode an RFC 2047 encoded word that uses ISO-2022-JP or
-     * ISO-2022-JP-2 (encodings that use code switching) even if the
-     *  encoded word's payload ends in a different mode from "ASCII mode".
-     *  (Each encoded word still starts in "ASCII mode", though.) This,
-     * however, is not a deviation to RFC 2047 because the relevant rule
-     *  only concerns bringing the output device back to "ASCII mode" after
-     * the decoded text is displayed (see last paragraph of sec. 6.2) --
-     * since the decoded text is converted to Unicode rather than kept as
-     * ISO-2022-JP or ISO-2022-JP-2, this is not applicable since there is
-     *  no such thing as "ASCII mode" in the Unicode Standard.</p> <p>Note
-     * that this library (the MailLib library) has no facilities for
-     * sending and receiving email messages, since that's outside this
-     * library's scope.</p></p>
-     */
+  /**
+   * Represents an email message, and contains methods and properties for
+   * accessing and modifying email message data. This class implements the
+   * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
+   * Extensions (MIME; RFC 2045-2047, RFC 2049).<p> <p><b>Thread
+   * safety:</b> This class is mutable; its properties can be changed. None
+   * of its instance methods are designed to be thread safe. Therefore,
+   * access to objects from this class must be synchronized if multiple
+   * threads can access them at the same time.</p> <p>The following lists
+   * known deviations from the mail specifications (Internet Message Format
+   * and MIME):</p> <ul> <li>The content-transfer-encodings
+   *  "quoted-printable" and "base64" are treated as 7bit instead if they
+   *  occur in a message or body part with content type "multipart/*" or
+   *  "message/*" (other than "message/global", "message/global-headers",
+   *  "message/global-disposition-notification", or
+   *  "message/global-delivery-status").</li> <li>If a message has two or
+   * more Content-Type header fields, it is treated as having a content
+   *  type of "application/octet-stream", unless one or more of the header
+   * fields is syntactically invalid.</li> <li>Illegal UTF-8 byte sequences
+   * appearing in header field values are replaced with replacement
+   * characters. Moreover, UTF-8 is parsed everywhere in header field
+   * values, even in those parts of some structured header fields where
+   * this appears not to be allowed. (UTF-8 is a character encoding for the
+   * Unicode character set.)</li> <li>This implementation can parse a
+   * message even if that message is without a From header field, without a
+   * Date header field, or without both.</li> <li>The To and Cc header
+   * fields are allowed to contain only comments and whitespace, but these
+   *  "empty" header fields will be omitted when generating.</li> <li>There
+   * is no line length limit imposed when parsing header fields, except
+   * header field names.</li> <li>There is no line length limit imposed
+   * when parsing quoted-printable or base64 encoded bodies.</li> <li>If
+   * the transfer encoding is absent and the content type is
+   *  "message/rfc822", bytes with values greater than 127 (called "8-bit
+   *  bytes" in the rest of these remarks) are still allowed, despite the
+   *  default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
+   * the following cases, if the transfer encoding is absent, declared as
+   * 7bit, or treated as 7bit, 8-bit bytes are still allowed:</li> <li>(a)
+   * The preamble and epilogue of multipart messages, which will be
+   * ignored.</li> <li>(b) If the charset is declared to be
+   *  <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
+   *  charset is declared to be <code>us-ascii</code>, "windows-1252",
+   *  "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
+   * <li>(d) In non-MIME message bodies and in text/plain message bodies.
+   * Any 8-bit bytes are replaced with the substitute character byte
+   *  (0x1a).</li> <li>If the message starts with the word "From" (and no
+   * other case variations of that word) followed by one or more space
+   * (U + 0020) not followed by colon, that text and the rest of the text is
+   * skipped up to and including a line feed (U + 000A). (See also RFC 4155,
+   *  which describes the so-called "mbox" convention with "From" lines of
+   * this kind.)</li> <li>The name <code>ascii</code> is treated as a synonym for
+   * <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
+   * name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
+   * <code>windows-1252</code> and <code>utf-8</code>, respectively, even though they
+   * are not IANA registered aliases.</li> <li>The following deviations
+   * involve encoded words under RFC 2047:</li> <li>(a) If a sequence of
+   * encoded words decodes to a string with a CTL character (U + 007F, or a
+   * character less than U + 0020 and not TAB) after being converted to
+   * Unicode, the encoded words are left un-decoded.</li> <li>(b) This
+   * implementation can decode encoded words regardless of the character
+   * length of the line in which they appear. This implementation can
+   * generate a header field line with one or more encoded words even if
+   * that line is more than 76 characters long. (This implementation
+   * follows the recommendation in RFC 5322 to limit header field lines to
+   * no more than 78 characters, where possible.)</li></ul> <p>It would be
+   * appreciated if users of this library contact the author if they find
+   * other ways in which this implementation deviates from the mail
+   * specifications or other applicable specifications.</p> <p>Note that
+   *  this class currently doesn't support the "padding" parameter for
+   *  message bodies with the media type "application/octet-stream" or
+   * treated as that media type (see RFC 2046 sec. 4.5.1).</p> <p>Note that
+   * this implementation can decode an RFC 2047 encoded word that uses
+   * ISO-2022-JP or ISO-2022-JP-2 (encodings that use code switching) even
+   *  if the encoded word's payload ends in a different mode from "ASCII
+   *  mode". (Each encoded word still starts in "ASCII mode", though.) This,
+   * however, is not a deviation to RFC 2047 because the relevant rule only
+   *  concerns bringing the output device back to "ASCII mode" after the
+   * decoded text is displayed (see last paragraph of sec. 6.2) -- since
+   * the decoded text is converted to Unicode rather than kept as
+   * ISO-2022-JP or ISO-2022-JP-2, this is not applicable since there is no
+   *  such thing as "ASCII mode" in the Unicode Standard.</p> <p>Note that
+   * this library (the MailLib library) has no facilities for sending and
+   * receiving email messages, since that's outside this library's
+   * scope.</p></p>
+   */
   public final class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -192,7 +189,7 @@ import com.upokecenter.text.*;
     }
 
     private static int EndOfLine(byte[] bytes, int index) {
-       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index - 2] ==
+      return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index - 2] ==
 0x0d) ?
 (index - 2) : index;
     }
@@ -245,60 +242,61 @@ import com.upokecenter.text.*;
      * follow the header fields.
      */
     public static String ExtractHeader(byte[] bytes, String headerFieldName) {
-if (bytes == null) {
-  return null;
-}
-if (((headerFieldName) == null || (headerFieldName).length() == 0) || headerFieldName.length() > 997) {
-  return null;
-}
-for (int i = 0; i < headerFieldName.length(); ++i) {
-  if (headerFieldName.charAt(i) >= 0x7f || headerFieldName.charAt(i) <= 0x20 ||
-             headerFieldName.charAt(i) == ':') {
-    break;
-  }
+      if (bytes == null) {
+        return null;
+      }
+      if (((headerFieldName) == null || (headerFieldName).length() == 0) || headerFieldName.length() >
+997) {
+        return null;
+      }
+      for (int i = 0; i < headerFieldName.length(); ++i) {
+        if (headerFieldName.charAt(i) >= 0x7f || headerFieldName.charAt(i) <= 0x20 ||
+                   headerFieldName.charAt(i) == ':') {
+          break;
+        }
       }
       int index = 0;
       String ret = null;
       while (index < bytes.length) {
         if (index + 1 < bytes.length && bytes[index] == 0x0d &&
            bytes[index + 1] == 0x0a) {
-            // End of headers reached, so output the header field
-            // found if any
-            return ret;
-         }
-         if (ret != null) {
-            // Already have a header field, so skip the line
-           index = SkipLine(bytes, index);
-           continue;
-         }
-         int n = SkipCaseString(bytes, index, headerFieldName);
-         if (n == index) {
-           // Not the desired header field
-           index = SkipLine(bytes, index);
-           continue;
-         }
-         n = SkipWsp(bytes, n);
-         if (n >= bytes.length || bytes[n] != ':') {
-           // Not the desired header field
-           index = SkipLine(bytes, index);
-           continue;
-         }
-         n = SkipWsp(bytes, n + 1);
-         java.io.ByteArrayOutputStream ms = null;
+          // End of headers reached, so output the header field
+          // found if any
+          return ret;
+        }
+        if (ret != null) {
+          // Already have a header field, so skip the line
+          index = SkipLine(bytes, index);
+          continue;
+        }
+        int n = SkipCaseString(bytes, index, headerFieldName);
+        if (n == index) {
+          // Not the desired header field
+          index = SkipLine(bytes, index);
+          continue;
+        }
+        n = SkipWsp(bytes, n);
+        if (n >= bytes.length || bytes[n] != ':') {
+          // Not the desired header field
+          index = SkipLine(bytes, index);
+          continue;
+        }
+        n = SkipWsp(bytes, n + 1);
+        java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-            int endLine = SkipLine(bytes, n);
-            ms.write(bytes, n, EndOfLine(bytes, endLine) - n);
+          int endLine = SkipLine(bytes, n);
+          ms.write(bytes, n, EndOfLine(bytes, endLine) - n);
+          index = endLine;
+          while (endLine < bytes.length &&
+               (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
+            int s = endLine;
+            endLine = SkipLine(bytes, endLine);
             index = endLine;
-            while (endLine < bytes.length &&
-                 (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
-              int s = endLine;
-              endLine = SkipLine(bytes, endLine);
-              index = endLine;
-              ms.write(bytes, s, EndOfLine(bytes, endLine) - s);
-            }
-            ret = DataUtilities.GetUtf8String(ms.toByteArray(), true);
+            ms.write(bytes, s, EndOfLine(bytes, endLine) - s);
+          }
+          ret = DataUtilities.GetUtf8String(ms.toByteArray(), true);
 }
 finally {
 try { if (ms != null) {
@@ -307,7 +305,7 @@ try { if (ms != null) {
 }
       }
       return null;
-      }
+    }
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Message}
@@ -428,8 +426,8 @@ try { if (ms != null) {
             // HACK
             charset = Encodings.GetEncoding("gb2312", false);
           } else {
-           throw new
-             UnsupportedOperationException("Not in a supported character encoding.");
+            throw new
+              UnsupportedOperationException("Not in a supported character encoding.");
           }
         }
         return Encodings.DecodeToString(
@@ -2023,12 +2021,12 @@ try { if (fs != null) {
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                    // CRLF was read
-                    lineStart = true;
-                  } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // CRLF was read
+                      lineStart = true;
+                    } else {
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -2248,7 +2246,7 @@ try { if (fs != null) {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(typePart + builder));
-} else {
+          } else {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(headerValue));
@@ -2600,7 +2598,7 @@ try { if (fs != null) {
                 if (c == -1) {
                   throw new MessageDataException(
   "Premature end before all headers were read (Mbox convention)");
-} else if (c == ':' && possibleMbox) {
+                } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
                   sb.append("from");
@@ -2692,12 +2690,12 @@ try { if (fs != null) {
                   if (c == '\r') {
                     c = stream.read();
                     if (c == '\n') {
-                    // CRLF was read
-                    lineCount = 0;
-                  } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // CRLF was read
+                      lineCount = 0;
+                    } else {
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -2953,7 +2951,8 @@ try { if (fs != null) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-       throw new IllegalArgumentException("Header field value contains invalid text");
+          throw new IllegalArgumentException("Header field value contains invalid" +
+"\u0020text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new
@@ -3099,9 +3098,9 @@ name.length() >= 2 &&
               }
               boolean isValidAddressing = this.IsValidAddressingField(name);
               haveHeaders[headerIndex] = true;
-/*
+              /*
 
-*/
+              */
               if (!isValidAddressing) {
                 value = "";
                 if (!name.equals("from") &&
@@ -3150,7 +3149,7 @@ name.length() >= 2 &&
               downgraded = HeaderEncoder.EncodeFieldAsEncodedWords(
                   "downgraded-" + name,
                   ParserUtility.TrimSpaceAndTab(value));
-                } else {
+            } else {
             }
           } else {
             AppendAscii(
@@ -3743,17 +3742,17 @@ this.getContentType().getTypeAndSubType().equals("text/plain");
     }
 
     private static class MessageStackEntry {
-    /**
-     * Gets a value which is used in an internal API.
-     * @return This is an internal API.
-     */
+      /**
+       * Gets a value which is used in an internal API.
+       * @return This is an internal API.
+       */
       public final Message getMessage() { return propVarmessage; }
 private final Message propVarmessage;
 
-    /**
-     * Gets a value which is used in an internal API.
-     * @return This is an internal API.
-     */
+      /**
+       * Gets a value which is used in an internal API.
+       * @return This is an internal API.
+       */
       public final String getBoundary() { return propVarboundary; }
 private final String propVarboundary;
 

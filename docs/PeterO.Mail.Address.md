@@ -19,7 +19,7 @@
 
  Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>addressValue</i>: An email address.
 
@@ -39,7 +39,7 @@ AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; 
 
  Gets the domain of this email address (the part after the "@" sign).
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 The domain of this email address (the part after the "@" sign).
 
@@ -50,7 +50,7 @@ The domain of this email address (the part after the "@" sign).
 
  Gets the local part of this email address (the part before the "@" sign).
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 The local part of this email address (the part before the "@" sign).
 
@@ -62,7 +62,7 @@ The local part of this email address (the part before the "@" sign).
 
  Determines whether this object and another object are equal.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>obj</i>: The parameter  <i>obj</i>
  is an arbitrary object.
@@ -78,7 +78,7 @@ The local part of this email address (the part before the "@" sign).
 
  Returns a hash code for this address object. No application or process identifiers are used in the hash code calculation.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A hash code for this instance.
 
@@ -89,6 +89,6 @@ A hash code for this instance.
 
  Converts this address object to a text string.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A string representation of this object.

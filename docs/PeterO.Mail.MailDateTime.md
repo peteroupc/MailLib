@@ -19,7 +19,7 @@
 
  Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
 
@@ -42,7 +42,7 @@ The parameter  <i>dateTime</i>
 
  Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 
-       <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
 
@@ -70,7 +70,7 @@ The parameter  <i>dateTime</i>
 
  Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(bool)`  for information on this method's return value.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A date-time string.
 
@@ -106,7 +106,7 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
 
  If a method or property uses an array of this format and refers to this method's documentation, that array may have any number of elements 8 or greater.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: A date-time string.
 
@@ -125,7 +125,7 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
 
  Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC 7231).
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>v</i>: A date-time string.
 

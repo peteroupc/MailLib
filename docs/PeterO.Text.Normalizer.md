@@ -23,7 +23,7 @@
 
  Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -40,7 +40,7 @@
 
  Returns whether this string is normalized.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: The string to check.
 
@@ -60,7 +60,7 @@
 
  Converts a string to the given Unicode normalization form.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -87,7 +87,7 @@ The parameter  <i>str</i>
 
  Reads a sequence of Unicode code points from a data source.
 
-        <b>Parameters:</b>
+       <b>Parameters:</b>
 
  * <i>chars</i>: Output buffer.
 
@@ -121,6 +121,6 @@ The parameter  <i>chars</i>
 
  Reads a Unicode character from a data source.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

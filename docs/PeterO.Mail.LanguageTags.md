@@ -27,7 +27,7 @@
 
  Parses a language list from a Content-Language header field.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string following the syntax of a Content-Language header field (see RFC 3282). This is a comma-separated list of language tags. RFC 5322 comments (in parentheses) can appear. This parameter can be null.
 
@@ -45,7 +45,7 @@ A list of language tags. Returns an empty list if  <i>str</i>
 
  Parses a language range list from an Accept-Language header field.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string following the syntax of an Accept-Language header field (see RFC 3282). This is a comma-separated list of language ranges, with an optional "quality" after the language tag (examples include "en; q=0.5" or "de-DE"). RFC 5322 comments (in parentheses) can appear. This parameter can be null.
 
@@ -62,7 +62,7 @@ A list of language ranges with their associated qualities. The list will be sort
 
  Returns whether the given string is a basic language range under RFC 4647. Examples include "*", "en-us", and "fr".
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: The string to check. Can be null.
 
@@ -79,7 +79,7 @@ A list of language ranges with their associated qualities. The list will be sort
 
  Returns whether the given string is a basic or extended language range under RFC 4647. Examples of basic (and extended) language ranges include "*", "en-us", and "fr". Examples of extended language ranges include "*-de" and "it-*".
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>str</i>: The string to check. Can be null.
 
@@ -98,7 +98,7 @@ A list of language ranges with their associated qualities. The list will be sort
 
  Returns true if (1) the given string is a well-formed language tag under RFC 5646 (that is, the string follows the syntax given in section 2.1 of that RFC), and (2) the language tag contains at most one extended language subtag, no variant subtags with the same value, and no extension singleton subtags with the same value.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: The string to check.
 
@@ -114,7 +114,7 @@ A list of language ranges with their associated qualities. The list will be sort
 
  Sets the given language tag to the case combination recommended by RFC 5646. For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: A string of a language tag. Can be null.
 
@@ -132,7 +132,7 @@ A text string in the recommended case combination, or null if  <i>str</i>
 
  Finds the language tags that match a priority list of basic language ranges.
 
-       <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>ranges</i>: A list of basic language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
 
@@ -165,7 +165,7 @@ The parameter  <i>ranges</i>
 
  Finds the language tags that match a priority list of language ranges.
 
-         <b>Parameters:</b>
+        <b>Parameters:</b>
 
  * <i>ranges</i>: A list of language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
 
@@ -201,7 +201,7 @@ The parameter  <i>ranges</i>
 
  Does a language tag lookup (under RFC 4647) for a matching language tag.
 
-        <b>Parameters:</b>
+       <b>Parameters:</b>
 
  * <i>range</i>: A basic language range (see the documentation for "IsLanguageRange").
 
@@ -236,7 +236,7 @@ The parameter  <i>range</i>
 
  Does a language tag lookup (under RFC 4647) for a matching language tag.
 
-         <b>Parameters:</b>
+        <b>Parameters:</b>
 
  * <i>range</i>: A language range (see the documentation for "IsLanguageRange").
 
@@ -272,7 +272,7 @@ The parameter  <i>range</i>
 
  Does a language tag lookup (under RFC 4647) for a matching language tag.
 
-        <b>Parameters:</b>
+       <b>Parameters:</b>
 
  * <i>ranges</i>: A list of basic language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
 
@@ -308,7 +308,7 @@ The parameter  <i>ranges</i>
 
  Does a language tag lookup (under RFC 4647) for a matching language tag.
 
-         <b>Parameters:</b>
+        <b>Parameters:</b>
 
  * <i>ranges</i>: A list of language ranges (see documentation for the "IsLanguageRange" method), which should be given in order of descending preference.
 
@@ -344,7 +344,7 @@ The parameter  <i>ranges</i>
 
  Determines whether the given language tag matches the given language range.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>range</i>: A basic language range (see the documentation for "IsLanguageRange").
 

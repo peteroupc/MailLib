@@ -140,16 +140,16 @@ namespace MailLibTest {
         throw new ArgumentNullException(nameof(expectedStr));
       }
       if (!expectedStr.Equals(actualStr, StringComparison.Ordinal)) {
-                Assert.Fail(
+        Assert.Fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
-            "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
+    "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
     }
 
     public static void AssertEqual(int expected, int actual, string msg) {
       if (expected != actual) {
-                Assert.Fail(
-          "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
+        Assert.Fail(
+  "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
 
@@ -206,8 +206,8 @@ namespace MailLibTest {
         this.TestIdempotent(str, Normalization.NFD);
         this.TestIdempotent(str, Normalization.NFKC);
         this.TestIdempotent(str, Normalization.NFKD);
-}
-Console.WriteLine("Done");
+      }
+      Console.WriteLine("Done");
     }
 
     [Test]
@@ -217,17 +217,17 @@ Console.WriteLine("Done");
         string stringTemp = NormalizerInput.Normalize(
           str,
           Normalization.NFC);
-          Assert.AreEqual(
-            "_\u96e3\uc972+67 Tqd R_.",
-            stringTemp);
-}
+        Assert.AreEqual(
+          "_\u96e3\uc972+67 Tqd R_.",
+          stringTemp);
+      }
       Assert.IsFalse(
         NormalizerInput.IsNormalized(str, Normalization.NFC));
       this.TestIdempotent(str, Normalization.NFC);
       str = "_\u96e3\uc972+67 Tqd R_._";
       Assert.IsTrue(
         NormalizerInput.IsNormalized(str, Normalization.NFC));
-        this.TestIdempotent(str, Normalization.NFC);
+      this.TestIdempotent(str, Normalization.NFC);
     }
 
     private sealed class NormResult {

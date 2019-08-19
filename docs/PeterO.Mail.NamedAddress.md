@@ -33,9 +33,9 @@
   *  `John <john@example.com>`
 
   *  `"Group" : Tom <tom@example.com>, Jane
-            <jane@example.com>;`
+             <jane@example.com>;`
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>address</i>: A text string identifying a single email address or a group of email addresses. Comments, or text within parentheses, can appear. Multiple email addresses are not allowed unless they appear in the group syntax given above. Encoded words under RFC 2047 that appear within comments or display names will be decoded. An RFC 2047 encoded word consists of "=?", a character encoding name, such as  `utf-8` , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in the character encoding, further encoded using B or Q encoding, and finally "?=". B encoding uses Base64, while in Q encoding, spaces are changed to "_", equals are changed to "=3D", and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their 2-digit hexadecimal form. An encoded word's maximum length is 75 characters. See the third example.
 
@@ -59,7 +59,7 @@ Address has an invalid syntax.; Address has an invalid syntax.
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>displayName</i>: The display name of the email address. Can be null or empty. Encoded words under RFC 2047 will not be decoded.
 
@@ -80,7 +80,7 @@ The parameter  <i>address</i>
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given display name and email address.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>displayName</i>: The display name of the email address. Can be null or empty. Encoded words under RFC 2047 will not be decoded.
 
@@ -102,7 +102,7 @@ The parameter  <i>address</i>
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class using the given name and an email address made up of its local part and domain.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>displayName</i>: The display name of the email address. Can be null or empty.
 
@@ -126,7 +126,7 @@ The parameter  <i>localPart</i>
 
  Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) class. Takes a group name and several named email addresses as parameters, and forms a group with them.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>groupName</i>: The group's name.
 
@@ -149,7 +149,7 @@ GroupName is empty.; A mailbox in the list is a group.
 
  Gets the email address associated with this object.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 The email address associated with this object. This value is null if this object represents a group of addresses instead.
 
@@ -160,7 +160,7 @@ The email address associated with this object. This value is null if this object
 
  Gets the display name for this email address.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 The display name for this email address. Returns null if the display name is absent.
 
@@ -171,7 +171,7 @@ The display name for this email address. Returns null if the display name is abs
 
  Gets a read-only list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 A list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
@@ -182,7 +182,7 @@ A list of addresses that make up the group, if this object represents a group, o
 
  Gets a value indicating whether this represents a group of addresses rather than a single address.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
  `true`  If this represents a group of addresses; otherwise,  `false` .
 
@@ -193,7 +193,7 @@ A list of addresses that make up the group, if this object represents a group, o
 
  Gets the display name for this email address, or the email address's value if the display name is null. Returns an empty string if the address and display name are null.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 The name for this email address.
 
@@ -205,7 +205,7 @@ The name for this email address.
 
  Determines whether the email addresses stored this object are the same between this object and the given object, regardless of the display names they store. For groups, the email addresses must be equal and in the same order in both objects.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>na</i>: A named address object to compare with this one. Can be null.
 
@@ -221,7 +221,7 @@ Either  `true`  or  `false` .
 
  Determines whether this object and another object are equal. For groups, the named addresses (display name/email address pairs) must be equal and in the same order in both objects.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>obj</i>: An arbitrary object to compare with this one.
 
@@ -236,7 +236,7 @@ Either  `true`  or  `false` .
 
  Calculates the hash code of this object. The exact algorithm used by this method is not guaranteed to be the same between versions of this library, and no application or process IDs are used in the hash code calculation.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A 32-bit hash code.
 
@@ -248,7 +248,7 @@ A 32-bit hash code.
 
  Generates a list of NamedAddress objects from a comma-separated list of addresses. Each address must follow the syntax accepted by the one-argument constructor of NamedAddress.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>addressValue</i>: A comma-separate list of addresses in the form of a text string.
 
@@ -270,6 +270,6 @@ The parameter  <i>addressValue</i>
 
  Converts this object to a text string. This will generally be the form of this NamedAddress object as it could appear in a "To" header field.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A string representation of this object.

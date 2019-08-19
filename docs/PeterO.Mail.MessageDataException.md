@@ -17,7 +17,7 @@
 
  Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
 
-   <b>Parameters:</b>
+  <b>Parameters:</b>
 
  * <i>message</i>: A string to use as the exception message.
 
@@ -30,7 +30,7 @@
 
  Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>message</i>: A string to use as the exception message.
 

@@ -44,7 +44,7 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
-   <b>Parameters:</b>
+  <b>Parameters:</b>
 
  * <i>input</i>: The parameter  <i>input</i>
  is an ICharacterInput object.
@@ -58,7 +58,7 @@
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>stream</i>: The parameter  <i>stream</i>
  is an ICharacterInput object.
@@ -79,7 +79,7 @@ The parameter  <i>stream</i>
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
-   <b>Parameters:</b>
+  <b>Parameters:</b>
 
  * <i>str</i>: A string specifying the text to normalize.
 
@@ -94,7 +94,7 @@ The parameter  <i>stream</i>
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class. Uses a portion of a string as the input.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -117,7 +117,7 @@ The parameter  <i>stream</i>
 
  Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -133,7 +133,7 @@ The parameter  <i>stream</i>
 
  Determines whether the text provided by a character input is normalized.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>chars</i>: A object that implements a streamable character input.
 
@@ -158,7 +158,7 @@ The parameter  <i>chars</i>
 
  Determines whether the given string is in the given Unicode normalization form.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -183,7 +183,7 @@ The parameter  <i>str</i>
 
  Converts a string to the given Unicode normalization form.
 
-       <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -214,7 +214,7 @@ The parameter  <i>str</i>
 
  Reads a sequence of Unicode code points from a data source.
 
-        <b>Parameters:</b>
+       <b>Parameters:</b>
 
  * <i>chars</i>: Output buffer.
 
@@ -251,6 +251,6 @@ Either  <i>index</i>
 
  Reads a Unicode character from a data source.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

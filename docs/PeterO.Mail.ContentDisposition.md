@@ -49,21 +49,21 @@
 
  The content disposition value "attachment" .
 
-  <a id="Inline"></a>
+ <a id="Inline"></a>
 ### Inline
 
     public static readonly PeterO.Mail.ContentDisposition Inline;
 
  The content disposition value "inline" .
 
-  <a id="DispositionType"></a>
+ <a id="DispositionType"></a>
 ### DispositionType
 
     public string DispositionType { get; }
 
  Gets a string containing this object's disposition type, such as "inline" or "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec. 2.8, unrecognized disposition types should be treated as "attachment".
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 A string containing this object's disposition type, such as "inline" or "attachment".
 
@@ -74,7 +74,7 @@ A string containing this object's disposition type, such as "inline" or "attachm
 
  Gets a value indicating whether the disposition type is attachment.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
  `true`  If the disposition type is attachment; otherwise,  `false` .
 
@@ -85,7 +85,7 @@ A string containing this object's disposition type, such as "inline" or "attachm
 
  Gets a value indicating whether the disposition type is inline.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
  `true`  If the disposition type is inline; otherwise,  `false` .
 
@@ -96,7 +96,7 @@ A string containing this object's disposition type, such as "inline" or "attachm
 
  Gets a list of parameter names associated with this object and their values. For the "filename" parameter, the value of that parameter is not adapted with the ContentDisposition.MakeFilename method; see the documentation for the ContentDisposition class.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
 A read-only list of parameter names associated with this object and their values. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
@@ -108,7 +108,7 @@ A read-only list of parameter names associated with this object and their values
 
  Determines whether this object and another object are equal.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>obj</i>: The parameter  <i>obj</i>
  is an arbitrary object.
@@ -124,7 +124,7 @@ A read-only list of parameter names associated with this object and their values
 
  Gets the date and time extracted from this content disposition's "creation-date" parameter, which specifies the date of creation of a file (RFC 2183 sec. 2.4). The parameter is parsed as though by  `MailDateTime.ParseDateString`  with obsolete time zones (including "GMT") allowed. See that method's documentation for information on the format of this method's return value.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 The extracted date and time as an 8-element array, or  `null`  if the "creation-date" parameter doesn't exist, is an empty string, or is syntactically invalid, or if the parameter's year would overflow a 32-bit signed integer.
 
@@ -135,7 +135,7 @@ The extracted date and time as an 8-element array, or  `null`  if the "creation-
 
  Gets an adapted version of the "filename" parameter in this content disposition object by using the "MakeFilename" method.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 The adapted file name in the form of a string. Returns the empty string if there is no "filename" parameter or that parameter is empty.
 
@@ -146,7 +146,7 @@ The adapted file name in the form of a string. Returns the empty string if there
 
  Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A 32-bit hash code.
 
@@ -157,7 +157,7 @@ A 32-bit hash code.
 
  Gets the date and time extracted from this content disposition's "modification-date" parameter, which specifies the date of last modification of a file (RFC 2183 sec. 2.5). The parameter is parsed as though by  `MailDateTime.ParseDateString`  with obsolete time zones (including "GMT") allowed. See that method's documentation for information on the format of this method's return value.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 The extracted date and time as an 8-element array, or  `null`  if the "modification-date" parameter doesn't exist, is an empty string, or is syntactically invalid, or if the parameter's year would overflow a 32-bit signed integer.
 
@@ -169,7 +169,7 @@ The extracted date and time as an 8-element array, or  `null`  if the "modificat
 
  Gets a parameter from this disposition object. For the "filename" parameter, the value of that parameter is not adapted with the ContentDisposition.MakeFilename method; see the documentation for the ContentDisposition class.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>name</i>: The name of the parameter to get. The name will be matched using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.). Can't be null.
 
@@ -194,7 +194,7 @@ The parameter  <i>name</i>
 
  Gets the date and time extracted from this content disposition's "read-date" parameter, which specifies the date at which a file was last read (RFC 2183 sec. 2.6). The parameter is parsed as though by  `MailDateTime.ParseDateString`  with obsolete time zones (including "GMT") allowed. See that method's documentation for information on the format of this method's return value.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 The extracted date and time as an 8-element array, or  `null`  if the "read-date" parameter doesn't exist, is an empty string, or is syntactically invalid, or if the parameter's year would overflow a 32-bit signed integer.
 
@@ -235,7 +235,7 @@ The extracted date and time as an 8-element array, or  `null`  if the "read-date
 
 .
 
-  <b>Parameters:</b>
+ <b>Parameters:</b>
 
  * <i>str</i>: A string representing a file name. Can be null.
 
@@ -261,7 +261,7 @@ A string with the converted version of the file name. Among other things, encode
 
  This implementation ignores keys (in parameter key-value pairs) that appear more than once in the content disposition. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or otherwise specifies error-handling behavior for such keys.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>dispositionValue</i>: A text string that should be the value of a Content-Disposition header field.
 
@@ -285,7 +285,7 @@ The parameter  <i>dispositionValue</i>
 
  Creates a new content disposition object from the value of a Content-Disposition header field.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>dispoValue</i>: The parameter  <i>dispoValue</i>
  is a text string.
@@ -308,7 +308,7 @@ The parameter  <i>dispoValue</i>
 
  Converts this content disposition to a text string form suitable for inserting in HTTP headers. Notably, the string contains the value of a Content-Disposition header field (without the text necessarily starting with "Content-Disposition" followed by a space), and consists of a single line.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A text string form of this content disposition.
 
@@ -319,6 +319,6 @@ A text string form of this content disposition.
 
  Converts this content disposition to a text string form suitable for inserting in email headers. Notably, the string contains the value of a Content-Disposition header field (without the text necessarily starting with "Content-Disposition" followed by a space), and consists of one or more lines.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A text string form of this content disposition.

@@ -24,7 +24,7 @@
 
  Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class using the data from another media type.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>mt</i>: The parameter  <i>mt</i>
  is a MediaType object.
@@ -44,7 +44,7 @@ The parameter  <i>mt</i>
 
  Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class.
 
-    <b>Parameters:</b>
+   <b>Parameters:</b>
 
  * <i>type</i>: The media type's top-level type.
 
@@ -57,7 +57,7 @@ The parameter  <i>mt</i>
 
  Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) class, using the type "application/octet-stream" .
 
-  <a id="IsMultipart"></a>
+ <a id="IsMultipart"></a>
 ### IsMultipart
 
     public bool IsMultipart { get; }
@@ -66,7 +66,7 @@ The parameter  <i>mt</i>
 
  Gets a value indicating whether this is a multipart media type.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
  `true`  If this is a multipart media type; otherwise,  `false` .
 
@@ -79,7 +79,7 @@ The parameter  <i>mt</i>
 
  Gets a value indicating whether this is a text media type.
 
-   <b>Returns:</b>
+  <b>Returns:</b>
 
  `true`  If this is a text media type; otherwise,  `false` .
 
@@ -90,7 +90,7 @@ The parameter  <i>mt</i>
 
  Gets or sets this value's subtype.
 
-     <b>Returns:</b>
+    <b>Returns:</b>
 
 A text string naming this object's subtype, such as "plain" or "xml".
 
@@ -109,7 +109,7 @@ The property is being set and the value is syntactically invalid for a subtype.
 
  Gets or sets this value's top-level type.
 
-     <b>Returns:</b>
+    <b>Returns:</b>
 
 A text string naming this object's top-level type, such as "text" or "audio" .
 
@@ -129,7 +129,7 @@ The property is being set and the value is syntactically invalid for a top-level
 
  Removes a parameter from this builder object. Does nothing if the parameter's name doesn't exist.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
 
@@ -152,7 +152,7 @@ The parameter  <i>name</i>
 
  Sets a parameter's name and value for this media type.
 
-       <b>Parameters:</b>
+      <b>Parameters:</b>
 
  * <i>name</i>: Name of the parameter to set, such as "charset" . The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
 
@@ -179,9 +179,9 @@ The parameter  <i>name</i>
     public PeterO.Mail.MediaTypeBuilder SetSubType(
         string str);
 
- Sets this media type's subtype, such as "plain" or "xml" . This method enables the pattern of method chaining (e.g.,  `new ...().Set...().Set...()` ) unlike with the SubType property in .NET or the setSubType method (with small s) in Java.
+ Sets this media type's subtype, such as "plain" or "xml" . This method enables the pattern of method chaining (e.g.,  `new...().Set...().Set...()`  ) unlike with the SubType property in.NET or the setSubType method (with small s) in Java.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: A text string naming a media subtype.
 
@@ -205,9 +205,9 @@ The parameter  <i>str</i>
     public PeterO.Mail.MediaTypeBuilder SetTopLevelType(
         string str);
 
- Sets this media type's top-level type. This method enables the pattern of method chaining (e.g.,  `new ...().Set...().Set...()` ) unlike with the TopLevelType property in .NET or the setTopLevelType method (with small s) in Java.
+ Sets this media type's top-level type. This method enables the pattern of method chaining (e.g.,  `new...().Set...().Set...()`  ) unlike with the TopLevelType property in.NET or the setTopLevelType method (with small s) in Java.
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>str</i>: A text string naming a top-level type, such as "text" or "audio" .
 
@@ -232,7 +232,7 @@ The parameter  <i>str</i>
 
  Converts this builder to an immutable media type object.
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A MediaType object.
 
@@ -243,6 +243,6 @@ A MediaType object.
 
  Converts this object to a text string of the media type it represents, in the same form as  `MediaType.ToString` .
 
-   <b>Return Value:</b>
+  <b>Return Value:</b>
 
 A string representation of this object.

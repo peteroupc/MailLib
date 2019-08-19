@@ -21,7 +21,7 @@ import com.upokecenter.mail.*;
         if (this.SplitIRIFails(
           cases[i],
           cases[i + 1].equals("1"))) {
-           Assert.fail(cases[i] + " " + cases[i + 1]);
+          Assert.fail(cases[i] + " " + cases[i + 1]);
         }
       }
     }

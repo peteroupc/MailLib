@@ -725,7 +725,8 @@ str) {
       }
       int index = HeaderParser.ParseCFWS(str, 0, str.Length, null);
       int noIndex = index;
-      if (index +1 < str.Length && str[index]=='N' && str[index+1]=='O') {
+      if (index + 1 < str.Length && str[index] == 'N' && str[index + 1] ==
+'O') {
         index = HeaderParser.ParseCFWS(str, index + 2, str.Length, null);
         if (index != str.Length) {
           return null;
@@ -758,46 +759,46 @@ str) {
       index = index2;
       while (index < str.Length) {
         if (index >= str.Length || str[index] != '<') {
-             // Downgrade rest of string
-             sstr = str.Substring(index, str.Length - index);
-             DowngradeCFWS(enc, sstr, true);
-             return enc.ToString();
+          // Downgrade rest of string
+          sstr = str.Substring(index, str.Length - index);
+          DowngradeCFWS(enc, sstr, true);
+          return enc.ToString();
         }
         var found = false;
         enc.AppendSymbol("<");
         ++index;
         while (index < str.Length) {
-           index = HeaderParser.ParseFWS(str, index, str.Length, null);
-           int c = str[index];
-           if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length && (c &
+          index = HeaderParser.ParseFWS(str, index, str.Length, null);
+          int c = str[index];
+          if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length && (c &
 0xfc00) == 0xdc00) {
-             sstr = str.Substring(index, 2);
-             enc.AppendSymbol(sstr);
-             index += 2;
-           } else if ((c & 0xf800) == 0xd800) {
-             // Downgrade rest of string
-             sstr = str.Substring(index, str.Length - index);
-             DowngradeCFWS(enc, sstr, true);
-             return enc.ToString();
-           } else if (c == 0x3e) {
-             // Right angle bracket '>'
-             string uri = sb.ToString();
-             enc.AppendSymbol(">");
-             ++index;
-             if (!URIUtility.IsValidIRI(uri)) {
-               // Downgrade rest of string
-               sstr = str.Substring(index, str.Length - index);
-               DowngradeCFWS(enc, sstr, true);
-               return enc.ToString();
-             }
-             list.Add(uri);
-             found = true;
-             break;
-           } else {
-             sstr = str.Substring(index, 1);
-             enc.AppendSymbol(sstr);
-             ++index;
-           }
+            sstr = str.Substring(index, 2);
+            enc.AppendSymbol(sstr);
+            index += 2;
+          } else if ((c & 0xf800) == 0xd800) {
+            // Downgrade rest of string
+            sstr = str.Substring(index, str.Length - index);
+            DowngradeCFWS(enc, sstr, true);
+            return enc.ToString();
+          } else if (c == 0x3e) {
+            // Right angle bracket '>'
+            string uri = sb.ToString();
+            enc.AppendSymbol(">");
+            ++index;
+            if (!URIUtility.IsValidIRI(uri)) {
+              // Downgrade rest of string
+              sstr = str.Substring(index, str.Length - index);
+              DowngradeCFWS(enc, sstr, true);
+              return enc.ToString();
+            }
+            list.Add(uri);
+            found = true;
+            break;
+          } else {
+            sstr = str.Substring(index, 1);
+            enc.AppendSymbol(sstr);
+            ++index;
+          }
         }
         if (!found) {
           break;
@@ -807,9 +808,9 @@ str) {
         DowngradeCFWS(enc, sstr, false);
         index = index2;
         if (index >= str.Length || str[index] != ',') {
-               sstr = str.Substring(index, str.Length - index);
-               DowngradeCFWS(enc, sstr, true);
-               return enc.ToString();
+          sstr = str.Substring(index, str.Length - index);
+          DowngradeCFWS(enc, sstr, true);
+          return enc.ToString();
         }
         enc.AppendSymbol(",");
         index2 = HeaderParser.ParseCFWS(str, index + 1, str.Length, null);
@@ -824,61 +825,61 @@ str) {
       HeaderEncoder enc,
       string str,
       bool multiple) {
-        if (str.IndexOf('(') < 0 ||
-          !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
-          // Contains no comments, or no text needs to be encoded
-          enc.AppendString(str, 0, str.Length);
-          return;
-        }
-        var tokener = new Tokener();
-        int endIndex;
-        if (multiple) {
-           endIndex = str.Length;
-           HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, 0,
-  str.Length, tokener);
-        } else {
-           endIndex = HeaderParser.ParseCFWS(str, 0, str.Length, tokener);
-        }
-        if (endIndex != str.Length) {
-          // The CFWS is syntactically invalid,
-          // so downgrading is not possible
-          enc.AppendString(str, 0, str.Length);
-          return;
-        }
-        var lastIndex = 0;
-        // Get each relevant token sorted by starting index
-        IList<int[]> tokens = tokener.GetTokens();
-        enc.Reset();
-        foreach (int[] token in tokens) {
-          if (token[1] < lastIndex) {
-            continue;
-          }
-          if (token[0] == HeaderParserUtility.TokenComment) {
-            int startIndex = token[1];
-            endIndex = token[2];
-            if (Message.HasTextToEscape(str, startIndex, endIndex)) {
-              enc.AppendString(str, lastIndex, startIndex);
-              Rfc2047.EncodeComment(
-                enc,
-                str,
-                startIndex,
-                endIndex);
-              lastIndex = endIndex;
-            }
-          }
-        }
-        enc.AppendString(str, lastIndex, str.Length);
+      if (str.IndexOf('(') < 0 ||
+        !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+        // Contains no comments, or no text needs to be encoded
+        enc.AppendString(str, 0, str.Length);
+        return;
       }
+      var tokener = new Tokener();
+      int endIndex;
+      if (multiple) {
+        endIndex = str.Length;
+        HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, 0,
+  str.Length, tokener);
+      } else {
+        endIndex = HeaderParser.ParseCFWS(str, 0, str.Length, tokener);
+      }
+      if (endIndex != str.Length) {
+        // The CFWS is syntactically invalid,
+        // so downgrading is not possible
+        enc.AppendString(str, 0, str.Length);
+        return;
+      }
+      var lastIndex = 0;
+      // Get each relevant token sorted by starting index
+      IList<int[]> tokens = tokener.GetTokens();
+      enc.Reset();
+      foreach (int[] token in tokens) {
+        if (token[1] < lastIndex) {
+          continue;
+        }
+        if (token[0] == HeaderParserUtility.TokenComment) {
+          int startIndex = token[1];
+          endIndex = token[2];
+          if (Message.HasTextToEscape(str, startIndex, endIndex)) {
+            enc.AppendString(str, lastIndex, startIndex);
+            Rfc2047.EncodeComment(
+              enc,
+              str,
+              startIndex,
+              endIndex);
+            lastIndex = endIndex;
+          }
+        }
+      }
+      enc.AppendString(str, lastIndex, str.Length);
+    }
 
     // Determines whether a List-Post field value contains "NO" in that
     // combination of case, and optional CFWS before or after the "NO"
     internal static bool IsListPostNo(string str, int index, int endIndex) {
-        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        if (index +1 < endIndex && str[index]=='N' && str[index+1]=='O') {
-          index = HeaderParser.ParseCFWS(str, index + 2, endIndex, null);
-          return index == endIndex;
-        }
-        return false;
+      index = HeaderParser.ParseCFWS(str, index, endIndex, null);
+      if (index + 1 < endIndex && str[index] == 'N' && str[index + 1] == 'O') {
+        index = HeaderParser.ParseCFWS(str, index + 2, endIndex, null);
+        return index == endIndex;
+      }
+      return false;
     }
 
     // NOTE: See RFC 2369 section 2
@@ -899,37 +900,37 @@ endIndex, ITokener tokener) {
         var found = false;
         var sb = new StringBuilder();
         while (index < endIndex) {
-           index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
-           int c = str[index];
-           if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex && (c &
+          index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
+          int c = str[index];
+          if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex && (c &
 0xfc00) == 0xdc00) {
-             sb.Append(str[index]);
-             sb.Append(str[index + 1]);
-             index += 2;
-           } else if ((c & 0xf800) == 0xd800) {
-             break;
-           }
-           if (c == 0x3e) {
-             // Right angle bracket '>'
-             string uri = sb.ToString();
-             if (!URIUtility.IsValidIRI(uri)) {
-               break;
-             }
-             list.Add(uri);
-             ++index;
-             found = true;
-             break;
-           } else {
-             sb.Append(str[index]);
-             ++index;
-           }
+            sb.Append(str[index]);
+            sb.Append(str[index + 1]);
+            index += 2;
+          } else if ((c & 0xf800) == 0xd800) {
+            break;
+          }
+          if (c == 0x3e) {
+            // Right angle bracket '>'
+            string uri = sb.ToString();
+            if (!URIUtility.IsValidIRI(uri)) {
+              break;
+            }
+            list.Add(uri);
+            ++index;
+            found = true;
+            break;
+          } else {
+            sb.Append(str[index]);
+            ++index;
+          }
         }
         if (!found) {
           break;
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
         if (index >= endIndex || str[index] != ',') {
-           break;
+          break;
         }
         index = HeaderParser.ParseCFWS(str, index + 1, endIndex, tokener);
       }
@@ -941,7 +942,6 @@ endIndex, ITokener tokener) {
     private sealed class HeaderListRfc2369 : StructuredHeaderField {
       public override string DowngradeHeaderField(string name, string str) {
         // The 2 below is for the colon and space after the header field name
-        // TODO: Handle special case of List-Post "NO"
         // NOTE: May introduce spaces within URLs; even though message
         // transport agents (MTAs) must not introduce such spaces, this is not
         // a deviation from RFC 2369, however, because this method is not
@@ -971,12 +971,12 @@ endIndex, ITokener tokener) {
         int index,
         int endIndex,
         ITokener tokener) {
-          HeaderParserUtility.TraverseCFWSAndQuotedStrings(
-            str,
-            index,
-            endIndex,
-            tokener);
-          return endIndex;
+        HeaderParserUtility.TraverseCFWSAndQuotedStrings(
+          str,
+          index,
+          endIndex,
+          tokener);
+        return endIndex;
       }
     }
 

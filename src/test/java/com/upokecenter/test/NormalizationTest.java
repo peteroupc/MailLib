@@ -139,16 +139,16 @@ import com.upokecenter.text.*;
         throw new NullPointerException("expectedStr");
       }
       if (!expectedStr.equals(actualStr)) {
-                Assert.fail(
+        Assert.fail(
   "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
-            "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
+    "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
     }
 
     public static void AssertEqual(int expected, int actual, String msg) {
       if (expected != actual) {
-                Assert.fail(
-          "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
+        Assert.fail(
+  "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
 
@@ -204,8 +204,8 @@ import com.upokecenter.text.*;
         this.TestIdempotent(str, Normalization.NFD);
         this.TestIdempotent(str, Normalization.NFKC);
         this.TestIdempotent(str, Normalization.NFKD);
-}
-System.out.println("Done");
+      }
+      System.out.println("Done");
     }
 
     @Test
@@ -215,10 +215,10 @@ System.out.println("Done");
         String stringTemp = NormalizerInput.Normalize(
           str,
           Normalization.NFC);
-          Assert.assertEquals(
-            "_\u96e3\uc972+67 Tqd R_.",
-            stringTemp);
-}
+        Assert.assertEquals(
+          "_\u96e3\uc972+67 Tqd R_.",
+          stringTemp);
+      }
       if (
         NormalizerInput.IsNormalized(str, Normalization.NFC)) {
  Assert.fail();
@@ -229,7 +229,7 @@ System.out.println("Done");
         NormalizerInput.IsNormalized(str, Normalization.NFC))) {
  Assert.fail();
  }
-        this.TestIdempotent(str, Normalization.NFC);
+      this.TestIdempotent(str, Normalization.NFC);
     }
 
     private static final class NormResult {

@@ -13,24 +13,24 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
-    /**
-     * <p>Specifies what kind of data a message body is.</p> <p>A media type
-     * consists of a top-level type (the general category of the data), a
-     * subtype (the specific type), and an optional list of parameters. For
-     * example, the media type <code>text/plain;charset = utf-8</code> is a text
-     *  media type ("text"), namely, a plain text type ("plain"), and the
-     * parameters say that the data uses UTF-8, a Unicode character
-     *  encoding ("charset = utf-8"). Other top-level types include "audio",
-     *  "video", and "application".</p> <p>A media type is sometimes known
-     *  as a "MIME type", for Multipurpose Internet Mail Extensions, the
-     * standard that introduced media types.</p> <p>This type is immutable,
-     * meaning its values can't be changed once it' s created. To create a
-     * changeable media type object, use the MediaTypeBuilder class.</p>
-     * <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
-     * top-level type <code>multipart</code> must be treated as
-     * <code>multipart/mixed</code> and unrecognized media types as the media
-     * type <code>application/octet-stream</code>.</p>
-     */
+  /**
+   * <p>Specifies what kind of data a message body is.</p> <p>A media type
+   * consists of a top-level type (the general category of the data), a
+   * subtype (the specific type), and an optional list of parameters. For
+   * example, the media type <code>text/plain;charset = utf-8</code> is a text
+   *  media type ("text"), namely, a plain text type ("plain"), and the
+   * parameters say that the data uses UTF-8, a Unicode character encoding
+   *  ("charset = utf-8"). Other top-level types include "audio", "video",
+   *  and "application".</p> <p>A media type is sometimes known as a "MIME
+   *  type", for Multipurpose Internet Mail Extensions, the standard that
+   * introduced media types.</p> <p>This type is immutable, meaning its
+   * values can't be changed once it' s created. To create a changeable
+   * media type object, use the MediaTypeBuilder class.</p> <p><b>Note:</b>
+   * According to RFC 2049, unrecognized subtypes of the top-level type
+   * <code>multipart</code> must be treated as <code>multipart/mixed</code> and
+   * unrecognized media types as the media type
+   * <code>application/octet-stream</code>.</p>
+   */
   public final class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -147,14 +147,14 @@ import com.upokecenter.text.*;
       }
 
     enum QuotedStringRule {
-    /**
-     * Use HTTP rules for quoted strings.
-     */
+      /**
+       * Use HTTP rules for quoted strings.
+       */
       Http,
 
-    /**
-     * Use Internet Message Format rules for quoted strings.
-     */
+      /**
+       * Use Internet Message Format rules for quoted strings.
+       */
       Rfc5322,
     }
 
@@ -996,6 +996,11 @@ import com.upokecenter.text.*;
       // be interpreted as including unsupported or unrecognized
       // character encodings (see sec. 3.2.1).
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      // HACK
+      if (cs == null && (charset.equals("GB2312") ||
+          charset.equals("gb2312"))) {
+        cs = Encodings.GetEncoding(charset, false);
+      }
       cs = (cs == null) ? (USAsciiEncoding) : cs;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
@@ -1025,6 +1030,11 @@ import com.upokecenter.text.*;
         return USAsciiEncoding;
       }
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      // HACK
+      if (cs == null && (charset.equals("GB2312") ||
+          charset.equals("gb2312"))) {
+        cs = Encodings.GetEncoding(charset, false);
+      }
       cs = (cs == null) ? (USAsciiEncoding) : cs;
       return cs;
     }

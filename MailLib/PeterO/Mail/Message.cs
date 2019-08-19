@@ -14,108 +14,108 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email message, and contains methods and
-    /// properties for accessing and modifying email message data. This
-    /// class implements the Internet Message Format (RFC 5322) and
-    /// Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC
-    /// 2049).</summary>
-    /// <remarks>
-    /// <para><b>Thread safety:</b> This class is mutable; its properties
-    /// can be changed. None of its instance methods are designed to be
-    /// thread safe. Therefore, access to objects from this class must be
-    /// synchronized if multiple threads can access them at the same
-    /// time.</para>
-    /// <para>The following lists known deviations from the mail
-    /// specifications (Internet Message Format and MIME):</para>
-    /// <list type=''>
-    /// <item>The content-transfer-encodings "quoted-printable" and
-    /// "base64" are treated as 7bit instead if they occur in a message or
-    /// body part with content type "multipart/*" or "message/*" (other
-    /// than "message/global", "message/global-headers",
-    /// "message/global-disposition-notification", or
-    /// "message/global-delivery-status").</item>
-    /// <item>If a message has two or more Content-Type header fields, it
-    /// is treated as having a content type of "application/octet-stream",
-    /// unless one or more of the header fields is syntactically
-    /// invalid.</item>
-    /// <item>Illegal UTF-8 byte sequences appearing in header field values
-    /// are replaced with replacement characters. Moreover, UTF-8 is parsed
-    /// everywhere in header field values, even in those parts of some
-    /// structured header fields where this appears not to be allowed.
-    /// (UTF-8 is a character encoding for the Unicode character
-    /// set.)</item>
-    /// <item>This implementation can parse a message even if that message
-    /// is without a From header field, without a Date header field, or
-    /// without both.</item>
-    /// <item>The To and Cc header fields are allowed to contain only
-    /// comments and whitespace, but these "empty" header fields will be
-    /// omitted when generating.</item>
-    /// <item>There is no line length limit imposed when parsing header
-    /// fields, except header field names.</item>
-    /// <item>There is no line length limit imposed when parsing
-    /// quoted-printable or base64 encoded bodies.</item>
-    /// <item>If the transfer encoding is absent and the content type is
-    /// "message/rfc822", bytes with values greater than 127 (called "8-bit
-    /// bytes" in the rest of these remarks) are still allowed, despite the
-    /// default value of "7bit" for "Content-Transfer-Encoding".</item>
-    /// <item>In the following cases, if the transfer encoding is absent,
-    /// declared as 7bit, or treated as 7bit, 8-bit bytes are still
-    /// allowed:</item>
-    /// <item>(a) The preamble and epilogue of multipart messages, which
-    /// will be ignored.</item>
-    /// <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
-    /// <item>(c) If the content type is "text/html" and the charset is
-    /// declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
-    /// "iso-8859-*" (all single byte encodings).</item>
-    /// <item>(d) In non-MIME message bodies and in text/plain message
-    /// bodies. Any 8-bit bytes are replaced with the substitute character
-    /// byte (0x1a).</item>
-    /// <item>If the message starts with the word "From" (and no other case
-    /// variations of that word) followed by one or more space (U + 0020)
-    /// not followed by colon, that text and the rest of the text is
-    /// skipped up to and including a line feed (U + 000A). (See also RFC
-    /// 4155, which describes the so-called "mbox" convention with "From"
-    /// lines of this kind.)</item>
-    /// <item>The name <c>ascii</c> is treated as a synonym for
-    /// <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
-    /// name <c>cp1252</c> and <c>utf8</c> are treated as synonyms for
-    /// <c>windows-1252</c> and <c>utf-8</c>, respectively, even though
-    /// they are not IANA registered aliases.</item>
-    /// <item>The following deviations involve encoded words under RFC
-    /// 2047:</item>
-    /// <item>(a) If a sequence of encoded words decodes to a string with a
-    /// CTL character (U + 007F, or a character less than U + 0020 and not
-    /// TAB) after being converted to Unicode, the encoded words are left
-    /// un-decoded.</item>
-    /// <item>(b) This implementation can decode encoded words regardless
-    /// of the character length of the line in which they appear. This
-    /// implementation can generate a header field line with one or more
-    /// encoded words even if that line is more than 76 characters long.
-    /// (This implementation follows the recommendation in RFC 5322 to
-    /// limit header field lines to no more than 78 characters, where
-    /// possible.)</item></list>
-    /// <para>It would be appreciated if users of this library contact the
-    /// author if they find other ways in which this implementation
-    /// deviates from the mail specifications or other applicable
-    /// specifications.</para>
-    /// <para>Note that this class currently doesn't support the "padding"
-    /// parameter for message bodies with the media type
-    /// "application/octet-stream" or treated as that media type (see RFC
-    /// 2046 sec. 4.5.1).</para>
-    /// <para>Note that this implementation can decode an RFC 2047 encoded
-    /// word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use
-    /// code switching) even if the encoded word's payload ends in a
-    /// different mode from "ASCII mode". (Each encoded word still starts
-    /// in "ASCII mode", though.) This, however, is not a deviation to RFC
-    /// 2047 because the relevant rule only concerns bringing the output
-    /// device back to "ASCII mode" after the decoded text is displayed
-    /// (see last paragraph of sec. 6.2) -- since the decoded text is
-    /// converted to Unicode rather than kept as ISO-2022-JP or
-    /// ISO-2022-JP-2, this is not applicable since there is no such thing
-    /// as "ASCII mode" in the Unicode Standard.</para>
-    /// <para>Note that this library (the MailLib library) has no
-    /// facilities for sending and receiving email messages, since that's
-    /// outside this library's scope.</para></remarks>
+  /// <summary>Represents an email message, and contains methods and
+  /// properties for accessing and modifying email message data. This
+  /// class implements the Internet Message Format (RFC 5322) and
+  /// Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC
+  /// 2049).</summary>
+  /// <remarks>
+  /// <para><b>Thread safety:</b> This class is mutable; its properties
+  /// can be changed. None of its instance methods are designed to be
+  /// thread safe. Therefore, access to objects from this class must be
+  /// synchronized if multiple threads can access them at the same
+  /// time.</para>
+  /// <para>The following lists known deviations from the mail
+  /// specifications (Internet Message Format and MIME):</para>
+  /// <list type=''>
+  /// <item>The content-transfer-encodings "quoted-printable" and
+  /// "base64" are treated as 7bit instead if they occur in a message or
+  /// body part with content type "multipart/*" or "message/*" (other
+  /// than "message/global", "message/global-headers",
+  /// "message/global-disposition-notification", or
+  /// "message/global-delivery-status").</item>
+  /// <item>If a message has two or more Content-Type header fields, it
+  /// is treated as having a content type of "application/octet-stream",
+  /// unless one or more of the header fields is syntactically
+  /// invalid.</item>
+  /// <item>Illegal UTF-8 byte sequences appearing in header field values
+  /// are replaced with replacement characters. Moreover, UTF-8 is parsed
+  /// everywhere in header field values, even in those parts of some
+  /// structured header fields where this appears not to be allowed.
+  /// (UTF-8 is a character encoding for the Unicode character
+  /// set.)</item>
+  /// <item>This implementation can parse a message even if that message
+  /// is without a From header field, without a Date header field, or
+  /// without both.</item>
+  /// <item>The To and Cc header fields are allowed to contain only
+  /// comments and whitespace, but these "empty" header fields will be
+  /// omitted when generating.</item>
+  /// <item>There is no line length limit imposed when parsing header
+  /// fields, except header field names.</item>
+  /// <item>There is no line length limit imposed when parsing
+  /// quoted-printable or base64 encoded bodies.</item>
+  /// <item>If the transfer encoding is absent and the content type is
+  /// "message/rfc822", bytes with values greater than 127 (called "8-bit
+  /// bytes" in the rest of these remarks) are still allowed, despite the
+  /// default value of "7bit" for "Content-Transfer-Encoding".</item>
+  /// <item>In the following cases, if the transfer encoding is absent,
+  /// declared as 7bit, or treated as 7bit, 8-bit bytes are still
+  /// allowed:</item>
+  /// <item>(a) The preamble and epilogue of multipart messages, which
+  /// will be ignored.</item>
+  /// <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
+  /// <item>(c) If the content type is "text/html" and the charset is
+  /// declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
+  /// "iso-8859-*" (all single byte encodings).</item>
+  /// <item>(d) In non-MIME message bodies and in text/plain message
+  /// bodies. Any 8-bit bytes are replaced with the substitute character
+  /// byte (0x1a).</item>
+  /// <item>If the message starts with the word "From" (and no other case
+  /// variations of that word) followed by one or more space (U + 0020)
+  /// not followed by colon, that text and the rest of the text is
+  /// skipped up to and including a line feed (U + 000A). (See also RFC
+  /// 4155, which describes the so-called "mbox" convention with "From"
+  /// lines of this kind.)</item>
+  /// <item>The name <c>ascii</c> is treated as a synonym for
+  /// <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
+  /// name <c>cp1252</c> and <c>utf8</c> are treated as synonyms for
+  /// <c>windows-1252</c> and <c>utf-8</c>, respectively, even though
+  /// they are not IANA registered aliases.</item>
+  /// <item>The following deviations involve encoded words under RFC
+  /// 2047:</item>
+  /// <item>(a) If a sequence of encoded words decodes to a string with a
+  /// CTL character (U + 007F, or a character less than U + 0020 and not
+  /// TAB) after being converted to Unicode, the encoded words are left
+  /// un-decoded.</item>
+  /// <item>(b) This implementation can decode encoded words regardless
+  /// of the character length of the line in which they appear. This
+  /// implementation can generate a header field line with one or more
+  /// encoded words even if that line is more than 76 characters long.
+  /// (This implementation follows the recommendation in RFC 5322 to
+  /// limit header field lines to no more than 78 characters, where
+  /// possible.)</item></list>
+  /// <para>It would be appreciated if users of this library contact the
+  /// author if they find other ways in which this implementation
+  /// deviates from the mail specifications or other applicable
+  /// specifications.</para>
+  /// <para>Note that this class currently doesn't support the "padding"
+  /// parameter for message bodies with the media type
+  /// "application/octet-stream" or treated as that media type (see RFC
+  /// 2046 sec. 4.5.1).</para>
+  /// <para>Note that this implementation can decode an RFC 2047 encoded
+  /// word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use
+  /// code switching) even if the encoded word's payload ends in a
+  /// different mode from "ASCII mode". (Each encoded word still starts
+  /// in "ASCII mode", though.) This, however, is not a deviation to RFC
+  /// 2047 because the relevant rule only concerns bringing the output
+  /// device back to "ASCII mode" after the decoded text is displayed
+  /// (see last paragraph of sec. 6.2) -- since the decoded text is
+  /// converted to Unicode rather than kept as ISO-2022-JP or
+  /// ISO-2022-JP-2, this is not applicable since there is no such thing
+  /// as "ASCII mode" in the Unicode Standard.</para>
+  /// <para>Note that this library (the MailLib library) has no
+  /// facilities for sending and receiving email messages, since that's
+  /// outside this library's scope.</para></remarks>
   public sealed class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
     // (see RFC 5322, 6532)
@@ -208,7 +208,7 @@ namespace PeterO.Mail {
     }
 
     private static int EndOfLine(byte[] bytes, int index) {
-       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index - 2] ==
+      return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index - 2] ==
 0x0d) ?
 (index - 2) : index;
     }
@@ -262,61 +262,62 @@ namespace PeterO.Mail {
     /// name does not exist, or if a body (even an empty one) does not
     /// follow the header fields.</returns>
     public static string ExtractHeader(byte[] bytes, string headerFieldName) {
-if (bytes == null) {
-  return null;
-}
-if (String.IsNullOrEmpty(headerFieldName) || headerFieldName.Length > 997) {
-  return null;
-}
-for (var i = 0; i < headerFieldName.Length; ++i) {
-  if (headerFieldName[i] >= 0x7f || headerFieldName[i] <= 0x20 ||
-             headerFieldName[i] == ':') {
-    break;
-  }
+      if (bytes == null) {
+        return null;
+      }
+      if (String.IsNullOrEmpty(headerFieldName) || headerFieldName.Length >
+997) {
+        return null;
+      }
+      for (var i = 0; i < headerFieldName.Length; ++i) {
+        if (headerFieldName[i] >= 0x7f || headerFieldName[i] <= 0x20 ||
+                   headerFieldName[i] == ':') {
+          break;
+        }
       }
       var index = 0;
       string ret = null;
       while (index < bytes.Length) {
         if (index + 1 < bytes.Length && bytes[index] == 0x0d &&
            bytes[index + 1] == 0x0a) {
-            // End of headers reached, so output the header field
-            // found if any
-            return ret;
-         }
-         if (ret != null) {
-            // Already have a header field, so skip the line
-           index = SkipLine(bytes, index);
-           continue;
-         }
-         int n = SkipCaseString(bytes, index, headerFieldName);
-         if (n == index) {
-           // Not the desired header field
-           index = SkipLine(bytes, index);
-           continue;
-         }
-         n = SkipWsp(bytes, n);
-         if (n >= bytes.Length || bytes[n] != ':') {
-           // Not the desired header field
-           index = SkipLine(bytes, index);
-           continue;
-         }
-         n = SkipWsp(bytes, n + 1);
-         using (var ms = new MemoryStream()) {
-            int endLine = SkipLine(bytes, n);
-            ms.Write(bytes, n, EndOfLine(bytes, endLine) - n);
+          // End of headers reached, so output the header field
+          // found if any
+          return ret;
+        }
+        if (ret != null) {
+          // Already have a header field, so skip the line
+          index = SkipLine(bytes, index);
+          continue;
+        }
+        int n = SkipCaseString(bytes, index, headerFieldName);
+        if (n == index) {
+          // Not the desired header field
+          index = SkipLine(bytes, index);
+          continue;
+        }
+        n = SkipWsp(bytes, n);
+        if (n >= bytes.Length || bytes[n] != ':') {
+          // Not the desired header field
+          index = SkipLine(bytes, index);
+          continue;
+        }
+        n = SkipWsp(bytes, n + 1);
+        using (var ms = new MemoryStream()) {
+          int endLine = SkipLine(bytes, n);
+          ms.Write(bytes, n, EndOfLine(bytes, endLine) - n);
+          index = endLine;
+          while (endLine < bytes.Length &&
+               (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
+            int s = endLine;
+            endLine = SkipLine(bytes, endLine);
             index = endLine;
-            while (endLine < bytes.Length &&
-                 (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
-              int s = endLine;
-              endLine = SkipLine(bytes, endLine);
-              index = endLine;
-              ms.Write(bytes, s, EndOfLine(bytes, endLine) - s);
-            }
-            ret = DataUtilities.GetUtf8String(ms.ToArray(), true);
-         }
+            ms.Write(bytes, s, EndOfLine(bytes, endLine) - s);
+          }
+          ret = DataUtilities.GetUtf8String(ms.ToArray(), true);
+        }
       }
       return null;
-      }
+    }
 
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.Message'/> class. Reads from the given byte
@@ -435,8 +436,8 @@ for (var i = 0; i < headerFieldName.Length; ++i) {
             // HACK
             charset = Encodings.GetEncoding("gb2312", false);
           } else {
-           throw new
-             NotSupportedException("Not in a supported character encoding.");
+            throw new
+              NotSupportedException("Not in a supported character encoding.");
           }
         }
         return Encodings.DecodeToString(
@@ -2072,12 +2073,12 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
                     c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                     ++index;
                     if (c == '\n') {
-                    // CRLF was read
-                    lineStart = true;
-                  } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // CRLF was read
+                      lineStart = true;
+                    } else {
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -2297,7 +2298,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(typePart + builder));
-} else {
+          } else {
             EncodeCommentsInText(
   encoder,
   HeaderEncoder.TrimLeadingFWS(headerValue));
@@ -2649,7 +2650,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
                 if (c == -1) {
                   throw new MessageDataException(
   "Premature end before all headers were read (Mbox convention)");
-} else if (c == ':' && possibleMbox) {
+                } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
                   sb.Append("from");
@@ -2741,12 +2742,12 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
                   if (c == '\r') {
                     c = stream.ReadByte();
                     if (c == '\n') {
-                    // CRLF was read
-                    lineCount = 0;
-                  } else {
-                    // It's the first part of the line, where the header name
-                    // should be, so the CR here is illegal
-                    throw new MessageDataException("CR not followed by LF");
+                      // CRLF was read
+                      lineCount = 0;
+                    } else {
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
                     }
                   } else {
                     // anything else, unget
@@ -3008,7 +3009,8 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-       throw new ArgumentException("Header field value contains invalid text");
+          throw new ArgumentException("Header field value contains invalid" +
+"\u0020text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -3074,8 +3076,8 @@ builder.SubType.Equals(
               builder.ToString() + ", " + this.ContentType);
 #else
 {
- throw new MessageDataException("Message body can't be encoded");
-}
+              throw new MessageDataException("Message body can't be encoded");
+            }
 #endif
           }
         }
@@ -3177,23 +3179,26 @@ name.Length >= 2 &&
               }
               bool isValidAddressing = this.IsValidAddressingField(name);
               haveHeaders[headerIndex] = true;
-/*
-#if DEBUG
-                DebugUtility.Log (name+" "+isValidAddressing);
-                {
-                  var ssb = new StringBuilder();
-                  foreach (var mhs in this.GetMultipleHeaders (name)) {
-                    ssb.Append (mhs + " ");
-                 if (isValidAddressing && name=="sender") {
-                    DebugUtility.Log(""+new NamedAddress(mhs));
-                    DebugUtility.Log("" + new NamedAddress(mhs).DisplayName);
-                    DebugUtility.Log("" + new NamedAddress(mhs).Address);
-                 }
-                  }
-                  DebugUtility.Log (ssb.ToString());
-                }
-#endif
-*/
+              /*
+              #if DEBUG
+                              DebugUtility.Log (name+" "+isValidAddressing);
+                              {
+                                var ssb = new StringBuilder();
+                                foreach (var mhs in this.GetMultipleHeaders
+(name)) {
+                                  ssb.Append (mhs + " ");
+                               if (isValidAddressing && name=="sender") {
+                                  DebugUtility.Log(""+new NamedAddress(mhs));
+                                  DebugUtility.Log("" + new
+NamedAddress(mhs).DisplayName);
+                                  DebugUtility.Log("" + new
+NamedAddress(mhs).Address);
+                               }
+                                }
+                                DebugUtility.Log (ssb.ToString());
+                              }
+              #endif
+              */
               if (!isValidAddressing) {
                 value = String.Empty;
                 if (!name.Equals("from", StringComparison.Ordinal) &&
@@ -3243,14 +3248,14 @@ name.Length >= 2 &&
               downgraded = HeaderEncoder.EncodeFieldAsEncodedWords(
                   "downgraded-" + name,
                   ParserUtility.TrimSpaceAndTab(value));
-                } else {
+            } else {
 #if DEBUG
               string exText = "Header field still has non-Ascii or controls: " +
                     name + "\n" + downgraded;
               throw new MessageDataException(exText);
 #else
-               throw new MessageDataException(
-                 "Header field still has non-Ascii or controls");
+              throw new MessageDataException(
+                "Header field still has non-Ascii or controls");
 #endif
             }
           } else {
@@ -3908,12 +3913,12 @@ this.ContentType.TypeAndSubType.Equals("text/plain",
     }
 
     private class MessageStackEntry {
-    /// <summary>Gets a value which is used in an internal API.</summary>
-    /// <value>This is an internal API.</value>
+      /// <summary>Gets a value which is used in an internal API.</summary>
+      /// <value>This is an internal API.</value>
       public Message Message { get; private set; }
 
-    /// <summary>Gets a value which is used in an internal API.</summary>
-    /// <value>This is an internal API.</value>
+      /// <summary>Gets a value which is used in an internal API.</summary>
+      /// <value>This is an internal API.</value>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

@@ -5,24 +5,24 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
- using System;
+using System;
 using System.IO;
 using PeterO.Mail;
 
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-var strs = new string[] {
+      var strs = new string[] {
 
-};
+      };
 
-Console.WriteLine("------");
-foreach (var s in strs) {
- var sc = PeterO.Mail.ContentDisposition.MakeFilename(s);
- Console.WriteLine(s);
- Console.WriteLine(sc);
- Console.WriteLine(s == sc);
-}
+      Console.WriteLine("------");
+      foreach (var s in strs) {
+        var sc = PeterO.Mail.ContentDisposition.MakeFilename(s);
+        Console.WriteLine(s);
+        Console.WriteLine(sc);
+        Console.WriteLine(s == sc);
+      }
     }
   }
 }

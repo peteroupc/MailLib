@@ -20,50 +20,52 @@ import com.upokecenter.mail.*;
       Assert.assertEquals(1, msg.getParts().size());
     }
 
-public void TestExtractHeaderOne(String expected, String msg, String name) {
-if (msg == null) {
-  Assert.assertEquals(expected, Message.ExtractHeader(null, name));
-} else {
-  byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
-  Assert.assertEquals(expected, Message.ExtractHeader(bytes, name));
-}
-}
+    public void TestExtractHeaderOne(String expected, String msg, String name) {
+      if (msg == null) {
+        Assert.assertEquals(expected, Message.ExtractHeader(null, name));
+      } else {
+        byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
+        Assert.assertEquals(expected, Message.ExtractHeader(bytes, name));
+      }
+    }
 
-@Test
-public void TestExtractHeader() {
-this.TestExtractHeaderOne(null,null,"From");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
-this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
-this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
-this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y","from");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n","from");
-this.TestExtractHeaderOne(
- "x",
- "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
- "from");
-this.TestExtractHeaderOne("x",
- "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
- "From");
-this.TestExtractHeaderOne(
- "x",
- "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
- "fRoM");
-this.TestExtractHeaderOne(
-  "x y z",
-  "X-Header: w\r\nFrom: x\r\n y\r\n\u0020z\r\n\r\nBody",
-  "from");
-this.TestExtractHeaderOne(
-  "x \u0020y z",
-  "X-Header: w\r\nFrom: x\r\n \u0020y\r\n\u0020z\r\n\r\nBody",
-  "from");
-this.TestExtractHeaderOne(
-    null,
-    "X-Header: w\r\n\r\nFrom: x\r\n\r\nBody",
-    "from");
-}
+    @Test
+    public void TestExtractHeader() {
+      this.TestExtractHeaderOne(null, null, "From");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody", null);
+      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "from");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody",
+  "f\u007from");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody",
+  "other");
+      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "From");
+      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "fRoM");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y", "from");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n", "from");
+      this.TestExtractHeaderOne(
+        "x",
+        "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
+        "from");
+      this.TestExtractHeaderOne("x",
+       "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+       "From");
+      this.TestExtractHeaderOne(
+        "x",
+        "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+        "fRoM");
+      this.TestExtractHeaderOne(
+        "x y z",
+        "X-Header: w\r\nFrom: x\r\n y\r\n\u0020z\r\n\r\nBody",
+        "from");
+      this.TestExtractHeaderOne(
+        "x \u0020y z",
+        "X-Header: w\r\nFrom: x\r\n \u0020y\r\n\u0020z\r\n\r\nBody",
+        "from");
+      this.TestExtractHeaderOne(
+        null,
+        "X-Header: w\r\n\r\nFrom: x\r\n\r\nBody",
+        "from");
+    }
 
     @Test
     public void TestMultilingual() {
@@ -1425,38 +1427,38 @@ try { if (ms != null) {
         throw new IllegalStateException("", ex);
       }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
- Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetDate(new int[] { 1899, 1, 1, 0, 0, 0, 0, 0 });
- Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        msg.SetDate(new int[] { 1899, 1, 1, 0, 0, 0, 0, 0 });
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetDate(new int[] { 1, 1, 1, 0, 0, 0, 0, 0 });
- Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        msg.SetDate(new int[] { 1, 1, 1, 0, 0, 0, 0, 0 });
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
         msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
         Assert.fail("Should have failed");
@@ -2861,24 +2863,24 @@ MessageFromString(MessageFromString(msg).Generate())
 
     @Test
     public void TestParseDateStringNull() {
-if (MailDateTime.ParseDateString(null) != null) {
-  Assert.fail();
-}
-if (MailDateTime.ParseDateString(null, true) != null) {
-  Assert.fail();
-}
-if (MailDateTime.ParseDateString(null, false) != null) {
-  Assert.fail();
-}
-if (MailDateTime.ParseDateString("") != null) {
-  Assert.fail();
-}
-if (MailDateTime.ParseDateString("", true) != null) {
-  Assert.fail();
-}
-if (MailDateTime.ParseDateString("", false) != null) {
-  Assert.fail();
-}
+      if (MailDateTime.ParseDateString(null) != null) {
+        Assert.fail();
+      }
+      if (MailDateTime.ParseDateString(null, true) != null) {
+        Assert.fail();
+      }
+      if (MailDateTime.ParseDateString(null, false) != null) {
+        Assert.fail();
+      }
+      if (MailDateTime.ParseDateString("") != null) {
+        Assert.fail();
+      }
+      if (MailDateTime.ParseDateString("", true) != null) {
+        Assert.fail();
+      }
+      if (MailDateTime.ParseDateString("", false) != null) {
+        Assert.fail();
+      }
     }
 
     @Test
@@ -2890,115 +2892,115 @@ if (MailDateTime.ParseDateString("", false) != null) {
       }
     }
 
-@Test
-public void TestEmptyBody() {
-Message msg = new Message();
-msg = new Message(msg.GenerateBytes());
-byte[] bytes = msg.GetBody();
-Assert.assertEquals(0, bytes.length);
-}
+    @Test
+    public void TestEmptyBody() {
+      Message msg = new Message();
+      msg = new Message(msg.GenerateBytes());
+      byte[] bytes = msg.GetBody();
+      Assert.assertEquals(0, bytes.length);
+    }
 
-@Test
-public void TestTwoToFields() {
-Message msg = new Message();
-msg.AddHeader("to", "a@example.com");
-msg.AddHeader("to", "b@example.com");
-String msggen = msg.Generate();
-int io = msggen.indexOf(
-    "To: a@example.com\u002c b@example.com");
-Assert.assertEquals(-1, io);
-}
+    @Test
+    public void TestTwoToFields() {
+      Message msg = new Message();
+      msg.AddHeader("to", "a@example.com");
+      msg.AddHeader("to", "b@example.com");
+      String msggen = msg.Generate();
+      int io = msggen.indexOf(
+        "To: a@example.com\u002c b@example.com");
+      Assert.assertEquals(-1, io);
+    }
 
-@Test
-public void TestDateStringHttp() {
- int[] dtime;
- dtime = MailDateTime.ParseDateStringHttp(
-  "Mon\u002c 06 May 2019 01:23:45 GMT");
- Assert.assertEquals(2019, dtime[0]);
- Assert.assertEquals(5, dtime[1]);
- Assert.assertEquals(6, dtime[2]);
- Assert.assertEquals(1, dtime[3]);
- Assert.assertEquals(23, dtime[4]);
- Assert.assertEquals(45, dtime[5]);
- Assert.assertEquals(0, dtime[6]);
- Assert.assertEquals(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp(
-  "Tue\u002c 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-  "Mon 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-  "Fun\u002c 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-  "Monday\u002c 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Monday\u002c 06-May-19 01:23:45 GMT");
- Assert.assertEquals(2019, dtime[0]);
- Assert.assertEquals(5, dtime[1]);
- Assert.assertEquals(6, dtime[2]);
- Assert.assertEquals(1, dtime[3]);
- Assert.assertEquals(23, dtime[4]);
- Assert.assertEquals(45, dtime[5]);
- Assert.assertEquals(0, dtime[6]);
- Assert.assertEquals(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp(
-   "Tuesday\u002c 06-May-19 01:23:45 GMT");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Funday\u002c 06-May-19 01:23:45 GMT");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Mon\u002c 06-May-19 01:23:45 GMT");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
- Assert.assertEquals(2019, dtime[0]);
- Assert.assertEquals(5, dtime[1]);
- Assert.assertEquals(6, dtime[2]);
- Assert.assertEquals(1, dtime[3]);
- Assert.assertEquals(23, dtime[4]);
- Assert.assertEquals(45, dtime[5]);
- Assert.assertEquals(0, dtime[6]);
- Assert.assertEquals(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
- Assert.assertEquals(2019, dtime[0]);
- Assert.assertEquals(5, dtime[1]);
- Assert.assertEquals(13, dtime[2]);
- Assert.assertEquals(1, dtime[3]);
- Assert.assertEquals(23, dtime[4]);
- Assert.assertEquals(45, dtime[5]);
- Assert.assertEquals(0, dtime[6]);
- Assert.assertEquals(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Mon\u002c May 13 01:23:45 2019");
- if (dtime != null) {
-   Assert.fail();
- }
- dtime = MailDateTime.ParseDateStringHttp("Fun May 13 01:23:45 2019");
- if (dtime != null) {
-   Assert.fail();
- }
-}
+    @Test
+    public void TestDateStringHttp() {
+      int[] dtime;
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Mon\u002c 06 May 2019 01:23:45 GMT");
+      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(5, dtime[1]);
+      Assert.assertEquals(6, dtime[2]);
+      Assert.assertEquals(1, dtime[3]);
+      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(45, dtime[5]);
+      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Tue\u002c 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Mon 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Fun\u002c 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Monday\u002c 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Monday\u002c 06-May-19 01:23:45 GMT");
+      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(5, dtime[1]);
+      Assert.assertEquals(6, dtime[2]);
+      Assert.assertEquals(1, dtime[3]);
+      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(45, dtime[5]);
+      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Tuesday\u002c 06-May-19 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Funday\u002c 06-May-19 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Mon\u002c 06-May-19 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
+      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(5, dtime[1]);
+      Assert.assertEquals(6, dtime[2]);
+      Assert.assertEquals(1, dtime[3]);
+      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(45, dtime[5]);
+      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
+      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(5, dtime[1]);
+      Assert.assertEquals(13, dtime[2]);
+      Assert.assertEquals(1, dtime[3]);
+      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(45, dtime[5]);
+      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Mon\u002c May 13 01:23:45 2019");
+      if (dtime != null) {
+        Assert.fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp("Fun May 13 01:23:45 2019");
+      if (dtime != null) {
+        Assert.fail();
+      }
+    }
     @Test
     public void TestNamedAddressNoThrow() {
       Message msg = new Message();

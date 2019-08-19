@@ -13,26 +13,26 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>
-    /// <para>Specifies what kind of data a message body is.</para>
-    /// <para>A media type consists of a top-level type (the general
-    /// category of the data), a subtype (the specific type), and an
-    /// optional list of parameters. For example, the media type
-    /// <c>text/plain;charset=utf-8</c> is a text media type ("text"),
-    /// namely, a plain text type ("plain"), and the parameters say that
-    /// the data uses UTF-8, a Unicode character encoding ("charset =
-    /// utf-8"). Other top-level types include "audio", "video", and
-    /// "application".</para>
-    /// <para>A media type is sometimes known as a "MIME type", for
-    /// Multipurpose Internet Mail Extensions, the standard that introduced
-    /// media types.</para>
-    /// <para>This type is immutable, meaning its values can't be changed
-    /// once it' s created. To create a changeable media type object, use
-    /// the MediaTypeBuilder class.</para>
-    /// <para><b>Note:</b> According to RFC 2049, unrecognized subtypes of
-    /// the top-level type <c>multipart</c> must be treated as
-    /// <c>multipart/mixed</c> and unrecognized media types as the media
-    /// type <c>application/octet-stream</c>.</para></summary>
+  /// <summary>
+  /// <para>Specifies what kind of data a message body is.</para>
+  /// <para>A media type consists of a top-level type (the general
+  /// category of the data), a subtype (the specific type), and an
+  /// optional list of parameters. For example, the media type
+  /// <c>text/plain;charset=utf-8</c> is a text media type ("text"),
+  /// namely, a plain text type ("plain"), and the parameters say that
+  /// the data uses UTF-8, a Unicode character encoding ("charset =
+  /// utf-8"). Other top-level types include "audio", "video", and
+  /// "application".</para>
+  /// <para>A media type is sometimes known as a "MIME type", for
+  /// Multipurpose Internet Mail Extensions, the standard that introduced
+  /// media types.</para>
+  /// <para>This type is immutable, meaning its values can't be changed
+  /// once it' s created. To create a changeable media type object, use
+  /// the MediaTypeBuilder class.</para>
+  /// <para><b>Note:</b> According to RFC 2049, unrecognized subtypes of
+  /// the top-level type <c>multipart</c> must be treated as
+  /// <c>multipart/mixed</c> and unrecognized media types as the media
+  /// type <c>application/octet-stream</c>.</para></summary>
   public sealed class MediaType {
     // Printable ASCII characters that cannot appear in a
     // parameter value under RFC 2231 (including single quote
@@ -157,11 +157,11 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    /// <summary>Use HTTP rules for quoted strings.</summary>
+      /// <summary>Use HTTP rules for quoted strings.</summary>
       Http,
 
-    /// <summary>Use Internet Message Format rules for quoted
-    /// strings.</summary>
+      /// <summary>Use Internet Message Format rules for quoted
+      /// strings.</summary>
       Rfc5322,
     }
 
@@ -1021,6 +1021,11 @@ namespace PeterO.Mail {
       // be interpreted as including unsupported or unrecognized
       // character encodings (see sec. 3.2.1).
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      // HACK
+      if (cs == null && (charset.Equals("GB2312", StringComparison.Ordinal) ||
+          charset.Equals("gb2312", StringComparison.Ordinal))) {
+        cs = Encodings.GetEncoding(charset, false);
+      }
       cs = cs ?? USAsciiEncoding;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
@@ -1050,6 +1055,11 @@ namespace PeterO.Mail {
         return USAsciiEncoding;
       }
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      // HACK
+      if (cs == null && (charset.Equals("GB2312", StringComparison.Ordinal) ||
+          charset.Equals("gb2312", StringComparison.Ordinal))) {
+        cs = Encodings.GetEncoding(charset, false);
+      }
       cs = cs ?? USAsciiEncoding;
       return cs;
     }

@@ -28,7 +28,7 @@
 
  Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>uri</i>: The parameter  <i>uri</i>
  is a text string.
@@ -52,7 +52,7 @@ The parameter  <i>uri</i>
 
  Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array, where the Data URI is given as a URI object.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>uri</i>: The Data URI in the form of a URI object.
 
@@ -75,7 +75,7 @@ The parameter  <i>uri</i>
 
  Extracts the media type from a Data URI (uniform resource identifier) in the form of a text string.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>uri</i>: A data URI in the form of a text string.
 
@@ -98,7 +98,7 @@ The parameter  <i>uri</i>
 
  Extracts the media type from a Data URI (uniform resource identifier) in the form of a URI object.
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>uri</i>: A data URI in the form of a URI object.
 
@@ -122,7 +122,7 @@ The parameter  <i>uri</i>
 
  Encodes data with the given media type in a Data URI (uniform resource identifier).
 
-      <b>Parameters:</b>
+     <b>Parameters:</b>
 
  * <i>bytes</i>: A byte array containing the data to encode in a Data URI.
 
@@ -147,7 +147,7 @@ The parameter  <i>bytes</i>
 
  Encodes text as a Data URI (uniform resource identifier).
 
-     <b>Parameters:</b>
+    <b>Parameters:</b>
 
  * <i>textString</i>: A text string to encode as a data URI.
 

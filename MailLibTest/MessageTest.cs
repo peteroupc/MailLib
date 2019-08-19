@@ -21,50 +21,52 @@ namespace MailLibTest {
       Assert.AreEqual(1, msg.Parts.Count);
     }
 
-public void TestExtractHeaderOne(string expected, string msg, string name) {
-if (msg == null) {
-  Assert.AreEqual(expected, Message.ExtractHeader(null, name));
-} else {
-  byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
-  Assert.AreEqual(expected, Message.ExtractHeader(bytes, name));
-}
-}
+    public void TestExtractHeaderOne(string expected, string msg, string name) {
+      if (msg == null) {
+        Assert.AreEqual(expected, Message.ExtractHeader(null, name));
+      } else {
+        byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
+        Assert.AreEqual(expected, Message.ExtractHeader(bytes, name));
+      }
+    }
 
-[Test]
-public void TestExtractHeader() {
-this.TestExtractHeaderOne(null,null,"From");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody",null);
-this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","from");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","f\u007from");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n\r\nBody","other");
-this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","From");
-this.TestExtractHeaderOne("x","From: x\r\nDate: y\r\n\r\nBody","fRoM");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y","from");
-this.TestExtractHeaderOne(null,"From: x\r\nDate: y\r\n","from");
-this.TestExtractHeaderOne(
- "x",
- "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
- "from");
-this.TestExtractHeaderOne("x",
- "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
- "From");
-this.TestExtractHeaderOne(
- "x",
- "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
- "fRoM");
-this.TestExtractHeaderOne(
-  "x y z",
-  "X-Header: w\r\nFrom: x\r\n y\r\n\u0020z\r\n\r\nBody",
-  "from");
-this.TestExtractHeaderOne(
-  "x \u0020y z",
-  "X-Header: w\r\nFrom: x\r\n \u0020y\r\n\u0020z\r\n\r\nBody",
-  "from");
-this.TestExtractHeaderOne(
-    null,
-    "X-Header: w\r\n\r\nFrom: x\r\n\r\nBody",
-    "from");
-}
+    [Test]
+    public void TestExtractHeader() {
+      this.TestExtractHeaderOne(null, null, "From");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody", null);
+      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "from");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody",
+  "f\u007from");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody",
+  "other");
+      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "From");
+      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "fRoM");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y", "from");
+      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n", "from");
+      this.TestExtractHeaderOne(
+        "x",
+        "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
+        "from");
+      this.TestExtractHeaderOne("x",
+       "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+       "From");
+      this.TestExtractHeaderOne(
+        "x",
+        "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
+        "fRoM");
+      this.TestExtractHeaderOne(
+        "x y z",
+        "X-Header: w\r\nFrom: x\r\n y\r\n\u0020z\r\n\r\nBody",
+        "from");
+      this.TestExtractHeaderOne(
+        "x \u0020y z",
+        "X-Header: w\r\nFrom: x\r\n \u0020y\r\n\u0020z\r\n\r\nBody",
+        "from");
+      this.TestExtractHeaderOne(
+        null,
+        "X-Header: w\r\n\r\nFrom: x\r\n\r\nBody",
+        "from");
+    }
 
     [Test]
     public void TestMultilingual() {
@@ -1407,38 +1409,38 @@ this.TestExtractHeaderOne(
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
- Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
- throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 1899, 1, 1, 0, 0, 0, 0, 0 });
- Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
- throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 1899, 1, 1, 0, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 1, 1, 1, 0, 0, 0, 0, 0 });
- Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
- throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 1, 1, 1, 0, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
         msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
         Assert.Fail("Should have failed");
@@ -2838,24 +2840,24 @@ MessageFromString(MessageFromString(msg).Generate())
 
     [Test]
     public void TestParseDateStringNull() {
-if (MailDateTime.ParseDateString(null) != null) {
-  Assert.Fail();
-}
-if (MailDateTime.ParseDateString(null, true) != null) {
-  Assert.Fail();
-}
-if (MailDateTime.ParseDateString(null, false) != null) {
-  Assert.Fail();
-}
-if (MailDateTime.ParseDateString(String.Empty) != null) {
-  Assert.Fail();
-}
-if (MailDateTime.ParseDateString(String.Empty, true) != null) {
-  Assert.Fail();
-}
-if (MailDateTime.ParseDateString(String.Empty, false) != null) {
-  Assert.Fail();
-}
+      if (MailDateTime.ParseDateString(null) != null) {
+        Assert.Fail();
+      }
+      if (MailDateTime.ParseDateString(null, true) != null) {
+        Assert.Fail();
+      }
+      if (MailDateTime.ParseDateString(null, false) != null) {
+        Assert.Fail();
+      }
+      if (MailDateTime.ParseDateString(String.Empty) != null) {
+        Assert.Fail();
+      }
+      if (MailDateTime.ParseDateString(String.Empty, true) != null) {
+        Assert.Fail();
+      }
+      if (MailDateTime.ParseDateString(String.Empty, false) != null) {
+        Assert.Fail();
+      }
     }
 
     [Test]
@@ -2867,116 +2869,116 @@ if (MailDateTime.ParseDateString(String.Empty, false) != null) {
       }
     }
 
-[Test]
-public void TestEmptyBody() {
-var msg = new Message();
-msg = new Message(msg.GenerateBytes());
-byte[] bytes = msg.GetBody();
-Assert.AreEqual(0, bytes.Length);
-}
+    [Test]
+    public void TestEmptyBody() {
+      var msg = new Message();
+      msg = new Message(msg.GenerateBytes());
+      byte[] bytes = msg.GetBody();
+      Assert.AreEqual(0, bytes.Length);
+    }
 
-[Test]
-public void TestTwoToFields() {
-var msg = new Message();
-msg.AddHeader("to", "a@example.com");
-msg.AddHeader("to", "b@example.com");
-string msggen = msg.Generate();
-int io = msggen.IndexOf(
-    "To: a@example.com\u002c b@example.com",
-    StringComparison.Ordinal);
-Assert.AreEqual(-1, io);
-}
+    [Test]
+    public void TestTwoToFields() {
+      var msg = new Message();
+      msg.AddHeader("to", "a@example.com");
+      msg.AddHeader("to", "b@example.com");
+      string msggen = msg.Generate();
+      int io = msggen.IndexOf(
+        "To: a@example.com\u002c b@example.com",
+        StringComparison.Ordinal);
+      Assert.AreEqual(-1, io);
+    }
 
-[Test]
-public void TestDateStringHttp() {
- int[] dtime;
- dtime = MailDateTime.ParseDateStringHttp(
-  "Mon\u002c 06 May 2019 01:23:45 GMT");
- Assert.AreEqual(2019, dtime[0]);
- Assert.AreEqual(5, dtime[1]);
- Assert.AreEqual(6, dtime[2]);
- Assert.AreEqual(1, dtime[3]);
- Assert.AreEqual(23, dtime[4]);
- Assert.AreEqual(45, dtime[5]);
- Assert.AreEqual(0, dtime[6]);
- Assert.AreEqual(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp(
-  "Tue\u002c 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-  "Mon 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-  "Fun\u002c 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-  "Monday\u002c 06 May 2019 01:23:45 GMT");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Monday\u002c 06-May-19 01:23:45 GMT");
- Assert.AreEqual(2019, dtime[0]);
- Assert.AreEqual(5, dtime[1]);
- Assert.AreEqual(6, dtime[2]);
- Assert.AreEqual(1, dtime[3]);
- Assert.AreEqual(23, dtime[4]);
- Assert.AreEqual(45, dtime[5]);
- Assert.AreEqual(0, dtime[6]);
- Assert.AreEqual(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp(
-   "Tuesday\u002c 06-May-19 01:23:45 GMT");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Funday\u002c 06-May-19 01:23:45 GMT");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Mon\u002c 06-May-19 01:23:45 GMT");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
- Assert.AreEqual(2019, dtime[0]);
- Assert.AreEqual(5, dtime[1]);
- Assert.AreEqual(6, dtime[2]);
- Assert.AreEqual(1, dtime[3]);
- Assert.AreEqual(23, dtime[4]);
- Assert.AreEqual(45, dtime[5]);
- Assert.AreEqual(0, dtime[6]);
- Assert.AreEqual(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
- Assert.AreEqual(2019, dtime[0]);
- Assert.AreEqual(5, dtime[1]);
- Assert.AreEqual(13, dtime[2]);
- Assert.AreEqual(1, dtime[3]);
- Assert.AreEqual(23, dtime[4]);
- Assert.AreEqual(45, dtime[5]);
- Assert.AreEqual(0, dtime[6]);
- Assert.AreEqual(0, dtime[7]);
- dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp(
-   "Mon\u002c May 13 01:23:45 2019");
- if (dtime != null) {
-   Assert.Fail();
- }
- dtime = MailDateTime.ParseDateStringHttp("Fun May 13 01:23:45 2019");
- if (dtime != null) {
-   Assert.Fail();
- }
-}
+    [Test]
+    public void TestDateStringHttp() {
+      int[] dtime;
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Mon\u002c 06 May 2019 01:23:45 GMT");
+      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(5, dtime[1]);
+      Assert.AreEqual(6, dtime[2]);
+      Assert.AreEqual(1, dtime[3]);
+      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(45, dtime[5]);
+      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Tue\u002c 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Mon 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Fun\u002c 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+       "Monday\u002c 06 May 2019 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Monday\u002c 06-May-19 01:23:45 GMT");
+      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(5, dtime[1]);
+      Assert.AreEqual(6, dtime[2]);
+      Assert.AreEqual(1, dtime[3]);
+      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(45, dtime[5]);
+      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Tuesday\u002c 06-May-19 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Funday\u002c 06-May-19 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Mon\u002c 06-May-19 01:23:45 GMT");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45 2019");
+      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(5, dtime[1]);
+      Assert.AreEqual(6, dtime[2]);
+      Assert.AreEqual(1, dtime[3]);
+      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(45, dtime[5]);
+      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
+      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(5, dtime[1]);
+      Assert.AreEqual(13, dtime[2]);
+      Assert.AreEqual(1, dtime[3]);
+      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(45, dtime[5]);
+      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(0, dtime[7]);
+      dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp(
+        "Mon\u002c May 13 01:23:45 2019");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+      dtime = MailDateTime.ParseDateStringHttp("Fun May 13 01:23:45 2019");
+      if (dtime != null) {
+        Assert.Fail();
+      }
+    }
     [Test]
     public void TestNamedAddressNoThrow() {
       var msg = new Message();

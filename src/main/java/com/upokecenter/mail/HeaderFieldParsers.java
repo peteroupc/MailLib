@@ -721,7 +721,8 @@ str) {
       }
       int index = HeaderParser.ParseCFWS(str, 0, str.length(), null);
       int noIndex = index;
-      if (index +1 < str.length() && str.charAt(index)=='N' && str.charAt(index+1)=='O') {
+      if (index + 1 < str.length() && str.charAt(index) == 'N' && str.charAt(index + 1) ==
+'O') {
         index = HeaderParser.ParseCFWS(str, index + 2, str.length(), null);
         if (index != str.length()) {
           return null;
@@ -754,46 +755,46 @@ str) {
       index = index2;
       while (index < str.length()) {
         if (index >= str.length() || str.charAt(index) != '<') {
-             // Downgrade rest of String
-             sstr = str.substring(index, (index)+(str.length() - index));
-             DowngradeCFWS(enc, sstr, true);
-             return enc.toString();
+          // Downgrade rest of String
+          sstr = str.substring(index, (index)+(str.length() - index));
+          DowngradeCFWS(enc, sstr, true);
+          return enc.toString();
         }
         boolean found = false;
         enc.AppendSymbol("<");
         ++index;
         while (index < str.length()) {
-           index = HeaderParser.ParseFWS(str, index, str.length(), null);
-           int c = str.charAt(index);
-           if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() && (c &
+          index = HeaderParser.ParseFWS(str, index, str.length(), null);
+          int c = str.charAt(index);
+          if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() && (c &
 0xfc00) == 0xdc00) {
-             sstr = str.substring(index, (index)+(2));
-             enc.AppendSymbol(sstr);
-             index += 2;
-           } else if ((c & 0xf800) == 0xd800) {
-             // Downgrade rest of String
-             sstr = str.substring(index, (index)+(str.length() - index));
-             DowngradeCFWS(enc, sstr, true);
-             return enc.toString();
-           } else if (c == 0x3e) {
-             // Right angle bracket '>'
-             String uri = sb.toString();
-             enc.AppendSymbol(">");
-             ++index;
-             if (!URIUtility.IsValidIRI(uri)) {
-               // Downgrade rest of String
-               sstr = str.substring(index, (index)+(str.length() - index));
-               DowngradeCFWS(enc, sstr, true);
-               return enc.toString();
-             }
-             list.add(uri);
-             found = true;
-             break;
-           } else {
-             sstr = str.substring(index, (index)+(1));
-             enc.AppendSymbol(sstr);
-             ++index;
-           }
+            sstr = str.substring(index, (index)+(2));
+            enc.AppendSymbol(sstr);
+            index += 2;
+          } else if ((c & 0xf800) == 0xd800) {
+            // Downgrade rest of String
+            sstr = str.substring(index, (index)+(str.length() - index));
+            DowngradeCFWS(enc, sstr, true);
+            return enc.toString();
+          } else if (c == 0x3e) {
+            // Right angle bracket '>'
+            String uri = sb.toString();
+            enc.AppendSymbol(">");
+            ++index;
+            if (!URIUtility.IsValidIRI(uri)) {
+              // Downgrade rest of String
+              sstr = str.substring(index, (index)+(str.length() - index));
+              DowngradeCFWS(enc, sstr, true);
+              return enc.toString();
+            }
+            list.add(uri);
+            found = true;
+            break;
+          } else {
+            sstr = str.substring(index, (index)+(1));
+            enc.AppendSymbol(sstr);
+            ++index;
+          }
         }
         if (!found) {
           break;
@@ -803,9 +804,9 @@ str) {
         DowngradeCFWS(enc, sstr, false);
         index = index2;
         if (index >= str.length() || str.charAt(index) != ',') {
-               sstr = str.substring(index, (index)+(str.length() - index));
-               DowngradeCFWS(enc, sstr, true);
-               return enc.toString();
+          sstr = str.substring(index, (index)+(str.length() - index));
+          DowngradeCFWS(enc, sstr, true);
+          return enc.toString();
         }
         enc.AppendSymbol(",");
         index2 = HeaderParser.ParseCFWS(str, index + 1, str.length(), null);
@@ -820,61 +821,61 @@ str) {
       HeaderEncoder enc,
       String str,
       boolean multiple) {
-        if (str.indexOf('(') < 0 ||
-          !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
-          // Contains no comments, or no text needs to be encoded
-          enc.AppendString(str, 0, str.length());
-          return;
-        }
-        Tokener tokener = new Tokener();
-        int endIndex;
-        if (multiple) {
-           endIndex = str.length();
-           HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, 0,
-  str.length(), tokener);
-        } else {
-           endIndex = HeaderParser.ParseCFWS(str, 0, str.length(), tokener);
-        }
-        if (endIndex != str.length()) {
-          // The CFWS is syntactically invalid,
-          // so downgrading is not possible
-          enc.AppendString(str, 0, str.length());
-          return;
-        }
-        int lastIndex = 0;
-        // Get each relevant token sorted by starting index
-        List<int[]> tokens = tokener.GetTokens();
-        enc.Reset();
-        for (int[] token : tokens) {
-          if (token[1] < lastIndex) {
-            continue;
-          }
-          if (token[0] == HeaderParserUtility.TokenComment) {
-            int startIndex = token[1];
-            endIndex = token[2];
-            if (Message.HasTextToEscape(str, startIndex, endIndex)) {
-              enc.AppendString(str, lastIndex, startIndex);
-              Rfc2047.EncodeComment(
-                enc,
-                str,
-                startIndex,
-                endIndex);
-              lastIndex = endIndex;
-            }
-          }
-        }
-        enc.AppendString(str, lastIndex, str.length());
+      if (str.indexOf('(') < 0 ||
+        !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+        // Contains no comments, or no text needs to be encoded
+        enc.AppendString(str, 0, str.length());
+        return;
       }
+      Tokener tokener = new Tokener();
+      int endIndex;
+      if (multiple) {
+        endIndex = str.length();
+        HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, 0,
+  str.length(), tokener);
+      } else {
+        endIndex = HeaderParser.ParseCFWS(str, 0, str.length(), tokener);
+      }
+      if (endIndex != str.length()) {
+        // The CFWS is syntactically invalid,
+        // so downgrading is not possible
+        enc.AppendString(str, 0, str.length());
+        return;
+      }
+      int lastIndex = 0;
+      // Get each relevant token sorted by starting index
+      List<int[]> tokens = tokener.GetTokens();
+      enc.Reset();
+      for (int[] token : tokens) {
+        if (token[1] < lastIndex) {
+          continue;
+        }
+        if (token[0] == HeaderParserUtility.TokenComment) {
+          int startIndex = token[1];
+          endIndex = token[2];
+          if (Message.HasTextToEscape(str, startIndex, endIndex)) {
+            enc.AppendString(str, lastIndex, startIndex);
+            Rfc2047.EncodeComment(
+              enc,
+              str,
+              startIndex,
+              endIndex);
+            lastIndex = endIndex;
+          }
+        }
+      }
+      enc.AppendString(str, lastIndex, str.length());
+    }
 
     // Determines whether a List-Post field value contains "NO" in that
     // combination of case, and optional CFWS before or after the "NO"
     static boolean IsListPostNo(String str, int index, int endIndex) {
-        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        if (index +1 < endIndex && str.charAt(index)=='N' && str.charAt(index+1)=='O') {
-          index = HeaderParser.ParseCFWS(str, index + 2, endIndex, null);
-          return index == endIndex;
-        }
-        return false;
+      index = HeaderParser.ParseCFWS(str, index, endIndex, null);
+      if (index + 1 < endIndex && str.charAt(index) == 'N' && str.charAt(index + 1) == 'O') {
+        index = HeaderParser.ParseCFWS(str, index + 2, endIndex, null);
+        return index == endIndex;
+      }
+      return false;
     }
 
     // NOTE: See RFC 2369 section 2
@@ -895,37 +896,37 @@ endIndex, ITokener tokener) {
         boolean found = false;
         StringBuilder sb = new StringBuilder();
         while (index < endIndex) {
-           index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
-           int c = str.charAt(index);
-           if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex && (c &
+          index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
+          int c = str.charAt(index);
+          if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex && (c &
 0xfc00) == 0xdc00) {
-             sb.append(str.charAt(index));
-             sb.append(str.charAt(index + 1));
-             index += 2;
-           } else if ((c & 0xf800) == 0xd800) {
-             break;
-           }
-           if (c == 0x3e) {
-             // Right angle bracket '>'
-             String uri = sb.toString();
-             if (!URIUtility.IsValidIRI(uri)) {
-               break;
-             }
-             list.add(uri);
-             ++index;
-             found = true;
-             break;
-           } else {
-             sb.append(str.charAt(index));
-             ++index;
-           }
+            sb.append(str.charAt(index));
+            sb.append(str.charAt(index + 1));
+            index += 2;
+          } else if ((c & 0xf800) == 0xd800) {
+            break;
+          }
+          if (c == 0x3e) {
+            // Right angle bracket '>'
+            String uri = sb.toString();
+            if (!URIUtility.IsValidIRI(uri)) {
+              break;
+            }
+            list.add(uri);
+            ++index;
+            found = true;
+            break;
+          } else {
+            sb.append(str.charAt(index));
+            ++index;
+          }
         }
         if (!found) {
           break;
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
         if (index >= endIndex || str.charAt(index) != ',') {
-           break;
+          break;
         }
         index = HeaderParser.ParseCFWS(str, index + 1, endIndex, tokener);
       }
@@ -937,7 +938,6 @@ endIndex, ITokener tokener) {
     private static final class HeaderListRfc2369 extends StructuredHeaderField {
       @Override public String DowngradeHeaderField(String name, String str) {
         // The 2 below is for the colon and space after the header field name
-        // TODO: Handle special case of List-Post "NO"
         // NOTE: May introduce spaces within URLs; even though message
         // transport agents (MTAs) must not introduce such spaces, this is not
         // a deviation from RFC 2369, however, because this method is not
@@ -967,12 +967,12 @@ endIndex, ITokener tokener) {
         int index,
         int endIndex,
         ITokener tokener) {
-          HeaderParserUtility.TraverseCFWSAndQuotedStrings(
-            str,
-            index,
-            endIndex,
-            tokener);
-          return endIndex;
+        HeaderParserUtility.TraverseCFWSAndQuotedStrings(
+          str,
+          index,
+          endIndex,
+          tokener);
+        return endIndex;
       }
     }
 
