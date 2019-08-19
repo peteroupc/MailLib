@@ -1253,11 +1253,11 @@ namespace PeterO.Mail {
           string stripped = StripHeadingStart(line);
           formatted.Append("<h").Append((char)('0' + heading))
                .Append(">").Append(FormatParagraph(stripped, links))
-               .Append("</h").Append((char)('0' + heading))
-               .Append(">");
-             } else if (IsCodeBlockLine(line)) {
-               isSingleParagraph = false;
-               if (haveParagraph) {
+               .Append("</h").Append((char)('0' + heading));
+          formatted.Append(">");
+        } else if (IsCodeBlockLine(line)) {
+          isSingleParagraph = false;
+          if (haveParagraph) {
             haveParagraph = false;
             formatted.Append("<p>");
             formatted.Append(paragraph.ToString());

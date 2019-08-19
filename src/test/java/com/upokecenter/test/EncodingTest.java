@@ -1860,27 +1860,8 @@ public final void setValueMessage(Message value) {
       }
     }
 
-    // @Test
+    @Test
     public void TestCommentsToWords() {
-      {
-        String stringTemp = EncodeComment("(x)");
-        Assert.assertEquals(
-  "(=?utf-8?Q?x?=)",
-  stringTemp);
-      }
-      {
-        String stringTemp = EncodeComment("(x\\y)");
-        Assert.assertEquals(
-  "(=?utf-8?Q?xy?=)",
-  stringTemp);
-      }
-      {
-        String stringTemp = EncodeComment("(x\r\n y)");
-        Assert.assertEquals(
-  "(=?utf-8?Q?x_y?=)",
-  stringTemp);
-      }
-
       {
         String stringTemp = EncodeComment("(x\u00a0)");
         Assert.assertEquals(
@@ -1897,19 +1878,6 @@ public final void setValueMessage(Message value) {
         String stringTemp = EncodeComment("(x\\\u00a0)");
         Assert.assertEquals(
   "(=?utf-8?Q?x=C2=A0?=)",
-  stringTemp);
-      }
-      Assert.assertEquals("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
-      Assert.assertEquals(
-  "(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
-  EncodeComment("(x()y)"));
-      Assert.assertEquals(
-  "(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
-  EncodeComment("(x(a\\b)y)"));
-      {
-        String stringTemp = EncodeComment("()");
-        Assert.assertEquals(
-  "()",
   stringTemp);
       }
     }

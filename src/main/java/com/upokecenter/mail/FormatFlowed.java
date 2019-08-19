@@ -1255,11 +1255,11 @@ private FormatFlowed() {
           String stripped = StripHeadingStart(line);
           formatted.append("<h").append((char)('0' + heading))
                .append(">").append(FormatParagraph(stripped, links))
-               .append("</h").append((char)('0' + heading))
-               .append(">");
-             } else if (IsCodeBlockLine(line)) {
-               isSingleParagraph = false;
-               if (haveParagraph) {
+               .append("</h").append((char)('0' + heading));
+          formatted.append(">");
+        } else if (IsCodeBlockLine(line)) {
+          isSingleParagraph = false;
+          if (haveParagraph) {
             haveParagraph = false;
             formatted.append("<p>");
             formatted.append(paragraph.toString());

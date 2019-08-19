@@ -501,29 +501,29 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
     // Parameters not conforming to RFC 2231, but
     // have names with asterisks
     static final String[] NoParams = {
-";param*xx=value",
-  ";param*0xx=value",
-  ";param*xx0=value",
-  ";param*xx*=value",
-  ";param*0*0=value",
-  ";param*0*x=value",
-  ";param*0xx*=value",
-  ";param*xx0*=value",
-  ";param*0*0*=value",
-  ";param*0*x*=value",
-  ";param*x*0*=value",
-  ";param*x*x*=value",
-  "; charset*='i-unknown'utf-8" /* invalid language tag, no charset */,
-  "; charset*=us-ascii'i-unknown'utf-8" /* invalid language tag, defined
-  charset */,
-  ";param*xx*=utf-8''value",
-  ";param*0xx*=utf-8''value",
-  ";param*xx0*=utf-8''value",
-  ";param*0*0*=utf-8''value",
-  ";param*0*x*=utf-8''value",
-  ";param*x*0*=utf-8''value",
-  ";param*x*x*=utf-8''value",
-  };
+      ";param*xx=value",
+      ";param*0xx=value",
+      ";param*xx0=value",
+      ";param*xx*=value",
+      ";param*0*0=value",
+      ";param*0*x=value",
+      ";param*0xx*=value",
+      ";param*xx0*=value",
+      ";param*0*0*=value",
+      ";param*0*x*=value",
+      ";param*x*0*=value",
+      ";param*x*x*=value",
+      "; charset*='i-unknown'utf-8" /* invalid language tag, no charset */,
+      "; charset*=us-ascii'i-unknown'utf-8" /* invalid language tag, defined
+      charset */,
+      ";param*xx*=utf-8''value",
+      ";param*0xx*=utf-8''value",
+      ";param*xx0*=utf-8''value",
+      ";param*0*0*=utf-8''value",
+      ";param*0*x*=utf-8''value",
+      ";param*x*0*=utf-8''value",
+      ";param*x*x*=utf-8''value",
+    };
 
     @Test
     public void TestParseIDB() {

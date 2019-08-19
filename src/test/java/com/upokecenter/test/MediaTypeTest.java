@@ -292,11 +292,9 @@ import com.upokecenter.mail.*;
     public void TestIsMultipart() {
       for (Map<String, String> dict : ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
-        {
-          Object objectTemp = dict.get("multipart").equals("1");
-  Object objectTemp2 = mt.isMultipart();
-  Assert.assertEquals(objectTemp, objectTemp2);
-}
+        Object objectTemp = dict.get("multipart").equals("1");
+        Object objectTemp2 = mt.isMultipart();
+        Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
     @Test

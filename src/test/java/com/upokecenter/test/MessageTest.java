@@ -20,7 +20,10 @@ import com.upokecenter.mail.*;
       Assert.assertEquals(1, msg.getParts().size());
     }
 
-    public void TestExtractHeaderOne(String expected, String msg, String name) {
+    public static void TestExtractHeaderOne(
+      String expected,
+      String msg,
+      String name) {
       if (msg == null) {
         Assert.assertEquals(expected, Message.ExtractHeader(null, name));
       } else {
@@ -31,37 +34,41 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestExtractHeader() {
-      this.TestExtractHeaderOne(null, null, "From");
-      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody", null);
-      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "from");
-      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody",
-  "f\u007from");
-      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody",
-  "other");
-      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "From");
-      this.TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "fRoM");
-      this.TestExtractHeaderOne(null, "From: x\r\nDate: y", "from");
-      this.TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n", "from");
-      this.TestExtractHeaderOne(
+      TestExtractHeaderOne(null, null, "From");
+      TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n\r\nBody", null);
+      TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "from");
+      TestExtractHeaderOne(
+        null,
+        "From: x\r\nDate: y\r\n\r\nBody",
+        "f\u007from");
+      TestExtractHeaderOne(
+        null,
+        "From: x\r\nDate: y\r\n\r\nBody",
+        "other");
+      TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "From");
+      TestExtractHeaderOne("x", "From: x\r\nDate: y\r\n\r\nBody", "fRoM");
+      TestExtractHeaderOne(null, "From: x\r\nDate: y", "from");
+      TestExtractHeaderOne(null, "From: x\r\nDate: y\r\n", "from");
+      TestExtractHeaderOne(
         "x",
         "X-Header: w\r\nFrom: x\r\nDate:\u0020y\r\n\r\nBody",
         "from");
-      this.TestExtractHeaderOne("x",
+      TestExtractHeaderOne("x",
        "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
        "From");
-      this.TestExtractHeaderOne(
+      TestExtractHeaderOne(
         "x",
         "X-Header: w\r\nFrom: x\r\nDate: y\r\n\r\nBody",
         "fRoM");
-      this.TestExtractHeaderOne(
+      TestExtractHeaderOne(
         "x y z",
         "X-Header: w\r\nFrom: x\r\n y\r\n\u0020z\r\n\r\nBody",
         "from");
-      this.TestExtractHeaderOne(
+      TestExtractHeaderOne(
         "x \u0020y z",
         "X-Header: w\r\nFrom: x\r\n \u0020y\r\n\u0020z\r\n\r\nBody",
         "from");
-      this.TestExtractHeaderOne(
+      TestExtractHeaderOne(
         null,
         "X-Header: w\r\n\r\nFrom: x\r\n\r\nBody",
         "from");

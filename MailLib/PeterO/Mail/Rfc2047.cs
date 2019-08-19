@@ -408,8 +408,9 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                     afterLast,
                     context,
                     encodingChar);
-                    if (i2 != index && i2 + 1 < endIndex &&
-                str[i2] == '?' && str[i2 + 1] == '=' && i2 + 2 == afterLast) {
+                  if (i2 != index && i2 + 1 < endIndex &&
+                    str[i2] == '?' && str[i2 + 1] == '=' &&
+                    i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -442,6 +443,14 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                 ICharacterEncoding encoding = Encodings.GetEncoding(
                   charset,
                   true);
+                // HACK
+                if (encoding == null && (
+                    charset.Equals("gb2312", StringComparison.Ordinal) ||
+                    charset.Equals("GB2312", StringComparison.Ordinal))) {
+                  encoding = Encodings.GetEncoding(
+                    charset,
+                    false);
+                }
                 if (encoding == null) {
                   // Console.WriteLine("Unknown charset " + charset);
                   decodedWord = str.Substring(

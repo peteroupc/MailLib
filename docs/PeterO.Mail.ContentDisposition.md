@@ -2,7 +2,7 @@
 
     public class ContentDisposition
 
-  Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
+ Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
 
  <b>About the "filename" parameter</b>
 

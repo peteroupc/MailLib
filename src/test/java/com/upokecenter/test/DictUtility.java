@@ -27,7 +27,7 @@ private DictUtility() {
         throw new NullPointerException("keyvalues");
       }
       if (keyvalues.length % 2 != 0) {
-        throw new IllegalArgumentException("keyvalues");
+        throw new IllegalArgumentException("keyvalues has odd length");
       }
       HashMap<String, String> dict = new HashMap<String, String>();
       for (int i = 0; i < keyvalues.length; i += 2) {
@@ -92,8 +92,10 @@ private DictUtility() {
         }
     }
 
-    public static String[] SetResource(String[] resources, String name,
-  String value) {
+    public static String[] SetResource(
+      String[] resources,
+      String name,
+      String value) {
       if (resources == null) {
         throw new NullPointerException("resources");
       }
@@ -112,7 +114,8 @@ private DictUtility() {
       String resourceLine = name + "=" + sb.toString();
       boolean added = false;
       for (String resource : resources) {
-        if (resource.indexOf(name + "=") == 0) {
+        if (resource.indexOf(
+          name + "=") == 0) {
           list.add(resourceLine);
           added = true;
         } else {

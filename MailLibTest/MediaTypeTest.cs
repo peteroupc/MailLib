@@ -293,12 +293,10 @@ ResourceUtil.GetDictList("paramtypes")) {
       foreach (IDictionary<string, string> dict in
 ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
-        {
-          object objectTemp = dict["multipart"].Equals("1",
-  StringComparison.Ordinal);
-  object objectTemp2 = mt.IsMultipart;
-  Assert.AreEqual(objectTemp, objectTemp2);
-}
+        object objectTemp = dict["multipart"].Equals("1",
+            StringComparison.Ordinal);
+        object objectTemp2 = mt.IsMultipart;
+        Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
     [Test]

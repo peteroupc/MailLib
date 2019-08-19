@@ -1870,27 +1870,8 @@ namespace MailLibTest {
       }
     }
 
-    // [Test]
+    [Test]
     public void TestCommentsToWords() {
-      {
-        string stringTemp = EncodeComment("(x)");
-        Assert.AreEqual(
-  "(=?utf-8?Q?x?=)",
-  stringTemp);
-      }
-      {
-        string stringTemp = EncodeComment("(x\\y)");
-        Assert.AreEqual(
-  "(=?utf-8?Q?xy?=)",
-  stringTemp);
-      }
-      {
-        string stringTemp = EncodeComment("(x\r\n y)");
-        Assert.AreEqual(
-  "(=?utf-8?Q?x_y?=)",
-  stringTemp);
-      }
-
       {
         string stringTemp = EncodeComment("(x\u00a0)");
         Assert.AreEqual(
@@ -1907,19 +1888,6 @@ namespace MailLibTest {
         string stringTemp = EncodeComment("(x\\\u00a0)");
         Assert.AreEqual(
   "(=?utf-8?Q?x=C2=A0?=)",
-  stringTemp);
-      }
-      Assert.AreEqual("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
-      Assert.AreEqual(
-  "(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
-  EncodeComment("(x()y)"));
-      Assert.AreEqual(
-  "(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
-  EncodeComment("(x(a\\b)y)"));
-      {
-        string stringTemp = EncodeComment("()");
-        Assert.AreEqual(
-  "()",
   stringTemp);
       }
     }

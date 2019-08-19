@@ -2,7 +2,7 @@
 
     public static class ProtocolStrings
 
-  Contains methods for preparing user-facing protocol strings (such as user identifiers) for equality comparison and validity checking. Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U + 0000 to U + 007F) of the Unicode Standard. See RFC 8264. Currently there are four profiles for internationalized strings: two for strings serving as user identifiers, one for arbitrary single-line strings (such as passwords), and one for display names.
+ Contains methods for preparing user-facing protocol strings (such as user identifiers) for equality comparison and validity checking. Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See RFC 8264. Currently there are four profiles for internationalized strings: two for strings serving as user identifiers, one for arbitrary single-line strings (such as passwords), and one for display names.
 
   * Other user-facing internationalized strings not expressly handled by this class include the following. Their preparation and comparison are outside the scope of this class.  -- File and directory names.  -- Domain names.  -- Text strings with multiple language versions (such as a checkbox's label or a dialog box's title).  -- Profile data voluntarily entered by users.  -- The text of article, post, and message bodies.
 
@@ -27,7 +27,7 @@
     public static bool IsInFreeformClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U + 0021 to U + 007E), but excludes control characters and separators. Horizontal tab, U + 0009, and other code points in the range U + 0000 to U + 001F, are among the excluded characters.
+ Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U+0021 to U+007E), but excludes control characters and separators. Horizontal tab, U+0009, and other code points in the range U+0000 to U+001F, are among the excluded characters.
 
    <b>Parameters:</b>
 
@@ -44,7 +44,7 @@
     public static bool IsInIdentifierClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U + 0000 to U + 007F).
+ Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
 
    <b>Parameters:</b>
 

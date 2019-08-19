@@ -184,21 +184,18 @@ import com.upokecenter.mail.*;
  }
       {
         String stringTemp = na.getAddress().toString();
-        Assert.assertEquals(
-          "me@example.com",
-          stringTemp);
-}
-na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
+        Assert.assertEquals("me@example.com", stringTemp);
+      }
+      na = new NamedAddress(
+        "(comment) Me (comment) <me@example.com> (comment)");
       Assert.assertEquals("Me", na.getName());
       if (na.isGroup()) {
  Assert.fail();
  }
       {
         String stringTemp = na.getAddress().toString();
-        Assert.assertEquals(
-          "me@example.com",
-          stringTemp);
-}
+        Assert.assertEquals("me@example.com", stringTemp);
+      }
       na = new NamedAddress("=?utf-8?q?Me?= <me@example.com>");
       Assert.assertEquals("Me", na.getName());
       if (na.isGroup()) {
@@ -206,17 +203,13 @@ na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
  }
       {
         String stringTemp = na.getAddress().toString();
-        Assert.assertEquals(
-          "me@example.com",
-          stringTemp);
-}
+        Assert.assertEquals("me@example.com", stringTemp);
+      }
       {
         String stringTemp = na.toString();
-        Assert.assertEquals(
-  "Me <me@example.com>",
-  stringTemp);
-}
-na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
+        Assert.assertEquals("Me <me@example.com>", stringTemp);
+      }
+      na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
                   "me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
       if (na.isGroup()) {
@@ -224,16 +217,12 @@ na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
  }
       {
         String stringTemp = na.getAddress().toString();
-        Assert.assertEquals(
-          "me@example.com",
-          stringTemp);
-}
+        Assert.assertEquals("me@example.com", stringTemp);
+      }
       {
         String stringTemp = na.toString();
-        Assert.assertEquals(
-  "John's Office <me@example.com>",
-  stringTemp);
-}
+        Assert.assertEquals("John's Office <me@example.com>", stringTemp);
+      }
       na = new NamedAddress("\"Me\" <me@example.com>");
       Assert.assertEquals("Me", na.getName());
       if (na.isGroup()) {

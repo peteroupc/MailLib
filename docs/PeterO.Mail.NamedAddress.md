@@ -33,7 +33,7 @@
   *  `John <john@example.com>`
 
   *  `"Group" : Tom <tom@example.com>, Jane
-             <jane@example.com>;`
+            <jane@example.com>;`
 
     <b>Parameters:</b>
 

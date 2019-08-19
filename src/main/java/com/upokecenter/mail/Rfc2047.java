@@ -390,8 +390,9 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
                     afterLast,
                     context,
                     encodingChar);
-                    if (i2 != index && i2 + 1 < endIndex &&
-                str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' && i2 + 2 == afterLast) {
+                  if (i2 != index && i2 + 1 < endIndex &&
+                    str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
+                    i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -424,6 +425,14 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
                 ICharacterEncoding encoding = Encodings.GetEncoding(
                   charset,
                   true);
+                // HACK
+                if (encoding == null && (
+                    charset.equals("gb2312") ||
+                    charset.equals("GB2312"))) {
+                  encoding = Encodings.GetEncoding(
+                    charset,
+                    false);
+                }
                 if (encoding == null) {
                   // System.out.println("Unknown charset " + charset);
                   decodedWord = str.substring(

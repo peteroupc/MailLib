@@ -8,7 +8,7 @@ using Test;
 namespace MailLibTest {
   [TestFixture]
   public class DataUrlTest {
-    public bool SplitIRIFails(string iri, bool expectedNonNull) {
+    public static bool SplitIRIFails(string iri, bool expectedNonNull) {
       return expectedNonNull ? URIUtility.SplitIRI(iri) == null :
          URIUtility.SplitIRI(iri) != null;
     }
@@ -19,7 +19,7 @@ namespace MailLibTest {
       string[] cases = DictUtility.ParseJSONStringArray(
          resources.GetString("ipv6parse"));
       for (var i = 0; i < cases.Length; i += 2) {
-        if (this.SplitIRIFails(
+        if (SplitIRIFails(
           cases[i],
           cases[i + 1].Equals("1", StringComparison.Ordinal))) {
           Assert.Fail(cases[i] + " " + cases[i + 1]);

@@ -26,7 +26,7 @@ namespace MailLibTest {
         throw new ArgumentNullException(nameof(keyvalues));
       }
       if (keyvalues.Length % 2 != 0) {
-        throw new ArgumentException("keyvalues");
+        throw new ArgumentException("keyvalues has odd length");
       }
       var dict = new Dictionary<string, string>();
       for (var i = 0; i < keyvalues.Length; i += 2) {
@@ -91,8 +91,10 @@ namespace MailLibTest {
         }
     }
 
-    public static string[] SetResource(string[] resources, string name,
-  string value) {
+    public static string[] SetResource(
+      string[] resources,
+      string name,
+      string value) {
       if (resources == null) {
         throw new ArgumentNullException(nameof(resources));
       }
@@ -111,7 +113,9 @@ namespace MailLibTest {
       string resourceLine = name + "=" + sb.ToString();
       var added = false;
       foreach (string resource in resources) {
-        if (resource.IndexOf(name + "=") == 0) {
+        if (resource.IndexOf(
+          name + "=",
+          StringComparison.Ordinal) == 0) {
           list.Add(resourceLine);
           added = true;
         } else {

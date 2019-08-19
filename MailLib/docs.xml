@@ -1585,6 +1585,12 @@
     </param>
     <returns>This instance.
     </returns>
+    <exception cref='ArgumentNullException'>The parameter
+      <paramref name='str'/>
+       is null.
+    </exception>
+    <exception cref='ArgumentException'>Str is empty.
+    </exception>
   </doc>
   <doc name='M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)'>
     <summary>Sets a parameter of this content disposition.
@@ -2364,7 +2370,7 @@
   <doc name='M:PeterO.Mail.MediaTypeBuilder.SetSubType(System.String)'>
     <summary>Sets this media type's subtype, such as "plain" or "xml" . This method
       enables the pattern of method chaining (e.g.,
-      <c>new ...().Set...().Set...()</c> ) unlike with the SubType property in .NET or the setSubType method (with
+      <c>new...().Set...().Set...()</c> ) unlike with the SubType property in.NET or the setSubType method (with
       small s) in Java.
     </summary>
     <param name='str'>A text string naming a media subtype.
@@ -2383,7 +2389,7 @@
   <doc name='M:PeterO.Mail.MediaTypeBuilder.SetTopLevelType(System.String)'>
     <summary>Sets this media type's top-level type. This method enables the pattern of
       method chaining (e.g.,
-      <c>new ...().Set...().Set...()</c> ) unlike with the TopLevelType property in .NET or the setTopLevelType
+      <c>new...().Set...().Set...()</c> ) unlike with the TopLevelType property in.NET or the setTopLevelType
       method (with small s) in Java.
     </summary>
     <param name='str'>A text string naming a top-level type, such as "text" or "audio" .

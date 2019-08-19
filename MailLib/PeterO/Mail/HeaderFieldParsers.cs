@@ -835,8 +835,11 @@ str) {
       int endIndex;
       if (multiple) {
         endIndex = str.Length;
-        HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, 0,
-  str.Length, tokener);
+        HeaderParserUtility.TraverseCFWSAndQuotedStrings(
+          str,
+          0,
+          str.Length,
+          tokener);
       } else {
         endIndex = HeaderParser.ParseCFWS(str, 0, str.Length, tokener);
       }
@@ -885,8 +888,11 @@ str) {
     // NOTE: See RFC 2369 section 2
     // NOTE: Applies to List-Help, List-Archive, List-Unsubscribe,
     // List-Owner, List-Subscribe, List-Post
-    internal static string[] GetListHeaderUris(string str, int index, int
-endIndex, ITokener tokener) {
+    internal static string[] GetListHeaderUris(
+      string str,
+      int index,
+      int endIndex,
+      ITokener tokener) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
@@ -902,8 +908,8 @@ endIndex, ITokener tokener) {
         while (index < endIndex) {
           index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
           int c = str[index];
-          if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex && (c &
-0xfc00) == 0xdc00) {
+          if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex &&
+            (c & 0xfc00) == 0xdc00) {
             sb.Append(str[index]);
             sb.Append(str[index + 1]);
             index += 2;

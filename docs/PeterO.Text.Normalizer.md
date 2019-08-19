@@ -4,7 +4,7 @@
 
 <b>Deprecated.</b> Use NormalizerInput instead; that class is much more flexible than Normalizer.
 
-  Implements the Unicode normalization algorithm and contains methods and functionality to test and convert Unicode strings for Unicode normalization.
+ Implements the Unicode normalization algorithm and contains methods and functionality to test and convert Unicode strings for Unicode normalization.
 
  NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 

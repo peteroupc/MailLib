@@ -168,50 +168,39 @@ namespace MailLibTest {
       Assert.IsFalse(na.IsGroup);
       {
         string stringTemp = na.Address.ToString();
-        Assert.AreEqual(
-          "me@example.com",
-          stringTemp);
-}
-na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
+        Assert.AreEqual("me@example.com", stringTemp);
+      }
+      na = new NamedAddress(
+        "(comment) Me (comment) <me@example.com> (comment)");
       Assert.AreEqual("Me", na.Name);
       Assert.IsFalse(na.IsGroup);
       {
         string stringTemp = na.Address.ToString();
-        Assert.AreEqual(
-          "me@example.com",
-          stringTemp);
-}
+        Assert.AreEqual("me@example.com", stringTemp);
+      }
       na = new NamedAddress("=?utf-8?q?Me?= <me@example.com>");
       Assert.AreEqual("Me", na.Name);
       Assert.IsFalse(na.IsGroup);
       {
         string stringTemp = na.Address.ToString();
-        Assert.AreEqual(
-          "me@example.com",
-          stringTemp);
-}
+        Assert.AreEqual("me@example.com", stringTemp);
+      }
       {
         string stringTemp = na.ToString();
-        Assert.AreEqual(
-  "Me <me@example.com>",
-  stringTemp);
-}
-na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
+        Assert.AreEqual("Me <me@example.com>", stringTemp);
+      }
+      na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
                   "me@example.com>");
       Assert.AreEqual("John's Office", na.Name);
       Assert.IsFalse(na.IsGroup);
       {
         string stringTemp = na.Address.ToString();
-        Assert.AreEqual(
-          "me@example.com",
-          stringTemp);
-}
+        Assert.AreEqual("me@example.com", stringTemp);
+      }
       {
         string stringTemp = na.ToString();
-        Assert.AreEqual(
-  "John's Office <me@example.com>",
-  stringTemp);
-}
+        Assert.AreEqual("John's Office <me@example.com>", stringTemp);
+      }
       na = new NamedAddress("\"Me\" <me@example.com>");
       Assert.AreEqual("Me", na.Name);
       Assert.IsFalse(na.IsGroup);
