@@ -2977,7 +2977,7 @@ try { if (fs != null) {
       String contentDisp = (this.getContentDisposition() == null) ? null :
         this.getContentDisposition().toString();
       int transferEnc = 0;
-      var isMultipart = builder.getTopLevelType().equals(
+      boolean isMultipart = builder.getTopLevelType().equals(
         "multipart");
       String boundary = "";
       if (isMultipart) {

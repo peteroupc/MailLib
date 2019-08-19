@@ -3032,7 +3032,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
       string contentDisp = (this.ContentDisposition == null) ? null :
         this.ContentDisposition.ToString();
       var transferEnc = 0;
-      var isMultipart = builder.TopLevelType.Equals(
+      bool isMultipart = builder.TopLevelType.Equals(
         "multipart",
         StringComparison.Ordinal);
       string boundary = String.Empty;

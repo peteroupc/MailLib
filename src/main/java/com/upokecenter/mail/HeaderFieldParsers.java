@@ -719,7 +719,7 @@ str) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      int index = HeaderParser.ParseCFWS(str, index, str.length(), null);
+      int index = HeaderParser.ParseCFWS(str, 0, str.length(), null);
       int noIndex = index;
       if (index +1 < str.length() && str.charAt(index)=='N' && str.charAt(index+1)=='O') {
         index = HeaderParser.ParseCFWS(str, index + 2, str.length(), null);
@@ -947,7 +947,7 @@ endIndex, ITokener tokener) {
         // field values) except to add certain header fields at the top of
         // the message.
         // DebugUtility.Log("before = "+str);
-        var lcname = DataUtilities.ToLowerCaseAscii(name);
+        String lcname = DataUtilities.ToLowerCaseAscii(name);
         HeaderEncoder enc = new HeaderEncoder(
           Message.MaxRecHeaderLineLength,
           name.length() + 2);
