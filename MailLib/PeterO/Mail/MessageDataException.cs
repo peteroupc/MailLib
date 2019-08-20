@@ -10,6 +10,9 @@ using System;
 namespace PeterO.Mail {
     /// <summary>Exception thrown when a message has invalid
     /// syntax.</summary>
+#if NET20 || NET40
+  [Serializable]
+#endif
   public sealed class MessageDataException : Exception {
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
@@ -32,5 +35,20 @@ namespace PeterO.Mail {
     public MessageDataException(string message, Exception innerException)
       : base(message, innerException) {
     }
+
+#if NET20 || NET40
+    /// <summary>Initializes a new instance of the
+    /// <see cref='PeterO.Mail.MessageDataException'/> class. Uses the given
+    /// serialization and streaming contexts.</summary>
+    /// <param name='info'>A System.Runtime.Serialization.SerializationInfo
+    /// object.</param>
+    /// <param name='context'>A
+    /// System.Runtime.Serialization.StreamingContext object.</param>
+    private MessageDataException(
+      System.Runtime.Serialization.SerializationInfo info,
+      System.Runtime.Serialization.StreamingContext context)
+      : base(info, context) {
+    }
+#endif
   }
 }

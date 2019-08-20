@@ -6,6 +6,9 @@
     <PackageId>PeterO.MailLib</PackageId>
     <Title>MailLib Library</Title>
     <Owners>Peter Occil</Owners>
+    <SignAssembly>True</SignAssembly>
+    <Copyright>Written by Peter O.  See https://github.com/peteroupc/MailLib/blob/master/LICENSE.md</Copyright>
+    <AssemblyOriginatorKeyFile>PeterO.snk</AssemblyOriginatorKeyFile>
     <Authors>Peter Occil</Authors>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>

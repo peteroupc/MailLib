@@ -1,21 +1,13 @@
 <package
-><metadata><version>0.13.0</version><id>PeterO.MailLib</id><requireLicenseAcceptance>false</requireLicenseAcceptance><releaseNotes>Version 0.13.0:
+><metadata><version>0.14.0</version><id>PeterO.MailLib</id><requireLicenseAcceptance>false</requireLicenseAcceptance><releaseNotes>Version 0.14.0:
 
-- The code for parsing and generating message headers and bodies was again
-rewritten in many places to improve robustness and conformance with RFCs that define
-the message format and MIME.  For instance, parsed messages with an unknown character
-encoding have their ContentType property set to &quot;application/octet-stream&quot;. (The original
-Content-Type header value is still available.)
-- Added methods to parse and generate Data URIs.
-- Added methods to parse and generate Mailto URIs.
-- Added ClearHeaders method to Message class.
-- Added public APIs to handle language tags.
-- Changed behavior of MakeFilename in a corner case.
-- Added ProtocolStrings class for checking protocol strings.
-- Added public APIs to process and generate multiple-language messages (multipart/multilingual).
-- Deprecated ToAddresses, FromAddresses, CcAddresses, and BccAddresses properties in Message.
-- Added convenience methods in Message class for creating attachments and inline body parts.
-- Updated Encoding library reference to 0.5.0.
-- Add several methods to DataUtilities class
-- Bug fixes</releaseNotes><summary></summary><licenseUrl>https://github.com/peteroupc/MailLib/LICENSE.md</licenseUrl><projectUrl>https://github.com/peteroupc/MailLib</projectUrl><authors>Peter Occil</authors><description>A .NET library for parsing and generating Internet email messages.</description><owners>Peter Occil</owners><title>MailLib Library</title><tags>email mail mime parser charset charsets</tags><dependencies><group><dependency id='PeterO.Encoding' version='0.5.1' /></group></dependencies></metadata><files><file src='MailLib/bin/Release/netstandard1.0/MailLib.dll' target='/lib/netstandard1.0' /><file src='MailLib/bin/Release/netstandard1.0/MailLib.xml' target='/lib/netstandard1.0' /><file src='MailLib20/bin/Release/MailLib.dll' target='/lib/net20' /><file src='MailLib20/bin/Release/MailLib.xml' target='/lib/net20' /><file src='MailLib40/bin/Release/MailLib.dll' target='/lib/net40' /><file src='MailLib40/bin/Release/MailLib.xml' target='/lib/net40' /></files></package
+- Message class can now convert Markdown to HTML, with new method SetTextAndMarkdown
+- Unicode data updated to latest version of Unicode
+- Date headers in generated messages (Generate()) are in global time
+- DataUrls class is now called DataUris; DataUrls is now deprecated.
+- Changes in algorithm used by ContentDisposition.MakeFilename
+- Add Message.ExtractHeaderField method
+- Changed ParseDateString and GenerateDateString to allow only years 1900 or greater and to fix bugs.
+- Deprecated IsText and IsMultipart in MediaTypeBuilder
+- Bug fixes</releaseNotes><summary></summary><license type='file'>LICENSE.md</license><projectUrl>https://github.com/peteroupc/MailLib</projectUrl><authors>Peter Occil</authors><description>A .NET library for parsing and generating Internet email messages.</description><owners>Peter Occil</owners><title>MailLib Library</title><tags>email mail mime parser charset charsets</tags><dependencies><group><dependency id='PeterO.Encoding' version='0.5.1' /></group></dependencies></metadata><files><file src='LICENSE.md' /><file src='MailLib/bin/Release/netstandard1.0/MailLib.dll' target='/lib/netstandard1.0' /><file src='MailLib/bin/Release/netstandard1.0/MailLib.xml' target='/lib/netstandard1.0' /><file src='MailLib20/bin/Release/MailLib.dll' target='/lib/net20' /><file src='MailLib20/bin/Release/MailLib.xml' target='/lib/net20' /><file src='MailLib40/bin/Release/MailLib.dll' target='/lib/net40' /><file src='MailLib40/bin/Release/MailLib.xml' target='/lib/net40' /></files></package
 >
