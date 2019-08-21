@@ -2,7 +2,7 @@
 
     public static class MailDateTime
 
- Contains methods for parsing and generating date-time strings following the Internet Message Format (RFC 5322).
+Contains methods for parsing and generating date-time strings following the Internet Message Format (RFC 5322).
 
 ### Member Summary
 * <code>[GenerateDateString(int[])](#GenerateDateString_int)</code> - Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
@@ -17,9 +17,9 @@
     public static string GenerateDateString(
         int[] dateTime);
 
- Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
+Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
 
@@ -40,9 +40,9 @@ The parameter  <i>dateTime</i>
         int[] dateTime,
         bool gmt);
 
- Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
+Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 
-      <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
 
@@ -68,9 +68,9 @@ The parameter  <i>dateTime</i>
     public static int[] ParseDateString(
         string str);
 
- Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(bool)`  for information on this method's return value.
+Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(bool)`  for information on this method's return value.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A date-time string.
 
@@ -86,27 +86,27 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
         string str,
         bool parseObsoleteZones);
 
- Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string. If an array is returned, the elements of that array (starting from 0) are as follows:
+Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string. If an array is returned, the elements of that array (starting from 0) are as follows:
 
-  * 0 - The year. For example, the value 2000 means 2000 C.E. This value cannot be less than 1900 (a restriction specified by RFC 5322).
+ * 0 - The year. For example, the value 2000 means 2000 C.E. This value cannot be less than 1900 (a restriction specified by RFC 5322).
 
-  * 1 - Month of the year, from 1 (January) through 12 (December).
+ * 1 - Month of the year, from 1 (January) through 12 (December).
 
-  * 2 - Day of the month, from 1 through 31.
+ * 2 - Day of the month, from 1 through 31.
 
-  * 3 - Hour of the day, from 0 through 23.
+ * 3 - Hour of the day, from 0 through 23.
 
-  * 4 - Minute of the hour, from 0 through 59.
+ * 4 - Minute of the hour, from 0 through 59.
 
-  * 5 - Second of the minute, from 0 through 60 (this value can go up to 60 to accommodate leap seconds). (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
+ * 5 - Second of the minute, from 0 through 60 (this value can go up to 60 to accommodate leap seconds). (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
 
-  * 6 - Fractional seconds. The return value will always have this value set to 0, since fractional seconds cannot be expressed in the date-time format specified by RFC 5322. This value cannot be less than 0.
+ * 6 - Fractional seconds. The return value will always have this value set to 0, since fractional seconds cannot be expressed in the date-time format specified by RFC 5322. This value cannot be less than 0.
 
-  * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative, but cannot be less than -1439 or greater than 1439.
+ * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative, but cannot be less than -1439 or greater than 1439.
 
- If a method or property uses an array of this format and refers to this method's documentation, that array may have any number of elements 8 or greater.
+If a method or property uses an array of this format and refers to this method's documentation, that array may have any number of elements 8 or greater.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A date-time string.
 
@@ -123,9 +123,9 @@ An 8-element array containing the date and time, or  `null`  if  <i>str</i>
     public static int[] ParseDateStringHttp(
         string v);
 
- Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC 7231).
+Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC 7231).
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>v</i>: A date-time string.
 

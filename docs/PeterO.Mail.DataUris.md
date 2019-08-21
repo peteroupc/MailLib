@@ -26,9 +26,9 @@
     public static byte[] DataUriBytes(
         string uri);
 
- Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
+Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>uri</i>: The parameter  <i>uri</i>
  is a text string.
@@ -50,9 +50,9 @@ The parameter  <i>uri</i>
     public static byte[] DataUriBytes(
         System.Uri uri);
 
- Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array, where the Data URI is given as a URI object.
+Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array, where the Data URI is given as a URI object.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>uri</i>: The Data URI in the form of a URI object.
 
@@ -73,9 +73,9 @@ The parameter  <i>uri</i>
     public static PeterO.Mail.MediaType DataUriMediaType(
         string uri);
 
- Extracts the media type from a Data URI (uniform resource identifier) in the form of a text string.
+Extracts the media type from a Data URI (uniform resource identifier) in the form of a text string.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>uri</i>: A data URI in the form of a text string.
 
@@ -96,9 +96,9 @@ The parameter  <i>uri</i>
     public static PeterO.Mail.MediaType DataUriMediaType(
         System.Uri uri);
 
- Extracts the media type from a Data URI (uniform resource identifier) in the form of a URI object.
+Extracts the media type from a Data URI (uniform resource identifier) in the form of a URI object.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>uri</i>: A data URI in the form of a URI object.
 
@@ -120,9 +120,9 @@ The parameter  <i>uri</i>
         byte[] bytes,
         PeterO.Mail.MediaType mediaType);
 
- Encodes data with the given media type in a Data URI (uniform resource identifier).
+Encodes data with the given media type in a Data URI (uniform resource identifier).
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>bytes</i>: A byte array containing the data to encode in a Data URI.
 
@@ -145,9 +145,9 @@ The parameter  <i>bytes</i>
     public static string MakeDataUri(
         string textString);
 
- Encodes text as a Data URI (uniform resource identifier).
+Encodes text as a Data URI (uniform resource identifier).
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>textString</i>: A text string to encode as a data URI.
 

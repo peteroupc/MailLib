@@ -11,9 +11,9 @@ namespace PeterO.Mail {
     /// <summary>Exception thrown when a message has invalid
     /// syntax.</summary>
 #if NET20 || NET40
-  [Serializable]
+[Serializable]
 #endif
-  public sealed class MessageDataException : Exception {
+public sealed class MessageDataException : Exception {
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
     public MessageDataException() {
@@ -38,8 +38,8 @@ namespace PeterO.Mail {
 
 #if NET20 || NET40
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.MessageDataException'/> class. Uses the given
-    /// serialization and streaming contexts.</summary>
+    /// <see cref='PeterO.Mail.MessageDataException'/> class. Uses the
+    /// given serialization and streaming contexts.</summary>
     /// <param name='info'>A System.Runtime.Serialization.SerializationInfo
     /// object.</param>
     /// <param name='context'>A

@@ -6,7 +6,7 @@
         System.IFormattable,
         System.IComparable
 
- Represents a Unicode normalization form.
+Represents a Unicode normalization form.
 
 ### Member Summary
 * <code>[public static PeterO.Text.Normalization NFC = 0;](#NFC)</code> - Normalization form C: canonical decomposition followed by canonical composition.
@@ -19,25 +19,25 @@
 
     public static PeterO.Text.Normalization NFC = 0;
 
- Normalization form C: canonical decomposition followed by canonical composition.
+Normalization form C: canonical decomposition followed by canonical composition.
 
- <a id="NFD"></a>
+<a id="NFD"></a>
 ### NFD
 
     public static PeterO.Text.Normalization NFD = 1;
 
- Normalization form D: canonical decomposition.
+Normalization form D: canonical decomposition.
 
- <a id="NFKC"></a>
+<a id="NFKC"></a>
 ### NFKC
 
     public static PeterO.Text.Normalization NFKC = 2;
 
- Normalization form KC: compatibility decomposition followed by canonical composition.
+Normalization form KC: compatibility decomposition followed by canonical composition.
 
- <a id="NFKD"></a>
+<a id="NFKD"></a>
 ### NFKD
 
     public static PeterO.Text.Normalization NFKD = 3;
 
- Normalization form KD: compatibility decomposition.
+Normalization form KD: compatibility decomposition.

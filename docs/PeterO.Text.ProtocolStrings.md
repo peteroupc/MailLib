@@ -2,13 +2,13 @@
 
     public static class ProtocolStrings
 
- Contains methods for preparing user-facing protocol strings (such as user identifiers) for equality comparison and validity checking. Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See RFC 8264. Currently there are four profiles for internationalized strings: two for strings serving as user identifiers, one for arbitrary single-line strings (such as passwords), and one for display names.
+Contains methods for preparing user-facing protocol strings (such as user identifiers) for equality comparison and validity checking. Such strings can be _internationalized_, that is, contain characters beyond the Basic Latin block (U + 0000 to U + 007F) of the Unicode Standard. See RFC 8264. Currently there are four profiles for internationalized strings: two for strings serving as user identifiers, one for arbitrary single-line strings (such as passwords), and one for display names.
 
-  * Other user-facing internationalized strings not expressly handled by this class include the following. Their preparation and comparison are outside the scope of this class.  -- File and directory names.  -- Domain names.  -- Text strings with multiple language versions (such as a checkbox's label or a dialog box's title).  -- Profile data voluntarily entered by users.  -- The text of article, post, and message bodies.
+ * Other user-facing internationalized strings not expressly handled by this class include the following. Their preparation and comparison are outside the scope of this class.  -- File and directory names.  -- Domain names.  -- Text strings with multiple language versions (such as a checkbox's label or a dialog box's title).  -- Profile data voluntarily entered by users.  -- The text of article, post, and message bodies.
 
-  * The methods in this class are not well suited for <i>collation</i>, or lexicographic ordering, which is a comparison of text strings that is usually language-dependent and goes beyond equality comparison. Further discussion on collation can be found in Unicode Technical Standard 10 (UTS 10), "Unicode Collation Algorithm".
+ * The methods in this class are not well suited for <i>collation</i>, or lexicographic ordering, which is a comparison of text strings that is usually language-dependent and goes beyond equality comparison. Further discussion on collation can be found in Unicode Technical Standard 10 (UTS 10), "Unicode Collation Algorithm".
 
-  * As explained in UTS 10 sec. 1.6, collation serves the purposes of searching and selection (e.g., searches by name or by title). However, this class is directed more to equality comparisons for authentication or authorization purposes, or to avoid creating multiple items that use the same string, rather than, say, to comparisons of names or parts of names for the purpose of showing matching records.
+ * As explained in UTS 10 sec. 1.6, collation serves the purposes of searching and selection (e.g., searches by name or by title). However, this class is directed more to equality comparisons for authentication or authorization purposes, or to avoid creating multiple items that use the same string, rather than, say, to comparisons of names or parts of names for the purpose of showing matching records.
 
 ### Member Summary
 * <code>[IsInFreeformClass(string)](#IsInFreeformClass_string)</code> - Determines whether the given string belongs in RFC 8264's FreeformClass.
@@ -27,9 +27,9 @@
     public static bool IsInFreeformClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U+0021 to U+007E), but excludes control characters and separators. Horizontal tab, U+0009, and other code points in the range U+0000 to U+001F, are among the excluded characters.
+Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U + 0021 to U + 007E), but excludes control characters and separators. Horizontal tab, U + 0009, and other code points in the range U + 0000 to U + 001F, are among the excluded characters.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string to check.
 
@@ -44,9 +44,9 @@
     public static bool IsInIdentifierClass(
         string str);
 
- Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
+Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U + 0000 to U + 007F).
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string to check.
 
@@ -61,9 +61,9 @@
     public static string NicknameEnforce(
         string str);
 
- Checks the validity of a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This checking is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
+Checks the validity of a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This checking is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string serving as a nickname for something.
 
@@ -78,9 +78,9 @@ A nickname prepared for enforcement under the Nickname profile in RFC 8266. Retu
     public static string NicknameForComparison(
         string str);
 
- Prepares for comparison a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This operation is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
+Prepares for comparison a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec. 6.1 of that RFC). This operation is done using the Nickname profile in RFC 8266. Such names are not intended to serve as URIs or file paths (see sec. 6.1 of that RFC).
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string serving as a nickname for something.
 
@@ -95,9 +95,9 @@ A nickname prepared for comparison under the Nickname profile in RFC 8266. Retur
     public static string OpaqueStringEnforce(
         string str);
 
- Checks the validity of a string serving as an arbitrary single-line sequence of characters, such as a passphrase. This checking is done using the OpaqueString profile in RFC 8265. (REMARK: Specifying a string as this method does is not ideal if the string represents a password or other sensitive data, since strings are immutable in.NET and Java, so that its contents cannot be cleared when done. An application concerned about security may want to reimplement this method by passing a clearable array of characters rather than a text string.).
+Checks the validity of a string serving as an arbitrary single-line sequence of characters, such as a passphrase. This checking is done using the OpaqueString profile in RFC 8265. (REMARK: Specifying a string as this method does is not ideal if the string represents a password or other sensitive data, since strings are immutable in.NET and Java, so that its contents cannot be cleared when done. An application concerned about security may want to reimplement this method by passing a clearable array of characters rather than a text string.).
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents an arbitrary single-line sequence of characters entered by a user.
 
@@ -112,9 +112,9 @@ A string prepared under the OpaqueString profile in RFC 8265. Returns null if th
     public static string UsernameEnforce(
         string str);
 
- Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
+Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 
@@ -130,9 +130,9 @@ A username where each of its parts is prepared under the UsernameCaseMapped prof
         string str,
         bool preserveCase);
 
- Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is either mapped to lowercase or preserved. This checking is done using the UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
+Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is either mapped to lowercase or preserved. This checking is done using the UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 
@@ -150,9 +150,9 @@ A username where each of its parts is prepared under the UsernameCaseMapped or U
     public static string UserpartEnforce(
         string str);
 
- Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
+Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 
@@ -169,9 +169,9 @@ A userpart prepared under the UsernameCaseMapped profile in RFC 8265 (among othe
         string str,
         bool preserveCase);
 
- Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is either mapped to lowercase or preserved. This checking is done using the UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
+Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is either mapped to lowercase or preserved. This checking is done using the UsernameCaseMapped or UsernameCasePreserved profile in RFC 8265.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: A string to prepare that represents a user or account identifier.
 

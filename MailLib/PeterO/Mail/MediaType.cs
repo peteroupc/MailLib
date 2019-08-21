@@ -75,8 +75,10 @@ namespace PeterO.Mail {
           CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
-    /// <summary>Calculates the hash code of this object. No application or
-    /// process IDs are used in the hash code calculation.</summary>
+    /// <summary>Calculates the hash code of this object. The exact
+    /// algorithm used by this method may change between versions of this
+    /// library, and no application or process IDs are used in the hash
+    /// code calculation.</summary>
     /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
       var hashCode = 632580499;

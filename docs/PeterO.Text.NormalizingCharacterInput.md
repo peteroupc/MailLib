@@ -5,29 +5,29 @@
 
 <b>Deprecated.</b> Renamed to NormalizerInput.
 
- A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
+A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
-  * <b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent characters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
+ * <b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent characters (E plus acute, for example), then reorders combining marks to a standardized order. This is called canonical decomposition.
 
-  * <b>NFC</b> does canonical decomposition, then combines certain constituent characters to their composites (E-acute, for example). This is called canonical composition.
+ * <b>NFC</b> does canonical decomposition, then combines certain constituent characters to their composites (E-acute, for example). This is called canonical composition.
 
-  * Two normalization forms, <b>NFKC</b> and <b>NFKD</b>, are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
+ * Two normalization forms, <b>NFKC</b> and <b>NFKD</b>, are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
 
- For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/` .
+For more information, see Standard Annex 15 at  `http://www.unicode.org/reports/tr15/` .
 
- <b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
+<b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
- NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. In case doing so is required, the permission notice for the Unicode Character Database is given here:
+NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. In case doing so is required, the permission notice for the Unicode Character Database is given here:
 
- COPYRIGHT AND PERMISSION NOTICE.
+COPYRIGHT AND PERMISSION NOTICE.
 
- Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
+Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
 
- Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files and any associated documentation (the "Data Files") or Unicode software and any associated documentation (the "Software") to deal in the Data Files or Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom the Data Files or Software are furnished to do so, provided that (a) this copyright and permission notice appear with all copies of the Data Files or Software, (b) this copyright and permission notice appear in associated documentation, and (c) there is clear notice in each modified Data File or in the Software as well as in the documentation associated with the Data File(s) or Software that the data or software has been modified.
+Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files and any associated documentation (the "Data Files") or Unicode software and any associated documentation (the "Software") to deal in the Data Files or Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom the Data Files or Software are furnished to do so, provided that (a) this copyright and permission notice appear with all copies of the Data Files or Software, (b) this copyright and permission notice appear in associated documentation, and (c) there is clear notice in each modified Data File or in the Software as well as in the documentation associated with the Data File(s) or Software that the data or software has been modified.
 
- THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
 
- Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
+Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
 
 ### Member Summary
 * <code>[GetChars(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#GetChars_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Gets a list of normalized code points after reading from a character stream.
@@ -46,9 +46,9 @@
     public NormalizingCharacterInput(
         PeterO.Text.ICharacterInput input);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
-  <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>input</i>: The parameter  <i>input</i>
  is an ICharacterInput object.
@@ -60,9 +60,9 @@
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>stream</i>: The parameter  <i>stream</i>
  is an ICharacterInput object.
@@ -76,9 +76,9 @@
     public NormalizingCharacterInput(
         string str);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
-  <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -92,9 +92,9 @@
         int length,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -115,9 +115,9 @@
         string str,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -137,9 +137,9 @@ The parameter  <i>str</i>
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
-  <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>characterList</i>: The parameter  <i>characterList</i>
  is an IList object.
@@ -151,9 +151,9 @@ The parameter  <i>str</i>
         System.Collections.Generic.IList characterList,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>characterList</i>: The parameter  <i>characterList</i>
  is an IList object.
@@ -170,9 +170,9 @@ The parameter  <i>str</i>
 
 <b>Deprecated.</b> Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.
 
- Gets a list of normalized code points after reading from a character stream.
+Gets a list of normalized code points after reading from a character stream.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>chars</i>: An object that implements a stream of Unicode characters.
 
@@ -197,9 +197,9 @@ The parameter  <i>chars</i>
 
 <b>Deprecated.</b> Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.
 
- Gets a list of normalized code points after reading from a string.
+Gets a list of normalized code points after reading from a string.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -225,9 +225,9 @@ The parameter  <i>str</i>
 
 <b>Deprecated.</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
- Determines whether the given array of characters is in the given Unicode normalization form.
+Determines whether the given array of characters is in the given Unicode normalization form.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>charArray</i>: An array of Unicode code points.
 
@@ -249,9 +249,9 @@ The parameter "charList" is null.
         PeterO.Text.ICharacterInput chars,
         PeterO.Text.Normalization form);
 
- Determines whether the text provided by a character input is normalized.
+Determines whether the text provided by a character input is normalized.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>chars</i>: A object that implements a streamable character input.
 
@@ -274,9 +274,9 @@ The parameter  <i>chars</i>
         string str,
         PeterO.Text.Normalization form);
 
- Determines whether the given string is in the given Unicode normalization form.
+Determines whether the given string is in the given Unicode normalization form.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -301,9 +301,9 @@ The parameter  <i>str</i>
 
 <b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
- Determines whether the given list of characters is in the given Unicode normalization form.
+Determines whether the given list of characters is in the given Unicode normalization form.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>charList</i>: A list of Unicode code points.
 
@@ -326,9 +326,9 @@ The parameter  <i>charList</i>
         string str,
         PeterO.Text.Normalization form);
 
- Converts a string to the given Unicode normalization form.
+Converts a string to the given Unicode normalization form.
 
-      <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -357,9 +357,9 @@ The parameter  <i>str</i>
         int index,
         int length);
 
- Reads a sequence of Unicode code points from a data source.
+Reads a sequence of Unicode code points from a data source.
 
-       <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>chars</i>: Output buffer.
 
@@ -394,8 +394,8 @@ Either  <i>index</i>
 
     public sealed int ReadChar();
 
- Reads a Unicode character from a data source.
+Reads a Unicode character from a data source.
 
-  <b>Return Value:</b>
+<b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

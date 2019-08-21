@@ -5,7 +5,7 @@
         System.Runtime.Serialization.ISerializable,
         System.Runtime.InteropServices._Exception
 
- Exception thrown when a message has invalid syntax.
+Exception thrown when a message has invalid syntax.
 
 ### Member Summary
 
@@ -15,9 +15,9 @@
     public MessageDataException(
         string message);
 
- Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
 
-  <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>message</i>: A string to use as the exception message.
 
@@ -28,9 +28,9 @@
         string message,
         System.Exception innerException);
 
- Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>message</i>: A string to use as the exception message.
 
@@ -42,4 +42,4 @@
 
     public MessageDataException();
 
- Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.
+Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) class.

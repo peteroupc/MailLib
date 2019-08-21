@@ -12,6 +12,8 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
+      // new UnitTest1().TestMessageBoxes();
+      new UnitTest1().TestMessageCore();
       var strs = new string[0];
       Console.WriteLine("------");
       foreach (var s in strs) {

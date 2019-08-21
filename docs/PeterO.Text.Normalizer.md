@@ -4,9 +4,9 @@
 
 <b>Deprecated.</b> Use NormalizerInput instead; that class is much more flexible than Normalizer.
 
- Implements the Unicode normalization algorithm and contains methods and functionality to test and convert Unicode strings for Unicode normalization.
+Implements the Unicode normalization algorithm and contains methods and functionality to test and convert Unicode strings for Unicode normalization.
 
- NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
+NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 
 ### Member Summary
 * <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Returns whether this string is normalized.
@@ -21,9 +21,9 @@
         string str,
         PeterO.Text.Normalization form);
 
- Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.
+Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) class.
 
-   <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
@@ -38,9 +38,9 @@
         string str,
         PeterO.Text.Normalization form);
 
- Returns whether this string is normalized.
+Returns whether this string is normalized.
 
-    <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: The string to check.
 
@@ -58,9 +58,9 @@
         string str,
         PeterO.Text.Normalization form);
 
- Converts a string to the given Unicode normalization form.
+Converts a string to the given Unicode normalization form.
 
-     <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>str</i>: An arbitrary string.
 
@@ -85,9 +85,9 @@ The parameter  <i>str</i>
         int index,
         int length);
 
- Reads a sequence of Unicode code points from a data source.
+Reads a sequence of Unicode code points from a data source.
 
-       <b>Parameters:</b>
+<b>Parameters:</b>
 
  * <i>chars</i>: Output buffer.
 
@@ -119,8 +119,8 @@ The parameter  <i>chars</i>
 
     public int ReadChar();
 
- Reads a Unicode character from a data source.
+Reads a Unicode character from a data source.
 
-  <b>Return Value:</b>
+<b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

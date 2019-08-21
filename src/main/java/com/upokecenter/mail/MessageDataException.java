@@ -10,7 +10,8 @@ at: http://peteroupc.github.io/
     /**
      * Exception thrown when a message has invalid syntax.
      */
-  public final class MessageDataException extends RuntimeException {
+
+public final class MessageDataException extends RuntimeException {
 private static final long serialVersionUID = 1L;
     /**
      * Initializes a new instance of the {@link

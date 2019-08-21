@@ -73,8 +73,9 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Calculates the hash code of this object. No application or process IDs are
-     * used in the hash code calculation.
+     * Calculates the hash code of this object. The exact algorithm used by this
+     * method may change between versions of this library, and no
+     * application or process IDs are used in the hash code calculation.
      * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
@@ -177,19 +178,19 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Converts a file name from the Content-Disposition header (or another string
-     * representing a title and an optional file extension) to a suitable
-     * name for saving data to a file. This method is idempotent; that is,
-     * calling the method again on the result doesn't change that result.
-     * The method avoids characters and combinations of characters that are
-     * problematic to use in certain file systems, and leaves the vast
-     * majority of file names seen in practice untouched. <p>Examples of
-     *  how this method works follows:</p> <p><code>"=?utf-8?q?hello=2Etxt?="
-     *  -&gt;"hello.txt"</code> (RFC 2047 encoding).</p>
-     *  <p><code>"=?utf-8?q?long_filename?=" -&gt;"long filename"</code> (RFC 2047
-     *  encoding).</p> <p><code>"utf-8'en'hello%2Etxt" -&gt;"hello.txt"</code>
-     *  (RFC 2231 encoding).</p> <p><code>"nul.txt" -&gt;"_nul.txt"</code>
-     *  (Reserved name).</p> <p><code>"dir1/dir2/file"
+     * Converts a file name from the Content-disposition header field (or another
+     * string representing a title and an optional file extension) to a
+     * suitable name for saving data to a file. This method is idempotent;
+     * that is, calling the method again on the result doesn't change that
+     * result. The method avoids characters and combinations of characters
+     * that are problematic to use in certain file systems, and leaves the
+     * vast majority of file names seen in practice untouched. <p>Examples
+     * of how this method works follows:</p>
+     *  <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt;"hello.txt"</code> (RFC 2047
+     *  encoding).</p> <p><code>"=?utf-8?q?long_filename?=" -&gt;"long
+     *  filename"</code> (RFC 2047 encoding).</p> <p><code>"utf-8'en'hello%2Etxt"
+     *  -&gt;"hello.txt"</code> (RFC 2231 encoding).</p> <p><code>"nul.txt"
+     *  -&gt;"_nul.txt"</code> (Reserved name).</p> <p><code>"dir1/dir2/file"
      *  -&gt;"dir1_dir2_file"</code> (Directory separators).</p><p>
      * <p><b>Remarks:</b></p> <ul> <li>This method should be used only to
      * prepare a file name for the purpose of suggesting a name by which to

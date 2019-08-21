@@ -125,8 +125,9 @@ Determines whether this object and another object are equal.
 
 ### hashCode
     public int hashCode()
-Calculates the hash code of this object. No application or process IDs are
- used in the hash code calculation.
+Calculates the hash code of this object. The exact algorithm used by this
+ method may change between versions of this library, and no
+ application or process IDs are used in the hash code calculation.
 
 **Overrides:**
 

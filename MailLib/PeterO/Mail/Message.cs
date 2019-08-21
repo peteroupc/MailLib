@@ -93,7 +93,7 @@ namespace PeterO.Mail {
   /// encoded words even if that line is more than 76 characters long.
   /// (This implementation follows the recommendation in RFC 5322 to
   /// limit header field lines to no more than 78 characters, where
-  /// possible.)</item></list>
+  /// possible; see also RFC 6532.)</item></list>
   /// <para>It would be appreciated if users of this library contact the
   /// author if they find other ways in which this implementation
   /// deviates from the mail specifications or other applicable

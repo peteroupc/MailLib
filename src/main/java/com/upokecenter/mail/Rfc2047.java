@@ -440,6 +440,12 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
              startIndex - 2)+(afterLast - (startIndex - 2)));
                   acceptedEncodedWord = false;
                 } else {
+                  // NOTE: This method converts to Unicode the text
+                  // in encoded words
+                  // one encoded word at a time; encoded word payloads
+                  // spanning multiple encoded words in a row are not
+                  // concatenated then converted to Unicode.
+                  // ----
                   // System.out.println("Encoded " + (base64 ? "B" : "Q") +
                   // " to: " + (encoding.GetString(transform)));
                   decodedWord = Encodings.DecodeToString(encoding, transform);
