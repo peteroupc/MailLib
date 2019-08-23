@@ -64,8 +64,10 @@ namespace PeterO.Mail {
           return false;
         }
       }
+      int maxSecond = (dateTime[3] == 23 && dateTime[4] == 59) ?
+          60 : 59;
       return !(dateTime[3] < 0 || dateTime[4] < 0 || dateTime[5] < 0 ||
-dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||
+dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] > maxSecond ||
 dateTime[6] < 0 || dateTime[7] <= -1440 ||
         dateTime[7] >= 1440);
     }
@@ -288,8 +290,9 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
     /// <item>2 - Day of the month, from 1 through 31.</item>
     /// <item>3 - Hour of the day, from 0 through 23.</item>
     /// <item>4 - Minute of the hour, from 0 through 59.</item>
-    /// <item>5 - Second of the minute, from 0 through 60 (this value can
-    /// go up to 60 to accommodate leap seconds). (Leap seconds are
+    /// <item>5 - Second of the minute, from 0 through 59, except this
+    /// value can be 60 if the hour of the day is 23 and the minute of the
+    /// hour is 59, to accommodate leap seconds. (Leap seconds are
     /// additional seconds added to adjust international atomic time, or
     /// TAI, to an approximation of astronomical time known as coordinated
     /// universal time, or UTC.)</item>
@@ -658,6 +661,10 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
               if (second >= 61) {
                 return indexStart;
               }
+              if (second == 60 && (hour != 23 || minute != 59)) {
+                // Leap second allowed only for 23:59
+                return indexStart;
+              }
               index += 2;
             } else {
               index = indexStart2;
@@ -834,6 +841,9 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         ret[5] = second;
         ret[6] = 0;
         ret[7] = offset;
+        if (!IsValidDateTime(ret)) {
+          return indexStart;
+        }
         if (dayOfWeek >= 0) {
           int dow = GetDayOfWeek(ret);
           if (dow != dayOfWeek) {
@@ -892,7 +902,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int minute = ((v[index + 20] - '0') * 10) + (v[index + 21] - '0');
         int second = ((v[index + 23] - '0') * 10) + (v[index + 24] - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-        return (dow == GetDayOfWeek(ret)) ? ret : null;
+        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret : null;
       }
       // ASCTIME
       if (endIndex - index > 23 && ((v[index] >= 33 && v[index] <= 126) &&
@@ -931,7 +941,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int minute = ((v[index + 14] - '0') * 10) + (v[index + 15] - '0');
         int second = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-        return (dow == GetDayOfWeek(ret)) ? ret : null;
+        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret : null;
       }
       // RFC 850
       int dowLong = ParseDOWLong(v, index, endIndex);
@@ -979,7 +989,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           return null;
         }
         int[] ret = { convertedYear, month, day, hour, minute, second, 0, 0 };
-        return (dowLong == GetDayOfWeek(ret)) ? ret : null;
+        return (dowLong == GetDayOfWeek(ret) &&
+             IsValidDateTime(ret)) ? ret : null;
       }
       return null;
     }

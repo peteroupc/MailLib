@@ -302,8 +302,8 @@ import java.util.*;
     /**
      * Reads a sequence of Unicode code points from a data source.
      * @param chars Output buffer.
-     * @param index A zero-based index showing where the desired portion of {@code
-     * chars} begins.
+     * @param index An index starting at 0 showing where the desired portion of
+     * {@code chars} begins.
      * @param length The number of elements in the desired portion of {@code chars}
      * (but not more than {@code chars} 's length).
      * @return The number of Unicode code points read, or 0 if the end of the

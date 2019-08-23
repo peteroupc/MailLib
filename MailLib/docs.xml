@@ -2003,10 +2003,11 @@
         </item>
         <item>4 - Minute of the hour, from 0 through 59.
         </item>
-        <item>5 - Second of the minute, from 0 through 60 (this value can go up to
-          60 to accommodate leap seconds). (Leap seconds are additional seconds
-          added to adjust international atomic time, or TAI, to an approximation
-          of astronomical time known as coordinated universal time, or UTC.)
+        <item>5 - Second of the minute, from 0 through 59, except this value can be
+          60 if the hour of the day is 23 and the minute of the hour is 59, to
+          accommodate leap seconds. (Leap seconds are additional seconds added
+          to adjust international atomic time, or TAI, to an approximation of
+          astronomical time known as coordinated universal time, or UTC.)
         </item>
         <item>6 - Fractional seconds. The return value will always have this value
           set to 0, since fractional seconds cannot be expressed in the
@@ -2539,7 +2540,7 @@
           can generate a header field line with one or more encoded words even
           if that line is more than 76 characters long. (This implementation
           follows the recommendation in RFC 5322 to limit header field lines to
-          no more than 78 characters, where possible.)
+          no more than 78 characters, where possible; see also RFC 6532.)
         </item>
       </list>
       <para>It would be appreciated if users of this library contact the author if
@@ -3197,7 +3198,7 @@
     <summary>Gets the first instance of the header field with the specified name, using
       a basic case-insensitive comparison. (Two strings are equal in such a
       comparison, if they match after converting the basic upper-case letters A
-      to Z (U+0041 to U+005A) in both strings to lower case.).
+      to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
     </summary>
     <param name='name'>The name of a header field.
     </param>
@@ -3211,7 +3212,8 @@
     <summary>Gets an array with the values of all header fields with the specified
       name, using a basic case-insensitive comparison. (Two strings are equal in
       such a comparison, if they match after converting the basic upper-case
-      letters A to Z (U+0041 to U+005A) in both strings to lower case.).
+      letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
+      letters.).
     </summary>
     <param name='name'>The name of a header field.
     </param>
@@ -3319,8 +3321,8 @@
       is a multipart message, the header field is not removed from its body part
       headers. A basic case-insensitive comparison is used. (Two strings are
       equal in such a comparison, if they match after converting the basic
-      upper-case letters A to Z (U+0041 to U+005A) in both strings to lower
-      case.).
+      upper-case letters A to Z (U+0041 to U+005A) in both strings to basic
+      lower-case letters.).
       <para>This method updates the ContentType and ContentDisposition properties if
         those header fields have been modified by this method.
       </para>
@@ -4851,7 +4853,7 @@
       <paramref name='str'/>
        is a text string.
     </param>
-    <param name='index'>A zero-based index showing where the desired portion of
+    <param name='index'>An index starting at 0 showing where the desired portion of
       <paramref name='str'/>
        begins.
     </param>
@@ -4922,7 +4924,7 @@
     </summary>
     <param name='chars'>Output buffer.
     </param>
-    <param name='index'>A zero-based index showing where the desired portion of
+    <param name='index'>An index starting at 0 showing where the desired portion of
       <paramref name='chars'/>
        begins.
     </param>
@@ -5253,7 +5255,7 @@
     </summary>
     <param name='chars'>Output buffer.
     </param>
-    <param name='index'>A zero-based index showing where the desired portion of
+    <param name='index'>An index starting at 0 showing where the desired portion of
       <paramref name='chars'/>
        begins.
     </param>

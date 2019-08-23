@@ -255,8 +255,8 @@ package com.upokecenter.text;
      * com.upokecenter.text.NormalizerInput} class. Uses a portion of a
      * string as the input.
      * @param str The parameter {@code str} is a text string.
-     * @param index A zero-based index showing where the desired portion of {@code
-     * str} begins.
+     * @param index An index starting at 0 showing where the desired portion of
+     * {@code str} begins.
      * @param length The number of elements in the desired portion of {@code str}
      * (but not more than {@code str} 's length).
      * @param form Specifies the normalization form to use when normalizing the
@@ -596,8 +596,8 @@ UnicodeDatabase.IsQuickCheckStarter(
     /**
      * Reads a sequence of Unicode code points from a data source.
      * @param chars Output buffer.
-     * @param index A zero-based index showing where the desired portion of {@code
-     * chars} begins.
+     * @param index An index starting at 0 showing where the desired portion of
+     * {@code chars} begins.
      * @param length The number of elements in the desired portion of {@code chars}
      * (but not more than {@code chars} 's length).
      * @return The number of Unicode code points read, or 0 if the end of the

@@ -98,7 +98,7 @@ Gets the date and time extracted from a date-time string following the Internet 
 
  * 4 - Minute of the hour, from 0 through 59.
 
- * 5 - Second of the minute, from 0 through 60 (this value can go up to 60 to accommodate leap seconds). (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
+ * 5 - Second of the minute, from 0 through 59, except this value can be 60 if the hour of the day is 23 and the minute of the hour is 59, to accommodate leap seconds. (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
 
  * 6 - Fractional seconds. The return value will always have this value set to 0, since fractional seconds cannot be expressed in the date-time format specified by RFC 5322. This value cannot be less than 0.
 

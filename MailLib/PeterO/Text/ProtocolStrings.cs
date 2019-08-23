@@ -6,10 +6,10 @@ namespace PeterO.Text {
     /// <para>Contains methods for preparing user-facing protocol strings
     /// (such as user identifiers) for equality comparison and validity
     /// checking. Such strings can be _internationalized_, that is, contain
-    /// characters beyond the Basic Latin block (U + 0000 to U + 007F) of
-    /// the Unicode Standard. See RFC 8264. Currently there are four
-    /// profiles for internationalized strings: two for strings serving as
-    /// user identifiers, one for arbitrary single-line strings (such as
+    /// characters beyond the Basic Latin block (U+0000 to U+007F) of the
+    /// Unicode Standard. See RFC 8264. Currently there are four profiles
+    /// for internationalized strings: two for strings serving as user
+    /// identifiers, one for arbitrary single-line strings (such as
     /// passwords), and one for display names.</para></summary>
     /// <remarks>
     /// <list>
@@ -40,7 +40,7 @@ namespace PeterO.Text {
     /// IdentifierClass. In general, the IdentifierClass contains all code
     /// points in the FreeformClass, except certain uncommon letters and
     /// digits, spaces, as well as punctuation and symbols outside the
-    /// Basic Latin range (U + 0000 to U + 007F).</summary>
+    /// Basic Latin range (U+0000 to U+007F).</summary>
     /// <param name='str'>A string to check.</param>
     /// <returns><c>true</c> if the given string is empty or contains only
     /// characters allowed in RFC 8264's IdentifierClass (in the contexts
@@ -53,10 +53,10 @@ namespace PeterO.Text {
     /// <summary>Determines whether the given string belongs in RFC 8264's
     /// FreeformClass. In general, the FreeformClass contains most letters,
     /// digits, spaces, punctuation, and symbols in the Unicode standard,
-    /// as well as all basic printable characters (U + 0021 to U + 007E),
-    /// but excludes control characters and separators. Horizontal tab, U +
-    /// 0009, and other code points in the range U + 0000 to U + 001F, are
-    /// among the excluded characters.</summary>
+    /// as well as all basic printable characters (U+0021 to U+007E), but
+    /// excludes control characters and separators. Horizontal tab, U+0009,
+    /// and other code points in the range U+0000 to U+001F, are among the
+    /// excluded characters.</summary>
     /// <param name='str'>A string to check.</param>
     /// <returns><c>true</c> if the given string is empty or contains only
     /// characters allowed in RFC 8264's FreeformClass (in the contexts
@@ -98,9 +98,9 @@ namespace PeterO.Text {
     /// name='str'/> is null or empty). Note that there will be as many
     /// spaces of separation between parts of the return value as between
     /// parts of the input; this method will not collapse multiple spaces
-    /// (U + 0020) into a single space. If such space collapsing on a
-    /// string (or rejection of strings with multiple consecutive spaces)
-    /// is desired, it should be done before that string is passed to this
+    /// (U+0020) into a single space. If such space collapsing on a string
+    /// (or rejection of strings with multiple consecutive spaces) is
+    /// desired, it should be done before that string is passed to this
     /// method. For comparison purposes, return values of this method
     /// should be compared code point by code point (see RFC 8265, sec.
     /// 3.3.4).</returns>
@@ -152,7 +152,7 @@ Idna.UsernameCasePreservedEnforce(str);
     /// (including if <paramref name='str'/> is null or empty). Note that
     /// there will be as many spaces of separation between parts of the
     /// return value as between parts of the input; this method will not
-    /// collapse multiple spaces (U + 0020) into a single space. If such
+    /// collapse multiple spaces (U+0020) into a single space. If such
     /// space collapsing on a string (or rejection of strings with multiple
     /// consecutive spaces) is desired, it should be done before that
     /// string is passed to this method. For comparison purposes, return

@@ -68,8 +68,10 @@ private MailDateTime() {
           return false;
         }
       }
+      int maxSecond = (dateTime[3] == 23 && dateTime[4] == 59) ?
+          60 : 59;
       return !(dateTime[3] < 0 || dateTime[4] < 0 || dateTime[5] < 0 ||
-dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||
+dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] > maxSecond ||
 dateTime[6] < 0 || dateTime[7] <= -1440 ||
         dateTime[7] >= 1440);
     }
@@ -288,19 +290,20 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
      * (January) through 12 (December).</li> <li>2 - Day of the month, from
      * 1 through 31.</li> <li>3 - Hour of the day, from 0 through 23.</li>
      * <li>4 - Minute of the hour, from 0 through 59.</li> <li>5 - Second
-     * of the minute, from 0 through 60 (this value can go up to 60 to
-     * accommodate leap seconds). (Leap seconds are additional seconds
-     * added to adjust international atomic time, or TAI, to an
-     * approximation of astronomical time known as coordinated universal
-     * time, or UTC.)</li> <li>6 - Fractional seconds. The return value
-     * will always have this value set to 0, since fractional seconds
-     * cannot be expressed in the date-time format specified by RFC 5322.
-     * This value cannot be less than 0.</li> <li>7 - Number of minutes to
-     * subtract from this date and time to get global time. This number can
-     * be positive or negative, but cannot be less than -1439 or greater
-     * than 1439.</li></ul> <p>If a method or property uses an array of
-     * this format and refers to this method's documentation, that array
-     * may have any number of elements 8 or greater.</p>
+     * of the minute, from 0 through 59, except this value can be 60 if the
+     * hour of the day is 23 and the minute of the hour is 59, to
+     * accommodate leap seconds. (Leap seconds are additional seconds added
+     * to adjust international atomic time, or TAI, to an approximation of
+     * astronomical time known as coordinated universal time, or UTC.)</li>
+     * <li>6 - Fractional seconds. The return value will always have this
+     * value set to 0, since fractional seconds cannot be expressed in the
+     * date-time format specified by RFC 5322. This value cannot be less
+     * than 0.</li> <li>7 - Number of minutes to subtract from this date
+     * and time to get global time. This number can be positive or
+     * negative, but cannot be less than -1439 or greater than
+     * 1439.</li></ul> <p>If a method or property uses an array of this
+     * format and refers to this method's documentation, that array may
+     * have any number of elements 8 or greater.</p>
      * @param str A date-time string.
      * @param parseObsoleteZones If set to {@code true}, this method allows
      *  obsolete time zones (single-letter time zones, "GMT", "UT", and
@@ -657,6 +660,10 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
               if (second >= 61) {
                 return indexStart;
               }
+              if (second == 60 && (hour != 23 || minute != 59)) {
+                // Leap second allowed only for 23:59
+                return indexStart;
+              }
               index += 2;
             } else {
               index = indexStart2;
@@ -833,6 +840,9 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         ret[5] = second;
         ret[6] = 0;
         ret[7] = offset;
+        if (!IsValidDateTime(ret)) {
+          return indexStart;
+        }
         if (dayOfWeek >= 0) {
           int dow = GetDayOfWeek(ret);
           if (dow != dayOfWeek) {
@@ -893,7 +903,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int minute = ((v.charAt(index + 20) - '0') * 10) + (v.charAt(index + 21) - '0');
         int second = ((v.charAt(index + 23) - '0') * 10) + (v.charAt(index + 24) - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-        return (dow == GetDayOfWeek(ret)) ? ret : null;
+        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret : null;
       }
       // ASCTIME
       if (endIndex - index > 23 && ((v.charAt(index) >= 33 && v.charAt(index) <= 126) &&
@@ -932,7 +942,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int minute = ((v.charAt(index + 14) - '0') * 10) + (v.charAt(index + 15) - '0');
         int second = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-        return (dow == GetDayOfWeek(ret)) ? ret : null;
+        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret : null;
       }
       // RFC 850
       int dowLong = ParseDOWLong(v, index, endIndex);
@@ -980,7 +990,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           return null;
         }
         int[] ret = { convertedYear, month, day, hour, minute, second, 0, 0 };
-        return (dowLong == GetDayOfWeek(ret)) ? ret : null;
+        return (dowLong == GetDayOfWeek(ret) &&
+             IsValidDateTime(ret)) ? ret : null;
       }
       return null;
     }

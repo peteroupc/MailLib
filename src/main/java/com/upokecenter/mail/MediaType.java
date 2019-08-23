@@ -949,7 +949,7 @@ import com.upokecenter.text.*;
      * @param name Name of the parameter to get. The name is compared using a basic
      * case-insensitive comparison. (Two strings are equal in such a
      * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U + 0041 to U + 005A) in both strings to basic
+     * letters A to Z (U+0041 to U+005A) in both strings to basic
      * lower-case letters.).
      * @return The value of the parameter as a string, or null if the parameter
      * doesn't exist.
@@ -1348,7 +1348,7 @@ import com.upokecenter.text.*;
     /**
      * Specifies the media type "text/plain" and the "charset" parameter "utf-8",
      * used for plain text data that may contain characters outside the
-     * basic Latin range (U + 0000 to U + 007F).
+     * basic Latin range (U+0000 to U+007F).
      */
     public static final MediaType TextPlainUtf8 =
       new MediaTypeBuilder(

@@ -345,8 +345,8 @@ namespace PeterO.Mail {
     /// <param name='name'>The name of the parameter to get. The name will
     /// be matched using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
-    /// strings to basic lower-case letters.). Can't be null.</param>
+    /// basic upper-case letters A to Z (U+0041 to U+005A) in both strings
+    /// to basic lower-case letters.). Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

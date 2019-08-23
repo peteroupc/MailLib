@@ -18,7 +18,7 @@
  <p>An NR-LDH label is an LDH label whose third and fourth characters
   are not both "-". For example, "ex--ample" is not an NR-LDH
  label.</p> <p>A U-label contains one or more characters outside the
- Basic Latin range (U + 0000 to U + 007F) and meets IDNA2008 requirements
+ Basic Latin range (U+0000 to U+007F) and meets IDNA2008 requirements
   for labels with such characters. An example is "eá".</p> <p>An
   A-label is an LDH label beginning with "xn--" in any combination of
  case, and is convertible to a U-label. An example is
@@ -36,7 +36,7 @@
  Tries to encode each XN-label of the given domain name into Unicode.
 * `static java.lang.String EncodeDomainName​(java.lang.String value)`<br>
  Tries to encode each label of a domain name with code points outside the
- Basic Latin range (U + 0000 to U + 007F) into an XN-label.
+ Basic Latin range (U+0000 to U+007F) into an XN-label.
 * `static boolean IsValidDomainName​(java.lang.String str,
                  boolean lookupRules)`<br>
  Determines whether the given string is a domain name containing only
@@ -67,7 +67,7 @@ Tries to encode each XN-label of the given domain name into Unicode. This
 ### EncodeDomainName
     public static java.lang.String EncodeDomainName​(java.lang.String value)
 Tries to encode each label of a domain name with code points outside the
- Basic Latin range (U + 0000 to U + 007F) into an XN-label. This method
+ Basic Latin range (U+0000 to U+007F) into an XN-label. This method
  does not check the syntactic validity of the domain name before
  proceeding.
 
@@ -78,7 +78,7 @@ Tries to encode each label of a domain name with code points outside the
 **Returns:**
 
 * The domain name where each label with code points outside the Basic
- Latin range (U + 0000 to U + 007F) is encoded into an XN-label. Labels
+ Latin range (U+0000 to U+007F) is encoded into an XN-label. Labels
  where this is not possible remain unchanged.
 
 **Throws:**

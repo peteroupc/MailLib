@@ -340,8 +340,8 @@ Deprecated.
 
 * <code>chars</code> - Output buffer.
 
-* <code>index</code> - A zero-based index showing where the desired portion of <code>
- chars</code> begins.
+* <code>index</code> - An index starting at 0 showing where the desired portion of
+ <code>chars</code> begins.
 
 * <code>length</code> - The number of elements in the desired portion of <code>chars</code>
  (but not more than <code>chars</code> 's length).

@@ -153,7 +153,7 @@ public final void setSubType(String value) {
      * @param name Name of the parameter to remove. The name is compared using a
      * basic case-insensitive comparison. (Two strings are equal in such a
      * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U + 0041 to U + 005A) in both strings to basic
+     * letters A to Z (U+0041 to U+005A) in both strings to basic
      * lower-case letters.).
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
@@ -171,7 +171,7 @@ public final void setSubType(String value) {
      * @param name Name of the parameter to set, such as "charset" . The name is
      * compared using a basic case-insensitive comparison. (Two strings are
      * equal in such a comparison, if they match after converting the basic
-     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+     * upper-case letters A to Z (U+0041 to U+005A) in both strings to
      * basic lower-case letters.).
      * @param value A text string giving the parameter's value.
      * @return This instance.

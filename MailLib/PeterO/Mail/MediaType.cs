@@ -800,7 +800,7 @@ namespace PeterO.Mail {
     /// <returns>If the "charset" parameter is present and non-empty,
     /// returns the result of the Encodings.ResolveAliasForEmail method for
     /// that parameter, except that the result's basic upper-case letters A
-    /// to Z (U + 0041 to U + 005A) are converted to lower case. If the
+    /// to Z (U+0041 to U+005A) are converted to lower case. If the
     /// "charset" parameter is absent or empty, returns the default value,
     /// if any, for that parameter given the media type (e.g., "us-ascii"
     /// if the media type is "text/plain"; see RFC2046), or the empty
@@ -975,8 +975,8 @@ namespace PeterO.Mail {
     /// <param name='name'>Name of the parameter to get. The name is
     /// compared using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U + 0041 to U + 005A) in both
-    /// strings to basic lower-case letters.).</param>
+    /// basic upper-case letters A to Z (U+0041 to U+005A) in both strings
+    /// to basic lower-case letters.).</param>
     /// <returns>The value of the parameter as a string, or null if the
     /// parameter doesn't exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -1385,8 +1385,8 @@ namespace PeterO.Mail {
 
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "utf-8", used for plain text data that may contain
-    /// characters outside the basic Latin range (U + 0000 to U +
-    /// 007F).</summary>
+    /// characters outside the basic Latin range (U+0000 to
+    /// U+007F).</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
         "text",

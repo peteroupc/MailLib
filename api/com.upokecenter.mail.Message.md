@@ -47,8 +47,8 @@ Represents an email message, and contains methods and properties for
  Any 8-bit bytes are replaced with the substitute character byte
   (0x1a).</li> <li>If the message starts with the word "From" (and no
  other case variations of that word) followed by one or more space
- (U + 0020) not followed by colon, that text and the rest of the text is
- skipped up to and including a line feed (U + 000A). (See also RFC 4155,
+ (U+0020) not followed by colon, that text and the rest of the text is
+ skipped up to and including a line feed (U+000A). (See also RFC 4155,
   which describes the so-called "mbox" convention with "From" lines of
  this kind.)</li> <li>The name <code>ascii</code> is treated as a synonym for
  <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
@@ -56,8 +56,8 @@ Represents an email message, and contains methods and properties for
  <code>windows-1252</code> and <code>utf-8</code>, respectively, even though they
  are not IANA registered aliases.</li> <li>The following deviations
  involve encoded words under RFC 2047:</li> <li>(a) If a sequence of
- encoded words decodes to a string with a CTL character (U + 007F, or a
- character less than U + 0020 and not TAB) after being converted to
+ encoded words decodes to a string with a CTL character (U+007F, or a
+ character less than U+0020 and not TAB) after being converted to
  Unicode, the encoded words are left un-decoded.</li> <li>(b) This
  implementation can decode encoded words regardless of the character
  length of the line in which they appear. This implementation can
@@ -369,7 +369,7 @@ Extracts the value of a header field from a byte array representing an email
  will be compared with the names of header fields in the given
  message using a basic case-insensitive comparison. (Two strings are
  equal in such a comparison, if they match after converting the basic
- upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+ upper-case letters A to Z (U+0041 to U+005A) in both strings to
  basic lower-case letters.).
 
 **Returns:**
@@ -379,10 +379,10 @@ Extracts the value of a header field from a byte array representing an email
  (0x0d/0x0a) pairs will be removed from the header field value, and
  the value is treated as encoded in UTF-8 (an 8-bit encoding form of
  the Unicode Standard) where illegally encoded UTF-8 is replaced as
- appropriate with replacement characters (U + FFFD). Returns null if
+ appropriate with replacement characters (U+FFFD). Returns null if
  <code>bytes</code> is null, if <code>headerFieldName</code> is null, is more
- than 997 characters long, or has a character less than U + 0021 or
- greater than U + 007E in the Unicode Standard, if a header field with
+ than 997 characters long, or has a character less than U+0021 or
+ greater than U+007E in the Unicode Standard, if a header field with
  that name does not exist, or if a body (even an empty one) does not
  follow the header fields.
 
@@ -548,7 +548,7 @@ Use GetAddresses(\From\) instead.
 Gets a snapshot of the header fields of this message, in the order in which
  they appear in the message. For each item in the list, the key is
  the header field's name (where any basic upper-case
- letters.get(U + 0041 to U + 005A) are converted to lower case) and the
+ letters.get(U+0041 to U+005A) are converted to lower case) and the
  value is the header field's value.
 
 **Returns:**
@@ -636,7 +636,7 @@ Adds a header field to the end of the message's header. <p>This method
 ### Generate
     public java.lang.String Generate()
 Generates this message's data in text form. <p>The generated message will
- have only Basic Latin code points (U + 0000 to U + 007F), and the
+ have only Basic Latin code points (U+0000 to U+007F), and the
  transfer encoding will always be 7bit, quoted-printable, or base64
  (the declared transfer encoding for this message will be
  ignored).</p> <p>The following applies to the following header
@@ -754,7 +754,8 @@ Gets the name and value of a header field by index.
 Gets the first instance of the header field with the specified name, using a
  basic case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic upper-case
- letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+ letters A to Z (U+0041 to U+005A) in both strings to basic
+ lower-case letters.).
 
 **Parameters:**
 
@@ -774,8 +775,8 @@ Gets the first instance of the header field with the specified name, using a
 Gets an array with the values of all header fields with the specified name,
  using a basic case-insensitive comparison. (Two strings are equal in
  such a comparison, if they match after converting the basic
- upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
- lower case.).
+ upper-case letters A to Z (U+0041 to U+005A) in both strings to
+ basic lower-case letters.).
 
 **Parameters:**
 
@@ -826,10 +827,10 @@ Removes all instances of the given header field from this message. If this
  is a multipart message, the header field is not removed from its
  body part headers. A basic case-insensitive comparison is used. (Two
  strings are equal in such a comparison, if they match after
- converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
- both strings to lower case.). <p>This method updates the ContentType
- and ContentDisposition properties if those header fields have been
- modified by this method.</p>
+ converting the basic upper-case letters A to Z (U+0041 to U+005A) in
+ both strings to basic lower-case letters.). <p>This method updates
+ the ContentType and ContentDisposition properties if those header
+ fields have been modified by this method.</p>
 
 **Parameters:**
 
@@ -1446,7 +1447,7 @@ Creates a message object from a MailTo URI (uniform resource identifier).
  given text. Keys other than these eight will be ignored. (Keys are
  compared using a basic case-sensitive comparison, in which two
  strings are equal if they match after converting the basic
- upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+ upper-case letters A to Z (U+0041 to U+005A) in both strings to
  basic lower-case letters.) The same key (matched using a basic
  case-insensitive comparison) can appear more than once; for
   "subject", "cc", "bcc", and "in-reply-to", the last value with the

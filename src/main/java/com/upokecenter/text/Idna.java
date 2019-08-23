@@ -24,7 +24,7 @@ at: http://peteroupc.github.io/
      * <p>An NR-LDH label is an LDH label whose third and fourth characters
      *  are not both "-". For example, "ex--ample" is not an NR-LDH
      * label.</p> <p>A U-label contains one or more characters outside the
-     * Basic Latin range (U + 0000 to U + 007F) and meets IDNA2008 requirements
+     * Basic Latin range (U+0000 to U+007F) and meets IDNA2008 requirements
      *  for labels with such characters. An example is "eá".</p> <p>An
      *  A-label is an LDH label beginning with "xn--" in any combination of
      * case, and is convertible to a U-label. An example is
@@ -350,12 +350,12 @@ private Idna() {
 
     /**
      * Tries to encode each label of a domain name with code points outside the
-     * Basic Latin range (U + 0000 to U + 007F) into an XN-label. This method
+     * Basic Latin range (U+0000 to U+007F) into an XN-label. This method
      * does not check the syntactic validity of the domain name before
      * proceeding.
      * @param value A domain name.
      * @return The domain name where each label with code points outside the Basic
-     * Latin range (U + 0000 to U + 007F) is encoded into an XN-label. Labels
+     * Latin range (U+0000 to U+007F) is encoded into an XN-label. Labels
      * where this is not possible remain unchanged.
      * @throws NullPointerException The parameter {@code value} is null.
      */
@@ -885,10 +885,10 @@ private Idna() {
           ++i;
         }
         // NOTE: Not coextensive with code points having
-        // Decomposition_Type = Wide or Narrow, since U + 3000,
+        // Decomposition_Type = Wide or Narrow, since U+3000,
         // ideographic space, is excluded. However, this
         // code point (as well as its decomposition mapping,
-        // which is U + 0020) will be excluded by the
+        // which is U+0020) will be excluded by the
         // IdentifierClass.
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           break;

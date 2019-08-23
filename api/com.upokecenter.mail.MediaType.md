@@ -32,7 +32,7 @@
 * `static MediaType TextPlainUtf8`<br>
  Specifies the media type "text/plain" and the "charset" parameter "utf-8",
  used for plain text data that may contain characters outside the
- basic Latin range (U + 0000 to U + 007F).
+ basic Latin range (U+0000 to U+007F).
 
 ## Methods
 
@@ -85,7 +85,7 @@ Specifies the media type "text/plain" and the "charset" parameter
     public static final MediaType TextPlainUtf8
 Specifies the media type "text/plain" and the "charset" parameter "utf-8",
  used for plain text data that may contain characters outside the
- basic Latin range (U + 0000 to U + 007F).
+ basic Latin range (U+0000 to U+007F).
 ### MessageRfc822
     public static final MediaType MessageRfc822
 Specifies the media type "message/rfc822", used for Internet mail messages.
@@ -242,7 +242,7 @@ Gets the value of a parameter in this media type, such as "charset" or
 * <code>name</code> - Name of the parameter to get. The name is compared using a basic
  case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic upper-case
- letters A to Z (U + 0041 to U + 005A) in both strings to basic
+ letters A to Z (U+0041 to U+005A) in both strings to basic
  lower-case letters.).
 
 **Returns:**

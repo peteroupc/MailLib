@@ -160,7 +160,7 @@ Removes a parameter from this content disposition. Does nothing if the
 * <code>name</code> - The parameter to remove. The name is compared using a basic
  case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic upper-case
- letters A to Z (U + 0041 to U + 005A) in both strings to basic
+ letters A to Z (U+0041 to U+005A) in both strings to basic
  lower-case letters.).
 
 **Returns:**
@@ -181,7 +181,7 @@ Sets a parameter of this content disposition.
  (compared using a basic case-insensitive comparison), it will be
  overwritten. (Two strings are equal in a basic case-insensitive
  comparison, if they match after converting the basic upper-case
- letters A to Z (U + 0041 to U + 005A) in both strings to basic
+ letters A to Z (U+0041 to U+005A) in both strings to basic
  lower-case letters.).
 
 * <code>value</code> - Value of the parameter to set.

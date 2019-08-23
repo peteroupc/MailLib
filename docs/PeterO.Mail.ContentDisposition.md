@@ -35,7 +35,7 @@ In this implementation, the first and second of these are syntactically invalid,
 * <code>[public static readonly PeterO.Mail.ContentDisposition Inline;](#Inline)</code> - The content disposition value "inline" .
 * <code>[IsAttachment](#IsAttachment)</code> - Gets a value indicating whether the disposition type is attachment.
 * <code>[IsInline](#IsInline)</code> - Gets a value indicating whether the disposition type is inline.
-* <code>[MakeFilename(string)](#MakeFilename_string)</code> - Converts a file name from the Content-Disposition header (or another string representing a title and an optional file extension) to a suitable name for saving data to a file.
+* <code>[MakeFilename(string)](#MakeFilename_string)</code> - Converts a file name from the Content-disposition header field (or another string representing a title and an optional file extension) to a suitable name for saving data to a file.
 * <code>[Parameters](#Parameters)</code> - Gets a list of parameter names associated with this object and their values.
 * <code>[Parse(string)](#Parse_string)</code> - Creates a new content disposition object from the value of a Content-Disposition header field.
 * <code>[Parse(string, PeterO.Mail.ContentDisposition)](#Parse_string_PeterO_Mail_ContentDisposition)</code> - Parses a content disposition string and returns a content disposition object, or the default value if the string is invalid.
@@ -144,7 +144,7 @@ The adapted file name in the form of a string. Returns the empty string if there
 
     public override int GetHashCode();
 
-Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
+Calculates the hash code of this object. The exact algorithm used by this method may change between versions of this library, and no application or process IDs are used in the hash code calculation.
 
 <b>Return Value:</b>
 
@@ -204,7 +204,7 @@ The extracted date and time as an 8-element array, or  `null`  if the "read-date
     public static string MakeFilename(
         string str);
 
-Converts a file name from the Content-Disposition header (or another string representing a title and an optional file extension) to a suitable name for saving data to a file. This method is idempotent; that is, calling the method again on the result doesn't change that result. The method avoids characters and combinations of characters that are problematic to use in certain file systems, and leaves the vast majority of file names seen in practice untouched. Examples of how this method works follows:
+Converts a file name from the Content-disposition header field (or another string representing a title and an optional file extension) to a suitable name for saving data to a file. This method is idempotent; that is, calling the method again on the result doesn't change that result. The method avoids characters and combinations of characters that are problematic to use in certain file systems, and leaves the vast majority of file names seen in practice untouched. Examples of how this method works follows:
 
  `"=?utf-8?q?hello=2Etxt?=" ->"hello.txt"`  (RFC 2047 encoding).
 

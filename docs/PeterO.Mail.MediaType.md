@@ -160,7 +160,7 @@ If the "charset" parameter is present and non-empty, returns the result of the E
 
     public override int GetHashCode();
 
-Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
+Calculates the hash code of this object. The exact algorithm used by this method may change between versions of this library, and no application or process IDs are used in the hash code calculation.
 
 <b>Return Value:</b>
 

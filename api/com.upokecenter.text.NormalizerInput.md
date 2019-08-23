@@ -152,8 +152,8 @@ Initializes a new instance of the <code>NormalizerInput</code> class. Uses a por
 
 * <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>index</code> - A zero-based index showing where the desired portion of <code>
- str</code> begins.
+* <code>index</code> - An index starting at 0 showing where the desired portion of
+ <code>str</code> begins.
 
 * <code>length</code> - The number of elements in the desired portion of <code>str</code>
  (but not more than <code>str</code> 's length).
@@ -273,8 +273,8 @@ Reads a sequence of Unicode code points from a data source.
 
 * <code>chars</code> - Output buffer.
 
-* <code>index</code> - A zero-based index showing where the desired portion of <code>
- chars</code> begins.
+* <code>index</code> - An index starting at 0 showing where the desired portion of
+ <code>chars</code> begins.
 
 * <code>length</code> - The number of elements in the desired portion of <code>chars</code>
  (but not more than <code>chars</code> 's length).

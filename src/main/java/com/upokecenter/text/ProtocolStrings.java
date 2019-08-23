@@ -4,7 +4,7 @@ package com.upokecenter.text;
      * <p>Contains methods for preparing user-facing protocol strings (such as user
      * identifiers) for equality comparison and validity checking. Such
      * strings can be _internationalized_, that is, contain characters
-     * beyond the Basic Latin block (U + 0000 to U + 007F) of the Unicode
+     * beyond the Basic Latin block (U+0000 to U+007F) of the Unicode
      * Standard. See RFC 8264. Currently there are four profiles for
      * internationalized strings: two for strings serving as user
      * identifiers, one for arbitrary single-line strings (such as
@@ -36,7 +36,7 @@ private ProtocolStrings() {
      * In general, the IdentifierClass contains all code points in the
      * FreeformClass, except certain uncommon letters and digits, spaces,
      * as well as punctuation and symbols outside the Basic Latin range
-     * (U + 0000 to U + 007F).
+     * (U+0000 to U+007F).
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
      * characters allowed in RFC 8264's IdentifierClass (in the contexts
@@ -51,9 +51,9 @@ private ProtocolStrings() {
      * Determines whether the given string belongs in RFC 8264's FreeformClass. In
      * general, the FreeformClass contains most letters, digits, spaces,
      * punctuation, and symbols in the Unicode standard, as well as all
-     * basic printable characters (U + 0021 to U + 007E), but excludes control
-     * characters and separators. Horizontal tab, U + 0009, and other code
-     * points in the range U + 0000 to U + 001F, are among the excluded
+     * basic printable characters (U+0021 to U+007E), but excludes control
+     * characters and separators. Horizontal tab, U+0009, and other code
+     * points in the range U+0000 to U+001F, are among the excluded
      * characters.
      * @param str A string to check.
      * @return {@code true} if the given string is empty or contains only
@@ -95,7 +95,7 @@ private ProtocolStrings() {
      * parts is invalid under that profile (including if {@code str} is
      * null or empty). Note that there will be as many spaces of separation
      * between parts of the return value as between parts of the input;
-     * this method will not collapse multiple spaces (U + 0020) into a single
+     * this method will not collapse multiple spaces (U+0020) into a single
      * space. If such space collapsing on a string (or rejection of strings
      * with multiple consecutive spaces) is desired, it should be done
      * before that string is passed to this method. For comparison
@@ -148,7 +148,7 @@ Idna.UsernameCasePreservedEnforce(str);
      * (including if {@code str} is null or empty). Note that there will be
      * as many spaces of separation between parts of the return value as
      * between parts of the input; this method will not collapse multiple
-     * spaces (U + 0020) into a single space. If such space collapsing on a
+     * spaces (U+0020) into a single space. If such space collapsing on a
      * string (or rejection of strings with multiple consecutive spaces) is
      * desired, it should be done before that string is passed to this
      * method. For comparison purposes, return values of this method (with

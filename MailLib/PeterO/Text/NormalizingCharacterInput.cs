@@ -311,8 +311,8 @@ namespace PeterO.Text {
     /// <summary>Reads a sequence of Unicode code points from a data
     /// source.</summary>
     /// <param name='chars'>Output buffer.</param>
-    /// <param name='index'>A zero-based index showing where the desired
-    /// portion of <paramref name='chars'/> begins.</param>
+    /// <param name='index'>An index starting at 0 showing where the
+    /// desired portion of <paramref name='chars'/> begins.</param>
     /// <param name='length'>The number of elements in the desired portion
     /// of <paramref name='chars'/> (but not more than <paramref
     /// name='chars'/> 's length).</param>

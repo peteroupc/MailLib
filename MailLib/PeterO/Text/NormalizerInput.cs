@@ -285,8 +285,8 @@ namespace PeterO.Text {
     /// a string as the input.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
-    /// <param name='index'>A zero-based index showing where the desired
-    /// portion of <paramref name='str'/> begins.</param>
+    /// <param name='index'>An index starting at 0 showing where the
+    /// desired portion of <paramref name='str'/> begins.</param>
     /// <param name='length'>The number of elements in the desired portion
     /// of <paramref name='str'/> (but not more than <paramref name='str'/>
     /// 's length).</param>
@@ -627,8 +627,8 @@ UnicodeDatabase.IsQuickCheckStarter(
     /// <summary>Reads a sequence of Unicode code points from a data
     /// source.</summary>
     /// <param name='chars'>Output buffer.</param>
-    /// <param name='index'>A zero-based index showing where the desired
-    /// portion of <paramref name='chars'/> begins.</param>
+    /// <param name='index'>An index starting at 0 showing where the
+    /// desired portion of <paramref name='chars'/> begins.</param>
     /// <param name='length'>The number of elements in the desired portion
     /// of <paramref name='chars'/> (but not more than <paramref
     /// name='chars'/> 's length).</param>
