@@ -99,7 +99,7 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>index</i>: A zero-based index showing where the desired portion of  <i>str</i>
+ * <i>index</i>: An index starting at 0 showing where the desired portion of  <i>str</i>
  begins.
 
  * <i>length</i>: The number of elements in the desired portion of  <i>str</i>
@@ -218,7 +218,7 @@ Reads a sequence of Unicode code points from a data source.
 
  * <i>chars</i>: Output buffer.
 
- * <i>index</i>: A zero-based index showing where the desired portion of  <i>chars</i>
+ * <i>index</i>: An index starting at 0 showing where the desired portion of  <i>chars</i>
  begins.
 
  * <i>length</i>: The number of elements in the desired portion of  <i>chars</i>

@@ -247,7 +247,7 @@ namespace PeterO.Mail {
     /// extract. This name will be compared with the names of header fields
     /// in the given message using a basic case-insensitive comparison.
     /// (Two strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U + 005A)
+    /// converting the basic upper-case letters A to Z (U+0041 to U+005A)
     /// in both strings to basic lower-case letters.).</param>
     /// <returns>The value of the first instance of the header field with
     /// the given name. Leading space and/or tab bytes (0x20 and/or 0x09)
@@ -265,8 +265,8 @@ namespace PeterO.Mail {
       if (bytes == null) {
         return null;
       }
-      if (String.IsNullOrEmpty(headerFieldName) || headerFieldName.Length >
-997) {
+      if (String.IsNullOrEmpty(headerFieldName) ||
+         headerFieldName.Length > 997) {
         return null;
       }
       for (var i = 0; i < headerFieldName.Length; ++i) {
@@ -419,31 +419,83 @@ namespace PeterO.Mail {
     /// message has no character encoding declared or assumed for it (which
     /// is usually the case for non-text messages), or the character
     /// encoding is not supported.</exception>
+    [Obsolete("Use GetBodyString() instead.")]
     public string BodyString {
       get {
-        if (this.ContentType.IsMultipart) {
-          string exceptionText = "This is a multipart message, " +
-            "so it doesn't have its " + "own body text.";
-          throw new NotSupportedException(
-              exceptionText);
-        }
-        ICharacterEncoding charset = Encodings.GetEncoding(
-          this.ContentType.GetCharset(),
+        return this.GetBodyString();
+      }
+    }
+
+    private static ICharacterEncoding GetEncoding(string charset) {
+        ICharacterEncoding enc = Encodings.GetEncoding(
+          charset,
           true);
-        if (charset == null) {
-          if (this.ContentType.GetCharset().Equals("gb2312",
-  StringComparison.Ordinal)) {
+        if (enc == null) {
+          if (charset.Equals("gb2312",
+              StringComparison.Ordinal)) {
             // HACK
-            charset = Encodings.GetEncoding("gb2312", false);
+            enc = Encodings.GetEncoding("gb2312", false);
           } else {
-            throw new
-              NotSupportedException("Not in a supported character encoding.");
+            return null;
           }
         }
-        return Encodings.DecodeToString(
-          charset,
-          DataIO.ToReader(this.body));
-      }
+        return enc;
+    }
+
+    private string GetBodyStringNoThrow() {
+        MediaType mt = this.ContentType;
+        if (mt.IsMultipart) {
+          if (mt.TypeAndSubType.Equals(
+            "multipart/alternative",
+            StringComparison.Ordinal)) {
+            IList<Message> parts = this.Parts;
+            // Navigate the parts in reverse order
+            for (var i = parts.Count -1; i >= 0; --i) {
+              string text = parts[i].GetBodyStringNoThrow();
+              if (text != null) {
+                return text;
+              }
+            }
+            return null;
+          }
+          return null;
+        }
+        ICharacterEncoding charset = GetEncoding(this.ContentType.GetCharset());
+        if (charset != null) {
+          return Encodings.DecodeToString(
+            charset,
+            DataIO.ToReader(this.body));
+        } else {
+          return null;
+        }
+    }
+
+    /// <summary>Gets the body of this message as a text string. If this
+    /// message's media type is "multipart/alternative", returns the result
+    /// of this method for the last supported body part.</summary>
+    /// <value>The body of this message as a text string.</value>
+    /// <exception cref='NotSupportedException'>This message is a
+    /// "multipart/alternative" message without a supported body part; or
+    /// this message is a multipart message other than
+    /// "multipart/alternative"; or this message has no character encoding
+    /// declared or assumed for it (which is usually the case for non-text
+    /// messages); or the character encoding is not supported.</exception>
+#if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Design",
+      "CA1024",
+  Justification="This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
+#endif
+  /// <returns/>
+  /// <returns>Not documented yet.</returns>
+    public string GetBodyString() {
+        // TODO: Consider returning null rather than throwing an exception
+        // in public API
+        string str = this.GetBodyStringNoThrow();
+        if (str == null) {
+          throw new NotSupportedException("No supported text to show");
+        }
+        return str;
     }
 
     /// <summary>Gets a list of addresses found in the CC header field or
@@ -459,15 +511,20 @@ namespace PeterO.Mail {
 
     /// <summary>
     /// <para>Gets a Hypertext Markup Language (HTML) rendering of this
-    /// message's text body. This method currently supports text/plain,
-    /// text/plain with format = flowed, text/enriched, and text/markdown
-    /// (original Markdown).</para></summary>
+    /// message's text body. This method currently supports any message for
+    /// which <c>GetBodyString()</c> outputs a text string and treats the
+    /// following media types specially: text/plain with
+    /// <c>format=flowed</c>, text/enriched, text/markdown (original
+    /// Markdown). If this message's media type is "multipart/alternative",
+    /// returns the result of this method for the last supported body
+    /// part.</para></summary>
     /// <returns>An HTML rendering of this message's text.</returns>
-    /// <exception cref='NotSupportedException'>Either this message is a
-    /// multipart message, so it doesn't have its own body text, or this
-    /// message has no character encoding declared or assumed for it (which
-    /// is usually the case for non-text messages), or the character
-    /// encoding is not supported.</exception>
+    /// <exception cref='NotSupportedException'>This message is a
+    /// "multipart/alternative" message without a supported body part; or
+    /// this message is a multipart message other than
+    /// "multipart/alternative"; or this message has no character encoding
+    /// declared or assumed for it (which is usually the case for non-text
+    /// messages); or the character encoding is not supported.</exception>
     /// <remarks>
     /// <para>REMARK: The Markdown implementation currently supports all
     /// features of original Markdown, except that the
@@ -481,11 +538,35 @@ namespace PeterO.Mail {
     /// <item>does not deliberately use HTML escapes to obfuscate email
     /// addresses wrapped in angle-brackets.</item></list></remarks>
     public string GetFormattedBodyString() {
-      string text = this.BodyString;
+      // TODO: Consider returning null rather than throwing an exception
+      // in public API
+      string text = this.GetFormattedBodyStringNoThrow();
+      if (text == null) {
+        throw new NotSupportedException();
+      }
+      return text;
+    }
+
+    private string GetFormattedBodyStringNoThrow() {
+      MediaType mt = this.ContentType;
+      string text;
+      if (mt.TypeAndSubType.Equals(
+        "multipart/alternative",
+        StringComparison.Ordinal)) {
+        IList<Message> parts = this.Parts;
+        // Navigate the parts in reverse order
+        for (var i = parts.Count -1; i >= 0; --i) {
+          text = parts[i].GetFormattedBodyString();
+          if (text != null) {
+            return text;
+          }
+        }
+        return null;
+      }
+      text = this.GetBodyStringNoThrow();
       if (text == null) {
         return null;
       }
-      MediaType mt = this.ContentType;
       string fmt = mt.GetParameter("format");
       string dsp = mt.GetParameter("delsp");
       bool formatFlowed = DataUtilities.ToLowerCaseAscii(
@@ -500,10 +581,10 @@ namespace PeterO.Mail {
           return FormatFlowed.NonFormatFlowedText(text);
         }
       } else if (mt.TypeAndSubType.Equals("text/html",
-  StringComparison.Ordinal)) {
+          StringComparison.Ordinal)) {
         return text;
       } else if (mt.TypeAndSubType.Equals("text/markdown",
-  StringComparison.Ordinal)) {
+          StringComparison.Ordinal)) {
         MediaType previewType = MediaType.Parse("text/html");
         if (this.ContentDisposition != null) {
           string pt = this.ContentDisposition.GetParameter("preview-type");
@@ -512,13 +593,13 @@ namespace PeterO.Mail {
             previewType);
         }
         if (previewType.TypeAndSubType.Equals("text/html",
-  StringComparison.Ordinal)) {
+          StringComparison.Ordinal)) {
           return FormatFlowed.MarkdownText(text, 0);
         } else {
           return FormatFlowed.NonFormatFlowedText(text);
         }
       } else if (mt.TypeAndSubType.Equals("text/enriched",
-  StringComparison.Ordinal)) {
+         StringComparison.Ordinal)) {
         return EnrichedText.EnrichedToHtml(text, 0, text.Length);
       } else {
         return FormatFlowed.NonFormatFlowedText(text);
@@ -645,8 +726,9 @@ namespace PeterO.Mail {
     /// <summary>Gets a snapshot of the header fields of this message, in
     /// the order in which they appear in the message. For each item in the
     /// list, the key is the header field's name (where any basic
-    /// upper-case letters [U+0041 to U+005A] are converted to lower case)
-    /// and the value is the header field's value.</summary>
+    /// upper-case letters, U+0041 to U+005A, are converted to basic
+    /// lower-case letters) and the value is the header field's
+    /// value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
@@ -834,7 +916,7 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1024",
-      Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
+    Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
 #endif
     public Message GetBodyMessage() {
       return (this.ContentType.TopLevelType.Equals("message",
@@ -1243,7 +1325,7 @@ namespace PeterO.Mail {
       string mtypestr = "text/markdown; charset=utf-8";
       markdownMessage.ContentType = MediaType.Parse(mtypestr);
       // Take advantage of SetTextBody's line break conversion
-      string markdownText = markdownMessage.BodyString;
+      string markdownText = markdownMessage.GetBodyString();
       Message htmlMessage = NewBodyPart().SetHtmlBody(
          FormatFlowed.MarkdownText(markdownText, 0));
       mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
@@ -1334,15 +1416,24 @@ namespace PeterO.Mail {
       if (inputStream != null) {
         try {
           using (var ms = new MemoryStream()) {
-            var buffer = new byte[4096];
-            while (true) {
-              int cp = inputStream.Read(buffer, 0, buffer.Length);
-              if (cp <= 0) {
-                break;
+            if (mediaType.IsMultipart) {
+              try {
+                var transform = DataIO.ToReader(inputStream);
+                bodyPart.ReadMultipartBody(transform);
+              } catch (InvalidOperationException ex) {
+                throw new MessageDataException(ex.Message, ex);
               }
-              ms.Write(buffer, 0, cp);
+            } else {
+              var buffer = new byte[4096];
+              while (true) {
+                int cp = inputStream.Read(buffer, 0, buffer.Length);
+                if (cp <= 0) {
+                  break;
+                }
+                ms.Write(buffer, 0, cp);
+              }
+              bodyPart.SetBody(ms.ToArray());
             }
-            bodyPart.SetBody(ms.ToArray());
           }
         } catch (IOException ex) {
           throw new MessageDataException("An I/O error occurred.", ex);
@@ -3077,7 +3168,7 @@ builder.SubType.Equals(
 #else
 {
               throw new MessageDataException("Message body can't be encoded");
-            }
+         }
 #endif
           }
         }
@@ -3196,10 +3287,9 @@ NamedAddress(mhs).Address);
                                }
                                 }
                                 DebugUtility.Log (ssb.ToString());
-                              }
-              #endif
-              */
-              if (!isValidAddressing) {
+              }
+#endif
+              */ if (!isValidAddressing) {
                 value = String.Empty;
                 if (!name.Equals("from", StringComparison.Ordinal) &&
 !name.Equals("sender", StringComparison.Ordinal)) {
@@ -3255,7 +3345,7 @@ NamedAddress(mhs).Address);
               throw new MessageDataException(exText);
 #else
               throw new MessageDataException(
-                "Header field still has non-Ascii or controls");
+           "Header field still has non-Ascii or controls");
 #endif
             }
           } else {
@@ -3618,9 +3708,11 @@ NamedAddress(mhs).Address);
             // For conformance with RFC 2049
             if (ctype.IsText) {
               if (String.IsNullOrEmpty(ctype.GetCharset())) {
-                if (!ctype.StoresCharsetInPayload()) {
-                  // Used unless the media type defines how charset
-                  // is determined from the payload
+                // charset is present but unrecognized, or
+                // the media type does not define how charset
+                // is determined from the payload
+                if (ctype.Parameters.ContainsKey("charset") ||
+                   !ctype.StoresCharsetInPayload()) {
                   ctype = MediaType.ApplicationOctetStream;
                 }
               } else {
@@ -3766,7 +3858,7 @@ NamedAddress(mhs).Address);
                     this).ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";
             valueExMessage = valueExMessage.Replace('\r', ' ')
-              .Replace('\n', ' ').Replace('\0', ' ');
+            .Replace('\n', ' ').Replace('\0', ' ');
 #endif
             throw new MessageDataException(valueExMessage);
           }
@@ -3876,7 +3968,7 @@ this.ContentType.TypeAndSubType.Equals("text/plain",
                 MediaType.TextPlainAscii) + "] [encoding=" + transferEnc +
                     "]";
             valueExMessage = valueExMessage.Replace('\r', ' ')
-              .Replace('\n', ' ').Replace('\0', ' ');
+            .Replace('\n', ' ').Replace('\0', ' ');
 #endif
             throw new MessageDataException(valueExMessage, ex);
           }

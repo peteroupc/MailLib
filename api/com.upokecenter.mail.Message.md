@@ -169,7 +169,10 @@ Use GetAddresses(\Bcc\) instead.
 * `Message GetBodyMessage()`<br>
  Returns the mail message contained in this message's body.
 * `java.lang.String getBodyString()`<br>
- Gets the body of this message as a text string.
+ Deprecated.
+Use GetBodyString() instead.
+ Use GetBodyString() instead.
+* `java.lang.String GetBodyString()`<br>
 * `java.util.List<NamedAddress> getCCAddresses()`<br>
  Deprecated.
 Use GetAddresses(\Cc\) instead.
@@ -415,8 +418,9 @@ Use GetAddresses(\Bcc\) instead.
 * A list of addresses found in the BCC header field or fields.
 
 ### getBodyString
-    public final java.lang.String getBodyString()
-Gets the body of this message as a text string.
+    @Deprecated public final java.lang.String getBodyString()
+Deprecated.
+Use GetBodyString() instead.
 
 **Returns:**
 
@@ -429,6 +433,8 @@ Gets the body of this message as a text string.
  encoding declared or assumed for it (which is usually the case for
  non-text messages), or the character encoding is not supported.
 
+### GetBodyString
+    public java.lang.String GetBodyString()
 ### getCCAddresses
     @Deprecated public final java.util.List<NamedAddress> getCCAddresses()
 Deprecated.
@@ -441,9 +447,13 @@ Use GetAddresses(\Cc\) instead.
 ### GetFormattedBodyString
     public java.lang.String GetFormattedBodyString()
 <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
- body. This method currently supports text/plain, text/plain with
- format = flowed, text/enriched, and text/markdown (original
- Markdown).</p><p> </p><p>REMARK: The Markdown implementation currently
+ body. This method currently supports any message for which
+ <code>GetBodyString()</code> outputs a text string and treats the
+ following media types specially: text/plain with
+ <code>format = flowed</code>, text/enriched, text/markdown (original
+  Markdown). If this message's media type is "multipart/alternative",
+ returns the result of this method for the last supported body
+ part.</p><p> </p><p>REMARK: The Markdown implementation currently
  supports all features of original Markdown, except that the
  implementation:</p> <ul> <li>does not strictly check the placement
   of "block-level HTML elements",</li> <li>does not prevent Markdown
@@ -458,10 +468,12 @@ Use GetAddresses(\Cc\) instead.
 
 **Throws:**
 
-* <code>java.lang.UnsupportedOperationException</code> - Either this message is a multipart message, so
- it doesn't have its own body text, or this message has no character
- encoding declared or assumed for it (which is usually the case for
- non-text messages), or the character encoding is not supported.
+* <code>java.lang.UnsupportedOperationException</code> - This message is a "multipart/alternative"
+ message without a supported body part; or this message is a
+  multipart message other than "multipart/alternative"; or this
+ message has no character encoding declared or assumed for it (which
+ is usually the case for non-text messages); or the character
+ encoding is not supported.
 
 ### getContentDisposition
     public final ContentDisposition getContentDisposition()
@@ -547,9 +559,9 @@ Use GetAddresses(\From\) instead.
     public final java.util.List<java.util.Map.Entry<java.lang.String,​java.lang.String>> getHeaderFields()
 Gets a snapshot of the header fields of this message, in the order in which
  they appear in the message. For each item in the list, the key is
- the header field's name (where any basic upper-case
- letters.get(U+0041 to U+005A) are converted to lower case) and the
- value is the header field's value.
+ the header field's name (where any basic upper-case letters, U+0041
+ to U+005A, are converted to basic lower-case letters) and the value
+ is the header field's value.
 
 **Returns:**
 

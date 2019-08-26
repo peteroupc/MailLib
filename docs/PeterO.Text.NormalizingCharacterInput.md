@@ -363,7 +363,7 @@ Reads a sequence of Unicode code points from a data source.
 
  * <i>chars</i>: Output buffer.
 
- * <i>index</i>: A zero-based index showing where the desired portion of  <i>chars</i>
+ * <i>index</i>: An index starting at 0 showing where the desired portion of  <i>chars</i>
  begins.
 
  * <i>length</i>: The number of elements in the desired portion of  <i>chars</i>

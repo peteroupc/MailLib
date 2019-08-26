@@ -26,7 +26,7 @@ This type is immutable, meaning its values can't be changed once it' s created. 
 * <code>[Parse(string, PeterO.Mail.MediaType)](#Parse_string_PeterO_Mail_MediaType)</code> - Parses a media type string and returns a media type object, or the default value if the string is invalid.
 * <code>[SubType](#SubType)</code> - Gets this media type's subtype (for example, "plain" in "text/plain").
 * <code>[public static readonly PeterO.Mail.MediaType TextPlainAscii;](#TextPlainAscii)</code> - Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
-* <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U + 0000 to U + 007F).
+* <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
 * <code>[TopLevelType](#TopLevelType)</code> - Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic").
 * <code>[ToSingleLineString()](#ToSingleLineString)</code> - Converts this media type to a text string form suitable for inserting in HTTP headers.
 * <code>[ToString()](#ToString)</code> - Converts this media type to a text string form suitable for inserting in email headers.
@@ -59,7 +59,7 @@ Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", us
 
     public static readonly PeterO.Mail.MediaType TextPlainUtf8;
 
-Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U + 0000 to U + 007F).
+Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
 
 <a id="IsMultipart"></a>
 ### IsMultipart
@@ -153,7 +153,7 @@ Gets this media type's "charset" parameter, naming a character encoding used to 
 
 <b>Return Value:</b>
 
-If the "charset" parameter is present and non-empty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that the result's basic upper-case letters A to Z (U + 0041 to U + 005A) are converted to lower case. If the "charset" parameter is absent or empty, returns the default value, if any, for that parameter given the media type (e.g., "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
+If the "charset" parameter is present and non-empty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that the result's basic upper-case letters A to Z (U+0041 to U+005A) are converted to lower case. If the "charset" parameter is absent or empty, returns the default value, if any, for that parameter given the media type (e.g., "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
 
 <a id="GetHashCode"></a>
 ### GetHashCode
@@ -176,7 +176,7 @@ Gets the value of a parameter in this media type, such as "charset" or "format".
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
+ * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
 
 <b>Return Value:</b>
 

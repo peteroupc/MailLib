@@ -245,8 +245,8 @@ import com.upokecenter.text.*;
       if (bytes == null) {
         return null;
       }
-      if (((headerFieldName) == null || (headerFieldName).length() == 0) || headerFieldName.length() >
-997) {
+      if (((headerFieldName) == null || (headerFieldName).length() == 0) ||
+         headerFieldName.length() > 997) {
         return null;
       }
       for (int i = 0; i < headerFieldName.length(); ++i) {
@@ -282,7 +282,8 @@ import com.upokecenter.text.*;
           continue;
         }
         n = SkipWsp(bytes, n + 1);
-        java.io.ByteArrayOutputStream ms = null;
+        {
+          java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -302,6 +303,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
       }
       return null;
@@ -410,30 +412,80 @@ try { if (ms != null) {
      * it doesn't have its own body text, or this message has no character
      * encoding declared or assumed for it (which is usually the case for
      * non-text messages), or the character encoding is not supported.
-     */
+     * @deprecated Use GetBodyString() instead.
+ */
+@Deprecated
     public final String getBodyString() {
-        if (this.getContentType().isMultipart()) {
-          String exceptionText = "This is a multipart message, " +
-            "so it doesn't have its " + "own body text.";
-          throw new UnsupportedOperationException(
-              exceptionText);
-        }
-        ICharacterEncoding charset = Encodings.GetEncoding(
-          this.getContentType().GetCharset(),
+        return this.GetBodyString();
+      }
+
+    private static ICharacterEncoding GetEncoding(String charset) {
+        ICharacterEncoding enc = Encodings.GetEncoding(
+          charset,
           true);
-        if (charset == null) {
-          if (this.getContentType().GetCharset().equals("gb2312")) {
+        if (enc == null) {
+          if (charset.equals("gb2312")) {
             // HACK
-            charset = Encodings.GetEncoding("gb2312", false);
+            enc = Encodings.GetEncoding("gb2312", false);
           } else {
-            throw new
-              UnsupportedOperationException("Not in a supported character encoding.");
+            return null;
           }
         }
-        return Encodings.DecodeToString(
-          charset,
-          DataIO.ToReader(this.body));
-      }
+        return enc;
+    }
+
+    private String GetBodyStringNoThrow() {
+        MediaType mt = this.getContentType();
+        if (mt.isMultipart()) {
+          if (mt.getTypeAndSubType().equals(
+            "multipart/alternative")) {
+            List<Message> parts = this.getParts();
+            // Navigate the parts in reverse order
+            for (var i = parts.size() -1; i >= 0; --i) {
+              String text = parts.get(i).GetBodyStringNoThrow();
+              if (text != null) {
+                return text;
+              }
+            }
+            return null;
+          }
+          return null;
+        }
+        ICharacterEncoding charset = GetEncoding(this.getContentType().GetCharset());
+        if (charset != null) {
+          return Encodings.DecodeToString(
+            charset,
+            DataIO.ToReader(this.body));
+        } else {
+          return null;
+        }
+    }
+
+    /**
+     * Gets the body of this message as a text string. If this message's media type
+     *  is "multipart/alternative", returns the result of this method for
+     * the last supported body part.
+     * @return The body of this message as a text string.
+     * @throws UnsupportedOperationException This message is a "multipart/alternative"
+     * message without a supported body part; or this message is a
+     *  multipart message other than "multipart/alternative"; or this
+     * message has no character encoding declared or assumed for it (which
+     * is usually the case for non-text messages); or the character
+     * encoding is not supported.
+     */
+
+  /**
+   *
+   */
+    public String GetBodyString() {
+        // TODO: Consider returning null rather than throwing an exception
+        // in public API
+        String str = this.GetBodyStringNoThrow();
+        if (str == null) {
+          throw new UnsupportedOperationException("No supported text to show");
+        }
+        return str;
+    }
 
     /**
      * Gets a list of addresses found in the CC header field or fields.
@@ -447,9 +499,13 @@ try { if (ms != null) {
 
     /**
      * <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
-     * body. This method currently supports text/plain, text/plain with
-     * format = flowed, text/enriched, and text/markdown (original
-     * Markdown).</p><p> <p>REMARK: The Markdown implementation currently
+     * body. This method currently supports any message for which
+     * <code>GetBodyString()</code> outputs a text string and treats the
+     * following media types specially: text/plain with
+     * <code>format = flowed</code>, text/enriched, text/markdown (original
+     *  Markdown). If this message's media type is "multipart/alternative",
+     * returns the result of this method for the last supported body
+     * part.</p><p> <p>REMARK: The Markdown implementation currently
      * supports all features of original Markdown, except that the
      * implementation:</p> <ul> <li>does not strictly check the placement
      *  of "block-level HTML elements",</li> <li>does not prevent Markdown
@@ -458,17 +514,42 @@ try { if (ms != null) {
      * use HTML escapes to obfuscate email addresses wrapped in
      * angle-brackets.</li></ul></p>
      * @return An HTML rendering of this message's text.
-     * @throws UnsupportedOperationException Either this message is a multipart message, so
-     * it doesn't have its own body text, or this message has no character
-     * encoding declared or assumed for it (which is usually the case for
-     * non-text messages), or the character encoding is not supported.
+     * @throws UnsupportedOperationException This message is a "multipart/alternative"
+     * message without a supported body part; or this message is a
+     *  multipart message other than "multipart/alternative"; or this
+     * message has no character encoding declared or assumed for it (which
+     * is usually the case for non-text messages); or the character
+     * encoding is not supported.
      */
     public String GetFormattedBodyString() {
-      String text = this.getBodyString();
+      // TODO: Consider returning null rather than throwing an exception
+      // in public API
+      String text = this.GetFormattedBodyStringNoThrow();
+      if (text == null) {
+        throw new UnsupportedOperationException();
+      }
+      return text;
+    }
+
+    private String GetFormattedBodyStringNoThrow() {
+      MediaType mt = this.getContentType();
+      String text;
+      if (mt.getTypeAndSubType().equals(
+        "multipart/alternative")) {
+        List<Message> parts = this.getParts();
+        // Navigate the parts in reverse order
+        for (var i = parts.size() -1; i >= 0; --i) {
+          text = parts.get(i).GetFormattedBodyString();
+          if (text != null) {
+            return text;
+          }
+        }
+        return null;
+      }
+      text = this.GetBodyStringNoThrow();
       if (text == null) {
         return null;
       }
-      MediaType mt = this.getContentType();
       String fmt = mt.GetParameter("format");
       String dsp = mt.GetParameter("delsp");
       boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
@@ -614,9 +695,9 @@ public final void setContentType(MediaType value) {
     /**
      * Gets a snapshot of the header fields of this message, in the order in which
      * they appear in the message. For each item in the list, the key is
-     * the header field's name (where any basic upper-case
-     * letters.get(U+0041 to U+005A) are converted to lower case) and the
-     * value is the header field's value.
+     * the header field's name (where any basic upper-case letters, U+0041
+     * to U+005A, are converted to basic lower-case letters) and the value
+     * is the header field's value.
      * @return A snapshot of the header fields of this message.
      */
     public final List<Map.Entry<String, String>> getHeaderFields() {
@@ -1195,7 +1276,7 @@ public final void setSubject(String value) {
       String mtypestr = "text/markdown; charset=utf-8";
       markdownMessage.setContentType(MediaType.Parse(mtypestr));
       // Take advantage of SetTextBody's line break conversion
-      String markdownText = markdownMessage.getBodyString();
+      String markdownText = markdownMessage.GetBodyString();
       Message htmlMessage = NewBodyPart().SetHtmlBody(
          FormatFlowed.MarkdownText(markdownText, 0));
       mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
@@ -1285,24 +1366,35 @@ public final void setSubject(String value) {
       bodyPart.setContentType(mediaType);
       if (inputStream != null) {
         try {
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-            byte[] buffer = new byte[4096];
-            while (true) {
-              int cp = inputStream.read(buffer, 0, buffer.length);
-              if (cp <= 0) {
-                break;
+            if (mediaType.isMultipart()) {
+              try {
+                var transform = DataIO.ToReader(inputStream);
+                bodyPart.ReadMultipartBody(transform);
+              } catch (IllegalStateException ex) {
+                throw new MessageDataException(ex.getMessage(), ex);
               }
-              ms.write(buffer, 0, cp);
+            } else {
+              byte[] buffer = new byte[4096];
+              while (true) {
+                int cp = inputStream.read(buffer, 0, buffer.length);
+                if (cp <= 0) {
+                  break;
+                }
+                ms.write(buffer, 0, cp);
+              }
+              bodyPart.SetBody(ms.toByteArray());
             }
-            bodyPart.SetBody(ms.toByteArray());
 }
 finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
         } catch (IOException ex) {
           throw new MessageDataException("An I/O error occurred.", ex);
@@ -3101,8 +3193,7 @@ name.length() >= 2 &&
               haveHeaders[headerIndex] = true;
               /*
 
-              */
-              if (!isValidAddressing) {
+              */ if (!isValidAddressing) {
                 value = "";
                 if (!name.equals("from") &&
 !name.equals("sender")) {
@@ -3502,9 +3593,11 @@ name.length() >= 2 &&
             // For conformance with RFC 2049
             if (ctype.isText()) {
               if (((ctype.GetCharset()) == null || (ctype.GetCharset()).length() == 0)) {
-                if (!ctype.StoresCharsetInPayload()) {
-                  // Used unless the media type defines how charset
-                  // is determined from the payload
+                // charset is present but unrecognized, or
+                // the media type does not define how charset
+                // is determined from the payload
+                if (ctype.getParameters().ContainsKey("charset") ||
+                   !ctype.StoresCharsetInPayload()) {
                   ctype = MediaType.ApplicationOctetStream;
                 }
               } else {

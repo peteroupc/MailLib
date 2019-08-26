@@ -34,13 +34,13 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
 
- * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U + 0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U + 000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
+ * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U+000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
 
  * The name  `ascii`  is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252`  and  `utf8`  are treated as synonyms for  `windows-1252`  and  `utf-8` , respectively, even though they are not IANA registered aliases.
 
  * The following deviations involve encoded words under RFC 2047:
 
- * (a) If a sequence of encoded words decodes to a string with a CTL character (U + 007F, or a character less than U + 0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
+ * (a) If a sequence of encoded words decodes to a string with a CTL character (U+007F, or a character less than U+0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
 
  * (b) This implementation can decode encoded words regardless of the character length of the line in which they appear. This implementation can generate a header field line with one or more encoded words even if that line is more than 76 characters long. (This implementation follows the recommendation in RFC 5322 to limit header field lines to no more than 78 characters, where possible; see also RFC 6532.)
 
@@ -263,7 +263,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U + 0041 to U + 005A] are converted to lower case) and the value is the header field's value.
+Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U+005A] are converted to lower case) and the value is the header field's value.
 
 <b>Returns:</b>
 
@@ -633,13 +633,13 @@ Extracts the value of a header field from a byte array representing an email mes
 
  * <i>bytes</i>: A byte array representing an email message.
 
- * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.).
+ * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U + 005A) in both strings to basic lower-case letters.).
 
 <b>Return Value:</b>
 
 The value of the first instance of the header field with the given name. Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF (0x0d/0x0a) pairs will be removed from the header field value, and the value is treated as encoded in UTF-8 (an 8-bit encoding form of the Unicode Standard) where illegally encoded UTF-8 is replaced as appropriate with replacement characters (U+FFFD). Returns null if  <i>bytes</i>
  is null, if  <i>headerFieldName</i>
- is null, is more than 997 characters long, or has a character less than U + 0021 or greater than U + 007E in the Unicode Standard, if a header field with that name does not exist, or if a body (even an empty one) does not follow the header fields.
+ is null, is more than 997 characters long, or has a character less than U+0021 or greater than U+007E in the Unicode Standard, if a header field with that name does not exist, or if a body (even an empty one) does not follow the header fields.
 
 <a id="FromMailtoUri_string"></a>
 ### FromMailtoUri
@@ -647,7 +647,7 @@ The value of the first instance of the header field with the given name. Leading
     public static PeterO.Mail.Message FromMailtoUri(
         string uri);
 
-Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored. (Keys are compared using a basic case-sensitive comparison, in which two strings are equal if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to basic lower-case letters.) The same key (matched using a basic case-insensitive comparison) can appear more than once; for "subject", "cc", "bcc", and "in-reply-to", the last value with the given key is used; for "to", all header field values as well as the path are combined to a single To header field; for "keywords" and "comments", each value adds another header field of the given key; and for "body", the last value with that key is used as the body.
+Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored. (Keys are compared using a basic case-sensitive comparison, in which two strings are equal if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.) The same key (matched using a basic case-insensitive comparison) can appear more than once; for "subject", "cc", "bcc", and "in-reply-to", the last value with the given key is used; for "to", all header field values as well as the path are combined to a single To header field; for "keywords" and "comments", each value adds another header field of the given key; and for "body", the last value with that key is used as the body.
 
 <b>Parameters:</b>
 
@@ -706,7 +706,7 @@ A Message object created from the given MailTo URI. Returs null if  <i>url</i>
 
     public string Generate();
 
-Generates this message's data in text form. The generated message will have only Basic Latin code points (U + 0000 to U + 007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
+Generates this message's data in text form. The generated message will have only Basic Latin code points (U+0000 to U+007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
 The following applies to the following header fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From, Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists, but has an invalid syntax, has no addresses, or appears more than once, this method will combine the addresses into one header field if possible (in the case of all fields given other than From and Sender), and otherwise generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to  `me@[header-name]-address.invalid`  as the address (a  `.invalid`  address is a reserved address that can never belong to anyone). (An exception is that the Resent-* header fields may appear more than once.) The generated message should always have a From header field.
 
@@ -827,7 +827,7 @@ Either this message is a multipart message, so it doesn't have its own body text
     public string GetHeader(
         string name);
 
-Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
 
 <b>Parameters:</b>
 
@@ -870,7 +870,7 @@ The parameter  <i>index</i>
     public string[] GetHeaderArray(
         string name);
 
-Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
 
 <b>Parameters:</b>
 
@@ -958,7 +958,7 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
-Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.). This method updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.). This method updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 

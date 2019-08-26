@@ -420,9 +420,8 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
+    Justification="This instance is immutable")]
 #endif
-
     /// <summary>The content disposition value "attachment" .</summary>
     public static readonly ContentDisposition Attachment =
       Build("attachment");
@@ -431,9 +430,8 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
+    Justification="This instance is immutable")]
 #endif
-
     /// <summary>The content disposition value "inline" .</summary>
     public static readonly ContentDisposition Inline =
       Build("inline");

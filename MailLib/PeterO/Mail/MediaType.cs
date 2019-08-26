@@ -809,7 +809,7 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
   Justification="This method has different semantics from " +
-        "GetParameter(\"charset\").")]
+    "GetParameter(\"charset\").")]
 #endif
     public string GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
@@ -1364,9 +1364,8 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
+    Justification="This instance is immutable")]
 #endif
-
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "US-ASCII", used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
@@ -1380,9 +1379,8 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
+    Justification="This instance is immutable")]
 #endif
-
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "utf-8", used for plain text data that may contain
     /// characters outside the basic Latin range (U+0000 to
@@ -1398,9 +1396,8 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
+    Justification="This instance is immutable")]
 #endif
-
     /// <summary>Specifies the media type "message/rfc822", used for
     /// Internet mail messages.</summary>
     public static readonly MediaType MessageRfc822 =
@@ -1410,9 +1407,8 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
+    Justification="This instance is immutable")]
 #endif
-
     /// <summary>Specifies the media type "application/octet-stream", used
     /// for arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =
