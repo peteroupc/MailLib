@@ -11,48 +11,42 @@ Represents an email message, and contains methods and properties for
  access to objects from this class must be synchronized if multiple
  threads can access them at the same time.</p> <p>The following lists
  known deviations from the mail specifications (Internet Message Format
- and MIME):</p> <ul> <li>The content-transfer-encodings
-  "quoted-printable" and "base64" are treated as 7bit instead if they
-  occur in a message or body part with content type "multipart/*" or
-  "message/*" (other than "message/global", "message/global-headers",
-  "message/global-disposition-notification", or
-  "message/global-delivery-status").</li> <li>If a message has two or
- more Content-Type header fields, it is treated as having a content
-  type of "application/octet-stream", unless one or more of the header
- fields is syntactically invalid.</li> <li>Illegal UTF-8 byte sequences
- appearing in header field values are replaced with replacement
- characters. Moreover, UTF-8 is parsed everywhere in header field
- values, even in those parts of some structured header fields where
- this appears not to be allowed. (UTF-8 is a character encoding for the
- Unicode character set.)</li> <li>This implementation can parse a
- message even if that message is without a From header field, without a
- Date header field, or without both.</li> <li>The To and Cc header
- fields are allowed to contain only comments and whitespace, but these
-  "empty" header fields will be omitted when generating.</li> <li>There
- is no line length limit imposed when parsing header fields, except
- header field names.</li> <li>There is no line length limit imposed
- when parsing quoted-printable or base64 encoded bodies.</li> <li>If
- the transfer encoding is absent and the content type is
-  "message/rfc822", bytes with values greater than 127 (called "8-bit
-  bytes" in the rest of these remarks) are still allowed, despite the
-  default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
- the following cases, if the transfer encoding is absent, declared as
- 7bit, or treated as 7bit, 8-bit bytes are still allowed:</li> <li>(a)
- The preamble and epilogue of multipart messages, which will be
+ and MIME):</p> <ul> <li>If a message has two or more Content-Type
+ header fields, it is treated as having a content type of
+  "application/octet-stream", unless one or more of the header fields is
+ syntactically invalid.</li> <li>Illegal UTF-8 byte sequences appearing
+ in header field values are replaced with replacement characters.
+ Moreover, UTF-8 is parsed everywhere in header field values, even in
+ those parts of some structured header fields where this appears not to
+ be allowed. (UTF-8 is a character encoding for the Unicode character
+ set.)</li> <li>This implementation can parse a message even if that
+ message is without a From header field, without a Date header field,
+ or without both.</li> <li>The To and Cc header fields are allowed to
+  contain only comments and whitespace, but these "empty" header fields
+ will be omitted when generating.</li> <li>There is no line length
+ limit imposed when parsing header fields, except header field
+ names.</li> <li>There is no line length limit imposed when parsing
+ quoted-printable or base64 encoded bodies.</li> <li>If the transfer
+  encoding is absent and the content type is "message/rfc822", bytes
+ with values greater than 127 are still allowed, despite the default
+  value of "7bit" for "Content-Transfer-Encoding".</li> <li>In the
+ following cases, if the transfer encoding is absent, declared as 7bit,
+ or treated as 7bit, bytes greater than 127 are still allowed:</li>
+ <li>(a) The preamble and epilogue of multipart messages, which will be
  ignored.</li> <li>(b) If the charset is declared to be
   <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
   charset is declared to be <code>us-ascii</code>, "windows-1252",
   "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
  <li>(d) In non-MIME message bodies and in text/plain message bodies.
- Any 8-bit bytes are replaced with the substitute character byte
-  (0x1a).</li> <li>If the message starts with the word "From" (and no
- other case variations of that word) followed by one or more space
+ Any bytes greater than 127 are replaced with the substitute character
+  byte (0x1a).</li> <li>If the message starts with the word "From" (and
+ no other case variations of that word) followed by one or more space
  (U+0020) not followed by colon, that text and the rest of the text is
  skipped up to and including a line feed (U+000A). (See also RFC 4155,
   which describes the so-called "mbox" convention with "From" lines of
  this kind.)</li> <li>The name <code>ascii</code> is treated as a synonym for
  <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
- name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
+ names <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
  <code>windows-1252</code> and <code>utf-8</code>, respectively, even though they
  are not IANA registered aliases.</li> <li>The following deviations
  involve encoded words under RFC 2047:</li> <li>(a) If a sequence of
@@ -68,22 +62,34 @@ Represents an email message, and contains methods and properties for
  6532.)</li></ul> <p>It would be appreciated if users of this library
  contact the author if they find other ways in which this
  implementation deviates from the mail specifications or other
- applicable specifications.</p> <p>Note that this class currently
-  doesn't support the "padding" parameter for message bodies with the
-  media type "application/octet-stream" or treated as that media type
- (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
- decode an RFC 2047 encoded word that uses ISO-2022-JP or ISO-2022-JP-2
- (encodings that use code switching) even if the encoded word's payload
-  ends in a different mode from "ASCII mode". (Each encoded word still
-  starts in "ASCII mode", though.) This, however, is not a deviation to
- RFC 2047 because the relevant rule only concerns bringing the output
-  device back to "ASCII mode" after the decoded text is displayed (see
- last paragraph of sec. 6.2) -- since the decoded text is converted to
- Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is not
-  applicable since there is no such thing as "ASCII mode" in the Unicode
- Standard.</p> <p>Note that this library (the MailLib library) has no
- facilities for sending and receiving email messages, since that's
- outside this library's scope.</p>
+ applicable specifications.</p> <p>This class currently doesn't support
+  the "padding" parameter for message bodies with the media type
+  "application/octet-stream" or treated as that media type (see RFC 2046
+ sec. 4.5.1).</p> <p>In this implementation, if the
+  content-transfer-encoding "quoted-printable" or "base64" occurs in a
+  message or body part with content type "multipart/*" or "message/*"
+  (other than "message/global", "message/global-headers",
+  "message/global-disposition-notification", or
+  "message/global-delivery-status"), that encoding is treated as
+ unrecognized for the purpose of treating that message or body part as
+  having a content type of "application/octet-stream" rather than the
+ declared content type. This is a clarification to RFCs 2045 and 2049.
+  (This may result in "misdecoded" messages because in practice, most if
+ not all messages of this kind don't use quoted-printable or base64
+ encodings for the whole body, but may do so in the body parts they
+ contain.)</p> <p>This implementation can decode an RFC 2047 encoded
+ word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use code
+ switching) even if the encoded word's payload ends in a different mode
+  from "ASCII mode". (Each encoded word still starts in "ASCII mode",
+ though.) This, however, is not a deviation to RFC 2047 because the
+  relevant rule only concerns bringing the output device back to "ASCII
+  mode" after the decoded text is displayed (see last paragraph of sec.
+ 6.2) -- since the decoded text is converted to Unicode rather than
+ kept as ISO-2022-JP or ISO-2022-JP-2, this is not applicable since
+  there is no such thing as "ASCII mode" in the Unicode Standard.</p>
+ <p>Note that this library (the MailLib library) has no facilities for
+ sending and receiving email messages, since that's outside this
+ library's scope.</p>
 
 ## Methods
 
@@ -160,6 +166,9 @@ Renamed to FromMailtoUri.
 * `java.util.List<NamedAddress> GetAddresses​(java.lang.String headerName)`<br>
  Gets a list of addresses contained in the header fields with the given name
  in this message.
+* `java.util.List<Message> GetAttachments()`<br>
+ Gets a list of descendant body parts of this message that are considered
+ attachments.
 * `java.util.List<NamedAddress> getBccAddresses()`<br>
  Deprecated.
 Use GetAddresses(\Bcc\) instead.
@@ -173,6 +182,7 @@ Use GetAddresses(\Bcc\) instead.
 Use GetBodyString() instead.
  Use GetBodyString() instead.
 * `java.lang.String GetBodyString()`<br>
+ Gets the body of this message as a text string.
 * `java.util.List<NamedAddress> getCCAddresses()`<br>
  Deprecated.
 Use GetAddresses(\Cc\) instead.
@@ -428,13 +438,37 @@ Use GetBodyString() instead.
 
 **Throws:**
 
-* <code>java.lang.UnsupportedOperationException</code> - Either this message is a multipart message, so
- it doesn't have its own body text, or this message has no character
- encoding declared or assumed for it (which is usually the case for
- non-text messages), or the character encoding is not supported.
+* <code>java.lang.UnsupportedOperationException</code> - See the <code>GetBodyString()</code> method.
 
+### GetAttachments
+    public java.util.List<Message> GetAttachments()
+Gets a list of descendant body parts of this message that are considered
+ attachments. An <i>attachment</i> is a body part or descendant body
+ part that has a content disposition with a type other than inline.
+ This message itself is not included in the list even if it's an
+ attachment as just defined.
 ### GetBodyString
     public java.lang.String GetBodyString()
+Gets the body of this message as a text string. If this message's media type
+  is "multipart/alternative", returns the result of this method for
+  the last supported body part. For any other "multipart" media type,
+ returns the result of this method for the first body part for which
+ this method returns a text string.
+
+**Returns:**
+
+* The body of this message as a text string.
+
+**Throws:**
+
+* <code>java.lang.UnsupportedOperationException</code> - This message is a multipart message without a
+ supported body part; or this message has a content disposition with
+  a type other than "inline"; or this message's media type is a
+  non-multipart type and does not specify the use of a "charset"
+ parameter, has no character encoding declared or assumed for it
+ (which is usually the case for non-text messages), or has an
+ unsupported character encoding.
+
 ### getCCAddresses
     @Deprecated public final java.util.List<NamedAddress> getCCAddresses()
 Deprecated.
@@ -451,9 +485,7 @@ Use GetAddresses(\Cc\) instead.
  <code>GetBodyString()</code> outputs a text string and treats the
  following media types specially: text/plain with
  <code>format = flowed</code>, text/enriched, text/markdown (original
-  Markdown). If this message's media type is "multipart/alternative",
- returns the result of this method for the last supported body
- part.</p><p> </p><p>REMARK: The Markdown implementation currently
+ Markdown).</p><p> </p><p>REMARK: The Markdown implementation currently
  supports all features of original Markdown, except that the
  implementation:</p> <ul> <li>does not strictly check the placement
   of "block-level HTML elements",</li> <li>does not prevent Markdown
@@ -468,19 +500,18 @@ Use GetAddresses(\Cc\) instead.
 
 **Throws:**
 
-* <code>java.lang.UnsupportedOperationException</code> - This message is a "multipart/alternative"
- message without a supported body part; or this message is a
-  multipart message other than "multipart/alternative"; or this
- message has no character encoding declared or assumed for it (which
- is usually the case for non-text messages); or the character
- encoding is not supported.
+* <code>java.lang.UnsupportedOperationException</code> - No supported body part was found; see <code>
+ GetBodyString()</code> for more information.
 
 ### getContentDisposition
     public final ContentDisposition getContentDisposition()
 Gets this message's content disposition. The content disposition specifies
  how a user agent should display or otherwise handle this message.
  Can be set to null. If set to a disposition or to null, updates the
- Content-Disposition header field as appropriate.
+ Content-Disposition header field as appropriate. (There is no
+ default content disposition if this value is null, and disposition
+ types unrecognized by the application should be treated as
+  "attachment"; see RFC 2183 sec. 2.8.).
 
 **Returns:**
 
@@ -579,11 +610,12 @@ Gets a list of all the parts of this message. This list is editable. This
 
 ### getSubject
     public final java.lang.String getSubject()
-Gets this message's subject.
+Gets this message's subject. The subject's value is found as though
+  GetHeader("subject") were called.
 
 **Returns:**
 
-* This message's subject.
+* This message's subject, or null if there is none.
 
 ### setSubject
     public final void setSubject​(java.lang.String value)
@@ -1503,10 +1535,10 @@ Creates a message object from a MailTo URI (uniform resource identifier) in
 Generates a MailTo URI (uniform resource identifier) corresponding to this
  message. The following header fields, and only these, are used to
  generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
- Comments. The message body is included in the URI only if this
- message has a text media type and uses a supported character
-  encoding ("charset" parameter). The To header field is included in
- the URI only if it has display names or group syntax.
+ Comments. The message body is included in the URI only if
+ <code>GetBodyString()</code> would return a non-empty string.. The To
+ header field is included in the URI only if it has display names or
+ group syntax.
 
 **Returns:**
 

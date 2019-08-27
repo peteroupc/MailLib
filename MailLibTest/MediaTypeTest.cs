@@ -509,35 +509,35 @@ ResourceUtil.GetDictList("mediatypes")) {
 [Test]
 public void TestHasStructuredSuffix() {
   MediaType mt;
-  mt=MediaType.Parse("example/b+xml");
+  mt = MediaType.Parse("example/b+xml");
   Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/b+xml");
+  mt = MediaType.Parse("example/b+xml");
   Assert.IsTrue(mt.HasStructuredSuffix("XML"));
-  mt=MediaType.Parse("example/b+xml");
+  mt = MediaType.Parse("example/b+xml");
   Assert.IsTrue(mt.HasStructuredSuffix("xMl"));
-  mt=MediaType.Parse("example/+xml");
+  mt = MediaType.Parse("example/+xml");
   Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/bxml");
+  mt = MediaType.Parse("example/bxml");
   Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/b-xml");
+  mt = MediaType.Parse("example/b-xml");
   Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/xml");
+  mt = MediaType.Parse("example/xml");
   Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/xm");
+  mt = MediaType.Parse("example/xm");
   Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/x");
+  mt = MediaType.Parse("example/x");
   Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/b+XML");
+  mt = MediaType.Parse("example/b+XML");
   Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/b+XML");
+  mt = MediaType.Parse("example/b+XML");
   Assert.IsTrue(mt.HasStructuredSuffix("XML"));
-  mt=MediaType.Parse("example/bcd+xMl");
+  mt = MediaType.Parse("example/bcd+xMl");
   Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/+XML");
+  mt = MediaType.Parse("example/+XML");
   Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt=MediaType.Parse("example/b+xml");
+  mt = MediaType.Parse("example/b+xml");
   Assert.IsFalse(mt.HasStructuredSuffix("xmc"));
-  mt=MediaType.Parse("example/b+xml");
+  mt = MediaType.Parse("example/b+xml");
   Assert.IsFalse(mt.HasStructuredSuffix("gml"));
 }
 

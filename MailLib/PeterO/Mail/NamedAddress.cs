@@ -15,23 +15,45 @@ namespace PeterO.Mail {
   public class NamedAddress {
     private readonly string displayName;
 
-    /// <summary>Generates a string containing the display names of the given named-address objects, separated by commas.  The generated string is intended to be displayed to end users, not parsed.</summary>
+    /// <summary>Generates a string containing the display names of the
+    /// given named-address objects, separated by commas. The generated
+    /// string is intended to be displayed to end users, not
+    /// parsed.</summary>
+    /// <param name='addresses'>Not documented yet.</param>
+    /// <returns/>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='addresses'/> is null.</exception>
     public static string ToDisplayStringShort(IList<NamedAddress> addresses) {
-      // ArgumentAssert.NotNull(addresses);
-      StringBuilder sb=new StringBuilder();
-      for(var i=0;i<addresses.Count;i++) {
-        if(i>0)sb.Append(", ");
+      if (addresses == null) {
+        throw new ArgumentNullException(nameof(addresses));
+      }
+      var sb = new StringBuilder();
+      for (var i = 0; i < addresses.Count; ++i) {
+        if (i > 0) {
+          sb.Append(", ");
+        }
         sb.Append(addresses[i].Name);
       }
       return sb.ToString();
     }
 
-    /// <summary>Generates a string containing the display names and email addresses of the given named-address objects, separated by semicolons.  The generated string is intended to be displayed to end users, not parsed.</summary>
+    /// <summary>Generates a string containing the display names and email
+    /// addresses of the given named-address objects, separated by commas.
+    /// The generated string is intended to be displayed to end users, not
+    /// parsed.</summary>
+    /// <param name='addresses'>Not documented yet.</param>
+    /// <returns/>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='addresses'/> is null.</exception>
     public static string ToDisplayString(IList<NamedAddress> addresses) {
-      // ArgumentAssert.NotNull(addresses);
-      StringBuilder sb=new StringBuilder();
-      for(var i=0;i<addresses.Count;i++) {
-        if(i>0)sb.Append("; ");
+      if (addresses == null) {
+        throw new ArgumentNullException(nameof(addresses));
+      }
+      var sb = new StringBuilder();
+      for (var i = 0; i < addresses.Count; ++i) {
+        if (i > 0) {
+          sb.Append(", ");
+        }
         sb.Append(addresses[i].ToDisplayString());
       }
       return sb.ToString();
@@ -130,6 +152,7 @@ namespace PeterO.Mail {
         if (this.groupAddresses.Count != na.GroupAddresses.Count) {
           return false;
         }
+        // TODO: Sort group addresses
         for (var i = 0; i < this.groupAddresses.Count; ++i) {
           NamedAddress a1 = this.groupAddresses[i];
           NamedAddress a2 = na.groupAddresses[i];
@@ -224,10 +247,13 @@ namespace PeterO.Mail {
       return enc.ToString();
     }
 
-    /// <summary>Converts this named-address object to a text string intended for display to end users.  The returned string is not intended to be parsed.</summary>
+    /// <summary>Converts this named-address object to a text string
+    /// intended for display to end users. The returned string is not
+    /// intended to be parsed.</summary>
+    /// <returns/>
     public string ToDisplayString() {
       if (this.IsGroup) {
-        var sb=new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append(this.displayName).Append(": ");
         var first = true;
         foreach (NamedAddress groupAddress in this.groupAddresses) {
@@ -242,14 +268,13 @@ namespace PeterO.Mail {
       } else if (this.displayName == null) {
         return this.address.ToString();
       } else {
-        var sb=new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append(this.displayName).Append(" <")
-           .Append(this.address.ToString())
-           .Append(">");
+           .Append(this.address.ToString()).Append(">");
         return sb.ToString();
       }
     }
- 
+
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.NamedAddress'/> class. Examples:
     /// <list>

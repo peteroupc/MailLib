@@ -4,7 +4,7 @@ using PeterO;
 
 namespace PeterO.Mail {
   /// <summary>
-  /// Contains methods for parsing and generating Data URIs
+  ///  Contains methods for parsing and generating Data URIs
   /// (uniform resource identifiers). Data URIs are described
   /// in RFC 2397. Examples for Data URIs follow.
   /// <code>data:, hello%20world</code>

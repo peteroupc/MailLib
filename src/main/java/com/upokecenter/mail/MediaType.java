@@ -54,11 +54,41 @@ import com.upokecenter.text.*;
         return this.topLevelType;
       }
 
+  /**
+   * Not documented yet.
+   * @param suffix Not documented yet.
+   */
+public boolean HasStructuredSuffix(String suffix) {
+  if (((suffix) == null || (suffix).length() == 0) || suffix.length() >= this.subType.length() ||
+      suffix.length() + 1 >= this.subType.length()) {
+    return false;
+  }
+  int j = this.subType.length() - 1 - suffix.length();
+  if (this.subType.charAt(j) == '+') {
+    ++j;
+    for (int i = 0; i < suffix.length(); ++i) {
+      int c = this.subType.charAt(j + i);
+      int c2 = suffix.charAt(i);
+      if (c >= 0x41 && c <= 0x5a) {
+        c += 0x20;
+      }
+if (c2 >= 0x41 && c2 <= 0x5a) {
+        c2 += 0x20;
+      }
+if (c != c2) {
+  return false;
+}
+    }
+    return true;
+  }
+  return false;
+}
+
     /**
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * @return {@code true} if this object and the other object are equal;
+     * otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
@@ -778,10 +808,10 @@ import com.upokecenter.text.*;
      * result of the Encodings.ResolveAliasForEmail method for that
      * parameter, except that the result's basic upper-case letters A to Z
      *  (U+0041 to U+005A) are converted to lower case. If the "charset"
-     * parameter is absent or empty, returns the default value, if any, for
-     *  that parameter given the media type (e.g., "us-ascii" if the media
-     *  type is "text/plain"; see RFC2046), or the empty string if there is
-     * none.
+     *  parameter is empty, returns the empty string. If the "charset"
+     * parameter is absent, returns the default value, if any, for that
+     *  parameter given the media type (e.g., "us-ascii" if the media type
+     *  is "text/plain"; see RFC2046), or the empty string if there is none.
      */
 
     public String GetCharset() {
@@ -817,10 +847,6 @@ import com.upokecenter.text.*;
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
       // vnd.wap.si, vnd.wap.sl, vnd.wap.wml
       //
-      // Behavior deliberately undefined (so whether US-ASCII or another
-      // charset is treated as default is irrelevant):
-      // -- example
-      //
       // These media types don't define a charset parameter (after
       // RFC6657):
       // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9),
@@ -850,6 +876,11 @@ import com.upokecenter.text.*;
       //
       // US-ASCII default:
       // -- plain, sgml, troff
+      //
+      // Behavior deliberately undefined (before RFC6657, so
+      // it still has a default of US-ASCII under that RFC):
+      // -- example
+      //
       //
       // -- UTF-8 assumed: --
       //
@@ -885,14 +916,18 @@ import com.upokecenter.text.*;
         // Charset parameter is present and non-empty
         param = Encodings.ResolveAliasForEmail(param);
         return DataUtilities.ToLowerCaseAscii(param);
+      } else if (param != null) {
+        // Charset parameter is empty
+        return "";
       } else {
-        // Charset parameter is absent or empty
+        // Charset parameter is absent
         if (this.isText()) {
           String sub = this.getSubType();
           // Media types that assume a default of US-ASCII
           if (sub.equals("plain") ||
   sub.equals("sgml") ||
   sub.equals("troff") ||
+  sub.equals("example") ||
   sub.equals("dns") ||
   sub.equals("mizar") ||
   sub.equals("prs.prop.logic") ||

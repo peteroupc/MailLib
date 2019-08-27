@@ -104,7 +104,8 @@ The content disposition value "inline" .
 Gets a string containing this object's disposition type, such as "inline" or
   "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec.
  2.8, unrecognized disposition types should be treated as
-  "attachment".
+  "attachment". (There is no default content disposition in a message
+ has no Content-Disposition header field.).
 
 **Returns:**
 

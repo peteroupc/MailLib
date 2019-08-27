@@ -52,6 +52,15 @@ Represents an email address and a name for that address. Can represent a
 * `static java.util.List<NamedAddress> ParseAddresses​(java.lang.String addressValue)`<br>
  Generates a list of NamedAddress objects from a comma-separated list of
  addresses.
+* `java.lang.String ToDisplayString()`<br>
+ Converts this named-address object to a text string intended for display to
+ end users.
+* `static java.lang.String ToDisplayString​(java.util.List<NamedAddress> addresses)`<br>
+ Generates a string containing the display names and email addresses of the
+ given named-address objects, separated by commas.
+* `static java.lang.String ToDisplayStringShort​(java.util.List<NamedAddress> addresses)`<br>
+ Generates a string containing the display names of the given named-address
+ objects, separated by commas.
 * `java.lang.String toString()`<br>
  Converts this object to a text string.
 
@@ -189,6 +198,34 @@ Initializes a new instance of the <code>NamedAddress</code>
 * <code>java.lang.IllegalArgumentException</code> - GroupName is empty.; A mailbox in the list is a
  group.
 
+### ToDisplayStringShort
+    public static java.lang.String ToDisplayStringShort​(java.util.List<NamedAddress> addresses)
+Generates a string containing the display names of the given named-address
+ objects, separated by commas. The generated string is intended to be
+ displayed to end users, not parsed.
+
+**Parameters:**
+
+* <code>addresses</code> - Not documented yet.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>addresses</code> is null.
+
+### ToDisplayString
+    public static java.lang.String ToDisplayString​(java.util.List<NamedAddress> addresses)
+Generates a string containing the display names and email addresses of the
+ given named-address objects, separated by commas. The generated
+ string is intended to be displayed to end users, not parsed.
+
+**Parameters:**
+
+* <code>addresses</code> - Not documented yet.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>addresses</code> is null.
+
 ### ParseAddresses
     public static java.util.List<NamedAddress> ParseAddresses​(java.lang.String addressValue)
 Generates a list of NamedAddress objects from a comma-separated list of
@@ -197,8 +234,8 @@ Generates a list of NamedAddress objects from a comma-separated list of
 
 **Parameters:**
 
-* <code>addressValue</code> - A comma-separate list of addresses in the form of a text
- string.
+* <code>addressValue</code> - A comma-separated list of addresses in the form of a
+ text string.
 
 **Returns:**
 
@@ -309,6 +346,10 @@ Converts this object to a text string. This will generally be the form of
 
 * A string representation of this object.
 
+### ToDisplayString
+    public java.lang.String ToDisplayString()
+Converts this named-address object to a text string intended for display to
+ end users. The returned string is not intended to be parsed.
 ### getGroupAddresses
     public final java.util.List<NamedAddress> getGroupAddresses()
 Gets a read-only list of addresses that make up the group, if this object

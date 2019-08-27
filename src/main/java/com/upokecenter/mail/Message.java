@@ -24,48 +24,42 @@ import com.upokecenter.text.*;
    * access to objects from this class must be synchronized if multiple
    * threads can access them at the same time.</p> <p>The following lists
    * known deviations from the mail specifications (Internet Message Format
-   * and MIME):</p> <ul> <li>The content-transfer-encodings
-   *  "quoted-printable" and "base64" are treated as 7bit instead if they
-   *  occur in a message or body part with content type "multipart/*" or
-   *  "message/*" (other than "message/global", "message/global-headers",
-   *  "message/global-disposition-notification", or
-   *  "message/global-delivery-status").</li> <li>If a message has two or
-   * more Content-Type header fields, it is treated as having a content
-   *  type of "application/octet-stream", unless one or more of the header
-   * fields is syntactically invalid.</li> <li>Illegal UTF-8 byte sequences
-   * appearing in header field values are replaced with replacement
-   * characters. Moreover, UTF-8 is parsed everywhere in header field
-   * values, even in those parts of some structured header fields where
-   * this appears not to be allowed. (UTF-8 is a character encoding for the
-   * Unicode character set.)</li> <li>This implementation can parse a
-   * message even if that message is without a From header field, without a
-   * Date header field, or without both.</li> <li>The To and Cc header
-   * fields are allowed to contain only comments and whitespace, but these
-   *  "empty" header fields will be omitted when generating.</li> <li>There
-   * is no line length limit imposed when parsing header fields, except
-   * header field names.</li> <li>There is no line length limit imposed
-   * when parsing quoted-printable or base64 encoded bodies.</li> <li>If
-   * the transfer encoding is absent and the content type is
-   *  "message/rfc822", bytes with values greater than 127 (called "8-bit
-   *  bytes" in the rest of these remarks) are still allowed, despite the
-   *  default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
-   * the following cases, if the transfer encoding is absent, declared as
-   * 7bit, or treated as 7bit, 8-bit bytes are still allowed:</li> <li>(a)
-   * The preamble and epilogue of multipart messages, which will be
+   * and MIME):</p> <ul> <li>If a message has two or more Content-Type
+   * header fields, it is treated as having a content type of
+   *  "application/octet-stream", unless one or more of the header fields is
+   * syntactically invalid.</li> <li>Illegal UTF-8 byte sequences appearing
+   * in header field values are replaced with replacement characters.
+   * Moreover, UTF-8 is parsed everywhere in header field values, even in
+   * those parts of some structured header fields where this appears not to
+   * be allowed. (UTF-8 is a character encoding for the Unicode character
+   * set.)</li> <li>This implementation can parse a message even if that
+   * message is without a From header field, without a Date header field,
+   * or without both.</li> <li>The To and Cc header fields are allowed to
+   *  contain only comments and whitespace, but these "empty" header fields
+   * will be omitted when generating.</li> <li>There is no line length
+   * limit imposed when parsing header fields, except header field
+   * names.</li> <li>There is no line length limit imposed when parsing
+   * quoted-printable or base64 encoded bodies.</li> <li>If the transfer
+   *  encoding is absent and the content type is "message/rfc822", bytes
+   * with values greater than 127 are still allowed, despite the default
+   *  value of "7bit" for "Content-Transfer-Encoding".</li> <li>In the
+   * following cases, if the transfer encoding is absent, declared as 7bit,
+   * or treated as 7bit, bytes greater than 127 are still allowed:</li>
+   * <li>(a) The preamble and epilogue of multipart messages, which will be
    * ignored.</li> <li>(b) If the charset is declared to be
    *  <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
    *  charset is declared to be <code>us-ascii</code>, "windows-1252",
    *  "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
    * <li>(d) In non-MIME message bodies and in text/plain message bodies.
-   * Any 8-bit bytes are replaced with the substitute character byte
-   *  (0x1a).</li> <li>If the message starts with the word "From" (and no
-   * other case variations of that word) followed by one or more space
+   * Any bytes greater than 127 are replaced with the substitute character
+   *  byte (0x1a).</li> <li>If the message starts with the word "From" (and
+   * no other case variations of that word) followed by one or more space
    * (U+0020) not followed by colon, that text and the rest of the text is
    * skipped up to and including a line feed (U+000A). (See also RFC 4155,
    *  which describes the so-called "mbox" convention with "From" lines of
    * this kind.)</li> <li>The name <code>ascii</code> is treated as a synonym for
    * <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
-   * name <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
+   * names <code>cp1252</code> and <code>utf8</code> are treated as synonyms for
    * <code>windows-1252</code> and <code>utf-8</code>, respectively, even though they
    * are not IANA registered aliases.</li> <li>The following deviations
    * involve encoded words under RFC 2047:</li> <li>(a) If a sequence of
@@ -81,22 +75,34 @@ import com.upokecenter.text.*;
    * 6532.)</li></ul> <p>It would be appreciated if users of this library
    * contact the author if they find other ways in which this
    * implementation deviates from the mail specifications or other
-   * applicable specifications.</p> <p>Note that this class currently
-   *  doesn't support the "padding" parameter for message bodies with the
-   *  media type "application/octet-stream" or treated as that media type
-   * (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
-   * decode an RFC 2047 encoded word that uses ISO-2022-JP or ISO-2022-JP-2
-   * (encodings that use code switching) even if the encoded word's payload
-   *  ends in a different mode from "ASCII mode". (Each encoded word still
-   *  starts in "ASCII mode", though.) This, however, is not a deviation to
-   * RFC 2047 because the relevant rule only concerns bringing the output
-   *  device back to "ASCII mode" after the decoded text is displayed (see
-   * last paragraph of sec. 6.2) -- since the decoded text is converted to
-   * Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is not
-   *  applicable since there is no such thing as "ASCII mode" in the Unicode
-   * Standard.</p> <p>Note that this library (the MailLib library) has no
-   * facilities for sending and receiving email messages, since that's
-   * outside this library's scope.</p></p>
+   * applicable specifications.</p> <p>This class currently doesn't support
+   *  the "padding" parameter for message bodies with the media type
+   *  "application/octet-stream" or treated as that media type (see RFC 2046
+   * sec. 4.5.1).</p> <p>In this implementation, if the
+   *  content-transfer-encoding "quoted-printable" or "base64" occurs in a
+   *  message or body part with content type "multipart/*" or "message/*"
+   *  (other than "message/global", "message/global-headers",
+   *  "message/global-disposition-notification", or
+   *  "message/global-delivery-status"), that encoding is treated as
+   * unrecognized for the purpose of treating that message or body part as
+   *  having a content type of "application/octet-stream" rather than the
+   * declared content type. This is a clarification to RFCs 2045 and 2049.
+   *  (This may result in "misdecoded" messages because in practice, most if
+   * not all messages of this kind don't use quoted-printable or base64
+   * encodings for the whole body, but may do so in the body parts they
+   * contain.)</p> <p>This implementation can decode an RFC 2047 encoded
+   * word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use code
+   * switching) even if the encoded word's payload ends in a different mode
+   *  from "ASCII mode". (Each encoded word still starts in "ASCII mode",
+   * though.) This, however, is not a deviation to RFC 2047 because the
+   *  relevant rule only concerns bringing the output device back to "ASCII
+   *  mode" after the decoded text is displayed (see last paragraph of sec.
+   * 6.2) -- since the decoded text is converted to Unicode rather than
+   * kept as ISO-2022-JP or ISO-2022-JP-2, this is not applicable since
+   *  there is no such thing as "ASCII mode" in the Unicode Standard.</p>
+   * <p>Note that this library (the MailLib library) has no facilities for
+   * sending and receiving email messages, since that's outside this
+   * library's scope.</p></p>
    */
   public final class Message {
     // Recomm. max. number of CHARACTERS per line (excluding CRLF)
@@ -406,12 +412,10 @@ try { if (ms != null) {
       }
 
     /**
-     * Gets the body of this message as a text string.
+     * Gets the body of this message as a text string. See the
+     * <code>GetBodyString()</code> method.
      * @return The body of this message as a text string.
-     * @throws UnsupportedOperationException Either this message is a multipart message, so
-     * it doesn't have its own body text, or this message has no character
-     * encoding declared or assumed for it (which is usually the case for
-     * non-text messages), or the character encoding is not supported.
+     * @throws UnsupportedOperationException See the {@code GetBodyString()} method.
      * @deprecated Use GetBodyString() instead.
  */
 @Deprecated
@@ -434,49 +438,173 @@ try { if (ms != null) {
         return enc;
     }
 
-    private String GetBodyStringNoThrow() {
+private static boolean DefinesCharsetParameter(MediaType mt) {
+// All media types that specify a charset parameter, either as a
+// required or an optional parameter.
+// NOTE: Up-to-date as of August 26, 2019
+if (mt.HasStructuredSuffix("xml") ||
+ mt.getTopLevelType().equals("text") ||
+ mt.getTypeAndSubType().equals("image/vnd.wap.wbmp")) {
+  return true;
+}
+if (mt.getTopLevelType().equals("application")) {
+return mt.getSubType().equals("vnd.uplanet.alert-wbxml") ||
+mt.getSubType().equals("vnd.wap.wmlscriptc") ||
+mt.getSubType().equals("xml-dtd") ||
+mt.getSubType().equals("vnd.picsel") ||
+mt.getSubType().equals("news-groupinfo") ||
+mt.getSubType().equals("ecmascript") ||
+mt.getSubType().equals("vnd.uplanet.cacheop-wbxml") ||
+mt.getSubType().equals("vnd.uplanet.bearer-choice") ||
+mt.getSubType().equals("vnd.wap.slc") ||
+mt.getSubType().equals("nss") ||
+mt.getSubType().equals("vnd.3gpp.mcdata-payload") ||
+mt.getSubType().equals("activity+json") ||
+mt.getSubType().equals("vnd.uplanet.list-wbxml") ||
+mt.getSubType().equals("vnd.3gpp.mcdata-signalling") ||
+mt.getSubType().equals("sgml-open-catalog") ||
+mt.getSubType().equals("smil") ||
+mt.getSubType().equals("vnd.uplanet.channel") ||
+mt.getSubType().equals("javascript") ||
+mt.getSubType().equals("vnd.syncml.dm+wbxml") ||
+mt.getSubType().equals("vnd.ah-barcode") ||
+mt.getSubType().equals("vnd.uplanet.alert") ||
+mt.getSubType().equals("vnd.wap.wbxml") ||
+mt.getSubType().equals("xml-external-parsed-entity") ||
+mt.getSubType().equals("vnd.uplanet.listcmd-wbxml") ||
+mt.getSubType().equals("vnd.uplanet.list") ||
+mt.getSubType().equals("vnd.uplanet.listcmd") ||
+mt.getSubType().equals("vnd.msign") ||
+mt.getSubType().equals("news-checkgroups") ||
+mt.getSubType().equals("fhir+json") ||
+mt.getSubType().equals("set-registration") ||
+mt.getSubType().equals("sql") ||
+mt.getSubType().equals("vnd.wap.sic") ||
+mt.getSubType().equals("prs.alvestrand.titrax-sheet") ||
+mt.getSubType().equals("vnd.uplanet.bearer-choice-wbxml") ||
+mt.getSubType().equals("vnd.wap.wmlc") ||
+mt.getSubType().equals("vnd.uplanet.channel-wbxml") ||
+mt.getSubType().equals("iotp") ||
+mt.getSubType().equals("vnd.uplanet.cacheop") ||
+mt.getSubType().equals("xml") ||
+mt.getSubType().equals("vnd.adobe.xfdf") ||
+mt.getSubType().equals("vnd.dpgraph");
+}
+return false;
+}
+
+    private void GetBodyStrings(
+       List<String> bodyStrings,
+       List<MediaType> mediaTypes) {
+        if (this.getContentDisposition() != null &&
+           !this.getContentDisposition().isInline()) {
+         // Content-Disposition is present and other than inline; ignore.
+         // See also RFC 2183 sec. 2.8 and 2.9.
+         return;
+        }
         MediaType mt = this.getContentType();
         if (mt.isMultipart()) {
-          if (mt.getTypeAndSubType().equals(
-            "multipart/alternative")) {
-            List<Message> parts = this.getParts();
+          List<Message> parts = this.getParts();
+          if (mt.getSubType().equals("alternative")) {
             // Navigate the parts in reverse order
-            for (var i = parts.size() -1; i >= 0; --i) {
-              String text = parts.get(i).GetBodyStringNoThrow();
-              if (text != null) {
-                return text;
+            for (var i = parts.size() - 1; i >= 0; --i) {
+              int oldCount = bodyStrings.size();
+              parts.get(i).GetBodyStrings(bodyStrings, mediaTypes);
+              if (oldCount != bodyStrings.size()) {
+                break;
               }
             }
-            return null;
+          } else {
+            // Any other multipart
+            for (int i = 0; i < parts.size(); ++i) {
+              parts.get(i).GetBodyStrings(bodyStrings, mediaTypes);
+            }
           }
-          return null;
         }
-        ICharacterEncoding charset = GetEncoding(this.getContentType().GetCharset());
+        if (!DefinesCharsetParameter(this.getContentType())) {
+          // Nontext and no charset parameter defined
+          return;
+        }
+        String charsetName = this.getContentType().GetCharset();
+        ICharacterEncoding charset = GetEncoding(charsetName);
+        if (charset == null &&
+             this.getContentType().getTypeAndSubType().equals("text/html")) {
+           charsetName = GuessHtmlEncoding(this.body);
+           charset = Encodings.GetEncoding(charsetName);
+        }
         if (charset != null) {
-          return Encodings.DecodeToString(
+          bodyStrings.add(Encodings.DecodeToString(
             charset,
-            DataIO.ToReader(this.body));
-        } else {
-          return null;
+            DataIO.ToReader(this.body)));
+          mediaTypes.add(this.getContentType());
         }
+    }
+
+    private String GetBodyStringNoThrow() {
+        List<String> bodyStrings = new ArrayList<String>();
+        List<MediaType> mediaTypes = new ArrayList<MediaType>();
+        this.GetBodyStrings(bodyStrings, mediaTypes);
+        if (bodyStrings.size() > 0) {
+          return bodyStrings.get(0);
+        } else {
+           return null;
+        }
+    }
+
+    private void AccumulateAttachments(
+        List<Message> attachments,
+        boolean root) {
+       if (this.getContentDisposition() != null &&
+          !this.getContentDisposition().isInline() && !root) {
+          attachments.add(this);
+          return;
+       }
+       MediaType mt = this.getContentType();
+       if (mt.getSubType().equals("alternative")) {
+          // Navigate the parts in reverse order
+          for (var i = this.parts.size() - 1; i >= 0; --i) {
+            if (this.GetBodyStringNoThrow() != null) {
+              this.parts.get(i).AccumulateAttachments(attachments, false);
+              break;
+            }
+          }
+       } else {
+          // Any other multipart
+          for (int i = 0; i < this.parts.size(); ++i) {
+            this.parts.get(i).AccumulateAttachments(attachments, false);
+          }
+       }
+    }
+
+    /**
+     * Gets a list of descendant body parts of this message that are considered
+     * attachments. An <i>attachment</i> is a body part or descendant body
+     * part that has a content disposition with a type other than inline.
+     * This message itself is not included in the list even if it's an
+     * attachment as just defined.
+     */
+    public List<Message> GetAttachments() {
+       ArrayList<Message> list = new ArrayList<Message>();
+       this.AccumulateAttachments(list, true);
+       return list;
     }
 
     /**
      * Gets the body of this message as a text string. If this message's media type
      *  is "multipart/alternative", returns the result of this method for
-     * the last supported body part.
+     *  the last supported body part. For any other "multipart" media type,
+     * returns the result of this method for the first body part for which
+     * this method returns a text string.
      * @return The body of this message as a text string.
-     * @throws UnsupportedOperationException This message is a "multipart/alternative"
-     * message without a supported body part; or this message is a
-     *  multipart message other than "multipart/alternative"; or this
-     * message has no character encoding declared or assumed for it (which
-     * is usually the case for non-text messages); or the character
-     * encoding is not supported.
+     * @throws UnsupportedOperationException This message is a multipart message without a
+     * supported body part; or this message has a content disposition with
+     *  a type other than "inline"; or this message's media type is a
+     *  non-multipart type and does not specify the use of a "charset"
+     * parameter, has no character encoding declared or assumed for it
+     * (which is usually the case for non-text messages), or has an
+     * unsupported character encoding.
      */
 
-  /**
-   *
-   */
     public String GetBodyString() {
         // TODO: Consider returning null rather than throwing an exception
         // in public API
@@ -497,15 +625,460 @@ try { if (ms != null) {
         return this.GetAddresses("cc");
       }
 
+    static String ExtractCharsetFromMeta(String value) {
+      if (value == null) {
+        return value;
+      }
+      // We assume value is lower-case here
+      int index = 0;
+      int length = value.length();
+      char c = (char)0;
+      while (true) {
+        index = value.indexOf("charset",0);
+        if (index < 0) {
+          return null;
+        }
+        index += 7;
+        // skip whitespace
+        while (index < length) {
+          c = value.charAt(index);
+          if (c != 0x09 && c != 0x0c && c != 0x0d && c != 0x0a && c != 0x20) {
+            break;
+          }
+          ++index;
+        }
+        if (index >= length) {
+          return null;
+        }
+        if (value.charAt(index) == '=') {
+          ++index;
+          break;
+        }
+      }
+      // skip whitespace
+      while (index < length) {
+        c = value.charAt(index);
+        if (c != 0x09 && c != 0x0c && c != 0x0d && c != 0x0a && c != 0x20) {
+          break;
+        }
+        ++index;
+      }
+      if (index >= length) {
+        return null;
+      }
+      c = value.charAt(index);
+      if (c == '"' || c == '\'') {
+        ++index;
+        int nextIndex = index;
+        while (nextIndex < length) {
+          char c2 = value.charAt(nextIndex);
+          if (c == c2) {
+            return Encodings.ResolveAlias(
+  value.substring(
+    index, (
+    index)+(nextIndex - index)));
+          }
+          ++nextIndex;
+        }
+        return null;
+      } else {
+        int nextIndex = index;
+        while (nextIndex < length) {
+          char c2 = value.charAt(nextIndex);
+          if (
+            c2 == 0x09 || c2 == 0x0c || c2 == 0x0d || c2 == 0x0a || c2 ==
+0x20 ||
+            c2 == 0x3b) {
+            break;
+          }
+          ++nextIndex;
+        }
+        return
+    Encodings.ResolveAlias(value.substring(index, (index)+(nextIndex - index)));
+      }
+    }
+
+    private static int ReadAttribute(
+      byte[] data,
+      int length,
+      int position,
+      StringBuilder attrName,
+      StringBuilder attrValue) {
+      if (attrName != null) {
+        attrName.delete(0, (0)+(attrName.length()));
+      }
+      if (attrValue != null) {
+        attrValue.delete(0, (0)+(attrValue.length()));
+      }
+      while (position < length && (data[position] == 0x09 ||
+          data[position] == 0x0a || data[position] == 0x0c ||
+          data[position] == 0x0d || data[position] == 0x20 ||
+          data[position] == 0x2f)) {
+        ++position;
+      }
+      if (position >= length || data[position] == 0x3f) {
+        return position;
+      }
+      boolean empty = true;
+      boolean tovalue = false;
+      int b = 0;
+      // Skip attribute name
+      while (true) {
+        if (position >= length) {
+          // end of stream reached, so clear
+          // the attribute name to indicate failure
+          if (attrName != null) {
+            attrName.delete(0, (0)+(attrName.length()));
+          }
+          return position;
+        }
+        b = data[position] & 0xff;
+        if (b == 0x3d && !empty) {
+          ++position;
+          tovalue = true;
+          break;
+        } else if (b == 0x09 || b == 0x0a || b == 0x0c || b == 0x0d || b ==
+            0x20) {
+          break;
+        } else if (b == 0x2f || b == 0x3e) {
+          return position;
+        } else {
+          if (attrName != null) {
+            if (b >= 0x41 && b <= 0x5a) {
+              attrName.append((char)(b + 0x20));
+            } else {
+              attrName.append((char)b);
+            }
+          }
+          empty = false;
+          ++position;
+        }
+      }
+      if (!tovalue) {
+        while (position < length) {
+          b = data[position] & 0xff;
+          if (b != 0x09 && b != 0x0a && b != 0x0c && b != 0x0d && b != 0x20) {
+            break;
+          }
+          ++position;
+        }
+        if (position >= length) {
+          // end of stream reached, so clear
+          // the attribute name to indicate failure
+          if (attrName != null) {
+            attrName.delete(0, (0)+(attrName.length()));
+          }
+          return position;
+        }
+        if ((data[position] & 0xff) != 0x3d) {
+          return position;
+        }
+        ++position;
+      }
+      while (position < length) {
+        b = data[position] & 0xff;
+        if (b != 0x09 && b != 0x0a && b != 0x0c && b != 0x0d && b != 0x20) {
+          break;
+        }
+        ++position;
+      }
+      // Skip value
+      if (position >= length) {
+        // end of stream reached, so clear
+        // the attribute name to indicate failure
+        if (attrName != null) {
+          attrName.delete(0, (0)+(attrName.length()));
+        }
+        return position;
+      }
+      b = data[position] & 0xff;
+      if (b == 0x22 || b == 0x27) { // have quoted _string
+        ++position;
+        while (true) {
+          if (position >= length) {
+            // end of stream reached, so clear
+            // the attribute name and value to indicate failure
+            if (attrName != null) {
+              attrName.delete(0, (0)+(attrName.length()));
+            }
+            if (attrValue != null) {
+              attrValue.delete(0, (0)+(attrValue.length()));
+            }
+            return position;
+          }
+          int b2 = data[position] & 0xff;
+          if (b == b2) { // quote mark reached
+            ++position;
+            break;
+          }
+          if (attrValue != null) {
+            if (b2 >= 0x41 && b2 <= 0x5a) {
+              attrValue.append((char)(b2 + 0x20));
+            } else {
+              attrValue.append((char)b2);
+            }
+          }
+          ++position;
+        }
+        return position;
+      } else if (b == 0x3e) {
+        return position;
+      } else {
+        if (attrValue != null) {
+          if (b >= 0x41 && b <= 0x5a) {
+            attrValue.append((char)(b + 0x20));
+          } else {
+            attrValue.append((char)b);
+          }
+        }
+        ++position;
+      }
+      while (true) {
+        if (position >= length) {
+          // end of stream reached, so clear
+          // the attribute name and value to indicate failure
+          if (attrName != null) {
+            attrName.delete(0, (0)+(attrName.length()));
+          }
+          if (attrValue != null) {
+            attrValue.delete(0, (0)+(attrValue.length()));
+          }
+          return position;
+        }
+        b = data[position] & 0xff;
+        if (b == 0x09 || b == 0x0a || b == 0x0c || b == 0x0d || b == 0x20 || b
+          == 0x3e) {
+          return position;
+        }
+        if (attrValue != null) {
+          if (b >= 0x41 && b <= 0x5a) {
+            attrValue.append((char)(b + 0x20));
+          } else {
+            attrValue.append((char)b);
+          }
+        }
+        ++position;
+      }
+    }
+    // NOTE: To be used when the encoding is not otherwise provided
+    // by the transport layer (e.g., Content-Type) and the transport
+    // layer's encoding is not overridden by the end user
+    private static String GuessHtmlEncoding(byte[] data) {
+      int b = 0;
+      var count = Math.min(data.length, 1024);
+      int position = 0;
+      while (position < count) {
+        if (position + 4 <= count && data[position + 0] == 0x3c &&
+            (data[position + 1] & 0xff) == 0x21 &&
+        (data[position + 2] & 0xff) == 0x2d &&
+            (data[position + 3] & 0xff) == 0x2d) {
+          // Skip comment
+          int hyphenCount = 2;
+          position += 4;
+          while (position < count) {
+            int c = data[position] & 0xff;
+            if (c == '-') {
+              hyphenCount = Math.min(2, hyphenCount + 1);
+            } else if (c == '>' && hyphenCount >= 2) {
+              break;
+            } else {
+              hyphenCount = 0;
+            }
+            ++position;
+          }
+        } else if (position + 6 <= count && data[position] == 0x3c &&
+   ((data[position + 1] & 0xff) == 0x4d || (data[position + 1] & 0xff) ==
+            0x6d) &&
+   ((data[position + 2] & 0xff) == 0x45 || (data[position + 2] & 0xff) ==
+            0x65) &&
+          ((data[position + 3] & 0xff) == 0x54 || (data[position + 3] & 0xff) ==
+            0x74) && (data[position + 4] == 0x41 ||
+                   data[position + 4] == 0x61) &&
+   (data[position + 5] == 0x09 || data[position + 5] == 0x0a ||
+         data[position + 5] == 0x0d ||
+          data[position + 5] == 0x0c || data[position + 5] == 0x20 ||
+                data[position + 5] == 0x2f)) {
+          // META tag
+          boolean haveHttpEquiv = false;
+          boolean haveContent = false;
+          boolean haveCharset = false;
+          boolean gotPragma = false;
+          int needPragma = 0; // need pragma null
+          String charset = null;
+          StringBuilder attrName = new StringBuilder();
+          StringBuilder attrValue = new StringBuilder();
+          position += 5;
+          while (true) {
+            int
+    newpos = ReadAttribute(
+      data,
+      count,
+      position,
+      attrName,
+      attrValue);
+            if (newpos == position) {
+              break;
+            }
+            String attrNameString = attrName.toString();
+            if (!haveHttpEquiv && attrNameString.equals("http-equiv")) {
+              haveHttpEquiv = true;
+              if (attrValue.toString().equals("content-type")) {
+                gotPragma = true;
+              }
+            } else if (!haveContent && attrNameString.equals("content")) {
+              haveContent = true;
+              if (charset == null) {
+                String newCharset =
+  ExtractCharsetFromMeta(attrValue.toString());
+                if (newCharset != null) {
+                  charset = newCharset;
+                  needPragma = 2; // need pragma true
+                }
+              }
+            } else if (!haveCharset && attrNameString.equals("charset")) {
+              haveCharset = true;
+              charset = Encodings.ResolveAlias(attrValue.toString());
+              needPragma = 1; // need pragma false
+            }
+            position = newpos;
+          }
+          if (needPragma == 0 || (needPragma == 2 && !gotPragma) || charset ==
+                 null) {
+            ++position;
+          } else {
+            if ("utf-16le".equals(charset) ||
+"utf-16be".equals(charset)) {
+              charset = "utf-8";
+            }
+            return charset;
+          }
+        } else if ((position + 3 <= count &&
+                data[position] == 0x3c && (data[position + 1] & 0xff) == 0x2f &&
+  (((data[position + 2] & 0xff) >= 0x41 && (data[position + 2] & 0xff) <=
+           0x5a) ||
+         ((data[position + 2] & 0xff) >= 0x61 && (data[position + 2] & 0xff) <=
+           0x7a))) ||
+                    // </X
+                    (position + 2 <= count && data[position] == 0x3c &&
+        (((data[position + 1] & 0xff) >= 0x41 && (data[position + 1] & 0xff)
+              <= 0x5a) ||
+         ((data[position + 1] & 0xff) >= 0x61 && (data[position + 1] & 0xff)
+               <= 0x7a)))) { // <X
+          // </X
+          while (position < count) {
+            if (data[position] == 0x09 ||
+                data[position] == 0x0a || data[position] == 0x0c ||
+                data[position] == 0x0d || data[position] == 0x20 ||
+                data[position] == 0x3e) {
+              break;
+            }
+            ++position;
+          }
+          while (true) {
+            int newpos = ReadAttribute(data, count, position, null, null);
+            if (newpos == position) {
+              break;
+            }
+            position = newpos;
+          }
+          ++position;
+        } else if (position + 2 <= count && data[position] == 0x3c &&
+    ((data[position + 1] & 0xff) == 0x21 || (data[position + 1] & 0xff) ==
+           0x3f || (data[position + 1] & 0xff) == 0x2f)) {
+          // <! or </ or <?
+          while (position < count) {
+            if (data[position] != 0x3e) {
+              break;
+            }
+            ++position;
+          }
+          ++position;
+        } else {
+          ++position;
+        }
+      }
+      int byteIndex = 0;
+      int b1 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
+0xff;
+int b2 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
+0xff;
+if (b1 == 0xfe && b2 == 0xff) {
+          return "utf-16be";
+        }
+        if (b1 == 0xff && b2 == 0xfe) {
+          return "utf-16le";
+        }
+        int b3 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
+0xff;
+if (b1 == 0xef && b2 == 0xbb && b3 == 0xbf) {
+          return "utf-8";
+        }
+      byteIndex = 0;
+      int maybeUtf8 = 0;
+      // Check for UTF-8
+      position = 0;
+      while (position < count) {
+        b = data[position] & 0xff;
+        if (b < 0x80) {
+          ++position;
+          continue;
+        }
+        if (position + 2 <= count && (b >= 0xc2 && b <= 0xdf) &&
+         ((data[position + 1] & 0xff) >= 0x80 && (data[position + 1] & 0xff) <=
+              0xbf)) {
+          // DebugUtility.Log("%02X %02X",data[position],data[position+1]);
+          position += 2;
+          maybeUtf8 = 1;
+        } else if (position + 3 <= count && (b >= 0xe0 && b <= 0xef) &&
+      ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
+              0xbf)) {
+          int startbyte = (b == 0xe0) ? 0xa0 : 0x80;
+          int endbyte = (b == 0xed) ? 0x9f : 0xbf;
+          // DebugUtility.Log("%02X %02X %02X"
+          // , data[position], data[position + 1], data[position + 2]);
+          if ((data[position + 1] & 0xff) < startbyte ||
+              (data[position + 1] & 0xff) > endbyte) {
+            maybeUtf8 = -1;
+            break;
+          }
+          position += 3;
+          maybeUtf8 = 1;
+        } else if (position + 4 <= count && (b >= 0xf0 && b <= 0xf4) &&
+   ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
+        0xbf) &&
+      ((data[position + 3] & 0xff) >= 0x80 && (data[position + 3] & 0xff) <=
+              0xbf)) {
+          int startbyte = (b == 0xf0) ? 0x90 : 0x80;
+          int endbyte = (b == 0xf4) ? 0x8f : 0xbf;
+          // DebugUtility.Log("%02X %02X %02X %02X"
+          // , data[position], data[position + 1], data[position + 2],
+          // data[position + 3]);
+          if ((data[position + 1] & 0xff) < startbyte ||
+              (data[position + 1] & 0xff) > endbyte) {
+            maybeUtf8 = -1;
+            break;
+          }
+          position += 4;
+          maybeUtf8 = 1;
+        } else {
+          if (position + 4 < count) {
+            // we check for position here because the data may
+            // end within a UTF-8 byte sequence
+            maybeUtf8 = -1;
+          }
+          break;
+        }
+      }
+      return maybeUtf8 == 1 ? "utf-8" : "windows-1252";
+    }
+
     /**
      * <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
      * body. This method currently supports any message for which
      * <code>GetBodyString()</code> outputs a text string and treats the
      * following media types specially: text/plain with
      * <code>format = flowed</code>, text/enriched, text/markdown (original
-     *  Markdown). If this message's media type is "multipart/alternative",
-     * returns the result of this method for the last supported body
-     * part.</p><p> <p>REMARK: The Markdown implementation currently
+     * Markdown).</p><p> <p>REMARK: The Markdown implementation currently
      * supports all features of original Markdown, except that the
      * implementation:</p> <ul> <li>does not strictly check the placement
      *  of "block-level HTML elements",</li> <li>does not prevent Markdown
@@ -514,12 +1087,8 @@ try { if (ms != null) {
      * use HTML escapes to obfuscate email addresses wrapped in
      * angle-brackets.</li></ul></p>
      * @return An HTML rendering of this message's text.
-     * @throws UnsupportedOperationException This message is a "multipart/alternative"
-     * message without a supported body part; or this message is a
-     *  multipart message other than "multipart/alternative"; or this
-     * message has no character encoding declared or assumed for it (which
-     * is usually the case for non-text messages); or the character
-     * encoding is not supported.
+     * @throws UnsupportedOperationException No supported body part was found; see {@code
+     * GetBodyString()} for more information.
      */
     public String GetFormattedBodyString() {
       // TODO: Consider returning null rather than throwing an exception
@@ -532,24 +1101,14 @@ try { if (ms != null) {
     }
 
     private String GetFormattedBodyStringNoThrow() {
-      MediaType mt = this.getContentType();
-      String text;
-      if (mt.getTypeAndSubType().equals(
-        "multipart/alternative")) {
-        List<Message> parts = this.getParts();
-        // Navigate the parts in reverse order
-        for (var i = parts.size() -1; i >= 0; --i) {
-          text = parts.get(i).GetFormattedBodyString();
-          if (text != null) {
-            return text;
-          }
-        }
+      ArrayList<String> bodyStrings = new ArrayList<String>();
+      ArrayList<MediaType> mediaTypes = new ArrayList<MediaType>();
+      this.GetBodyStrings(bodyStrings, mediaTypes);
+      if (bodyStrings.size() == 0) {
         return null;
       }
-      text = this.GetBodyStringNoThrow();
-      if (text == null) {
-        return null;
-      }
+      String text = bodyStrings.get(0);
+      MediaType mt = mediaTypes.get(0);
       String fmt = mt.GetParameter("format");
       String dsp = mt.GetParameter("delsp");
       boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
@@ -589,7 +1148,10 @@ try { if (ms != null) {
      * Gets this message's content disposition. The content disposition specifies
      * how a user agent should display or otherwise handle this message.
      * Can be set to null. If set to a disposition or to null, updates the
-     * Content-Disposition header field as appropriate.
+     * Content-Disposition header field as appropriate. (There is no
+     * default content disposition if this value is null, and disposition
+     * types unrecognized by the application should be treated as
+     *  "attachment"; see RFC 2183 sec. 2.8.).
      * @return This message's content disposition, or null if none is specified.
      */
     public final ContentDisposition getContentDisposition() {
@@ -720,8 +1282,9 @@ public final void setContentType(MediaType value) {
       }
 
     /**
-     * Gets this message's subject.
-     * @return This message's subject.
+     * Gets this message's subject. The subject's value is found as though
+     *  GetHeader("subject") were called.
+     * @return This message's subject, or null if there is none.
      */
     public final String getSubject() {
         return this.GetHeader("subject");
@@ -2603,7 +3166,7 @@ try { if (fs != null) {
           transform = stream;
           break;
         case EncodingSevenBit:
-          // DEVIATION: Replace 8-bit bytes and null with the
+          // DEVIATION: Replace bytes greater than 127 and null with the
           // ASCII substitute character (0x1a) for text/plain messages,
           // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
@@ -2833,7 +3396,7 @@ try { if (fs != null) {
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
           // a conforming message if the name is too long
-          // NOTE: Some emails still have 8-bit bytes in an unencoded
+          // NOTE: Some emails still have bytes greater than 127 in an unencoded
           // subject line
           // or other unstructured header field; however, since RFC6532,
           // we can just assume the UTF-8 encoding in these cases; in
@@ -3437,10 +4000,10 @@ name.length() >= 2 &&
      * Generates a MailTo URI (uniform resource identifier) corresponding to this
      * message. The following header fields, and only these, are used to
      * generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
-     * Comments. The message body is included in the URI only if this
-     * message has a text media type and uses a supported character
-     *  encoding ("charset" parameter). The To header field is included in
-     * the URI only if it has display names or group syntax.
+     * Comments. The message body is included in the URI only if
+     * <code>GetBodyString()</code> would return a non-empty string. The To
+     * header field is included in the URI only if it has display names or
+     * group syntax.
      * @return A MailTo URI corresponding to this message.
      * @deprecated Renamed to ToMailtoUri.
  */
@@ -3501,10 +4064,10 @@ name.length() >= 2 &&
      * Generates a MailTo URI (uniform resource identifier) corresponding to this
      * message. The following header fields, and only these, are used to
      * generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords,
-     * Comments. The message body is included in the URI only if this
-     * message has a text media type and uses a supported character
-     *  encoding ("charset" parameter). The To header field is included in
-     * the URI only if it has display names or group syntax.
+     * Comments. The message body is included in the URI only if
+     * <code>GetBodyString()</code> would return a non-empty string.. The To
+     * header field is included in the URI only if it has display names or
+     * group syntax.
      * @return A MailTo URI corresponding to this message.
      */
     public String ToMailtoUri() {
@@ -3568,6 +4131,7 @@ name.length() >= 2 &&
             this.transferEncoding = EncodingBase64;
           } else {
             // Unrecognized transfer encoding
+            DebugUtility.Log("unrecognized: " + value);
             this.transferEncoding = EncodingUnknown;
           }
           haveContentEncoding = true;
@@ -3593,11 +4157,23 @@ name.length() >= 2 &&
             // For conformance with RFC 2049
             if (ctype.isText()) {
               if (((ctype.GetCharset()) == null || (ctype.GetCharset()).length() == 0)) {
-                // charset is present but unrecognized, or
-                // the media type does not define how charset
-                // is determined from the payload
-                if (ctype.getParameters().ContainsKey("charset") ||
-                   !ctype.StoresCharsetInPayload()) {
+                // If we get here, then either:
+                // - The charset is present but unrecognized or empty, or
+                // - The charset is absent and the media type has
+                // no default charset assumed for it.
+                if (ctype.getParameters().ContainsKey("charset")) {
+                  // The charset is present but unrecognized or
+                  // empty; treat the content as application/octet-stream
+                  // for conformance with RFC 2049.
+                  ctype = MediaType.ApplicationOctetStream;
+                } else if (!ctype.StoresCharsetInPayload()) {
+                  // The charset is absent, and the media type:
+                  // - has no default assumed for it, and
+                  // - does not specify how the charset is determined
+                  // from the payload.
+                  // In this case, treat the body as being in an
+                  // "unrecognized" charset, so as application/octet-stream
+                  // for conformance with RFC 2049.
                   ctype = MediaType.ApplicationOctetStream;
                 }
               } else {
@@ -3621,23 +4197,34 @@ name.length() >= 2 &&
       if (this.transferEncoding == EncodingUnknown) {
         ctype = MediaType.ApplicationOctetStream;
       }
+      if (!haveContentEncoding && ctype.getTypeAndSubType().equals(
+        "message/rfc822")) {
+        // DEVIATION: Be a little more liberal with rfc822
+        // messages with bytes greater than 127
+        this.transferEncoding = EncodingEightBit;
+      }
+      if (this.transferEncoding == EncodingQuotedPrintable ||
+          this.transferEncoding == EncodingBase64) {
+        if (ctype.isMultipart() || (ctype.getTopLevelType().equals("message") && !ctype.getSubType().equals("global") && !ctype.getSubType().equals("global-headers") && !ctype.getSubType().equals(
+    "global-disposition-notification") && !ctype.getSubType().equals("global-delivery-status"))) {
+            // CLARIFICATION: Treat quoted-printable and base64
+            // as "unrecognized" encodings in multipart and most
+            // message media types, for the purpose of treating the
+            // content type as "application/octet-stream".
+            ctype = MediaType.ApplicationOctetStream;
+        }
+      }
       // Update content type as appropriate
       // NOTE: Setting the field, not the setter,
       // because it's undesirable here to add a Content-Type
       // header field, as the setter does
       this.contentType = ctype;
-      if (!haveContentEncoding && this.contentType.getTypeAndSubType().equals(
-        "message/rfc822")) {
-        // DEVIATION: Be a little more liberal with rfc822
-        // messages with 8-bit bytes
-        this.transferEncoding = EncodingEightBit;
-      }
       if (this.transferEncoding == EncodingSevenBit) {
         String charset = this.contentType.GetCharset();
         if (charset.equals("utf-8")) {
           // DEVIATION: Be a little more liberal with UTF-8
           this.transferEncoding = EncodingEightBit;
-        } else if (this.contentType.getTypeAndSubType().equals("text/html")) {
+        } else if (ctype.getTypeAndSubType().equals("text/html")) {
           if (charset.equals("us-ascii") ||
               charset.equals("windows-1252") ||
               charset.equals("windows-1251") ||
@@ -3646,27 +4233,6 @@ name.length() >= 2 &&
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
-          }
-        }
-      }
-      if (this.transferEncoding == EncodingQuotedPrintable ||
-          this.transferEncoding == EncodingBase64 ||
-          this.transferEncoding == EncodingUnknown) {
-        if (this.contentType.isMultipart() ||
-            (this.contentType.getTopLevelType().equals("message") && !this.contentType.getSubType().equals("global") &&
-             !this.contentType.getSubType().equals("global-headers") && !this.contentType.getSubType().equals(
-    "global-disposition-notification") &&
-             !this.contentType.getSubType().equals("global-delivery-status"))) {
-          if (this.transferEncoding == EncodingQuotedPrintable ||
-              this.transferEncoding == EncodingBase64) {
-            // DEVIATION: Treat quoted-printable for multipart and message
-            // as 7bit instead
-            this.transferEncoding = EncodingSevenBit;
-          } else {
-            String exceptText =
-              "Invalid content encoding for multipart or message";
-
-            throw new MessageDataException(exceptText);
           }
         }
       }

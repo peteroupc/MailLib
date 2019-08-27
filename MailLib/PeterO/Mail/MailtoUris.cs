@@ -121,7 +121,7 @@ namespace PeterO.Mail {
       }
       try {
         field = msg.GetBodyString();
-      } catch(NotSupportedException) {
+      } catch (NotSupportedException) {
         field = null;
       }
       if (!String.IsNullOrEmpty(field)) {

@@ -17,11 +17,53 @@ import java.util.*;
     private final String displayName;
 
     /**
+     * Generates a string containing the display names of the given named-address
+     * objects, separated by commas. The generated string is intended to be
+     * displayed to end users, not parsed.
+     * @param addresses Not documented yet.
+     * @throws NullPointerException The parameter {@code addresses} is null.
+     */
+    public static String ToDisplayStringShort(List<NamedAddress> addresses) {
+      if (addresses == null) {
+        throw new NullPointerException("addresses");
+      }
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < addresses.size(); ++i) {
+        if (i > 0) {
+          sb.append(", ");
+        }
+        sb.append(addresses.get(i).getName());
+      }
+      return sb.toString();
+    }
+
+    /**
+     * Generates a string containing the display names and email addresses of the
+     * given named-address objects, separated by commas. The generated
+     * string is intended to be displayed to end users, not parsed.
+     * @param addresses Not documented yet.
+     * @throws NullPointerException The parameter {@code addresses} is null.
+     */
+    public static String ToDisplayString(List<NamedAddress> addresses) {
+      if (addresses == null) {
+        throw new NullPointerException("addresses");
+      }
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < addresses.size(); ++i) {
+        if (i > 0) {
+          sb.append(", ");
+        }
+        sb.append(addresses.get(i).ToDisplayString());
+      }
+      return sb.toString();
+    }
+
+    /**
      * Generates a list of NamedAddress objects from a comma-separated list of
      * addresses. Each address must follow the syntax accepted by the
      * one-argument constructor of NamedAddress.
-     * @param addressValue A comma-separate list of addresses in the form of a text
-     * string.
+     * @param addressValue A comma-separated list of addresses in the form of a
+     * text string.
      * @return A list of addresses generated from the {@code addressValue}
      * parameter.
      * @throws NullPointerException The parameter {@code addressValue} is null.
@@ -112,6 +154,7 @@ import java.util.*;
         if (this.groupAddresses.size() != na.getGroupAddresses().size()) {
           return false;
         }
+        // TODO: Sort group addresses
         for (int i = 0; i < this.groupAddresses.size(); ++i) {
           NamedAddress a1 = this.groupAddresses.get(i);
           NamedAddress a2 = na.groupAddresses.get(i);
@@ -203,6 +246,34 @@ import java.util.*;
       HeaderEncoder enc = new HeaderEncoder(Message.MaxRecHeaderLineLength, 15);
       this.AppendThisAddress(enc);
       return enc.toString();
+    }
+
+    /**
+     * Converts this named-address object to a text string intended for display to
+     * end users. The returned string is not intended to be parsed.
+     */
+    public String ToDisplayString() {
+      if (this.isGroup()) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.displayName).append(": ");
+        boolean first = true;
+        for (NamedAddress groupAddress : this.groupAddresses) {
+          if (!first) {
+            sb.append("; ");
+          }
+          first = false;
+          sb.append(groupAddress.ToDisplayString());
+        }
+        sb.append(";");
+        return sb.toString();
+      } else if (this.displayName == null) {
+        return this.address.toString();
+      } else {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.displayName).append(" <")
+           .append(this.address.toString()).append(">");
+        return sb.toString();
+      }
     }
 
     /**

@@ -428,14 +428,14 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
             Assert.assertEquals(
               "inline",
               msg.getParts().get(0).getContentDisposition().getDispositionType());
-            Assert.assertEquals(stringBody, msg.getParts().get(0).getBodyString());
+            Assert.assertEquals(stringBody, msg.getParts().get(0).GetBodyString());
             Assert.assertEquals(
               mt.getTypeAndSubType(),
               msg.getParts().get(1).getContentType().getTypeAndSubType());
             Assert.assertEquals(
                phase < 6 ? "attachment" : "inline",
                msg.getParts().get(1).getContentDisposition().getDispositionType());
-            Assert.assertEquals(stringPart, msg.getParts().get(1).getBodyString());
+            Assert.assertEquals(stringPart, msg.getParts().get(1).GetBodyString());
 }
 finally {
 try { if (ms != null) {
@@ -1516,7 +1516,12 @@ try { if (ms != null) {
           }
           Assert.assertEquals(1, msg.getParts().size());
           Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
-          Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+          {
+            String stringTemp = msg.getParts().get(0).GetBodyString();
+            Assert.assertEquals(
+              "Test",
+              stringTemp);
+}
         }
       }
     }
@@ -1544,9 +1549,24 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(3, msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
-      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
-      Assert.assertEquals("Test2", msg.getParts().get(1).getBodyString());
-      Assert.assertEquals("Test3", msg.getParts().get(2).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
+      {
+        String stringTemp = msg.getParts().get(1).GetBodyString();
+        Assert.assertEquals(
+          "Test2",
+          stringTemp);
+}
+      {
+        String stringTemp = msg.getParts().get(2).GetBodyString();
+        Assert.assertEquals(
+          "Test3",
+          stringTemp);
+}
       message = messageStart;
       message += "--b1BOUNDARY\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
@@ -1560,7 +1580,12 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
-      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
     }
 
     @Test
@@ -1587,7 +1612,12 @@ try { if (ms != null) {
       }
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
-      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1600,7 +1630,12 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
       // No headers in body part
       message = messageStart;
       message += "\r\n";
@@ -1609,7 +1644,12 @@ try { if (ms != null) {
       message += "Epilogue";
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
       // No CRLF before first boundary
       message = "MIME-Version: 1.0\r\n";
       message += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
@@ -1620,7 +1660,12 @@ try { if (ms != null) {
       message += "Epilogue";
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
       // Base64 body part
       message = messageStart;
       message += "Content-Type: application/octet-stream\r\n";
@@ -1706,8 +1751,182 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
     }
+
+@Test
+public void TestGetBodyString() {
+      Message msg;
+      String message;
+      String textpart = "--b1\r\nContent-Type: text/plain\r\n\r\nText\r\n";
+      String htmlpart = "--b1\r\nContent-Type: text/html;charset=utf-8" +
+        "\r\n\r\nHTML\r\n";
+      String textmultipart = "--b1\r\n" +
+        "Content-Type: multipart/alternative;boundary=b2" +
+        "\r\n\r\n--b2\r\nContent-Type: text/plain;charset=utf-8" +
+        "\r\n\r\nText\r\n";
+      String htmlmultipart = "--b1\r\n" +
+        "Content-Type: multipart/alternative;boundary=b2" +
+        "\r\n\r\n--b2\r\nContent-Type: text/html;charset=utf-8" +
+        "\r\n\r\nHTML\r\n--b2--\r\n";
+      String texample = "--b1\r\nContent-Type: text/example;charset=utf-8" +
+        "\r\n\r\ntext/example\r\n";
+      String aexample = "--b1\r\nContent-Type: application/example" +
+        "\r\n\r\napp/example\r\n";
+      String example1 = "--b1\r\nContent-Type: example/w1" +
+        "\r\n\r\nexample/w1\r\n";
+      String example2 = "--b1\r\nContent-Type: example/w2" +
+        "\r\n\r\nexample/w2\r\n";
+      String endmsg = "--b1--";
+      String messageStart = "MIME-Version: 1.0\r\n";
+      messageStart += "Content-Type: multipart/alternative; boundary=b1" +
+        "\r\n\r\n";
+      message = messageStart + textpart + htmlpart + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "HTML",
+          stringTemp);
+}
+      message = messageStart + htmlpart + textpart + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textpart + htmlmultipart + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "HTML",
+          stringTemp);
+}
+      message = messageStart + htmlpart + textmultipart + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + htmlpart + texample + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "text/example",
+          stringTemp);
+}
+      message = messageStart + aexample + endmsg;
+      msg = MessageFromString(message);
+      try {
+ msg.GetBodyString();
+ Assert.fail("Should have failed");
+} catch (UnsupportedOperationException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      message = messageStart + aexample + example1 + endmsg;
+      msg = MessageFromString(message);
+      try {
+ msg.GetBodyString();
+ Assert.fail("Should have failed");
+} catch (UnsupportedOperationException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      message = messageStart + example1 + example2 + aexample + endmsg;
+      msg = MessageFromString(message);
+      try {
+ msg.GetBodyString();
+ Assert.fail("Should have failed");
+} catch (UnsupportedOperationException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      message = messageStart + aexample + textpart + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textpart + aexample + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + example1 + endmsg;
+      msg = MessageFromString(message);
+      try {
+ msg.GetBodyString();
+ Assert.fail("Should have failed");
+} catch (UnsupportedOperationException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      message = messageStart + example1 + textpart + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + example1 + textmultipart + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textpart + example1 + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textmultipart + example1 + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + htmlpart + example1 + endmsg;
+      msg = MessageFromString(message);
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "HTML",
+          stringTemp);
+}
+   }
 
     @Test
     public void TestBoundaryReading2() {
@@ -1730,7 +1949,12 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test\r\n--Not-b2--", msg.getParts().get(0).getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test\r\n--Not-b2--",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1742,7 +1966,12 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1759,8 +1988,18 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(2, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test\r\n--Not-b2--", msg.getParts().get(0).getParts().get(0).getBodyString());
-      Assert.assertEquals("Test2", msg.getParts().get(0).getParts().get(1).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test\r\n--Not-b2--",
+          stringTemp);
+}
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(1).GetBodyString();
+        Assert.assertEquals(
+          "Test2",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1774,7 +2013,12 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1788,7 +2032,12 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1802,7 +2051,12 @@ try { if (ms != null) {
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
-      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      {
+        String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
+        Assert.assertEquals(
+          "Test",
+          stringTemp);
+}
     }
 
     @Test
@@ -2326,7 +2580,7 @@ MessageFromString(MessageFromString(msg).Generate())
       String mtype = "text/plain;charset=x-unknown";
       msg.setContentType(MediaType.Parse(mtype));
       try {
-        System.out.print(msg.getBodyString());
+        System.out.print(msg.GetBodyString());
         Assert.fail("Should have failed");
       } catch (UnsupportedOperationException ex) {
         // NOTE: Intentionally empty

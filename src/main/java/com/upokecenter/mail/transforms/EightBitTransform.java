@@ -20,6 +20,8 @@ import com.upokecenter.mail.*;
     public int read() {
       int ret = this.input.read();
       if (ret == 0) {
+        // NOTE: See definition of 8bit Data in RFC2045 sec. 2.8 (line length
+        // limits are not enforced here, though)
         throw new MessageDataException("Invalid character in message body");
       }
       return ret;

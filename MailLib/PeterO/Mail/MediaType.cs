@@ -56,21 +56,30 @@ namespace PeterO.Mail {
       }
     }
 
+  /// <summary>Not documented yet.</summary>
+  /// <summary>Not documented yet.</summary>
+  /// <param name='suffix'>Not documented yet.</param>
+  /// <returns/>
 public bool HasStructuredSuffix(string suffix) {
-  if (String.IsNullOrEmpty(suffix) || 
-      suffix.Length >= subType.Length ||
-      suffix.Length + 1 >= subType.Length) {
+  if (String.IsNullOrEmpty(suffix) || suffix.Length >= this.subType.Length ||
+      suffix.Length + 1 >= this.subType.Length) {
     return false;
   }
-  int j = subType.Length - 1 - suffix.Length;
-  if (subType[j] == '+') {
-    j++;
-    for(var i=0;i<suffix.Length;i++){
-      int c=subType[j+i];
-      int c2=suffix[i];
-      if(c>=0x41 && c<=0x5a)c+=0x20;
-      if(c2>=0x41 && c2<=0x5a)c2+=0x20;
-      if(c!=c2)return false;
+  int j = this.subType.Length - 1 - suffix.Length;
+  if (this.subType[j] == '+') {
+    ++j;
+    for (var i = 0; i < suffix.Length; ++i) {
+      int c = this.subType[j + i];
+      int c2 = suffix[i];
+      if (c >= 0x41 && c <= 0x5a) {
+        c += 0x20;
+      }
+if (c2 >= 0x41 && c2 <= 0x5a) {
+        c2 += 0x20;
+      }
+if (c != c2) {
+  return false;
+}
     }
     return true;
   }
@@ -822,11 +831,11 @@ public bool HasStructuredSuffix(string suffix) {
     /// returns the result of the Encodings.ResolveAliasForEmail method for
     /// that parameter, except that the result's basic upper-case letters A
     /// to Z (U+0041 to U+005A) are converted to lower case. If the
-    /// "charset" parameter is empty, returns the empty string.  If the
-    /// "charset" parameter is absent, returns the default value,
-    /// if any, for that parameter given the media type (e.g., "us-ascii"
-    /// if the media type is "text/plain"; see RFC2046), or the empty
-    /// string if there is none.</returns>
+    /// "charset" parameter is empty, returns the empty string. If the
+    /// "charset" parameter is absent, returns the default value, if any,
+    /// for that parameter given the media type (e.g., "us-ascii" if the
+    /// media type is "text/plain"; see RFC2046), or the empty string if
+    /// there is none.</returns>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",

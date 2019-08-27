@@ -121,14 +121,15 @@ private MailtoUris() {
           sb.append(URIUtility.EncodeStringForURI(field));
         }
       }
-      if (msg.getContentType().isText() &&
-          !((msg.getContentType().GetCharset()) == null || (msg.getContentType().GetCharset()).length() == 0)) {
-        field = msg.getBodyString();
-        if (!((field) == null || (field).length() == 0)) {
+      try {
+        field = msg.GetBodyString();
+      } catch (UnsupportedOperationException ex) {
+        field = null;
+      }
+      if (!((field) == null || (field).length() == 0)) {
           sb.append(firstField ? "?body=" : "&body=");
           firstField = false;
           sb.append(URIUtility.EncodeStringForURI(field));
-        }
       }
       return sb.toString();
     }

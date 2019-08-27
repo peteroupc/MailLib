@@ -506,6 +506,72 @@ import com.upokecenter.mail.*;
     public void TestToString() {
       // not implemented yet
     }
+
+@Test
+public void TestHasStructuredSuffix() {
+  MediaType mt;
+  mt = MediaType.Parse("example/b+xml");
+  if (!(mt.HasStructuredSuffix("xml"))) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/b+xml");
+  if (!(mt.HasStructuredSuffix("XML"))) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/b+xml");
+  if (!(mt.HasStructuredSuffix("xMl"))) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/+xml");
+  if (mt.HasStructuredSuffix("xml")) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/bxml");
+  if (mt.HasStructuredSuffix("xml")) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/b-xml");
+  if (mt.HasStructuredSuffix("xml")) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/xml");
+  if (mt.HasStructuredSuffix("xml")) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/xm");
+  if (mt.HasStructuredSuffix("xml")) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/x");
+  if (mt.HasStructuredSuffix("xml")) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/b+XML");
+  if (!(mt.HasStructuredSuffix("xml"))) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/b+XML");
+  if (!(mt.HasStructuredSuffix("XML"))) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/bcd+xMl");
+  if (!(mt.HasStructuredSuffix("xml"))) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/+XML");
+  if (!(mt.HasStructuredSuffix("xml"))) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/b+xml");
+  if (mt.HasStructuredSuffix("xmc")) {
+ Assert.fail();
+ }
+  mt = MediaType.Parse("example/b+xml");
+  if (mt.HasStructuredSuffix("gml")) {
+ Assert.fail();
+ }
+}
+
     @Test
     public void TestToSingleLineString() {
       for (Map<String, String> dict : ResourceUtil.GetDictList("mediatypes")) {

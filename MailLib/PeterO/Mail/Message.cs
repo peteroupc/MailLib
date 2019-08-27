@@ -49,11 +49,12 @@ namespace PeterO.Mail {
   /// <item>There is no line length limit imposed when parsing
   /// quoted-printable or base64 encoded bodies.</item>
   /// <item>If the transfer encoding is absent and the content type is
-  /// "message/rfc822", bytes with values greater than 127 are still allowed, despite the
-  /// default value of "7bit" for "Content-Transfer-Encoding".</item>
+  /// "message/rfc822", bytes with values greater than 127 are still
+  /// allowed, despite the default value of "7bit" for
+  /// "Content-Transfer-Encoding".</item>
   /// <item>In the following cases, if the transfer encoding is absent,
-  /// declared as 7bit, or treated as 7bit, bytes greater than 127 are still
-  /// allowed:</item>
+  /// declared as 7bit, or treated as 7bit, bytes greater than 127 are
+  /// still allowed:</item>
   /// <item>(a) The preamble and epilogue of multipart messages, which
   /// will be ignored.</item>
   /// <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
@@ -61,8 +62,8 @@ namespace PeterO.Mail {
   /// declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
   /// "iso-8859-*" (all single byte encodings).</item>
   /// <item>(d) In non-MIME message bodies and in text/plain message
-  /// bodies. Any bytes greater than 127 are replaced with the substitute character
-  /// byte (0x1a).</item>
+  /// bodies. Any bytes greater than 127 are replaced with the substitute
+  /// character byte (0x1a).</item>
   /// <item>If the message starts with the word "From" (and no other case
   /// variations of that word) followed by one or more space (U+0020) not
   /// followed by colon, that text and the rest of the text is skipped up
@@ -91,30 +92,33 @@ namespace PeterO.Mail {
   /// author if they find other ways in which this implementation
   /// deviates from the mail specifications or other applicable
   /// specifications.</para>
-  /// <para>This class currently doesn't support the "padding"
-  /// parameter for message bodies with the media type
-  /// "application/octet-stream" or treated as that media type (see RFC
-  /// 2046 sec. 4.5.1).</para>
-  /// <para>In this implementation, if the content-transfer-encoding "quoted-printable" or
-  /// "base64" occurs in a message or
-  /// body part with content type "multipart/*" or "message/*" (other
-  /// than "message/global", "message/global-headers",
+  /// <para>This class currently doesn't support the "padding" parameter
+  /// for message bodies with the media type "application/octet-stream"
+  /// or treated as that media type (see RFC 2046 sec. 4.5.1).</para>
+  /// <para>In this implementation, if the content-transfer-encoding
+  /// "quoted-printable" or "base64" occurs in a message or body part
+  /// with content type "multipart/*" or "message/*" (other than
+  /// "message/global", "message/global-headers",
   /// "message/global-disposition-notification", or
   /// "message/global-delivery-status"), that encoding is treated as
-  /// unrecognized for the purpose of treating that message or
-  /// body part as having a content type of "application/octet-stream"
-  /// rather than the declared content type.  This is a clarification to RFCs 2045 and 2049.</para>
-  /// <para>This implementation can decode an RFC 2047 encoded
-  /// word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use
-  /// code switching) even if the encoded word's payload ends in a
-  /// different mode from "ASCII mode". (Each encoded word still starts
-  /// in "ASCII mode", though.) This, however, is not a deviation to RFC
-  /// 2047 because the relevant rule only concerns bringing the output
-  /// device back to "ASCII mode" after the decoded text is displayed
-  /// (see last paragraph of sec. 6.2) -- since the decoded text is
-  /// converted to Unicode rather than kept as ISO-2022-JP or
-  /// ISO-2022-JP-2, this is not applicable since there is no such thing
-  /// as "ASCII mode" in the Unicode Standard.</para>
+  /// unrecognized for the purpose of treating that message or body part
+  /// as having a content type of "application/octet-stream" rather than
+  /// the declared content type. This is a clarification to RFCs 2045 and
+  /// 2049. (This may result in "misdecoded" messages because in
+  /// practice, most if not all messages of this kind don't use
+  /// quoted-printable or base64 encodings for the whole body, but may do
+  /// so in the body parts they contain.)</para>
+  /// <para>This implementation can decode an RFC 2047 encoded word that
+  /// uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use code
+  /// switching) even if the encoded word's payload ends in a different
+  /// mode from "ASCII mode". (Each encoded word still starts in "ASCII
+  /// mode", though.) This, however, is not a deviation to RFC 2047
+  /// because the relevant rule only concerns bringing the output device
+  /// back to "ASCII mode" after the decoded text is displayed (see last
+  /// paragraph of sec. 6.2) -- since the decoded text is converted to
+  /// Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is
+  /// not applicable since there is no such thing as "ASCII mode" in the
+  /// Unicode Standard.</para>
   /// <para>Note that this library (the MailLib library) has no
   /// facilities for sending and receiving email messages, since that's
   /// outside this library's scope.</para></remarks>
@@ -414,14 +418,11 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets the body of this message as a text string.</summary>
+    /// <summary>Gets the body of this message as a text string. See the
+    /// <c>GetBodyString()</c> method.</summary>
     /// <value>The body of this message as a text string.</value>
-    /// <exception cref='NotSupportedException'>This message is a
-    /// "multipart/alternative" message without a supported body part; or
-    /// this message is a multipart message other than
-    /// "multipart/alternative"; or this message's media type is a non-multipart type and does not specify the use of a "charset" parameter; or this message has no character encoding
-    /// declared or assumed for it (which is usually the case for non-text
-    /// messages); or the character encoding is not supported.</exception>
+    /// <exception cref='NotSupportedException'>See the
+    /// <c>GetBodyString()</c> method.</exception>
     [Obsolete("Use GetBodyString() instead.")]
     public string BodyString {
       get {
@@ -445,107 +446,179 @@ namespace PeterO.Mail {
         return enc;
     }
 
-public static bool DefinesCharsetParameter(MediaType mt) {
+private static bool DefinesCharsetParameter(MediaType mt) {
 // All media types that specify a charset parameter, either as a
 // required or an optional parameter.
 // NOTE: Up-to-date as of August 26, 2019
-if(mt.HasStructuredSuffix("xml") || 
-   mt.TopLevelType.Equals("text") || 
-   mt.TypeAndSubType.Equals("image/vnd.wap.wbmp"))return true;
-if(mt.TopLevelType.Equals("application")) {
-return (mt.SubType.Equals("vnd.uplanet.alert-wbxml") ||
-mt.SubType.Equals("vnd.wap.wmlscriptc") ||
-mt.SubType.Equals("xml-dtd") ||
-mt.SubType.Equals("vnd.picsel") ||
-mt.SubType.Equals("news-groupinfo") ||
-mt.SubType.Equals("ecmascript") ||
-mt.SubType.Equals("vnd.uplanet.cacheop-wbxml") ||
-mt.SubType.Equals("vnd.uplanet.bearer-choice") ||
-mt.SubType.Equals("vnd.wap.slc") ||
-mt.SubType.Equals("nss") ||
-mt.SubType.Equals("vnd.3gpp.mcdata-payload") ||
-mt.SubType.Equals("activity+json") ||
-mt.SubType.Equals("vnd.uplanet.list-wbxml") ||
-mt.SubType.Equals("vnd.3gpp.mcdata-signalling") ||
-mt.SubType.Equals("sgml-open-catalog") ||
-mt.SubType.Equals("smil") ||
-mt.SubType.Equals("vnd.uplanet.channel") ||
-mt.SubType.Equals("javascript") ||
-mt.SubType.Equals("vnd.syncml.dm+wbxml") ||
-mt.SubType.Equals("vnd.ah-barcode") ||
-mt.SubType.Equals("vnd.uplanet.alert") ||
-mt.SubType.Equals("vnd.wap.wbxml") ||
-mt.SubType.Equals("xml-external-parsed-entity") ||
-mt.SubType.Equals("vnd.uplanet.listcmd-wbxml") ||
-mt.SubType.Equals("vnd.uplanet.list") ||
-mt.SubType.Equals("vnd.uplanet.listcmd") ||
-mt.SubType.Equals("vnd.msign") ||
-mt.SubType.Equals("news-checkgroups") ||
-mt.SubType.Equals("fhir+json") ||
-mt.SubType.Equals("set-registration") ||
-mt.SubType.Equals("sql") ||
-mt.SubType.Equals("vnd.wap.sic") ||
-mt.SubType.Equals("prs.alvestrand.titrax-sheet") ||
-mt.SubType.Equals("vnd.uplanet.bearer-choice-wbxml") ||
-mt.SubType.Equals("vnd.wap.wmlc") ||
-mt.SubType.Equals("vnd.uplanet.channel-wbxml") ||
-mt.SubType.Equals("iotp") ||
-mt.SubType.Equals("vnd.uplanet.cacheop") ||
-mt.SubType.Equals("xml") ||
-mt.SubType.Equals("vnd.adobe.xfdf") ||
-mt.SubType.Equals("vnd.dpgraph"));
+if (mt.HasStructuredSuffix("xml") ||
+ mt.TopLevelType.Equals("text", StringComparison.Ordinal) ||
+ mt.TypeAndSubType.Equals("image/vnd.wap.wbmp", StringComparison.Ordinal)) {
+  return true;
+}
+if (mt.TopLevelType.Equals("application", StringComparison.Ordinal)) {
+return mt.SubType.Equals("vnd.uplanet.alert-wbxml", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.wap.wmlscriptc", StringComparison.Ordinal) ||
+mt.SubType.Equals("xml-dtd", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.picsel", StringComparison.Ordinal) ||
+mt.SubType.Equals("news-groupinfo", StringComparison.Ordinal) ||
+mt.SubType.Equals("ecmascript", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.cacheop-wbxml", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.bearer-choice", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.wap.slc", StringComparison.Ordinal) ||
+mt.SubType.Equals("nss", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.3gpp.mcdata-payload", StringComparison.Ordinal) ||
+mt.SubType.Equals("activity+json", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.list-wbxml", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.3gpp.mcdata-signalling", StringComparison.Ordinal) ||
+mt.SubType.Equals("sgml-open-catalog", StringComparison.Ordinal) ||
+mt.SubType.Equals("smil", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.channel", StringComparison.Ordinal) ||
+mt.SubType.Equals("javascript", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.syncml.dm+wbxml", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.ah-barcode", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.alert", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.wap.wbxml", StringComparison.Ordinal) ||
+mt.SubType.Equals("xml-external-parsed-entity", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.listcmd-wbxml", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.list", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.listcmd", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.msign", StringComparison.Ordinal) ||
+mt.SubType.Equals("news-checkgroups", StringComparison.Ordinal) ||
+mt.SubType.Equals("fhir+json", StringComparison.Ordinal) ||
+mt.SubType.Equals("set-registration", StringComparison.Ordinal) ||
+mt.SubType.Equals("sql", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.wap.sic", StringComparison.Ordinal) ||
+mt.SubType.Equals("prs.alvestrand.titrax-sheet", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.bearer-choice-wbxml",
+  StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.wap.wmlc", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.channel-wbxml", StringComparison.Ordinal) ||
+mt.SubType.Equals("iotp", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.uplanet.cacheop", StringComparison.Ordinal) ||
+mt.SubType.Equals("xml", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.adobe.xfdf", StringComparison.Ordinal) ||
+mt.SubType.Equals("vnd.dpgraph", StringComparison.Ordinal);
 }
 return false;
 }
 
-
-
-    private string GetBodyStringNoThrow() {
+    private void GetBodyStrings(
+       IList<string> bodyStrings,
+       IList<MediaType> mediaTypes) {
+        if (this.ContentDisposition != null &&
+           !this.ContentDisposition.IsInline) {
+         // Content-Disposition is present and other than inline; ignore.
+         // See also RFC 2183 sec. 2.8 and 2.9.
+         return;
+        }
         MediaType mt = this.ContentType;
         if (mt.IsMultipart) {
-          if (mt.TypeAndSubType.Equals(
-            "multipart/alternative",
+          IList<Message> parts = this.Parts;
+          if (mt.SubType.Equals("alternative",
             StringComparison.Ordinal)) {
-            IList<Message> parts = this.Parts;
             // Navigate the parts in reverse order
-            for (var i = parts.Count -1; i >= 0; --i) {
-              string text = parts[i].GetBodyStringNoThrow();
-              if (text != null) {
-                return text;
+            for (var i = parts.Count - 1; i >= 0; --i) {
+              int oldCount = bodyStrings.Count;
+              parts[i].GetBodyStrings(bodyStrings, mediaTypes);
+              if (oldCount != bodyStrings.Count) {
+                break;
               }
             }
-            return null;
+          } else {
+            // Any other multipart
+            for (var i = 0; i < parts.Count; ++i) {
+              parts[i].GetBodyStrings(bodyStrings, mediaTypes);
+            }
           }
-          return null;
         }
         if (!DefinesCharsetParameter(this.ContentType)) {
-          return null;
+          // Nontext and no charset parameter defined
+          return;
         }
-        ICharacterEncoding charset = GetEncoding(this.ContentType.GetCharset());
+        string charsetName = this.ContentType.GetCharset();
+        ICharacterEncoding charset = GetEncoding(charsetName);
+        if (charset == null &&
+             this.ContentType.TypeAndSubType.Equals("text/html",
+  StringComparison.Ordinal)) {
+           charsetName = GuessHtmlEncoding(this.body);
+           charset = Encodings.GetEncoding(charsetName);
+        }
         if (charset != null) {
-          return Encodings.DecodeToString(
+          bodyStrings.Add(Encodings.DecodeToString(
             charset,
-            DataIO.ToReader(this.body));
-        } else {
-          return null;
+            DataIO.ToReader(this.body)));
+          mediaTypes.Add(this.ContentType);
         }
+    }
+
+    private string GetBodyStringNoThrow() {
+        IList<string> bodyStrings = new List<string>();
+        IList<MediaType> mediaTypes = new List<MediaType>();
+        this.GetBodyStrings(bodyStrings, mediaTypes);
+        if (bodyStrings.Count > 0) {
+          return bodyStrings[0];
+        } else {
+           return null;
+        }
+    }
+
+    private void AccumulateAttachments(
+        IList<Message> attachments,
+        bool root) {
+       if (this.ContentDisposition != null &&
+          !this.ContentDisposition.IsInline && !root) {
+          attachments.Add(this);
+          return;
+       }
+       MediaType mt = this.ContentType;
+       if (mt.SubType.Equals("alternative", StringComparison.Ordinal)) {
+          // Navigate the parts in reverse order
+          for (var i = this.parts.Count - 1; i >= 0; --i) {
+            if (this.GetBodyStringNoThrow() != null) {
+              this.parts[i].AccumulateAttachments(attachments, false);
+              break;
+            }
+          }
+       } else {
+          // Any other multipart
+          for (var i = 0; i < this.parts.Count; ++i) {
+            this.parts[i].AccumulateAttachments(attachments, false);
+          }
+       }
+    }
+
+    /// <summary>Gets a list of descendant body parts of this message that
+    /// are considered attachments. An
+    /// <i>attachment</i> is a body part or descendant body part that has a
+    /// content disposition with a type other than inline. This message
+    /// itself is not included in the list even if it's an attachment as
+    /// just defined.</summary>
+    /// <returns/>
+    public IList<Message> GetAttachments() {
+       var list = new List<Message>();
+       this.AccumulateAttachments(list, true);
+       return list;
     }
 
     /// <summary>Gets the body of this message as a text string. If this
     /// message's media type is "multipart/alternative", returns the result
-    /// of this method for the last supported body part.</summary>
+    /// of this method for the last supported body part. For any other
+    /// "multipart" media type, returns the result of this method for the
+    /// first body part for which this method returns a text
+    /// string.</summary>
     /// <returns>The body of this message as a text string.</returns>
-    /// <exception cref='NotSupportedException'>This message is a
-    /// "multipart/alternative" message without a supported body part; or
-    /// this message is a multipart message other than
-    /// "multipart/alternative"; or this message's media type is a non-multipart type and does not specify the use of a "charset" parameter; or this message has no character encoding
+    /// <exception cref='NotSupportedException'>This message is a multipart
+    /// message without a supported body part; or this message has a
+    /// content disposition with a type other than "inline"; or this
+    /// message's media type is a non-multipart type and does not specify
+    /// the use of a "charset" parameter, has no character encoding
     /// declared or assumed for it (which is usually the case for non-text
-    /// messages); or the character encoding is not supported.</exception>
+    /// messages), or has an unsupported character encoding.</exception>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1024",
-  Justification="This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
+    Justification="This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
 #endif
     public string GetBodyString() {
         // TODO: Consider returning null rather than throwing an exception
@@ -568,22 +641,467 @@ return false;
       }
     }
 
+    internal static string ExtractCharsetFromMeta(string value) {
+      if (value == null) {
+        return value;
+      }
+      // We assume value is lower-case here
+      var index = 0;
+      int length = value.Length;
+      var c = (char)0;
+      while (true) {
+        index = value.IndexOf("charset", 0, StringComparison.Ordinal);
+        if (index < 0) {
+          return null;
+        }
+        index += 7;
+        // skip whitespace
+        while (index < length) {
+          c = value[index];
+          if (c != 0x09 && c != 0x0c && c != 0x0d && c != 0x0a && c != 0x20) {
+            break;
+          }
+          ++index;
+        }
+        if (index >= length) {
+          return null;
+        }
+        if (value[index] == '=') {
+          ++index;
+          break;
+        }
+      }
+      // skip whitespace
+      while (index < length) {
+        c = value[index];
+        if (c != 0x09 && c != 0x0c && c != 0x0d && c != 0x0a && c != 0x20) {
+          break;
+        }
+        ++index;
+      }
+      if (index >= length) {
+        return null;
+      }
+      c = value[index];
+      if (c == '"' || c == '\'') {
+        ++index;
+        int nextIndex = index;
+        while (nextIndex < length) {
+          char c2 = value[nextIndex];
+          if (c == c2) {
+            return Encodings.ResolveAlias(
+  value.Substring(
+    index,
+    nextIndex - index));
+          }
+          ++nextIndex;
+        }
+        return null;
+      } else {
+        int nextIndex = index;
+        while (nextIndex < length) {
+          char c2 = value[nextIndex];
+          if (
+            c2 == 0x09 || c2 == 0x0c || c2 == 0x0d || c2 == 0x0a || c2 ==
+0x20 ||
+            c2 == 0x3b) {
+            break;
+          }
+          ++nextIndex;
+        }
+        return
+    Encodings.ResolveAlias(value.Substring(index, nextIndex - index));
+      }
+    }
+
+    private static int ReadAttribute(
+      byte[] data,
+      int length,
+      int position,
+      StringBuilder attrName,
+      StringBuilder attrValue) {
+      if (attrName != null) {
+        attrName.Remove(0, attrName.Length);
+      }
+      if (attrValue != null) {
+        attrValue.Remove(0, attrValue.Length);
+      }
+      while (position < length && (data[position] == 0x09 ||
+          data[position] == 0x0a || data[position] == 0x0c ||
+          data[position] == 0x0d || data[position] == 0x20 ||
+          data[position] == 0x2f)) {
+        ++position;
+      }
+      if (position >= length || data[position] == 0x3f) {
+        return position;
+      }
+      var empty = true;
+      var tovalue = false;
+      var b = 0;
+      // Skip attribute name
+      while (true) {
+        if (position >= length) {
+          // end of stream reached, so clear
+          // the attribute name to indicate failure
+          if (attrName != null) {
+            attrName.Remove(0, attrName.Length);
+          }
+          return position;
+        }
+        b = data[position] & 0xff;
+        if (b == 0x3d && !empty) {
+          ++position;
+          tovalue = true;
+          break;
+        } else if (b == 0x09 || b == 0x0a || b == 0x0c || b == 0x0d || b ==
+            0x20) {
+          break;
+        } else if (b == 0x2f || b == 0x3e) {
+          return position;
+        } else {
+          if (attrName != null) {
+            if (b >= 0x41 && b <= 0x5a) {
+              attrName.Append((char)(b + 0x20));
+            } else {
+              attrName.Append((char)b);
+            }
+          }
+          empty = false;
+          ++position;
+        }
+      }
+      if (!tovalue) {
+        while (position < length) {
+          b = data[position] & 0xff;
+          if (b != 0x09 && b != 0x0a && b != 0x0c && b != 0x0d && b != 0x20) {
+            break;
+          }
+          ++position;
+        }
+        if (position >= length) {
+          // end of stream reached, so clear
+          // the attribute name to indicate failure
+          if (attrName != null) {
+            attrName.Remove(0, attrName.Length);
+          }
+          return position;
+        }
+        if ((data[position] & 0xff) != 0x3d) {
+          return position;
+        }
+        ++position;
+      }
+      while (position < length) {
+        b = data[position] & 0xff;
+        if (b != 0x09 && b != 0x0a && b != 0x0c && b != 0x0d && b != 0x20) {
+          break;
+        }
+        ++position;
+      }
+      // Skip value
+      if (position >= length) {
+        // end of stream reached, so clear
+        // the attribute name to indicate failure
+        if (attrName != null) {
+          attrName.Remove(0, attrName.Length);
+        }
+        return position;
+      }
+      b = data[position] & 0xff;
+      if (b == 0x22 || b == 0x27) { // have quoted _string
+        ++position;
+        while (true) {
+          if (position >= length) {
+            // end of stream reached, so clear
+            // the attribute name and value to indicate failure
+            if (attrName != null) {
+              attrName.Remove(0, attrName.Length);
+            }
+            if (attrValue != null) {
+              attrValue.Remove(0, attrValue.Length);
+            }
+            return position;
+          }
+          int b2 = data[position] & 0xff;
+          if (b == b2) { // quote mark reached
+            ++position;
+            break;
+          }
+          if (attrValue != null) {
+            if (b2 >= 0x41 && b2 <= 0x5a) {
+              attrValue.Append((char)(b2 + 0x20));
+            } else {
+              attrValue.Append((char)b2);
+            }
+          }
+          ++position;
+        }
+        return position;
+      } else if (b == 0x3e) {
+        return position;
+      } else {
+        if (attrValue != null) {
+          if (b >= 0x41 && b <= 0x5a) {
+            attrValue.Append((char)(b + 0x20));
+          } else {
+            attrValue.Append((char)b);
+          }
+        }
+        ++position;
+      }
+      while (true) {
+        if (position >= length) {
+          // end of stream reached, so clear
+          // the attribute name and value to indicate failure
+          if (attrName != null) {
+            attrName.Remove(0, attrName.Length);
+          }
+          if (attrValue != null) {
+            attrValue.Remove(0, attrValue.Length);
+          }
+          return position;
+        }
+        b = data[position] & 0xff;
+        if (b == 0x09 || b == 0x0a || b == 0x0c || b == 0x0d || b == 0x20 || b
+          == 0x3e) {
+          return position;
+        }
+        if (attrValue != null) {
+          if (b >= 0x41 && b <= 0x5a) {
+            attrValue.Append((char)(b + 0x20));
+          } else {
+            attrValue.Append((char)b);
+          }
+        }
+        ++position;
+      }
+    }
+    // NOTE: To be used when the encoding is not otherwise provided
+    // by the transport layer (e.g., Content-Type) and the transport
+    // layer's encoding is not overridden by the end user
+    private static string GuessHtmlEncoding(byte[] data) {
+      var b = 0;
+      var count = Math.Min(data.Length, 1024);
+      var position = 0;
+      while (position < count) {
+        if (position + 4 <= count && data[position + 0] == 0x3c &&
+            (data[position + 1] & 0xff) == 0x21 &&
+        (data[position + 2] & 0xff) == 0x2d &&
+            (data[position + 3] & 0xff) == 0x2d) {
+          // Skip comment
+          var hyphenCount = 2;
+          position += 4;
+          while (position < count) {
+            int c = data[position] & 0xff;
+            if (c == '-') {
+              hyphenCount = Math.Min(2, hyphenCount + 1);
+            } else if (c == '>' && hyphenCount >= 2) {
+              break;
+            } else {
+              hyphenCount = 0;
+            }
+            ++position;
+          }
+        } else if (position + 6 <= count && data[position] == 0x3c &&
+   ((data[position + 1] & 0xff) == 0x4d || (data[position + 1] & 0xff) ==
+            0x6d) &&
+   ((data[position + 2] & 0xff) == 0x45 || (data[position + 2] & 0xff) ==
+            0x65) &&
+          ((data[position + 3] & 0xff) == 0x54 || (data[position + 3] & 0xff) ==
+            0x74) && (data[position + 4] == 0x41 ||
+                   data[position + 4] == 0x61) &&
+   (data[position + 5] == 0x09 || data[position + 5] == 0x0a ||
+         data[position + 5] == 0x0d ||
+          data[position + 5] == 0x0c || data[position + 5] == 0x20 ||
+                data[position + 5] == 0x2f)) {
+          // META tag
+          var haveHttpEquiv = false;
+          var haveContent = false;
+          var haveCharset = false;
+          var gotPragma = false;
+          var needPragma = 0; // need pragma null
+          string charset = null;
+          var attrName = new StringBuilder();
+          var attrValue = new StringBuilder();
+          position += 5;
+          while (true) {
+            int
+    newpos = ReadAttribute(
+      data,
+      count,
+      position,
+      attrName,
+      attrValue);
+            if (newpos == position) {
+              break;
+            }
+            string attrNameString = attrName.ToString();
+            if (!haveHttpEquiv && attrNameString.Equals("http-equiv",
+  StringComparison.Ordinal)) {
+              haveHttpEquiv = true;
+              if (attrValue.ToString().Equals("content-type",
+  StringComparison.Ordinal)) {
+                gotPragma = true;
+              }
+            } else if (!haveContent && attrNameString.Equals("content",
+  StringComparison.Ordinal)) {
+              haveContent = true;
+              if (charset == null) {
+                string newCharset =
+  ExtractCharsetFromMeta(attrValue.ToString());
+                if (newCharset != null) {
+                  charset = newCharset;
+                  needPragma = 2; // need pragma true
+                }
+              }
+            } else if (!haveCharset && attrNameString.Equals("charset",
+  StringComparison.Ordinal)) {
+              haveCharset = true;
+              charset = Encodings.ResolveAlias(attrValue.ToString());
+              needPragma = 1; // need pragma false
+            }
+            position = newpos;
+          }
+          if (needPragma == 0 || (needPragma == 2 && !gotPragma) || charset ==
+                 null) {
+            ++position;
+          } else {
+            if ("utf-16le".Equals(charset, StringComparison.Ordinal) ||
+"utf-16be".Equals(charset, StringComparison.Ordinal)) {
+              charset = "utf-8";
+            }
+            return charset;
+          }
+        } else if ((position + 3 <= count &&
+                data[position] == 0x3c && (data[position + 1] & 0xff) == 0x2f &&
+  (((data[position + 2] & 0xff) >= 0x41 && (data[position + 2] & 0xff) <=
+           0x5a) ||
+         ((data[position + 2] & 0xff) >= 0x61 && (data[position + 2] & 0xff) <=
+           0x7a))) ||
+                    // </X
+                    (position + 2 <= count && data[position] == 0x3c &&
+        (((data[position + 1] & 0xff) >= 0x41 && (data[position + 1] & 0xff)
+              <= 0x5a) ||
+         ((data[position + 1] & 0xff) >= 0x61 && (data[position + 1] & 0xff)
+               <= 0x7a)))) { // <X
+          // </X
+          while (position < count) {
+            if (data[position] == 0x09 ||
+                data[position] == 0x0a || data[position] == 0x0c ||
+                data[position] == 0x0d || data[position] == 0x20 ||
+                data[position] == 0x3e) {
+              break;
+            }
+            ++position;
+          }
+          while (true) {
+            int newpos = ReadAttribute(data, count, position, null, null);
+            if (newpos == position) {
+              break;
+            }
+            position = newpos;
+          }
+          ++position;
+        } else if (position + 2 <= count && data[position] == 0x3c &&
+    ((data[position + 1] & 0xff) == 0x21 || (data[position + 1] & 0xff) ==
+           0x3f || (data[position + 1] & 0xff) == 0x2f)) {
+          // <! or </ or <?
+          while (position < count) {
+            if (data[position] != 0x3e) {
+              break;
+            }
+            ++position;
+          }
+          ++position;
+        } else {
+          ++position;
+        }
+      }
+      var byteIndex = 0;
+      int b1 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) &
+0xff;
+int b2 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) &
+0xff;
+if (b1 == 0xfe && b2 == 0xff) {
+          return "utf-16be";
+        }
+        if (b1 == 0xff && b2 == 0xfe) {
+          return "utf-16le";
+        }
+        int b3 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) &
+0xff;
+if (b1 == 0xef && b2 == 0xbb && b3 == 0xbf) {
+          return "utf-8";
+        }
+      byteIndex = 0;
+      var maybeUtf8 = 0;
+      // Check for UTF-8
+      position = 0;
+      while (position < count) {
+        b = data[position] & 0xff;
+        if (b < 0x80) {
+          ++position;
+          continue;
+        }
+        if (position + 2 <= count && (b >= 0xc2 && b <= 0xdf) &&
+         ((data[position + 1] & 0xff) >= 0x80 && (data[position + 1] & 0xff) <=
+              0xbf)) {
+          // DebugUtility.Log("%02X %02X",data[position],data[position+1]);
+          position += 2;
+          maybeUtf8 = 1;
+        } else if (position + 3 <= count && (b >= 0xe0 && b <= 0xef) &&
+      ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
+              0xbf)) {
+          int startbyte = (b == 0xe0) ? 0xa0 : 0x80;
+          int endbyte = (b == 0xed) ? 0x9f : 0xbf;
+          // DebugUtility.Log("%02X %02X %02X"
+          // , data[position], data[position + 1], data[position + 2]);
+          if ((data[position + 1] & 0xff) < startbyte ||
+              (data[position + 1] & 0xff) > endbyte) {
+            maybeUtf8 = -1;
+            break;
+          }
+          position += 3;
+          maybeUtf8 = 1;
+        } else if (position + 4 <= count && (b >= 0xf0 && b <= 0xf4) &&
+   ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
+        0xbf) &&
+      ((data[position + 3] & 0xff) >= 0x80 && (data[position + 3] & 0xff) <=
+              0xbf)) {
+          int startbyte = (b == 0xf0) ? 0x90 : 0x80;
+          int endbyte = (b == 0xf4) ? 0x8f : 0xbf;
+          // DebugUtility.Log("%02X %02X %02X %02X"
+          // , data[position], data[position + 1], data[position + 2],
+          // data[position + 3]);
+          if ((data[position + 1] & 0xff) < startbyte ||
+              (data[position + 1] & 0xff) > endbyte) {
+            maybeUtf8 = -1;
+            break;
+          }
+          position += 4;
+          maybeUtf8 = 1;
+        } else {
+          if (position + 4 < count) {
+            // we check for position here because the data may
+            // end within a UTF-8 byte sequence
+            maybeUtf8 = -1;
+          }
+          break;
+        }
+      }
+      return maybeUtf8 == 1 ? "utf-8" : "windows-1252";
+    }
+
     /// <summary>
     /// <para>Gets a Hypertext Markup Language (HTML) rendering of this
     /// message's text body. This method currently supports any message for
     /// which <c>GetBodyString()</c> outputs a text string and treats the
     /// following media types specially: text/plain with
     /// <c>format=flowed</c>, text/enriched, text/markdown (original
-    /// Markdown). If this message's media type is "multipart/alternative",
-    /// returns the result of this method for the last supported body
-    /// part.</para></summary>
+    /// Markdown).</para></summary>
     /// <returns>An HTML rendering of this message's text.</returns>
-    /// <exception cref='NotSupportedException'>This message is a
-    /// "multipart/alternative" message without a supported body part; or
-    /// this message is a multipart message other than
-    /// "multipart/alternative"; or this message has no character encoding
-    /// declared or assumed for it (which is usually the case for non-text
-    /// messages); or the character encoding is not supported.</exception>
+    /// <exception cref='NotSupportedException'>No supported body part was
+    /// found; see <c>GetBodyString()</c> for more information.</exception>
     /// <remarks>
     /// <para>REMARK: The Markdown implementation currently supports all
     /// features of original Markdown, except that the
@@ -607,26 +1125,14 @@ return false;
     }
 
     private string GetFormattedBodyStringNoThrow() {
-      MediaType mt = this.ContentType;
-      string text;
-      if (mt.TypeAndSubType.Equals(
-        "multipart/alternative",
-        StringComparison.Ordinal)) {
-        IList<Message> parts = this.Parts;
-        // Navigate the parts in reverse order
-        for (var i = parts.Count -1; i >= 0; --i) {
-          DebugUtility.Log("bodypart {0}: {1}", i, parts[i].ContentType);
-          text = parts[i].GetFormattedBodyString();
-          if (text != null) {
-            return text;
-          }
-        }
+      var bodyStrings = new List<string>();
+      var mediaTypes = new List<MediaType>();
+      this.GetBodyStrings(bodyStrings, mediaTypes);
+      if (bodyStrings.Count == 0) {
         return null;
       }
-      text = this.GetBodyStringNoThrow();
-      if (text == null) {
-        return null;
-      }
+      string text = bodyStrings[0];
+      MediaType mt = mediaTypes[0];
       string fmt = mt.GetParameter("format");
       string dsp = mt.GetParameter("delsp");
       bool formatFlowed = DataUtilities.ToLowerCaseAscii(
@@ -670,7 +1176,10 @@ return false;
     /// content disposition specifies how a user agent should display or
     /// otherwise handle this message. Can be set to null. If set to a
     /// disposition or to null, updates the Content-Disposition header
-    /// field as appropriate.</summary>
+    /// field as appropriate. (There is no default content disposition if
+    /// this value is null, and disposition types unrecognized by the
+    /// application should be treated as "attachment"; see RFC 2183 sec.
+    /// 2.8.).</summary>
     /// <value>This message's content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
@@ -813,8 +1322,8 @@ return false;
       }
     }
 
-    /// <summary>Gets or sets this message's subject. The subject's value is found as though
-    /// GetHeader("subject") were called.</summary>
+    /// <summary>Gets or sets this message's subject. The subject's value
+    /// is found as though GetHeader("subject") were called.</summary>
     /// <value>This message's subject, or null if there is none.</value>
     public string Subject {
       get {
@@ -3610,9 +4119,8 @@ NamedAddress(mhs).Address);
     /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
     /// Subject, Keywords, Comments. The message body is included in the
     /// URI only if <c>GetBodyString()</c> would return a non-empty string.
-    /// The To header field is
-    /// included in the URI only if it has display names or group
-    /// syntax.</summary>
+    /// The To header field is included in the URI only if it has display
+    /// names or group syntax.</summary>
     /// <returns>A MailTo URI corresponding to this message.</returns>
     [Obsolete("Renamed to ToMailtoUri.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -3674,9 +4182,9 @@ NamedAddress(mhs).Address);
     /// corresponding to this message. The following header fields, and
     /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
     /// Subject, Keywords, Comments. The message body is included in the
-    /// URI only if <c>GetBodyString()</c> would return a non-empty string.. The To header field is
-    /// included in the URI only if it has display names or group
-    /// syntax.</summary>
+    /// URI only if <c>GetBodyString()</c> would return a non-empty
+    /// string.. The To header field is included in the URI only if it has
+    /// display names or group syntax.</summary>
     /// <returns>A MailTo URI corresponding to this message.</returns>
     public string ToMailtoUri() {
       return MailtoUris.MessageToMailtoUri(this);
@@ -3772,17 +4280,17 @@ NamedAddress(mhs).Address);
                 // If we get here, then either:
                 // - The charset is present but unrecognized or empty, or
                 // - The charset is absent and the media type has
-                //    no default charset assumed for it.
+                // no default charset assumed for it.
                 if (ctype.Parameters.ContainsKey("charset")) {
                   // The charset is present but unrecognized or
                   // empty; treat the content as application/octet-stream
                   // for conformance with RFC 2049.
                   ctype = MediaType.ApplicationOctetStream;
-                } else if(!ctype.StoresCharsetInPayload()) {
+                } else if (!ctype.StoresCharsetInPayload()) {
                   // The charset is absent, and the media type:
                   // - has no default assumed for it, and
                   // - does not specify how the charset is determined
-                  //   from the payload.
+                  // from the payload.
                   // In this case, treat the body as being in an
                   // "unrecognized" charset, so as application/octet-stream
                   // for conformance with RFC 2049.
@@ -3823,24 +4331,17 @@ NamedAddress(mhs).Address);
       }
       if (this.transferEncoding == EncodingQuotedPrintable ||
           this.transferEncoding == EncodingBase64) {
-        if (ctype.IsMultipart ||
-            (ctype.TopLevelType.Equals("message",
+        if (ctype.IsMultipart || (ctype.TopLevelType.Equals("message",
   StringComparison.Ordinal) && !ctype.SubType.Equals("global",
-  StringComparison.Ordinal) &&
-             !ctype.SubType.Equals("global-headers",
+  StringComparison.Ordinal) && !ctype.SubType.Equals("global-headers",
   StringComparison.Ordinal) && !ctype.SubType.Equals(
     "global-disposition-notification",
-    StringComparison.Ordinal) &&
-             !ctype.SubType.Equals("global-delivery-status",
-  StringComparison.Ordinal))) {          
-            // CLARIFICATION: Treat quoted-printable and base64 
+    StringComparison.Ordinal) && !ctype.SubType.Equals("global-delivery-status",
+  StringComparison.Ordinal))) {
+            // CLARIFICATION: Treat quoted-printable and base64
             // as "unrecognized" encodings in multipart and most
             // message media types, for the purpose of treating the
-            // content type as "application/octet-stream".  This may
-            // result in "misdecoded" messages since most if not all messages
-            // of this kind don't use quoted-printable or base64 encodings
-            // for the whole body, but may do so in the body parts 
-            // they contain.
+            // content type as "application/octet-stream".
             ctype = MediaType.ApplicationOctetStream;
         }
       }

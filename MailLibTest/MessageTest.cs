@@ -1498,7 +1498,12 @@ namespace MailLibTest {
           }
           Assert.AreEqual(1, msg.Parts.Count);
           Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
-          Assert.AreEqual("Test", msg.Parts[0].GetBodyString());
+          {
+            string stringTemp = msg.Parts[0].GetBodyString();
+            Assert.AreEqual(
+              "Test",
+              stringTemp);
+}
         }
       }
     }
@@ -1526,9 +1531,24 @@ namespace MailLibTest {
       msg = MessageFromString(message);
       Assert.AreEqual(3, msg.Parts.Count);
       Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
-      Assert.AreEqual("Test", msg.Parts[0].GetBodyString());
-      Assert.AreEqual("Test2", msg.Parts[1].GetBodyString());
-      Assert.AreEqual("Test3", msg.Parts[2].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
+      {
+        string stringTemp = msg.Parts[1].GetBodyString();
+        Assert.AreEqual(
+          "Test2",
+          stringTemp);
+}
+      {
+        string stringTemp = msg.Parts[2].GetBodyString();
+        Assert.AreEqual(
+          "Test3",
+          stringTemp);
+}
       message = messageStart;
       message += "--b1BOUNDARY\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
@@ -1542,7 +1562,12 @@ namespace MailLibTest {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
-      Assert.AreEqual("Test", msg.Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
     }
 
     [Test]
@@ -1569,7 +1594,12 @@ namespace MailLibTest {
       }
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
-      Assert.AreEqual("Test", msg.Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1582,7 +1612,12 @@ namespace MailLibTest {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
       // No headers in body part
       message = messageStart;
       message += "\r\n";
@@ -1591,7 +1626,12 @@ namespace MailLibTest {
       message += "Epilogue";
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
       // No CRLF before first boundary
       message = "MIME-Version: 1.0\r\n";
       message += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
@@ -1602,7 +1642,12 @@ namespace MailLibTest {
       message += "Epilogue";
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
       // Base64 body part
       message = messageStart;
       message += "Content-Type: application/octet-stream\r\n";
@@ -1688,84 +1733,181 @@ namespace MailLibTest {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
     }
 
 [Test]
 public void TestGetBodyString() {
       Message msg;
       string message;
-      string textpart="--b1\r\nContent-Type: text/plain\r\n\r\nText\r\n";
-      string htmlpart="--b1\r\nContent-Type: text/html;charset=utf-8" +
+      string textpart = "--b1\r\nContent-Type: text/plain\r\n\r\nText\r\n";
+      string htmlpart = "--b1\r\nContent-Type: text/html;charset=utf-8" +
         "\r\n\r\nHTML\r\n";
-      string textmultipart="--b1\r\n" +
+      string textmultipart = "--b1\r\n" +
         "Content-Type: multipart/alternative;boundary=b2" +
         "\r\n\r\n--b2\r\nContent-Type: text/plain;charset=utf-8" +
         "\r\n\r\nText\r\n";
-      string htmlmultipart="--b1\r\n" +
+      string htmlmultipart = "--b1\r\n" +
         "Content-Type: multipart/alternative;boundary=b2" +
         "\r\n\r\n--b2\r\nContent-Type: text/html;charset=utf-8" +
         "\r\n\r\nHTML\r\n--b2--\r\n";
-      string texample="--b1\r\nContent-Type: text/example;charset=utf-8" +
+      string texample = "--b1\r\nContent-Type: text/example;charset=utf-8" +
         "\r\n\r\ntext/example\r\n";
-      string aexample="--b1\r\nContent-Type: application/example" +
+      string aexample = "--b1\r\nContent-Type: application/example" +
         "\r\n\r\napp/example\r\n";
-      string example1="--b1\r\nContent-Type: example/w1" +
+      string example1 = "--b1\r\nContent-Type: example/w1" +
         "\r\n\r\nexample/w1\r\n";
-      string example2="--b1\r\nContent-Type: example/w2" +
+      string example2 = "--b1\r\nContent-Type: example/w2" +
         "\r\n\r\nexample/w2\r\n";
-      string endmsg="--b1--";
+      string endmsg = "--b1--";
       string messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/alternative; boundary=b1" +
         "\r\n\r\n";
-      message=messageStart+textpart+htmlpart+endmsg;
+      message = messageStart + textpart + htmlpart + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("HTML", msg.GetBodyString());   
-      message=messageStart+htmlpart+textpart+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "HTML",
+          stringTemp);
+}
+      message = messageStart + htmlpart + textpart + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+textpart+htmlmultipart+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textpart + htmlmultipart + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("HTML", msg.GetBodyString());   
-      message=messageStart+htmlpart+textmultipart+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "HTML",
+          stringTemp);
+}
+      message = messageStart + htmlpart + textmultipart + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+htmlpart+texample+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + htmlpart + texample + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("text/example", msg.GetBodyString());   
-      message=messageStart+aexample+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "text/example",
+          stringTemp);
+}
+      message = messageStart + aexample + endmsg;
       msg = MessageFromString(message);
-      Assert.Throws(typeof(NotSupportedException), ()=>msg.GetBodyString());
-      message=messageStart+aexample+example1+endmsg;
+      try {
+ msg.GetBodyString();
+ Assert.Fail("Should have failed");
+} catch (NotSupportedException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+ throw new InvalidOperationException(String.Empty, ex);
+}
+      message = messageStart + aexample + example1 + endmsg;
       msg = MessageFromString(message);
-      Assert.Throws(typeof(NotSupportedException), ()=>msg.GetBodyString());
-      message=messageStart+example1+example2+aexample+endmsg;
+      try {
+ msg.GetBodyString();
+ Assert.Fail("Should have failed");
+} catch (NotSupportedException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+ throw new InvalidOperationException(String.Empty, ex);
+}
+      message = messageStart + example1 + example2 + aexample + endmsg;
       msg = MessageFromString(message);
-      Assert.Throws(typeof(NotSupportedException), ()=>msg.GetBodyString());
-      message=messageStart+aexample+textpart+endmsg;
+      try {
+ msg.GetBodyString();
+ Assert.Fail("Should have failed");
+} catch (NotSupportedException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+ throw new InvalidOperationException(String.Empty, ex);
+}
+      message = messageStart + aexample + textpart + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+textpart+aexample+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textpart + aexample + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+example1+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + example1 + endmsg;
       msg = MessageFromString(message);
-      Assert.Throws(typeof(NotSupportedException), ()=>msg.GetBodyString());
-      message=messageStart+example1+textpart+endmsg;
+      try {
+ msg.GetBodyString();
+ Assert.Fail("Should have failed");
+} catch (NotSupportedException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+ throw new InvalidOperationException(String.Empty, ex);
+}
+      message = messageStart + example1 + textpart + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+example1+textmultipart+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + example1 + textmultipart + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+textpart+example1+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textpart + example1 + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+textmultipart+example1+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + textmultipart + example1 + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("Text", msg.GetBodyString());   
-      message=messageStart+htmlpart+example1+endmsg;
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "Text",
+          stringTemp);
+}
+      message = messageStart + htmlpart + example1 + endmsg;
       msg = MessageFromString(message);
-      Assert.AreEqual("HTML", msg.GetBodyString());   
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "HTML",
+          stringTemp);
+}
    }
 
     [Test]
@@ -1789,7 +1931,12 @@ public void TestGetBodyString() {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test\r\n--Not-b2--", msg.Parts[0].Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test\r\n--Not-b2--",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1801,7 +1948,12 @@ public void TestGetBodyString() {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1818,8 +1970,18 @@ public void TestGetBodyString() {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(2, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test\r\n--Not-b2--", msg.Parts[0].Parts[0].GetBodyString());
-      Assert.AreEqual("Test2", msg.Parts[0].Parts[1].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test\r\n--Not-b2--",
+          stringTemp);
+}
+      {
+        string stringTemp = msg.Parts[0].Parts[1].GetBodyString();
+        Assert.AreEqual(
+          "Test2",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1833,7 +1995,12 @@ public void TestGetBodyString() {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1847,7 +2014,12 @@ public void TestGetBodyString() {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1861,7 +2033,12 @@ public void TestGetBodyString() {
       msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
-      Assert.AreEqual("Test", msg.Parts[0].Parts[0].GetBodyString());
+      {
+        string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
+        Assert.AreEqual(
+          "Test",
+          stringTemp);
+}
     }
 
     [Test]
