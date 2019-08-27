@@ -28,12 +28,6 @@ namespace PeterO.Mail {
   /// <para>The following lists known deviations from the mail
   /// specifications (Internet Message Format and MIME):</para>
   /// <list type=''>
-  /// <item>The content-transfer-encodings "quoted-printable" and
-  /// "base64" are treated as 7bit instead if they occur in a message or
-  /// body part with content type "multipart/*" or "message/*" (other
-  /// than "message/global", "message/global-headers",
-  /// "message/global-disposition-notification", or
-  /// "message/global-delivery-status").</item>
   /// <item>If a message has two or more Content-Type header fields, it
   /// is treated as having a content type of "application/octet-stream",
   /// unless one or more of the header fields is syntactically
@@ -55,11 +49,10 @@ namespace PeterO.Mail {
   /// <item>There is no line length limit imposed when parsing
   /// quoted-printable or base64 encoded bodies.</item>
   /// <item>If the transfer encoding is absent and the content type is
-  /// "message/rfc822", bytes with values greater than 127 (called "8-bit
-  /// bytes" in the rest of these remarks) are still allowed, despite the
+  /// "message/rfc822", bytes with values greater than 127 are still allowed, despite the
   /// default value of "7bit" for "Content-Transfer-Encoding".</item>
   /// <item>In the following cases, if the transfer encoding is absent,
-  /// declared as 7bit, or treated as 7bit, 8-bit bytes are still
+  /// declared as 7bit, or treated as 7bit, bytes greater than 127 are still
   /// allowed:</item>
   /// <item>(a) The preamble and epilogue of multipart messages, which
   /// will be ignored.</item>
@@ -68,7 +61,7 @@ namespace PeterO.Mail {
   /// declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
   /// "iso-8859-*" (all single byte encodings).</item>
   /// <item>(d) In non-MIME message bodies and in text/plain message
-  /// bodies. Any 8-bit bytes are replaced with the substitute character
+  /// bodies. Any bytes greater than 127 are replaced with the substitute character
   /// byte (0x1a).</item>
   /// <item>If the message starts with the word "From" (and no other case
   /// variations of that word) followed by one or more space (U+0020) not
@@ -78,7 +71,7 @@ namespace PeterO.Mail {
   /// kind.)</item>
   /// <item>The name <c>ascii</c> is treated as a synonym for
   /// <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
-  /// name <c>cp1252</c> and <c>utf8</c> are treated as synonyms for
+  /// names <c>cp1252</c> and <c>utf8</c> are treated as synonyms for
   /// <c>windows-1252</c> and <c>utf-8</c>, respectively, even though
   /// they are not IANA registered aliases.</item>
   /// <item>The following deviations involve encoded words under RFC
@@ -98,11 +91,20 @@ namespace PeterO.Mail {
   /// author if they find other ways in which this implementation
   /// deviates from the mail specifications or other applicable
   /// specifications.</para>
-  /// <para>Note that this class currently doesn't support the "padding"
+  /// <para>This class currently doesn't support the "padding"
   /// parameter for message bodies with the media type
   /// "application/octet-stream" or treated as that media type (see RFC
   /// 2046 sec. 4.5.1).</para>
-  /// <para>Note that this implementation can decode an RFC 2047 encoded
+  /// <para>In this implementation, if the content-transfer-encoding "quoted-printable" or
+  /// "base64" occurs in a message or
+  /// body part with content type "multipart/*" or "message/*" (other
+  /// than "message/global", "message/global-headers",
+  /// "message/global-disposition-notification", or
+  /// "message/global-delivery-status"), that encoding is treated as
+  /// unrecognized for the purpose of treating that message or
+  /// body part as having a content type of "application/octet-stream"
+  /// rather than the declared content type.  This is a clarification to RFCs 2045 and 2049.</para>
+  /// <para>This implementation can decode an RFC 2047 encoded
   /// word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use
   /// code switching) even if the encoded word's payload ends in a
   /// different mode from "ASCII mode". (Each encoded word still starts
@@ -414,11 +416,12 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the body of this message as a text string.</summary>
     /// <value>The body of this message as a text string.</value>
-    /// <exception cref='NotSupportedException'>Either this message is a
-    /// multipart message, so it doesn't have its own body text, or this
-    /// message has no character encoding declared or assumed for it (which
-    /// is usually the case for non-text messages), or the character
-    /// encoding is not supported.</exception>
+    /// <exception cref='NotSupportedException'>This message is a
+    /// "multipart/alternative" message without a supported body part; or
+    /// this message is a multipart message other than
+    /// "multipart/alternative"; or this message's media type is a non-multipart type and does not specify the use of a "charset" parameter; or this message has no character encoding
+    /// declared or assumed for it (which is usually the case for non-text
+    /// messages); or the character encoding is not supported.</exception>
     [Obsolete("Use GetBodyString() instead.")]
     public string BodyString {
       get {
@@ -442,6 +445,61 @@ namespace PeterO.Mail {
         return enc;
     }
 
+public static bool DefinesCharsetParameter(MediaType mt) {
+// All media types that specify a charset parameter, either as a
+// required or an optional parameter.
+// NOTE: Up-to-date as of August 26, 2019
+if(mt.HasStructuredSuffix("xml") || 
+   mt.TopLevelType.Equals("text") || 
+   mt.TypeAndSubType.Equals("image/vnd.wap.wbmp"))return true;
+if(mt.TopLevelType.Equals("application")) {
+return (mt.SubType.Equals("vnd.uplanet.alert-wbxml") ||
+mt.SubType.Equals("vnd.wap.wmlscriptc") ||
+mt.SubType.Equals("xml-dtd") ||
+mt.SubType.Equals("vnd.picsel") ||
+mt.SubType.Equals("news-groupinfo") ||
+mt.SubType.Equals("ecmascript") ||
+mt.SubType.Equals("vnd.uplanet.cacheop-wbxml") ||
+mt.SubType.Equals("vnd.uplanet.bearer-choice") ||
+mt.SubType.Equals("vnd.wap.slc") ||
+mt.SubType.Equals("nss") ||
+mt.SubType.Equals("vnd.3gpp.mcdata-payload") ||
+mt.SubType.Equals("activity+json") ||
+mt.SubType.Equals("vnd.uplanet.list-wbxml") ||
+mt.SubType.Equals("vnd.3gpp.mcdata-signalling") ||
+mt.SubType.Equals("sgml-open-catalog") ||
+mt.SubType.Equals("smil") ||
+mt.SubType.Equals("vnd.uplanet.channel") ||
+mt.SubType.Equals("javascript") ||
+mt.SubType.Equals("vnd.syncml.dm+wbxml") ||
+mt.SubType.Equals("vnd.ah-barcode") ||
+mt.SubType.Equals("vnd.uplanet.alert") ||
+mt.SubType.Equals("vnd.wap.wbxml") ||
+mt.SubType.Equals("xml-external-parsed-entity") ||
+mt.SubType.Equals("vnd.uplanet.listcmd-wbxml") ||
+mt.SubType.Equals("vnd.uplanet.list") ||
+mt.SubType.Equals("vnd.uplanet.listcmd") ||
+mt.SubType.Equals("vnd.msign") ||
+mt.SubType.Equals("news-checkgroups") ||
+mt.SubType.Equals("fhir+json") ||
+mt.SubType.Equals("set-registration") ||
+mt.SubType.Equals("sql") ||
+mt.SubType.Equals("vnd.wap.sic") ||
+mt.SubType.Equals("prs.alvestrand.titrax-sheet") ||
+mt.SubType.Equals("vnd.uplanet.bearer-choice-wbxml") ||
+mt.SubType.Equals("vnd.wap.wmlc") ||
+mt.SubType.Equals("vnd.uplanet.channel-wbxml") ||
+mt.SubType.Equals("iotp") ||
+mt.SubType.Equals("vnd.uplanet.cacheop") ||
+mt.SubType.Equals("xml") ||
+mt.SubType.Equals("vnd.adobe.xfdf") ||
+mt.SubType.Equals("vnd.dpgraph"));
+}
+return false;
+}
+
+
+
     private string GetBodyStringNoThrow() {
         MediaType mt = this.ContentType;
         if (mt.IsMultipart) {
@@ -460,6 +518,9 @@ namespace PeterO.Mail {
           }
           return null;
         }
+        if (!DefinesCharsetParameter(this.ContentType)) {
+          return null;
+        }
         ICharacterEncoding charset = GetEncoding(this.ContentType.GetCharset());
         if (charset != null) {
           return Encodings.DecodeToString(
@@ -473,11 +534,11 @@ namespace PeterO.Mail {
     /// <summary>Gets the body of this message as a text string. If this
     /// message's media type is "multipart/alternative", returns the result
     /// of this method for the last supported body part.</summary>
-    /// <value>The body of this message as a text string.</value>
+    /// <returns>The body of this message as a text string.</returns>
     /// <exception cref='NotSupportedException'>This message is a
     /// "multipart/alternative" message without a supported body part; or
     /// this message is a multipart message other than
-    /// "multipart/alternative"; or this message has no character encoding
+    /// "multipart/alternative"; or this message's media type is a non-multipart type and does not specify the use of a "charset" parameter; or this message has no character encoding
     /// declared or assumed for it (which is usually the case for non-text
     /// messages); or the character encoding is not supported.</exception>
 #if CODE_ANALYSIS
@@ -486,8 +547,6 @@ namespace PeterO.Mail {
       "CA1024",
   Justification="This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
 #endif
-  /// <returns/>
-  /// <returns>Not documented yet.</returns>
     public string GetBodyString() {
         // TODO: Consider returning null rather than throwing an exception
         // in public API
@@ -556,6 +615,7 @@ namespace PeterO.Mail {
         IList<Message> parts = this.Parts;
         // Navigate the parts in reverse order
         for (var i = parts.Count -1; i >= 0; --i) {
+          DebugUtility.Log("bodypart {0}: {1}", i, parts[i].ContentType);
           text = parts[i].GetFormattedBodyString();
           if (text != null) {
             return text;
@@ -753,8 +813,9 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message's subject.</value>
+    /// <summary>Gets or sets this message's subject. The subject's value is found as though
+    /// GetHeader("subject") were called.</summary>
+    /// <value>This message's subject, or null if there is none.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -2653,7 +2714,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
           transform = stream;
           break;
         case EncodingSevenBit:
-          // DEVIATION: Replace 8-bit bytes and null with the
+          // DEVIATION: Replace bytes greater than 127 and null with the
           // ASCII substitute character (0x1a) for text/plain messages,
           // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
@@ -2883,7 +2944,7 @@ ext.Equals(".txt", StringComparison.Ordinal)) {
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
           // a conforming message if the name is too long
-          // NOTE: Some emails still have 8-bit bytes in an unencoded
+          // NOTE: Some emails still have bytes greater than 127 in an unencoded
           // subject line
           // or other unstructured header field; however, since RFC6532,
           // we can just assume the UTF-8 encoding in these cases; in
@@ -3548,8 +3609,8 @@ NamedAddress(mhs).Address);
     /// corresponding to this message. The following header fields, and
     /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
     /// Subject, Keywords, Comments. The message body is included in the
-    /// URI only if this message has a text media type and uses a supported
-    /// character encoding ("charset" parameter). The To header field is
+    /// URI only if <c>GetBodyString()</c> would return a non-empty string.
+    /// The To header field is
     /// included in the URI only if it has display names or group
     /// syntax.</summary>
     /// <returns>A MailTo URI corresponding to this message.</returns>
@@ -3613,8 +3674,7 @@ NamedAddress(mhs).Address);
     /// corresponding to this message. The following header fields, and
     /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
     /// Subject, Keywords, Comments. The message body is included in the
-    /// URI only if this message has a text media type and uses a supported
-    /// character encoding ("charset" parameter). The To header field is
+    /// URI only if <c>GetBodyString()</c> would return a non-empty string.. The To header field is
     /// included in the URI only if it has display names or group
     /// syntax.</summary>
     /// <returns>A MailTo URI corresponding to this message.</returns>
@@ -3682,6 +3742,7 @@ NamedAddress(mhs).Address);
             this.transferEncoding = EncodingBase64;
           } else {
             // Unrecognized transfer encoding
+            DebugUtility.Log("unrecognized: " + value);
             this.transferEncoding = EncodingUnknown;
           }
           haveContentEncoding = true;
@@ -3708,11 +3769,23 @@ NamedAddress(mhs).Address);
             // For conformance with RFC 2049
             if (ctype.IsText) {
               if (String.IsNullOrEmpty(ctype.GetCharset())) {
-                // charset is present but unrecognized, or
-                // the media type does not define how charset
-                // is determined from the payload
-                if (ctype.Parameters.ContainsKey("charset") ||
-                   !ctype.StoresCharsetInPayload()) {
+                // If we get here, then either:
+                // - The charset is present but unrecognized or empty, or
+                // - The charset is absent and the media type has
+                //    no default charset assumed for it.
+                if (ctype.Parameters.ContainsKey("charset")) {
+                  // The charset is present but unrecognized or
+                  // empty; treat the content as application/octet-stream
+                  // for conformance with RFC 2049.
+                  ctype = MediaType.ApplicationOctetStream;
+                } else if(!ctype.StoresCharsetInPayload()) {
+                  // The charset is absent, and the media type:
+                  // - has no default assumed for it, and
+                  // - does not specify how the charset is determined
+                  //   from the payload.
+                  // In this case, treat the body as being in an
+                  // "unrecognized" charset, so as application/octet-stream
+                  // for conformance with RFC 2049.
                   ctype = MediaType.ApplicationOctetStream;
                 }
               } else {
@@ -3741,24 +3814,47 @@ NamedAddress(mhs).Address);
       if (this.transferEncoding == EncodingUnknown) {
         ctype = MediaType.ApplicationOctetStream;
       }
+      if (!haveContentEncoding && ctype.TypeAndSubType.Equals(
+        "message/rfc822",
+        StringComparison.Ordinal)) {
+        // DEVIATION: Be a little more liberal with rfc822
+        // messages with bytes greater than 127
+        this.transferEncoding = EncodingEightBit;
+      }
+      if (this.transferEncoding == EncodingQuotedPrintable ||
+          this.transferEncoding == EncodingBase64) {
+        if (ctype.IsMultipart ||
+            (ctype.TopLevelType.Equals("message",
+  StringComparison.Ordinal) && !ctype.SubType.Equals("global",
+  StringComparison.Ordinal) &&
+             !ctype.SubType.Equals("global-headers",
+  StringComparison.Ordinal) && !ctype.SubType.Equals(
+    "global-disposition-notification",
+    StringComparison.Ordinal) &&
+             !ctype.SubType.Equals("global-delivery-status",
+  StringComparison.Ordinal))) {          
+            // CLARIFICATION: Treat quoted-printable and base64 
+            // as "unrecognized" encodings in multipart and most
+            // message media types, for the purpose of treating the
+            // content type as "application/octet-stream".  This may
+            // result in "misdecoded" messages since most if not all messages
+            // of this kind don't use quoted-printable or base64 encodings
+            // for the whole body, but may do so in the body parts 
+            // they contain.
+            ctype = MediaType.ApplicationOctetStream;
+        }
+      }
       // Update content type as appropriate
       // NOTE: Setting the field, not the setter,
       // because it's undesirable here to add a Content-Type
       // header field, as the setter does
       this.contentType = ctype;
-      if (!haveContentEncoding && this.contentType.TypeAndSubType.Equals(
-        "message/rfc822",
-        StringComparison.Ordinal)) {
-        // DEVIATION: Be a little more liberal with rfc822
-        // messages with 8-bit bytes
-        this.transferEncoding = EncodingEightBit;
-      }
       if (this.transferEncoding == EncodingSevenBit) {
         string charset = this.contentType.GetCharset();
         if (charset.Equals("utf-8", StringComparison.Ordinal)) {
           // DEVIATION: Be a little more liberal with UTF-8
           this.transferEncoding = EncodingEightBit;
-        } else if (this.contentType.TypeAndSubType.Equals("text/html",
+        } else if (ctype.TypeAndSubType.Equals("text/html",
             StringComparison.Ordinal)) {
           if (charset.Equals("us-ascii", StringComparison.Ordinal) ||
               charset.Equals("windows-1252", StringComparison.Ordinal) ||
@@ -3769,34 +3865,6 @@ NamedAddress(mhs).Address);
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
-          }
-        }
-      }
-      if (this.transferEncoding == EncodingQuotedPrintable ||
-          this.transferEncoding == EncodingBase64 ||
-          this.transferEncoding == EncodingUnknown) {
-        if (this.contentType.IsMultipart ||
-            (this.contentType.TopLevelType.Equals("message",
-  StringComparison.Ordinal) && !this.contentType.SubType.Equals("global",
-  StringComparison.Ordinal) &&
-             !this.contentType.SubType.Equals("global-headers",
-  StringComparison.Ordinal) && !this.contentType.SubType.Equals(
-    "global-disposition-notification",
-    StringComparison.Ordinal) &&
-             !this.contentType.SubType.Equals("global-delivery-status",
-  StringComparison.Ordinal))) {
-          if (this.transferEncoding == EncodingQuotedPrintable ||
-              this.transferEncoding == EncodingBase64) {
-            // DEVIATION: Treat quoted-printable for multipart and message
-            // as 7bit instead
-            this.transferEncoding = EncodingSevenBit;
-          } else {
-            string exceptText =
-              "Invalid content encoding for multipart or message";
-#if DEBUG
-            exceptText += " [type=" + this.contentType + "]";
-#endif
-            throw new MessageDataException(exceptText);
           }
         }
       }

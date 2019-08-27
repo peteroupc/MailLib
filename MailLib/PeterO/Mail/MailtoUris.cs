@@ -119,14 +119,15 @@ namespace PeterO.Mail {
           sb.Append(URIUtility.EncodeStringForURI(field));
         }
       }
-      if (msg.ContentType.IsText &&
-          !String.IsNullOrEmpty(msg.ContentType.GetCharset())) {
-        field = msg.BodyString;
-        if (!String.IsNullOrEmpty(field)) {
+      try {
+        field = msg.GetBodyString();
+      } catch(NotSupportedException) {
+        field = null;
+      }
+      if (!String.IsNullOrEmpty(field)) {
           sb.Append(firstField ? "?body=" : "&body=");
           firstField = false;
           sb.Append(URIUtility.EncodeStringForURI(field));
-        }
       }
       return sb.ToString();
     }

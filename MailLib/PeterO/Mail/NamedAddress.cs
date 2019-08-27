@@ -15,11 +15,33 @@ namespace PeterO.Mail {
   public class NamedAddress {
     private readonly string displayName;
 
+    /// <summary>Generates a string containing the display names of the given named-address objects, separated by commas.  The generated string is intended to be displayed to end users, not parsed.</summary>
+    public static string ToDisplayStringShort(IList<NamedAddress> addresses) {
+      // ArgumentAssert.NotNull(addresses);
+      StringBuilder sb=new StringBuilder();
+      for(var i=0;i<addresses.Count;i++) {
+        if(i>0)sb.Append(", ");
+        sb.Append(addresses[i].Name);
+      }
+      return sb.ToString();
+    }
+
+    /// <summary>Generates a string containing the display names and email addresses of the given named-address objects, separated by semicolons.  The generated string is intended to be displayed to end users, not parsed.</summary>
+    public static string ToDisplayString(IList<NamedAddress> addresses) {
+      // ArgumentAssert.NotNull(addresses);
+      StringBuilder sb=new StringBuilder();
+      for(var i=0;i<addresses.Count;i++) {
+        if(i>0)sb.Append("; ");
+        sb.Append(addresses[i].ToDisplayString());
+      }
+      return sb.ToString();
+    }
+
     /// <summary>Generates a list of NamedAddress objects from a
     /// comma-separated list of addresses. Each address must follow the
     /// syntax accepted by the one-argument constructor of
     /// NamedAddress.</summary>
-    /// <param name='addressValue'>A comma-separate list of addresses in
+    /// <param name='addressValue'>A comma-separated list of addresses in
     /// the form of a text string.</param>
     /// <returns>A list of addresses generated from the <paramref
     /// name='addressValue'/> parameter.</returns>
@@ -202,6 +224,32 @@ namespace PeterO.Mail {
       return enc.ToString();
     }
 
+    /// <summary>Converts this named-address object to a text string intended for display to end users.  The returned string is not intended to be parsed.</summary>
+    public string ToDisplayString() {
+      if (this.IsGroup) {
+        var sb=new StringBuilder();
+        sb.Append(this.displayName).Append(": ");
+        var first = true;
+        foreach (NamedAddress groupAddress in this.groupAddresses) {
+          if (!first) {
+            sb.Append("; ");
+          }
+          first = false;
+          sb.Append(groupAddress.ToDisplayString());
+        }
+        sb.Append(";");
+        return sb.ToString();
+      } else if (this.displayName == null) {
+        return this.address.ToString();
+      } else {
+        var sb=new StringBuilder();
+        sb.Append(this.displayName).Append(" <")
+           .Append(this.address.ToString())
+           .Append(">");
+        return sb.ToString();
+      }
+    }
+ 
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.NamedAddress'/> class. Examples:
     /// <list>

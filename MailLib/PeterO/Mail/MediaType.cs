@@ -56,13 +56,34 @@ namespace PeterO.Mail {
       }
     }
 
+public bool HasStructuredSuffix(string suffix) {
+  if (String.IsNullOrEmpty(suffix) || 
+      suffix.Length >= subType.Length ||
+      suffix.Length + 1 >= subType.Length) {
+    return false;
+  }
+  int j = subType.Length - 1 - suffix.Length;
+  if (subType[j] == '+') {
+    j++;
+    for(var i=0;i<suffix.Length;i++){
+      int c=subType[j+i];
+      int c2=suffix[i];
+      if(c>=0x41 && c<=0x5a)c+=0x20;
+      if(c2>=0x41 && c2<=0x5a)c2+=0x20;
+      if(c!=c2)return false;
+    }
+    return true;
+  }
+  return false;
+}
+
     #region Equals and GetHashCode implementation
 
     /// <summary>Determines whether this object and another object are
     /// equal.</summary>
     /// <param name='obj'>The parameter <paramref name='obj'/> is an
     /// arbitrary object.</param>
-    /// <returns><c>true</c> if this object and another object are equal;
+    /// <returns><c>true</c> if this object and the other object are equal;
     /// otherwise, <c>false</c>.</returns>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
@@ -801,7 +822,8 @@ namespace PeterO.Mail {
     /// returns the result of the Encodings.ResolveAliasForEmail method for
     /// that parameter, except that the result's basic upper-case letters A
     /// to Z (U+0041 to U+005A) are converted to lower case. If the
-    /// "charset" parameter is absent or empty, returns the default value,
+    /// "charset" parameter is empty, returns the empty string.  If the
+    /// "charset" parameter is absent, returns the default value,
     /// if any, for that parameter given the media type (e.g., "us-ascii"
     /// if the media type is "text/plain"; see RFC2046), or the empty
     /// string if there is none.</returns>
@@ -844,10 +866,6 @@ namespace PeterO.Mail {
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
       // vnd.wap.si, vnd.wap.sl, vnd.wap.wml
       //
-      // Behavior deliberately undefined (so whether US-ASCII or another
-      // charset is treated as default is irrelevant):
-      // -- example
-      //
       // These media types don't define a charset parameter (after
       // RFC6657):
       // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9),
@@ -877,6 +895,11 @@ namespace PeterO.Mail {
       //
       // US-ASCII default:
       // -- plain, sgml, troff
+      //
+      // Behavior deliberately undefined (before RFC6657, so
+      // it still has a default of US-ASCII under that RFC):
+      // -- example
+      //
       //
       // -- UTF-8 assumed: --
       //
@@ -912,14 +935,18 @@ namespace PeterO.Mail {
         // Charset parameter is present and non-empty
         param = Encodings.ResolveAliasForEmail(param);
         return DataUtilities.ToLowerCaseAscii(param);
+      } else if (param != null) {
+        // Charset parameter is empty
+        return String.Empty;
       } else {
-        // Charset parameter is absent or empty
+        // Charset parameter is absent
         if (this.IsText) {
           string sub = this.SubType;
           // Media types that assume a default of US-ASCII
           if (sub.Equals("plain", StringComparison.Ordinal) ||
   sub.Equals("sgml", StringComparison.Ordinal) ||
   sub.Equals("troff", StringComparison.Ordinal) ||
+  sub.Equals("example", StringComparison.Ordinal) ||
   sub.Equals("dns", StringComparison.Ordinal) ||
   sub.Equals("mizar", StringComparison.Ordinal) ||
   sub.Equals("prs.prop.logic", StringComparison.Ordinal) ||
