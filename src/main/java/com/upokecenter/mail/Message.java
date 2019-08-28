@@ -582,6 +582,7 @@ return false;
      * part that has a content disposition with a type other than inline.
      * This message itself is not included in the list even if it's an
      * attachment as just defined.
+     * @return The return value is not documented yet.
      */
     public List<Message> GetAttachments() {
        ArrayList<Message> list = new ArrayList<Message>();

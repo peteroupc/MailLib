@@ -21,6 +21,7 @@ import java.util.*;
      * objects, separated by commas. The generated string is intended to be
      * displayed to end users, not parsed.
      * @param addresses Not documented yet.
+     * @return The return value is not documented yet.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */
     public static String ToDisplayStringShort(List<NamedAddress> addresses) {
@@ -42,6 +43,7 @@ import java.util.*;
      * given named-address objects, separated by commas. The generated
      * string is intended to be displayed to end users, not parsed.
      * @param addresses Not documented yet.
+     * @return The return value is not documented yet.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */
     public static String ToDisplayString(List<NamedAddress> addresses) {
@@ -251,6 +253,7 @@ import java.util.*;
     /**
      * Converts this named-address object to a text string intended for display to
      * end users. The returned string is not intended to be parsed.
+     * @return The return value is not documented yet.
      */
     public String ToDisplayString() {
       if (this.isGroup()) {

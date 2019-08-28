@@ -46,7 +46,8 @@ import com.upokecenter.text.*;
     /**
      * Gets the name of this media type's top-level type (such as "text" in
      *  "text/plain", or "audio" in "audio/basic"). The resulting string
-     * will be in lowercase letters.
+     * will be in lower case; that is, with its basic upper-case letters
+     *  ("A" to "Z") converted to basic lower-case letters ("a" to "z").
      * @return The name of this media type's top-level type (such as "text" or
      *  "audio" .
      */
@@ -57,8 +58,9 @@ import com.upokecenter.text.*;
   /**
    * Not documented yet.
    * @param suffix Not documented yet.
+   * @return The return value is not documented yet.
    */
-public boolean HasStructuredSuffix(String suffix) {
+  public boolean HasStructuredSuffix(String suffix) {
   if (((suffix) == null || (suffix).length() == 0) || suffix.length() >= this.subType.length() ||
       suffix.length() + 1 >= this.subType.length()) {
     return false;
@@ -72,12 +74,12 @@ public boolean HasStructuredSuffix(String suffix) {
       if (c >= 0x41 && c <= 0x5a) {
         c += 0x20;
       }
-if (c2 >= 0x41 && c2 <= 0x5a) {
+      if (c2 >= 0x41 && c2 <= 0x5a) {
         c2 += 0x20;
       }
-if (c != c2) {
-  return false;
-}
+      if (c != c2) {
+        return false;
+      }
     }
     return true;
   }
@@ -130,7 +132,9 @@ if (c != c2) {
 
     /**
      * Gets this media type's subtype (for example, "plain" in "text/plain"). The
-     * resulting string will be in lowercase letters.
+     * resulting string will be in lower case; that is, with its basic
+     *  upper-case letters ("A" to "Z") converted to basic lower-case
+     *  letters ("a" to "z").
      * @return This media type's subtype.
      */
     public final String getSubType() {
@@ -166,7 +170,10 @@ if (c != c2) {
     private final HashMap<String, String> parameters;
 
     /**
-     * Gets a list of the parameters contained in this media type object.
+     * Gets a list of the parameter names contained in this media type object and
+     * their values. Each parameter name will be in lower case; that is,
+     *  with its basic upper-case letters ("A" to "Z") converted to basic
+     *  lower-case letters ("a" to "z").
      * @return A list of the parameters contained in this media type object; the
      * names of each parameter appear in an undefined order. NOTE: Previous
      * versions erroneously stated that the list will be sorted by name. In

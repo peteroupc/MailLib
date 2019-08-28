@@ -20,7 +20,7 @@ namespace PeterO.Mail {
     /// string is intended to be displayed to end users, not
     /// parsed.</summary>
     /// <param name='addresses'>Not documented yet.</param>
-    /// <returns/>
+    /// <returns>The return value is not documented yet.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>
     public static string ToDisplayStringShort(IList<NamedAddress> addresses) {
@@ -42,7 +42,7 @@ namespace PeterO.Mail {
     /// The generated string is intended to be displayed to end users, not
     /// parsed.</summary>
     /// <param name='addresses'>Not documented yet.</param>
-    /// <returns/>
+    /// <returns>The return value is not documented yet.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>
     public static string ToDisplayString(IList<NamedAddress> addresses) {
@@ -250,7 +250,7 @@ namespace PeterO.Mail {
     /// <summary>Converts this named-address object to a text string
     /// intended for display to end users. The returned string is not
     /// intended to be parsed.</summary>
-    /// <returns/>
+    /// <returns>The return value is not documented yet.</returns>
     public string ToDisplayString() {
       if (this.IsGroup) {
         var sb = new StringBuilder();

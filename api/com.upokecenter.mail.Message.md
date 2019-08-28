@@ -447,6 +447,11 @@ Gets a list of descendant body parts of this message that are considered
  part that has a content disposition with a type other than inline.
  This message itself is not included in the list even if it's an
  attachment as just defined.
+
+**Returns:**
+
+* The return value is not documented yet.
+
 ### GetBodyString
     public java.lang.String GetBodyString()
 Gets the body of this message as a text string. If this message's media type

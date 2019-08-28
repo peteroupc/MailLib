@@ -55,7 +55,10 @@ namespace PeterO.Mail {
     /// such as "inline" or "attachment". Note that under RFC 6266 sec. 4.2
     /// and RFC 2183 sec. 2.8, unrecognized disposition types should be
     /// treated as "attachment". (There is no default content disposition
-    /// in a message has no Content-Disposition header field.).</summary>
+    /// in a message has no Content-Disposition header field.). The
+    /// resulting string will be in lower case; that is, with its basic
+    /// upper-case letters ("A" to "Z") converted to basic lower-case
+    /// letters ("a" to "z").</summary>
     /// <value>A string containing this object's disposition type, such as
     /// "inline" or "attachment".</value>
     public string DispositionType {
@@ -142,7 +145,9 @@ namespace PeterO.Mail {
     private readonly IDictionary<string, string> parameters;
 
     /// <summary>Gets a list of parameter names associated with this object
-    /// and their values.
+    /// and their values. Each parameter name will be in lower case; that
+    /// is, with its basic upper-case letters ("A" to "Z") converted to
+    /// basic lower-case letters ("a" to "z").
     /// <para>For the "filename" parameter, the value of that parameter is
     /// not adapted with the ContentDisposition.MakeFilename method; see
     /// the documentation for the ContentDisposition

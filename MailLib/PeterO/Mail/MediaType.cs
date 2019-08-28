@@ -47,7 +47,9 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the name of this media type's top-level type (such as
     /// "text" in "text/plain", or "audio" in "audio/basic"). The resulting
-    /// string will be in lowercase letters.</summary>
+    /// string will be in lower case; that is, with its basic upper-case
+    /// letters ("A" to "Z") converted to basic lower-case letters ("a" to
+    /// "z").</summary>
     /// <value>The name of this media type's top-level type (such as "text"
     /// or "audio" .</value>
     public string TopLevelType {
@@ -57,10 +59,9 @@ namespace PeterO.Mail {
     }
 
   /// <summary>Not documented yet.</summary>
-  /// <summary>Not documented yet.</summary>
   /// <param name='suffix'>Not documented yet.</param>
-  /// <returns/>
-public bool HasStructuredSuffix(string suffix) {
+  /// <returns>The return value is not documented yet.</returns>
+  public bool HasStructuredSuffix(string suffix) {
   if (String.IsNullOrEmpty(suffix) || suffix.Length >= this.subType.Length ||
       suffix.Length + 1 >= this.subType.Length) {
     return false;
@@ -74,12 +75,12 @@ public bool HasStructuredSuffix(string suffix) {
       if (c >= 0x41 && c <= 0x5a) {
         c += 0x20;
       }
-if (c2 >= 0x41 && c2 <= 0x5a) {
+      if (c2 >= 0x41 && c2 <= 0x5a) {
         c2 += 0x20;
       }
-if (c != c2) {
-  return false;
-}
+      if (c != c2) {
+        return false;
+      }
     }
     return true;
   }
@@ -134,8 +135,9 @@ if (c != c2) {
     private readonly string subType;
 
     /// <summary>Gets this media type's subtype (for example, "plain" in
-    /// "text/plain"). The resulting string will be in lowercase
-    /// letters.</summary>
+    /// "text/plain"). The resulting string will be in lower case; that is,
+    /// with its basic upper-case letters ("A" to "Z") converted to basic
+    /// lower-case letters ("a" to "z").</summary>
     /// <value>This media type's subtype.</value>
     public string SubType {
       get {
@@ -174,8 +176,10 @@ if (c != c2) {
 
     private readonly Dictionary<string, string> parameters;
 
-    /// <summary>Gets a list of the parameters contained in this media type
-    /// object.</summary>
+    /// <summary>Gets a list of the parameter names contained in this media
+    /// type object and their values. Each parameter name will be in lower
+    /// case; that is, with its basic upper-case letters ("A" to "Z")
+    /// converted to basic lower-case letters ("a" to "z").</summary>
     /// <value>A list of the parameters contained in this media type
     /// object; the names of each parameter appear in an undefined order.
     /// NOTE: Previous versions erroneously stated that the list will be

@@ -208,6 +208,10 @@ Generates a string containing the display names of the given named-address
 
 * <code>addresses</code> - Not documented yet.
 
+**Returns:**
+
+* The return value is not documented yet.
+
 **Throws:**
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>addresses</code> is null.
@@ -221,6 +225,10 @@ Generates a string containing the display names and email addresses of the
 **Parameters:**
 
 * <code>addresses</code> - Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
 
 **Throws:**
 
@@ -350,6 +358,11 @@ Converts this object to a text string. This will generally be the form of
     public java.lang.String ToDisplayString()
 Converts this named-address object to a text string intended for display to
  end users. The returned string is not intended to be parsed.
+
+**Returns:**
+
+* The return value is not documented yet.
+
 ### getGroupAddresses
     public final java.util.List<NamedAddress> getGroupAddresses()
 Gets a read-only list of addresses that make up the group, if this object

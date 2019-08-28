@@ -45,7 +45,8 @@
  Gets the value of a parameter in this media type, such as "charset" or
   "format".
 * `java.util.Map<java.lang.String,​java.lang.String> getParameters()`<br>
- Gets a list of the parameters contained in this media type object.
+ Gets a list of the parameter names contained in this media type object and
+ their values.
 * `java.lang.String getSubType()`<br>
  Gets this media type's subtype (for example, "plain" in "text/plain").
 * `java.lang.String getTopLevelType()`<br>
@@ -101,7 +102,8 @@ Specifies the media type "application/octet-stream", used for arbitrary
     public final java.lang.String getTopLevelType()
 Gets the name of this media type's top-level type (such as "text" in
   "text/plain", or "audio" in "audio/basic"). The resulting string
- will be in lowercase letters.
+ will be in lower case; that is, with its basic upper-case letters
+  ("A" to "Z") converted to basic lower-case letters ("a" to "z").
 
 **Returns:**
 
@@ -115,6 +117,10 @@ Not documented yet.
 **Parameters:**
 
 * <code>suffix</code> - Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
 
 ### equals
     public boolean equals​(java.lang.Object obj)
@@ -150,7 +156,9 @@ Calculates the hash code of this object. The exact algorithm used by this
 ### getSubType
     public final java.lang.String getSubType()
 Gets this media type's subtype (for example, "plain" in "text/plain"). The
- resulting string will be in lowercase letters.
+ resulting string will be in lower case; that is, with its basic
+  upper-case letters ("A" to "Z") converted to basic lower-case
+  letters ("a" to "z").
 
 **Returns:**
 
@@ -175,7 +183,10 @@ Gets a value indicating whether this is a multipart media type.
 
 ### getParameters
     public final java.util.Map<java.lang.String,​java.lang.String> getParameters()
-Gets a list of the parameters contained in this media type object.
+Gets a list of the parameter names contained in this media type object and
+ their values. Each parameter name will be in lower case; that is,
+  with its basic upper-case letters ("A" to "Z") converted to basic
+  lower-case letters ("a" to "z").
 
 **Returns:**
 

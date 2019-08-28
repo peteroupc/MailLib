@@ -593,7 +593,7 @@ return false;
     /// content disposition with a type other than inline. This message
     /// itself is not included in the list even if it's an attachment as
     /// just defined.</summary>
-    /// <returns/>
+    /// <returns>The return value is not documented yet.</returns>
     public IList<Message> GetAttachments() {
        var list = new List<Message>();
        this.AccumulateAttachments(list, true);
