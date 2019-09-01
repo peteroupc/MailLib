@@ -128,41 +128,6 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       }
       return index;
     }
-    private static String[] SplitAt(String str, String delimiter) {
-      if (delimiter == null) {
-        throw new NullPointerException("delimiter");
-      }
-      if (delimiter.length() == 0) {
-        throw new IllegalArgumentException("delimiter is empty.");
-      }
-      if (((str) == null || (str).length() == 0)) {
-        return new String[] { "" };
-      }
-      int index = 0;
-      boolean first = true;
-      ArrayList<String> strings = null;
-      int delimLength = delimiter.length();
-      while (true) {
-        int index2 = str.indexOf(delimiter, index);
-        if (index2 < 0) {
-          if (first) {
-            String[] strret = new String[1];
-            strret[0] = str;
-            return strret;
-          }
-          strings = (strings == null) ? (new ArrayList<String>()) : strings;
-          strings.add(str.substring(index));
-          break;
-        } else {
-          first = false;
-          String newstr = str.substring(index, (index)+(index2 - index));
-          strings = (strings == null) ? (new ArrayList<String>()) : strings;
-          strings.add(newstr);
-          index = index2 + delimLength;
-        }
-      }
-      return strings.toArray(new String[] { });
-    }
 
     private static String TrimSpaces(String s) {
       if (((s) == null || (s).length() == 0)) {
@@ -262,7 +227,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                     currentBuilder = originalBuilder;
                   } else {
                     withinParam = true;
-                    paramBuilder.delete(0, (0)+(paramBuilder.length()));
+                    paramBuilder.delete(0, paramBuilder.length());
                     currentBuilder = paramBuilder;
                   }
                 }
@@ -567,7 +532,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                       }
                     } else if (lastCommand.equals("paraindent")) {
                       p = DataUtilities.ToLowerCaseAscii(p);
-                      String[] valuePList = SplitAt(p, ",");
+                      String[] valuePList = ParserUtility.SplitAt(p, ",");
                       boolean leftFlag = false;
                       boolean rightFlag = false;
                       boolean inFlag = false;
@@ -596,7 +561,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                     lastCommand = "";
                   } else {
                     withinParam = true;
-                    paramBuilder.delete(0, (0)+(paramBuilder.length()));
+                    paramBuilder.delete(0, paramBuilder.length());
                     currentBuilder = paramBuilder;
                   }
                 }

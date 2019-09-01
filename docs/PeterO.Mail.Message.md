@@ -8,8 +8,6 @@ Represents an email message, and contains methods and properties for accessing a
 
 The following lists known deviations from the mail specifications (Internet Message Format and MIME):
 
- * The content-transfer-encodings "quoted-printable" and "base64" are treated as 7bit instead if they occur in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status").
-
  * If a message has two or more Content-Type header fields, it is treated as having a content type of "application/octet-stream", unless one or more of the header fields is syntactically invalid.
 
  * Illegal UTF-8 byte sequences appearing in header field values are replaced with replacement characters. Moreover, UTF-8 is parsed everywhere in header field values, even in those parts of some structured header fields where this appears not to be allowed. (UTF-8 is a character encoding for the Unicode character set.)
@@ -22,9 +20,9 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * There is no line length limit imposed when parsing quoted-printable or base64 encoded bodies.
 
- * If the transfer encoding is absent and the content type is "message/rfc822", bytes with values greater than 127 (called "8-bit bytes" in the rest of these remarks) are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
+ * If the transfer encoding is absent and the content type is "message/rfc822", bytes with values greater than 127 are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
 
- * In the following cases, if the transfer encoding is absent, declared as 7bit, or treated as 7bit, 8-bit bytes are still allowed:
+ * In the following cases, if the transfer encoding is absent, declared as 7bit, or treated as 7bit, bytes greater than 127 are still allowed:
 
  * (a) The preamble and epilogue of multipart messages, which will be ignored.
 
@@ -32,11 +30,11 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (c) If the content type is "text/html" and the charset is declared to be  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
 
- * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
+ * (d) In non-MIME message bodies and in text/plain message bodies. Any bytes greater than 127 are replaced with the substitute character byte (0x1a).
 
  * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U+000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
 
- * The name  `ascii`  is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252`  and  `utf8`  are treated as synonyms for  `windows-1252`  and  `utf-8` , respectively, even though they are not IANA registered aliases.
+ * The name  `ascii`  is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The names  `cp1252`  and  `utf8`  are treated as synonyms for  `windows-1252`  and  `utf-8` , respectively, even though they are not IANA registered aliases.
 
  * The following deviations involve encoded words under RFC 2047:
 
@@ -46,9 +44,11 @@ The following lists known deviations from the mail specifications (Internet Mess
 
 It would be appreciated if users of this library contact the author if they find other ways in which this implementation deviates from the mail specifications or other applicable specifications.
 
-Note that this class currently doesn't support the "padding" parameter for message bodies with the media type "application/octet-stream" or treated as that media type (see RFC 2046 sec. 4.5.1).
+This class currently doesn't support the "padding" parameter for message bodies with the media type "application/octet-stream" or treated as that media type (see RFC 2046 sec. 4.5.1).
 
-Note that this implementation can decode an RFC 2047 encoded word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in "ASCII mode", though.) This, however, is not a deviation to RFC 2047 because the relevant rule only concerns bringing the output device back to "ASCII mode" after the decoded text is displayed (see last paragraph of sec. 6.2) -- since the decoded text is converted to Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is not applicable since there is no such thing as "ASCII mode" in the Unicode Standard.
+In this implementation, if the content-transfer-encoding "quoted-printable" or "base64" occurs in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status"), that encoding is treated as unrecognized for the purpose of treating that message or body part as having a content type of "application/octet-stream" rather than the declared content type. This is a clarification to RFCs 2045 and 2049. (This may result in "misdecoded" messages because in practice, most if not all messages of this kind don't use quoted-printable or base64 encodings for the whole body, but may do so in the body parts they contain.)
+
+This implementation can decode an RFC 2047 encoded word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in "ASCII mode", though.) This, however, is not a deviation to RFC 2047 because the relevant rule only concerns bringing the output device back to "ASCII mode" after the decoded text is displayed (see last paragraph of sec. 6.2) -- since the decoded text is converted to Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is not applicable since there is no such thing as "ASCII mode" in the Unicode Standard.
 
 Note that this library (the MailLib library) has no facilities for sending and receiving email messages, since that's outside this library's scope.
 
@@ -79,8 +79,10 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[Generate()](#Generate)</code> - Generates this message's data in text form.
 * <code>[GenerateBytes()](#GenerateBytes)</code> - Generates this message's data as a byte array, using the same algorithm as the Generate method.
 * <code>[GetAddresses(string)](#GetAddresses_string)</code> - Gets a list of addresses contained in the header fields with the given name in this message.
+* <code>[GetAttachments()](#GetAttachments)</code> - Gets a list of descendant body parts of this message that are considered attachments.
 * <code>[GetBody()](#GetBody)</code> - Gets the byte array for this message's body.
 * <code>[GetBodyMessage()](#GetBodyMessage)</code> - Returns the mail message contained in this message's body.
+* <code>[GetBodyString()](#GetBodyString)</code> - Gets the body of this message as a text string.
 * <code>[GetDate()](#GetDate)</code> - Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called).
 * <code>[GetFormattedBodyString()](#GetFormattedBodyString)</code> - Gets a Hypertext Markup Language (HTML) rendering of this message's text body.
 * <code>[GetHeader(int)](#GetHeader_int)</code> - Gets the name and value of a header field by index.
@@ -181,7 +183,9 @@ A list of addresses found in the BCC header field or fields.
 
     public string BodyString { get; }
 
-Gets the body of this message as a text string.
+<b>Deprecated.</b> Use GetBodyString() instead.
+
+Gets the body of this message as a text string. See the  `GetBodyString()`  method.
 
 <b>Returns:</b>
 
@@ -190,7 +194,7 @@ The body of this message as a text string.
 <b>Exceptions:</b>
 
  * System.NotSupportedException:
-Either this message is a multipart message, so it doesn't have its own body text, or this message has no character encoding declared or assumed for it (which is usually the case for non-text messages), or the character encoding is not supported.
+See the  `GetBodyString()`  method.
 
 <a id="CCAddresses"></a>
 ### CCAddresses
@@ -210,7 +214,7 @@ A list of addresses found in the CC header field or fields.
 
     public PeterO.Mail.ContentDisposition ContentDisposition { get; set; }
 
-Gets or sets this message's content disposition. The content disposition specifies how a user agent should display or otherwise handle this message. Can be set to null. If set to a disposition or to null, updates the Content-Disposition header field as appropriate.
+Gets or sets this message's content disposition. The content disposition specifies how a user agent should display or otherwise handle this message. Can be set to null. If set to a disposition or to null, updates the Content-Disposition header field as appropriate. (There is no default content disposition if this value is null, and disposition types unrecognized by the application should be treated as "attachment"; see RFC 2183 sec. 2.8.).
 
 <b>Returns:</b>
 
@@ -263,7 +267,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U+005A] are converted to lower case) and the value is the header field's value.
+Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters, U+0041 to U+005A, are converted to basic lower-case letters) and the value is the header field's value.
 
 <b>Returns:</b>
 
@@ -285,11 +289,11 @@ A list of all the parts of this message. This list is editable. This will only b
 
     public string Subject { get; set; }
 
-Gets or sets this message's subject.
+Gets or sets this message's subject. The subject's value is found as though GetHeader("subject") were called.
 
 <b>Returns:</b>
 
-This message's subject.
+This message's subject, or null if there is none.
 
 <a id="ToAddresses"></a>
 ### ToAddresses
@@ -633,7 +637,7 @@ Extracts the value of a header field from a byte array representing an email mes
 
  * <i>bytes</i>: A byte array representing an email message.
 
- * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U + 005A) in both strings to basic lower-case letters.).
+ * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
 
 <b>Return Value:</b>
 
@@ -764,6 +768,17 @@ The parameter  <i>headerName</i>
 The parameter  <i>headerName</i>
  is empty.
 
+<a id="GetAttachments"></a>
+### GetAttachments
+
+    public System.Collections.Generic.IList GetAttachments();
+
+Gets a list of descendant body parts of this message that are considered attachments. An <i>attachment</i> is a body part or descendant body part that has a content disposition with a type other than inline. This message itself is not included in the list even if it's an attachment as just defined.
+
+<b>Return Value:</b>
+
+The return value is not documented yet.
+
 <a id="GetBody"></a>
 ### GetBody
 
@@ -786,6 +801,22 @@ Returns the mail message contained in this message's body.
 
 A message object if this object's content type is "message/rfc822", "message/news", or "message/global", or null otherwise.
 
+<a id="GetBodyString"></a>
+### GetBodyString
+
+    public string GetBodyString();
+
+Gets the body of this message as a text string. If this message's media type is "multipart/alternative", returns the result of this method for the last supported body part. For any other "multipart" media type, returns the result of this method for the first body part for which this method returns a text string.
+
+<b>Return Value:</b>
+
+The body of this message as a text string.
+
+<b>Exceptions:</b>
+
+ * System.NotSupportedException:
+This message is a multipart message without a supported body part; or this message has a content disposition with a type other than "inline"; or this message's media type is a non-multipart type and does not specify the use of a "charset" parameter, has no character encoding declared or assumed for it (which is usually the case for non-text messages), or has an unsupported character encoding.
+
 <a id="GetDate"></a>
 ### GetDate
 
@@ -802,7 +833,7 @@ An array of 32-bit unsigned integers.
 
     public string GetFormattedBodyString();
 
-Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports text/plain, text/plain with format = flowed, text/enriched, and text/markdown (original Markdown).
+Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports any message for which  `GetBodyString()`  outputs a text string and treats the following media types specially: text/plain with  `format=flowed` , text/enriched, text/markdown (original Markdown).
 
 REMARK: The Markdown implementation currently supports all features of original Markdown, except that the implementation:
 
@@ -819,7 +850,7 @@ An HTML rendering of this message's text.
 <b>Exceptions:</b>
 
  * System.NotSupportedException:
-Either this message is a multipart message, so it doesn't have its own body text, or this message has no character encoding declared or assumed for it (which is usually the case for non-text messages), or the character encoding is not supported.
+No supported body part was found; see  `GetBodyString()`  for more information.
 
 <a id="GetHeader_string"></a>
 ### GetHeader
@@ -1308,7 +1339,7 @@ The parameter  <i>str</i>
 
     public string ToMailtoUri();
 
-Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if this message has a text media type and uses a supported character encoding ("charset" parameter). The To header field is included in the URI only if it has display names or group syntax.
+Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if  `GetBodyString()`  would return a non-empty string.. The To header field is included in the URI only if it has display names or group syntax.
 
 <b>Return Value:</b>
 
@@ -1321,7 +1352,7 @@ A MailTo URI corresponding to this message.
 
 <b>Deprecated.</b> Renamed to ToMailtoUri.
 
-Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if this message has a text media type and uses a supported character encoding ("charset" parameter). The To header field is included in the URI only if it has display names or group syntax.
+Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if  `GetBodyString()`  would return a non-empty string. The To header field is included in the URI only if it has display names or group syntax.
 
 <b>Return Value:</b>
 

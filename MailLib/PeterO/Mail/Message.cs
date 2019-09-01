@@ -4250,7 +4250,7 @@ NamedAddress(mhs).Address);
             this.transferEncoding = EncodingBase64;
           } else {
             // Unrecognized transfer encoding
-            DebugUtility.Log("unrecognized: " + value);
+            // DebugUtility.Log("unrecognized: " + value);
             this.transferEncoding = EncodingUnknown;
           }
           haveContentEncoding = true;

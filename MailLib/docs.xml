@@ -895,7 +895,11 @@
             <summary>Gets a string containing this object's disposition type,
             such as "inline" or "attachment". Note that under RFC 6266 sec. 4.2
             and RFC 2183 sec. 2.8, unrecognized disposition types should be
-            treated as "attachment".</summary>
+            treated as "attachment". (There is no default content disposition
+            in a message has no Content-Disposition header field.). The
+            resulting string will be in lower case; that is, with its basic
+            upper-case letters ("A" to "Z") converted to basic lower-case
+            letters ("a" to "z").</summary>
             <value>A string containing this object's disposition type, such as
             "inline" or "attachment".</value>
 
@@ -1099,7 +1103,9 @@
 <doc name="P:PeterO.Mail.ContentDisposition.Parameters">
 
             <summary>Gets a list of parameter names associated with this object
-            and their values.
+            and their values. Each parameter name will be in lower case; that
+            is, with its basic upper-case letters ("A" to "Z") converted to
+            basic lower-case letters ("a" to "z").
             <para>For the "filename" parameter, the value of that parameter is
             not adapted with the ContentDisposition.MakeFilename method; see
             the documentation for the ContentDisposition
@@ -1184,7 +1190,8 @@
             <summary>Contains methods for parsing and generating Data URIs
             (uniform resource identifiers). Data URIs are described
             in RFC 2397. Examples for Data URIs follow.
-            <code>data:, hello%20world</code> <code>data:text/markdown, hello%20world</code> <code>data:application/octet-stream;base64, AAAAAA==</code> .</summary>
+            <code>data:, hello%20world</code> <code>data:text/markdown, hello%20world</code> <code>data:application/octet-stream;base64, AAAAAA==</code> .
+            </summary>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUris.DataUriBytes(System.String)">
@@ -1256,7 +1263,8 @@
             <summary>Contains methods for parsing and generating Data URIs
             (uniform resource identifiers). Data URIs are described
             in RFC 2397. Examples for Data URIs follow.
-            <code>data:, hello%20world</code> <code>data:text/markdown, hello%20world</code> <code>data:application/octet-stream;base64, AAAAAA==</code> .</summary>
+            <code>data:, hello%20world</code> <code>data:text/markdown, hello%20world</code> <code>data:application/octet-stream;base64, AAAAAA==</code> .
+            </summary>
 
 </doc>
 <doc name="M:PeterO.Mail.DataUrls.DataUrlBytes(System.String)">
@@ -1795,7 +1803,7 @@
             equal.</summary>
             <param name='obj'>The parameter <paramref name='obj'/> is an
             arbitrary object.</param>
-            <returns><c>true</c> if this object and another object are equal; otherwise, <c>false</c>.</returns>
+            <returns><c>true</c> if this object and the other object are equal; otherwise, <c>false</c>.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetCharset">
@@ -1807,10 +1815,11 @@
             returns the result of the Encodings.ResolveAliasForEmail method for
             that parameter, except that the result's basic upper-case letters A
             to Z (U+0041 to U+005A) are converted to lower case. If the
-            "charset" parameter is absent or empty, returns the default value,
-            if any, for that parameter given the media type (e.g., "us-ascii"
-            if the media type is "text/plain"; see RFC2046), or the empty
-            string if there is none.</returns>
+            "charset" parameter is empty, returns the empty string. If the
+            "charset" parameter is absent, returns the default value, if any,
+            for that parameter given the media type (e.g., "us-ascii" if the
+            media type is "text/plain"; see RFC2046), or the empty string if
+            there is none.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetHashCode">
@@ -1837,6 +1846,14 @@
             <exception cref='ArgumentException'>Name is empty.</exception>
 
 </doc>
+<doc name="M:PeterO.Mail.MediaType.HasStructuredSuffix(System.String)">
+
+            <summary>Not documented yet.</summary>
+            <param name='suffix'>The parameter <paramref name='suffix'/> is
+            a.String object.</param>
+            <returns>The return value is not documented yet.</returns>
+
+</doc>
 <doc name="P:PeterO.Mail.MediaType.IsMultipart">
 
             <summary>Gets a value indicating whether this is a multipart media
@@ -1859,8 +1876,10 @@
 </doc>
 <doc name="P:PeterO.Mail.MediaType.Parameters">
 
-            <summary>Gets a list of the parameters contained in this media type
-            object.</summary>
+            <summary>Gets a list of the parameter names contained in this media
+            type object and their values. Each parameter name will be in lower
+            case; that is, with its basic upper-case letters ("A" to "Z")
+            converted to basic lower-case letters ("a" to "z").</summary>
             <value>A list of the parameters contained in this media type
             object; the names of each parameter appear in an undefined order.
             NOTE: Previous versions erroneously stated that the list will be
@@ -1932,8 +1951,9 @@
 <doc name="P:PeterO.Mail.MediaType.SubType">
 
             <summary>Gets this media type's subtype (for example, "plain" in
-            "text/plain"). The resulting string will be in lowercase
-            letters.</summary>
+            "text/plain"). The resulting string will be in lower case; that is,
+            with its basic upper-case letters ("A" to "Z") converted to basic
+            lower-case letters ("a" to "z").</summary>
             <value>This media type's subtype.</value>
 
 </doc>
@@ -1986,7 +2006,9 @@
 
             <summary>Gets the name of this media type's top-level type (such as
             "text" in "text/plain", or "audio" in "audio/basic"). The resulting
-            string will be in lowercase letters.</summary>
+            string will be in lower case; that is, with its basic upper-case
+            letters ("A" to "Z") converted to basic lower-case letters ("a" to
+            "z").</summary>
             <value>The name of this media type's top-level type (such as "text"
             or "audio" .</value>
 
@@ -2154,12 +2176,6 @@
             <para>The following lists known deviations from the mail
             specifications (Internet Message Format and MIME):</para>
             <list type=''>
-            <item>The content-transfer-encodings "quoted-printable" and
-            "base64" are treated as 7bit instead if they occur in a message or
-            body part with content type "multipart/*" or "message/*" (other
-            than "message/global", "message/global-headers",
-            "message/global-disposition-notification", or
-            "message/global-delivery-status").</item>
             <item>If a message has two or more Content-Type header fields, it
             is treated as having a content type of "application/octet-stream",
             unless one or more of the header fields is syntactically
@@ -2181,12 +2197,12 @@
             <item>There is no line length limit imposed when parsing
             quoted-printable or base64 encoded bodies.</item>
             <item>If the transfer encoding is absent and the content type is
-            "message/rfc822", bytes with values greater than 127 (called "8-bit
-            bytes" in the rest of these remarks) are still allowed, despite the
-            default value of "7bit" for "Content-Transfer-Encoding".</item>
+            "message/rfc822", bytes with values greater than 127 are still
+            allowed, despite the default value of "7bit" for
+            "Content-Transfer-Encoding".</item>
             <item>In the following cases, if the transfer encoding is absent,
-            declared as 7bit, or treated as 7bit, 8-bit bytes are still
-            allowed:</item>
+            declared as 7bit, or treated as 7bit, bytes greater than 127 are
+            still allowed:</item>
             <item>(a) The preamble and epilogue of multipart messages, which
             will be ignored.</item>
             <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
@@ -2194,8 +2210,8 @@
             declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
             "iso-8859-*" (all single byte encodings).</item>
             <item>(d) In non-MIME message bodies and in text/plain message
-            bodies. Any 8-bit bytes are replaced with the substitute character
-            byte (0x1a).</item>
+            bodies. Any bytes greater than 127 are replaced with the substitute
+            character byte (0x1a).</item>
             <item>If the message starts with the word "From" (and no other case
             variations of that word) followed by one or more space (U+0020) not
             followed by colon, that text and the rest of the text is skipped up
@@ -2204,7 +2220,7 @@
             kind.)</item>
             <item>The name <c>ascii</c> is treated as a synonym for
             <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
-            name <c>cp1252</c> and <c>utf8</c> are treated as synonyms for
+            names <c>cp1252</c> and <c>utf8</c> are treated as synonyms for
             <c>windows-1252</c> and <c>utf-8</c>, respectively, even though
             they are not IANA registered aliases.</item>
             <item>The following deviations involve encoded words under RFC
@@ -2224,21 +2240,33 @@
             author if they find other ways in which this implementation
             deviates from the mail specifications or other applicable
             specifications.</para>
-            <para>Note that this class currently doesn't support the "padding"
-            parameter for message bodies with the media type
-            "application/octet-stream" or treated as that media type (see RFC
-            2046 sec. 4.5.1).</para>
-            <para>Note that this implementation can decode an RFC 2047 encoded
-            word that uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use
-            code switching) even if the encoded word's payload ends in a
-            different mode from "ASCII mode". (Each encoded word still starts
-            in "ASCII mode", though.) This, however, is not a deviation to RFC
-            2047 because the relevant rule only concerns bringing the output
-            device back to "ASCII mode" after the decoded text is displayed
-            (see last paragraph of sec. 6.2) -- since the decoded text is
-            converted to Unicode rather than kept as ISO-2022-JP or
-            ISO-2022-JP-2, this is not applicable since there is no such thing
-            as "ASCII mode" in the Unicode Standard.</para>
+            <para>This class currently doesn't support the "padding" parameter
+            for message bodies with the media type "application/octet-stream"
+            or treated as that media type (see RFC 2046 sec. 4.5.1).</para>
+            <para>In this implementation, if the content-transfer-encoding
+            "quoted-printable" or "base64" occurs in a message or body part
+            with content type "multipart/*" or "message/*" (other than
+            "message/global", "message/global-headers",
+            "message/global-disposition-notification", or
+            "message/global-delivery-status"), that encoding is treated as
+            unrecognized for the purpose of treating that message or body part
+            as having a content type of "application/octet-stream" rather than
+            the declared content type. This is a clarification to RFCs 2045 and
+            2049. (This may result in "misdecoded" messages because in
+            practice, most if not all messages of this kind don't use
+            quoted-printable or base64 encodings for the whole body, but may do
+            so in the body parts they contain.)</para>
+            <para>This implementation can decode an RFC 2047 encoded word that
+            uses ISO-2022-JP or ISO-2022-JP-2 (encodings that use code
+            switching) even if the encoded word's payload ends in a different
+            mode from "ASCII mode". (Each encoded word still starts in "ASCII
+            mode", though.) This, however, is not a deviation to RFC 2047
+            because the relevant rule only concerns bringing the output device
+            back to "ASCII mode" after the decoded text is displayed (see last
+            paragraph of sec. 6.2) -- since the decoded text is converted to
+            Unicode rather than kept as ISO-2022-JP or ISO-2022-JP-2, this is
+            not applicable since there is no such thing as "ASCII mode" in the
+            Unicode Standard.</para>
             <para>Note that this library (the MailLib library) has no
             facilities for sending and receiving email messages, since that's
             outside this library's scope.</para></remarks>
@@ -2505,13 +2533,11 @@
 </doc>
 <doc name="P:PeterO.Mail.Message.BodyString">
 
-            <summary>Gets the body of this message as a text string.</summary>
+            <summary>Gets the body of this message as a text string. See the
+            <c>GetBodyString()</c> method.</summary>
             <value>The body of this message as a text string.</value>
-            <exception cref='NotSupportedException'>Either this message is a
-            multipart message, so it doesn't have its own body text, or this
-            message has no character encoding declared or assumed for it (which
-            is usually the case for non-text messages), or the character
-            encoding is not supported.</exception>
+            <exception cref='NotSupportedException'>See the
+            <c>GetBodyString()</c> method.</exception>
 
 </doc>
 <doc name="P:PeterO.Mail.Message.CCAddresses">
@@ -2536,7 +2562,10 @@
             content disposition specifies how a user agent should display or
             otherwise handle this message. Can be set to null. If set to a
             disposition or to null, updates the Content-Disposition header
-            field as appropriate.</summary>
+            field as appropriate. (There is no default content disposition if
+            this value is null, and disposition types unrecognized by the
+            application should be treated as "attachment"; see RFC 2183 sec.
+            2.8.).</summary>
             <value>This message's content disposition, or null if none is
             specified.</value>
 
@@ -2754,6 +2783,17 @@
             <exception cref='ArgumentException'>The parameter <paramref name='headerName'/> is empty.</exception>
 
 </doc>
+<doc name="M:PeterO.Mail.Message.GetAttachments">
+
+            <summary>Gets a list of descendant body parts of this message that
+            are considered attachments. An
+            <i>attachment</i> is a body part or descendant body part that has a
+            content disposition with a type other than inline. This message
+            itself is not included in the list even if it's an attachment as
+            just defined.</summary>
+            <returns>The return value is not documented yet.</returns>
+
+</doc>
 <doc name="M:PeterO.Mail.Message.GetBody">
 
             <summary>Gets the byte array for this message's body. This method
@@ -2770,6 +2810,24 @@
             otherwise.</returns>
 
 </doc>
+<doc name="M:PeterO.Mail.Message.GetBodyString">
+
+            <summary>Gets the body of this message as a text string. If this
+            message's media type is "multipart/alternative", returns the result
+            of this method for the last supported body part. For any other
+            "multipart" media type, returns the result of this method for the
+            first body part for which this method returns a text
+            string.</summary>
+            <returns>The body of this message as a text string.</returns>
+            <exception cref='NotSupportedException'>This message is a multipart
+            message without a supported body part; or this message has a
+            content disposition with a type other than "inline"; or this
+            message's media type is a non-multipart type and does not specify
+            the use of a "charset" parameter, has no character encoding
+            declared or assumed for it (which is usually the case for non-text
+            messages), or has an unsupported character encoding.</exception>
+
+</doc>
 <doc name="M:PeterO.Mail.Message.GetDate">
 
             <summary>Gets the date and time extracted from this message's Date
@@ -2784,15 +2842,14 @@
 <doc name="M:PeterO.Mail.Message.GetFormattedBodyString">
 
             <summary><para>Gets a Hypertext Markup Language (HTML) rendering of this
-            message's text body. This method currently supports text/plain,
-            text/plain with format = flowed, text/enriched, and text/markdown
-            (original Markdown).</para></summary>
+            message's text body. This method currently supports any message for
+            which <c>GetBodyString()</c> outputs a text string and treats the
+            following media types specially: text/plain with
+            <c>format=flowed</c>, text/enriched, text/markdown (original
+            Markdown).</para></summary>
             <returns>An HTML rendering of this message's text.</returns>
-            <exception cref='NotSupportedException'>Either this message is a
-            multipart message, so it doesn't have its own body text, or this
-            message has no character encoding declared or assumed for it (which
-            is usually the case for non-text messages), or the character
-            encoding is not supported.</exception>
+            <exception cref='NotSupportedException'>No supported body part was
+            found; see <c>GetBodyString()</c> for more information.</exception>
             <remarks>
             <para>REMARK: The Markdown implementation currently supports all
             features of original Markdown, except that the
@@ -2852,8 +2909,9 @@
             <summary>Gets a snapshot of the header fields of this message, in
             the order in which they appear in the message. For each item in the
             list, the key is the header field's name (where any basic
-            upper-case letters [U+0041 to U+005A] are converted to lower case)
-            and the value is the header field's value.</summary>
+            upper-case letters, U+0041 to U+005A, are converted to basic
+            lower-case letters) and the value is the header field's
+            value.</summary>
             <value>A snapshot of the header fields of this message.</value>
 
 </doc>
@@ -3167,8 +3225,9 @@
 </doc>
 <doc name="P:PeterO.Mail.Message.Subject">
 
-            <summary>Gets or sets this message's subject.</summary>
-            <value>This message's subject.</value>
+            <summary>Gets or sets this message's subject. The subject's value
+            is found as though GetHeader("subject") were called.</summary>
+            <value>This message's subject, or null if there is none.</value>
 
 </doc>
 <doc name="P:PeterO.Mail.Message.ToAddresses">
@@ -3185,10 +3244,9 @@
             corresponding to this message. The following header fields, and
             only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
             Subject, Keywords, Comments. The message body is included in the
-            URI only if this message has a text media type and uses a supported
-            character encoding ("charset" parameter). The To header field is
-            included in the URI only if it has display names or group
-            syntax.</summary>
+            URI only if <c>GetBodyString()</c> would return a non-empty
+            string.. The To header field is included in the URI only if it has
+            display names or group syntax.</summary>
             <returns>A MailTo URI corresponding to this message.</returns>
 
 </doc>
@@ -3198,10 +3256,9 @@
             corresponding to this message. The following header fields, and
             only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
             Subject, Keywords, Comments. The message body is included in the
-            URI only if this message has a text media type and uses a supported
-            character encoding ("charset" parameter). The To header field is
-            included in the URI only if it has display names or group
-            syntax.</summary>
+            URI only if <c>GetBodyString()</c> would return a non-empty string.
+            The To header field is included in the URI only if it has display
+            names or group syntax.</summary>
             <returns>A MailTo URI corresponding to this message.</returns>
 
 </doc>
@@ -3405,10 +3462,44 @@
             comma-separated list of addresses. Each address must follow the
             syntax accepted by the one-argument constructor of
             NamedAddress.</summary>
-            <param name='addressValue'>A comma-separate list of addresses in
+            <param name='addressValue'>A comma-separated list of addresses in
             the form of a text string.</param>
             <returns>A list of addresses generated from the <paramref name='addressValue'/> parameter.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='addressValue'/> is null.</exception>
+
+</doc>
+<doc name="M:PeterO.Mail.NamedAddress.ToDisplayString">
+
+            <summary>Converts this named-address object to a text string
+            intended for display to end users. The returned string is not
+            intended to be parsed.</summary>
+            <returns>The return value is not documented yet.</returns>
+
+</doc>
+<doc name="M:PeterO.Mail.NamedAddress.ToDisplayString(System.Collections.Generic.IList{PeterO.Mail.NamedAddress})">
+
+            <summary>Generates a string containing the display names and email
+            addresses of the given named-address objects, separated by commas.
+            The generated string is intended to be displayed to end users, not
+            parsed.</summary>
+            <param name='addresses'>The parameter <paramref name='addresses'/>
+            is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
+            object.</param>
+            <returns>The return value is not documented yet.</returns>
+            <exception cref='ArgumentNullException'>The parameter <paramref name='addresses'/> is null.</exception>
+
+</doc>
+<doc name="M:PeterO.Mail.NamedAddress.ToDisplayStringShort(System.Collections.Generic.IList{PeterO.Mail.NamedAddress})">
+
+            <summary>Generates a string containing the display names of the
+            given named-address objects, separated by commas. The generated
+            string is intended to be displayed to end users, not
+            parsed.</summary>
+            <param name='addresses'>The parameter <paramref name='addresses'/>
+            is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
+            object.</param>
+            <returns>The return value is not documented yet.</returns>
+            <exception cref='ArgumentNullException'>The parameter <paramref name='addresses'/> is null.</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.ToString">

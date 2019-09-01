@@ -66,8 +66,8 @@ private ParserUtility() {
         ++index;
       }
       if (index == valueSLength) {
- return "";
-}
+        return "";
+      }
       int indexStart = index;
       index = str.length() - 1;
       while (index >= 0) {
@@ -75,14 +75,50 @@ private ParserUtility() {
         if (c != 0x09 && c != 0x20) {
           int indexEnd = index + 1;
           if (indexEnd == indexStart) {
- return "";
-}
+            return "";
+          }
           return (indexEnd == str.length() && indexStart == 0) ? str :
             str.substring(indexStart, (indexStart)+(indexEnd - indexStart));
         }
         --index;
       }
       return "";
+    }
+
+    public static String[] SplitAt(String str, String delimiter) {
+      if (delimiter == null) {
+        throw new NullPointerException("delimiter");
+      }
+      if (delimiter.length() == 0) {
+        throw new IllegalArgumentException("delimiter is empty.");
+      }
+      if (((str) == null || (str).length() == 0)) {
+        return new String[] { "" };
+      }
+      int index = 0;
+      boolean first = true;
+      ArrayList<String> strings = null;
+      int delimLength = delimiter.length();
+      while (true) {
+        int index2 = str.indexOf(delimiter, index);
+        if (index2 < 0) {
+          if (first) {
+            String[] strret = new String[1];
+            strret[0] = str;
+            return strret;
+          }
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
+          strings.add(str.substring(index));
+          break;
+        } else {
+          first = false;
+          String newstr = str.substring(index, (index)+(index2 - index));
+          strings = (strings == null) ? (new ArrayList<String>()) : strings;
+          strings.add(newstr);
+          index = index2 + delimLength;
+        }
+      }
+      return strings.toArray(new String[] { });
     }
 
     public static String Implode(String[] strings, String delim) {

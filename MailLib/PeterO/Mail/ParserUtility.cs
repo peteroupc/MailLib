@@ -64,8 +64,8 @@ namespace PeterO.Mail {
         ++index;
       }
       if (index == valueSLength) {
- return String.Empty;
-}
+        return String.Empty;
+      }
       int indexStart = index;
       index = str.Length - 1;
       while (index >= 0) {
@@ -73,14 +73,50 @@ namespace PeterO.Mail {
         if (c != 0x09 && c != 0x20) {
           int indexEnd = index + 1;
           if (indexEnd == indexStart) {
- return String.Empty;
-}
+            return String.Empty;
+          }
           return (indexEnd == str.Length && indexStart == 0) ? str :
             str.Substring(indexStart, indexEnd - indexStart);
         }
         --index;
       }
       return String.Empty;
+    }
+
+    public static string[] SplitAt(string str, string delimiter) {
+      if (delimiter == null) {
+        throw new ArgumentNullException(nameof(delimiter));
+      }
+      if (delimiter.Length == 0) {
+        throw new ArgumentException("delimiter is empty.");
+      }
+      if (String.IsNullOrEmpty(str)) {
+        return new[] { String.Empty };
+      }
+      var index = 0;
+      var first = true;
+      List<string> strings = null;
+      int delimLength = delimiter.Length;
+      while (true) {
+        int index2 = str.IndexOf(delimiter, index, StringComparison.Ordinal);
+        if (index2 < 0) {
+          if (first) {
+            var strret = new string[1];
+            strret[0] = str;
+            return strret;
+          }
+          strings = strings ?? new List<string>();
+          strings.Add(str.Substring(index));
+          break;
+        } else {
+          first = false;
+          string newstr = str.Substring(index, index2 - index);
+          strings = strings ?? new List<string>();
+          strings.Add(newstr);
+          index = index2 + delimLength;
+        }
+      }
+      return (string[])strings.ToArray();
     }
 
     public static string Implode(string[] strings, string delim) {

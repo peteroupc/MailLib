@@ -14,6 +14,9 @@ Represents an email address and a name for that address. Can represent a group o
 * <code>[IsGroup](#IsGroup)</code> - Gets a value indicating whether this represents a group of addresses rather than a single address.
 * <code>[Name](#Name)</code> - Gets the display name for this email address, or the email address's value if the display name is null.
 * <code>[ParseAddresses(string)](#ParseAddresses_string)</code> - Generates a list of NamedAddress objects from a comma-separated list of addresses.
+* <code>[ToDisplayString()](#ToDisplayString)</code> - Converts this named-address object to a text string intended for display to end users.
+* <code>[ToDisplayString(System.Collections.Generic.IList)](#ToDisplayString_System_Collections_Generic_IList)</code> - Generates a string containing the display names and email addresses of the given named-address objects, separated by commas.
+* <code>[ToDisplayStringShort(System.Collections.Generic.IList)](#ToDisplayStringShort_System_Collections_Generic_IList)</code> - Generates a string containing the display names of the given named-address objects, separated by commas.
 * <code>[ToString()](#ToString)</code> - Converts this object to a text string.
 
 <a id="Void_ctor_System_String"></a>
@@ -250,7 +253,7 @@ Generates a list of NamedAddress objects from a comma-separated list of addresse
 
 <b>Parameters:</b>
 
- * <i>addressValue</i>: A comma-separate list of addresses in the form of a text string.
+ * <i>addressValue</i>: A comma-separated list of addresses in the form of a text string.
 
 <b>Return Value:</b>
 
@@ -261,6 +264,63 @@ A list of addresses generated from the  <i>addressValue</i>
 
  * System.ArgumentNullException:
 The parameter  <i>addressValue</i>
+ is null.
+
+<a id="ToDisplayString_System_Collections_Generic_IList"></a>
+### ToDisplayString
+
+    public static string ToDisplayString(
+        System.Collections.Generic.IList addresses);
+
+Generates a string containing the display names and email addresses of the given named-address objects, separated by commas. The generated string is intended to be displayed to end users, not parsed.
+
+<b>Parameters:</b>
+
+ * <i>addresses</i>: The parameter  <i>addresses</i>
+ is a.Collections.Generic.IList{PeterO.Mail.NamedAddress} object.
+
+<b>Return Value:</b>
+
+The return value is not documented yet.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>addresses</i>
+ is null.
+
+<a id="ToDisplayString"></a>
+### ToDisplayString
+
+    public string ToDisplayString();
+
+Converts this named-address object to a text string intended for display to end users. The returned string is not intended to be parsed.
+
+<b>Return Value:</b>
+
+The return value is not documented yet.
+
+<a id="ToDisplayStringShort_System_Collections_Generic_IList"></a>
+### ToDisplayStringShort
+
+    public static string ToDisplayStringShort(
+        System.Collections.Generic.IList addresses);
+
+Generates a string containing the display names of the given named-address objects, separated by commas. The generated string is intended to be displayed to end users, not parsed.
+
+<b>Parameters:</b>
+
+ * <i>addresses</i>: The parameter  <i>addresses</i>
+ is a.Collections.Generic.IList{PeterO.Mail.NamedAddress} object.
+
+<b>Return Value:</b>
+
+The return value is not documented yet.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>addresses</i>
  is null.
 
 <a id="ToString"></a>

@@ -7,42 +7,6 @@ namespace PeterO.Mail {
     /// <summary>Contains methods for parsing and matching language
     /// tags.</summary>
   public static class LanguageTags {
-    private static string[] SplitAt(string str, string delimiter) {
-      if (delimiter == null) {
-        throw new ArgumentNullException(nameof(delimiter));
-      }
-      if (delimiter.Length == 0) {
-        throw new ArgumentException("delimiter is empty.");
-      }
-      if (String.IsNullOrEmpty(str)) {
-        return new[] { String.Empty };
-      }
-      var index = 0;
-      var first = true;
-      List<string> strings = null;
-      int delimLength = delimiter.Length;
-      while (true) {
-        int index2 = str.IndexOf(delimiter, index, StringComparison.Ordinal);
-        if (index2 < 0) {
-          if (first) {
-            var strret = new string[1];
-            strret[0] = str;
-            return strret;
-          }
-          strings = strings ?? new List<string>();
-          strings.Add(str.Substring(index));
-          break;
-        } else {
-          first = false;
-          string newstr = str.Substring(index, index2 - index);
-          strings = strings ?? new List<string>();
-          strings.Add(newstr);
-          index = index2 + delimLength;
-        }
-      }
-      return (string[])strings.ToArray();
-    }
-
     /// <summary>Returns whether the given string is a basic language range
     /// under RFC 4647. Examples include "*", "en-us", and "fr".</summary>
     /// <param name='str'>The string to check. Can be null.</param>
@@ -417,8 +381,8 @@ namespace PeterO.Mail {
     private static bool MatchLangTagExtended(
       string rangeLowerCased,
       string tagLowerCased) {
-      string[] rangeSub = SplitAt(rangeLowerCased, "-");
-      string[] tagSub = SplitAt(tagLowerCased, "-");
+      string[] rangeSub = ParserUtility.SplitAt(rangeLowerCased, "-");
+      string[] tagSub = ParserUtility.SplitAt(tagLowerCased, "-");
       if (rangeSub.Length == 0 || tagSub.Length == 0) {
         return false;
       }
@@ -800,7 +764,7 @@ str.Equals("zh-min-nan", StringComparison.Ordinal)) {
             return true;
           }
           // More complex cases
-          string[] splitString = SplitAt(
+          string[] splitString = ParserUtility.SplitAt(
   str.Substring(startIndex, endIndex - startIndex),
   "-");
           if (splitString.Length == 0) {

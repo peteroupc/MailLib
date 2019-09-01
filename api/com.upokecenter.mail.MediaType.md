@@ -116,7 +116,7 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>suffix</code> - Not documented yet.
+* <code>suffix</code> - The parameter <code>suffix</code> is a.string object.
 
 **Returns:**
 

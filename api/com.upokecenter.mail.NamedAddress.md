@@ -206,7 +206,8 @@ Generates a string containing the display names of the given named-address
 
 **Parameters:**
 
-* <code>addresses</code> - Not documented yet.
+* <code>addresses</code> - The parameter <code>addresses</code> is
+ a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
 
 **Returns:**
 
@@ -224,7 +225,8 @@ Generates a string containing the display names and email addresses of the
 
 **Parameters:**
 
-* <code>addresses</code> - Not documented yet.
+* <code>addresses</code> - The parameter <code>addresses</code> is
+ a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
 
 **Returns:**
 

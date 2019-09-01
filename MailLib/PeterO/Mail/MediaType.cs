@@ -59,7 +59,8 @@ namespace PeterO.Mail {
     }
 
   /// <summary>Not documented yet.</summary>
-  /// <param name='suffix'>Not documented yet.</param>
+  /// <param name='suffix'>The parameter <paramref name='suffix'/> is
+  /// a.String object.</param>
   /// <returns>The return value is not documented yet.</returns>
   public bool HasStructuredSuffix(string suffix) {
   if (String.IsNullOrEmpty(suffix) || suffix.Length >= this.subType.Length ||

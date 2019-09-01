@@ -57,7 +57,7 @@ import com.upokecenter.text.*;
 
   /**
    * Not documented yet.
-   * @param suffix Not documented yet.
+   * @param suffix The parameter {@code suffix} is a.string object.
    * @return The return value is not documented yet.
    */
   public boolean HasStructuredSuffix(String suffix) {

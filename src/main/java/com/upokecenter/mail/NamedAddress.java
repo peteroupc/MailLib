@@ -20,7 +20,8 @@ import java.util.*;
      * Generates a string containing the display names of the given named-address
      * objects, separated by commas. The generated string is intended to be
      * displayed to end users, not parsed.
-     * @param addresses Not documented yet.
+     * @param addresses The parameter {@code addresses} is
+     * a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
      * @return The return value is not documented yet.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */
@@ -42,7 +43,8 @@ import java.util.*;
      * Generates a string containing the display names and email addresses of the
      * given named-address objects, separated by commas. The generated
      * string is intended to be displayed to end users, not parsed.
-     * @param addresses Not documented yet.
+     * @param addresses The parameter {@code addresses} is
+     * a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
      * @return The return value is not documented yet.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */

@@ -19,7 +19,9 @@ namespace PeterO.Mail {
     /// given named-address objects, separated by commas. The generated
     /// string is intended to be displayed to end users, not
     /// parsed.</summary>
-    /// <param name='addresses'>Not documented yet.</param>
+    /// <param name='addresses'>The parameter <paramref name='addresses'/>
+    /// is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
+    /// object.</param>
     /// <returns>The return value is not documented yet.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>
@@ -41,7 +43,9 @@ namespace PeterO.Mail {
     /// addresses of the given named-address objects, separated by commas.
     /// The generated string is intended to be displayed to end users, not
     /// parsed.</summary>
-    /// <param name='addresses'>Not documented yet.</param>
+    /// <param name='addresses'>The parameter <paramref name='addresses'/>
+    /// is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
+    /// object.</param>
     /// <returns>The return value is not documented yet.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>

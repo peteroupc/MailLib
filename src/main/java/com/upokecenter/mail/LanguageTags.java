@@ -10,42 +10,6 @@ import com.upokecenter.util.*;
   public final class LanguageTags {
 private LanguageTags() {
 }
-    private static String[] SplitAt(String str, String delimiter) {
-      if (delimiter == null) {
-        throw new NullPointerException("delimiter");
-      }
-      if (delimiter.length() == 0) {
-        throw new IllegalArgumentException("delimiter is empty.");
-      }
-      if (((str) == null || (str).length() == 0)) {
-        return new String[] { "" };
-      }
-      int index = 0;
-      boolean first = true;
-      ArrayList<String> strings = null;
-      int delimLength = delimiter.length();
-      while (true) {
-        int index2 = str.indexOf(delimiter, index);
-        if (index2 < 0) {
-          if (first) {
-            String[] strret = new String[1];
-            strret[0] = str;
-            return strret;
-          }
-          strings = (strings == null) ? (new ArrayList<String>()) : strings;
-          strings.add(str.substring(index));
-          break;
-        } else {
-          first = false;
-          String newstr = str.substring(index, (index)+(index2 - index));
-          strings = (strings == null) ? (new ArrayList<String>()) : strings;
-          strings.add(newstr);
-          index = index2 + delimLength;
-        }
-      }
-      return strings.toArray(new String[] { });
-    }
-
     /**
      * Returns whether the given string is a basic language range under RFC 4647.
      *  Examples include "*", "en-us", and "fr".
@@ -426,8 +390,8 @@ private LanguageTags() {
     private static boolean MatchLangTagExtended(
       String rangeLowerCased,
       String tagLowerCased) {
-      String[] rangeSub = SplitAt(rangeLowerCased, "-");
-      String[] tagSub = SplitAt(tagLowerCased, "-");
+      String[] rangeSub = ParserUtility.SplitAt(rangeLowerCased, "-");
+      String[] tagSub = ParserUtility.SplitAt(tagLowerCased, "-");
       if (rangeSub.length == 0 || tagSub.length == 0) {
         return false;
       }
@@ -800,7 +764,7 @@ str.equals("zh-min-nan")) {
             return true;
           }
           // More complex cases
-          String[] splitString = SplitAt(
+          String[] splitString = ParserUtility.SplitAt(
   str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
   "-");
           if (splitString.length == 0) {

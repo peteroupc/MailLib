@@ -4132,7 +4132,7 @@ name.length() >= 2 &&
             this.transferEncoding = EncodingBase64;
           } else {
             // Unrecognized transfer encoding
-            DebugUtility.Log("unrecognized: " + value);
+            // DebugUtility.Log("unrecognized: " + value);
             this.transferEncoding = EncodingUnknown;
           }
           haveContentEncoding = true;
