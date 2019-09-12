@@ -125,6 +125,16 @@
       <version>0.5.0</version>
     </dependency>
     <dependency>
+      <groupId>com.github.peteroupc</groupId>
+      <artifactId>datautilities</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.peteroupc</groupId>
+      <artifactId>uriutility</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13-beta-3</version>

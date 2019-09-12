@@ -348,7 +348,7 @@ import com.upokecenter.text.*;
       if (Idna.IsValidDomainName("xy\u200cz", false)) {
  Assert.fail();
  }
-      // Dual-joining character (U + A840, Phags-pa KA) on both sides
+      // Dual-joining character (U+A840, Phags-pa KA) on both sides
       if (!(Idna.IsValidDomainName("\ua840\u200c\ua840", false))) {
  Assert.fail();
  }
@@ -365,7 +365,7 @@ import com.upokecenter.text.*;
           false))) {
  Assert.fail();
  }
-      // Left-joining character (U + A872, the only such character
+      // Left-joining character (U+A872, the only such character
       // in Unicode 6.3, with Bidi type L) on left side
       if (!(Idna.IsValidDomainName("\ua872\u200c\ua840", false))) {
  Assert.fail();
@@ -447,9 +447,9 @@ import com.upokecenter.text.*;
       if (Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627", false)) {
  Assert.fail();
  }
-      // Right-joining character (U + 062F; since the only right-joining
+      // Right-joining character (U+062F; since the only right-joining
       // characters in Unicode 6.3 have Bidi type R,
-      // a different dual-joining character is used, U + 062D, which also has
+      // a different dual-joining character is used, U+062D, which also has
       // the same Bidi type).
       if (!(Idna.IsValidDomainName("\u062d\u200c\u062f", false))) {
  Assert.fail();
@@ -472,8 +472,8 @@ import com.upokecenter.text.*;
           false)) {
  Assert.fail();
  }
-      // Regression tests: U + 07FA mistakenly allowed (since
-      // U + 07FA has Bidi type R, the other characters in these tests
+      // Regression tests: U+07FA mistakenly allowed (since
+      // U+07FA has Bidi type R, the other characters in these tests
       // also have Bidi type R).
       if (Idna.IsValidDomainName("\u07ca\u07fa\u07ca", false)) {
  Assert.fail();

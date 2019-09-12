@@ -58,7 +58,8 @@
 * `int hashCode()`<br>
  Calculates the hash code of this object.
 * `boolean HasStructuredSuffix​(java.lang.String suffix)`<br>
- Not documented yet.
+ Returns whether this media type's subtype has the given structured syntax
+ suffix.
 * `boolean isMultipart()`<br>
  Gets a value indicating whether this is a multipart media type.
 * `boolean isText()`<br>
@@ -112,15 +113,28 @@ Gets the name of this media type's top-level type (such as "text" in
 
 ### HasStructuredSuffix
     public boolean HasStructuredSuffix​(java.lang.String suffix)
-Not documented yet.
+Returns whether this media type's subtype has the given structured syntax
+ suffix.
 
 **Parameters:**
 
-* <code>suffix</code> - The parameter <code>suffix</code> is a.string object.
+* <code>suffix</code> - A text string identifying a structured syntax suffix without
+  the starting "+". Examples include "xml" and "json". The suffix is
+ compared to the end of the media type's subtype using a basic
+ case-insensitive comparison. (Two strings are equal in such a
+ comparison, if they match after converting the basic upper-case
+ letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
+ letters.).
 
 **Returns:**
 
-* The return value is not documented yet.
+* True if the media type's subtype ends with, but does not consist of,
+  "+" followed by the <code>suffix</code> parameter (using a basic
+ case-insensitive comparison); otherwise, <code>false</code>. For example,
+  returns false if <code>suffix</code> is "xml" and the subtype is "+xml",
+  but returns true if <code>suffix</code> is "xml" and the subtype is
+  "example+xml". Returns false if <code>suffix</code> is null or an empty
+ string.
 
 ### equals
     public boolean equals​(java.lang.Object obj)

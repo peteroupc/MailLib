@@ -300,7 +300,7 @@ str.substring(i));
       int index,
       StringBuilder sb) {
       int c;
-      sb.delete(0, (0)+(sb.length()));
+      sb.delete(0, sb.length());
       while (index < str.length()) {
         c = index >= str.length() ? -1 : str.charAt(index++);
         if (c == -1 || c < 0x20) {

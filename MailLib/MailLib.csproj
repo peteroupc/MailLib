@@ -1,4 +1,4 @@
-<Project Sdk='Microsoft.NET.Sdk'>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
@@ -38,21 +38,23 @@ Version 0.14.0:
     <PackageTags>email mail mime parser charset charsets</PackageTags>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
 
-  <PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Debug|AnyCPU&apos; '>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
     <DocumentationFile>bin\Debug\netstandard1.0\MailLib.xml</DocumentationFile>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
-  <PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Release|AnyCPU&apos; '>
-    <DebugType/>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType />
     <DocumentationFile>bin\Release\netstandard1.0\MailLib.xml</DocumentationFile>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
   <ItemGroup>
     <None Pack="true" Include="../LICENSE.md" PackagePath="LICENSE.md" />
-    <EmbeddedResource Condition=' &apos;$(EnableDefaultEmbeddedResourceItems)&apos; == &apos;true&apos; ' Update='PeterO.Text.Encoders.AppResources.resx'>
+    <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="PeterO.Text.Encoders.AppResources.resx">
       <LogicalName>PeterO.Text.Encoders.AppResources.resources</LogicalName>
     </EmbeddedResource>
-  <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.1.118'/><AdditionalFiles Include='stylecop.json'/><PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers' PrivateAssets='All' Version='2.9.4'></PackageReference></ItemGroup>
+  <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.1.118" /><AdditionalFiles Include="stylecop.json" /><PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" PrivateAssets="All" Version="2.9.4"></PackageReference><PackageReference Include="PeterO.DataUtilities" Version="1.0.0" />
+<PackageReference Include="PeterO.URIUtility" Version="1.0.0" />
+</ItemGroup>
   <ItemGroup>
-    <PackageReference Include='PeterO.Encoding' Version='0.5.1'/>
-  <AdditionalFiles Include='rules.ruleset'/></ItemGroup>
+    <PackageReference Include="PeterO.Encoding" Version="0.5.1" />
+  <AdditionalFiles Include="rules.ruleset" /></ItemGroup>
 </Project>

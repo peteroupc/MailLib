@@ -18,7 +18,7 @@ This type is immutable, meaning its values can't be changed once it' s created. 
 * <code>[GetCharset()](#GetCharset)</code> - Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
 * <code>[GetHashCode()](#GetHashCode)</code> - Calculates the hash code of this object.
 * <code>[GetParameter(string)](#GetParameter_string)</code> - Gets the value of a parameter in this media type, such as "charset" or "format".
-* <code>[HasStructuredSuffix(string)](#HasStructuredSuffix_string)</code> - Not documented yet.
+* <code>[HasStructuredSuffix(string)](#HasStructuredSuffix_string)</code> - Returns whether this media type's subtype has the given structured syntax suffix.
 * <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
 * <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type ("text/*").
 * <code>[public static readonly PeterO.Mail.MediaType MessageRfc822;](#MessageRfc822)</code> - Specifies the media type "message/rfc822", used for Internet mail messages.
@@ -198,16 +198,19 @@ Name is empty.
     public bool HasStructuredSuffix(
         string suffix);
 
-Not documented yet.
+Returns whether this media type's subtype has the given structured syntax suffix.
 
 <b>Parameters:</b>
 
- * <i>suffix</i>: The parameter  <i>suffix</i>
- is a.String object.
+ * <i>suffix</i>: A text string identifying a structured syntax suffix without the starting "+". Examples include "xml" and "json". The suffix is compared to the end of the media type's subtype using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
 
 <b>Return Value:</b>
 
-The return value is not documented yet.
+True if the media type's subtype ends with, but does not consist of, "+" followed by the  <i>suffix</i>
+ parameter (using a basic case-insensitive comparison); otherwise,  `false` . For example, returns false if  <i>suffix</i>
+ is "xml" and the subtype is "+xml", but returns true if  <i>suffix</i>
+ is "xml" and the subtype is "example+xml". Returns false if  <i>suffix</i>
+ is null or an empty string.
 
 <a id="Parse_string"></a>
 ### Parse

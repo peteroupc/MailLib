@@ -89,13 +89,13 @@ private FormatFlowed() {
                     .append("</p>");
               haveParagraph = false;
               endedParagraph = true;
-              paragraph.delete(0, (0)+(paragraph.length()));
+              paragraph.delete(0, paragraph.length());
             }
           } else if (haveParagraph && (!flowed || lastLine)) {
             formatted.append("<p>").append(HtmlEscape(paragraph.toString()));
             haveParagraph = false;
             endedParagraph = true;
-            paragraph.delete(0, (0)+(paragraph.length()));
+            paragraph.delete(0, paragraph.length());
             formatted.append(
                 HtmlEscape(str.substring(index, (index)+(lineEnd - index))))
                     .append("</p>");
@@ -1197,7 +1197,7 @@ private FormatFlowed() {
                 formatted.append(qss2);
               }
               formatted.append("</li><li>");
-              qs.delete(0, (0)+(qs.length()));
+              qs.delete(0, qs.length());
               ++qi;
               strippedLine = StripItemStart(line, ordered);
               qs.append(strippedLine);
@@ -1285,7 +1285,7 @@ private FormatFlowed() {
             if (haveParagraph) {
               paragraph.append("\r\n");
             } else {
-              paragraph.delete(0, (0)+(paragraph.length()));
+              paragraph.delete(0, paragraph.length());
             }
             haveParagraph = true;
             paragraph.append(FormatParagraph(line, links));

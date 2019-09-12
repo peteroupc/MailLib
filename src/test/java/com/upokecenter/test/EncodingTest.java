@@ -2062,9 +2062,9 @@ public final void setValueMessage(Message value) {
     public void TestEncodedWordsReservedChars() {
       // Check decoding of encoded words containing reserved characters
       // such as specials and CTLs:
-      // U + 007F, should not be directly representable
+      // U+007F, should not be directly representable
       TestEncodedWordsPhrase("=?utf-8?q?x_=7F?=", "=?utf-8?q?x_=7F?=");
-      // U + 0001, should not be directly representable
+      // U+0001, should not be directly representable
       TestEncodedWordsPhrase("=?utf-8?q?x_=01?=", "=?utf-8?q?x_=01?=");
       // CR and LF, should not be directly representable
       TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=", "=?utf-8?q?x_=0D=0A?=");

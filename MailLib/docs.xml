@@ -380,8 +380,7 @@
     </exception>
 </doc>
 <doc name="T:PeterO.DataUtilities">
-
-            <summary>Contains methods useful for reading and writing text
+<summary>Contains methods useful for reading and writing text
             strings. It is designed to have no dependencies other than the
             basic runtime class library.
             <para>Many of these methods work with text encoded in UTF-8, an
@@ -402,11 +401,9 @@
             found in text strings, such as throwing an error or treating the
             unpaired surrogate as a replacement character
             (U+FFFD).</para></summary>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32)">
-
-            <summary>Gets the Unicode code point at the given index of the
+<summary>Gets the Unicode code point at the given index of the
             string.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
@@ -419,11 +416,9 @@
             the return value is 65536 (0x10000) or greater, the code point
             takes up two UTF-16 code units.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32,System.Int32)">
-
-            <summary>Gets the Unicode code point at the given index of the
+<summary>Gets the Unicode code point at the given index of the
             string.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
@@ -448,11 +443,9 @@
             Unpaired surrogate */ } Console.WriteLine("codePoint:"+codePoint); if
             (codePoint &gt;= 0x10000) { i++; /* Supplementary code point */ } }</code> .
             </example>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointBefore(System.String,System.Int32)">
-
-            <summary>Gets the Unicode code point just before the given index of
+<summary>Gets the Unicode code point just before the given index of
             the string.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
@@ -465,11 +458,9 @@
             point. If the return value is 65536 (0x10000) or greater, the code
             point takes up two UTF-16 code units.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointBefore(System.String,System.Int32,System.Int32)">
-
-            <summary>Gets the Unicode code point just before the given index of
+<summary>Gets the Unicode code point just before the given index of
             the string.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
@@ -487,11 +478,9 @@
             is 65536 (0x10000) or greater, the code point takes up two UTF-16
             code units.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointCompare(System.String,System.String)">
-
-            <summary>Compares two strings in Unicode code point order. Unpaired
+<summary>Compares two strings in Unicode code point order. Unpaired
             surrogate code points are treated as individual code
             points.</summary>
             <param name='strA'>The first string. Can be null.</param>
@@ -503,11 +492,9 @@
             null and a isn't; or the first code point that's different is
             greater in A than in B; or a starts with b and is longer than
             b.</returns>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointLength(System.String)">
-
-            <summary>Finds the number of Unicode code points in the given text
+<summary>Finds the number of Unicode code points in the given text
             string. Unpaired surrogate code points increase this number by 1.
             This is not necessarily the length of the string in "char"
             s.</summary>
@@ -516,11 +503,9 @@
             <returns>The number of Unicode code points in the given
             string.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean)">
-
-            <summary><para>Encodes a string in UTF-8 as a byte array. This method does
+<summary><para>Encodes a string in UTF-8 as a byte array. This method does
             not insert a byte-order mark (U+FEFF) at the beginning of the
             encoded byte array.</para>
             <para>REMARK: It is not recommended to use
@@ -537,11 +522,9 @@
             <exception cref='ArgumentException'>The string contains an unpaired
             surrogate code point and <paramref name='replace'/> is false, or an
             internal error occurred.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean,System.Boolean)">
-
-            <summary><para>Encodes a string in UTF-8 as a byte array. This method does
+<summary><para>Encodes a string in UTF-8 as a byte array. This method does
             not insert a byte-order mark (U+FEFF) at the beginning of the
             encoded byte array.</para>
             <para>REMARK: It is not recommended to use
@@ -561,11 +544,9 @@
             <exception cref='ArgumentException'>The string contains an unpaired
             surrogate code point and <paramref name='replace'/> is false, or an
             internal error occurred.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Length(System.String,System.Boolean)">
-
-            <summary>Calculates the number of bytes needed to encode a string
+<summary>Calculates the number of bytes needed to encode a string
             in UTF-8.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
@@ -576,11 +557,9 @@
             UTF-8, or -1 if the string contains an unpaired surrogate code
             point and <paramref name='replace'/> is false.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8String(System.Byte[],System.Boolean)">
-
-            <summary>Generates a text string from a UTF-8 byte array.</summary>
+<summary>Generates a text string from a UTF-8 byte array.</summary>
             <param name='bytes'>A byte array containing text encoded in
             UTF-8.</param>
             <param name='replace'>If true, replaces invalid encoding with the
@@ -590,11 +569,9 @@
             <exception cref='ArgumentNullException'>The parameter <paramref name='bytes'/> is null.</exception>
             <exception cref='ArgumentException'>The string is not valid UTF-8
             and <paramref name='replace'/> is false.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8String(System.Byte[],System.Int32,System.Int32,System.Boolean)">
-
-            <summary>Generates a text string from a portion of a UTF-8 byte
+<summary>Generates a text string from a portion of a UTF-8 byte
             array.</summary>
             <param name='bytes'>A byte array containing text encoded in
             UTF-8.</param>
@@ -613,11 +590,9 @@
             <exception cref='ArgumentException'>The parameter <paramref name='offset'/> is less than 0, <paramref name='bytesCount'/> is
             less than 0, or offset plus bytesCount is greater than the length
             of "data" .</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.ReadUtf8(System.IO.Stream,System.Int32,System.Text.StringBuilder,System.Boolean)">
-
-            <summary>Reads a string in UTF-8 encoding from a data
+<summary>Reads a string in UTF-8 encoding from a data
             stream.</summary>
             <param name='stream'>A readable data stream.</param>
             <param name='bytesCount'>The length, in bytes, of the string. If
@@ -636,11 +611,9 @@
             occurred.</exception>
             <exception cref='ArgumentNullException'>The parameter <paramref name='stream'/> is null or <paramref name='builder'/> is
             null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.ReadUtf8FromBytes(System.Byte[],System.Int32,System.Int32,System.Text.StringBuilder,System.Boolean)">
-
-            <summary>Reads a string in UTF-8 encoding from a byte
+<summary>Reads a string in UTF-8 encoding from a byte
             array.</summary>
             <param name='data'>A byte array containing a UTF-8 text
             string.</param>
@@ -661,11 +634,9 @@
             <exception cref='ArgumentException'>The parameter <paramref name='offset'/> is less than 0, <paramref name='bytesCount'/> is
             less than 0, or offset plus bytesCount is greater than the length
             of <paramref name='data'/>.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.ReadUtf8ToString(System.IO.Stream)">
-
-            <summary>Reads a string in UTF-8 encoding from a data stream in
+<summary>Reads a string in UTF-8 encoding from a data stream in
             full and returns that string. Replaces invalid encoding with the
             replacement character (U+FFFD).</summary>
             <param name='stream'>A readable data stream.</param>
@@ -673,11 +644,9 @@
             <exception cref='System.IO.IOException'>An I/O error
             occurred.</exception>
             <exception cref='ArgumentNullException'>The parameter <paramref name='stream'/> is null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.ReadUtf8ToString(System.IO.Stream,System.Int32,System.Boolean)">
-
-            <summary>Reads a string in UTF-8 encoding from a data stream and
+<summary>Reads a string in UTF-8 encoding from a data stream and
             returns that string.</summary>
             <param name='stream'>A readable data stream.</param>
             <param name='bytesCount'>The length, in bytes, of the string. If
@@ -691,33 +660,27 @@
             the string is not valid UTF-8 and <paramref name='replace'/> is
             false.</exception>
             <exception cref='ArgumentNullException'>The parameter <paramref name='stream'/> is null.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.ToLowerCaseAscii(System.String)">
-
-            <summary>Returns a string with the basic upper-case letters A to Z
+<summary>Returns a string with the basic upper-case letters A to Z
             (U+0041 to U+005A) converted to lower-case. Other characters remain
             unchanged.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
             <returns>The converted string, or null if <paramref name='str'/> is
             null.</returns>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.ToUpperCaseAscii(System.String)">
-
-            <summary>Returns a string with the basic lower-case letters A to Z
+<summary>Returns a string with the basic lower-case letters A to Z
             (U+0061 to U+007A) converted to upper-case. Other characters remain
             unchanged.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
             <returns>The converted string, or null if <paramref name='str'/> is
             null.</returns>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.WriteUtf8(System.String,System.IO.Stream,System.Boolean)">
-
-            <summary>Writes a string in UTF-8 encoding to a data
+<summary>Writes a string in UTF-8 encoding to a data
             stream.</summary>
             <param name='str'>A string to write.</param>
             <param name='stream'>A writable data stream.</param>
@@ -730,11 +693,9 @@
             null.</exception>
             <exception cref='System.IO.IOException'>An I/O error
             occurred.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.WriteUtf8(System.String,System.Int32,System.Int32,System.IO.Stream,System.Boolean)">
-
-            <summary>Writes a portion of a string in UTF-8 encoding to a data
+<summary>Writes a portion of a string in UTF-8 encoding to a data
             stream.</summary>
             <param name='str'>A string to write.</param>
             <param name='offset'>The Index starting at 0 where the string
@@ -755,11 +716,9 @@
             <exception cref='ArgumentException'>Either <paramref name='offset'/> or <paramref name='length'/> is less than 0 or
             greater than <paramref name='str'/> 's length, or <paramref name='str'/> 's length minus <paramref name='offset'/> is less than
             <paramref name='length'/>.</exception>
-
 </doc>
 <doc name="M:PeterO.DataUtilities.WriteUtf8(System.String,System.Int32,System.Int32,System.IO.Stream,System.Boolean,System.Boolean)">
-
-            <summary>Writes a portion of a string in UTF-8 encoding to a data
+<summary>Writes a portion of a string in UTF-8 encoding to a data
             stream.</summary>
             <param name='str'>A string to write.</param>
             <param name='offset'>The Index starting at 0 where the string
@@ -783,7 +742,6 @@
             is greater than the string's length.</exception>
             <exception cref='System.IO.IOException'>An I/O error
             occurred.</exception>
-
 </doc>
 <doc name="T:PeterO.Mail.Address">
 
@@ -1848,10 +1806,21 @@
 </doc>
 <doc name="M:PeterO.Mail.MediaType.HasStructuredSuffix(System.String)">
 
-            <summary>Not documented yet.</summary>
-            <param name='suffix'>The parameter <paramref name='suffix'/> is
-            a.String object.</param>
-            <returns>The return value is not documented yet.</returns>
+            <summary>Returns whether this media type's subtype has the given
+            structured syntax suffix.</summary>
+            <param name='suffix'>A text string identifying a structured syntax
+            suffix without the starting "+". Examples include "xml" and "json".
+            The suffix is compared to the end of the media type's subtype using
+            a basic case-insensitive comparison. (Two strings are equal in such
+            a comparison, if they match after converting the basic upper-case
+            letters A to Z (U+0041 to U+005A) in both strings to basic
+            lower-case letters.).</param>
+            <returns><c>true</c> if the media type's subtype ends with, but does not
+            consist of, "+" followed by the <paramref name='suffix'/> parameter
+            (using a basic case-insensitive comparison); otherwise, <c>false</c>. For example, returns false if <paramref name='suffix'/> is "xml" and the subtype is "+xml", but returns
+            true if <paramref name='suffix'/> is "xml" and the subtype is
+            "example+xml". Returns false if <paramref name='suffix'/> is null
+            or an empty string.</returns>
 
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsMultipart">

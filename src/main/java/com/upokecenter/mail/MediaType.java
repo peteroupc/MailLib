@@ -56,9 +56,22 @@ import com.upokecenter.text.*;
       }
 
   /**
-   * Not documented yet.
-   * @param suffix The parameter {@code suffix} is a.string object.
-   * @return The return value is not documented yet.
+   * Returns whether this media type's subtype has the given structured syntax
+   * suffix.
+   * @param suffix A text string identifying a structured syntax suffix without
+   *  the starting "+". Examples include "xml" and "json". The suffix is
+   * compared to the end of the media type's subtype using a basic
+   * case-insensitive comparison. (Two strings are equal in such a
+   * comparison, if they match after converting the basic upper-case
+   * letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
+   * letters.).
+   * @return True if the media type's subtype ends with, but does not consist of,
+   *  "+" followed by the {@code suffix} parameter (using a basic
+   * case-insensitive comparison); otherwise, {@code false}. For example,
+   *  returns false if {@code suffix} is "xml" and the subtype is "+xml",
+   *  but returns true if {@code suffix} is "xml" and the subtype is
+   *  "example+xml". Returns false if {@code suffix} is null or an empty
+   * string.
    */
   public boolean HasStructuredSuffix(String suffix) {
   if (((suffix) == null || (suffix).length() == 0) || suffix.length() >= this.subType.length() ||
@@ -757,6 +770,7 @@ import com.upokecenter.text.*;
       // procedures for determining the charset from the payload
       // if no charset is given or supported in the charset
       // parameter.
+      // NOTE: Up to date as of Sep. 4, 2019
       if (this.isText()) {
         String sub = this.getSubType();
         if (sub.equals("html")) {
@@ -829,7 +843,7 @@ import com.upokecenter.text.*;
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Jun. 9, 2019, are listed below:
+      // Sep. 3, 2019, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -1295,7 +1309,7 @@ import com.upokecenter.text.*;
           // No more parameters
           return ExpandRfc2231Extensions(parameters, httpRules);
         }
-        builder.delete(0, (0)+(builder.length()));
+        builder.delete(0, builder.length());
         int qs;
         // try getting the value quoted
         qs = SkipQuotedString(
@@ -1317,7 +1331,7 @@ import com.upokecenter.text.*;
           index = qs;
           continue;
         }
-        builder.delete(0, (0)+(builder.length()));
+        builder.delete(0, builder.length());
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);

@@ -706,10 +706,10 @@ return false;
       StringBuilder attrName,
       StringBuilder attrValue) {
       if (attrName != null) {
-        attrName.delete(0, (0)+(attrName.length()));
+        attrName.delete(0, attrName.length());
       }
       if (attrValue != null) {
-        attrValue.delete(0, (0)+(attrValue.length()));
+        attrValue.delete(0, attrValue.length());
       }
       while (position < length && (data[position] == 0x09 ||
           data[position] == 0x0a || data[position] == 0x0c ||
@@ -729,7 +729,7 @@ return false;
           // end of stream reached, so clear
           // the attribute name to indicate failure
           if (attrName != null) {
-            attrName.delete(0, (0)+(attrName.length()));
+            attrName.delete(0, attrName.length());
           }
           return position;
         }
@@ -767,7 +767,7 @@ return false;
           // end of stream reached, so clear
           // the attribute name to indicate failure
           if (attrName != null) {
-            attrName.delete(0, (0)+(attrName.length()));
+            attrName.delete(0, attrName.length());
           }
           return position;
         }
@@ -788,7 +788,7 @@ return false;
         // end of stream reached, so clear
         // the attribute name to indicate failure
         if (attrName != null) {
-          attrName.delete(0, (0)+(attrName.length()));
+          attrName.delete(0, attrName.length());
         }
         return position;
       }
@@ -800,10 +800,10 @@ return false;
             // end of stream reached, so clear
             // the attribute name and value to indicate failure
             if (attrName != null) {
-              attrName.delete(0, (0)+(attrName.length()));
+              attrName.delete(0, attrName.length());
             }
             if (attrValue != null) {
-              attrValue.delete(0, (0)+(attrValue.length()));
+              attrValue.delete(0, attrValue.length());
             }
             return position;
           }
@@ -839,10 +839,10 @@ return false;
           // end of stream reached, so clear
           // the attribute name and value to indicate failure
           if (attrName != null) {
-            attrName.delete(0, (0)+(attrName.length()));
+            attrName.delete(0, attrName.length());
           }
           if (attrValue != null) {
-            attrValue.delete(0, (0)+(attrValue.length()));
+            attrValue.delete(0, attrValue.length());
           }
           return position;
         }
@@ -2589,7 +2589,7 @@ try { if (fs != null) {
       int lastIndex = -1;
       ArrayWriter writer = null;
       while (index < endIndex) {
-        sb.delete(0, (0)+(sb.length()));
+        sb.delete(0, sb.length());
         boolean first = true;
         int headerNameStart = index;
         int headerNameEnd = index;
@@ -3192,7 +3192,7 @@ try { if (fs != null) {
       boolean ungetLast = false;
       int lastByte = 0;
       while (true) {
-        sb.delete(0, (0)+(sb.length()));
+        sb.delete(0, sb.length());
         boolean first = true;
         boolean endOfHeaders = false;
         boolean wsp = false;
@@ -3249,7 +3249,7 @@ try { if (fs != null) {
               // Possible Mbox convention
               boolean possibleMbox = true;
               boolean isFromField = false;
-              sb.delete(0, (0)+(sb.length()));
+              sb.delete(0, sb.length());
               while (true) {
                 c = stream.read();
                 if (c == -1) {
@@ -3296,7 +3296,7 @@ try { if (fs != null) {
         String fieldName = sb.toString();
         // Clear the String builder to read the
         // header field's value
-        sb.delete(0, (0)+(sb.length()));
+        sb.delete(0, sb.length());
         // Skip initial spaces in the header field value,
         // to keep them from being added by the String builder
         while (true) {

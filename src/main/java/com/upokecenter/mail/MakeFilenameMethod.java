@@ -324,7 +324,7 @@ private MakeFilenameMethod() {
       builder.append(str.substring(0, i));
       while (i < str.length()) {
         int c = DataUtilities.CodePointAt(str, i, 0);
-        // NOTE: Unpaired surrogates are replaced with U + FFFD
+        // NOTE: Unpaired surrogates are replaced with U+FFFD
         if (c >= 0x10000) {
           builder.append(str.charAt(i));
           builder.append(str.charAt(i + 1));
@@ -545,7 +545,7 @@ private MakeFilenameMethod() {
         i = 0;
         while (i < str.length() && IsBelowMaxCodeLength(builder)) {
           int c = DataUtilities.CodePointAt(str, i, 0);
-          // NOTE: Unpaired surrogates are replaced with U + FFFD
+          // NOTE: Unpaired surrogates are replaced with U+FFFD
           if (c >= 0x10000) {
             ++i;
           }

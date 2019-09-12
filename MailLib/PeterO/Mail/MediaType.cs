@@ -58,10 +58,23 @@ namespace PeterO.Mail {
       }
     }
 
-  /// <summary>Not documented yet.</summary>
-  /// <param name='suffix'>The parameter <paramref name='suffix'/> is
-  /// a.String object.</param>
-  /// <returns>The return value is not documented yet.</returns>
+  /// <summary>Returns whether this media type's subtype has the given
+  /// structured syntax suffix.</summary>
+  /// <param name='suffix'>A text string identifying a structured syntax
+  /// suffix without the starting "+". Examples include "xml" and "json".
+  /// The suffix is compared to the end of the media type's subtype using
+  /// a basic case-insensitive comparison. (Two strings are equal in such
+  /// a comparison, if they match after converting the basic upper-case
+  /// letters A to Z (U+0041 to U+005A) in both strings to basic
+  /// lower-case letters.).</param>
+  /// <returns>True if the media type's subtype ends with, but does not
+  /// consist of, "+" followed by the <paramref name='suffix'/> parameter
+  /// (using a basic case-insensitive comparison); otherwise,
+  /// <c>false</c>. For example, returns false if <paramref
+  /// name='suffix'/> is "xml" and the subtype is "+xml", but returns
+  /// true if <paramref name='suffix'/> is "xml" and the subtype is
+  /// "example+xml". Returns false if <paramref name='suffix'/> is null
+  /// or an empty string.</returns>
   public bool HasStructuredSuffix(string suffix) {
   if (String.IsNullOrEmpty(suffix) || suffix.Length >= this.subType.Length ||
       suffix.Length + 1 >= this.subType.Length) {
@@ -775,6 +788,7 @@ namespace PeterO.Mail {
       // procedures for determining the charset from the payload
       // if no charset is given or supported in the charset
       // parameter.
+      // NOTE: Up to date as of Sep. 4, 2019
       if (this.IsText) {
         string sub = this.SubType;
         if (sub.Equals("html", StringComparison.Ordinal)) {
@@ -855,7 +869,7 @@ namespace PeterO.Mail {
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Jun. 9, 2019, are listed below:
+      // Sep. 3, 2019, are listed below:
       //
       // -- No default charset assumed: --
       //

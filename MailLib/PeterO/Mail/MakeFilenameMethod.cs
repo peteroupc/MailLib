@@ -323,7 +323,7 @@ namespace PeterO.Mail {
       builder.Append(str.Substring(0, i));
       while (i < str.Length) {
         int c = DataUtilities.CodePointAt(str, i, 0);
-        // NOTE: Unpaired surrogates are replaced with U + FFFD
+        // NOTE: Unpaired surrogates are replaced with U+FFFD
         if (c >= 0x10000) {
           builder.Append(str[i]);
           builder.Append(str[i + 1]);
@@ -544,7 +544,7 @@ namespace PeterO.Mail {
         i = 0;
         while (i < str.Length && IsBelowMaxCodeLength(builder)) {
           int c = DataUtilities.CodePointAt(str, i, 0);
-          // NOTE: Unpaired surrogates are replaced with U + FFFD
+          // NOTE: Unpaired surrogates are replaced with U+FFFD
           if (c >= 0x10000) {
             ++i;
           }

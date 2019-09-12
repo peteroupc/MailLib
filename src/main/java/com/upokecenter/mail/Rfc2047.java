@@ -177,7 +177,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
         }
         // Get the next run of non-parentheses
         int parenEnd = index;
-        builder.delete(0, (0)+(builder.length()));
+        builder.delete(0, builder.length());
         while (index < endIndex) {
           if (str.charAt(index) == '(' || str.charAt(index) == ')') {
             break;
