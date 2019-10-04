@@ -21,7 +21,7 @@ Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) 
 
 <b>Parameters:</b>
 
- * <i>addressValue</i>: An email address.
+ * <i>addressValue</i>: An email address. This parameter must contain an at-sign, and may not contain extraneous whitespace, and comments enclosed in parentheses are also not allowed.
 
 <b>Exceptions:</b>
 

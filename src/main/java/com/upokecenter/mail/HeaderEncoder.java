@@ -11,6 +11,7 @@ import com.upokecenter.util.*;
 
   final class HeaderEncoder {
     private static final String HexChars = "0123456789ABCDEF";
+    private static final int EncodedWordMaxLength = 75;
     private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
             "jklmnopqrstuvwxyz0123456789+/";
 
@@ -367,8 +368,7 @@ HeaderParserUtility.ParseQuotedStringCore(
       int currentWordLength,
       int unitLength,
       boolean writeSpace) {
-      // 75 is max. allowed length of an encoded word
-      int effectiveMaxLength = 75;
+      var effectiveMaxLength = EncodedWordMaxLength;
       if (this.GetMaxLineLength() >= 0) {
         effectiveMaxLength = Math.min(
          effectiveMaxLength,

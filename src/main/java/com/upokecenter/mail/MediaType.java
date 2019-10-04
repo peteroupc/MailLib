@@ -1394,6 +1394,7 @@ import com.upokecenter.text.*;
      * Specifies the media type "text/plain" and the "charset" parameter
      *  "US-ASCII", used for plain text data.
      */
+
     public static final MediaType TextPlainAscii =
       new MediaTypeBuilder(
         "text",
@@ -1416,6 +1417,7 @@ import com.upokecenter.text.*;
     /**
      * Specifies the media type "message/rfc822", used for Internet mail messages.
      */
+
     public static final MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 

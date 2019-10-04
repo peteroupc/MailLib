@@ -12,8 +12,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("", (String)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -21,8 +21,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("", (Address)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -30,8 +30,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("x at example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -39,8 +39,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("x"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -48,8 +48,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("x@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -57,8 +57,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -66,8 +66,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -75,8 +75,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address((String)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -84,8 +84,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -108,14 +108,14 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "test@EXAMPLE.COM",
           stringTemp);
-}
+      }
       na = new NamedAddress("Me <test@EXAMPLE.COM>");
       {
         String stringTemp = na.toString();
         Assert.assertEquals(
   "Me <test@EXAMPLE.COM>",
   stringTemp);
-}
+      }
     }
 
     @Test
@@ -164,13 +164,13 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "me@example.com",
           stringTemp);
-}
+      }
       {
         String stringTemp = na.toString();
         Assert.assertEquals(
           "me@example.com",
           stringTemp);
-}
+      }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
       na = new NamedAddress("<me@example.com>");
@@ -233,13 +233,13 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "me@example.com",
           stringTemp);
-}
+      }
       {
         String stringTemp = na.toString();
         Assert.assertEquals(
   "Me <me@example.com>",
   stringTemp);
-}
+      }
       //------------
       na = new NamedAddress("Group: \"Me\" <me@example.com>;");
       if (!(na.isGroup())) {
@@ -254,7 +254,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "me@example.com",
           stringTemp);
-}
+      }
       na = new
   NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
       if (!(na.isGroup())) {
@@ -265,7 +265,7 @@ import com.upokecenter.mail.*;
         String ValueS1 =
         "Group: Me <me@example.com>, Fred <fred@example.com>;";
         Assert.assertEquals(ValueS1, stringTemp);
-}
+      }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());
       na = groupAddr.get(0);
@@ -275,7 +275,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "me@example.com",
           stringTemp);
-}
+      }
       na = groupAddr.get(1);
       Assert.assertEquals("Fred", na.getName());
       {
@@ -283,7 +283,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "fred@example.com",
           stringTemp);
-}
+      }
       //------------
       na = new
         NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
@@ -305,7 +305,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "me@example.com",
           stringTemp);
-}
+      }
       na = groupAddr.get(1);
       Assert.assertEquals("somebody@example.com", na.getName());
       {
@@ -313,7 +313,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "somebody@example.com",
           stringTemp);
-}
+      }
     }
     @Test
     public void TestDisplayName() {

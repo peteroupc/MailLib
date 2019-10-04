@@ -306,9 +306,7 @@ ms = new java.io.ByteArrayOutputStream();
           ret = DataUtilities.GetUtf8String(ms.toByteArray(), true);
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
       }
@@ -424,156 +422,153 @@ try { if (ms != null) {
       }
 
     private static ICharacterEncoding GetEncoding(String charset) {
-        ICharacterEncoding enc = Encodings.GetEncoding(
-          charset,
-          true);
-        if (enc == null) {
-          if (charset.equals("gb2312")) {
-            // HACK
-            enc = Encodings.GetEncoding("gb2312", false);
-          } else {
-            return null;
-          }
+      ICharacterEncoding enc = Encodings.GetEncoding(
+        charset,
+        true);
+      if (enc == null) {
+        if (charset.equals("gb2312")) {
+          // HACK
+          enc = Encodings.GetEncoding("gb2312", false);
+        } else {
+          return null;
         }
-        return enc;
+      }
+      return enc;
     }
 
-private static boolean DefinesCharsetParameter(MediaType mt) {
-// All media types that specify a charset parameter, either as a
-// required or an optional parameter.
-// NOTE: Up-to-date as of August 26, 2019
-if (mt.HasStructuredSuffix("xml") ||
- mt.getTopLevelType().equals("text") ||
- mt.getTypeAndSubType().equals("image/vnd.wap.wbmp")) {
-  return true;
-}
-if (mt.getTopLevelType().equals("application")) {
-return mt.getSubType().equals("vnd.uplanet.alert-wbxml") ||
-mt.getSubType().equals("vnd.wap.wmlscriptc") ||
-mt.getSubType().equals("xml-dtd") ||
-mt.getSubType().equals("vnd.picsel") ||
-mt.getSubType().equals("news-groupinfo") ||
-mt.getSubType().equals("ecmascript") ||
-mt.getSubType().equals("vnd.uplanet.cacheop-wbxml") ||
-mt.getSubType().equals("vnd.uplanet.bearer-choice") ||
-mt.getSubType().equals("vnd.wap.slc") ||
-mt.getSubType().equals("nss") ||
-mt.getSubType().equals("vnd.3gpp.mcdata-payload") ||
-mt.getSubType().equals("activity+json") ||
-mt.getSubType().equals("vnd.uplanet.list-wbxml") ||
-mt.getSubType().equals("vnd.3gpp.mcdata-signalling") ||
-mt.getSubType().equals("sgml-open-catalog") ||
-mt.getSubType().equals("smil") ||
-mt.getSubType().equals("vnd.uplanet.channel") ||
-mt.getSubType().equals("javascript") ||
-mt.getSubType().equals("vnd.syncml.dm+wbxml") ||
-mt.getSubType().equals("vnd.ah-barcode") ||
-mt.getSubType().equals("vnd.uplanet.alert") ||
-mt.getSubType().equals("vnd.wap.wbxml") ||
-mt.getSubType().equals("xml-external-parsed-entity") ||
-mt.getSubType().equals("vnd.uplanet.listcmd-wbxml") ||
-mt.getSubType().equals("vnd.uplanet.list") ||
-mt.getSubType().equals("vnd.uplanet.listcmd") ||
-mt.getSubType().equals("vnd.msign") ||
-mt.getSubType().equals("news-checkgroups") ||
-mt.getSubType().equals("fhir+json") ||
-mt.getSubType().equals("set-registration") ||
-mt.getSubType().equals("sql") ||
-mt.getSubType().equals("vnd.wap.sic") ||
-mt.getSubType().equals("prs.alvestrand.titrax-sheet") ||
-mt.getSubType().equals("vnd.uplanet.bearer-choice-wbxml") ||
-mt.getSubType().equals("vnd.wap.wmlc") ||
-mt.getSubType().equals("vnd.uplanet.channel-wbxml") ||
-mt.getSubType().equals("iotp") ||
-mt.getSubType().equals("vnd.uplanet.cacheop") ||
-mt.getSubType().equals("xml") ||
-mt.getSubType().equals("vnd.adobe.xfdf") ||
-mt.getSubType().equals("vnd.dpgraph");
-}
-return false;
-}
+    private static boolean DefinesCharsetParameter(MediaType mt) {
+      // All media types that specify a charset parameter, either as a
+      // required or an optional parameter.
+      // NOTE: Up-to-date as of August 26, 2019
+      if (mt.HasStructuredSuffix("xml") ||
+       mt.getTopLevelType().equals("text") ||
+       mt.getTypeAndSubType().equals("image/vnd.wap.wbmp")) {
+        return true;
+      }
+      if (mt.getTopLevelType().equals("application")) {
+        return mt.getSubType().equals("vnd.uplanet.alert-wbxml") ||
+        mt.getSubType().equals("vnd.wap.wmlscriptc") ||
+        mt.getSubType().equals("xml-dtd") ||
+        mt.getSubType().equals("vnd.picsel") ||
+        mt.getSubType().equals("news-groupinfo") ||
+        mt.getSubType().equals("ecmascript") ||
+        mt.getSubType().equals("vnd.uplanet.cacheop-wbxml") || mt.getSubType().equals("vnd.uplanet.bearer-choice") ||
+        mt.getSubType().equals("vnd.wap.slc") ||
+        mt.getSubType().equals("nss") ||
+        mt.getSubType().equals("vnd.3gpp.mcdata-payload") ||
+        mt.getSubType().equals("activity+json") ||
+        mt.getSubType().equals("vnd.uplanet.list-wbxml") ||
+        mt.getSubType().equals("vnd.3gpp.mcdata-signalling") ||
+        mt.getSubType().equals("sgml-open-catalog") ||
+        mt.getSubType().equals("smil") ||
+        mt.getSubType().equals("vnd.uplanet.channel") ||
+        mt.getSubType().equals("javascript") ||
+        mt.getSubType().equals("vnd.syncml.dm+wbxml") ||
+        mt.getSubType().equals("vnd.ah-barcode") ||
+        mt.getSubType().equals("vnd.uplanet.alert") ||
+        mt.getSubType().equals("vnd.wap.wbxml") ||
+        mt.getSubType().equals("xml-external-parsed-entity") || mt.getSubType().equals("vnd.uplanet.listcmd-wbxml") ||
+        mt.getSubType().equals("vnd.uplanet.list") ||
+        mt.getSubType().equals("vnd.uplanet.listcmd") ||
+        mt.getSubType().equals("vnd.msign") ||
+        mt.getSubType().equals("news-checkgroups") ||
+        mt.getSubType().equals("fhir+json") ||
+        mt.getSubType().equals("set-registration") ||
+        mt.getSubType().equals("sql") ||
+        mt.getSubType().equals("vnd.wap.sic") ||
+        mt.getSubType().equals("prs.alvestrand.titrax-sheet") ||
+        mt.getSubType().equals("vnd.uplanet.bearer-choice-wbxml") ||
+        mt.getSubType().equals("vnd.wap.wmlc") ||
+        mt.getSubType().equals("vnd.uplanet.channel-wbxml") ||
+        mt.getSubType().equals("iotp") ||
+        mt.getSubType().equals("vnd.uplanet.cacheop") ||
+        mt.getSubType().equals("xml") ||
+        mt.getSubType().equals("vnd.adobe.xfdf") ||
+        mt.getSubType().equals("vnd.dpgraph");
+      }
+      return false;
+    }
 
     private void GetBodyStrings(
        List<String> bodyStrings,
        List<MediaType> mediaTypes) {
-        if (this.getContentDisposition() != null &&
-           !this.getContentDisposition().isInline()) {
-         // Content-Disposition is present and other than inline; ignore.
-         // See also RFC 2183 sec. 2.8 and 2.9.
-         return;
-        }
-        MediaType mt = this.getContentType();
-        if (mt.isMultipart()) {
-          List<Message> parts = this.getParts();
-          if (mt.getSubType().equals("alternative")) {
-            // Navigate the parts in reverse order
-            for (var i = parts.size() - 1; i >= 0; --i) {
-              int oldCount = bodyStrings.size();
-              parts.get(i).GetBodyStrings(bodyStrings, mediaTypes);
-              if (oldCount != bodyStrings.size()) {
-                break;
-              }
-            }
-          } else {
-            // Any other multipart
-            for (int i = 0; i < parts.size(); ++i) {
-              parts.get(i).GetBodyStrings(bodyStrings, mediaTypes);
+      if (this.getContentDisposition() != null &&
+         !this.getContentDisposition().isInline()) {
+        // Content-Disposition is present and other than inline; ignore.
+        // See also RFC 2183 sec. 2.8 and 2.9.
+        return;
+      }
+      MediaType mt = this.getContentType();
+      if (mt.isMultipart()) {
+        List<Message> parts = this.getParts();
+        if (mt.getSubType().equals("alternative")) {
+          // Navigate the parts in reverse order
+          for (var i = parts.size() - 1; i >= 0; --i) {
+            int oldCount = bodyStrings.size();
+            parts.get(i).GetBodyStrings(bodyStrings, mediaTypes);
+            if (oldCount != bodyStrings.size()) {
+              break;
             }
           }
+        } else {
+          // Any other multipart
+          for (int i = 0; i < parts.size(); ++i) {
+            parts.get(i).GetBodyStrings(bodyStrings, mediaTypes);
+          }
         }
-        if (!DefinesCharsetParameter(this.getContentType())) {
-          // Nontext and no charset parameter defined
-          return;
-        }
-        String charsetName = this.getContentType().GetCharset();
-        ICharacterEncoding charset = GetEncoding(charsetName);
-        if (charset == null &&
-             this.getContentType().getTypeAndSubType().equals("text/html")) {
-           charsetName = GuessHtmlEncoding(this.body);
-           charset = Encodings.GetEncoding(charsetName);
-        }
-        if (charset != null) {
-          bodyStrings.add(Encodings.DecodeToString(
-            charset,
-            DataIO.ToReader(this.body)));
-          mediaTypes.add(this.getContentType());
-        }
+      }
+      if (!DefinesCharsetParameter(this.getContentType())) {
+        // Nontext and no charset parameter defined
+        return;
+      }
+      String charsetName = this.getContentType().GetCharset();
+      ICharacterEncoding charset = GetEncoding(charsetName);
+      if (charset == null && this.getContentType().getTypeAndSubType().equals("text/html")) {
+        charsetName = GuessHtmlEncoding(this.body);
+        charset = Encodings.GetEncoding(charsetName);
+      }
+      if (charset != null) {
+        bodyStrings.add(Encodings.DecodeToString(
+          charset,
+          DataIO.ToReader(this.body)));
+        mediaTypes.add(this.getContentType());
+      }
     }
 
     private String GetBodyStringNoThrow() {
-        List<String> bodyStrings = new ArrayList<String>();
-        List<MediaType> mediaTypes = new ArrayList<MediaType>();
-        this.GetBodyStrings(bodyStrings, mediaTypes);
-        if (bodyStrings.size() > 0) {
-          return bodyStrings.get(0);
-        } else {
-           return null;
-        }
+      List<String> bodyStrings = new ArrayList<String>();
+      List<MediaType> mediaTypes = new ArrayList<MediaType>();
+      this.GetBodyStrings(bodyStrings, mediaTypes);
+      if (bodyStrings.size() > 0) {
+        return bodyStrings.get(0);
+      } else {
+        return null;
+      }
     }
 
     private void AccumulateAttachments(
         List<Message> attachments,
         boolean root) {
-       if (this.getContentDisposition() != null &&
-          !this.getContentDisposition().isInline() && !root) {
-          attachments.add(this);
-          return;
-       }
-       MediaType mt = this.getContentType();
-       if (mt.getSubType().equals("alternative")) {
-          // Navigate the parts in reverse order
-          for (var i = this.parts.size() - 1; i >= 0; --i) {
-            if (this.GetBodyStringNoThrow() != null) {
-              this.parts.get(i).AccumulateAttachments(attachments, false);
-              break;
-            }
-          }
-       } else {
-          // Any other multipart
-          for (int i = 0; i < this.parts.size(); ++i) {
+      if (this.getContentDisposition() != null &&
+         !this.getContentDisposition().isInline() && !root) {
+        attachments.add(this);
+        return;
+      }
+      MediaType mt = this.getContentType();
+      if (mt.getSubType().equals("alternative")) {
+        // Navigate the parts in reverse order
+        for (var i = this.parts.size() - 1; i >= 0; --i) {
+          if (this.GetBodyStringNoThrow() != null) {
             this.parts.get(i).AccumulateAttachments(attachments, false);
+            break;
           }
-       }
+        }
+      } else {
+        // Any other multipart
+        for (int i = 0; i < this.parts.size(); ++i) {
+          this.parts.get(i).AccumulateAttachments(attachments, false);
+        }
+      }
     }
 
     /**
@@ -585,9 +580,9 @@ return false;
      * @return The return value is not documented yet.
      */
     public List<Message> GetAttachments() {
-       ArrayList<Message> list = new ArrayList<Message>();
-       this.AccumulateAttachments(list, true);
-       return list;
+      ArrayList<Message> list = new ArrayList<Message>();
+      this.AccumulateAttachments(list, true);
+      return list;
     }
 
     /**
@@ -607,13 +602,13 @@ return false;
      */
 
     public String GetBodyString() {
-        // TODO: Consider returning null rather than throwing an exception
-        // in public API
-        String str = this.GetBodyStringNoThrow();
-        if (str == null) {
-          throw new UnsupportedOperationException("No supported text to show");
-        }
-        return str;
+      // TODO: Consider returning null rather than throwing an exception
+      // in public API
+      String str = this.GetBodyStringNoThrow();
+      if (str == null) {
+        throw new UnsupportedOperationException("No supported text to show");
+      }
+      return str;
     }
 
     /**
@@ -999,21 +994,19 @@ return false;
         }
       }
       int byteIndex = 0;
-      int b1 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
+      int b1 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) & 0xff;
+      int b2 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) & 0xff;
+      if (b1 == 0xfe && b2 == 0xff) {
+        return "utf-16be";
+      }
+      if (b1 == 0xff && b2 == 0xfe) {
+        return "utf-16le";
+      }
+      int b3 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
 0xff;
-int b2 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
-0xff;
-if (b1 == 0xfe && b2 == 0xff) {
-          return "utf-16be";
-        }
-        if (b1 == 0xff && b2 == 0xfe) {
-          return "utf-16le";
-        }
-        int b3 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
-0xff;
-if (b1 == 0xef && b2 == 0xbb && b3 == 0xbf) {
-          return "utf-8";
-        }
+      if (b1 == 0xef && b2 == 0xbb && b3 == 0xbf) {
+        return "utf-8";
+      }
       byteIndex = 0;
       int maybeUtf8 = 0;
       // Check for UTF-8
@@ -1955,9 +1948,7 @@ ms = new java.io.ByteArrayOutputStream();
             }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
         } catch (IOException ex) {
@@ -2095,11 +2086,16 @@ ext.equals(".txt")) {
      *  message, it becomes a "multipart/mixed" message with the current
      * body converted to an inline body part.<p> The following example
      * (written in C# for the.NET version) is an extension method that adds
-     * an attachment from a byte array to a message. <pre>public static
-     * Message AddAttachmentFromBytes(this Message msg, byte[] bytes,
-     * MediaType mediaType) { using (MemoryStream fs = new
-     * MemoryStream(bytes)) { return msg.AddAttachment(fs, mediaType); }
-     * }</pre> . </p>
+     * an attachment from a byte array to a message. <pre>public static Message AddAttachmentFromBytes(Message msg, byte[] bytes, MediaType mediaType) { {
+java.io.ByteArrayInputStream fs = null;
+try {
+fs = new java.io.ByteArrayInputStream(bytes);
+ return msg.AddAttachment(fs, mediaType);
+}
+finally {
+try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
+}
+} }</pre> . </p>
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
@@ -2176,19 +2172,14 @@ ext.equals(".txt")) {
      *  becomes a "multipart/mixed" message with the current body converted
      * to an inline body part.<p> The following example (written in C# for
      * the.NET version) is an extension method that adds an inline body
-     * part from a byte array to a message. <pre>public static Message
-     * AddInlineFromBytes(this Message msg, byte[] bytes, MediaType
-     * mediaType) { {
+     * part from a byte array to a message. <pre>public static Message AddInlineFromBytes(Message msg, byte[] bytes, MediaType mediaType) { {
 java.io.ByteArrayInputStream fs = null;
 try {
 fs = new java.io.ByteArrayInputStream(bytes);
-
-     * return msg.AddInline(fs, mediaType);
+ return msg.AddInline(fs, mediaType);
 }
 finally {
-try { if (fs != null) {
- fs.close();
- } } catch (java.io.IOException ex) {}
+try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 }
 } }</pre> . </p>
      * @param inputStream A readable data stream.
@@ -4208,11 +4199,11 @@ name.length() >= 2 &&
           this.transferEncoding == EncodingBase64) {
         if (ctype.isMultipart() || (ctype.getTopLevelType().equals("message") && !ctype.getSubType().equals("global") && !ctype.getSubType().equals("global-headers") && !ctype.getSubType().equals(
     "global-disposition-notification") && !ctype.getSubType().equals("global-delivery-status"))) {
-            // CLARIFICATION: Treat quoted-printable and base64
-            // as "unrecognized" encodings in multipart and most
-            // message media types, for the purpose of treating the
-            // content type as "application/octet-stream".
-            ctype = MediaType.ApplicationOctetStream;
+          // CLARIFICATION: Treat quoted-printable and base64
+          // as "unrecognized" encodings in multipart and most
+          // message media types, for the purpose of treating the
+          // content type as "application/octet-stream".
+          ctype = MediaType.ApplicationOctetStream;
         }
       }
       // Update content type as appropriate

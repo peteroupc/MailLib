@@ -1415,14 +1415,12 @@ namespace PeterO.Mail {
         parameters) ? new MediaType(topLevelType, subType, parameters) : null;
     }
 
-#if CODE_ANALYSIS
+    /// <summary>Specifies the media type "text/plain" and the "charset"
+    /// parameter "US-ASCII", used for plain text data.</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-    Justification="This instance is immutable")]
-#endif
-    /// <summary>Specifies the media type "text/plain" and the "charset"
-    /// parameter "US-ASCII", used for plain text data.</summary>
+      Justification = "This instance is immutable")]
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
         "text",
@@ -1447,14 +1445,12 @@ namespace PeterO.Mail {
         "charset",
         "utf-8").ToMediaType();
 
-#if CODE_ANALYSIS
+    /// <summary>Specifies the media type "message/rfc822", used for
+    /// Internet mail messages.</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-    Justification="This instance is immutable")]
-#endif
-    /// <summary>Specifies the media type "message/rfc822", used for
-    /// Internet mail messages.</summary>
+      Justification = "This instance is immutable")]
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 

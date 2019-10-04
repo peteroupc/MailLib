@@ -12,6 +12,7 @@ using PeterO;
 namespace PeterO.Mail {
   internal sealed class HeaderEncoder {
     private const string HexChars = "0123456789ABCDEF";
+    private const int EncodedWordMaxLength = 75;
     private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
             "jklmnopqrstuvwxyz0123456789+/";
 
@@ -369,8 +370,7 @@ HeaderParserUtility.ParseQuotedStringCore(
       int currentWordLength,
       int unitLength,
       bool writeSpace) {
-      // 75 is max. allowed length of an encoded word
-      var effectiveMaxLength = 75;
+      var effectiveMaxLength = EncodedWordMaxLength;
       if (this.GetMaxLineLength() >= 0) {
         effectiveMaxLength = Math.Min(
          effectiveMaxLength,

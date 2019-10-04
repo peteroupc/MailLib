@@ -12,8 +12,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (string)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -21,8 +21,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (Address)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -30,8 +30,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress("x at example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -39,8 +39,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress("x"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -48,8 +48,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress("x@"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -57,8 +57,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress("@example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -66,8 +66,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress("example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -75,8 +75,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new Address((string)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -84,8 +84,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress(String.Empty));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -108,14 +108,14 @@ namespace MailLibTest {
         Assert.AreEqual(
           "test@EXAMPLE.COM",
           stringTemp);
-}
+      }
       na = new NamedAddress("Me <test@EXAMPLE.COM>");
       {
         string stringTemp = na.ToString();
         Assert.AreEqual(
   "Me <test@EXAMPLE.COM>",
   stringTemp);
-}
+      }
     }
 
     [Test]
@@ -150,13 +150,13 @@ namespace MailLibTest {
         Assert.AreEqual(
           "me@example.com",
           stringTemp);
-}
+      }
       {
         string stringTemp = na.ToString();
         Assert.AreEqual(
           "me@example.com",
           stringTemp);
-}
+      }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.AreEqual("John's Office", na.Name);
       na = new NamedAddress("<me@example.com>");
@@ -209,13 +209,13 @@ namespace MailLibTest {
         Assert.AreEqual(
           "me@example.com",
           stringTemp);
-}
+      }
       {
         string stringTemp = na.ToString();
         Assert.AreEqual(
   "Me <me@example.com>",
   stringTemp);
-}
+      }
       //------------
       na = new NamedAddress("Group: \"Me\" <me@example.com>;");
       Assert.IsTrue(na.IsGroup);
@@ -228,7 +228,7 @@ namespace MailLibTest {
         Assert.AreEqual(
           "me@example.com",
           stringTemp);
-}
+      }
       na = new
   NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
       Assert.IsTrue(na.IsGroup);
@@ -237,7 +237,7 @@ namespace MailLibTest {
         const string ValueS1 =
         "Group: Me <me@example.com>, Fred <fred@example.com>;";
         Assert.AreEqual(ValueS1, stringTemp);
-}
+      }
       groupAddr = na.GroupAddresses;
       Assert.AreEqual(2, groupAddr.Count);
       na = groupAddr[0];
@@ -247,7 +247,7 @@ namespace MailLibTest {
         Assert.AreEqual(
           "me@example.com",
           stringTemp);
-}
+      }
       na = groupAddr[1];
       Assert.AreEqual("Fred", na.Name);
       {
@@ -255,7 +255,7 @@ namespace MailLibTest {
         Assert.AreEqual(
           "fred@example.com",
           stringTemp);
-}
+      }
       //------------
       na = new
         NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
@@ -275,7 +275,7 @@ namespace MailLibTest {
         Assert.AreEqual(
           "me@example.com",
           stringTemp);
-}
+      }
       na = groupAddr[1];
       Assert.AreEqual("somebody@example.com", na.Name);
       {
@@ -283,7 +283,7 @@ namespace MailLibTest {
         Assert.AreEqual(
           "somebody@example.com",
           stringTemp);
-}
+      }
     }
     [Test]
     public void TestDisplayName() {

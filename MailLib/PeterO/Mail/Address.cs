@@ -148,7 +148,9 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.Address'/> class.</summary>
-    /// <param name='addressValue'>An email address.</param>
+    /// <param name='addressValue'>An email address. This parameter must
+    /// contain an at-sign, and may not contain extraneous whitespace, and
+    /// comments enclosed in parentheses are also not allowed.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addressValue'/> is null.</exception>
     /// <exception cref='ArgumentException'>AddressValue is empty.; Address

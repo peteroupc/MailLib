@@ -431,160 +431,167 @@ namespace PeterO.Mail {
     }
 
     private static ICharacterEncoding GetEncoding(string charset) {
-        ICharacterEncoding enc = Encodings.GetEncoding(
-          charset,
-          true);
-        if (enc == null) {
-          if (charset.Equals("gb2312",
-              StringComparison.Ordinal)) {
-            // HACK
-            enc = Encodings.GetEncoding("gb2312", false);
-          } else {
-            return null;
-          }
+      ICharacterEncoding enc = Encodings.GetEncoding(
+        charset,
+        true);
+      if (enc == null) {
+        if (charset.Equals("gb2312",
+            StringComparison.Ordinal)) {
+          // HACK
+          enc = Encodings.GetEncoding("gb2312", false);
+        } else {
+          return null;
         }
-        return enc;
+      }
+      return enc;
     }
 
-private static bool DefinesCharsetParameter(MediaType mt) {
-// All media types that specify a charset parameter, either as a
-// required or an optional parameter.
-// NOTE: Up-to-date as of August 26, 2019
-if (mt.HasStructuredSuffix("xml") ||
- mt.TopLevelType.Equals("text", StringComparison.Ordinal) ||
- mt.TypeAndSubType.Equals("image/vnd.wap.wbmp", StringComparison.Ordinal)) {
-  return true;
-}
-if (mt.TopLevelType.Equals("application", StringComparison.Ordinal)) {
-return mt.SubType.Equals("vnd.uplanet.alert-wbxml", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.wap.wmlscriptc", StringComparison.Ordinal) ||
-mt.SubType.Equals("xml-dtd", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.picsel", StringComparison.Ordinal) ||
-mt.SubType.Equals("news-groupinfo", StringComparison.Ordinal) ||
-mt.SubType.Equals("ecmascript", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.cacheop-wbxml", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.bearer-choice", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.wap.slc", StringComparison.Ordinal) ||
-mt.SubType.Equals("nss", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.3gpp.mcdata-payload", StringComparison.Ordinal) ||
-mt.SubType.Equals("activity+json", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.list-wbxml", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.3gpp.mcdata-signalling", StringComparison.Ordinal) ||
-mt.SubType.Equals("sgml-open-catalog", StringComparison.Ordinal) ||
-mt.SubType.Equals("smil", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.channel", StringComparison.Ordinal) ||
-mt.SubType.Equals("javascript", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.syncml.dm+wbxml", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.ah-barcode", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.alert", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.wap.wbxml", StringComparison.Ordinal) ||
-mt.SubType.Equals("xml-external-parsed-entity", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.listcmd-wbxml", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.list", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.listcmd", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.msign", StringComparison.Ordinal) ||
-mt.SubType.Equals("news-checkgroups", StringComparison.Ordinal) ||
-mt.SubType.Equals("fhir+json", StringComparison.Ordinal) ||
-mt.SubType.Equals("set-registration", StringComparison.Ordinal) ||
-mt.SubType.Equals("sql", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.wap.sic", StringComparison.Ordinal) ||
-mt.SubType.Equals("prs.alvestrand.titrax-sheet", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.bearer-choice-wbxml",
+    private static bool DefinesCharsetParameter(MediaType mt) {
+      // All media types that specify a charset parameter, either as a
+      // required or an optional parameter.
+      // NOTE: Up-to-date as of August 26, 2019
+      if (mt.HasStructuredSuffix("xml") ||
+       mt.TopLevelType.Equals("text", StringComparison.Ordinal) ||
+       mt.TypeAndSubType.Equals("image/vnd.wap.wbmp",
+  StringComparison.Ordinal)) {
+        return true;
+      }
+      if (mt.TopLevelType.Equals("application", StringComparison.Ordinal)) {
+        return mt.SubType.Equals("vnd.uplanet.alert-wbxml",
   StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.wap.wmlc", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.channel-wbxml", StringComparison.Ordinal) ||
-mt.SubType.Equals("iotp", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.uplanet.cacheop", StringComparison.Ordinal) ||
-mt.SubType.Equals("xml", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.adobe.xfdf", StringComparison.Ordinal) ||
-mt.SubType.Equals("vnd.dpgraph", StringComparison.Ordinal);
-}
-return false;
-}
+        mt.SubType.Equals("vnd.wap.wmlscriptc", StringComparison.Ordinal) ||
+        mt.SubType.Equals("xml-dtd", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.picsel", StringComparison.Ordinal) ||
+        mt.SubType.Equals("news-groupinfo", StringComparison.Ordinal) ||
+        mt.SubType.Equals("ecmascript", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.cacheop-wbxml",
+  StringComparison.Ordinal) || mt.SubType.Equals("vnd.uplanet.bearer-choice",
+  StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.wap.slc", StringComparison.Ordinal) ||
+        mt.SubType.Equals("nss", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.3gpp.mcdata-payload",
+  StringComparison.Ordinal) ||
+        mt.SubType.Equals("activity+json", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.list-wbxml", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.3gpp.mcdata-signalling",
+  StringComparison.Ordinal) ||
+        mt.SubType.Equals("sgml-open-catalog", StringComparison.Ordinal) ||
+        mt.SubType.Equals("smil", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.channel", StringComparison.Ordinal) ||
+        mt.SubType.Equals("javascript", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.syncml.dm+wbxml", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.ah-barcode", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.alert", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.wap.wbxml", StringComparison.Ordinal) ||
+        mt.SubType.Equals("xml-external-parsed-entity",
+  StringComparison.Ordinal) || mt.SubType.Equals("vnd.uplanet.listcmd-wbxml",
+  StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.list", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.listcmd", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.msign", StringComparison.Ordinal) ||
+        mt.SubType.Equals("news-checkgroups", StringComparison.Ordinal) ||
+        mt.SubType.Equals("fhir+json", StringComparison.Ordinal) ||
+        mt.SubType.Equals("set-registration", StringComparison.Ordinal) ||
+        mt.SubType.Equals("sql", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.wap.sic", StringComparison.Ordinal) ||
+        mt.SubType.Equals("prs.alvestrand.titrax-sheet",
+  StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.bearer-choice-wbxml",
+          StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.wap.wmlc", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.channel-wbxml",
+  StringComparison.Ordinal) ||
+        mt.SubType.Equals("iotp", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.uplanet.cacheop", StringComparison.Ordinal) ||
+        mt.SubType.Equals("xml", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.adobe.xfdf", StringComparison.Ordinal) ||
+        mt.SubType.Equals("vnd.dpgraph", StringComparison.Ordinal);
+      }
+      return false;
+    }
 
     private void GetBodyStrings(
        IList<string> bodyStrings,
        IList<MediaType> mediaTypes) {
-        if (this.ContentDisposition != null &&
-           !this.ContentDisposition.IsInline) {
-         // Content-Disposition is present and other than inline; ignore.
-         // See also RFC 2183 sec. 2.8 and 2.9.
-         return;
-        }
-        MediaType mt = this.ContentType;
-        if (mt.IsMultipart) {
-          IList<Message> parts = this.Parts;
-          if (mt.SubType.Equals("alternative",
-            StringComparison.Ordinal)) {
-            // Navigate the parts in reverse order
-            for (var i = parts.Count - 1; i >= 0; --i) {
-              int oldCount = bodyStrings.Count;
-              parts[i].GetBodyStrings(bodyStrings, mediaTypes);
-              if (oldCount != bodyStrings.Count) {
-                break;
-              }
-            }
-          } else {
-            // Any other multipart
-            for (var i = 0; i < parts.Count; ++i) {
-              parts[i].GetBodyStrings(bodyStrings, mediaTypes);
+      if (this.ContentDisposition != null &&
+         !this.ContentDisposition.IsInline) {
+        // Content-Disposition is present and other than inline; ignore.
+        // See also RFC 2183 sec. 2.8 and 2.9.
+        return;
+      }
+      MediaType mt = this.ContentType;
+      if (mt.IsMultipart) {
+        IList<Message> parts = this.Parts;
+        if (mt.SubType.Equals("alternative",
+          StringComparison.Ordinal)) {
+          // Navigate the parts in reverse order
+          for (var i = parts.Count - 1; i >= 0; --i) {
+            int oldCount = bodyStrings.Count;
+            parts[i].GetBodyStrings(bodyStrings, mediaTypes);
+            if (oldCount != bodyStrings.Count) {
+              break;
             }
           }
+        } else {
+          // Any other multipart
+          for (var i = 0; i < parts.Count; ++i) {
+            parts[i].GetBodyStrings(bodyStrings, mediaTypes);
+          }
         }
-        if (!DefinesCharsetParameter(this.ContentType)) {
-          // Nontext and no charset parameter defined
-          return;
-        }
-        string charsetName = this.ContentType.GetCharset();
-        ICharacterEncoding charset = GetEncoding(charsetName);
-        if (charset == null &&
-             this.ContentType.TypeAndSubType.Equals("text/html",
+      }
+      if (!DefinesCharsetParameter(this.ContentType)) {
+        // Nontext and no charset parameter defined
+        return;
+      }
+      string charsetName = this.ContentType.GetCharset();
+      ICharacterEncoding charset = GetEncoding(charsetName);
+      if (charset == null && this.ContentType.TypeAndSubType.Equals("text/html",
   StringComparison.Ordinal)) {
-           charsetName = GuessHtmlEncoding(this.body);
-           charset = Encodings.GetEncoding(charsetName);
-        }
-        if (charset != null) {
-          bodyStrings.Add(Encodings.DecodeToString(
-            charset,
-            DataIO.ToReader(this.body)));
-          mediaTypes.Add(this.ContentType);
-        }
+        charsetName = GuessHtmlEncoding(this.body);
+        charset = Encodings.GetEncoding(charsetName);
+      }
+      if (charset != null) {
+        bodyStrings.Add(Encodings.DecodeToString(
+          charset,
+          DataIO.ToReader(this.body)));
+        mediaTypes.Add(this.ContentType);
+      }
     }
 
     private string GetBodyStringNoThrow() {
-        IList<string> bodyStrings = new List<string>();
-        IList<MediaType> mediaTypes = new List<MediaType>();
-        this.GetBodyStrings(bodyStrings, mediaTypes);
-        if (bodyStrings.Count > 0) {
-          return bodyStrings[0];
-        } else {
-           return null;
-        }
+      IList<string> bodyStrings = new List<string>();
+      IList<MediaType> mediaTypes = new List<MediaType>();
+      this.GetBodyStrings(bodyStrings, mediaTypes);
+      if (bodyStrings.Count > 0) {
+        return bodyStrings[0];
+      } else {
+        return null;
+      }
     }
 
     private void AccumulateAttachments(
         IList<Message> attachments,
         bool root) {
-       if (this.ContentDisposition != null &&
-          !this.ContentDisposition.IsInline && !root) {
-          attachments.Add(this);
-          return;
-       }
-       MediaType mt = this.ContentType;
-       if (mt.SubType.Equals("alternative", StringComparison.Ordinal)) {
-          // Navigate the parts in reverse order
-          for (var i = this.parts.Count - 1; i >= 0; --i) {
-            if (this.GetBodyStringNoThrow() != null) {
-              this.parts[i].AccumulateAttachments(attachments, false);
-              break;
-            }
-          }
-       } else {
-          // Any other multipart
-          for (var i = 0; i < this.parts.Count; ++i) {
+      if (this.ContentDisposition != null &&
+         !this.ContentDisposition.IsInline && !root) {
+        attachments.Add(this);
+        return;
+      }
+      MediaType mt = this.ContentType;
+      if (mt.SubType.Equals("alternative", StringComparison.Ordinal)) {
+        // Navigate the parts in reverse order
+        for (var i = this.parts.Count - 1; i >= 0; --i) {
+          if (this.GetBodyStringNoThrow() != null) {
             this.parts[i].AccumulateAttachments(attachments, false);
+            break;
           }
-       }
+        }
+      } else {
+        // Any other multipart
+        for (var i = 0; i < this.parts.Count; ++i) {
+          this.parts[i].AccumulateAttachments(attachments, false);
+        }
+      }
     }
 
     /// <summary>Gets a list of descendant body parts of this message that
@@ -595,9 +602,9 @@ return false;
     /// just defined.</summary>
     /// <returns>The return value is not documented yet.</returns>
     public IList<Message> GetAttachments() {
-       var list = new List<Message>();
-       this.AccumulateAttachments(list, true);
-       return list;
+      var list = new List<Message>();
+      this.AccumulateAttachments(list, true);
+      return list;
     }
 
     /// <summary>Gets the body of this message as a text string. If this
@@ -621,13 +628,13 @@ return false;
     Justification="This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
 #endif
     public string GetBodyString() {
-        // TODO: Consider returning null rather than throwing an exception
-        // in public API
-        string str = this.GetBodyStringNoThrow();
-        if (str == null) {
-          throw new NotSupportedException("No supported text to show");
-        }
-        return str;
+      // TODO: Consider returning null rather than throwing an exception
+      // in public API
+      string str = this.GetBodyStringNoThrow();
+      if (str == null) {
+        throw new NotSupportedException("No supported text to show");
+      }
+      return str;
     }
 
     /// <summary>Gets a list of addresses found in the CC header field or
@@ -1018,21 +1025,19 @@ return false;
         }
       }
       var byteIndex = 0;
-      int b1 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) &
+      int b1 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) & 0xff;
+      int b2 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) & 0xff;
+      if (b1 == 0xfe && b2 == 0xff) {
+        return "utf-16be";
+      }
+      if (b1 == 0xff && b2 == 0xfe) {
+        return "utf-16le";
+      }
+      int b3 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) &
 0xff;
-int b2 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) &
-0xff;
-if (b1 == 0xfe && b2 == 0xff) {
-          return "utf-16be";
-        }
-        if (b1 == 0xff && b2 == 0xfe) {
-          return "utf-16le";
-        }
-        int b3 = byteIndex >= data.Length ? -1 : ((int)data[byteIndex++]) &
-0xff;
-if (b1 == 0xef && b2 == 0xbb && b3 == 0xbf) {
-          return "utf-8";
-        }
+      if (b1 == 0xef && b2 == 0xbb && b3 == 0xbf) {
+        return "utf-8";
+      }
       byteIndex = 0;
       var maybeUtf8 = 0;
       // Check for UTF-8
@@ -4338,11 +4343,11 @@ NamedAddress(mhs).Address);
     "global-disposition-notification",
     StringComparison.Ordinal) && !ctype.SubType.Equals("global-delivery-status",
   StringComparison.Ordinal))) {
-            // CLARIFICATION: Treat quoted-printable and base64
-            // as "unrecognized" encodings in multipart and most
-            // message media types, for the purpose of treating the
-            // content type as "application/octet-stream".
-            ctype = MediaType.ApplicationOctetStream;
+          // CLARIFICATION: Treat quoted-printable and base64
+          // as "unrecognized" encodings in multipart and most
+          // message media types, for the purpose of treating the
+          // content type as "application/octet-stream".
+          ctype = MediaType.ApplicationOctetStream;
         }
       }
       // Update content type as appropriate

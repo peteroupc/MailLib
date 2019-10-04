@@ -149,7 +149,9 @@ import com.upokecenter.text.*;
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.Address}
      * class.
-     * @param addressValue An email address.
+     * @param addressValue An email address. This parameter must contain an
+     * at-sign, and may not contain extraneous whitespace, and comments
+     * enclosed in parentheses are also not allowed.
      * @throws NullPointerException The parameter {@code addressValue} is null.
      * @throws IllegalArgumentException AddressValue is empty.; Address doesn't contain a
      * '@' sign; Invalid local part; Expected '@' sign after local part;

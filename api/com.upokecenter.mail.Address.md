@@ -35,7 +35,9 @@ Initializes a new instance of the <code>Address</code>
 
 **Parameters:**
 
-* <code>addressValue</code> - An email address.
+* <code>addressValue</code> - An email address. This parameter must contain an
+ at-sign, and may not contain extraneous whitespace, and comments
+ enclosed in parentheses are also not allowed.
 
 **Throws:**
 
@@ -52,7 +54,9 @@ Initializes a new instance of the <code>Address</code>
 
 **Parameters:**
 
-* <code>addressValue</code> - An email address.
+* <code>addressValue</code> - An email address. This parameter must contain an
+ at-sign, and may not contain extraneous whitespace, and comments
+ enclosed in parentheses are also not allowed.
 
 **Throws:**
 
