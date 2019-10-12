@@ -80,10 +80,10 @@ Assert.Fail("Should have failed");
     public void TestSetParameter() {
       var db = new DispositionBuilder().SetParameter("a", "b");
       {
-string stringTemp = db.ToDisposition().GetParameter("a");
-Assert.AreEqual(
-  "b",
-  stringTemp);
+        string stringTemp = db.ToDisposition().GetParameter("a");
+        Assert.AreEqual(
+          "b",
+          stringTemp);
 }
       db.SetParameter("a", String.Empty);
       Assert.AreEqual(String.Empty, db.ToDisposition().GetParameter("a"));
@@ -158,10 +158,10 @@ throw new InvalidOperationException(String.Empty, ex);
       disp.SetDispositionType("attachment");
       disp.SetParameter("a", "b");
       {
-string stringTemp = disp.ToString();
-Assert.AreEqual(
-  "attachment;a=b",
-  stringTemp);
+        string stringTemp = disp.ToString();
+        Assert.AreEqual(
+          "attachment;a=b",
+          stringTemp);
 }
     }
   }

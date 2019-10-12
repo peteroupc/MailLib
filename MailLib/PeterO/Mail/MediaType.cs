@@ -27,7 +27,7 @@ namespace PeterO.Mail {
   /// Multipurpose Internet Mail Extensions, the standard that introduced
   /// media types.</para>
   /// <para>This type is immutable, meaning its values can't be changed
-  /// once it' s created. To create a changeable media type object, use
+  /// once it's created. To create a changeable media type object, use
   /// the MediaTypeBuilder class.</para>
   /// <para><b>Note:</b> According to RFC 2049, unrecognized subtypes of
   /// the top-level type <c>multipart</c> must be treated as
@@ -1432,8 +1432,9 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-    Justification="This instance is immutable")]
+      Justification="This instance is immutable")]
 #endif
+
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "utf-8", used for plain text data that may contain
     /// characters outside the basic Latin range (U+0000 to
@@ -1458,8 +1459,9 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-    Justification="This instance is immutable")]
+      Justification="This instance is immutable")]
 #endif
+
     /// <summary>Specifies the media type "application/octet-stream", used
     /// for arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =

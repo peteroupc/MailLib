@@ -35,10 +35,10 @@ namespace MailLibTest {
       var builder = new MediaTypeBuilder();
       builder.SetParameter("a", "b");
       {
-string stringTemp = builder.ToMediaType().GetParameter("a");
-Assert.AreEqual(
-  "b",
-  stringTemp);
+        string stringTemp = builder.ToMediaType().GetParameter("a");
+        Assert.AreEqual(
+          "b",
+          stringTemp);
 }
       builder.SetParameter("a", String.Empty);
       Assert.AreEqual(String.Empty, builder.ToMediaType().GetParameter("a"));

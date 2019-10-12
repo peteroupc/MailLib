@@ -38,8 +38,8 @@ namespace PeterO.Text {
 
     public PartialListCharacterInput(IList<int> ilist) {
       if (ilist == null) {
-  throw new ArgumentNullException(nameof(ilist));
-}
+        throw new ArgumentNullException(nameof(ilist));
+      }
       this.ilist = ilist;
       this.pos = 0;
       this.endPos = ilist.Count;

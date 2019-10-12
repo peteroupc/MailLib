@@ -51,7 +51,7 @@ Version 0.14.0:
     <EmbeddedResource Condition=' &apos;$(EnableDefaultEmbeddedResourceItems)&apos; == &apos;true&apos; ' Update='PeterO.Text.Encoders.AppResources.resx'>
       <LogicalName>PeterO.Text.Encoders.AppResources.resources</LogicalName>
     </EmbeddedResource>
-  <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.1.118'/><AdditionalFiles Include='stylecop.json'/><PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers' PrivateAssets='All' Version='2.9.5'/><PackageReference Include='PeterO.DataUtilities' Version='1.0.0'/>
+  <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.1.118'/><AdditionalFiles Include='stylecop.json'/><PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers' PrivateAssets='All' Version='2.9.6'/><PackageReference Include='PeterO.DataUtilities' Version='1.0.0'/>
 <PackageReference Include='PeterO.URIUtility' Version='1.0.0'/>
 </ItemGroup>
   <ItemGroup>

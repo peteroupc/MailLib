@@ -63,19 +63,19 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type.
 * <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name.
 * <code>[AddInline(System.IO.Stream, string)](#AddInline_System_IO_Stream_string)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given file name.
-* <code>[BccAddresses](#BccAddresses)</code> - Gets a list of addresses found in the BCC header field or fields.
-* <code>[BodyString](#BodyString)</code> - Gets the body of this message as a text string.
-* <code>[CCAddresses](#CCAddresses)</code> - Gets a list of addresses found in the CC header field or fields.
+* <code>[BccAddresses](#BccAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;Bcc&#x22;) instead.
+* <code>[BodyString](#BodyString)</code> - <b>Deprecated:</b> Use GetBodyString() instead.
+* <code>[CCAddresses](#CCAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;Cc&#x22;) instead.
 * <code>[ClearHeaders()](#ClearHeaders)</code> - Deletes all header fields in this message.
 * <code>[ContentDisposition](#ContentDisposition)</code> - Gets or sets this message's content disposition.
 * <code>[ContentType](#ContentType)</code> - Gets or sets this message's media type.
 * <code>[DecodeHeaderValue(string, string)](#DecodeHeaderValue_string_string)</code> - Decodes RFC 2047 encoded words from the given header field value and returns a string with those words decoded.
 * <code>[ExtractHeader(byte[], string)](#ExtractHeader_byte_string)</code> - Extracts the value of a header field from a byte array representing an email message.
 * <code>[FileName](#FileName)</code> - Gets a file name suggested by this message for saving the message's body to a file.
-* <code>[FromAddresses](#FromAddresses)</code> - Gets a list of addresses found in the From header field or fields.
+* <code>[FromAddresses](#FromAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;From&#x22;) instead.
 * <code>[FromMailtoUri(string)](#FromMailtoUri_string)</code> - Creates a message object from a MailTo URI (uniform resource identifier).
 * <code>[FromMailtoUri(System.Uri)](#FromMailtoUri_System_Uri)</code> - Creates a message object from a MailTo URI (uniform resource identifier) in the form of a URI object.
-* <code>[FromMailtoUrl(string)](#FromMailtoUrl_string)</code> - Creates a message object from a MailTo URI (uniform resource identifier).
+* <code>[FromMailtoUrl(string)](#FromMailtoUrl_string)</code> - <b>Deprecated:</b> Renamed to FromMailtoUri.
 * <code>[Generate()](#Generate)</code> - Generates this message's data in text form.
 * <code>[GenerateBytes()](#GenerateBytes)</code> - Generates this message's data as a byte array, using the same algorithm as the Generate method.
 * <code>[GetAddresses(string)](#GetAddresses_string)</code> - Gets a list of addresses contained in the header fields with the given name in this message.
@@ -108,9 +108,9 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[SetTextAndMarkdown(string, string)](#SetTextAndMarkdown_string_string)</code> - Sets the body of this message to a multipart body with plain text, Markdown, and Hypertext Markup Language (HTML) versions of the same message.
 * <code>[SetTextBody(string)](#SetTextBody_string)</code> - Sets the body of this message to the specified plain text string.
 * <code>[Subject](#Subject)</code> - Gets or sets this message's subject.
-* <code>[ToAddresses](#ToAddresses)</code> - Gets a list of addresses found in the To header field or fields.
+* <code>[ToAddresses](#ToAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;To&#x22;) instead.
 * <code>[ToMailtoUri()](#ToMailtoUri)</code> - Generates a MailTo URI (uniform resource identifier) corresponding to this message.
-* <code>[ToMailtoUrl()](#ToMailtoUrl)</code> - Generates a MailTo URI (uniform resource identifier) corresponding to this message.
+* <code>[ToMailtoUrl()](#ToMailtoUrl)</code> - <b>Deprecated:</b> Renamed to ToMailtoUri.
 
 <a id="Void_ctor_Byte"></a>
 ### Message Constructor

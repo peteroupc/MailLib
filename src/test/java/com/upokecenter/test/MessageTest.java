@@ -380,9 +380,7 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
           }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
         for (int phase = 0; phase < 12; ++phase) {
@@ -438,9 +436,7 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
             Assert.assertEquals(stringPart, msg.getParts().get(1).GetBodyString());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
         }

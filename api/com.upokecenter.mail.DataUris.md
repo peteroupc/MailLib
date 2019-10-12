@@ -4,9 +4,7 @@
 
 Contains methods for parsing and generating Data URIs (uniform resource
  identifiers). Data URIs are described in RFC 2397. Examples for Data
- URIs follow. <pre>data:, hello%20world</pre>
- <pre>data:text/markdown, hello%20world</pre>
- <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
+ URIs follow. <pre>data:, hello%20world</pre> <pre>data:text/markdown, hello%20world</pre> <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
 
 ## Methods
 

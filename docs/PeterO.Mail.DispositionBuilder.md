@@ -6,8 +6,8 @@ A mutable data type that allows a content disposition to be built.
 
 ### Member Summary
 * <code>[DispositionType](#DispositionType)</code> - Gets or sets this value's disposition type, such as "inline" or "attachment".
-* <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
-* <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type.
+* <code>[IsMultipart](#IsMultipart)</code> - <b>Deprecated:</b> Irrelevant for content dispositions; will be removed in the future.
+* <code>[IsText](#IsText)</code> - <b>Deprecated:</b> Irrelevant for content dispositions; will be removed in the future.
 * <code>[RemoveParameter(string)](#RemoveParameter_string)</code> - Removes a parameter from this content disposition.
 * <code>[SetDispositionType(string)](#SetDispositionType_string)</code> - Sets the disposition type, such as "inline".
 * <code>[SetParameter(string, string)](#SetParameter_string_string)</code> - Sets a parameter of this content disposition.

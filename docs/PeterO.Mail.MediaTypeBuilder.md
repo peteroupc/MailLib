@@ -5,8 +5,8 @@
 A mutable media type object.
 
 ### Member Summary
-* <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
-* <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type.
+* <code>[IsMultipart](#IsMultipart)</code> - <b>Deprecated:</b> Instead of using this property, use the TopLevelType property and compare the result with the exact string 'multipart'.
+* <code>[IsText](#IsText)</code> - <b>Deprecated:</b> Instead of using this property, use the TopLevelType property and compare the result with the exact string 'text'.
 * <code>[RemoveParameter(string)](#RemoveParameter_string)</code> - Removes a parameter from this builder object.
 * <code>[SetParameter(string, string)](#SetParameter_string_string)</code> - Sets a parameter's name and value for this media type.
 * <code>[SetSubType(string)](#SetSubType_string)</code> - Sets this media type's subtype, such as "plain" or "xml" .

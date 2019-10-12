@@ -81,9 +81,9 @@ Assert.fail("Should have failed");
       DispositionBuilder db = new DispositionBuilder().SetParameter("a", "b");
       {
         String stringTemp = db.ToDisposition().GetParameter("a");
-Assert.assertEquals(
-  "b",
-  stringTemp);
+        Assert.assertEquals(
+          "b",
+          stringTemp);
 }
       db.SetParameter("a", "");
       Assert.assertEquals("", db.ToDisposition().GetParameter("a"));
@@ -159,9 +159,9 @@ throw new IllegalStateException("", ex);
       disp.SetParameter("a", "b");
       {
         String stringTemp = disp.toString();
-Assert.assertEquals(
-  "attachment;a=b",
-  stringTemp);
+        Assert.assertEquals(
+          "attachment;a=b",
+          stringTemp);
 }
     }
   }

@@ -50,8 +50,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       }
       for (int i = 0; i < listA.size(); ++i) {
         if (!(((listA.get(i)) == null) ? ((listB.get(i)) == null) : (listA.get(i)).equals(listB.get(i)))) {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }

@@ -625,7 +625,7 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1024",
-    Justification="This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
+      Justification="This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
 #endif
     public string GetBodyString() {
       // TODO: Consider returning null rather than throwing an exception
@@ -1491,7 +1491,7 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1024",
-    Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
+      Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
 #endif
     public Message GetBodyMessage() {
       return (this.ContentType.TopLevelType.Equals("message",

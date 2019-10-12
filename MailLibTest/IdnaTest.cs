@@ -272,7 +272,7 @@ namespace MailLibTest {
       // ZWNJ preceded by virama
       Assert.IsTrue(Idna.IsValidDomainName("xy\u094d\u200cz", false));
       Assert.IsFalse(Idna.IsValidDomainName("xy\u200cz", false));
-      // Dual-joining character (U + A840, Phags-pa KA) on both sides
+      // Dual-joining character (U+A840, Phags-pa KA) on both sides
       Assert.IsTrue(Idna.IsValidDomainName("\ua840\u200c\ua840", false));
       // Dual-joining character with intervening T-joining characters
       Assert.IsTrue(
@@ -283,7 +283,7 @@ namespace MailLibTest {
         Idna.IsValidDomainName(
           "\ua840\u0300\u0300\u200c\u0300\u0300\ua840",
           false));
-      // Left-joining character (U + A872, the only such character
+      // Left-joining character (U+A872, the only such character
       // in Unicode 6.3, with Bidi type L) on left side
       Assert.IsTrue(Idna.IsValidDomainName("\ua872\u200c\ua840", false));
       Assert.IsTrue(
@@ -329,9 +329,9 @@ namespace MailLibTest {
       Assert.IsFalse(Idna.IsValidDomainName("\u05d0a", false)); // Hebrew
       // Arabic-indic digits and extended Arabic-indic digits
       Assert.IsFalse(Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627", false));
-      // Right-joining character (U + 062F; since the only right-joining
+      // Right-joining character (U+062F; since the only right-joining
       // characters in Unicode 6.3 have Bidi type R,
-      // a different dual-joining character is used, U + 062D, which also has
+      // a different dual-joining character is used, U+062D, which also has
       // the same Bidi type).
       Assert.IsTrue(Idna.IsValidDomainName("\u062d\u200c\u062f", false));
 
@@ -346,8 +346,8 @@ namespace MailLibTest {
         Idna.IsValidDomainName(
           "\u062f\u0300\u0300\u200c\u0300\u0300\u062d",
           false));
-      // Regression tests: U + 07FA mistakenly allowed (since
-      // U + 07FA has Bidi type R, the other characters in these tests
+      // Regression tests: U+07FA mistakenly allowed (since
+      // U+07FA has Bidi type R, the other characters in these tests
       // also have Bidi type R).
       Assert.IsFalse(Idna.IsValidDomainName("\u07ca\u07fa\u07ca", false));
       Assert.IsFalse(Idna.IsValidDomainName("\u07fa", false));

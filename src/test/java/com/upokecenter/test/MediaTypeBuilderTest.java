@@ -36,9 +36,9 @@ import com.upokecenter.mail.*;
       builder.SetParameter("a", "b");
       {
         String stringTemp = builder.ToMediaType().GetParameter("a");
-Assert.assertEquals(
-  "b",
-  stringTemp);
+        Assert.assertEquals(
+          "b",
+          stringTemp);
 }
       builder.SetParameter("a", "");
       Assert.assertEquals("", builder.ToMediaType().GetParameter("a"));

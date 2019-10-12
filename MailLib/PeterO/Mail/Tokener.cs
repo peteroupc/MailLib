@@ -43,11 +43,11 @@ namespace PeterO.Mail {
 
     public int Compare(int[] x, int[] y) {
       if (x == null) {
-  throw new ArgumentNullException(nameof(x));
-}
+        throw new ArgumentNullException(nameof(x));
+      }
       if (y == null) {
-  throw new ArgumentNullException(nameof(y));
-}
+        throw new ArgumentNullException(nameof(y));
+      }
       // Sort by their start indexes
       if (x[1] == y[1]) {
         // Sort by their token numbers

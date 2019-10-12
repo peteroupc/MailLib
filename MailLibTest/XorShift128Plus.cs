@@ -47,8 +47,8 @@ namespace PeterO {
                 length -= 8;
             }
             if (length != 0) {
-                long nv = this.NextValue();
-                while (length > 0) {
+              long nv = this.NextValue();
+              while (length > 0) {
                     bytes[offset++] = unchecked((byte)nv);
                     nv >>= 8;
                     --length;

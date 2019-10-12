@@ -39,15 +39,15 @@ namespace PeterO.Mail {
 
     public static bool ListEquals<T>(IList<T> listA, IList<T> listB) {
       if (listA == null) {
- return listB == null;
-}
+        return listB == null;
+      }
       if (listA.Count != listB.Count) {
- return false;
-}
+        return false;
+      }
       for (var i = 0; i < listA.Count; ++i) {
         if (!Object.Equals(listA[i], listB[i])) {
- return false;
-}
+          return false;
+        }
       }
       return true;
     }

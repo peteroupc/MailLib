@@ -38,8 +38,8 @@ import java.util.*;
 
     public PartialListCharacterInput(List<Integer> ilist) {
       if (ilist == null) {
-  throw new NullPointerException("ilist");
-}
+        throw new NullPointerException("ilist");
+      }
       this.ilist = ilist;
       this.pos = 0;
       this.endPos = ilist.size();

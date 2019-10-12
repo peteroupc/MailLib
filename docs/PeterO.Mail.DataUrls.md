@@ -15,10 +15,10 @@
  .
 
 ### Member Summary
-* <code>[DataUrlBytes(string)](#DataUrlBytes_string)</code> - Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
-* <code>[DataUrlMediaType(string)](#DataUrlMediaType_string)</code> - Extracts the media type from a Data URI (uniform resource identifier).
-* <code>[MakeDataUrl(byte[], PeterO.Mail.MediaType)](#MakeDataUrl_byte_PeterO_Mail_MediaType)</code> - Encodes data with the given media type in a Data URI (uniform resource identifier).
-* <code>[MakeDataUrl(string)](#MakeDataUrl_string)</code> - Encodes text as a Data URI (uniform resource identifier).
+* <code>[DataUrlBytes(string)](#DataUrlBytes_string)</code> - <b>Deprecated:</b> Renamed to DataUriBytes.
+* <code>[DataUrlMediaType(string)](#DataUrlMediaType_string)</code> - <b>Deprecated:</b> Renamed to DataUriMediaType.
+* <code>[MakeDataUrl(byte[], PeterO.Mail.MediaType)](#MakeDataUrl_byte_PeterO_Mail_MediaType)</code> - <b>Deprecated:</b> Renamed to MakeDataUri.
+* <code>[MakeDataUrl(string)](#MakeDataUrl_string)</code> - <b>Deprecated:</b> Renamed to MakeDataUri.
 
 <a id="DataUrlBytes_string"></a>
 ### DataUrlBytes

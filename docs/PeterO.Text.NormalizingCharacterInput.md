@@ -30,12 +30,12 @@ THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
 Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
 
 ### Member Summary
-* <code>[GetChars(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#GetChars_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Gets a list of normalized code points after reading from a character stream.
-* <code>[GetChars(string, PeterO.Text.Normalization)](#GetChars_string_PeterO_Text_Normalization)</code> - Gets a list of normalized code points after reading from a string.
-* <code>[IsNormalized(int[], PeterO.Text.Normalization)](#IsNormalized_int_PeterO_Text_Normalization)</code> - Determines whether the given array of characters is in the given Unicode normalization form.
+* <code>[GetChars(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#GetChars_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - <b>Deprecated:</b> Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.
+* <code>[GetChars(string, PeterO.Text.Normalization)](#GetChars_string_PeterO_Text_Normalization)</code> - <b>Deprecated:</b> Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.
+* <code>[IsNormalized(int[], PeterO.Text.Normalization)](#IsNormalized_int_PeterO_Text_Normalization)</code> - <b>Deprecated:</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 * <code>[IsNormalized(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Determines whether the text provided by a character input is normalized.
 * <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Determines whether the given string is in the given Unicode normalization form.
-* <code>[IsNormalized(System.Collections.Generic.IList, PeterO.Text.Normalization)](#IsNormalized_System_Collections_Generic_IList_PeterO_Text_Normalization)</code> - Determines whether the given list of characters is in the given Unicode normalization form.
+* <code>[IsNormalized(System.Collections.Generic.IList, PeterO.Text.Normalization)](#IsNormalized_System_Collections_Generic_IList_PeterO_Text_Normalization)</code> - <b>Deprecated:</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 * <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
 * <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
 * <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
