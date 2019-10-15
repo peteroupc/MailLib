@@ -39,8 +39,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("local=domain.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -48,8 +48,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("local@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -57,13 +57,13 @@ import com.upokecenter.mail.*;
         {
           Object objectTemp = null;
           Object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
-          "@example.com");
+            "@example.com");
           Assert.assertEquals(objectTemp, objectTemp2);
-}
+        }
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -71,8 +71,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("lo,cal@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -88,7 +88,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "test@EXAMPLE.COM",
           stringTemp);
-}
+      }
     }
 
     @Test
@@ -101,15 +101,15 @@ import com.upokecenter.mail.*;
         "x.example\ud800\udc00.example.com",
         "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
-      TestParseDomainNAOnly("(comment1) x (comment2)", "x");
-      TestParseDomainNAOnly(
-  "(comment1) example (comment2) . (comment3) com",
-  "example.com");
-      TestParseDomainNAOnly(
+      TestParseDomainNAOnly("(comment1) x(comment2)", "x");
+      TestParseDomainNAOnly (
+        "(comment1) example (comment2) . (comment3) com",
+        "example.com");
+      TestParseDomainNAOnly (
         "(co(mme)nt1) example (comment2) . (comment3) com",
         "example.com");
-      TestParseDomainNAOnly("(comment1) [x] (comment2)", "[x]");
-      TestParseDomainNAOnly("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
+      TestParseDomainNAOnly("(comment1) [x](comment2)", "[x]");
+      TestParseDomainNAOnly("(comment1) [a.b.c.d](comment2)", "[a.b.c.d]");
       TestParseDomain("[]", "[]");
       TestParseDomainNAOnly("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
@@ -133,12 +133,12 @@ import com.upokecenter.mail.*;
         "x.example\ud800\udc00.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      TestParseLocalPartNAOnly("(comment1) x (comment2)", "x");
+      TestParseLocalPartNAOnly("(comment1) x(comment2)", "x");
       TestParseLocalPartNAOnly("(comment1)x(comment2)", "x");
-      TestParseLocalPartNAOnly(
-  "(comment1) example (comment2) . (comment3) com",
-  "example.com");
-      TestParseLocalPartNAOnly(
+      TestParseLocalPartNAOnly (
+        "(comment1) example (comment2) . (comment3) com",
+        "example.com");
+      TestParseLocalPartNAOnly (
         "(com(plex)comment) example (comment2) . (comment3) com",
         "example.com");
     }
@@ -150,7 +150,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "local.local@example.com",
           stringTemp);
-}
+      }
       addr = new Address("local-local@example.com");
       {
         String stringTemp = addr.toString();

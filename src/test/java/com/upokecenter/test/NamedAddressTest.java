@@ -112,9 +112,9 @@ import com.upokecenter.mail.*;
       na = new NamedAddress("Me <test@EXAMPLE.COM>");
       {
         String stringTemp = na.toString();
-        Assert.assertEquals(
-  "Me <test@EXAMPLE.COM>",
-  stringTemp);
+        Assert.assertEquals (
+          "Me <test@EXAMPLE.COM>",
+          stringTemp);
       }
     }
 
@@ -186,7 +186,7 @@ import com.upokecenter.mail.*;
         String stringTemp = na.getAddress().toString();
         Assert.assertEquals("me@example.com", stringTemp);
       }
-      na = new NamedAddress(
+      na = new NamedAddress (
         "(comment) Me (comment) <me@example.com> (comment)");
       Assert.assertEquals("Me", na.getName());
       if (na.isGroup()) {
@@ -210,7 +210,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals("Me <me@example.com>", stringTemp);
       }
       na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
-                  "me@example.com>");
+        "me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
       if (na.isGroup()) {
  Assert.fail();
@@ -236,9 +236,9 @@ import com.upokecenter.mail.*;
       }
       {
         String stringTemp = na.toString();
-        Assert.assertEquals(
-  "Me <me@example.com>",
-  stringTemp);
+        Assert.assertEquals (
+          "Me <me@example.com>",
+          stringTemp);
       }
       //------------
       na = new NamedAddress("Group: \"Me\" <me@example.com>;");
@@ -256,14 +256,14 @@ import com.upokecenter.mail.*;
           stringTemp);
       }
       na = new
-  NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
+      NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
       if (!(na.isGroup())) {
  Assert.fail();
  }
       {
         String stringTemp = na.toString();
         String ValueS1 =
-        "Group: Me <me@example.com>, Fred <fred@example.com>;";
+          "Group: Me <me@example.com>, Fred <fred@example.com>;";
         Assert.assertEquals(ValueS1, stringTemp);
       }
       groupAddr = na.getGroupAddresses();
@@ -286,14 +286,14 @@ import com.upokecenter.mail.*;
       }
       //------------
       na = new
-        NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
+      NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
       Assert.assertEquals("Group", na.getName());
       if (!(na.isGroup())) {
  Assert.fail();
  }
       {
         String ValueS1 = "Group: Me <me@example.com>," +
-"\u0020somebody@example.com;";
+          "\u0020somebody@example.com;";
         Assert.assertEquals(ValueS1, na.toString());
       }
       groupAddr = na.getGroupAddresses();
@@ -353,11 +353,11 @@ import com.upokecenter.mail.*;
     @Test
     public void TestToString() {
       String ValueMbox =
-              "Me <@example.org,@example.net,@example.com:me@x.example>";
+        "Me <@example.org,@example.net,@example.com:me@x.example>";
       NamedAddress result = new NamedAddress(ValueMbox);
       {
         String stringTemp = result.toString();
-        Assert.assertEquals(
+        Assert.assertEquals (
           "Me <me@x.example>",
           stringTemp);
       }

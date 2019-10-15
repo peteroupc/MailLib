@@ -73,19 +73,19 @@ import com.upokecenter.text.*;
       System.out.println(ProtocolStrings.IsInFreeformClass(" "));
       System.out.println(ProtocolStrings.IsInFreeformClass("x"));
       if (!(
-       ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"))) {
+        ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"))) {
  Assert.fail();
  }
       if (!(
-       ProtocolStrings.IsInFreeformClass("test\u007b}[]?^&"))) {
+        ProtocolStrings.IsInFreeformClass("test\u007b}[]?^&"))) {
  Assert.fail();
  }
       if (
-       ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&")) {
+        ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&")) {
  Assert.fail();
  }
       if (!(
-       ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"))) {
+        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"))) {
  Assert.fail();
  }
       {
@@ -95,11 +95,11 @@ import com.upokecenter.text.*;
           stringTemp);
       }
       if (
-       ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&")) {
+        ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&")) {
  Assert.fail();
  }
       if (
-       ProtocolStrings.IsInFreeformClass("tes\nt\u007b} []?^&")) {
+        ProtocolStrings.IsInFreeformClass("tes\nt\u007b} []?^&")) {
  Assert.fail();
  }
       {
@@ -120,9 +120,9 @@ import com.upokecenter.text.*;
           "TeSt",
           stringTemp);
       }
-      Assert.assertEquals(
-       null,
-       ProtocolStrings.UserpartEnforce("Te St", false));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.UserpartEnforce("Te St", false));
       {
         String stringTemp = ProtocolStrings.UsernameEnforce("Te St", false);
         Assert.assertEquals(
@@ -142,39 +142,39 @@ import com.upokecenter.text.*;
           "x\u03c2",
           stringTemp);
       }
-      Assert.assertEquals(
+      Assert.assertEquals (
         null,
         ProtocolStrings.UsernameEnforce(null));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.UsernameEnforce(""));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.UserpartEnforce(null));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.UserpartEnforce(""));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.OpaqueStringEnforce(null));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.OpaqueStringEnforce(""));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.NicknameEnforce(null));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.NicknameEnforce(""));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.NicknameForComparison(null));
-      Assert.assertEquals(
-      null,
-      ProtocolStrings.NicknameForComparison(""));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.UsernameEnforce(""));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.UserpartEnforce(null));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.UserpartEnforce(""));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.OpaqueStringEnforce(null));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.OpaqueStringEnforce(""));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.NicknameEnforce(null));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.NicknameEnforce(""));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.NicknameForComparison(null));
+      Assert.assertEquals (
+        null,
+        ProtocolStrings.NicknameForComparison(""));
       {
         String stringTemp = ProtocolStrings.OpaqueStringEnforce("a b ccccc" +
-"\u0020test");
+            "\u0020test");
         Assert.assertEquals(
           "a b ccccc test",
           stringTemp);
@@ -186,13 +186,15 @@ import com.upokecenter.text.*;
           stringTemp);
       }
       {
-        String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
+        String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc" +
+"\u0020test ");
         Assert.assertEquals(
           "a b ccccc test",
           stringTemp);
       }
       {
-        String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc test ");
+        String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc" +
+"\u0020test ");
         Assert.assertEquals(
           "a b ccccc test",
           stringTemp);
@@ -204,12 +206,12 @@ import com.upokecenter.text.*;
           "a b ccccc test",
           stringTemp);
       }
-      Assert.assertEquals(
+      Assert.assertEquals (
         null,
         ProtocolStrings.OpaqueStringEnforce("a\ntest"));
       {
         String stringTemp = ProtocolStrings.OpaqueStringEnforce("A b Ccccc" +
-"\u0020tEst");
+            "\u0020tEst");
         Assert.assertEquals(
           "A b Ccccc tEst",
           stringTemp);
@@ -265,15 +267,15 @@ import com.upokecenter.text.*;
  }
       // Label starting with digit is not valid since there are RTL labels
       if (
-  Idna.IsValidDomainName(
-    "1domain.example.\u05d0\u05d0",
-    false)) {
+        Idna.IsValidDomainName(
+          "1domain.example.\u05d0\u05d0",
+          false)) {
  Assert.fail();
  }
       if (
-  Idna.IsValidDomainName(
-    "\u05d0\u05d0.1domain.example",
-    false)) {
+        Idna.IsValidDomainName(
+          "\u05d0\u05d0.1domain.example",
+          false)) {
  Assert.fail();
  }
       if (Idna.IsValidDomainName("el\u00b7", false)) {
@@ -354,9 +356,9 @@ import com.upokecenter.text.*;
  }
       // Dual-joining character with intervening T-joining characters
       if (!(
-  Idna.IsValidDomainName(
-    "\ua840\u0300\u0300\u200c\ua840",
-    false))) {
+        Idna.IsValidDomainName(
+          "\ua840\u0300\u0300\u200c\ua840",
+          false))) {
  Assert.fail();
  }
       if (!(
@@ -410,7 +412,8 @@ import com.upokecenter.text.*;
  Assert.fail();
  }
       // Consecutive ZWNJs
-      if (Idna.IsValidDomainName("\ua840\u200c\u200c\ua840", false)) {
+      if (Idna.IsValidDomainName("\ua840\u200c\u200c\ua840",
+  false)) {
  Assert.fail();
  }
 
@@ -444,7 +447,8 @@ import com.upokecenter.text.*;
  Assert.fail();
  } // Hebrew
       // Arabic-indic digits and extended Arabic-indic digits
-      if (Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627", false)) {
+      if (Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627",
+  false)) {
  Assert.fail();
  }
       // Right-joining character (U+062F; since the only right-joining

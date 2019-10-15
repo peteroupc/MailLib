@@ -4,9 +4,9 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 
-    /**
-     * This is an internal API.
-     */
+  /**
+   * This is an internal API.
+   */
   final class EnrichedText {
 private EnrichedText() {
 }
@@ -21,9 +21,9 @@ private EnrichedText() {
           return false;
         }
         char c1 = (str.charAt(idx) >= 0x41 && str.charAt(idx) <= 0x5a) ?
-            (char)(str.charAt(idx) + 0x20) : str.charAt(idx);
+          (char)(str.charAt(idx) + 0x20) : str.charAt(idx);
         char c2 = (strToMatch.charAt(i) >= 0x41 && strToMatch.charAt(i) <= 0x5a) ?
-            (char)(strToMatch.charAt(i) + 0x20) : strToMatch.charAt(i);
+          (char)(strToMatch.charAt(i) + 0x20) : strToMatch.charAt(i);
         if (c1 != c2) {
           return false;
         }
@@ -69,11 +69,10 @@ private EnrichedText() {
         }
       }
       String ret = "#";
-      return
-ret + str.substring(index, (index)+(2)) + str.substring(index + 5, (index + 5)+(2)) +
-  str.substring(
-    index, (
-    index)+(10));
+      return ret + str.substring(index, (index)+(2)) + str.substring(index + 5, (index + 5)+(2)) +
+        str.substring(
+          index, (
+          index)+(10));
     }
     private static int SkipFont(String str, int index, int endIndex) {
       int indexTemp = index;
@@ -82,25 +81,26 @@ ret + str.substring(index, (index)+(2)) + str.substring(index + 5, (index + 5)+(
           int indexTemp2 = index;
           do {
             if (index < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <=
-              57) ||
-           (str.charAt(index) >= 44 && str.charAt(index) <= 45) || (str.charAt(index) == 32) ||
-              (str.charAt(index) >= 12 && str.charAt(index) <= 13) || (str.charAt(index)
-              >= 9 &&
-           str.charAt(index) <= 10) || (str.charAt(index) >= 97 && str.charAt(index) <= 122) ||
-              (str.charAt(index) >= 65 && str.charAt(index) <= 90))) {
+                  57) ||
+                (str.charAt(index) >= 44 && str.charAt(index) <= 45) || (str.charAt(index) == 32) ||
+                (str.charAt(index) >= 12 && str.charAt(index) <= 13) || (str.charAt(index)
+                >= 9 && str.charAt(index) <= 10) || (str.charAt(index) >= 97 && str.charAt(index) <=
+122) ||
+                (str.charAt(index) >= 65 && str.charAt(index) <= 90))) {
               ++indexTemp2;
               break;
             }
             int indexTemp3 = index;
             do {
               if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index)
-          <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
-              65535))) {
+                    <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
+                    65535))) {
                 ++indexTemp3;
                 break;
               }
               if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+                    str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                    str.charAt(index + 1) <= 57343))) {
                 indexTemp3 += 2;
                 break;
               }
@@ -122,7 +122,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
     }
     private static int SkipLang(String str, int index, int endIndex) {
       while (index < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
-            (str.charAt(index) == 45) || (str.charAt(index) >= 97 && str.charAt(index) <= 122) ||
+          (str.charAt(index) == 45) || (str.charAt(index) >= 97 && str.charAt(index) <= 122) ||
           (str.charAt(index) >= 65 && str.charAt(index) <= 90))) {
         ++index;
       }
@@ -138,7 +138,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       while (index < valueSLength) {
         char c = s.charAt(index);
         if (c != 0x09 && c != 0x0a && c != 0x0c && c != 0x0d && c !=
-            0x20) {
+          0x20) {
           break;
         }
         ++index;
@@ -151,7 +151,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       while (index >= 0) {
         char c = s.charAt(index);
         if (c != 0x09 && c != 0x0a && c != 0x0c && c != 0x0d && c !=
-            0x20) {
+          0x20) {
           return s.substring(startIndex, (startIndex)+((index + 1) - startIndex));
         }
         --index;
@@ -172,7 +172,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
           int indexTemp2 = index;
           do {
             if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
-                  60) {
+              60) {
               currentBuilder.append("<");
               indexTemp2 += 2;
               break;
@@ -193,10 +193,11 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               int commandStart = index;
               for (int i3 = 0; i3 < 60; ++i3) {
                 if (index < endIndex && ((str.charAt(index) >= 48 && str.charAt(index)
-<= 57) || (str.charAt(index) == 45) || (str.charAt(index) >= 97 && str.charAt(index) <= 122) ||
-(str.charAt(index) >= 65 && str.charAt(index) <=
+                      <= 57) || (str.charAt(index) == 45) || (str.charAt(index) >= 97 &&
+str.charAt(index) <= 122) ||
+                    (str.charAt(index) >= 65 && str.charAt(index) <=
 
-                90))) {
+                      90))) {
                   ++index;
                 } else if (i3 < 1) {
                   index = indexStart3;
@@ -254,7 +255,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                   break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)
-                == 10))) {
+                      == 10))) {
                   ++indexTemp3;
                   break;
                 }
@@ -297,8 +298,9 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               break;
             }
             if (index < endIndex && ((str.charAt(index) >= 0 && str.charAt(index) <=
-            9) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14 &&
-            str.charAt(index) <= 127))) {
+                  9) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) ||
+(str.charAt(index) >= 14 &&
+                  str.charAt(index) <= 127))) {
               // Ordinary character
               if (str.charAt(index) == 0) {
                 // Null
@@ -312,15 +314,16 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             indexTemp3 = index;
             do {
               if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index)
-          <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
-              65535))) {
+                    <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
+                    65535))) {
                 // BMP character
                 currentBuilder.append(str.charAt(index));
                 ++indexTemp3;
                 break;
               }
               if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+                    str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                    str.charAt(index + 1) <= 57343))) {
                 // Supplementary character
                 currentBuilder.append(str.charAt(index));
                 currentBuilder.append(str.charAt(index + 1));
@@ -333,7 +336,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               break;
             }
             if (index < endIndex && (str.charAt(index) >= 55296 && str.charAt(index)
-            <= 57343)) {
+                <= 57343)) {
               // Unpaired surrogate
               currentBuilder.append((char)0xfffd);
               ++indexTemp2;
@@ -360,7 +363,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
       int nofillDepth = 0;
       originalBuilder.append("<!DOCTYPE html><html><title>Untitled</title>");
       originalBuilder.append("<style>p { margin-bottom: 0em; ")
-           .append("margin-top: 0em; }");
+      .append("margin-top: 0em; }");
       originalBuilder.append("</style><body>");
       String lastCommand = "";
       do {
@@ -368,7 +371,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
           int indexTemp2 = index;
           do {
             if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
-                  60) {
+              60) {
               currentBuilder.append("&lt;");
               indexTemp2 += 2;
               break;
@@ -389,10 +392,11 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               int commandStart = index;
               for (int i3 = 0; i3 < 60; ++i3) {
                 if (index < endIndex && ((str.charAt(index) >= 48 && str.charAt(index)
-<= 57) || (str.charAt(index) == 45) || (str.charAt(index) >= 97 && str.charAt(index) <= 122) ||
-(str.charAt(index) >= 65 && str.charAt(index) <=
+                      <= 57) || (str.charAt(index) == 45) || (str.charAt(index) >= 97 &&
+str.charAt(index) <= 122) ||
+                    (str.charAt(index) >= 65 && str.charAt(index) <=
 
-                90))) {
+                      90))) {
                   ++index;
                 } else if (i3 < 1) {
                   index = indexStart3;
@@ -452,7 +456,8 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                     if (isEndTag) {
                       currentBuilder.append("</div>");
                     } else {
-                      currentBuilder.append("<div style='text-align:justify'>");
+                      currentBuilder.append("<div" +
+"\u0020style='text-align:justify'>");
                     }
                   } else if (command.equals("fontfamily")) {
                     if (isEndTag) {
@@ -507,26 +512,28 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                     String p = TrimSpaces(paramBuilder.toString());
                     if (lastCommand.equals("fontfamily")) {
                       if (SkipFont(p, 0, p.length()) == p.length()) {
-                        currentBuilder.append("<span style='font-family: " + p +
-                        "'> ");
+                        currentBuilder.append("<span style='font-family: " +
+p +
+                          "'> ");
                       } else {
                         currentBuilder.append("<span>");
                       }
                     } else if (lastCommand.equals("color")) {
-                      p = ParseColor(
-            DataUtilities.ToLowerCaseAscii(p),
-            0,
-            p.length());
+                      p = ParseColor (
+                          DataUtilities.ToLowerCaseAscii(p),
+                          0,
+                          p.length());
                       if (p != null) {
-                      currentBuilder.append("<span style='color: " + p +
+                        currentBuilder.append("<span style='color: " + p +
                           "'>");
                       } else {
                         currentBuilder.append("<span>");
                       }
                     } else if (lastCommand.equals("lang")) {
                       if (SkipLang(p, 0, p.length()) == p.length()) {
-    currentBuilder.append("<span lang=' " + DataUtilities.ToLowerCaseAscii(p) +
-                                        "'> ");
+                        currentBuilder.append("<span lang=' " +
+DataUtilities.ToLowerCaseAscii (
+                p) + "'> ");
                       } else {
                         currentBuilder.append("<span>");
                       }
@@ -556,7 +563,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                         styleBuilder.append("padding-bottom: 0;");
                       }
                       currentBuilder.append("<div style=' " +
-                      styleBuilder.toString() + "'> ");
+                        styleBuilder.toString() + "'> ");
                     }
                     lastCommand = "";
                   } else {
@@ -595,7 +602,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
                   break;
                 }
                 if (index < endIndex && ((str.charAt(index) == 13) || (str.charAt(index)
-                == 10))) {
+                      == 10))) {
                   ++indexTemp3;
                   break;
                 }
@@ -639,8 +646,9 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               break;
             }
             if (index < endIndex && ((str.charAt(index) >= 0 && str.charAt(index) <=
-            9) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14 &&
-            str.charAt(index) <= 127))) {
+                  9) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) ||
+(str.charAt(index) >= 14 &&
+                  str.charAt(index) <= 127))) {
               // Ordinary character
               if (str.charAt(index) == 0) {
                 // Null
@@ -656,15 +664,16 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
             indexTemp3 = index;
             do {
               if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index)
-          <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
-              65535))) {
+                    <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
+                    65535))) {
                 // BMP character
                 currentBuilder.append(str.charAt(index));
                 ++indexTemp3;
                 break;
               }
               if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+                    str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                    str.charAt(index + 1) <= 57343))) {
                 // Supplementary character
                 currentBuilder.append(str.charAt(index));
                 currentBuilder.append(str.charAt(index + 1));
@@ -677,7 +686,7 @@ str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(ind
               break;
             }
             if (index < endIndex && (str.charAt(index) >= 55296 && str.charAt(index)
-            <= 57343)) {
+                <= 57343)) {
               // Unpaired surrogate
               currentBuilder.append((char)0xfffd);
               ++indexTemp2;

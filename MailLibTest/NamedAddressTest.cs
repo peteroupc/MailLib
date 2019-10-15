@@ -112,9 +112,9 @@ namespace MailLibTest {
       na = new NamedAddress("Me <test@EXAMPLE.COM>");
       {
         string stringTemp = na.ToString();
-        Assert.AreEqual(
-  "Me <test@EXAMPLE.COM>",
-  stringTemp);
+        Assert.AreEqual (
+          "Me <test@EXAMPLE.COM>",
+          stringTemp);
       }
     }
 
@@ -170,7 +170,7 @@ namespace MailLibTest {
         string stringTemp = na.Address.ToString();
         Assert.AreEqual("me@example.com", stringTemp);
       }
-      na = new NamedAddress(
+      na = new NamedAddress (
         "(comment) Me (comment) <me@example.com> (comment)");
       Assert.AreEqual("Me", na.Name);
       Assert.IsFalse(na.IsGroup);
@@ -190,7 +190,7 @@ namespace MailLibTest {
         Assert.AreEqual("Me <me@example.com>", stringTemp);
       }
       na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
-                  "me@example.com>");
+        "me@example.com>");
       Assert.AreEqual("John's Office", na.Name);
       Assert.IsFalse(na.IsGroup);
       {
@@ -212,9 +212,9 @@ namespace MailLibTest {
       }
       {
         string stringTemp = na.ToString();
-        Assert.AreEqual(
-  "Me <me@example.com>",
-  stringTemp);
+        Assert.AreEqual (
+          "Me <me@example.com>",
+          stringTemp);
       }
       //------------
       na = new NamedAddress("Group: \"Me\" <me@example.com>;");
@@ -230,12 +230,12 @@ namespace MailLibTest {
           stringTemp);
       }
       na = new
-  NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
+      NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
       Assert.IsTrue(na.IsGroup);
       {
         string stringTemp = na.ToString();
         const string ValueS1 =
-        "Group: Me <me@example.com>, Fred <fred@example.com>;";
+          "Group: Me <me@example.com>, Fred <fred@example.com>;";
         Assert.AreEqual(ValueS1, stringTemp);
       }
       groupAddr = na.GroupAddresses;
@@ -258,12 +258,12 @@ namespace MailLibTest {
       }
       //------------
       na = new
-        NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
+      NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
       Assert.AreEqual("Group", na.Name);
       Assert.IsTrue(na.IsGroup);
       {
         const string ValueS1 = "Group: Me <me@example.com>," +
-"\u0020somebody@example.com;";
+          "\u0020somebody@example.com;";
         Assert.AreEqual(ValueS1, na.ToString());
       }
       groupAddr = na.GroupAddresses;
@@ -323,11 +323,11 @@ namespace MailLibTest {
     [Test]
     public void TestToString() {
       const string ValueMbox =
-              "Me <@example.org,@example.net,@example.com:me@x.example>";
+        "Me <@example.org,@example.net,@example.com:me@x.example>";
       var result = new NamedAddress(ValueMbox);
       {
         string stringTemp = result.ToString();
-        Assert.AreEqual(
+        Assert.AreEqual (
           "Me <me@x.example>",
           stringTemp);
       }

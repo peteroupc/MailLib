@@ -88,19 +88,19 @@ namespace PeterO.Text {
           copy = new byte[matchLength];
         }
         if (pos > outputPos) {
-          throw new ArgumentException("pos (" + pos + ") is more than " +
+          throw new ArgumentException("pos(" + pos + ") is more than " +
             output.Length);
         }
         if (matchLength < 0) {
-          throw new ArgumentException("matchLength (" + matchLength +
+          throw new ArgumentException("matchLength(" + matchLength +
             ") is less than 0");
         }
         if (matchLength > outputPos) {
-          throw new ArgumentException("matchLength (" + matchLength +
+          throw new ArgumentException("matchLength(" + matchLength +
             ") is more than " + outputPos);
         }
         if (outputPos - pos < matchLength) {
-          throw new ArgumentException("outputPos minus " + pos + " (" +
+          throw new ArgumentException("outputPos minus " + pos + "(" +
             (outputPos - pos) + ") is less than " + matchLength);
         }
         Array.Copy(output, pos, copy, 0, matchLength);
@@ -128,28 +128,32 @@ namespace PeterO.Text {
 
     public bool GetBoolean(int cp) {
       if (cp < 0) {
-        throw new ArgumentException("cp (" + cp + ") is less than " + "0");
+        throw new ArgumentException("cp(" + cp + ") is less than " + "0");
       }
       if (cp > 0x10ffff) {
-     throw new ArgumentException("cp (" + cp + ") is more than " + 0x10ffff);
+        throw new ArgumentException("cp(" + cp + ") is more than " +
+0x10ffff);
       }
       int b = this.array[cp >> 13] & 0xff;
       switch (b) {
-        case 0xfe: return false;
-        case 0xff: return true;
+        case 0xfe:
+          return false;
+        case 0xff:
+          return true;
         default: {
-            int index = 136 + (b << 10) + ((cp & 8191) >> 3);
-            return (this.array[index] & (1 << (cp & 7))) > 0;
-          }
+          int index = 136 + (b << 10) + ((cp & 8191) >> 3);
+          return (this.array[index] & (1 << (cp & 7))) > 0;
+        }
       }
     }
 
     public byte GetByte(int cp) {
       if (cp < 0) {
-        throw new ArgumentException("cp (" + cp + ") is less than " + "0");
+        throw new ArgumentException("cp(" + cp + ") is less than " + "0");
       }
       if (cp > 0x10ffff) {
-     throw new ArgumentException("cp (" + cp + ") is more than " + 0x10ffff);
+        throw new ArgumentException("cp(" + cp + ") is more than " +
+0x10ffff);
       }
       int index = (cp >> 9) << 1;
       int x = this.array[index + 1];

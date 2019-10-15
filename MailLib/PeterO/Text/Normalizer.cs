@@ -8,18 +8,18 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Text {
-    /// <summary>
-    /// <para>Implements the Unicode normalization algorithm and contains
-    /// methods and functionality to test and convert Unicode strings for
-    /// Unicode normalization.</para>
-    /// <para>NOTICE: While this class's source code is in the public
-    /// domain, the class uses an internal class, called NormalizationData,
-    /// that includes data derived from the Unicode Character Database. See
-    /// the documentation for the NormalizerInput class for the permission
-    /// notice for the Unicode Character Database.</para></summary>
+  /// <summary>
+  /// <para>Implements the Unicode normalization algorithm and contains
+  /// methods and functionality to test and convert Unicode strings for
+  /// Unicode normalization.</para>
+  /// <para>NOTICE: While this class's source code is in the public
+  /// domain, the class uses an internal class, called NormalizationData,
+  /// that includes data derived from the Unicode Character Database. See
+  /// the documentation for the NormalizerInput class for the permission
+  /// notice for the Unicode Character Database.</para></summary>
   [Obsolete(
-    "Use NormalizerInput instead; that class is much more flexible than " +
-    "Normalizer.")]
+      "Use NormalizerInput instead; that class is much more flexible than " +
+      "Normalizer.")]
   public sealed class Normalizer {
     /// <summary>Converts a string to the given Unicode normalization
     /// form.</summary>
@@ -76,7 +76,7 @@ namespace PeterO.Text {
     /// the source is reached.</returns>
     /// <exception cref='ArgumentException'>Either <paramref name='index'/>
     /// or <paramref name='length'/> is less than 0 or greater than
-    /// <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s
+    /// <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
     /// length minus <paramref name='index'/> is less than <paramref
     /// name='length'/>.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

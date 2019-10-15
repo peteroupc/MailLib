@@ -73,7 +73,7 @@ import com.upokecenter.mail.*;
       }
       ret = this.input.read();
       if (this.innerBuffer == null ||
-         this.innerBufferIndex >= this.innerBuffer.length) {
+        this.innerBufferIndex >= this.innerBuffer.length) {
         this.innerBuffer = (this.innerBuffer == null) ? ((new byte[32])) : this.innerBuffer;
         if (this.innerBufferIndex >= this.innerBuffer.length) {
           byte[] newbuffer = new byte[this.innerBuffer.length + 32];
@@ -132,8 +132,8 @@ import com.upokecenter.mail.*;
       // CR might signal next boundary or not
       this.StartInnerBuffer();
       if (this.InnerBufferReadAndStore() != 0x0a ||
-         this.InnerBufferReadAndStore() != '-' ||
-           this.InnerBufferReadAndStore() != '-') {
+        this.InnerBufferReadAndStore() != '-' ||
+        this.InnerBufferReadAndStore() != '-') {
         this.ResetInnerBuffer();
         return 0x0d;
       }
@@ -174,7 +174,7 @@ import com.upokecenter.mail.*;
           boolean match = true;
           for (int j = 0; j < boundary.length(); ++j) {
             match &= (boundary.charAt(j) & 0xff) == (int)(boundaryBuffer[j] &
-                    0xff);
+                0xff);
           }
           if (match) {
             matchingBoundary = boundary;

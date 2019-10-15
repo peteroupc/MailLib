@@ -6,20 +6,20 @@ using PeterO;
 #pragma warning disable CA1055
 
 namespace PeterO.Mail {
-    /// <summary>
-    ///  Contains methods for parsing and generating Data URIs
-    /// (uniform resource identifiers). Data URIs are described
-    /// in RFC 2397. Examples for Data URIs follow.
-    /// <code>data:, hello%20world</code>
-    /// <code>data:text/markdown, hello%20world</code>
-    /// <code>data:application/octet-stream;base64, AAAAAA==</code>
-    ///  .
-    /// </summary>
+  /// <summary>
+  ///  Contains methods for parsing and generating Data URIs
+  /// (uniform resource identifiers). Data URIs are described
+  /// in RFC 2397. Examples for Data URIs follow.
+  /// <code>data:, hello%20world</code>
+  /// <code>data:text/markdown, hello%20world</code>
+  /// <code>data:application/octet-stream;base64, AAAAAA==</code>
+  ///  .
+  /// </summary>
   [Obsolete("Renamed to DataUris.")]
   [System.Diagnostics.CodeAnalysis.SuppressMessage(
     "Microsoft.Design",
     "CA1054",
-    Justification="This API is obsolete.")]
+    Justification = "This API is obsolete.")]
   public static class DataUrls {
     /// <summary>Extracts the media type from a Data URI (uniform resource
     /// identifier).</summary>
@@ -30,9 +30,9 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1054",
-      Justification="This API is obsolete.")]
+      Justification = "This API is obsolete.")]
     public static MediaType DataUrlMediaType(string url) {
-return DataUris.DataUriMediaType(url);
+      return DataUris.DataUriMediaType(url);
     }
 
     /// <summary>Extracts the data from a Data URI (uniform resource
@@ -45,13 +45,13 @@ return DataUris.DataUriMediaType(url);
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1054",
-      Justification="This API is obsolete.")]
+      Justification = "This API is obsolete.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA2234",
       Justification = "This API is obsolete.")]
     public static byte[] DataUrlBytes(string url) {
-return DataUris.DataUriBytes(url);
+      return DataUris.DataUriBytes(url);
     }
 
     /// <summary>Encodes text as a Data URI (uniform resource
@@ -72,7 +72,7 @@ return DataUris.DataUriBytes(url);
       Justification = "This API is obsolete.")]
 
     public static string MakeDataUrl(string textString) {
-return DataUris.MakeDataUri(textString);
+      return DataUris.MakeDataUri(textString);
     }
 
     /// <summary>Encodes data with the given media type in a Data URI
@@ -88,9 +88,9 @@ return DataUris.MakeDataUri(textString);
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1054",
-      Justification="This API is obsolete.")]
+      Justification = "This API is obsolete.")]
     public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
-return DataUris.MakeDataUri(bytes, mediaType);
+      return DataUris.MakeDataUri(bytes, mediaType);
+    }
   }
- }
 }

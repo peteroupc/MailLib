@@ -139,16 +139,16 @@ import com.upokecenter.text.*;
         throw new NullPointerException("expectedStr");
       }
       if (!expectedStr.equals(actualStr)) {
-        Assert.fail(
-  "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
-    "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
+        Assert.fail (
+          "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
+          "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
     }
 
     public static void AssertEqual(int expected, int actual, String msg) {
       if (expected != actual) {
-        Assert.fail(
-  "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
+        Assert.fail (
+          "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
 
@@ -160,14 +160,14 @@ import com.upokecenter.text.*;
         throw new NullPointerException("actual");
       }
       if (expected.length != actual.length) {
-        Assert.fail(
+        Assert.fail (
           "\nexpected: " + toString(expected) + "\n" + "\nwas: " +
-            toString(actual) + "\n" + msg);
+          toString(actual) + "\n" + msg);
       }
       for (int i = 0; i < expected.length; ++i) {
         if (expected[i] != actual[i]) {
           Assert.fail("\nexpected: " + toString(expected) + "\n" +
-                "\nwas: " + toString(actual) + "\n" + msg);
+            "\nwas: " + toString(actual) + "\n" + msg);
         }
       }
     }
@@ -313,33 +313,33 @@ import com.upokecenter.text.*;
     }
     /*
 
-@Test
-public void TestNormD() {
-  int[] cp = new int[1];
+    @Test
+    public void TestNormD() {
+    int[] cp = new int[1];
       int[] pairs = NormalizationData.ComposedPairs;
       for (int i = 0; i < pairs.length; i += 3) {
         int p1 = pairs[i];
         int p2 = pairs[i + 1];
         int p3 = pairs[i + 2];
         if (IsSpecialChar(p1) ||
-IsSpecialChar(p2) ||
-IsSpecialChar(p3)) {
+    IsSpecialChar(p2) ||
+    IsSpecialChar(p3)) {
           System.out.println("{0:X4},{1:X4},{2:X4}", p1, p2, p3);
         }
       }
-  for (int i = 0; i < 0x110000; ++i) {
-    if ((i & 0xf800) == 0xd800) {
-      continue;
-    }
+    for (int i = 0; i < 0x110000; ++i) {
+      if ((i & 0xf800) == 0xd800) {
+        continue;
+      }
           cp.charAt(0) = i;
           String codePointString = ToCodePointString(cp);
     String nfc = NormalizerInput.Normalize(codePointString,
             Normalization.NFD);
     String nfd = NormalizerInput.Normalize(codePointString,
             Normalization.NFD);
-String nfdfs = NormalizerInput.Normalize(codePointString,
+    String nfdfs = NormalizerInput.Normalize(codePointString,
             Normalization.NFDForFilesystems);
-   if (!(nfdfs.length() > 0)) {
+    if (!(nfdfs.length() > 0)) {
  Assert.fail(
             EncodingTest.EscapeString(codePointString));
  }
@@ -355,7 +355,7 @@ String nfdfs = NormalizerInput.Normalize(codePointString,
           }
         }
     }
-*/
+    */
     @Test(timeout = 60000)
     public void NormTest() {
       boolean[] handled = new boolean[0x110000];
@@ -437,22 +437,22 @@ String nfdfs = NormalizerInput.Normalize(codePointString,
             Assert.fail(TestCommon.IntToString(i));
           }
           String imsg = TestCommon.IntToString(i);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFC),
-  imsg);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFD),
-  imsg);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFKC),
-  imsg);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFKD),
-  imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFC),
+            imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFD),
+            imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFKC),
+            imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFKD),
+            imsg);
         }
       }
     }

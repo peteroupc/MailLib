@@ -21,23 +21,23 @@ private DomainUtility() {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-            "0");
+        throw new IllegalArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + index + ") is more than " +
+        throw new IllegalArgumentException("index(" + index + ") is more than " +
           str.length());
       }
       if (endIndex < 0) {
-      throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is less than " + "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is more than " + str.length());
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is less than " + index);
       }
       int vnum = 128;
@@ -65,7 +65,7 @@ private DomainUtility() {
       while (tmpIndex < endIndex) {
         int c = str.charAt(tmpIndex);
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+          (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
@@ -99,7 +99,7 @@ private DomainUtility() {
         while (tmpIndex < endIndex) {
           int c = str.charAt(tmpIndex);
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
@@ -129,7 +129,7 @@ private DomainUtility() {
         while (tmpIndex < endIndex) {
           int c = str.charAt(tmpIndex);
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
@@ -187,28 +187,29 @@ private DomainUtility() {
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
     };
 
-    static String PunycodeDecode(String str, int index, int endIndex) {
+    static String PunycodeDecode(String str, int index,
+      int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-            "0");
+        throw new IllegalArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + index + ") is more than " +
+        throw new IllegalArgumentException("index(" + index + ") is more than " +
           str.length());
       }
       if (endIndex < 0) {
-      throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is less than " + "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is more than " + str.length());
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is less than " + index);
       }
       if (index == endIndex) {
@@ -333,23 +334,23 @@ private DomainUtility() {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-            "0");
+        throw new IllegalArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + index + ") is more than " +
+        throw new IllegalArgumentException("index(" + index + ") is more than " +
           str.length());
       }
       if (endIndex < 0) {
-      throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is less than " + "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is more than " + str.length());
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
+        throw new IllegalArgumentException("endIndex(" + endIndex +
           ") is less than " + index);
       }
       int vnum = 128;
@@ -379,7 +380,7 @@ private DomainUtility() {
       while (tmpIndex < endIndex) {
         int c = str.charAt(tmpIndex);
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+          (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
@@ -421,7 +422,7 @@ private DomainUtility() {
         while (tmpIndex < endIndex) {
           int c = str.charAt(tmpIndex);
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
@@ -454,7 +455,7 @@ private DomainUtility() {
         while (tmpIndex < endIndex) {
           int c = str.charAt(tmpIndex);
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
+            (str.charAt(tmpIndex + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(tmpIndex + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {

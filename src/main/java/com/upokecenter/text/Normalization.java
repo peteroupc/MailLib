@@ -1,8 +1,8 @@
 package com.upokecenter.text;
 
-    /**
-     * Represents a Unicode normalization form.
-     */
+  /**
+   * Represents a Unicode normalization form.
+   */
   public enum Normalization {
     /**
      * Normalization form C: canonical decomposition followed by canonical

@@ -41,8 +41,8 @@ namespace PeterO.Mail {
         // Has 'specials', or CTLs other than tab
         if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
           c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
-            == 0x3b || c == 0x40 ||
-              c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
+          == 0x3b || c == 0x40 ||
+          c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
           return true;
         }
       }
@@ -55,27 +55,27 @@ namespace PeterO.Mail {
       int index,
       int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
-#if DEBUG
+      #if DEBUG
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " +
-            "0");
+        throw new ArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " +
+        throw new ArgumentException("index(" + index + ") is more than " +
           str.Length);
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + endIndex +
-            ") is less than " + "0");
+        throw new ArgumentException("endIndex(" + endIndex +
+          ") is less than " + "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is more than " + str.Length);
       }
-#endif
+      #endif
       int length = endIndex - index;
       if (length < 2 || str[index] != '(' || str[endIndex - 1] != ')') {
         enc.AppendString(str.Substring(index, length - index));
@@ -154,8 +154,9 @@ namespace PeterO.Mail {
             break;
           }
           if (str[index] == '\r' && index + 2 < endIndex &&
-str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
-                    0x09)) {
+            str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index +
+2] ==
+              0x09)) {
             // Folding whitespace
             builder.Append(str[index + 2]);
             index += 3;
@@ -167,7 +168,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                 builder.Append((char)cp);
               }
             } else if (cp <= 0x10ffff) {
-              builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) |
+0xd800));
               builder.Append((char)(((cp - 0x10000) & 0x3ff) | 0xdc00));
             }
             index += 1 + (cp >= 0x10000 ? 2 : 1);
@@ -201,8 +203,9 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
             break;
           }
           if (str[index] == '\r' && index + 2 < endIndex &&
-str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
-                0x09)) {
+            str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index +
+2] ==
+              0x09)) {
             // Folding whitespace
             builder.Append(str[index + 2]);
             index += 3;
@@ -212,7 +215,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
             if (cp <= 0xffff) {
               builder.Append((char)cp);
             } else if (cp <= 0x10ffff) {
-              builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) |
+0xd800));
               builder.Append((char)(((cp - 0x10000) & 0x3ff) | 0xdc00));
             }
             index += 1 + (cp >= 0x10000 ? 2 : 1);
@@ -245,7 +249,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          ValueSpecials.IndexOf(c) >= 0)) {
+            ValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         ++i;
@@ -286,12 +290,12 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           break;
         }
         if (context == EncodedWordContext.Comment &&
-            (c == '(' || c == ')' || c == '\\')) {
+          (c == '(' || c == ')' || c == '\\')) {
           break;
         }
         if (context == EncodedWordContext.Phrase &&
-            (encodingChar == 'Q' || encodingChar == 'q') &&
-            (ValueSmallchars[c - 0x20] == 0 && c != '=')) {
+          (encodingChar == 'Q' || encodingChar == 'q') &&
+          (ValueSmallchars[c - 0x20] == 0 && c != '=')) {
           // NOTE: Smallchars excludes '=' to be consistent
           // with the same array used in HeaderEncoder.
           // We check for '=' here separately. This is
@@ -301,7 +305,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           break;
         }
         if (context == EncodedWordContext.Phrase &&
-            ValueAsciiAtext[c - 0x20] == 0) {
+          ValueAsciiAtext[c - 0x20] == 0) {
           break;
         }
         ++i;
@@ -343,8 +347,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           index += 2;
           havePossibleEncodedWord = true;
         } else if (context == EncodedWordContext.Comment &&
-                   index + 2 < endIndex && str[index] == '(' &&
-                   str[index + 1] == '=' && str[index + 2] == '?') {
+          index + 2 < endIndex && str[index] == '(' &&
+          str[index + 1] == '=' && str[index + 2] == '?') {
           startIndex = index + 3;
           index += 3;
           startParen = true;
@@ -360,8 +364,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
             // with length up to 75 (also exclude '(' , '\', and ')' if the
             // context is a comment)
             if (c >= 0x21 && c < 0x7e && (context !=
-          EncodedWordContext.Comment || (c != '(' && c != ')' &&
-                                         c != '\\'))) {
+                EncodedWordContext.Comment || (c != '(' && c != ')' &&
+                  c != '\\'))) {
               ++charCount;
               if (charCount > 75) {
                 maybeWord = false;
@@ -396,7 +400,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                 // check for supported encoding (B or Q)
                 char encodingChar = str[index];
                 if (i2 - index == 1 && (encodingChar == 'b' ||
-                  encodingChar == 'B' ||
+                    encodingChar == 'B' ||
                     encodingChar == 'q' || encodingChar == 'Q')) {
                   // Parse encoded text
                   base64 = encodingChar == 'b' || encodingChar == 'B';
@@ -421,15 +425,15 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
               string charset = str.Substring(
                 startIndex,
                 charsetEnd - startIndex);
-              string encodedText = str.Substring(
-                encodedTextStart,
-                (afterLast - 2) - encodedTextStart);
+              string encodedText = str.Substring (
+                  encodedTextStart,
+                  (afterLast - 2) - encodedTextStart);
               // DebugUtility.Log("enctext " + encodedText);
               int asterisk = charset.IndexOf('*');
               if (asterisk >= 1) {
-                string language = charset.Substring(
-            asterisk + 1,
-            charset.Length - (asterisk + 1));
+                string language = charset.Substring (
+                    asterisk + 1,
+                    charset.Length - (asterisk + 1));
                 charset = charset.Substring(0, asterisk);
                 acceptedEncodedWord &=
                   LanguageTags.IsPotentiallyValidLanguageTag(language);
@@ -437,9 +441,10 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {
-                IByteReader transform = base64 ?
-                  (IByteReader)new BEncodingStringTransform(encodedText) :
+                IByteReader transform = base64 ? (IByteReader)new
+BEncodingStringTransform(encodedText) :
                   (IByteReader)new QEncodingStringTransform(encodedText);
+
                 ICharacterEncoding encoding = Encodings.GetEncoding(
                   charset,
                   true);
@@ -453,9 +458,9 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                 }
                 if (encoding == null) {
                   // Console.WriteLine("Unknown charset " + charset);
-                  decodedWord = str.Substring(
-             startIndex - 2,
-             afterLast - (startIndex - 2));
+                  decodedWord = str.Substring (
+                      startIndex - 2,
+                      afterLast - (startIndex - 2));
                   acceptedEncodedWord = false;
                 } else {
                   // NOTE: This method converts to Unicode the text
@@ -476,32 +481,33 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                  hasSuspiciousText |= context == EncodedWordContext.Comment &&
-                HasSuspiciousTextInComments(decodedWord);
+                    hasSuspiciousText |= context ==
+EncodedWordContext.Comment &&
+                      HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
                 }
               } else {
-                decodedWord = str.Substring(
-           startIndex - 2,
-           afterLast - (startIndex - 2));
+                decodedWord = str.Substring (
+                    startIndex - 2,
+                    afterLast - (startIndex - 2));
               }
             } else {
-              decodedWord = str.Substring(
-         startIndex - 2,
-         afterLast - (startIndex - 2));
+              decodedWord = str.Substring (
+                  startIndex - 2,
+                  afterLast - (startIndex - 2));
             }
             index = afterLast;
           }
         }
         if (whitespaceStart >= 0 && whitespaceStart < whitespaceEnd &&
-            (!acceptedEncodedWord || !lastWordWasEncodedWord)) {
+          (!acceptedEncodedWord || !lastWordWasEncodedWord)) {
           // Append whitespace as long as it doesn't occur between two
           // encoded words
-          builder.Append(
-  str.Substring(
-    whitespaceStart,
-    whitespaceEnd - whitespaceStart));
+          builder.Append (
+            str.Substring(
+              whitespaceStart,
+              whitespaceEnd - whitespaceStart));
         }
         if (startParen) {
           builder.Append('(');
@@ -517,7 +523,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
         while (index < endIndex) {
           char c = str[index];
           if (c == 0x0d && index + 2 < endIndex && str[index + 1] == 0x0a &&
-                   (str[index + 2] == 0x09 || str[index + 2] == 0x20)) {
+            (str[index + 2] == 0x09 || str[index + 2] == 0x20)) {
             index += 2; // skip the CRLF break;
           }
           if (c == 0x09 || c == 0x20) {
@@ -539,27 +545,28 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           if (index == endIndex) {
             builder.Append(str.Substring(oldIndex, index - oldIndex));
           } else {
-            builder.Append(str.Substring(oldIndex, whitespaceStart - oldIndex));
+            builder.Append(str.Substring(oldIndex, whitespaceStart -
+oldIndex));
           }
         }
         lastWordWasEncodedWord = acceptedEncodedWord;
       }
       string retval = builder.ToString();
       if (
-  wordsWereDecoded && (
-  hasSuspiciousText || (
-  retval.IndexOf(
-    "=?",
-    StringComparison.Ordinal) >= 0 && retval.IndexOf(
-  "?=",
-  StringComparison.Ordinal) >= 0))) {
+        wordsWereDecoded && (
+          hasSuspiciousText || (
+            retval.IndexOf(
+              "=?",
+              StringComparison.Ordinal) >= 0 && retval.IndexOf (
+              "?=",
+              StringComparison.Ordinal) >= 0))) {
         if (context == EncodedWordContext.Comment) {
           string wrappedComment = "(" + retval + ")";
           if (
-  HeaderParserUtility.ParseCommentStrict(
-    wrappedComment,
-    0,
-    wrappedComment.Length) != wrappedComment.Length) {
+            HeaderParserUtility.ParseCommentStrict(
+              wrappedComment,
+              0,
+              wrappedComment.Length) != wrappedComment.Length) {
             // Comment is syntactically invalid after decoding, so
             // don't decode any of the encoded words
             return str.Substring(start, endIndex - start);
@@ -606,7 +613,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       string str,
       int index) {
       return (index == 0) || (index - 1 >= 0 && (str[index - 1] == 0x09 ||
-        str[index - 1] == 0x20));
+            str[index - 1] == 0x20));
     }
 
     private static int IndexOfNextPossibleEncodedWord(
@@ -633,12 +640,12 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       return -1;
     }
 
-    public static string DecodePhraseText(
-  string str,
-  int index,
-  int endIndex,
-  IList<int[]> tokens,
-  bool withComments) {
+    public static string DecodePhraseText (
+      string str,
+      int index,
+      int endIndex,
+      IList<int[]> tokens,
+      bool withComments) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all CFWS
       // found after the phrase.
@@ -657,14 +664,14 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
         var hasCFWS = false;
         if (
           !(token[1] >= lastIndex && token[1] >= index && token[1] <=
-endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+            endIndex && token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment && withComments) {
           // This is a comment token
           int startIndex = token[1];
-          builder.Append(str.Substring(lastIndex, startIndex + 1 - lastIndex));
+          builder.Append(str.Substring(lastIndex, startIndex + 1 -
+lastIndex));
           string newComment = Rfc2047.DecodeEncodedWords(
             str,
             startIndex + 1,
@@ -732,10 +739,10 @@ endIndex &&
             builder.Append(replacement);
           }
           hasCFWS = HeaderParser.ParseCFWS(str, wordEnd, endIndex, null) !=
-                 wordEnd;
+            wordEnd;
           lastIndex = wordEnd;
         } else if (token[0] == HeaderParserUtility.TokenQuotedString &&
-                   !withComments) {
+          !withComments) {
           if (appendSpace) {
             builder.Append(' ');
             appendSpace = false;
@@ -825,12 +832,12 @@ endIndex &&
       }
     }
 
-    public static void EncodePhraseText(
-  HeaderEncoder enc,
-  string str,
-  int index,
-  int endIndex,
-  IList<int[]> tokens) {
+    public static void EncodePhraseText (
+      HeaderEncoder enc,
+      string str,
+      int index,
+      int endIndex,
+      IList<int[]> tokens) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all whitespace
       // found after the phrase. Doesn't encode text within comments.
@@ -845,8 +852,8 @@ endIndex &&
       int lastIndex = index;
       foreach (int[] token in tokens) {
         if (token[1] < lastIndex || token[1] < index ||
-            token[1] > endIndex || token[2] < index ||
-            token[2] > endIndex) {
+          token[1] > endIndex || token[2] < index ||
+          token[2] > endIndex) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {

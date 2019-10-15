@@ -55,21 +55,21 @@ namespace PeterO.Mail.Transforms {
 
     public QuotedPrintableTransform(
       IByteReader input,
-      bool allowBareLfCr) : this(
-  input,
-  allowBareLfCr,
-  MaxLineLength,
-  false) {
+      bool allowBareLfCr) : this (
+          input,
+          allowBareLfCr,
+          MaxLineLength,
+          false) {
     }
 
     public QuotedPrintableTransform(
       IByteReader input,
       bool allowBareLfCr,
-      int maxLineLength) : this(
-  input,
-  allowBareLfCr,
-  maxLineLength,
-  false) {
+      int maxLineLength) : this (
+          input,
+          allowBareLfCr,
+          maxLineLength,
+          false) {
     }
 
     private void ResizeBuffer(int size) {
@@ -110,7 +110,7 @@ namespace PeterO.Mail.Transforms {
           return -1;
         }
         if (!this.checkStrictEncoding && this.printable[c] == 1 &&
-       this.maxLineSize < 0) {
+          this.maxLineSize < 0) {
           return c;
         }
         if (c == 0x0d) {
@@ -142,7 +142,7 @@ namespace PeterO.Mail.Transforms {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           }
           int b1 = this.ReadInputByte();
@@ -164,12 +164,13 @@ namespace PeterO.Mail.Transforms {
               continue;
             }
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
+                this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
                   throw new
-              MessageDataException("Encoded quoted-printable line too long");
+                  MessageDataException("Encoded quoted-printable line too" +
+"\u0020long");
                 }
               }
               this.unget = true;
@@ -179,16 +180,17 @@ namespace PeterO.Mail.Transforms {
               this.unget = true;
               return '=';
             } else {
-            throw new
-              MessageDataException("CR not followed by LF in quoted-printable");
+              throw new
+              MessageDataException("CR not followed by LF in" +
+"\u0020quoted-printable");
             }
           } else if (b1 == -1) {
             // Equals sign at end, ignore
             return -1;
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > MaxLineLength ||
-              this.maxLineSize < 0)) {
+                this.maxLineSize > MaxLineLength ||
+                this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -199,8 +201,9 @@ namespace PeterO.Mail.Transforms {
               this.unget = true;
               return '=';
             } else {
-               throw new
-  MessageDataException("Invalid hex character in quoted-printable");
+              throw new
+              MessageDataException("Invalid hex character in" +
+"\u0020quoted-printable");
             }
           }
           int b2 = this.ReadInputByte();
@@ -216,7 +219,7 @@ namespace PeterO.Mail.Transforms {
             c |= b2 + 10 - 'a';
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
+                this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -225,7 +228,8 @@ namespace PeterO.Mail.Transforms {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
                   throw new
-              MessageDataException("Encoded quoted-printable line too long");
+                  MessageDataException("Encoded quoted-printable line too" +
+"\u0020long");
                 }
               }
               this.ResizeBuffer(1);
@@ -233,13 +237,13 @@ namespace PeterO.Mail.Transforms {
               return '=';
             }
             throw new
-           MessageDataException("Invalid hex character in quoted-printable");
+            MessageDataException("Invalid hex character in quoted-printable");
           }
           if (this.maxLineSize >= 0) {
             this.lineCharCount += 2;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           }
           return c;
@@ -254,7 +258,7 @@ namespace PeterO.Mail.Transforms {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           }
           // In most cases, though, there will only be
@@ -320,7 +324,7 @@ namespace PeterO.Mail.Transforms {
               ++this.lineCharCount;
               if (this.lineCharCount > this.maxLineSize) {
                 throw new
-            MessageDataException("Encoded quoted-printable line too long");
+                MessageDataException("Encoded quoted-printable line too long");
               }
             }
             c2 = this.ReadInputByte();
@@ -344,10 +348,11 @@ namespace PeterO.Mail.Transforms {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           } else {
-       throw new MessageDataException("Invalid character in quoted-printable");
+            throw new MessageDataException("Invalid character in" +
+"\u0020quoted-printable");
           }
         } else {
           // Any other character
@@ -355,7 +360,7 @@ namespace PeterO.Mail.Transforms {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           } else if (this.checkStrictEncoding && (c >= 0x7f || c < 0x20)) {
             throw new MessageDataException("Invalid character");

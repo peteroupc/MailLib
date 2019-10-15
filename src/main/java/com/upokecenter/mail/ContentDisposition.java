@@ -12,37 +12,37 @@ import java.util.*;
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
-    /**
-     * <p>Specifies how a message body should be displayed or handled by a mail
-     * user agent. This type is immutable; its contents can't be changed
-     * after it's created. To create a changeable disposition object, use
-     *  the DispositionBuilder class.</p> <p><b>About the "filename"
-     *  parameter</b></p> <p>The "filename" parameter of a content
-     * disposition suggests a name to use when saving data to a file. For
-     *  the "filename" parameter, the GetParameter method and Parameters
-     * property (<code>getParameters</code>) method in Java) do not adapt that
-     * parameter's value using the ContentDisposition.MakeFilename method.
-     *  Thus, for example, the "filename" parameter, if any, returned by
-     * this method could have an arbitrary length, be encoded using RFC
-     * 2047 encoded words (which some email and HTTP implementations still
-     * like to write out in headers, even though that RFC says encoded
-     *  words "MUST NOT appear within a 'quoted-string'"; see
-     * ContentDisposition.MakeFilename), or not be usable as is as a file
-     * name.</p> <p><b>Example:</b> An example of RFC 2047 encoded words
-     * is:</p> <p><b>=?UTF-8?Q?test?=</b></p> <p>Content-Disposition header
-     * fields like the following have appeared in practice:</p>
-     * <p><b>Content-Disposition: attachment;
-     * filename==?UTF-8?Q?example?=</b></p> <p><b>Content-Disposition:
-     * attachment; filename==?UTF-8?Q?test.png?=</b></p>
-     * <p><b>Content-Disposition: attachment;
-     *  filename="=?UTF-8?Q?test.png?="</b></p> <p>In this implementation,
-     * the first and second of these are syntactically invalid, so they
-     * trigger parse errors, while the third of these is syntactically
-     *  valid, but the "filename" parameter is treated as
-     *  "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047
-     * encoded words are not decoded at the moment a content disposition is
-     * parsed (using the Parse method).</p>
-     */
+  /**
+   * <p>Specifies how a message body should be displayed or handled by a mail
+   * user agent. This type is immutable; its contents can't be changed
+   * after it's created. To create a changeable disposition object, use the
+   *  DispositionBuilder class.</p> <p><b>About the "filename"
+   *  parameter</b></p> <p>The "filename" parameter of a content disposition
+   *  suggests a name to use when saving data to a file. For the "filename"
+   * parameter, the GetParameter method and Parameters property (
+   * <code>getParameters</code>) method in Java) do not adapt that parameter's
+   * value using the ContentDisposition.MakeFilename method. Thus, for
+   *  example, the "filename" parameter, if any, returned by this method
+   * could have an arbitrary length, be encoded using RFC 2047 encoded
+   * words (which some email and HTTP implementations still like to write
+   *  out in headers, even though that RFC says encoded words "MUST NOT
+   *  appear within a 'quoted-string'"; see
+   * ContentDisposition.MakeFilename), or not be usable as is as a file
+   * name.</p> <p><b>Example:</b> An example of RFC 2047 encoded words
+   * is:</p> <p><b>=?UTF-8?Q?test?=</b></p> <p>Content-Disposition header
+   * fields like the following have appeared in practice:</p>
+   * <p><b>Content-Disposition: attachment;
+   * filename==?UTF-8?Q?example?=</b></p> <p><b>Content-Disposition:
+   * attachment; filename==?UTF-8?Q?test.png?=</b></p>
+   * <p><b>Content-Disposition: attachment;
+   *  filename="=?UTF-8?Q?test.png?="</b></p> <p>In this implementation, the
+   * first and second of these are syntactically invalid, so they trigger
+   * parse errors, while the third of these is syntactically valid, but the
+   *  "filename" parameter is treated as "=?UTF-8?Q?test.png?=", not
+   *  "test.png" or something else -- RFC 2047 encoded words are not decoded
+   * at the moment a content disposition is parsed (using the Parse
+   * method).</p>
+   */
   public class ContentDisposition {
     private final String dispositionType;
 
@@ -85,13 +85,13 @@ import com.upokecenter.text.*;
       int valueHashCode = 632580499;
       if (this.dispositionType != null) {
         for (int i = 0; i < this.dispositionType.length(); ++i) {
- valueHashCode = (valueHashCode + (632580503 *
-          this.dispositionType.charAt(i)));
- }
+          valueHashCode = (valueHashCode + (632580503 *
+                this.dispositionType.charAt(i)));
+        }
       }
       if (this.parameters != null) {
         valueHashCode = (valueHashCode + (632580587 *
-                this.parameters.size()));
+              this.parameters.size()));
       }
       return valueHashCode;
     }
@@ -114,9 +114,9 @@ import com.upokecenter.text.*;
         return this.dispositionType.equals("attachment");
       }
 
-    ContentDisposition(
- String type,
- Map<String, String> parameters) {
+    ContentDisposition (
+      String type,
+      Map<String, String> parameters) {
       if (type == null) {
         throw new NullPointerException("type");
       }
@@ -284,9 +284,9 @@ import com.upokecenter.text.*;
      * overflow a 32-bit signed integer.
      */
     public int[] GetCreationDate() {
-      return MailDateTime.ParseDateString(
-        this.GetParameter("creation-date"),
-        true);
+      return MailDateTime.ParseDateString (
+          this.GetParameter("creation-date"),
+          true);
     }
 
     /**
@@ -302,9 +302,9 @@ import com.upokecenter.text.*;
      * would overflow a 32-bit signed integer.
      */
     public int[] GetModificationDate() {
-      return MailDateTime.ParseDateString(
-        this.GetParameter("modification-date"),
-        true);
+      return MailDateTime.ParseDateString (
+          this.GetParameter("modification-date"),
+          true);
     }
 
     /**
@@ -320,9 +320,9 @@ import com.upokecenter.text.*;
      * a 32-bit signed integer.
      */
     public int[] GetReadDate() {
-      return MailDateTime.ParseDateString(
-        this.GetParameter("read-date"),
-        true);
+      return MailDateTime.ParseDateString (
+          this.GetParameter("read-date"),
+          true);
     }
 
     /**
@@ -348,7 +348,7 @@ import com.upokecenter.text.*;
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       return this.parameters.containsKey(name) ? this.parameters.get(name) :
-               null;
+        null;
     }
 
     private static ContentDisposition ParseDisposition(String str) {
@@ -391,15 +391,15 @@ import com.upokecenter.text.*;
         index,
         endIndex,
         HttpRules,
-        parameters) ? new ContentDisposition(
-            dispoType,
-            parameters) : null;
+        parameters) ? new ContentDisposition (
+          dispoType,
+          parameters) : null;
     }
 
     private static ContentDisposition Build(String name) {
-      return new ContentDisposition(
-        name,
-        new HashMap<String, String>());
+      return new ContentDisposition (
+          name,
+          new HashMap<String, String>());
     }
 
     /**

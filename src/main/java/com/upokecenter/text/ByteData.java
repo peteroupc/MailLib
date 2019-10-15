@@ -87,19 +87,19 @@ package com.upokecenter.text;
           copy = new byte[matchLength];
         }
         if (pos > outputPos) {
-          throw new IllegalArgumentException("pos (" + pos + ") is more than " +
+          throw new IllegalArgumentException("pos(" + pos + ") is more than " +
             output.length);
         }
         if (matchLength < 0) {
-          throw new IllegalArgumentException("matchLength (" + matchLength +
+          throw new IllegalArgumentException("matchLength(" + matchLength +
             ") is less than 0");
         }
         if (matchLength > outputPos) {
-          throw new IllegalArgumentException("matchLength (" + matchLength +
+          throw new IllegalArgumentException("matchLength(" + matchLength +
             ") is more than " + outputPos);
         }
         if (outputPos - pos < matchLength) {
-          throw new IllegalArgumentException("outputPos minus " + pos + " (" +
+          throw new IllegalArgumentException("outputPos minus " + pos + "(" +
             (outputPos - pos) + ") is less than " + matchLength);
         }
         System.arraycopy(output, pos, copy, 0, matchLength);
@@ -127,28 +127,32 @@ package com.upokecenter.text;
 
     public boolean GetBoolean(int cp) {
       if (cp < 0) {
-        throw new IllegalArgumentException("cp (" + cp + ") is less than " + "0");
+        throw new IllegalArgumentException("cp(" + cp + ") is less than " + "0");
       }
       if (cp > 0x10ffff) {
-     throw new IllegalArgumentException("cp (" + cp + ") is more than " + 0x10ffff);
+        throw new IllegalArgumentException("cp(" + cp + ") is more than " +
+0x10ffff);
       }
       int b = this.array[cp >> 13] & 0xff;
       switch (b) {
-        case 0xfe: return false;
-        case 0xff: return true;
+        case 0xfe:
+          return false;
+        case 0xff:
+          return true;
         default: {
-            int index = 136 + (b << 10) + ((cp & 8191) >> 3);
-            return (this.array[index] & (1 << (cp & 7))) > 0;
-          }
+          int index = 136 + (b << 10) + ((cp & 8191) >> 3);
+          return (this.array[index] & (1 << (cp & 7))) > 0;
+        }
       }
     }
 
     public byte GetByte(int cp) {
       if (cp < 0) {
-        throw new IllegalArgumentException("cp (" + cp + ") is less than " + "0");
+        throw new IllegalArgumentException("cp(" + cp + ") is less than " + "0");
       }
       if (cp > 0x10ffff) {
-     throw new IllegalArgumentException("cp (" + cp + ") is more than " + 0x10ffff);
+        throw new IllegalArgumentException("cp(" + cp + ") is more than " +
+0x10ffff);
       }
       int index = (cp >> 9) << 1;
       int x = this.array[index + 1];

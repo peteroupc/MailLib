@@ -31,7 +31,8 @@ private UnicodeDatabase() {
       }
       if (classes == null) {
         synchronized (ValueSyncRoot) {
-  classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
+          classes = (classes == null) ? (ByteData.Decompress (
+              NormalizationData.CombiningClasses)) : classes;
         }
       }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -207,7 +208,8 @@ private UnicodeDatabase() {
       }
       if (casedprop == null) {
         synchronized (ValueSyncRoot) {
-  casedprop = (casedprop == null) ? (ByteData.Decompress(NormalizationData.CaseProperty)) : casedprop;
+          casedprop = (casedprop == null) ? (ByteData.Decompress (
+              NormalizationData.CaseProperty)) : casedprop;
         }
       }
       return ((int)casedprop.GetByte(cp)) & 0xff;
@@ -219,7 +221,7 @@ private UnicodeDatabase() {
       }
       if (precisCat == null) {
         synchronized (ValueSyncRoot) {
-       precisCat = (precisCat == null) ? (ByteData.Decompress(IdnaData.PrecisCategories)) : precisCat;
+          precisCat = (precisCat == null) ? (ByteData.Decompress(IdnaData.PrecisCategories)) : precisCat;
         }
       }
       return ((int)precisCat.GetByte(cp)) & 0xff;
@@ -248,22 +250,22 @@ private UnicodeDatabase() {
       // class of 0
       ByteData bd = null;
       if (form == Normalization.NFC &&
-      (cp < NormalizationData.QCSNFCMin || cp >
+        (cp < NormalizationData.QCSNFCMin || cp >
           NormalizationData.QCSNFCMax)) {
         return true;
       }
       if (form == Normalization.NFD &&
-      (cp < NormalizationData.QCSNFDMin || cp >
+        (cp < NormalizationData.QCSNFDMin || cp >
           NormalizationData.QCSNFDMax)) {
         return true;
       }
       if (form == Normalization.NFKC &&
-    (cp < NormalizationData.QCSNFKCMin || cp >
+        (cp < NormalizationData.QCSNFKCMin || cp >
           NormalizationData.QCSNFKCMax)) {
         return true;
       }
       if (form == Normalization.NFKD &&
-    (cp < NormalizationData.QCSNFKDMin || cp >
+        (cp < NormalizationData.QCSNFKDMin || cp >
           NormalizationData.QCSNFKDMax)) {
         return true;
       }
@@ -286,7 +288,8 @@ private UnicodeDatabase() {
       if (form == Normalization.NFKC) {
         if (qcsnfkc == null) {
           synchronized (ValueSyncRoot) {
-            qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(NormalizationData.QCSNFKC)) : qcsnfkc;
+            qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(
+  NormalizationData.QCSNFKC)) : qcsnfkc;
           }
         }
         bd = qcsnfkc;
@@ -294,7 +297,8 @@ private UnicodeDatabase() {
       if (form == Normalization.NFKD) {
         if (qcsnfkd == null) {
           synchronized (ValueSyncRoot) {
-            qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(NormalizationData.QCSNFKD)) : qcsnfkd;
+            qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(
+  NormalizationData.QCSNFKD)) : qcsnfkd;
           }
         }
         bd = qcsnfkd;

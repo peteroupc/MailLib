@@ -54,11 +54,11 @@ import com.upokecenter.text.*;
     @Test
     public void TestEquals() {
       ContentDisposition mt =
-          ParseAndTestAspects("inline;param1=value1;param2=value2");
+        ParseAndTestAspects("inline;param1=value1;param2=value2");
       ContentDisposition mt2 =
-           ParseAndTestAspects("inline;param2=value2;param1=value1");
+        ParseAndTestAspects("inline;param2=value2;param1=value1");
       ContentDisposition mt3 =
-           ParseAndTestAspects("inline;param1=value2;param2=value2");
+        ParseAndTestAspects("inline;param1=value2;param2=value2");
       TestCommon.AssertEqualsHashCode(mt, mt2);
       TestCommon.AssertEqualsHashCode(mt, mt3);
       TestCommon.AssertEqualsHashCode(mt3, mt2);
@@ -78,7 +78,7 @@ import com.upokecenter.text.*;
     public void TestGetParameter() {
       for (Map<String, String> dict : ResourceUtil.GetDictList("paramtypes")) {
         ContentDisposition mt = ParseAndTestAspects("inline" + dict.get("params"));
-        Assert.assertEquals(
+        Assert.assertEquals (
           dict.get("filename"),
           mt.GetParameter("filename"));
       }
@@ -176,10 +176,10 @@ import com.upokecenter.text.*;
       String newName,
       String extra) {
       String failstr = "original=" + EncodingTest.EscapeString(filename) +
- "\nfilename=" + EncodingTest.EscapeString(newName) + "\n" +
-"AssertGoodFilename(\"" + EncodingTest.EscapeString(filename) +
-         "\");" + (((extra)==null || (extra).length()==0) ? "" : "\n" +
-              extra);
+        "\nfilename=" + EncodingTest.EscapeString(newName) + "\n" +
+        "AssertGoodFilename(\"" + EncodingTest.EscapeString(filename) +
+        "\");" + (((extra)==null || (extra).length()==0) ? "" : "\n" +
+          extra);
       Assert.fail(failstr);
     }
 
@@ -198,12 +198,12 @@ import com.upokecenter.text.*;
       }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
       boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
-              str.charAt(1) >= '0' && str.charAt(1) <= '9';
+        str.charAt(1) >= '0' && str.charAt(1) <= '9';
       boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
-          '$';
+        '$';
       boolean period = str.charAt(0) == '.';
       boolean beginEndSpace = str.charAt(0) == 0x20 || str.charAt(str.length() - 1) ==
-          0x20;
+        0x20;
       if (bracketDigit) {
         FailFilename(filename, str);
       }
@@ -277,17 +277,17 @@ import com.upokecenter.text.*;
         }
       }
       if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4)
-        == '.' || strLower.charAt(4) == ' '))) {
+            == '.' || strLower.charAt(4) == ' '))) {
         if (strLower.indexOf(
           "lpt") == 0 && strLower.charAt(3) >= '0' &&
-            strLower.charAt(3) <= '9') {
+          strLower.charAt(3) <= '9') {
           {
             FailFilename(filename, str, strLower);
           }
         }
         if (strLower.indexOf(
           "com") == 0 && strLower.charAt(3) >= '0' &&
-            strLower.charAt(3) <= '9') {
+          strLower.charAt(3) <= '9') {
           {
             FailFilename(filename, str, strLower);
           }
@@ -305,23 +305,24 @@ import com.upokecenter.text.*;
         char c = str.charAt(i);
         if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
           c == '%' || c == 0x2028 || c == 0x2029 ||
-        c == '#' || c == ';' || c == '\'' || c == '&' ||
-            c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
+          c == '#' || c == ';' || c == '\'' || c == '&' ||
+          c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
           c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
-c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
-(c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
-            (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
-          FailFilename(
-  filename,
-  str,
-  "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
+          c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
+          (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
+0xfeff ||
+          (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+          FailFilename (
+            filename,
+            str,
+            "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
         }
         // Code points that decompose to "bad" characters
         if (c == 0x1fef) {
-          FailFilename(
-  filename,
-  str,
-  "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
+          FailFilename (
+            filename,
+            str,
+            "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
         }
       }
       if (str.indexOf("\u0020\u0020") >= 0) {
@@ -354,10 +355,10 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       // Assert that MakeFilename is idempotent
       String newstr = ContentDisposition.MakeFilename(str);
       if (!newstr.equals(str)) {
-        FailFilename(
-  filename,
-  str,
-  "Not idempotent:\nnewname_=" + EncodingTest.EscapeString(newstr));
+        FailFilename (
+          filename,
+          str,
+          "Not idempotent:\nnewname_=" + EncodingTest.EscapeString(newstr));
       }
     }
 
@@ -371,9 +372,9 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
     @Test(timeout = 200000)
     public void TestMakeFilename() {
       RandomGenerator rnd = new RandomGenerator(new XorShift128Plus(false));
-      Assert.assertEquals(
-          "",
-          ContentDisposition.MakeFilename(null));
+      Assert.assertEquals (
+        "",
+        ContentDisposition.MakeFilename(null));
       for (int i = 0; i < 10000; ++i) {
         if (i % 1000 == 0) {
           System.out.println(i);
@@ -387,8 +388,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       // "my\ufffdfile\ufffdname\ud800\udc00.txt",
       // "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
       for (int i = 0; i < filenames.length; i += 2) {
-        String str = ContentDisposition.MakeFilename(
-          filenames[i]);
+        String str = ContentDisposition.MakeFilename (
+            filenames[i]);
         Assert.assertEquals(filenames[i], filenames[i + 1], str);
         AssertGoodFilename(filenames[i]);
         AssertGoodFilename(filenames[i + 1]);
@@ -398,7 +399,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
     @Test
     public void TestParameters() {
       ContentDisposition mt =
-          ParseAndTestAspects("inline;param1=value1;param2=value2");
+        ParseAndTestAspects("inline;param1=value1;param2=value2");
       Map<String, String> parameters;
       parameters = mt.getParameters();
       if (!(parameters.containsKey("param1"))) {
@@ -463,22 +464,26 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       Assert.assertEquals("value2", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+        ParseAndTestAspects(
+  "inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+        ParseAndTestAspects(
+  "inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+        ParseAndTestAspects(
+  "inline;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+        ParseAndTestAspects(
+  "inline;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
@@ -533,22 +538,26 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       Map<String, String> parameters;
       mt =
 
-  ParseAndTestAspects("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+        ParseAndTestAspects(
+  "inline;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "inline;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "inline;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+        ParseAndTestAspects(
+  "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       for (String str : NoParams) {
@@ -559,8 +568,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
         Assert.assertEquals(0, keys.size());
         Assert.assertEquals("inline", mt.getDispositionType());
       }
-      mt =
-       ParseAndTestAspects("inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
+      String mts = "inline;charset*0=ab;charset*1*=iso-8859-1'en'xyz";
+      mt = ParseAndTestAspects(mts);
       {
         String stringTemp = mt.GetParameter("charset");
         Assert.assertEquals(
@@ -576,8 +585,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       mt =
 
-  ParseAndTestAspects("inline;" +
-"\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+        ParseAndTestAspects("inline;" +
+          "\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
         String stringTemp = mt.GetParameter("charset");
         Assert.assertEquals(

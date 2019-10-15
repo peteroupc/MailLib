@@ -84,7 +84,7 @@ private MakeFilenameMethod() {
               break;
             }
             if (str.charAt(index) == '=' && index + 1 < endIndex &&
-            str.charAt(index + 1) == '?') {
+              str.charAt(index + 1) == '?') {
               wordStart = index;
               state = 1;
               index += 2;
@@ -118,13 +118,13 @@ private MakeFilenameMethod() {
               break;
             }
             if ((str.charAt(index) == 'b' || str.charAt(index) == 'B') && index +
-          1 < endIndex && str.charAt(index + 1) == '?') {
+              1 < endIndex && str.charAt(index + 1) == '?') {
               encoding = 1;
               state = 3;
               index += 2;
               dataStart = index;
             } else if ((str.charAt(index) == 'q' || str.charAt(index) == 'Q') &&
-             index + 1 < endIndex && str.charAt(index + 1) == '?') {
+              index + 1 < endIndex && str.charAt(index + 1) == '?') {
               encoding = 2;
               state = 3;
               index += 2;
@@ -144,7 +144,7 @@ private MakeFilenameMethod() {
               break;
             }
             if (str.charAt(index) == '?' && index + 1 < endIndex &&
-            str.charAt(index + 1) == '=') {
+              str.charAt(index + 1) == '=') {
               String charset = str.substring(
                 charsetStart, (
                 charsetStart)+(charsetEnd - charsetStart));
@@ -163,9 +163,10 @@ private MakeFilenameMethod() {
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {
-                IByteReader transform = (encoding == 1) ?
-                (IByteReader)new BEncodingStringTransform(data) :
-                (IByteReader)new QEncodingStringTransform(data);
+                IByteReader transform = (encoding == 1) ? (IByteReader)new
+BEncodingStringTransform(data) :
+                  (IByteReader)new QEncodingStringTransform(data);
+
                 ICharacterEncoding charEncoding = Encodings.GetEncoding(
                   charset,
                   true);
@@ -181,10 +182,10 @@ private MakeFilenameMethod() {
                 state = 0;
               } else {
                 if (!haveSpace) {
-                  builder.append(
-                 str.substring(
-                   markStart, (
-                   markStart)+(wordStart - markStart)));
+                  builder.append (
+                    str.substring(
+                      markStart, (
+                      markStart)+(wordStart - markStart)));
                 }
                 builder.append(decodedWord);
                 haveSpace = false;
@@ -202,7 +203,7 @@ private MakeFilenameMethod() {
               break;
             }
             if (str.charAt(index) == '=' && index + 1 < endIndex &&
-            str.charAt(index + 1) == '?') {
+              str.charAt(index + 1) == '?') {
               wordStart = index;
               state = 1;
               index += 2;
@@ -246,9 +247,9 @@ private MakeFilenameMethod() {
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
       int quote = paramValue.indexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeToString(
-        cs,
-        new PercentEncodingStringTransform(paramValue));
+      return (quote >= 0) ? null : Encodings.DecodeToString (
+          cs,
+          new PercentEncodingStringTransform(paramValue));
     }
 
     private static String RemoveEncodedWordEnds(String str) {
@@ -257,7 +258,7 @@ private MakeFilenameMethod() {
       boolean inEncodedWord = false;
       while (index < str.length()) {
         if (!inEncodedWord && index + 1 < str.length() && str.charAt(index) == '=' &&
-              str.charAt(index + 1) == '?') {
+          str.charAt(index + 1) == '?') {
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
@@ -284,7 +285,7 @@ private MakeFilenameMethod() {
             index = start;
           }
         } else if (inEncodedWord && index + 1 < str.length() && str.charAt(index)
-             == '?' && str.charAt(index + 1) == '=') {
+          == '?' && str.charAt(index + 1) == '=') {
           // End of encoded word
           index += 2;
           inEncodedWord = false;
@@ -365,13 +366,13 @@ private MakeFilenameMethod() {
           // This is the only kind of character in Unicode with this
           // normalization property.
           StringBuilder tsb = new StringBuilder().append((char)c);
-          String tss = NormalizerInput.Normalize(
-  tsb.toString(),
-  Normalization.NFD);
+          String tss = NormalizerInput.Normalize (
+              tsb.toString(),
+              Normalization.NFD);
           if (tss.indexOf((char)0x338) >= 0) {
-              builder.append('!');
-              builder.append(tss.charAt(0));
-            } else {
+            builder.append('!');
+            builder.append(tss.charAt(0));
+          } else {
             builder.append(c);
           }
           ++i;
@@ -447,10 +448,10 @@ private MakeFilenameMethod() {
         // too, to use quotes around a filename parameter AND use
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
-        String charset = Encodings.ResolveAliasForEmail(
-  str.substring(
-    0, (
-    0)+(index)));
+        String charset = Encodings.ResolveAliasForEmail (
+            str.substring(
+              0, (
+              0)+(index)));
         if (!((charset) == null || (charset).length() == 0)) {
           String newstr = DecodeRfc2231ExtensionLenient(str);
           if (!((newstr) == null || (newstr).length() == 0)) {
@@ -478,8 +479,8 @@ private MakeFilenameMethod() {
         return false;
       }
       return (sb.length() < MaxFileNameUtf8Length / 3) ||
-         DataUtilities.GetUtf8Length(sb.toString(), true) <=
-         MaxFileNameUtf8Length;
+        DataUtilities.GetUtf8Length(sb.toString(), true) <=
+        MaxFileNameUtf8Length;
     }
 
     private static boolean IsBelowMaxCodeLength(StringBuilder sb) {
@@ -487,8 +488,8 @@ private MakeFilenameMethod() {
         return false;
       }
       return (sb.length() < MaxFileNameUtf8Length / 3) ||
-         DataUtilities.GetUtf8Length(sb.toString(), true) <
-         MaxFileNameUtf8Length;
+        DataUtilities.GetUtf8Length(sb.toString(), true) <
+        MaxFileNameUtf8Length;
     }
 
     public static String MakeFilename(String str) {
@@ -550,14 +551,14 @@ private MakeFilenameMethod() {
             ++i;
           }
           if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-     c == 0x180e || c == 0x1680 ||
-  (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
-       0xfeff) {
+            c == 0x180e || c == 0x1680 ||
+            (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
+            0xfeff) {
             // Replace space-like characters (including tab) with space
             builder.append(' ');
           } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
             c == '?' || c == '|' ||
-      c == ':' || c == '<' || c == '>' || c == '"' ||
+            c == ':' || c == '<' || c == '>' || c == '"' ||
             (c >= 0x7f && c <= 0x9f)) {
             // Unsuitable character for a filename (one of the
             // characters
@@ -576,7 +577,7 @@ private MakeFilenameMethod() {
             // Avoid glob bracket pattern
             builder.append(')');
           } else if (c == '`') {
-            // '`' starts a command in BASH and possibly other shells
+            // '`'starts a command in BASH and possibly other shells
             builder.append('_');
           } else if (c == '&') {
             // '&' delimits commands
@@ -588,17 +589,17 @@ private MakeFilenameMethod() {
             // Fragment identifier for URIs
             builder.append('_');
           } else if (c == '$') {
-            // '$' starts a variable in BASH and possibly other shells
+            // '$'starts a variable in BASH and possibly other shells
             builder.append('_');
           } else if (c == ';') {
-            // ';' separates command lines in BASH and possibly
+            // ';'separates command lines in BASH and possibly
             // other shells
             builder.append('_');
           } else if (c == 0x2028 || c == 0x2029) {
             // line break characters (0x85 is already included above)
             builder.append('_');
           } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
-                 0xfdef)) {
+              0xfdef)) {
             // noncharacters
             builder.append('_');
           } else if (c == '%') {
@@ -612,9 +613,9 @@ private MakeFilenameMethod() {
             if (c <= 0xffff) {
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
-                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-0xd800));
-                builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+                  0xd800));
+              builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
             if (!IsAtOrBelowMaxCodeLength(builder)) {
               builder.delete(oldLength, (oldLength)+(builder.length() - oldLength));
@@ -625,35 +626,34 @@ private MakeFilenameMethod() {
         }
         str = builder.toString();
         if (str.length() == 0) {
- return "_";
-}
+          return "_";
+        }
         String strLower = DataUtilities.ToLowerCaseAscii(str);
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
         boolean reservedFilename = strLower.equals(
-          "nul") || strLower.equals("clock$") ||
-strLower.indexOf(
-          "nul.") == 0 || strLower.equals(
+          "nul") || strLower.equals("clock$") || strLower.indexOf(
+              "nul.") == 0 || strLower.equals(
             "prn") || strLower.indexOf(
-          "prn.") == 0 || strLower.indexOf(
+              "prn.") == 0 || strLower.indexOf(
             "![") >= 0 || strLower.equals(
-          "aux") || strLower.indexOf(
+              "aux") || strLower.indexOf(
             "aux.") == 0 || strLower.equals(
-          "con") || strLower.indexOf(
+              "con") || strLower.indexOf(
             "con.") == 0;
         // LPTn, COMn
         if (
           strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
-          strLower.charAt(4) == ' '))) {
+              strLower.charAt(4) == ' '))) {
           reservedFilename = reservedFilename || (strLower.indexOf(
             "lpt") == 0 && strLower.charAt(3) >= '0' &&
-                 strLower.charAt(3) <= '9');
+              strLower.charAt(3) <= '9');
           reservedFilename = reservedFilename || (strLower.indexOf(
             "com") == 0 && strLower.charAt(3) >= '0' &&
-                strLower.charAt(3) <= '9');
+              strLower.charAt(3) <= '9');
         }
         boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
-              str.charAt(1) >= '0' && str.charAt(1) <= '9';
+          str.charAt(1) >= '0' && str.charAt(1) <= '9';
         // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
         // problematic especially in Unix-based systems,
@@ -661,11 +661,11 @@ strLower.indexOf(
         // be misinterpreted if they're treated as expansion
         // symbols
         boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
-            '$';
+          '$';
         // Starts with period; may be hidden in some configurations
         boolean period = str.charAt(0) == '.';
         if (reservedFilename || bracketDigit || homeFolder ||
-             period) {
+          period) {
           str = "_" + str;
         }
         str = TrimAndCollapseSpaceAndTab(str);
@@ -683,7 +683,7 @@ strLower.indexOf(
               str = str.substring(0,i) + "._" + str.substring(i + 2);
             } else if (spaceBefore) {
               str = str.substring(0,i - 1) + "_." + str.substring(i +
-                 1);
+                  1);
             }
             break;
           }

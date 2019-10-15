@@ -37,11 +37,11 @@ namespace PeterO.Mail.Transforms {
 
     public Base64Transform(
       IByteReader input,
-      bool lenientLineBreaks) : this(
-  input,
-  lenientLineBreaks,
-  MaxLineLength,
-  false) {
+      bool lenientLineBreaks) : this (
+          input,
+          lenientLineBreaks,
+          MaxLineLength,
+          false) {
     }
 
     public Base64Transform(
@@ -83,11 +83,13 @@ namespace PeterO.Mail.Transforms {
           // End of stream
           if (count == 1) {
             // Not supposed to happen
-         throw new MessageDataException("Invalid number of base64 characters");
+            throw new MessageDataException("Invalid number of base64" +
+"\u0020characters");
           }
           if (count == 2) {
             if (this.checkStrictEncoding && this.paddingCount != 2) {
-            throw new MessageDataException("Invalid amount of base64 padding");
+              throw new MessageDataException("Invalid amount of base64" +
+"\u0020padding");
             }
             if (this.checkStrictEncoding && (value & 0x0f) != 0) {
               throw new MessageDataException("Invalid base64 padding");
@@ -97,7 +99,8 @@ namespace PeterO.Mail.Transforms {
           }
           if (count == 3) {
             if (this.checkStrictEncoding && this.paddingCount != 1) {
-            throw new MessageDataException("Invalid amount of base64 padding");
+              throw new MessageDataException("Invalid amount of base64" +
+"\u0020padding");
             }
             if (this.checkStrictEncoding && (value & 0x03) != 0) {
               throw new MessageDataException("Invalid base64 padding");
@@ -129,8 +132,8 @@ namespace PeterO.Mail.Transforms {
             continue;
           }
           if (this.checkStrictEncoding) {
-         throw new
-              MessageDataException("Invalid base64 character: 0x0A bare");
+            throw new
+            MessageDataException("Invalid base64 character: 0x0A bare");
           }
         } else if (c >= 0x80) {
           // Ignore (this behavior is required under MIME, RFC 2045,

@@ -46,7 +46,7 @@ namespace PeterO.Mail.Transforms {
       int endIndex = this.input.Length;
       while (true) {
         int c = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] :
-             -1;
+          -1;
         if (c < 0) {
           // End of stream
           return -1;
@@ -63,7 +63,7 @@ namespace PeterO.Mail.Transforms {
         }
         if (c == '=') {
           int b1 = (this.inputIndex < endIndex) ?
-              this.input[this.inputIndex++] : -1;
+            this.input[this.inputIndex++] : -1;
           c = 0;
           if (b1 >= '0' && b1 <= '9') {
             c <<= 4;
@@ -81,8 +81,7 @@ namespace PeterO.Mail.Transforms {
             return '=';
           }
           int b2 = (this.inputIndex < endIndex) ?
-this.input[this.inputIndex++] :
-                    -1;
+            this.input[this.inputIndex++] : -1;
           if (b2 >= '0' && b2 <= '9') {
             c <<= 4;
             c |= b2 - '0';

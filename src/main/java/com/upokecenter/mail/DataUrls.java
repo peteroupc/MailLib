@@ -2,13 +2,11 @@ package com.upokecenter.mail;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Contains methods for parsing and generating Data URIs (uniform resource
-     * identifiers). Data URIs are described in RFC 2397. Examples for Data
-     * URIs follow. <pre>data:, hello%20world</pre>
-     * <pre>data:text/markdown, hello%20world</pre>
-     * <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
-     * @deprecated Renamed to DataUris.
+  /**
+   * Contains methods for parsing and generating Data URIs (uniform resource
+   * identifiers). Data URIs are described in RFC 2397. Examples for Data
+   * URIs follow. <pre>data:, hello%20world</pre> <pre>data:text/markdown, hello%20world</pre> <pre>data:application/octet-stream;base64, AAAAAA==</pre>.
+   * @deprecated Renamed to DataUris.
  */
 @Deprecated
 
@@ -25,7 +23,7 @@ private DataUrls() {
 @Deprecated
 
     public static MediaType DataUrlMediaType(String url) {
-return DataUris.DataUriMediaType(url);
+      return DataUris.DataUriMediaType(url);
     }
 
     /**
@@ -39,7 +37,7 @@ return DataUris.DataUriMediaType(url);
 @Deprecated
 
     public static byte[] DataUrlBytes(String url) {
-return DataUris.DataUriBytes(url);
+      return DataUris.DataUriBytes(url);
     }
 
     /**
@@ -52,7 +50,7 @@ return DataUris.DataUriBytes(url);
 @Deprecated
 
     public static String MakeDataUrl(String textString) {
-return DataUris.MakeDataUri(textString);
+      return DataUris.MakeDataUri(textString);
     }
 
     /**
@@ -68,6 +66,6 @@ return DataUris.MakeDataUri(textString);
 @Deprecated
 
     public static String MakeDataUrl(byte[] bytes, MediaType mediaType) {
-return DataUris.MakeDataUri(bytes, mediaType);
+      return DataUris.MakeDataUri(bytes, mediaType);
+    }
   }
- }

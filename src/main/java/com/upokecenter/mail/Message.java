@@ -196,14 +196,13 @@ import com.upokecenter.text.*;
 
     private static int EndOfLine(byte[] bytes, int index) {
       return (index >= 2 && bytes[index - 1] == 0x0a && bytes[index - 2] ==
-0x0d) ?
-(index - 2) : index;
+          0x0d) ? (index - 2) : index;
     }
 
     private static int SkipLine(byte[] bytes, int index) {
       while (index < bytes.length) {
         if (bytes[index] == 0x0d && index + 1 < bytes.length && bytes[index +
-1] == 0x0a) {
+            1] == 0x0a) {
           return index + 2;
         }
         ++index;
@@ -252,12 +251,12 @@ import com.upokecenter.text.*;
         return null;
       }
       if (((headerFieldName) == null || (headerFieldName).length() == 0) ||
-         headerFieldName.length() > 997) {
+        headerFieldName.length() > 997) {
         return null;
       }
       for (int i = 0; i < headerFieldName.length(); ++i) {
         if (headerFieldName.charAt(i) >= 0x7f || headerFieldName.charAt(i) <= 0x20 ||
-                   headerFieldName.charAt(i) == ':') {
+          headerFieldName.charAt(i) == ':') {
           break;
         }
       }
@@ -265,7 +264,7 @@ import com.upokecenter.text.*;
       String ret = null;
       while (index < bytes.length) {
         if (index + 1 < bytes.length && bytes[index] == 0x0d &&
-           bytes[index + 1] == 0x0a) {
+          bytes[index + 1] == 0x0a) {
           // End of headers reached, so output the header field
           // found if any
           return ret;
@@ -297,7 +296,7 @@ ms = new java.io.ByteArrayOutputStream();
           ms.write(bytes, n, EndOfLine(bytes, endLine) - n);
           index = endLine;
           while (endLine < bytes.length &&
-               (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
+            (bytes[endLine] == 0x09 || bytes[endLine] == 0x20)) {
             int s = endLine;
             endLine = SkipLine(bytes, endLine);
             index = endLine;
@@ -441,59 +440,60 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       // required or an optional parameter.
       // NOTE: Up-to-date as of August 26, 2019
       if (mt.HasStructuredSuffix("xml") ||
-       mt.getTopLevelType().equals("text") ||
-       mt.getTypeAndSubType().equals("image/vnd.wap.wbmp")) {
+        mt.getTopLevelType().equals("text") ||
+        mt.getTypeAndSubType().equals("image/vnd.wap.wbmp")) {
         return true;
       }
       if (mt.getTopLevelType().equals("application")) {
         return mt.getSubType().equals("vnd.uplanet.alert-wbxml") ||
-        mt.getSubType().equals("vnd.wap.wmlscriptc") ||
-        mt.getSubType().equals("xml-dtd") ||
-        mt.getSubType().equals("vnd.picsel") ||
-        mt.getSubType().equals("news-groupinfo") ||
-        mt.getSubType().equals("ecmascript") ||
-        mt.getSubType().equals("vnd.uplanet.cacheop-wbxml") || mt.getSubType().equals("vnd.uplanet.bearer-choice") ||
-        mt.getSubType().equals("vnd.wap.slc") ||
-        mt.getSubType().equals("nss") ||
-        mt.getSubType().equals("vnd.3gpp.mcdata-payload") ||
-        mt.getSubType().equals("activity+json") ||
-        mt.getSubType().equals("vnd.uplanet.list-wbxml") ||
-        mt.getSubType().equals("vnd.3gpp.mcdata-signalling") ||
-        mt.getSubType().equals("sgml-open-catalog") ||
-        mt.getSubType().equals("smil") ||
-        mt.getSubType().equals("vnd.uplanet.channel") ||
-        mt.getSubType().equals("javascript") ||
-        mt.getSubType().equals("vnd.syncml.dm+wbxml") ||
-        mt.getSubType().equals("vnd.ah-barcode") ||
-        mt.getSubType().equals("vnd.uplanet.alert") ||
-        mt.getSubType().equals("vnd.wap.wbxml") ||
-        mt.getSubType().equals("xml-external-parsed-entity") || mt.getSubType().equals("vnd.uplanet.listcmd-wbxml") ||
-        mt.getSubType().equals("vnd.uplanet.list") ||
-        mt.getSubType().equals("vnd.uplanet.listcmd") ||
-        mt.getSubType().equals("vnd.msign") ||
-        mt.getSubType().equals("news-checkgroups") ||
-        mt.getSubType().equals("fhir+json") ||
-        mt.getSubType().equals("set-registration") ||
-        mt.getSubType().equals("sql") ||
-        mt.getSubType().equals("vnd.wap.sic") ||
-        mt.getSubType().equals("prs.alvestrand.titrax-sheet") ||
-        mt.getSubType().equals("vnd.uplanet.bearer-choice-wbxml") ||
-        mt.getSubType().equals("vnd.wap.wmlc") ||
-        mt.getSubType().equals("vnd.uplanet.channel-wbxml") ||
-        mt.getSubType().equals("iotp") ||
-        mt.getSubType().equals("vnd.uplanet.cacheop") ||
-        mt.getSubType().equals("xml") ||
-        mt.getSubType().equals("vnd.adobe.xfdf") ||
-        mt.getSubType().equals("vnd.dpgraph");
+          mt.getSubType().equals("vnd.wap.wmlscriptc") ||
+          mt.getSubType().equals("xml-dtd") ||
+          mt.getSubType().equals("vnd.picsel") ||
+          mt.getSubType().equals("news-groupinfo") ||
+          mt.getSubType().equals("ecmascript") ||
+          mt.getSubType().equals("vnd.uplanet.cacheop-wbxml") || mt.getSubType().equals(
+              "vnd.uplanet.bearer-choice") ||
+          mt.getSubType().equals("vnd.wap.slc") ||
+          mt.getSubType().equals("nss") ||
+          mt.getSubType().equals("vnd.3gpp.mcdata-payload") ||
+          mt.getSubType().equals("activity+json") ||
+          mt.getSubType().equals("vnd.uplanet.list-wbxml") || mt.getSubType().equals("vnd.3gpp.mcdata-signalling") ||
+          mt.getSubType().equals("sgml-open-catalog") ||
+          mt.getSubType().equals("smil") ||
+          mt.getSubType().equals("vnd.uplanet.channel") ||
+          mt.getSubType().equals("javascript") ||
+          mt.getSubType().equals("vnd.syncml.dm+wbxml") ||
+          mt.getSubType().equals("vnd.ah-barcode") ||
+          mt.getSubType().equals("vnd.uplanet.alert") ||
+          mt.getSubType().equals("vnd.wap.wbxml") ||
+          mt.getSubType().equals("xml-external-parsed-entity") || mt.getSubType().equals(
+              "vnd.uplanet.listcmd-wbxml") ||
+          mt.getSubType().equals("vnd.uplanet.list") ||
+          mt.getSubType().equals("vnd.uplanet.listcmd") ||
+          mt.getSubType().equals("vnd.msign") ||
+          mt.getSubType().equals("news-checkgroups") ||
+          mt.getSubType().equals("fhir+json") ||
+          mt.getSubType().equals("set-registration") ||
+          mt.getSubType().equals("sql") ||
+          mt.getSubType().equals("vnd.wap.sic") ||
+          mt.getSubType().equals("prs.alvestrand.titrax-sheet") ||
+          mt.getSubType().equals("vnd.uplanet.bearer-choice-wbxml") ||
+          mt.getSubType().equals("vnd.wap.wmlc") ||
+          mt.getSubType().equals("vnd.uplanet.channel-wbxml") ||
+          mt.getSubType().equals("iotp") ||
+          mt.getSubType().equals("vnd.uplanet.cacheop") ||
+          mt.getSubType().equals("xml") ||
+          mt.getSubType().equals("vnd.adobe.xfdf") ||
+          mt.getSubType().equals("vnd.dpgraph");
       }
       return false;
     }
 
     private void GetBodyStrings(
-       List<String> bodyStrings,
-       List<MediaType> mediaTypes) {
+      List<String> bodyStrings,
+      List<MediaType> mediaTypes) {
       if (this.getContentDisposition() != null &&
-         !this.getContentDisposition().isInline()) {
+        !this.getContentDisposition().isInline()) {
         // Content-Disposition is present and other than inline; ignore.
         // See also RFC 2183 sec. 2.8 and 2.9.
         return;
@@ -523,14 +523,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       String charsetName = this.getContentType().GetCharset();
       ICharacterEncoding charset = GetEncoding(charsetName);
-      if (charset == null && this.getContentType().getTypeAndSubType().equals("text/html")) {
+      if (charset == null && this.getContentType().getTypeAndSubType().equals(
+        "text/html")) {
         charsetName = GuessHtmlEncoding(this.body);
         charset = Encodings.GetEncoding(charsetName);
       }
       if (charset != null) {
         bodyStrings.add(Encodings.DecodeToString(
-          charset,
-          DataIO.ToReader(this.body)));
+            charset,
+            DataIO.ToReader(this.body)));
         mediaTypes.add(this.getContentType());
       }
     }
@@ -547,10 +548,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private void AccumulateAttachments(
-        List<Message> attachments,
-        boolean root) {
+      List<Message> attachments,
+      boolean root) {
       if (this.getContentDisposition() != null &&
-         !this.getContentDisposition().isInline() && !root) {
+        !this.getContentDisposition().isInline() && !root) {
         attachments.add(this);
         return;
       }
@@ -669,10 +670,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         while (nextIndex < length) {
           char c2 = value.charAt(nextIndex);
           if (c == c2) {
-            return Encodings.ResolveAlias(
-  value.substring(
-    index, (
-    index)+(nextIndex - index)));
+            return Encodings.ResolveAlias (
+                value.substring(
+                  index, (
+                  index)+(nextIndex - index)));
           }
           ++nextIndex;
         }
@@ -683,14 +684,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           char c2 = value.charAt(nextIndex);
           if (
             c2 == 0x09 || c2 == 0x0c || c2 == 0x0d || c2 == 0x0a || c2 ==
-0x20 ||
-            c2 == 0x3b) {
+            0x20 || c2 == 0x3b) {
             break;
           }
           ++nextIndex;
         }
         return
-    Encodings.ResolveAlias(value.substring(index, (index)+(nextIndex - index)));
+          Encodings.ResolveAlias(value.substring(index, (index)+(nextIndex - index)));
       }
     }
 
@@ -734,7 +734,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           tovalue = true;
           break;
         } else if (b == 0x09 || b == 0x0a || b == 0x0c || b == 0x0d || b ==
-            0x20) {
+          0x20) {
           break;
         } else if (b == 0x2f || b == 0x3e) {
           return position;
@@ -865,9 +865,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int position = 0;
       while (position < count) {
         if (position + 4 <= count && data[position + 0] == 0x3c &&
-            (data[position + 1] & 0xff) == 0x21 &&
-        (data[position + 2] & 0xff) == 0x2d &&
-            (data[position + 3] & 0xff) == 0x2d) {
+          (data[position + 1] & 0xff) == 0x21 &&
+          (data[position + 2] & 0xff) == 0x2d &&
+          (data[position + 3] & 0xff) == 0x2d) {
           // Skip comment
           int hyphenCount = 2;
           position += 4;
@@ -883,17 +883,17 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             ++position;
           }
         } else if (position + 6 <= count && data[position] == 0x3c &&
-   ((data[position + 1] & 0xff) == 0x4d || (data[position + 1] & 0xff) ==
+          ((data[position + 1] & 0xff) == 0x4d || (data[position + 1] & 0xff) ==
             0x6d) &&
-   ((data[position + 2] & 0xff) == 0x45 || (data[position + 2] & 0xff) ==
+          ((data[position + 2] & 0xff) == 0x45 || (data[position + 2] & 0xff) ==
             0x65) &&
           ((data[position + 3] & 0xff) == 0x54 || (data[position + 3] & 0xff) ==
             0x74) && (data[position + 4] == 0x41 ||
-                   data[position + 4] == 0x61) &&
-   (data[position + 5] == 0x09 || data[position + 5] == 0x0a ||
-         data[position + 5] == 0x0d ||
-          data[position + 5] == 0x0c || data[position + 5] == 0x20 ||
-                data[position + 5] == 0x2f)) {
+            data[position + 4] == 0x61) &&
+          (data[position + 5] == 0x09 || data[position + 5] == 0x0a ||
+            data[position + 5] == 0x0d ||
+            data[position + 5] == 0x0c || data[position + 5] == 0x20 ||
+            data[position + 5] == 0x2f)) {
           // META tag
           boolean haveHttpEquiv = false;
           boolean haveContent = false;
@@ -906,12 +906,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           position += 5;
           while (true) {
             int
-    newpos = ReadAttribute(
-      data,
-      count,
-      position,
-      attrName,
-      attrValue);
+            newpos = ReadAttribute(
+              data,
+              count,
+              position,
+              attrName,
+              attrValue);
             if (newpos == position) {
               break;
             }
@@ -925,7 +925,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               haveContent = true;
               if (charset == null) {
                 String newCharset =
-  ExtractCharsetFromMeta(attrValue.toString());
+                  ExtractCharsetFromMeta(attrValue.toString());
                 if (newCharset != null) {
                   charset = newCharset;
                   needPragma = 2; // need pragma true
@@ -939,33 +939,36 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             position = newpos;
           }
           if (needPragma == 0 || (needPragma == 2 && !gotPragma) || charset ==
-                 null) {
+            null) {
             ++position;
           } else {
             if ("utf-16le".equals(charset) ||
-"utf-16be".equals(charset)) {
+              "utf-16be".equals(charset)) {
               charset = "utf-8";
             }
             return charset;
           }
         } else if ((position + 3 <= count &&
-                data[position] == 0x3c && (data[position + 1] & 0xff) == 0x2f &&
-  (((data[position + 2] & 0xff) >= 0x41 && (data[position + 2] & 0xff) <=
-           0x5a) ||
-         ((data[position + 2] & 0xff) >= 0x61 && (data[position + 2] & 0xff) <=
-           0x7a))) ||
-                    // </X
-                    (position + 2 <= count && data[position] == 0x3c &&
-        (((data[position + 1] & 0xff) >= 0x41 && (data[position + 1] & 0xff)
-              <= 0x5a) ||
-         ((data[position + 1] & 0xff) >= 0x61 && (data[position + 1] & 0xff)
-               <= 0x7a)))) { // <X
+            data[position] == 0x3c && (data[position + 1] & 0xff) == 0x2f &&
+            (((data[position + 2] & 0xff) >= 0x41 && (data[position + 2] &
+0xff) <=
+                0x5a) ||
+              ((data[position + 2] & 0xff) >= 0x61 && (data[position + 2] &
+0xff) <=
+                0x7a))) ||
+          // </X
+          (position + 2 <= count && data[position] == 0x3c &&
+            (((data[position + 1] & 0xff) >= 0x41 && (data[position + 1] & 0xff)
+                <= 0x5a) ||
+              ((data[position + 1] & 0xff) >= 0x61 && (data[position + 1] &
+0xff)
+                <= 0x7a)))) { // <X
           // </X
           while (position < count) {
             if (data[position] == 0x09 ||
-                data[position] == 0x0a || data[position] == 0x0c ||
-                data[position] == 0x0d || data[position] == 0x20 ||
-                data[position] == 0x3e) {
+              data[position] == 0x0a || data[position] == 0x0c ||
+              data[position] == 0x0d || data[position] == 0x20 ||
+              data[position] == 0x3e) {
               break;
             }
             ++position;
@@ -979,8 +982,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
           ++position;
         } else if (position + 2 <= count && data[position] == 0x3c &&
-    ((data[position + 1] & 0xff) == 0x21 || (data[position + 1] & 0xff) ==
-           0x3f || (data[position + 1] & 0xff) == 0x2f)) {
+          ((data[position + 1] & 0xff) == 0x21 || (data[position + 1] & 0xff) ==
+            0x3f || (data[position + 1] & 0xff) == 0x2f)) {
           // <! or </ or <?
           while (position < count) {
             if (data[position] != 0x3e) {
@@ -1003,7 +1006,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return "utf-16le";
       }
       int b3 = byteIndex >= data.length ? -1 : ((int)data[byteIndex++]) &
-0xff;
+        0xff;
       if (b1 == 0xef && b2 == 0xbb && b3 == 0xbf) {
         return "utf-8";
       }
@@ -1018,37 +1021,37 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           continue;
         }
         if (position + 2 <= count && (b >= 0xc2 && b <= 0xdf) &&
-         ((data[position + 1] & 0xff) >= 0x80 && (data[position + 1] & 0xff) <=
-              0xbf)) {
+          ((data[position + 1] & 0xff) >= 0x80 && (data[position + 1] & 0xff) <=
+            0xbf)) {
           // DebugUtility.Log("%02X %02X",data[position],data[position+1]);
           position += 2;
           maybeUtf8 = 1;
         } else if (position + 3 <= count && (b >= 0xe0 && b <= 0xef) &&
-      ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
-              0xbf)) {
+          ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
+            0xbf)) {
           int startbyte = (b == 0xe0) ? 0xa0 : 0x80;
           int endbyte = (b == 0xed) ? 0x9f : 0xbf;
           // DebugUtility.Log("%02X %02X %02X"
           // , data[position], data[position + 1], data[position + 2]);
           if ((data[position + 1] & 0xff) < startbyte ||
-              (data[position + 1] & 0xff) > endbyte) {
+            (data[position + 1] & 0xff) > endbyte) {
             maybeUtf8 = -1;
             break;
           }
           position += 3;
           maybeUtf8 = 1;
         } else if (position + 4 <= count && (b >= 0xf0 && b <= 0xf4) &&
-   ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
-        0xbf) &&
-      ((data[position + 3] & 0xff) >= 0x80 && (data[position + 3] & 0xff) <=
-              0xbf)) {
+          ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
+            0xbf) &&
+          ((data[position + 3] & 0xff) >= 0x80 && (data[position + 3] & 0xff) <=
+            0xbf)) {
           int startbyte = (b == 0xf0) ? 0x90 : 0x80;
           int endbyte = (b == 0xf4) ? 0x8f : 0xbf;
           // DebugUtility.Log("%02X %02X %02X %02X"
           // , data[position], data[position + 1], data[position + 2],
           // data[position + 3]);
           if ((data[position + 1] & 0xff) < startbyte ||
-              (data[position + 1] & 0xff) > endbyte) {
+            (data[position + 1] & 0xff) > endbyte) {
             maybeUtf8 = -1;
             break;
           }
@@ -1105,11 +1108,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       MediaType mt = mediaTypes.get(0);
       String fmt = mt.GetParameter("format");
       String dsp = mt.GetParameter("delsp");
-      boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
-      fmt == null ? "fixed" : fmt)
-    .equals("flowed");
-      boolean delSp = DataUtilities.ToLowerCaseAscii(
-        dsp == null ? "no" : dsp).equals("yes");
+      boolean formatFlowed = DataUtilities.ToLowerCaseAscii (
+          fmt == null ? "fixed" : fmt)
+        .equals("flowed");
+      boolean delSp = DataUtilities.ToLowerCaseAscii (
+          dsp == null ? "no" : dsp).equals("yes");
       if (mt.getTypeAndSubType().equals("text/plain")) {
         if (formatFlowed) {
           return FormatFlowed.FormatFlowedText(text, delSp);
@@ -1157,9 +1160,9 @@ public final void setContentDisposition(ContentDisposition value) {
           this.RemoveHeader("content-disposition");
         } else if (!value.equals(this.contentDisposition)) {
           this.contentDisposition = value;
-          this.SetHeader(
-     "content-disposition",
-     this.contentDisposition.toString());
+          this.SetHeader (
+            "content-disposition",
+            this.contentDisposition.toString());
         }
       }
 
@@ -1180,7 +1183,7 @@ public final void setContentType(MediaType value) {
           throw new NullPointerException("value");
         }
         if (this.contentType == null ||
-            !this.contentType.equals(value)) {
+          !this.contentType.equals(value)) {
           this.contentType = value;
           if (!value.isMultipart()) {
             List<Message> thisParts = this.getParts();
@@ -1206,8 +1209,8 @@ public final void setContentType(MediaType value) {
         ContentDisposition disp = this.contentDisposition;
         return (disp != null) ?
           ContentDisposition.MakeFilename(disp.GetParameter("filename")) :
-        ContentDisposition.MakeFilename(this.contentType.GetParameter(
-  "name"));
+          ContentDisposition.MakeFilename(this.contentType.GetParameter(
+              "name"));
       }
 
     /**
@@ -1231,7 +1234,7 @@ public final void setContentType(MediaType value) {
       }
       headerName = DataUtilities.ToLowerCaseAscii(headerName);
       if (ValueHeaderIndices.containsKey(headerName) &&
-         ValueHeaderIndices.get(headerName) <= 5) {
+        ValueHeaderIndices.get(headerName) <= 5) {
         return ParseAddresses(this.GetMultipleHeaders(headerName));
       } else {
         throw new UnsupportedOperationException("Not supported for: " + headerName);
@@ -1260,7 +1263,7 @@ public final void setContentType(MediaType value) {
         ArrayList<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>();
         for (int i = 0; i < this.headers.size(); i += 2) {
           list.add(
-      new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
+            new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
         }
         return list;
       }
@@ -1401,7 +1404,8 @@ public final void setSubject(String value) {
      */
     public int[] GetDate() {
       String field = this.GetHeader("date");
-      return (field == null) ? null : MailDateTime.ParseDateString(field, true);
+      return (field == null) ? null : MailDateTime.ParseDateString(field,
+  true);
     }
 
     /**
@@ -1426,9 +1430,9 @@ public final void setSubject(String value) {
         throw new IllegalArgumentException("Invalid year: " +
           ParserUtility.IntToString(dateTime[0]));
       }
-      return this.SetHeader(
-        "date",
-        MailDateTime.GenerateDateString(dateTime));
+      return this.SetHeader (
+          "date",
+          MailDateTime.GenerateDateString(dateTime));
     }
 
     /**
@@ -1438,9 +1442,9 @@ public final void setSubject(String value) {
      */
 
     public Message GetBodyMessage() {
-      return (this.getContentType().getTopLevelType().equals("message") && (this.getContentType().getSubType().equals("rfc822") ||
-           this.getContentType().getSubType().equals("news") ||
-           this.getContentType().getSubType().equals("global"))) ? new Message(this.body) : null;
+      return (this.getContentType().getTopLevelType().equals("message") && (this.getContentType().getSubType().equals(
+              "rfc822") ||
+            this.getContentType().getSubType().equals("news") || this.getContentType().getSubType().equals("global"))) ? new Message(this.body) : null;
     }
 
     /**
@@ -1453,13 +1457,13 @@ public final void setSubject(String value) {
      */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + index +
-                    ") is not less than " + (this.headers.size()
-                    / 2));
+        throw new IllegalArgumentException("index(" + index +
+          ") is not less than " + (this.headers.size()
+            / 2));
       }
       return new AbstractMap.SimpleImmutableEntry<String, String>(
         this.headers.get(index),
@@ -1541,13 +1545,13 @@ public final void setSubject(String value) {
      */
     public Message RemoveHeader(int index) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + index +
-                    ") is not less than " + (this.headers.size()
-                    / 2));
+        throw new IllegalArgumentException("index(" + index +
+          ") is not less than " + (this.headers.size()
+            / 2));
       }
       String name = this.headers.get(index * 2);
       this.headers.remove(index * 2);
@@ -1645,13 +1649,13 @@ public final void setSubject(String value) {
      */
     public Message SetHeader(int index, String name, String value) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + index +
-                    ") is not less than " + (this.headers.size()
-                    / 2));
+        throw new IllegalArgumentException("index(" + index +
+          ") is not less than " + (this.headers.size()
+            / 2));
       }
       name = ValidateHeaderField(name, value);
       this.headers.set(index * 2, name);
@@ -1679,13 +1683,13 @@ public final void setSubject(String value) {
      */
     public Message SetHeader(int index, String value) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + index +
-                    ") is not less than " + (this.headers.size()
-                    / 2));
+        throw new IllegalArgumentException("index(" + index +
+          ") is not less than " + (this.headers.size()
+            / 2));
       }
       return this.SetHeader(index, this.headers.get(index * 2), value);
     }
@@ -1834,8 +1838,8 @@ public final void setSubject(String value) {
       markdownMessage.setContentType(MediaType.Parse(mtypestr));
       // Take advantage of SetTextBody's line break conversion
       String markdownText = markdownMessage.GetBodyString();
-      Message htmlMessage = NewBodyPart().SetHtmlBody(
-         FormatFlowed.MarkdownText(markdownText, 0));
+      Message htmlMessage = NewBodyPart().SetHtmlBody (
+          FormatFlowed.MarkdownText(markdownText, 0));
       mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
@@ -2004,10 +2008,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     private static MediaType SuggestMediaType(String filename) {
       if (!((filename) == null || (filename).length() == 0)) {
-        String ext = DataUtilities.ToLowerCaseAscii(
-           ExtensionName(filename));
+        String ext = DataUtilities.ToLowerCaseAscii (
+            ExtensionName(filename));
         if (ext.equals(".doc") ||
-ext.equals(".dot")) {
+          ext.equals(".dot")) {
           return MediaType.Parse("application/msword");
         }
         if (ext.equals(".pdf")) {
@@ -2025,54 +2029,56 @@ ext.equals(".dot")) {
         if (ext.equals(".docx")) {
           return
 
-  MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            MediaType.Parse(
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
         if (ext.equals(".zip")) {
           return MediaType.Parse("application/zip");
         }
         if (ext.equals(".m4a") ||
-ext.equals(".mp2") ||
-ext.equals(".mp3") ||
-ext.equals(".mpega") ||
-ext.equals(".mpga")) {
+          ext.equals(".mp2") ||
+          ext.equals(".mp3") ||
+          ext.equals(".mpega") ||
+          ext.equals(".mpga")) {
           return MediaType.Parse("audio/mpeg");
         }
         if (ext.equals(".gif")) {
           return MediaType.Parse("image/gif");
         }
         if (ext.equals(".jpe") ||
-ext.equals(".jpeg") ||
-ext.equals(".jpg")) {
+          ext.equals(".jpeg") ||
+          ext.equals(".jpg")) {
           return MediaType.Parse("image/jpeg");
         }
         if (ext.equals(".png")) {
           return MediaType.Parse("image/png");
         }
         if (ext.equals(".tif") ||
-ext.equals(".tiff")) {
+          ext.equals(".tiff")) {
           return MediaType.Parse("image/tiff");
         }
         if (ext.equals(".eml")) {
           return MediaType.Parse("message/rfc822");
         }
         if (ext.equals(".rst")) {
-          return MediaType.Parse("text/prs.fallenstein.rst\u003bcharset=utf-8");
+          return MediaType.Parse(
+  "text/prs.fallenstein.rst\u003bcharset=utf-8");
         }
         if (ext.equals(".htm") ||
-ext.equals(".html") ||
-ext.equals(".shtml")) {
+          ext.equals(".html") ||
+          ext.equals(".shtml")) {
           return MediaType.Parse("text/html\u003bcharset=utf-8");
         }
         if (ext.equals(".md") ||
-ext.equals(".markdown")) {
+          ext.equals(".markdown")) {
           return MediaType.Parse("text/markdown\u003bcharset=utf-8");
         }
         if (ext.equals(".asc") ||
-ext.equals(".brf") ||
-ext.equals(".pot") ||
-ext.equals(".srt") ||
-ext.equals(".text") ||
-ext.equals(".txt")) {
+          ext.equals(".brf") ||
+          ext.equals(".pot") ||
+          ext.equals(".srt") ||
+          ext.equals(".text") ||
+          ext.equals(".txt")) {
           return MediaType.Parse("text/plain\u003bcharset=utf-8");
         }
       }
@@ -2128,12 +2134,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, String filename) {
-      return
-  this.AddBodyPart(
-  inputStream,
-  SuggestMediaType(filename),
-  filename,
-  "attachment");
+      return this.AddBodyPart (
+          inputStream,
+          SuggestMediaType(filename),
+          filename,
+          "attachment");
     }
 
     /**
@@ -2215,11 +2220,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, String filename) {
-      return this.AddBodyPart(
-  inputStream,
-  SuggestMediaType(filename),
-  filename,
-  "inline");
+      return this.AddBodyPart (
+          inputStream,
+          SuggestMediaType(filename),
+          filename,
+          "inline");
     }
 
     /**
@@ -2265,8 +2270,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       if (cttEnd != ctt.length()) {
         return "";
       }
-      return DataUtilities.ToLowerCaseAscii(
-         ctt.substring(index, (index)+(cttEnd - index)));
+      return DataUtilities.ToLowerCaseAscii (
+          ctt.substring(index, (index)+(cttEnd - index)));
     }
 
     /**
@@ -2284,7 +2289,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
      * @throws NullPointerException The parameter {@code languages} is null.
      */
     public Message SelectLanguageMessage(
-       List<String> languages) {
+      List<String> languages) {
       return this.SelectLanguageMessage(languages, false);
     }
 
@@ -2307,8 +2312,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
      * @throws NullPointerException The parameter {@code languages} is null.
      */
     public Message SelectLanguageMessage(
-       List<String> languages,
-       boolean preferOriginals) {
+      List<String> languages,
+      boolean preferOriginals) {
       if (this.getContentType().getTypeAndSubType().equals("multipart/multilingual") && this.getParts().size() >= 2) {
         String subject = this.GetHeader("subject");
         int passes = preferOriginals ? 2 : 1;
@@ -2317,13 +2322,13 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         for (int i = 0; i < passes; ++i) {
           for (Message part : this.getParts()) {
             clang = LanguageTags.GetLanguageList(part.GetHeader(
-        "content-language"));
+                  "content-language"));
             if (clang == null) {
               continue;
             }
             if (preferOriginals && i == 0) { // Allow originals only, on first
-              String ctt =
-  GetContentTranslationType(part.GetHeader("content-translation-type"));
+              String ctt = GetContentTranslationType(part.GetHeader(
+  "content-translation-type"));
               if (!ctt.equals("original")) {
                 continue;
               }
@@ -2344,8 +2349,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         Message firstmsg = this.getParts().get(1);
         Message lastPart = this.getParts().get(this.getParts().size() - 1);
         List<String> zxx = Arrays.asList(new String[] { "zxx" });
-        clang = LanguageTags.GetLanguageList(
-          lastPart.GetHeader("content-language"));
+        clang = LanguageTags.GetLanguageList (
+            lastPart.GetHeader("content-language"));
         if (clang != null) {
           filt = LanguageTags.LanguageTagFilter(zxx, clang);
           if (filt.size() > 0) {
@@ -2390,8 +2395,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
      * list, or the first message contains no From header field.
      */
     public static Message MakeMultilingualMessage(
-  List<Message> messages,
-  List<String> languages) {
+      List<Message> messages,
+      List<String> languages) {
       if (messages == null) {
         throw new NullPointerException("messages");
       }
@@ -2399,11 +2404,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         throw new NullPointerException("languages");
       }
       if (messages.size() < 0) {
-        throw new IllegalArgumentException("messages.size() (" + messages.size() +
+        throw new IllegalArgumentException("messages.size()(" + messages.size() +
           ") is less than 0");
       }
       if (messages.size() != languages.size()) {
-        throw new IllegalArgumentException("messages.size() (" + messages.size() +
+        throw new IllegalArgumentException("messages.size()(" + messages.size() +
           ") is not equal to " + languages.size());
       }
       StringBuilder prefaceBody;
@@ -2412,21 +2417,21 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           throw new IllegalArgumentException("A message in 'messages' is null");
         }
         if (i > 0 && !HasSameAddresses(messages.get(0), messages.get(i))) {
-          throw new IllegalArgumentException(
+          throw new IllegalArgumentException (
             "Each message doesn't contain the same email addresses");
         }
       }
       for (String lang : languages) {
         List<String> langtags = LanguageTags.GetLanguageList(lang);
         if (langtags == null) {
-          throw new IllegalArgumentException(
-          lang + " is an invalid list of language tags");
+          throw new IllegalArgumentException (
+            lang + " is an invalid list of language tags");
         }
       }
       prefaceBody = new StringBuilder().append("This is a multilingual " +
-      "message, a message that\r\ncan be read in one or more different " +
-      "languages. Each\r\npart of the message may appear inline, as an " +
-      "attachment, or both.\r\n\r\n");
+        "message, a message that\r\ncan be read in one or more different " +
+        "languages. Each\r\npart of the message may appear inline, as an " +
+        "attachment, or both.\r\n\r\n");
       prefaceBody.append("Languages available:\r\n\r\n");
       for (String lang : languages) {
         prefaceBody.append("- ").append(lang).append("\r\n");
@@ -2453,7 +2458,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       }
       if (prefaceSubject.length() == 0) {
         prefaceSubject.append("Multilingual Message");
-        prefaceSubject.append(" (");
+        prefaceSubject.append("(");
         for (int i = 0; i < languages.size(); ++i) {
           if (i > 0) {
             prefaceSubject.append(", ");
@@ -2482,8 +2487,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         MediaType mt = MediaType.Parse("message/rfc822");
         String msgstring = messages.get(i).Generate();
         if (msgstring.indexOf("\r\n--") >= 0 || (
-          msgstring.length() >= 2 && msgstring.charAt(0) == '-' &&
-             msgstring.charAt(1) == '-')) {
+            msgstring.length() >= 2 && msgstring.charAt(0) == '-' &&
+            msgstring.charAt(1) == '-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");
@@ -2512,21 +2517,21 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           return false;
         }
         if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
-            bytes[index] == '-' && bytes[index + 1] == '-' &&
-            bytes[index + 2] == '=' && bytes[index + 3] == '_' &&
-            bytes[index + 4] == 'B') {
+          bytes[index] == '-' && bytes[index + 1] == '-' &&
+          bytes[index + 2] == '=' && bytes[index + 3] == '_' &&
+          bytes[index + 4] == 'B') {
           // Start of a reserved boundary delimiter
           return false;
         }
         if (lineLength == 0 && index + 4 < endIndex &&
-            bytes[index] == 'F' && bytes[index + 1] == 'r' &&
-            bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
-            (bytes[index + 4] == ' ' || bytes[index + 4] == '\t')) {
+          bytes[index] == 'F' && bytes[index + 1] == 'r' &&
+          bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
+          (bytes[index + 4] == ' ' || bytes[index + 4] == '\t')) {
           // Line starts with "From" followed by space
           return false;
         }
         if (lineLength == 0 && index < endIndex &&
-            bytes[index] == '.') {
+          bytes[index] == '.') {
           // Dot at beginning of line
           return false;
         }
@@ -2631,12 +2636,12 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         }
         int headerValueStart = index;
         int headerValueEnd = index;
-        String fieldName = DataUtilities.ToLowerCaseAscii(
-          DataUtilities.GetUtf8String(
-            bytes,
-            headerNameStart,
-            headerNameEnd - headerNameStart,
-            true));
+        String fieldName = DataUtilities.ToLowerCaseAscii (
+            DataUtilities.GetUtf8String(
+              bytes,
+              headerNameStart,
+              headerNameEnd - headerNameStart,
+              true));
         boolean origRecipient = fieldName.equals("original-recipient");
         boolean finalRecipient = fieldName.equals("final-recipient");
         // Read the header field value using UTF-8 characters
@@ -2827,8 +2832,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         String origValue = headerValue;
         boolean isUtf8 = typeEnd - index == 5 &&
           (headerValue.charAt(index) & ~0x20) == 'U' && (headerValue.charAt(index +
-               1) & ~0x20) == 'T' && (headerValue.charAt(index + 2) & ~0x20) == 'F'
-                    &&
+              1) & ~0x20) == 'T' && (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
           headerValue.charAt(index + 3) == '-' && headerValue.charAt(index + 4) == '8';
         atomText = HeaderParser.ParseCFWS(
           headerValue,
@@ -2860,7 +2864,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
             for (int i = addressPart; i < headerValue.length(); ++i) {
               if (headerValue.charAt(i) < 0x7f && headerValue.charAt(i) > 0x20 &&
                 headerValue.charAt(i) != '\\' && headerValue.charAt(i) != '+' &&
-                   headerValue.charAt(i) != '-') {
+                headerValue.charAt(i) != '-') {
                 builder.append(headerValue.charAt(i));
               } else {
                 int cp = DataUtilities.CodePointAt(headerValue, i);
@@ -2891,13 +2895,13 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
             // 2.3.1 and 2.3.2, which uses the conventions in RFC
             // 822, where linear white space can appear between lexical
             // tokens of a header field).
-            EncodeCommentsInText(
-  encoder,
-  HeaderEncoder.TrimLeadingFWS(typePart + builder));
+            EncodeCommentsInText (
+              encoder,
+              HeaderEncoder.TrimLeadingFWS(typePart + builder));
           } else {
-            EncodeCommentsInText(
-  encoder,
-  HeaderEncoder.TrimLeadingFWS(headerValue));
+            EncodeCommentsInText (
+              encoder,
+              HeaderEncoder.TrimLeadingFWS(headerValue));
           }
           headerValue = encoder.toString();
         }
@@ -3110,9 +3114,10 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           return false;
         }
         if (!(
-          (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <=
-            '9') || c == 0x20 || c == 0x2c || "'()-./+_:=?".indexOf(c) >=
-                    0)) {
+            (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
+c <=
+              '9') || c == 0x20 || c == 0x2c || "'()-./+_:=?".indexOf(c) >=
+            0)) {
           return false;
         }
       }
@@ -3162,9 +3167,10 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           // ASCII substitute character (0x1a) for text/plain messages,
           // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
-          transform = useLiberalSevenBit ?
-            ((IByteReader)new LiberalSevenBitTransform(stream)) :
+          transform = useLiberalSevenBit ? ((IByteReader)new
+LiberalSevenBitTransform(stream)) :
             ((IByteReader)new SevenBitTransform(stream));
+
           break;
       }
 
@@ -3208,7 +3214,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           }
           if (c == -1) {
             throw new MessageDataException("Premature end of message " +
-               "before all headers were read, while reading header field name");
+              "before all headers were read, while reading header field name");
           }
           ++lineCount;
           if (first && c == '\r') {
@@ -3221,7 +3227,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           if ((c >= 0x21 && c <= 57) || (c >= 59 && c <= 0x7e)) {
             if (wsp) {
               throw new
-                MessageDataException("Whitespace within header field name");
+              MessageDataException("Whitespace within header field name");
             }
             first = false;
             if (c >= 'A' && c <= 'Z') {
@@ -3244,8 +3250,9 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
               while (true) {
                 c = stream.read();
                 if (c == -1) {
-                  throw new MessageDataException(
-  "Premature end before all headers were read (Mbox convention)");
+                  throw new MessageDataException (
+                    "Premature end before all headers were read (Mbox" +
+"\u0020convention)");
                 } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
@@ -3505,7 +3512,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 
     private static boolean StartsWithWhitespace(String str) {
       return str.length() > 0 && (str.charAt(0) == ' ' || str.charAt(0) == 0x09 || str.charAt(0) ==
-                    '\r');
+          '\r');
     }
 
     private static int TransferEncodingToUse(byte[] body, boolean isBodyPart) {
@@ -3538,8 +3545,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           // TAB
           allTextBytes = false;
         } else if (body[i] == 0x7f ||
-            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i] !=
-                0x09)) {
+          (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i] !=
+            0x09)) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == (byte)'\r') {
@@ -3547,11 +3554,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
             // bare CR
             allTextBytes = false;
           } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] ==
-                 (byte)'\t')) {
+              (byte)'\t')) {
             // Space followed immediately by CRLF
             allTextBytes = false;
           } else if (i + 2 < body.length && body[i + 1] == (byte)'\n' &&
-                    body[i + 2] == (byte)'.') {
+            body[i + 2] == (byte)'.') {
             // CR LF dot (see RFC 5321 secs. 4.1.1.4 and 4.5.2)
             allTextBytes = false;
           } else {
@@ -3567,14 +3574,14 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           '.';
         allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
-                'm' || (body[i + 4] != ' ' && body[i + 4] != '\t');
+          'm' || (body[i + 4] != ' ' && body[i + 4] != '\t');
         allTextBytes &= lineLength != 0 || i + 1 >= body.length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
         allTextBytes &= lineLength <= MaxShortHeaderLineLength;
       }
       return allTextBytes ? EncodingSevenBit :
-    ((highBytes > lengthCheck / 3) ? EncodingBase64 :
+        ((highBytes > lengthCheck / 3) ? EncodingBase64 :
           EncodingQuotedPrintable);
     }
 
@@ -3592,7 +3599,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       for (int i = 0; i < name.length(); ++i) {
         if (name.charAt(i) <= 0x20 || name.charAt(i) == ':' || name.charAt(i) >= 0x7f) {
           throw new
-  IllegalArgumentException("Header field name contains an invalid character");
+          IllegalArgumentException("Header field name contains an invalid character");
         }
       }
       // Check characters in structured header fields
@@ -3600,11 +3607,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
           throw new IllegalArgumentException("Header field value contains invalid" +
-"\u0020text");
+            "\u0020text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new
-  IllegalArgumentException("Header field value is not in the correct format");
+          IllegalArgumentException("Header field value is not in the correct format");
         }
       }
       return name;
@@ -3633,22 +3640,24 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       } else {
         if (builder.getTopLevelType().equals("message")) {
           if (builder.getSubType().equals("delivery-status") ||
-                     builder.getSubType().equals("global-delivery-status") ||
-                     builder.getSubType().equals("disposition-notification") ||
-                     builder.getSubType().equals("global-disposition-notification")) {
+            builder.getSubType().equals("global-delivery-status") ||
+            builder.getSubType().equals("disposition-notification") ||
+            builder.getSubType().equals("global-disposition-notification")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
           if ((builder.getSubType().equals("rfc822") ||
-builder.getSubType().equals(
-            "news")) && !msgCanBeUnencoded) {
+              builder.getSubType().equals(
+                "news")) && !msgCanBeUnencoded) {
             builder.SetSubType("global");
           } else if (builder.getSubType().equals("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
           } else if (builder.getSubType().equals("delivery-status") && !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
           } else if (!msgCanBeUnencoded && !builder.getSubType().equals("global") &&
-            !builder.getSubType().equals("global-disposition-notification") && !builder.getSubType().equals("global-delivery-status") && !builder.getSubType().equals("global-headers")) {
+            !builder.getSubType().equals("global-disposition-notification") &&
+            !builder.getSubType().equals("global-delivery-status") && !builder.getSubType().equals(
+                "global-headers")) {
           }
         }
       }
@@ -3658,11 +3667,13 @@ builder.getSubType().equals(
       transferEnc = topLevel.equals("message") ||
         topLevel.equals("multipart") ?
 (topLevel.equals("multipart") || (
-          !builder.getSubType().equals("global") &&
-          !builder.getSubType().equals("global-headers") &&
-          !builder.getSubType().equals("global-disposition-notification") && !builder.getSubType().equals("global-delivery-status"))) ? EncodingSevenBit : TransferEncodingToUse(
-            bodyToWrite,
-            depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
+            !builder.getSubType().equals("global") &&
+            !builder.getSubType().equals("global-headers") &&
+            !builder.getSubType().equals("global-disposition-notification") &&
+            !builder.getSubType().equals("global-delivery-status"))) ? EncodingSevenBit :
+TransferEncodingToUse (
+          bodyToWrite,
+          depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       String encodingString = "7bit";
       if (transferEnc == EncodingBase64) {
         encodingString = "base64";
@@ -3710,8 +3721,7 @@ builder.getSubType().equals(
         }
         if (
           depth > 0 &&
-name.length() >= 2 &&
-          name.charAt(0) == '-' && name.charAt(1) == '-') {
+          name.length() >= 2 && name.charAt(0) == '-' && name.charAt(1) == '-') {
           // don't generate header fields starting with "--"
           // in body parts
           continue;
@@ -3751,9 +3761,9 @@ name.length() >= 2 &&
               */ if (!isValidAddressing) {
                 value = "";
                 if (!name.equals("from") &&
-!name.equals("sender")) {
-                  value = GenerateAddressList(
-                    NamedAddress.ParseAddresses(value));
+                  !name.equals("sender")) {
+                  value = GenerateAddressList (
+                      NamedAddress.ParseAddresses(value));
                 }
                 if (value.length() == 0) {
                   // Synthesize a field
@@ -3762,8 +3772,8 @@ name.length() >= 2 &&
               }
             } else if (headerIndex <= 10) {
               // Resent-* fields can appear more than once
-              value = GenerateAddressList(
-                NamedAddress.ParseAddresses(value));
+              value = GenerateAddressList (
+                  NamedAddress.ParseAddresses(value));
               if (value.length() == 0) {
                 // No addresses, synthesize a field
                 rawField = this.SynthesizeField(name);
@@ -3777,23 +3787,23 @@ name.length() >= 2 &&
         } else {
           // DebugUtility.Log("Can't output '"+name+"' raw");
           String downgraded = HeaderFieldParsers.GetParser(name)
-                    .DowngradeHeaderField(name, value);
+            .DowngradeHeaderField(name, value);
           if (
             HasTextToEscape(
               downgraded,
               0,
               downgraded.length())) {
             if (name.equals("message-id") ||
-              name.equals("resent-message-id") ||
-              name.equals("in-reply-to") ||
-              name.equals("references") ||
-              name.equals(
-                "original-recipient") ||
-              name.equals("final-recipient")) {
+                         name.equals("resent-message-id") ||
+                         name.equals("in-reply-to") ||
+                         name.equals("references") ||
+                         name.equals(
+                         "original-recipient") ||
+                         name.equals("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
-              downgraded = HeaderEncoder.EncodeFieldAsEncodedWords(
+              downgraded = HeaderEncoder.EncodeFieldAsEncodedWords (
                   "downgraded-" + name,
                   ParserUtility.TrimSpaceAndTab(value));
             } else {
@@ -3815,15 +3825,15 @@ name.length() >= 2 &&
         AppendAscii(output, "Date: ");
         // NOTE: Use global rather than local time; there are overriding
         // reasons not to use local time, despite the SHOULD in RFC 5322
-        String dateString = MailDateTime.GenerateDateString(
-          DateTimeUtilities.GetCurrentGlobalTime());
+        String dateString = MailDateTime.GenerateDateString (
+            DateTimeUtilities.GetCurrentGlobalTime());
         AppendAscii(
           output,
           dateString);
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        AppendAscii(
+        AppendAscii (
           output,
           HeaderEncoder.EncodeField("Message-ID", this.GenerateMessageID()));
         AppendAscii(output, "\r\n");
@@ -3959,8 +3969,8 @@ name.length() >= 2 &&
           }
           String headerValue = this.headers.get(i + 1);
           if (
-            HeaderFieldParsers.GetParser(
-              name).Parse(
+            HeaderFieldParsers.GetParser (
+              name).Parse (
               headerValue,
               0,
               headerValue.length(),
@@ -4075,7 +4085,8 @@ name.length() >= 2 &&
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
         if (name.equals("content-transfer-encoding")) {
-          int startIndex = HeaderParser.ParseCFWS(value, 0, value.length(), null);
+          int startIndex = HeaderParser.ParseCFWS(value, 0, value.length(),
+  null);
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
           // subtypes
@@ -4085,13 +4096,13 @@ name.length() >= 2 &&
             value.length(),
             null);
           transferEncodingValue = (
-            HeaderParser.ParseCFWS(
-              value,
-              endIndex,
-              value.length(),
-              null) == value.length()) ? value.substring(
-                startIndex, (
-                startIndex)+(endIndex - startIndex)) : "";
+              HeaderParser.ParseCFWS(
+                value,
+                endIndex,
+                value.length(),
+                null) == value.length()) ? value.substring(
+              startIndex, (
+              startIndex)+(endIndex - startIndex)) : "";
         }
         mime |= name.equals("mime-version");
         if (value.indexOf("=?") >= 0) {
@@ -4170,7 +4181,7 @@ name.length() >= 2 &&
                 }
               } else {
                 MediaTypeBuilder builder = new MediaTypeBuilder(ctype)
-                    .SetParameter("charset", ctype.GetCharset());
+                .SetParameter("charset", ctype.GetCharset());
                 ctype = builder.ToMediaType();
               }
             }
@@ -4196,9 +4207,11 @@ name.length() >= 2 &&
         this.transferEncoding = EncodingEightBit;
       }
       if (this.transferEncoding == EncodingQuotedPrintable ||
-          this.transferEncoding == EncodingBase64) {
-        if (ctype.isMultipart() || (ctype.getTopLevelType().equals("message") && !ctype.getSubType().equals("global") && !ctype.getSubType().equals("global-headers") && !ctype.getSubType().equals(
-    "global-disposition-notification") && !ctype.getSubType().equals("global-delivery-status"))) {
+        this.transferEncoding == EncodingBase64) {
+        if (ctype.isMultipart() || (ctype.getTopLevelType().equals("message") && !ctype.getSubType().equals("global") && !ctype.getSubType().equals(
+                "global-headers") && !ctype.getSubType().equals(
+                "global-disposition-notification") &&
+            !ctype.getSubType().equals("global-delivery-status"))) {
           // CLARIFICATION: Treat quoted-printable and base64
           // as "unrecognized" encodings in multipart and most
           // message media types, for the purpose of treating the
@@ -4218,10 +4231,10 @@ name.length() >= 2 &&
           this.transferEncoding = EncodingEightBit;
         } else if (ctype.getTypeAndSubType().equals("text/html")) {
           if (charset.equals("us-ascii") ||
-              charset.equals("windows-1252") ||
-              charset.equals("windows-1251") ||
-              (charset.length() > 9 && charset.substring(0, 9).equals(
-                "iso-8859-"))) {
+            charset.equals("windows-1252") ||
+            charset.equals("windows-1251") ||
+(charset.length() > 9 && charset.substring(0, 9).equals(
+              "iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
@@ -4297,7 +4310,7 @@ name.length() >= 2 &&
                 multipartStack.remove(stackCount);
               }
               Message parentMessage = multipartStack.get(
-                    multipartStack.size() - 1).getMessage();
+                  multipartStack.size() - 1).getMessage();
               boundaryChecker.StartBodyPartHeaders();
               MediaType ctype = parentMessage.getContentType();
               boolean parentIsDigest = ctype.getSubType().equals("digest") && ctype.isMultipart();
@@ -4341,8 +4354,7 @@ name.length() >= 2 &&
     }
 
     private void ReadSimpleBody(IByteReader stream) {
-      boolean isTextPlain =
-this.getContentType().getTypeAndSubType().equals("text/plain");
+      boolean isTextPlain = this.getContentType().getTypeAndSubType().equals("text/plain");
       IByteReader transform = MakeTransferEncoding(
         stream,
         this.transferEncoding,
@@ -4379,9 +4391,9 @@ this.getContentType().getTypeAndSubType().equals("text/plain");
 
     private String SynthesizeField(String name) {
       HeaderEncoder encoder = new HeaderEncoder(76, 0).AppendFieldName(name);
-      String fullField = ParserUtility.Implode(
-        this.GetMultipleHeaders(name),
-        "\u002c ");
+      String fullField = ParserUtility.Implode (
+          this.GetMultipleHeaders(name),
+          "\u002c ");
       String lcname = DataUtilities.ToLowerCaseAscii(name);
       if (fullField.length() == 0) {
         encoder.AppendSymbol("me@" + name + "-address.invalid");
@@ -4415,12 +4427,13 @@ private final String propVarboundary;
           newBoundary = mediaType.GetParameter("boundary");
           if (newBoundary == null) {
             throw new
-              MessageDataException("Multipart message has no boundary defined");
+            MessageDataException("Multipart message has no boundary defined");
           }
           if (!IsWellFormedBoundary(newBoundary)) {
             throw new
-  MessageDataException("Multipart message has an invalid boundary defined: " +
-                newBoundary);
+            MessageDataException("Multipart message has an invalid boundary" +
+"\u0020defined: " +
+              newBoundary);
           }
         }
         this.propVarmessage = msg;

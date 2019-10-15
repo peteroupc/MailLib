@@ -12,7 +12,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>This is an internal class.</summary>
+  /// <summary>This is an internal class.</summary>
   internal sealed class Base64Encoder : ICharacterEncoder {
     internal const int MaxLineLength = 76;
 
@@ -90,14 +90,14 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(alphabetString));
       }
       if (alphabetString.Length != 64) {
-      throw new ArgumentException("alphabet string length (" +
+        throw new ArgumentException("alphabet string length(" +
           alphabetString.Length + ") is not equal to 64");
       }
       var alphabet = new byte[64];
       for (var i = 0; i < alphabetString.Length; ++i) {
         if (alphabetString[i] >= 0x100) {
-throw new
-  ArgumentException("alphabet string contains a non-Latin1 character");
+          throw new
+          ArgumentException("alphabet string contains a non-Latin1 character");
         }
         alphabet[i] = (byte)alphabetString[i];
       }
@@ -107,12 +107,13 @@ throw new
     private int AddByteInternal(IWriter output, int b) {
       int ib = b & 0xff;
       if (this.quantumCount == 2) {
-        int ret = this.LineAwareAppendFour(
-  output,
-  this.alphabet[(this.byte1 >> 2) & 63],
-  this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)],
-  this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)],
-  this.alphabet[ib & 63]);
+        int ret = this.LineAwareAppendFour (
+            output,
+            this.alphabet[(this.byte1 >> 2) & 63],
+            this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
+15)],
+            this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)],
+            this.alphabet[ib & 63]);
         this.byte1 = -1;
         this.byte2 = -1;
         this.quantumCount = 0;
@@ -133,8 +134,9 @@ throw new
       var count = 0;
       if (this.quantumCount == 2) {
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
-        byte c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
-          15)];
+        byte c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4)
+&
+              15)];
         byte c3 = this.alphabet[(this.byte2 & 15) << 2];
         if (this.padding) {
           count += this.LineAwareAppendFour(output, c1, c2, c3, (byte)'=');
@@ -150,13 +152,13 @@ throw new
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
         byte c2 = this.alphabet[(this.byte1 & 3) << 4];
         if (this.padding) {
-         count += this.LineAwareAppendFour(
-           output,
-           c1,
-           c2,
-           (byte)'=',
-           (byte)'=');
-         } else {
+          count += this.LineAwareAppendFour (
+              output,
+              c1,
+              c2,
+              (byte)'=',
+              (byte)'=');
+        } else {
           count += this.LineAwareAppend(output, c1);
           count += this.LineAwareAppend(output, c2);
         }

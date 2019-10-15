@@ -8,20 +8,20 @@ import com.upokecenter.mail.*;
 
   public class DataUrlTest {
     private void TestMatchBasicNone(String[] langranges, String str) {
-      List<String> r = LanguageTags.LanguageTagFilter(
-        Arrays.asList(langranges),
-        Arrays.asList(new String[] { str }),
-        false,
-        false);
+      List<String> r = LanguageTags.LanguageTagFilter (
+          Arrays.asList(langranges),
+          Arrays.asList(new String[] { str }),
+          false,
+          false);
       Assert.assertEquals(0, r.size());
     }
 
     private void TestMatchBasicContained(String[] langranges, String str) {
-      List<String> r = LanguageTags.LanguageTagFilter(
-        Arrays.asList(langranges),
-        Arrays.asList(new String[] { str }),
-        false,
-        false);
+      List<String> r = LanguageTags.LanguageTagFilter (
+          Arrays.asList(langranges),
+          Arrays.asList(new String[] { str }),
+          false,
+          false);
       if (!(r.size() > 0)) {
  Assert.fail();
  }
@@ -76,11 +76,10 @@ import com.upokecenter.mail.*;
       Message msg;
       this.TestMailToOne("mailto:me@example.com");
       this.TestMailToOne("mailto:you@example.com?subject=current-issue");
-      msg =
-  this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-hijk");
+      msg = this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-hijk");
       Assert.assertEquals("x abcdefg-hijk", msg.getBodyString());
-      msg =
-  this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
+      msg = this.TestMailToOne(
+  "mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
       Assert.assertEquals("x abcdefg-h\r\nijk", msg.getBodyString());
       // ----
       msg = this.TestMailToOne("mailto:e%25f@m.example");
@@ -134,7 +133,8 @@ import com.upokecenter.mail.*;
       Assert.assertEquals("b\u00e7", msg.getBodyString());
       msg =
 
-  this.TestMailToOne("mailto:me@example.com?subject=%3D%3futf-8%3fQ%3fb%3dC3%3dA7%3f%3d");
+        this.TestMailToOne(
+  "mailto:me@example.com?subject=%3D%3futf-8%3fQ%3fb%3dC3%3dA7%3f%3d");
       System.out.print(msg.GetHeader("subject"));
     }
   }

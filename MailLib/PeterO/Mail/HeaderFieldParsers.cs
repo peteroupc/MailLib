@@ -169,11 +169,10 @@ namespace PeterO.Mail {
         // in brackets; they are invalid under
         // "IsValidDomainName" .
         domain = (Message.HasTextToEscape(domain) &&
-                  Idna.IsValidDomainName(domain, false)) ?
-          Idna.EncodeDomainName(domain) :
-              str.Substring(
-                startIndex,
-                endIndex - startIndex);
+            Idna.IsValidDomainName(domain, false)) ?
+          Idna.EncodeDomainName(domain) : str.Substring(
+            startIndex,
+            endIndex - startIndex);
         return Message.HasTextToEscape(domain) ? null : domain;
       }
 
@@ -183,8 +182,8 @@ namespace PeterO.Mail {
         string str) {
         string originalString = str;
         if (str.IndexOf(':') < 0 ||
-           str.IndexOf('@') < 0 ||
-           !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+          str.IndexOf('@') < 0 ||
+          !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
           // No colon or at-sign, or no text needs to be encoded
           return str;
         }
@@ -215,11 +214,11 @@ namespace PeterO.Mail {
             // of the group's display name
             foreach (int[] token2 in tokens) {
               if (token2[0] == HeaderParserUtility.TokenPhrase &&
-                   displayNameEnd < 0) {
+                displayNameEnd < 0) {
                 displayNameEnd = token2[2];
               }
               if (token2[0] == HeaderParserUtility.TokenLocalPart &&
-                  token2[1] >= startIndex && token2[2] <= endIndex) {
+                token2[1] >= startIndex && token2[2] <= endIndex) {
                 // Local part within a group
                 if (Message.HasTextToEscape(
                   str,
@@ -238,7 +237,7 @@ namespace PeterO.Mail {
               var sb2 = new StringBuilder();
               foreach (int[] token2 in tokens) {
                 if (token2[0] == HeaderParserUtility.TokenDomain &&
-                   token2[1] >= startIndex && token2[2] <= endIndex) {
+                  token2[1] >= startIndex && token2[2] <= endIndex) {
                   // Domain within the group
                   string domain = EncodeDomain(str, token2[1], token2[2]);
                   if (domain == null) {
@@ -246,10 +245,10 @@ namespace PeterO.Mail {
                     nonasciiDomains = true;
                     break;
                   }
-                  sb2.Append(
-                  str.Substring(
-                    localLastIndex,
-                    token2[1] - localLastIndex));
+                  sb2.Append (
+                    str.Substring(
+                      localLastIndex,
+                      token2[1] - localLastIndex));
                   sb2.Append(domain);
                   localLastIndex = token2[2];
                 }
@@ -257,10 +256,10 @@ namespace PeterO.Mail {
               nonasciiLocalParts = nonasciiDomains;
               if (!nonasciiLocalParts) {
                 // All of the domains could be converted to ASCII
-                sb2.Append(
-                str.Substring(
-                  localLastIndex,
-                  endIndex - localLastIndex));
+                sb2.Append (
+                  str.Substring(
+                    localLastIndex,
+                    endIndex - localLastIndex));
                 enc.AppendString(str, lastIndex, startIndex);
                 enc.AppendString(sb2.ToString());
                 lastIndex = endIndex;
@@ -336,7 +335,7 @@ namespace PeterO.Mail {
         string str) {
         string originalString = str;
         if (str.IndexOf('@') < 0 ||
-           !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+          !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
           // No at-sign, or no text needs to be encoded
           return str;
         }
@@ -364,11 +363,11 @@ namespace PeterO.Mail {
             foreach (int[] token2 in tokens) {
               hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
               if (token2[0] == HeaderParserUtility.TokenLocalPart &&
-              token2[1] >= startIndex && token2[2] <= endIndex &&
-              Message.HasTextToEscape(
-                str,
-                token2[1],
-                token2[2])) {
+                token2[1] >= startIndex && token2[2] <= endIndex &&
+                Message.HasTextToEscape(
+                  str,
+                  token2[1],
+                  token2[2])) {
                 nonasciiLocalPart = true;
                 break;
               }
@@ -387,10 +386,10 @@ namespace PeterO.Mail {
                       nonasciiDomains = true;
                       break;
                     }
-                    sb2.Append(
-                    str.Substring(
-                      localLastIndex,
-                      token2[1] - localLastIndex));
+                    sb2.Append (
+                      str.Substring(
+                        localLastIndex,
+                        token2[1] - localLastIndex));
                     sb2.Append(domain);
                     localLastIndex = token2[2];
                   }
@@ -399,10 +398,10 @@ namespace PeterO.Mail {
               nonasciiLocalPart = nonasciiDomains;
               if (!nonasciiLocalPart) {
                 // All of the domains could be converted to ASCII
-                sb2.Append(
-                str.Substring(
-                  localLastIndex,
-                  endIndex - localLastIndex));
+                sb2.Append (
+                  str.Substring(
+                    localLastIndex,
+                    endIndex - localLastIndex));
                 enc.AppendString(str, lastIndex, startIndex);
                 enc.AppendString(sb2.ToString());
                 lastIndex = endIndex;
@@ -482,11 +481,11 @@ namespace PeterO.Mail {
       }
 
       public string DecodeEncodedWords(string str) {
-#if DEBUG
+        #if DEBUG
         if (str == null) {
           throw new ArgumentNullException(nameof(str));
         }
-#endif
+        #endif
 
         // For structured header fields that allow comments only wherever
         // whitespace
@@ -516,7 +515,7 @@ namespace PeterO.Mail {
           // DebugUtility.Log("" + token[0] + " [" +
           // (str.Substring(token[1],token[2]-token[1])) + "]");
           if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
-                   lastIndex) {
+            lastIndex) {
             // This is a comment token
             int startIndex = token[1];
             endIndex = token[2];
@@ -691,10 +690,10 @@ namespace PeterO.Mail {
         if (changed) {
           receivedPart = TrimFWSFromRight(receivedPart);
           return new HeaderEncoder().AppendFieldName(name)
-             .AppendString(receivedPart + datePart).ToString();
-           } else {
+            .AppendString(receivedPart + datePart).ToString();
+          } else {
           return new HeaderEncoder().AppendFieldName(name).ToString() +
-             str;
+            str;
         }
       }
     }
@@ -719,14 +718,14 @@ namespace PeterO.Mail {
     }
 
     internal static string DowngradeListHeaderIfNo(HeaderEncoder enc, string
-str) {
+      str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       int index = HeaderParser.ParseCFWS(str, 0, str.Length, null);
       int noIndex = index;
       if (index + 1 < str.Length && str[index] == 'N' && str[index + 1] ==
-'O') {
+        'O') {
         index = HeaderParser.ParseCFWS(str, index + 2, str.Length, null);
         if (index != str.Length) {
           return null;
@@ -771,7 +770,7 @@ str) {
           index = HeaderParser.ParseFWS(str, index, str.Length, null);
           int c = str[index];
           if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length && (c &
-0xfc00) == 0xdc00) {
+              0xfc00) == 0xdc00) {
             sstr = str.Substring(index, 2);
             enc.AppendSymbol(sstr);
             index += 2;
@@ -1073,7 +1072,8 @@ str) {
           return index;
         }
         int ret = (cd.DispositionType.Equals("no", StringComparison.Ordinal) ||
- cd.DispositionType.Equals("yes", StringComparison.Ordinal)) ? endIndex : index;
+            cd.DispositionType.Equals("yes",
+              StringComparison.Ordinal)) ? endIndex : index;
         if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
             str,
@@ -1384,7 +1384,7 @@ str) {
     }
 
     private sealed class HeaderPreventNondeliveryReport :
-        StructuredHeaderField {
+      StructuredHeaderField {
       public override int Parse(
         string str,
         int index,
@@ -1522,7 +1522,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderUserAgent(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderUserAgent(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1579,7 +1580,7 @@ str) {
     }
 
     private sealed class HeaderArcAuthenticationResults :
-        StructuredHeaderField {
+      StructuredHeaderField {
       public override int Parse(
         string str,
         int index,
@@ -1637,7 +1638,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderCancelKey(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderCancelKey(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1723,7 +1725,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderContentId(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderContentId(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1823,7 +1826,7 @@ str) {
     }
 
     private sealed class HeaderDispositionNotificationTo :
-         StructuredHeaderField {
+      StructuredHeaderField {
       public override int Parse(
         string str,
         int index,
@@ -1933,7 +1936,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderEncrypted(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderEncrypted(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1953,7 +1957,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderInReplyTo(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderInReplyTo(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2045,7 +2050,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderMessageId(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderMessageId(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2137,7 +2143,7 @@ str) {
     }
 
     private sealed class HeaderMmhsHandlingInstructions :
-        StructuredHeaderField {
+      StructuredHeaderField {
       public override int Parse(
         string str,
         int index,
@@ -2252,7 +2258,7 @@ str) {
     }
 
     private sealed class HeaderMmhsSubjectIndicatorCodes :
-         StructuredHeaderField {
+      StructuredHeaderField {
       public override int Parse(
         string str,
         int index,
@@ -2286,7 +2292,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderObsoletes(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderObsoletes(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2319,7 +2326,7 @@ str) {
     }
 
     private sealed class HeaderRequireRecipientValidSince :
-          StructuredHeaderField {
+      StructuredHeaderField {
       public override int Parse(
         string str,
         int index,
@@ -2421,7 +2428,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderXRicevuta(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderXRicevuta(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2468,13 +2476,13 @@ str) {
     }
 
     private static readonly IHeaderFieldParser Unstructured = new
-  UnstructuredHeaderField();
+    UnstructuredHeaderField();
 
     private static readonly IDictionary<string, IHeaderFieldParser> FieldMap =
       CreateHeaderFieldList();
 
-    private static IDictionary<string, IHeaderFieldParser>
-      CreateHeaderFieldList() {
+    private static
+    IDictionary<string, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
       var fieldMap = new Dictionary<string, IHeaderFieldParser>();
       fieldMap["content-disposition"] = new HeaderContentDisposition();
@@ -2514,7 +2522,7 @@ str) {
       fieldMap["generate-delivery-report"] = new HeaderGenerateDeliveryReport();
       fieldMap["incomplete-copy"] = new HeaderIncompleteCopy();
       fieldMap["prevent-nondelivery-report"] = new
-             HeaderPreventNondeliveryReport();
+      HeaderPreventNondeliveryReport();
       fieldMap["alternate-recipient"] = new HeaderAlternateRecipient();
       fieldMap["disclose-recipients"] = new HeaderDiscloseRecipients();
       fieldMap["expanded-date"] = new HeaderExpandedDate();
@@ -2531,7 +2539,7 @@ str) {
       fieldMap["accept-language"] = new HeaderAcceptLanguage();
       fieldMap["archived-at"] = new HeaderArchivedAt();
       fieldMap["arc-authentication-results"] = new
-             HeaderArcAuthenticationResults();
+      HeaderArcAuthenticationResults();
       fieldMap["authentication-results"] = new HeaderAuthenticationResults();
       fieldMap["base"] = new HeaderContentBase();
       fieldMap["bcc"] = new HeaderBcc();
@@ -2549,13 +2557,13 @@ str) {
       fieldMap["content-location"] = new HeaderContentLocation();
       fieldMap["content-md5"] = new HeaderContentMd5();
       fieldMap["content-transfer-encoding"] = new
-           HeaderContentTransferEncoding();
+      HeaderContentTransferEncoding();
       fieldMap["date"] = new HeaderDate();
       fieldMap["deferred-delivery"] = new HeaderDeferredDelivery();
       fieldMap["disposition-notification-options"] = new
-        HeaderDispositionNotificationOptions();
+      HeaderDispositionNotificationOptions();
       fieldMap["disposition-notification-to"] = new
-        HeaderDispositionNotificationTo();
+      HeaderDispositionNotificationTo();
       fieldMap["mmhs-authorizing-users"] = new HeaderMmhsAuthorizingUsers();
       fieldMap["dkim-signature"] = new HeaderDkimSignature();
       fieldMap["arc-message-signature"] = new HeaderArcMessageSignature();
@@ -2577,28 +2585,28 @@ str) {
       fieldMap["message-id"] = new HeaderMessageId();
       fieldMap["mime-version"] = new HeaderMimeVersion();
       fieldMap["mmhs-acp127-message-identifier"] = new
-        HeaderMmhsAcp127MessageIdentifier();
+      HeaderMmhsAcp127MessageIdentifier();
       fieldMap["mmhs-codress-message-indicator"] = new
-        HeaderMmhsCodressMessageIndicator();
+      HeaderMmhsCodressMessageIndicator();
       fieldMap["mmhs-copy-precedence"] = new HeaderMmhsCopyPrecedence();
       fieldMap["mmhs-exempted-address"] = new HeaderMmhsExemptedAddress();
       fieldMap["mmhs-extended-authorisation-info"] = new
-        HeaderMmhsExtendedAuthorisationInfo();
+      HeaderMmhsExtendedAuthorisationInfo();
       fieldMap["mmhs-handling-instructions"] = new
-             HeaderMmhsHandlingInstructions();
+      HeaderMmhsHandlingInstructions();
       fieldMap["mmhs-message-instructions"] = new
-           HeaderMmhsMessageInstructions();
+      HeaderMmhsMessageInstructions();
       fieldMap["mmhs-message-type"] = new HeaderMmhsMessageType();
       fieldMap["mmhs-originator-plad"] = new HeaderMmhsOriginatorPlad();
       fieldMap["mmhs-originator-reference"] = new
-           HeaderMmhsOriginatorReference();
+      HeaderMmhsOriginatorReference();
       fieldMap["mmhs-other-recipients-indicator-cc"] = new
-        HeaderMmhsOtherRecipientsIndicatorCc();
+      HeaderMmhsOtherRecipientsIndicatorCc();
       fieldMap["mmhs-other-recipients-indicator-to"] = new
-        HeaderMmhsOtherRecipientsIndicatorTo();
+      HeaderMmhsOtherRecipientsIndicatorTo();
       fieldMap["mmhs-primary-precedence"] = new HeaderMmhsPrimaryPrecedence();
       fieldMap["mmhs-subject-indicator-codes"] = new
-        HeaderMmhsSubjectIndicatorCodes();
+      HeaderMmhsSubjectIndicatorCodes();
       fieldMap["mt-priority"] = new HeaderMtPriority();
       fieldMap["obsoletes"] = new HeaderObsoletes();
       fieldMap["original-from"] = new HeaderFrom();
@@ -2609,7 +2617,7 @@ str) {
       fieldMap["references"] = new HeaderInReplyTo();
       fieldMap["reply-to"] = new HeaderResentTo();
       fieldMap["require-recipient-valid-since"] = new
-        HeaderRequireRecipientValidSince();
+      HeaderRequireRecipientValidSince();
       fieldMap["resent-bcc"] = new HeaderBcc();
       fieldMap["resent-cc"] = new HeaderResentTo();
       fieldMap["resent-date"] = new HeaderDate();

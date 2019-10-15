@@ -30,7 +30,8 @@ namespace PeterO.Text {
       }
       if (classes == null) {
         lock (ValueSyncRoot) {
-  classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
+          classes = classes ?? ByteData.Decompress (
+              NormalizationData.CombiningClasses);
         }
       }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -206,7 +207,8 @@ namespace PeterO.Text {
       }
       if (casedprop == null) {
         lock (ValueSyncRoot) {
-  casedprop = casedprop ?? ByteData.Decompress(NormalizationData.CaseProperty);
+          casedprop = casedprop ?? ByteData.Decompress (
+              NormalizationData.CaseProperty);
         }
       }
       return ((int)casedprop.GetByte(cp)) & 0xff;
@@ -218,7 +220,7 @@ namespace PeterO.Text {
       }
       if (precisCat == null) {
         lock (ValueSyncRoot) {
-       precisCat = precisCat ??
+          precisCat = precisCat ??
             ByteData.Decompress(IdnaData.PrecisCategories);
         }
       }
@@ -248,22 +250,22 @@ namespace PeterO.Text {
       // class of 0
       ByteData bd = null;
       if (form == Normalization.NFC &&
-      (cp < NormalizationData.QCSNFCMin || cp >
+        (cp < NormalizationData.QCSNFCMin || cp >
           NormalizationData.QCSNFCMax)) {
         return true;
       }
       if (form == Normalization.NFD &&
-      (cp < NormalizationData.QCSNFDMin || cp >
+        (cp < NormalizationData.QCSNFDMin || cp >
           NormalizationData.QCSNFDMax)) {
         return true;
       }
       if (form == Normalization.NFKC &&
-    (cp < NormalizationData.QCSNFKCMin || cp >
+        (cp < NormalizationData.QCSNFKCMin || cp >
           NormalizationData.QCSNFKCMax)) {
         return true;
       }
       if (form == Normalization.NFKD &&
-    (cp < NormalizationData.QCSNFKDMin || cp >
+        (cp < NormalizationData.QCSNFKDMin || cp >
           NormalizationData.QCSNFKDMax)) {
         return true;
       }
@@ -286,7 +288,8 @@ namespace PeterO.Text {
       if (form == Normalization.NFKC) {
         if (qcsnfkc == null) {
           lock (ValueSyncRoot) {
-            qcsnfkc = qcsnfkc ?? ByteData.Decompress(NormalizationData.QCSNFKC);
+            qcsnfkc = qcsnfkc ?? ByteData.Decompress(
+  NormalizationData.QCSNFKC);
           }
         }
         bd = qcsnfkc;
@@ -294,7 +297,8 @@ namespace PeterO.Text {
       if (form == Normalization.NFKD) {
         if (qcsnfkd == null) {
           lock (ValueSyncRoot) {
-            qcsnfkd = qcsnfkd ?? ByteData.Decompress(NormalizationData.QCSNFKD);
+            qcsnfkd = qcsnfkd ?? ByteData.Decompress(
+  NormalizationData.QCSNFKD);
           }
         }
         bd = qcsnfkd;

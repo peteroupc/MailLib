@@ -44,7 +44,7 @@ Initializes a new instance of the <code>Address</code>
 * <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
 
 * <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't contain a
- '@' sign; Invalid local part; Expected '@' sign after local part;
+ '@'sign; Invalid local part; Expected '@'sign after local part;
  Expected domain after '@'; Invalid domain; Address too long.
 
 ### Address
@@ -63,7 +63,7 @@ Initializes a new instance of the <code>Address</code>
 * <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
 
 * <code>java.lang.IllegalArgumentException</code> - AddressValue is empty.; Address doesn't contain a
- '@' sign; Invalid local part; Expected '@' sign after local part;
+ '@'sign; Invalid local part; Expected '@'sign after local part;
  Expected domain after '@'; Invalid domain; Address too long.
 
 ### equals

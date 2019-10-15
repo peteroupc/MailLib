@@ -108,9 +108,9 @@ namespace MailLibTest {
         "x\u0300\u0323",
         Normalization.NFC));
       try {
-        NormalizerInput.IsNormalized(
-  (ICharacterInput)null,
-  Normalization.NFC);
+        NormalizerInput.IsNormalized (
+          (ICharacterInput)null,
+          Normalization.NFC);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -119,22 +119,22 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
 
-      Assert.IsTrue(
-  NormalizerInput.IsNormalized(
-    "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-    Normalization.NFC));
-      Assert.IsTrue(
-      NormalizerInput.IsNormalized(
-        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-        Normalization.NFD));
-      Assert.IsTrue(
-      NormalizerInput.IsNormalized(
-        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-        Normalization.NFKC));
-      Assert.IsTrue(
-      NormalizerInput.IsNormalized(
-        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-        Normalization.NFKD));
+      Assert.IsTrue (
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFC));
+      Assert.IsTrue (
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFD));
+      Assert.IsTrue (
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFKC));
+      Assert.IsTrue (
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFKD));
     }
     [Test]
     public void TestRead() {

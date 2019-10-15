@@ -1,33 +1,33 @@
 package com.upokecenter.text;
 
-    /**
-     * <p>Contains methods for preparing user-facing protocol strings (such as user
-     * identifiers) for equality comparison and validity checking. Such
-     * strings can be _internationalized_, that is, contain characters
-     * beyond the Basic Latin block (U+0000 to U+007F) of the Unicode
-     * Standard. See RFC 8264. Currently there are four profiles for
-     * internationalized strings: two for strings serving as user
-     * identifiers, one for arbitrary single-line strings (such as
-     * passwords), and one for display names.</p><p> <ul> <li>Other
-     * user-facing internationalized strings not expressly handled by this
-     * class include the following. Their preparation and comparison are
-     * outside the scope of this class. <br/> -- File and directory names.
-     * <br/> -- Domain names. <br/> -- Text strings with multiple language
-     * versions (such as a checkbox's label or a dialog box's title). <br/>
-     * -- Profile data voluntarily entered by users. <br/> -- The text of
-     * article, post, and message bodies.</li> <li>The methods in this
-     * class are not well suited for <i>collation</i>, or lexicographic
-     * ordering, which is a comparison of text strings that is usually
-     * language-dependent and goes beyond equality comparison. Further
-     * discussion on collation can be found in Unicode Technical Standard
-     *  10 (UTS 10), "Unicode Collation Algorithm".</li> <li>As explained in
-     * UTS 10 sec. 1.6, collation serves the purposes of searching and
-     * selection (e.g., searches by name or by title). However, this class
-     * is directed more to equality comparisons for authentication or
-     * authorization purposes, or to avoid creating multiple items that use
-     * the same string, rather than, say, to comparisons of names or parts
-     * of names for the purpose of showing matching records.</li></ul></p>
-     */
+  /**
+   * <p>Contains methods for preparing user-facing protocol strings (such as user
+   * identifiers) for equality comparison and validity checking. Such
+   * strings can be _internationalized_, that is, contain characters beyond
+   * the Basic Latin block (U+0000 to U+007F) of the Unicode Standard. See
+   * RFC 8264. Currently there are four profiles for internationalized
+   * strings: two for strings serving as user identifiers, one for
+   * arbitrary single-line strings (such as passwords), and one for display
+   * names.</p><p> <ul> <li>Other user-facing internationalized strings not
+   * expressly handled by this class include the following. Their
+   * preparation and comparison are outside the scope of this class. <br/>
+   * -- File and directory names. <br/> -- Domain names. <br/> -- Text
+   * strings with multiple language versions (such as a checkbox's label or
+   * a dialog box's title). <br/> -- Profile data voluntarily entered by
+   * users. <br/> -- The text of article, post, and message bodies.</li>
+   * <li>The methods in this class are not well suited for
+   * <i>collation</i>, or lexicographic ordering, which is a comparison of
+   * text strings that is usually language-dependent and goes beyond
+   * equality comparison. Further discussion on collation can be found in
+   *  Unicode Technical Standard 10 (UTS 10), "Unicode Collation
+   *  Algorithm".</li> <li>As explained in UTS 10 sec. 1.6, collation serves
+   * the purposes of searching and selection (e.g., searches by name or by
+   * title). However, this class is directed more to equality comparisons
+   * for authentication or authorization purposes, or to avoid creating
+   * multiple items that use the same string, rather than, say, to
+   * comparisons of names or parts of names for the purpose of showing
+   * matching records.</li></ul></p>
+   */
   public final class ProtocolStrings {
 private ProtocolStrings() {
 }
@@ -125,8 +125,8 @@ private ProtocolStrings() {
     public static String UserpartEnforce(String str, boolean preserveCase) {
       if (preserveCase) {
         return (str == null) ? null :
-Idna.UsernameCasePreservedEnforce(str);
-      } else {
+          Idna.UsernameCasePreservedEnforce(str);
+        } else {
         return (str == null) ? null : Idna.UsernameCaseMappedEnforce(str);
       }
     }
@@ -167,9 +167,9 @@ Idna.UsernameCasePreservedEnforce(str);
       StringBuilder sb = null;
       while (i < str.length()) {
         if (str.charAt(i) == ' ') {
-          String part = UserpartEnforce(
-            str.substring(lastPos, (lastPos)+(i - lastPos)),
-            preserveCase);
+          String part = UserpartEnforce (
+              str.substring(lastPos, (lastPos)+(i - lastPos)),
+              preserveCase);
           if (part == null) {
             return null;
           }
@@ -191,9 +191,9 @@ Idna.UsernameCasePreservedEnforce(str);
         return UserpartEnforce(str, preserveCase);
       }
       if (lastPos != str.length()) {
-        String part = UserpartEnforce(
-          str.substring(lastPos, (lastPos)+(str.length() - lastPos)),
-          preserveCase);
+        String part = UserpartEnforce (
+            str.substring(lastPos, (lastPos)+(str.length() - lastPos)),
+            preserveCase);
         if (part == null) {
           return null;
         }

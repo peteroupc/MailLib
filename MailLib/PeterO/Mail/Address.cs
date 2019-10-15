@@ -12,7 +12,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email address.</summary>
+  /// <summary>Represents an email address.</summary>
   public class Address {
     private readonly string localPart;
 
@@ -25,7 +25,7 @@ namespace PeterO.Mail {
     public override bool Equals(object obj) {
       var other = obj as Address;
       return other != null && this.localPart.Equals(other.localPart,
-  StringComparison.Ordinal) &&
+          StringComparison.Ordinal) &&
         this.domain.Equals(other.domain, StringComparison.Ordinal);
     }
 
@@ -104,7 +104,7 @@ namespace PeterO.Mail {
       // we check if the length exceeds that number (thus excluding the space
       // character of a folded line).
       if (DataUtilities.GetUtf8Length(lp, true) >
-    Message.MaxHardHeaderLineLength - 1) {
+        Message.MaxHardHeaderLineLength - 1) {
         return true;
       }
       if (DataUtilities.GetUtf8Length(domainstr, true) >
@@ -112,7 +112,7 @@ namespace PeterO.Mail {
         return true;
       }
       return (DataUtilities.GetUtf8Length(domain2, true) >
-        Message.MaxHardHeaderLineLength - 1) ? true : false;
+          Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 
     /// <summary>Returns a hash code for this address object. No
@@ -154,7 +154,7 @@ namespace PeterO.Mail {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addressValue'/> is null.</exception>
     /// <exception cref='ArgumentException'>AddressValue is empty.; Address
-    /// doesn't contain a '@' sign; Invalid local part; Expected '@' sign
+    /// doesn't contain a '@'sign; Invalid local part; Expected '@'sign
     /// after local part; Expected domain after '@'; Invalid domain;
     /// Address too long.</exception>
     public Address(string addressValue) {
@@ -165,7 +165,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("addressValue is empty.");
       }
       if (addressValue.IndexOf('@') < 0) {
-        throw new ArgumentException("Address doesn't contain a '@' sign");
+        throw new ArgumentException("Address doesn't contain a '@'sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
         addressValue,
@@ -176,8 +176,8 @@ namespace PeterO.Mail {
         throw new ArgumentException("Invalid local part");
       }
       if (localPartEnd >= addressValue.Length ||
-     addressValue[localPartEnd] != '@') {
-        throw new ArgumentException("Expected '@' sign after local part");
+        addressValue[localPartEnd] != '@') {
+        throw new ArgumentException("Expected '@'sign after local part");
       }
       if (localPartEnd + 1 == addressValue.Length) {
         throw new ArgumentException("Expected domain after '@'");

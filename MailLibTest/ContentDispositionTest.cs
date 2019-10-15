@@ -55,11 +55,11 @@ namespace MailLibTest {
     [Test]
     public void TestEquals() {
       ContentDisposition mt =
-          ParseAndTestAspects("inline;param1=value1;param2=value2");
+        ParseAndTestAspects("inline;param1=value1;param2=value2");
       ContentDisposition mt2 =
-           ParseAndTestAspects("inline;param2=value2;param1=value1");
+        ParseAndTestAspects("inline;param2=value2;param1=value1");
       ContentDisposition mt3 =
-           ParseAndTestAspects("inline;param1=value2;param2=value2");
+        ParseAndTestAspects("inline;param1=value2;param2=value2");
       TestCommon.AssertEqualsHashCode(mt, mt2);
       TestCommon.AssertEqualsHashCode(mt, mt3);
       TestCommon.AssertEqualsHashCode(mt3, mt2);
@@ -74,9 +74,9 @@ namespace MailLibTest {
     [Test]
     public void TestGetParameter() {
       foreach (IDictionary<string, string> dict in
-           ResourceUtil.GetDictList("paramtypes")) {
+        ResourceUtil.GetDictList("paramtypes")) {
         ContentDisposition mt = ParseAndTestAspects("inline" + dict["params"]);
-        Assert.AreEqual(
+        Assert.AreEqual (
           dict["filename"],
           mt.GetParameter("filename"));
       }
@@ -162,10 +162,10 @@ namespace MailLibTest {
       string newName,
       string extra) {
       string failstr = "original=" + EncodingTest.EscapeString(filename) +
- "\nfilename=" + EncodingTest.EscapeString(newName) + "\n" +
-"AssertGoodFilename(\"" + EncodingTest.EscapeString(filename) +
-         "\");" + (String.IsNullOrEmpty(extra) ? String.Empty : "\n" +
-              extra);
+        "\nfilename=" + EncodingTest.EscapeString(newName) + "\n" +
+        "AssertGoodFilename(\"" + EncodingTest.EscapeString(filename) +
+        "\");" + (String.IsNullOrEmpty(extra) ? String.Empty : "\n" +
+          extra);
       Assert.Fail(failstr);
     }
 
@@ -184,12 +184,12 @@ namespace MailLibTest {
       }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       bool bracketDigit = str[0] == '{' && str.Length > 1 &&
-              str[1] >= '0' && str[1] <= '9';
+        str[1] >= '0' && str[1] <= '9';
       bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] ==
-          '$';
+        '$';
       bool period = str[0] == '.';
       bool beginEndSpace = str[0] == 0x20 || str[str.Length - 1] ==
-          0x20;
+        0x20;
       if (bracketDigit) {
         FailFilename(filename, str);
       }
@@ -272,11 +272,11 @@ namespace MailLibTest {
         }
       }
       if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4]
-        == '.' || strLower[4] == ' '))) {
+            == '.' || strLower[4] == ' '))) {
         if (strLower.IndexOf(
           "lpt",
           StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-            strLower[3] <= '9') {
+          strLower[3] <= '9') {
           {
             FailFilename(filename, str, strLower);
           }
@@ -284,7 +284,7 @@ namespace MailLibTest {
         if (strLower.IndexOf(
           "com",
           StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-            strLower[3] <= '9') {
+          strLower[3] <= '9') {
           {
             FailFilename(filename, str, strLower);
           }
@@ -302,23 +302,24 @@ namespace MailLibTest {
         char c = str[i];
         if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
           c == '%' || c == 0x2028 || c == 0x2029 ||
-        c == '#' || c == ';' || c == '\'' || c == '&' ||
-            c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
+          c == '#' || c == ';' || c == '\'' || c == '&' ||
+          c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
           c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
-c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
-(c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
-            (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
-          FailFilename(
-  filename,
-  str,
-  "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
+          c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
+          (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
+0xfeff ||
+          (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+          FailFilename (
+            filename,
+            str,
+            "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
         }
         // Code points that decompose to "bad" characters
         if (c == 0x1fef) {
-          FailFilename(
-  filename,
-  str,
-  "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
+          FailFilename (
+            filename,
+            str,
+            "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
         }
       }
       if (str.IndexOf("\u0020\u0020", StringComparison.Ordinal) >= 0) {
@@ -351,10 +352,10 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       // Assert that MakeFilename is idempotent
       string newstr = ContentDisposition.MakeFilename(str);
       if (!newstr.Equals(str, StringComparison.Ordinal)) {
-        FailFilename(
-  filename,
-  str,
-  "Not idempotent:\nnewname_=" + EncodingTest.EscapeString(newstr));
+        FailFilename (
+          filename,
+          str,
+          "Not idempotent:\nnewname_=" + EncodingTest.EscapeString(newstr));
       }
     }
 
@@ -369,9 +370,9 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
     [Timeout(200000)]
     public void TestMakeFilename() {
       var rnd = new RandomGenerator(new XorShift128Plus(false));
-      Assert.AreEqual(
-          String.Empty,
-          ContentDisposition.MakeFilename(null));
+      Assert.AreEqual (
+        String.Empty,
+        ContentDisposition.MakeFilename(null));
       for (var i = 0; i < 10000; ++i) {
         if (i % 1000 == 0) {
           Console.WriteLine(i);
@@ -385,8 +386,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       // "my\ufffdfile\ufffdname\ud800\udc00.txt",
       // "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
       for (var i = 0; i < filenames.Length; i += 2) {
-        string str = ContentDisposition.MakeFilename(
-          filenames[i]);
+        string str = ContentDisposition.MakeFilename (
+            filenames[i]);
         Assert.AreEqual(
           filenames[i + 1],
           str,
@@ -399,7 +400,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
     [Test]
     public void TestParameters() {
       ContentDisposition mt =
-          ParseAndTestAspects("inline;param1=value1;param2=value2");
+        ParseAndTestAspects("inline;param1=value1;param2=value2");
       IDictionary<string, string> parameters;
       parameters = mt.Parameters;
       Assert.IsTrue(parameters.ContainsKey("param1"));
@@ -460,22 +461,26 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       Assert.AreEqual("value2", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+        ParseAndTestAspects(
+  "inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+        ParseAndTestAspects(
+  "inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+        ParseAndTestAspects(
+  "inline;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+        ParseAndTestAspects(
+  "inline;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
@@ -530,22 +535,26 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       IDictionary<string, string> parameters;
       mt =
 
-  ParseAndTestAspects("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+        ParseAndTestAspects(
+  "inline;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "inline;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "inline;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+        ParseAndTestAspects(
+  "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       foreach (var str in NoParams) {
@@ -556,8 +565,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
         Assert.AreEqual(0, keys.Count);
         Assert.AreEqual("inline", mt.DispositionType);
       }
-      mt =
-       ParseAndTestAspects("inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
+      string mts = "inline;charset*0=ab;charset*1*=iso-8859-1'en'xyz";
+      mt = ParseAndTestAspects(mts);
       {
         string stringTemp = mt.GetParameter("charset");
         Assert.AreEqual(
@@ -573,8 +582,8 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
       mt =
 
-  ParseAndTestAspects("inline;" +
-"\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+        ParseAndTestAspects("inline;" +
+          "\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
         string stringTemp = mt.GetParameter("charset");
         Assert.AreEqual(

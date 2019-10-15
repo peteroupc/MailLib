@@ -10,9 +10,9 @@ at: http://peteroupc.github.io/
 import java.util.*;
 import com.upokecenter.util.*;
 
-    /**
-     * A mutable media type object.
-     */
+  /**
+   * A mutable media type object.
+   */
   public final class MediaTypeBuilder {
     private final Map<String, String> parameters;
     private String type;
@@ -141,7 +141,8 @@ public final void setSubType(String value) {
       }
       if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
-        throw new IllegalArgumentException("Not a well-formed top level type: " + str);
+        throw new IllegalArgumentException("Not a well-formed top level type: " +
+str);
       }
       this.type = DataUtilities.ToLowerCaseAscii(str);
       return this;
@@ -192,7 +193,7 @@ public final void setSubType(String value) {
       }
       if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
         name.length()) {
-      throw new IllegalArgumentException("Not a well-formed parameter name: " +
+        throw new IllegalArgumentException("Not a well-formed parameter name: " +
           name);
       }
       this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);

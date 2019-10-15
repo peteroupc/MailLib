@@ -7,9 +7,9 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     * Specifies the context where an encoded word under RFC 2047 can appear.
-     */
+  /**
+   * Specifies the context where an encoded word under RFC 2047 can appear.
+   */
   enum EncodedWordContext {
     /**
      * In an unstructured header field's value.

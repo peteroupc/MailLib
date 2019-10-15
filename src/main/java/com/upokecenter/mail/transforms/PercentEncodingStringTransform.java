@@ -46,7 +46,7 @@ import com.upokecenter.mail.*;
       int endIndex = this.input.length();
       while (true) {
         int c = (this.inputIndex < endIndex) ? this.input.charAt(this.inputIndex++) :
-             -1;
+          -1;
         if (c < 0) {
           // End of stream
           return -1;

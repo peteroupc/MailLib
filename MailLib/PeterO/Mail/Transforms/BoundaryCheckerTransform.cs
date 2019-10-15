@@ -27,13 +27,13 @@ namespace PeterO.Mail.Transforms {
 
     private void StartInnerBuffer() {
       if (this.innerBufferCount > 0) {
-#if DEBUG
+        #if DEBUG
         if (this.innerBufferCount < this.innerBufferIndex) {
-          throw new ArgumentException("this.innerBufferCount (" +
+          throw new ArgumentException("this.innerBufferCount(" +
             this.innerBufferCount + ") is less than " +
             this.innerBufferIndex);
         }
-#endif
+        #endif
         Array.Copy(
           this.innerBuffer,
           this.innerBufferIndex,
@@ -80,7 +80,7 @@ namespace PeterO.Mail.Transforms {
       }
       ret = this.input.ReadByte();
       if (this.innerBuffer == null ||
-         this.innerBufferIndex >= this.innerBuffer.Length) {
+        this.innerBufferIndex >= this.innerBuffer.Length) {
         this.innerBuffer = this.innerBuffer ?? (new byte[32]);
         if (this.innerBufferIndex >= this.innerBuffer.Length) {
           var newbuffer = new byte[this.innerBuffer.Length + 32];
@@ -139,8 +139,8 @@ namespace PeterO.Mail.Transforms {
       // CR might signal next boundary or not
       this.StartInnerBuffer();
       if (this.InnerBufferReadAndStore() != 0x0a ||
-         this.InnerBufferReadAndStore() != '-' ||
-           this.InnerBufferReadAndStore() != '-') {
+        this.InnerBufferReadAndStore() != '-' ||
+        this.InnerBufferReadAndStore() != '-') {
         this.ResetInnerBuffer();
         return 0x0d;
       }
@@ -181,7 +181,7 @@ namespace PeterO.Mail.Transforms {
           var match = true;
           for (int j = 0; j < boundary.Length; ++j) {
             match &= (boundary[j] & 0xff) == (int)(boundaryBuffer[j] &
-                    0xff);
+                0xff);
           }
           if (match) {
             matchingBoundary = boundary;
@@ -288,25 +288,25 @@ namespace PeterO.Mail.Transforms {
     }
 
     public void StartBodyPartHeaders() {
-#if DEBUG
+      #if DEBUG
       if (!this.hasNewBodyPart) {
         throw new ArgumentException("doesn't satisfy this.hasNewBodyPart");
       }
       if (this.readingHeaders) {
         throw new ArgumentException("doesn't satisfy !this.readingHeaders");
       }
-#endif
+      #endif
 
       this.readingHeaders = true;
       this.hasNewBodyPart = false;
     }
 
     public void EndBodyPartHeaders(string boundary) {
-#if DEBUG
+      #if DEBUG
       if (!this.readingHeaders) {
         throw new ArgumentException("doesn't satisfy this.readingHeaders");
       }
-#endif
+      #endif
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
       this.boundaries.Add(boundary);

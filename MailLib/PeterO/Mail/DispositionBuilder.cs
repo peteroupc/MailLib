@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>A mutable data type that allows a content disposition to
-    /// be built.</summary>
+  /// <summary>A mutable data type that allows a content disposition to
+  /// be built.</summary>
   public class DispositionBuilder {
     private readonly IDictionary<string, string> parameters;
     private string type;
@@ -81,7 +81,7 @@ namespace PeterO.Mail {
     /// <value><c>true</c> If this is a text media type; otherwise,
     /// <c>false</c>.</value>
     [Obsolete(
-      "Irrelevant for content dispositions; will be removed in the future.")]
+        "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsText {
       get {
         return this.DispositionType.Equals("text", StringComparison.Ordinal);
@@ -93,11 +93,11 @@ namespace PeterO.Mail {
     /// <value><c>true</c> If this is a multipart media type; otherwise,
     /// <c>false</c>.</value>
     [Obsolete("Irrelevant for content dispositions; will be removed in the" +
-"\u0020future.")]
+        "\u0020future.")]
     public bool IsMultipart {
       get {
         return this.DispositionType.Equals("multipart",
-  StringComparison.Ordinal);
+            StringComparison.Ordinal);
       }
     }
 
@@ -179,7 +179,7 @@ namespace PeterO.Mail {
       if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
         name.Length) {
         throw new ArgumentException("Not a well-formed parameter name: " +
-            name);
+          name);
       }
       this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;
       return this;

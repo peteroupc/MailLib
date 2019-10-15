@@ -123,8 +123,8 @@ Returns whether this media type's subtype has the given structured syntax
  compared to the end of the media type's subtype using a basic
  case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic upper-case
- letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
- letters.).
+ letters A to Z (U+0041 to U+005A) in both strings to basic
+ lower-case letters.).
 
 **Returns:**
 

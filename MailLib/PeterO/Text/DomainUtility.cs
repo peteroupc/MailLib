@@ -19,23 +19,23 @@ namespace PeterO.Text {
         throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " +
-            "0");
+        throw new ArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " +
+        throw new ArgumentException("index(" + index + ") is more than " +
           str.Length);
       }
       if (endIndex < 0) {
-      throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is less than " + "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is more than " + str.Length);
       }
       if (endIndex < index) {
-        throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is less than " + index);
       }
       var vnum = 128;
@@ -63,7 +63,7 @@ namespace PeterO.Text {
       while (tmpIndex < endIndex) {
         int c = str[tmpIndex];
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
+          (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
@@ -97,7 +97,7 @@ namespace PeterO.Text {
         while (tmpIndex < endIndex) {
           int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
+            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
@@ -127,7 +127,7 @@ namespace PeterO.Text {
         while (tmpIndex < endIndex) {
           int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
+            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
@@ -185,28 +185,29 @@ namespace PeterO.Text {
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
     };
 
-    internal static string PunycodeDecode(string str, int index, int endIndex) {
+    internal static string PunycodeDecode(string str, int index,
+      int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " +
-            "0");
+        throw new ArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " +
+        throw new ArgumentException("index(" + index + ") is more than " +
           str.Length);
       }
       if (endIndex < 0) {
-      throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is less than " + "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is more than " + str.Length);
       }
       if (endIndex < index) {
-        throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is less than " + index);
       }
       if (index == endIndex) {
@@ -331,23 +332,23 @@ namespace PeterO.Text {
         throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " +
-            "0");
+        throw new ArgumentException("index(" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " +
+        throw new ArgumentException("index(" + index + ") is more than " +
           str.Length);
       }
       if (endIndex < 0) {
-      throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is less than " + "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is more than " + str.Length);
       }
       if (endIndex < index) {
-        throw new ArgumentException("endIndex (" + endIndex +
+        throw new ArgumentException("endIndex(" + endIndex +
           ") is less than " + index);
       }
       var vnum = 128;
@@ -377,7 +378,7 @@ namespace PeterO.Text {
       while (tmpIndex < endIndex) {
         int c = str[tmpIndex];
         if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
+          (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
@@ -419,7 +420,7 @@ namespace PeterO.Text {
         while (tmpIndex < endIndex) {
           int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
+            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
@@ -452,7 +453,7 @@ namespace PeterO.Text {
         while (tmpIndex < endIndex) {
           int c = str[tmpIndex];
           if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
+            (str[tmpIndex + 1] & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str[tmpIndex + 1] & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {

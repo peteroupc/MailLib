@@ -40,8 +40,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new Address("local=domain.example"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -49,8 +49,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new Address("local@"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -58,13 +58,13 @@ namespace MailLibTest {
         {
           object objectTemp = null;
           object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
-          "@example.com");
+            "@example.com");
           Assert.AreEqual(objectTemp, objectTemp2);
-}
+        }
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -72,8 +72,8 @@ namespace MailLibTest {
         Assert.AreEqual(null, new Address("lo,cal@example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -89,7 +89,7 @@ namespace MailLibTest {
         Assert.AreEqual(
           "test@EXAMPLE.COM",
           stringTemp);
-}
+      }
     }
 
     [Test]
@@ -102,15 +102,15 @@ namespace MailLibTest {
         "x.example\ud800\udc00.example.com",
         "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
-      TestParseDomainNAOnly("(comment1) x (comment2)", "x");
-      TestParseDomainNAOnly(
-  "(comment1) example (comment2) . (comment3) com",
-  "example.com");
-      TestParseDomainNAOnly(
+      TestParseDomainNAOnly("(comment1) x(comment2)", "x");
+      TestParseDomainNAOnly (
+        "(comment1) example (comment2) . (comment3) com",
+        "example.com");
+      TestParseDomainNAOnly (
         "(co(mme)nt1) example (comment2) . (comment3) com",
         "example.com");
-      TestParseDomainNAOnly("(comment1) [x] (comment2)", "[x]");
-      TestParseDomainNAOnly("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
+      TestParseDomainNAOnly("(comment1) [x](comment2)", "[x]");
+      TestParseDomainNAOnly("(comment1) [a.b.c.d](comment2)", "[a.b.c.d]");
       TestParseDomain("[]", "[]");
       TestParseDomainNAOnly("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
@@ -134,12 +134,12 @@ namespace MailLibTest {
         "x.example\ud800\udc00.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      TestParseLocalPartNAOnly("(comment1) x (comment2)", "x");
+      TestParseLocalPartNAOnly("(comment1) x(comment2)", "x");
       TestParseLocalPartNAOnly("(comment1)x(comment2)", "x");
-      TestParseLocalPartNAOnly(
-  "(comment1) example (comment2) . (comment3) com",
-  "example.com");
-      TestParseLocalPartNAOnly(
+      TestParseLocalPartNAOnly (
+        "(comment1) example (comment2) . (comment3) com",
+        "example.com");
+      TestParseLocalPartNAOnly (
         "(com(plex)comment) example (comment2) . (comment3) com",
         "example.com");
     }
@@ -152,7 +152,7 @@ namespace MailLibTest {
         Assert.AreEqual(
           "local.local@example.com",
           stringTemp);
-}
+      }
       addr = new Address("local-local@example.com");
       {
         string stringTemp = addr.ToString();

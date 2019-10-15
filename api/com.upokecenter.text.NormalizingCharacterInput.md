@@ -356,5 +356,5 @@ Deprecated.
 * <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
 * <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
- than 0 or greater than <code>chars</code> 's length, or <code>chars</code> ' s
+ than 0 or greater than <code>chars</code> 's length, or <code>chars</code> 's
  length minus <code>index</code> is less than <code>length</code>.

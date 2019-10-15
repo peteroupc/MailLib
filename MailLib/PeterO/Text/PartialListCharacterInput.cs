@@ -12,23 +12,23 @@ namespace PeterO.Text {
         throw new ArgumentNullException(nameof(ilist));
       }
       if (start < 0) {
-      throw new ArgumentException("start (" + start + ") is less than " +
+        throw new ArgumentException("start(" + start + ") is less than " +
           "0");
       }
       if (start > ilist.Count) {
-        throw new ArgumentException("start (" + start + ") is more than " +
+        throw new ArgumentException("start(" + start + ") is more than " +
           ilist.Count);
       }
       if (length < 0) {
-    throw new ArgumentException("length (" + length + ") is less than " +
+        throw new ArgumentException("length(" + length + ") is less than " +
           "0");
       }
       if (length > ilist.Count) {
-        throw new ArgumentException("length (" + length + ") is more than " +
+        throw new ArgumentException("length(" + length + ") is more than " +
           ilist.Count);
       }
       if (ilist.Count - start < length) {
-        throw new ArgumentException("ilist's length minus " + start + " (" +
+        throw new ArgumentException("ilist's length minus " + start + "(" +
           (ilist.Count - start) + ") is less than " + length);
       }
       this.ilist = ilist;
@@ -54,23 +54,23 @@ namespace PeterO.Text {
         throw new ArgumentNullException(nameof(buf));
       }
       if (offset < 0) {
-    throw new ArgumentException("offset (" + offset + ") is less than " +
+        throw new ArgumentException("offset(" + offset + ") is less than " +
           "0");
       }
       if (offset > buf.Length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
+        throw new ArgumentException("offset(" + offset + ") is more than " +
           buf.Length);
       }
       if (unitCount < 0) {
-        throw new ArgumentException("unitCount (" + unitCount +
+        throw new ArgumentException("unitCount(" + unitCount +
           ") is less than " + "0");
       }
       if (unitCount > buf.Length) {
-        throw new ArgumentException("unitCount (" + unitCount +
+        throw new ArgumentException("unitCount(" + unitCount +
           ") is more than " + buf.Length);
       }
       if (buf.Length - offset < unitCount) {
-        throw new ArgumentException("buf's length minus " + offset + " (" +
+        throw new ArgumentException("buf's length minus " + offset + "(" +
           (buf.Length - offset) + ") is less than " + unitCount);
       }
       if (unitCount == 0) {

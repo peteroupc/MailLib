@@ -12,9 +12,8 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>This is an internal API.</summary>
-  internal sealed class IdentityEncoder : ICharacterEncoder
-  {
+  /// <summary>This is an internal API.</summary>
+  internal sealed class IdentityEncoder : ICharacterEncoder {
     public int Encode(int c, IWriter s) {
       if (s == null) {
         throw new ArgumentNullException(nameof(s));

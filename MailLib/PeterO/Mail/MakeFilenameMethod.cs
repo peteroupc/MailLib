@@ -83,7 +83,7 @@ namespace PeterO.Mail {
               break;
             }
             if (str[index] == '=' && index + 1 < endIndex &&
-            str[index + 1] == '?') {
+              str[index + 1] == '?') {
               wordStart = index;
               state = 1;
               index += 2;
@@ -117,13 +117,13 @@ namespace PeterO.Mail {
               break;
             }
             if ((str[index] == 'b' || str[index] == 'B') && index +
-          1 < endIndex && str[index + 1] == '?') {
+              1 < endIndex && str[index + 1] == '?') {
               encoding = 1;
               state = 3;
               index += 2;
               dataStart = index;
             } else if ((str[index] == 'q' || str[index] == 'Q') &&
-             index + 1 < endIndex && str[index + 1] == '?') {
+              index + 1 < endIndex && str[index + 1] == '?') {
               encoding = 2;
               state = 3;
               index += 2;
@@ -143,7 +143,7 @@ namespace PeterO.Mail {
               break;
             }
             if (str[index] == '?' && index + 1 < endIndex &&
-            str[index + 1] == '=') {
+              str[index + 1] == '=') {
               string charset = str.Substring(
                 charsetStart,
                 charsetEnd - charsetStart);
@@ -162,9 +162,10 @@ namespace PeterO.Mail {
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {
-                IByteReader transform = (encoding == 1) ?
-                (IByteReader)new BEncodingStringTransform(data) :
-                (IByteReader)new QEncodingStringTransform(data);
+                IByteReader transform = (encoding == 1) ? (IByteReader)new
+BEncodingStringTransform(data) :
+                  (IByteReader)new QEncodingStringTransform(data);
+
                 ICharacterEncoding charEncoding = Encodings.GetEncoding(
                   charset,
                   true);
@@ -180,10 +181,10 @@ namespace PeterO.Mail {
                 state = 0;
               } else {
                 if (!haveSpace) {
-                  builder.Append(
-                 str.Substring(
-                   markStart,
-                   wordStart - markStart));
+                  builder.Append (
+                    str.Substring(
+                      markStart,
+                      wordStart - markStart));
                 }
                 builder.Append(decodedWord);
                 haveSpace = false;
@@ -201,7 +202,7 @@ namespace PeterO.Mail {
               break;
             }
             if (str[index] == '=' && index + 1 < endIndex &&
-            str[index + 1] == '?') {
+              str[index + 1] == '?') {
               wordStart = index;
               state = 1;
               index += 2;
@@ -245,9 +246,9 @@ namespace PeterO.Mail {
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = cs ?? Encodings.GetEncoding("us-ascii", true);
       int quote = paramValue.IndexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeToString(
-        cs,
-        new PercentEncodingStringTransform(paramValue));
+      return (quote >= 0) ? null : Encodings.DecodeToString (
+          cs,
+          new PercentEncodingStringTransform(paramValue));
     }
 
     private static string RemoveEncodedWordEnds(string str) {
@@ -256,7 +257,7 @@ namespace PeterO.Mail {
       var inEncodedWord = false;
       while (index < str.Length) {
         if (!inEncodedWord && index + 1 < str.Length && str[index] == '=' &&
-              str[index + 1] == '?') {
+          str[index + 1] == '?') {
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
@@ -283,7 +284,7 @@ namespace PeterO.Mail {
             index = start;
           }
         } else if (inEncodedWord && index + 1 < str.Length && str[index]
-             == '?' && str[index + 1] == '=') {
+          == '?' && str[index + 1] == '=') {
           // End of encoded word
           index += 2;
           inEncodedWord = false;
@@ -364,13 +365,13 @@ namespace PeterO.Mail {
           // This is the only kind of character in Unicode with this
           // normalization property.
           var tsb = new StringBuilder().Append((char)c);
-          string tss = NormalizerInput.Normalize(
-  tsb.ToString(),
-  Normalization.NFD);
+          string tss = NormalizerInput.Normalize (
+              tsb.ToString(),
+              Normalization.NFD);
           if (tss.IndexOf((char)0x338) >= 0) {
-              builder.Append('!');
-              builder.Append(tss[0]);
-            } else {
+            builder.Append('!');
+            builder.Append(tss[0]);
+          } else {
             builder.Append(c);
           }
           ++i;
@@ -446,10 +447,10 @@ namespace PeterO.Mail {
         // too, to use quotes around a filename parameter AND use
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
-        string charset = Encodings.ResolveAliasForEmail(
-  str.Substring(
-    0,
-    index));
+        string charset = Encodings.ResolveAliasForEmail (
+            str.Substring(
+              0,
+              index));
         if (!String.IsNullOrEmpty(charset)) {
           string newstr = DecodeRfc2231ExtensionLenient(str);
           if (!String.IsNullOrEmpty(newstr)) {
@@ -477,8 +478,8 @@ namespace PeterO.Mail {
         return false;
       }
       return (sb.Length < MaxFileNameUtf8Length / 3) ||
-         DataUtilities.GetUtf8Length(sb.ToString(), true) <=
-         MaxFileNameUtf8Length;
+        DataUtilities.GetUtf8Length(sb.ToString(), true) <=
+        MaxFileNameUtf8Length;
     }
 
     private static bool IsBelowMaxCodeLength(StringBuilder sb) {
@@ -486,8 +487,8 @@ namespace PeterO.Mail {
         return false;
       }
       return (sb.Length < MaxFileNameUtf8Length / 3) ||
-         DataUtilities.GetUtf8Length(sb.ToString(), true) <
-         MaxFileNameUtf8Length;
+        DataUtilities.GetUtf8Length(sb.ToString(), true) <
+        MaxFileNameUtf8Length;
     }
 
     public static string MakeFilename(string str) {
@@ -549,14 +550,14 @@ namespace PeterO.Mail {
             ++i;
           }
           if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-     c == 0x180e || c == 0x1680 ||
-  (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
-       0xfeff) {
+            c == 0x180e || c == 0x1680 ||
+            (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
+            0xfeff) {
             // Replace space-like characters (including tab) with space
             builder.Append(' ');
           } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
             c == '?' || c == '|' ||
-      c == ':' || c == '<' || c == '>' || c == '"' ||
+            c == ':' || c == '<' || c == '>' || c == '"' ||
             (c >= 0x7f && c <= 0x9f)) {
             // Unsuitable character for a filename (one of the
             // characters
@@ -575,7 +576,7 @@ namespace PeterO.Mail {
             // Avoid glob bracket pattern
             builder.Append(')');
           } else if (c == '`') {
-            // '`' starts a command in BASH and possibly other shells
+            // '`'starts a command in BASH and possibly other shells
             builder.Append('_');
           } else if (c == '&') {
             // '&' delimits commands
@@ -587,17 +588,17 @@ namespace PeterO.Mail {
             // Fragment identifier for URIs
             builder.Append('_');
           } else if (c == '$') {
-            // '$' starts a variable in BASH and possibly other shells
+            // '$'starts a variable in BASH and possibly other shells
             builder.Append('_');
           } else if (c == ';') {
-            // ';' separates command lines in BASH and possibly
+            // ';'separates command lines in BASH and possibly
             // other shells
             builder.Append('_');
           } else if (c == 0x2028 || c == 0x2029) {
             // line break characters (0x85 is already included above)
             builder.Append('_');
           } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
-                 0xfdef)) {
+              0xfdef)) {
             // noncharacters
             builder.Append('_');
           } else if (c == '%') {
@@ -611,9 +612,9 @@ namespace PeterO.Mail {
             if (c <= 0xffff) {
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
-                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-0xd800));
-                builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+                  0xd800));
+              builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
             if (!IsAtOrBelowMaxCodeLength(builder)) {
               builder.Remove(oldLength, builder.Length - oldLength);
@@ -624,47 +625,46 @@ namespace PeterO.Mail {
         }
         str = builder.ToString();
         if (str.Length == 0) {
- return "_";
-}
+          return "_";
+        }
         string strLower = DataUtilities.ToLowerCaseAscii(str);
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
         bool reservedFilename = strLower.Equals(
           "nul",
           StringComparison.Ordinal) || strLower.Equals("clock$",
-  StringComparison.Ordinal) ||
-strLower.IndexOf(
-          "nul.",
-          StringComparison.Ordinal) == 0 || strLower.Equals(
+            StringComparison.Ordinal) || strLower.IndexOf(
+              "nul.",
+              StringComparison.Ordinal) == 0 || strLower.Equals (
             "prn",
             StringComparison.Ordinal) || strLower.IndexOf(
-          "prn.",
-          StringComparison.Ordinal) == 0 || strLower.IndexOf(
+              "prn.",
+              StringComparison.Ordinal) == 0 || strLower.IndexOf (
             "![",
             StringComparison.Ordinal) >= 0 || strLower.Equals(
-          "aux",
-          StringComparison.Ordinal) || strLower.IndexOf(
+              "aux",
+              StringComparison.Ordinal) || strLower.IndexOf (
             "aux.",
             StringComparison.Ordinal) == 0 || strLower.Equals(
-          "con",
-          StringComparison.Ordinal) || strLower.IndexOf(
+              "con",
+              StringComparison.Ordinal) || strLower.IndexOf (
             "con.",
             StringComparison.Ordinal) == 0;
         // LPTn, COMn
         if (
           strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
-          strLower[4] == ' '))) {
+              strLower[4] == ' '))) {
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "lpt",
             StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-                 strLower[3] <= '9');
+              strLower[3] <= '9');
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "com",
             StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-                strLower[3] <= '9');
+              strLower[3] <= '9');
         }
         bool bracketDigit = str[0] == '{' && str.Length > 1 &&
-              str[1] >= '0' && str[1] <= '9';
+          str[1] >= '0' && str[1] <= '9';
         // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
         // problematic especially in Unix-based systems,
@@ -672,11 +672,11 @@ strLower.IndexOf(
         // be misinterpreted if they're treated as expansion
         // symbols
         bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] ==
-            '$';
+          '$';
         // Starts with period; may be hidden in some configurations
         bool period = str[0] == '.';
         if (reservedFilename || bracketDigit || homeFolder ||
-             period) {
+          period) {
           str = "_" + str;
         }
         str = TrimAndCollapseSpaceAndTab(str);
@@ -694,7 +694,7 @@ strLower.IndexOf(
               str = str.Substring(0, i) + "._" + str.Substring(i + 2);
             } else if (spaceBefore) {
               str = str.Substring(0, i - 1) + "_." + str.Substring(i +
-                 1);
+                  1);
             }
             break;
           }

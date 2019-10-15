@@ -21,14 +21,14 @@ import com.upokecenter.mail.*;
     public void TestRemoveParameter() {
       MediaTypeBuilder builder = new MediaTypeBuilder();
       try {
- builder.RemoveParameter(null);
- Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        builder.RemoveParameter(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestSetParameter() {
@@ -39,69 +39,69 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(
           "b",
           stringTemp);
-}
+      }
       builder.SetParameter("a", "");
       Assert.assertEquals("", builder.ToMediaType().GetParameter("a"));
       try {
- new MediaTypeBuilder().SetParameter(null, null);
- Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        new MediaTypeBuilder().SetParameter(null, null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- new MediaTypeBuilder().SetParameter(null, "test");
- Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        new MediaTypeBuilder().SetParameter(null, "test");
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- new MediaTypeBuilder().SetParameter(null, "");
- Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        new MediaTypeBuilder().SetParameter(null, "");
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- new MediaTypeBuilder().SetParameter("test", null);
- Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        new MediaTypeBuilder().SetParameter("test", null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- new MediaTypeBuilder().SetParameter("test", "");
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        new MediaTypeBuilder().SetParameter("test", "");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- new MediaTypeBuilder().SetParameter("", "value");
- Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        new MediaTypeBuilder().SetParameter("", "value");
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- new MediaTypeBuilder().SetParameter("test\u00e0", "value");
- Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        new MediaTypeBuilder().SetParameter("test\u00e0", "value");
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestSetSubType() {

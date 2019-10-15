@@ -12,42 +12,42 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>
-    /// <para>Specifies how a message body should be displayed or handled
-    /// by a mail user agent. This type is immutable; its contents can't be
-    /// changed after it's created. To create a changeable disposition
-    /// object, use the DispositionBuilder class.</para>
-    /// <para><b>About the "filename" parameter</b></para>
-    /// <para>The "filename" parameter of a content disposition suggests a
-    /// name to use when saving data to a file. For the "filename"
-    /// parameter, the GetParameter method and Parameters property (
-    /// <c>getParameters</c> ) method in Java) do not adapt that
-    /// parameter's value using the ContentDisposition.MakeFilename method.
-    /// Thus, for example, the "filename" parameter, if any, returned by
-    /// this method could have an arbitrary length, be encoded using RFC
-    /// 2047 encoded words (which some email and HTTP implementations still
-    /// like to write out in headers, even though that RFC says encoded
-    /// words "MUST NOT appear within a 'quoted-string'"; see
-    /// ContentDisposition.MakeFilename), or not be usable as is as a file
-    /// name.</para>
-    /// <para><b>Example:</b> An example of RFC 2047 encoded words
-    /// is:</para>
-    /// <para><b>=?UTF-8?Q?test?=</b></para>
-    /// <para>Content-Disposition header fields like the following have
-    /// appeared in practice:</para>
-    /// <para><b>Content-Disposition: attachment;
-    /// filename==?UTF-8?Q?example?=</b></para>
-    /// <para><b>Content-Disposition: attachment;
-    /// filename==?UTF-8?Q?test.png?=</b></para>
-    /// <para><b>Content-Disposition: attachment;
-    /// filename="=?UTF-8?Q?test.png?="</b></para>
-    /// <para>In this implementation, the first and second of these are
-    /// syntactically invalid, so they trigger parse errors, while the
-    /// third of these is syntactically valid, but the "filename" parameter
-    /// is treated as "=?UTF-8?Q?test.png?=", not "test.png" or something
-    /// else -- RFC 2047 encoded words are not decoded at the moment a
-    /// content disposition is parsed (using the Parse
-    /// method).</para></summary>
+  /// <summary>
+  /// <para>Specifies how a message body should be displayed or handled
+  /// by a mail user agent. This type is immutable; its contents can't be
+  /// changed after it's created. To create a changeable disposition
+  /// object, use the DispositionBuilder class.</para>
+  /// <para><b>About the "filename" parameter</b></para>
+  /// <para>The "filename" parameter of a content disposition suggests a
+  /// name to use when saving data to a file. For the "filename"
+  /// parameter, the GetParameter method and Parameters property (
+  /// <c>getParameters</c> ) method in Java) do not adapt that
+  /// parameter's value using the ContentDisposition.MakeFilename method.
+  /// Thus, for example, the "filename" parameter, if any, returned by
+  /// this method could have an arbitrary length, be encoded using RFC
+  /// 2047 encoded words (which some email and HTTP implementations still
+  /// like to write out in headers, even though that RFC says encoded
+  /// words "MUST NOT appear within a 'quoted-string'"; see
+  /// ContentDisposition.MakeFilename), or not be usable as is as a file
+  /// name.</para>
+  /// <para><b>Example:</b> An example of RFC 2047 encoded words
+  /// is:</para>
+  /// <para><b>=?UTF-8?Q?test?=</b></para>
+  /// <para>Content-Disposition header fields like the following have
+  /// appeared in practice:</para>
+  /// <para><b>Content-Disposition: attachment;
+  /// filename==?UTF-8?Q?example?=</b></para>
+  /// <para><b>Content-Disposition: attachment;
+  /// filename==?UTF-8?Q?test.png?=</b></para>
+  /// <para><b>Content-Disposition: attachment;
+  /// filename="=?UTF-8?Q?test.png?="</b></para>
+  /// <para>In this implementation, the first and second of these are
+  /// syntactically invalid, so they trigger parse errors, while the
+  /// third of these is syntactically valid, but the "filename" parameter
+  /// is treated as "=?UTF-8?Q?test.png?=", not "test.png" or something
+  /// else -- RFC 2047 encoded words are not decoded at the moment a
+  /// content disposition is parsed (using the Parse
+  /// method).</para></summary>
   public class ContentDisposition {
     private readonly string dispositionType;
 
@@ -81,7 +81,7 @@ namespace PeterO.Mail {
         return false;
       }
       return this.dispositionType.Equals(other.dispositionType,
-  StringComparison.Ordinal) &&
+          StringComparison.Ordinal) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -94,13 +94,13 @@ namespace PeterO.Mail {
       var hashCode = 632580499;
       if (this.dispositionType != null) {
         for (var i = 0; i < this.dispositionType.Length; ++i) {
- hashCode = unchecked(hashCode + (632580503 *
-          this.dispositionType[i]));
- }
+          hashCode = unchecked(hashCode + (632580503 *
+                this.dispositionType[i]));
+        }
       }
       if (this.parameters != null) {
         hashCode = unchecked(hashCode + (632580587 *
-                this.parameters.Count));
+              this.parameters.Count));
       }
       return hashCode;
     }
@@ -123,13 +123,13 @@ namespace PeterO.Mail {
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment",
-  StringComparison.Ordinal);
+            StringComparison.Ordinal);
       }
     }
 
-    internal ContentDisposition(
- string type,
- IDictionary<string, string> parameters) {
+    internal ContentDisposition (
+      string type,
+      IDictionary<string, string> parameters) {
       if (type == null) {
         throw new ArgumentNullException(nameof(type));
       }
@@ -305,9 +305,9 @@ namespace PeterO.Mail {
     /// empty string, or is syntactically invalid, or if the parameter's
     /// year would overflow a 32-bit signed integer.</returns>
     public int[] GetCreationDate() {
-      return MailDateTime.ParseDateString(
-        this.GetParameter("creation-date"),
-        true);
+      return MailDateTime.ParseDateString (
+          this.GetParameter("creation-date"),
+          true);
     }
 
     /// <summary>Gets the date and time extracted from this content
@@ -322,9 +322,9 @@ namespace PeterO.Mail {
     /// an empty string, or is syntactically invalid, or if the parameter's
     /// year would overflow a 32-bit signed integer.</returns>
     public int[] GetModificationDate() {
-      return MailDateTime.ParseDateString(
-        this.GetParameter("modification-date"),
-        true);
+      return MailDateTime.ParseDateString (
+          this.GetParameter("modification-date"),
+          true);
     }
 
     /// <summary>Gets the date and time extracted from this content
@@ -339,9 +339,9 @@ namespace PeterO.Mail {
     /// string, or is syntactically invalid, or if the parameter's year
     /// would overflow a 32-bit signed integer.</returns>
     public int[] GetReadDate() {
-      return MailDateTime.ParseDateString(
-        this.GetParameter("read-date"),
-        true);
+      return MailDateTime.ParseDateString (
+          this.GetParameter("read-date"),
+          true);
     }
 
     /// <summary>Gets a parameter from this disposition object. For the
@@ -368,7 +368,7 @@ namespace PeterO.Mail {
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       return this.parameters.ContainsKey(name) ? this.parameters[name] :
-               null;
+        null;
     }
 
     private static ContentDisposition ParseDisposition(string str) {
@@ -411,34 +411,34 @@ namespace PeterO.Mail {
         index,
         endIndex,
         HttpRules,
-        parameters) ? new ContentDisposition(
-            dispoType,
-            parameters) : null;
+        parameters) ? new ContentDisposition (
+          dispoType,
+          parameters) : null;
     }
 
     private static ContentDisposition Build(string name) {
-      return new ContentDisposition(
-        name,
-        new Dictionary<string, string>());
+      return new ContentDisposition (
+          name,
+          new Dictionary<string, string>());
     }
 
-#if CODE_ANALYSIS
+    #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
-#endif
+      Justification = "This instance is immutable")]
+    #endif
 
     /// <summary>The content disposition value "attachment" .</summary>
     public static readonly ContentDisposition Attachment =
       Build("attachment");
 
-#if CODE_ANALYSIS
+    #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
-#endif
+      Justification = "This instance is immutable")]
+    #endif
 
     /// <summary>The content disposition value "inline" .</summary>
     public static readonly ContentDisposition Inline =

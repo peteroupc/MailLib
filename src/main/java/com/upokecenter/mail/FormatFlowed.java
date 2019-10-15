@@ -55,7 +55,7 @@ private FormatFlowed() {
       boolean haveParagraph = false;
       while (i <= str.length()) {
         if (i == str.length() || (str.charAt(i) == 0x0d && i + 1 < str.length() &&
-          str.charAt(i + 1) == 0x0a)) {
+            str.charAt(i + 1) == 0x0a)) {
           boolean lastLine = i == str.length();
           int lineEnd = i;
           int index = lineStart;
@@ -71,7 +71,7 @@ private FormatFlowed() {
             ++index;
           }
           if (index + 3 == lineEnd && str.charAt(index) == '-' &&
-             str.charAt(index + 1) == '-' && str.charAt(index + 2) == ' ') {
+            str.charAt(index + 1) == '-' && str.charAt(index + 2) == ' ') {
             signature = true;
           } else if (index < lineEnd && str.charAt(lineEnd - 1) == ' ') {
             flowed = true;
@@ -85,8 +85,8 @@ private FormatFlowed() {
             // change in quote depth, or fixed after flowed
             if (haveParagraph) {
               formatted.append("<p>")
-                    .append(HtmlEscape(paragraph.toString()))
-                    .append("</p>");
+              .append(HtmlEscape(paragraph.toString()))
+              .append("</p>");
               haveParagraph = false;
               endedParagraph = true;
               paragraph.delete(0, paragraph.length());
@@ -96,9 +96,9 @@ private FormatFlowed() {
             haveParagraph = false;
             endedParagraph = true;
             paragraph.delete(0, paragraph.length());
-            formatted.append(
-                HtmlEscape(str.substring(index, (index)+(lineEnd - index))))
-                    .append("</p>");
+            formatted.append (
+              HtmlEscape(str.substring(index, (index)+(lineEnd - index))))
+            .append("</p>");
           }
           if (lastQuotes < quotes) {
             int k = 0;
@@ -122,7 +122,7 @@ private FormatFlowed() {
               } else {
                 if (index < lineEnd) {
                   formatted.append("<tt>");
-                  formatted.append(
+                  formatted.append (
                     HtmlEscape(str.substring(index, (index)+(lineEnd - index))));
                   formatted.append("</tt>");
                 }
@@ -259,9 +259,9 @@ private FormatFlowed() {
           ++index;
         }
         return (
-  index != str.length()) ? null : str.substring(
-  titleStart, (
-  titleStart)+(titleEnd - titleStart));
+            index != str.length()) ? null : str.substring(
+            titleStart, (
+            titleStart)+(titleEnd - titleStart));
       }
       return null;
     }
@@ -295,8 +295,8 @@ private FormatFlowed() {
           return null;
         }
         int urlStart = index;
-        String label = DataUtilities.ToLowerCaseAscii(
-          str.substring(labelStart, (labelStart)+(labelEnd - labelStart)));
+        String label = DataUtilities.ToLowerCaseAscii (
+            str.substring(labelStart, (labelStart)+(labelEnd - labelStart)));
         String url = str.substring(urlStart, (urlStart)+(str.length() - urlStart));
         String[] urltitle = SplitUrl(url, true);
         url = urltitle[0];
@@ -328,8 +328,8 @@ private FormatFlowed() {
     private static boolean IsUnorderedListLine(String str) {
       str = TrimShortSpaces(str);
       return str != null && str.length() >= 2 &&
-          (str.charAt(0) == '-' || str.charAt(0) == '*' || str.charAt(0) == '+') &&
-          (str.charAt(1) == ' ' || str.charAt(1) == '\t');
+        (str.charAt(0) == '-' || str.charAt(0) == '*' || str.charAt(0) == '+') &&
+        (str.charAt(1) == ' ' || str.charAt(1) == '\t');
     }
 
     private static boolean IsOrderedListLine(String str) {
@@ -370,12 +370,12 @@ private FormatFlowed() {
           str.charAt(2) == ' ' && str.charAt(3) == ' ') ? true : false;
     }
     private static String ReplaceTwoOrMoreSpacesWithBR(
-        String str) {
+      String str) {
       if (((str) == null || (str).length() == 0)) {
         return "";
       }
       if (str.length() >= 2 && str.charAt(str.length() - 1) == ' ' && str.charAt(str.length() -
-        2) == ' ') {
+          2) == ' ') {
         int i = str.length() - 1;
         while (i >= 0) {
           if (str.charAt(i) != ' ') {
@@ -487,7 +487,7 @@ private FormatFlowed() {
               inner = HtmlEscapeStrong(inner);
             }
             sb.append('<').append(tag).append('>').append(inner)
-              .append("</").append(tag).append('>');
+            .append("</").append(tag).append('>');
             i = qi + delim.length() - 1;
             continue;
           }
@@ -504,7 +504,7 @@ private FormatFlowed() {
         if (urlText.charAt(qi) == ' ' || urlText.charAt(qi) == '\t') {
           int possibleUrlEnd = qi;
           while (qi < urlText.length() &&
-           (urlText.charAt(qi) == ' ' || urlText.charAt(qi) == '\t')) {
+            (urlText.charAt(qi) == ' ' || urlText.charAt(qi) == '\t')) {
             {
               ++qi;
             }
@@ -528,8 +528,8 @@ private FormatFlowed() {
             }
             if (qi == urlText.length() - 1) {
               titleText = urlText.substring(
-  possibleTitleStart, (
-  possibleTitleStart)+((urlText.length() - 1) - possibleTitleStart));
+                  possibleTitleStart, (
+                  possibleTitleStart)+((urlText.length() - 1) - possibleTitleStart));
               urlText = urlText.substring(0, possibleUrlEnd);
               return new String[] { urlText, titleText };
             }
@@ -553,8 +553,8 @@ private FormatFlowed() {
     }
 
     private static String ReplaceImageLinks(
-        String str,
-        Map<String, String[]> links) {
+      String str,
+      Map<String, String[]> links) {
       if (str.indexOf('!') < 0) {
         return str;
       }
@@ -604,8 +604,8 @@ private FormatFlowed() {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii(
-              ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
+            urlText = DataUtilities.ToLowerCaseAscii (
+                ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
             if (links.containsKey(urlText)) {
               urlTitle = links.get(urlText);
             } else {
@@ -618,7 +618,7 @@ private FormatFlowed() {
           .append(HtmlEscapeStrong(linkText)).append("\"");
           if (urlTitle[1] != null) {
             sb.append(" title=\"")
-              .append(HtmlEscapeStrong(urlTitle[1])).append("\"");
+            .append(HtmlEscapeStrong(urlTitle[1])).append("\"");
           }
           sb.append(" />");
           i = index;
@@ -687,8 +687,8 @@ private FormatFlowed() {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii(
-              ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
+            urlText = DataUtilities.ToLowerCaseAscii (
+                ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
             if (links.containsKey(urlText)) {
               urlTitle = links.get(urlText);
             } else {
@@ -700,7 +700,7 @@ private FormatFlowed() {
           .append(HtmlEscapeStrong(urlTitle[0])).append("\"");
           if (urlTitle[1] != null) {
             sb.append(" title=\"")
-              .append(HtmlEscapeStrong(urlTitle[1])).append("\"");
+            .append(HtmlEscapeStrong(urlTitle[1])).append("\"");
           }
           sb.append(">")
           .append(linkText).append("</a>");
@@ -725,7 +725,7 @@ private FormatFlowed() {
     }
 
     private static String CodeSpansAndEscapes(
-         String str) {
+      String str) {
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) == '&') {
@@ -772,10 +772,10 @@ private FormatFlowed() {
           int qi = i + 1;
           boolean plausibleTag = false;
           if (qi < str.length() && (
-             (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
-             (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
-             (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
-             (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
+              (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
+              (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
+              (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
+              (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
             {
               plausibleTag = true;
             }
@@ -801,7 +801,7 @@ private FormatFlowed() {
           }
           continue;
         } else if (str.charAt(i) == '\\' && i + 1 < str.length() &&
-                  "[]()\u007b\u007d#+-_`\\*!.".indexOf(str.charAt(i + 1)) >= 0) {
+          "[]()\u007b\u007d#+-_`\\*!.".indexOf(str.charAt(i + 1)) >= 0) {
           HexEscape(sb, str.charAt(i + 1));
           ++i;
           continue;
@@ -856,7 +856,7 @@ private FormatFlowed() {
     }
 
     private static String ReplaceAutomaticLinks(
-         String str) {
+      String str) {
       if (str.indexOf('<') < 0) {
         return str;
       }
@@ -868,10 +868,10 @@ private FormatFlowed() {
           int linkEnd = linkStart;
           boolean plausibleTag = false;
           if (qi < str.length() && (
-             (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
-             (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
-             (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
-             (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
+              (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
+              (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
+              (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
+              (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
             {
               plausibleTag = true;
             }
@@ -900,14 +900,14 @@ private FormatFlowed() {
               sb.append("<a href=\"");
               sb.append(HtmlEscapeStrong("mailto:" + payload));
               sb.append("\">").append(HtmlEscapeStrong(payload))
-               .append("</a>");
+              .append("</a>");
               i = linkEnd;
               continue;
             } else if (payload.indexOf(':') >= 1) {
               sb.append("<a href=\"");
               sb.append(HtmlEscapeStrong(payload));
               sb.append("\">").append(HtmlEscapeStrong(payload))
-               .append("</a>");
+              .append("</a>");
               i = linkEnd;
               continue;
             }
@@ -1030,12 +1030,12 @@ private FormatFlowed() {
 
     public static boolean IsListLine(String line, boolean ordered) {
       return ordered ? IsOrderedListLine(line) :
-                    IsUnorderedListLine(line);
+        IsUnorderedListLine(line);
     }
 
     public static String StripItemStart(String line, boolean ordered) {
       return ordered ? StripOrderedListItemStart(line) :
-                    StripListItemStart(line);
+        StripListItemStart(line);
     }
 
     private static String MarkdownText(
@@ -1052,7 +1052,7 @@ private FormatFlowed() {
       boolean isSingleParagraph = true;
       while (i <= str.length()) {
         if (i == str.length() ||
-            (str.charAt(i) == 0x0d && i + 1 < str.length() && str.charAt(i + 1) == 0x0a)) {
+          (str.charAt(i) == 0x0d && i + 1 < str.length() && str.charAt(i + 1) == 0x0a)) {
           lines.add(str.substring(lineStart, (lineStart)+(i - lineStart)));
           if (i == str.length()) {
             break;
@@ -1130,12 +1130,12 @@ private FormatFlowed() {
             formatted.append(HtmlEscape(qs.toString()));
             formatted.append("</code></pre>");
           } else {
-            formatted.append(
-  MarkdownText(
-  qs.toString(),
-  depth + 1,
-  true,
-  links));
+            formatted.append (
+              MarkdownText (
+                qs.toString(),
+                depth + 1,
+                true,
+                links));
           }
           formatted.append("</blockquote>");
         } else if (IsEqualsLine(line) && haveParagraph) {
@@ -1189,11 +1189,11 @@ private FormatFlowed() {
                 formatted.append(qs.toString());
                 formatted.append("</code></pre>");
               } else {
-                qss2 = MarkdownText(
-                qs.toString(),
-                depth + 1,
-                wrapLinesInParas,
-                links);
+                qss2 = MarkdownText (
+                    qs.toString(),
+                    depth + 1,
+                    wrapLinesInParas,
+                    links);
                 formatted.append(qss2);
               }
               formatted.append("</li><li>");
@@ -1234,11 +1234,11 @@ private FormatFlowed() {
           }
           i = qi - 1;
           // DebugUtility.Log("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
-          String qss = MarkdownText(
-  qs.toString(),
-  depth + 1,
-  wrapLinesInParas,
-  links);
+          String qss = MarkdownText (
+              qs.toString(),
+              depth + 1,
+              wrapLinesInParas,
+              links);
           // DebugUtility.Log("formatted_listitem = "+qss);
           formatted.append(qss);
           formatted.append("</li>");
@@ -1254,8 +1254,8 @@ private FormatFlowed() {
           int heading = HeadingLevel(line);
           String stripped = StripHeadingStart(line);
           formatted.append("<h").append((char)('0' + heading))
-               .append(">").append(FormatParagraph(stripped, links))
-               .append("</h").append((char)('0' + heading));
+          .append(">").append(FormatParagraph(stripped, links))
+          .append("</h").append((char)('0' + heading));
           formatted.append(">");
         } else if (IsCodeBlockLine(line)) {
           isSingleParagraph = false;

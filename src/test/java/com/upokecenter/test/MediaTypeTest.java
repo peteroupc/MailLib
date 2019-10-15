@@ -14,7 +14,8 @@ import com.upokecenter.mail.*;
       return mt;
     }
 
-    private static MediaType ParseAndTestAspects(String s, MediaType defvalue) {
+    private static MediaType ParseAndTestAspects(String s,
+      MediaType defvalue) {
       MediaType mt = MediaType.Parse(s, defvalue);
       if (mt == null) {
         TestAspects(mt);
@@ -45,11 +46,11 @@ import com.upokecenter.mail.*;
     @Test
     public void TestEquals() {
       MediaType mt =
-          ParseAndTestAspects("text/example;param1=value1;param2=value2");
+        ParseAndTestAspects("text/example;param1=value1;param2=value2");
       MediaType mt2 =
-           ParseAndTestAspects("text/example;param2=value2;param1=value1");
+        ParseAndTestAspects("text/example;param2=value2;param1=value1");
       MediaType mt3 =
-           ParseAndTestAspects("text/example;param1=value2;param2=value2");
+        ParseAndTestAspects("text/example;param1=value2;param2=value2");
       TestCommon.AssertEqualsHashCode(mt, mt2);
       TestCommon.AssertEqualsHashCode(mt, mt3);
       TestCommon.AssertEqualsHashCode(mt3, mt2);
@@ -62,7 +63,7 @@ import com.upokecenter.mail.*;
  }
       for (Map<String, String> dictI : ResourceUtil.GetDictList("mediatypes")) {
         for (Map<String, String> dictJ : ResourceUtil.GetDictList("mediatypes")) {
-          TestCommon.AssertEqualsHashCode(
+          TestCommon.AssertEqualsHashCode (
             ParseAndTestAspects(dictI.get("name")),
             ParseAndTestAspects(dictJ.get("name")));
         }
@@ -118,33 +119,33 @@ import com.upokecenter.mail.*;
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/plain; CHARSET=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/plain; ChArSeT=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/plain; charset=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       // Note that MIME implicitly allows whitespace around the equal sign
       {
         String stringTemp = ParseAndTestAspects("text/plain; charset = UTF-8")
-.GetCharset();
+          .GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
         String stringTemp =
-                 ParseAndTestAspects("text/plain; charset (cmt) = (cmt) UTF-8")
-                    .GetCharset();
+          ParseAndTestAspects("text/plain; charset(cmt) =(cmt) UTF-8")
+          .GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
@@ -152,14 +153,14 @@ import com.upokecenter.mail.*;
       {
         // NOTE: 'UTF-8' (with single quotes) is now treated as unknown
         String stringTemp = ParseAndTestAspects("text/plain; charset='UTF-8'")
-.GetCharset();
+          .GetCharset();
         Assert.assertEquals(
           "",
           stringTemp);
       }
       {
-        String stringTemp = ParseAndTestAspects("text/plain; charset=\"UTF-8\"")
-.GetCharset();
+        String stringTemp = "text/plain; charset=\"UTF-8\"";
+        ParseAndTestAspects(stringTemp).GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
@@ -167,7 +168,7 @@ import com.upokecenter.mail.*;
       {
         String stringTemp =
           ParseAndTestAspects("text/plain; foo=\"\\\"\"; charset=\"UTF-8\"")
-.GetCharset();
+          .GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
@@ -175,31 +176,30 @@ import com.upokecenter.mail.*;
       {
         String stringTemp =
           ParseAndTestAspects("text/plain; foo=\"; charset=\\\"UTF-8\\\"\"")
-.GetCharset();
+          .GetCharset();
         Assert.assertEquals(
           "us-ascii",
           stringTemp);
       }
       {
         String stringTemp =
-              ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
-           .GetCharset();
+          ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
+          .GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
         String stringTemp =
-                ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
-                 .GetCharset();
+          ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
+          .GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
         String stringTemp = ParseAndTestAspects("text/plain;" +
-"\u0020charset=\"UTF-\\8\"")
-   .GetCharset();
+            "\u0020charset=\"UTF-\\8\"").GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
@@ -213,42 +213,42 @@ import com.upokecenter.mail.*;
       {
         Object objectTemp = "";
         Object objectTemp2 = ParseAndTestAspects("text/xyz")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/xyz;charset=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/xyz;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "";
         Object objectTemp2 = ParseAndTestAspects("text/xyz;chabset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/xml;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/plain;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         String stringTemp = ParseAndTestAspects("text/plain;chabset=utf-8")
-      .GetCharset();
+          .GetCharset();
         Assert.assertEquals(
           "us-ascii",
           stringTemp);
@@ -256,25 +256,25 @@ import com.upokecenter.mail.*;
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("image/xml;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "";
         Object objectTemp2 = ParseAndTestAspects("image/xml;chabset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("image/plain;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "";
         Object objectTemp2 = ParseAndTestAspects("image/plain;chabset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
@@ -283,7 +283,7 @@ import com.upokecenter.mail.*;
     public void TestGetParameter() {
       for (Map<String, String> dict : ResourceUtil.GetDictList("paramtypes")) {
         MediaType mt = ParseAndTestAspects("x/x" + dict.get("params"));
-        Assert.assertEquals(
+        Assert.assertEquals (
           dict.get("filename"),
           mt.GetParameter("filename"));
       }
@@ -302,13 +302,13 @@ import com.upokecenter.mail.*;
       for (Map<String, String> dict : ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
         Assert.assertEquals(dict.get("text").equals("1"),
-  mt.isText());
+          mt.isText());
       }
     }
     @Test
     public void TestParameters() {
       MediaType mt =
-          ParseAndTestAspects("text/example;param1=value1;param2=value2");
+        ParseAndTestAspects("text/example;param1=value1;param2=value2");
       Map<String, String> parameters;
       parameters = mt.getParameters();
       if (!(parameters.containsKey("param1"))) {
@@ -342,8 +342,8 @@ import com.upokecenter.mail.*;
       mt = ParseAndTestAspects("text/example;param1*=utf-8'en'value3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
-      mt =
-  ParseAndTestAspects("text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
+      mt = ParseAndTestAspects(
+  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt = ParseAndTestAspects("text/example;param1*=iso-8859-1''valu%e72");
@@ -365,29 +365,31 @@ import com.upokecenter.mail.*;
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u004e2", parameters.get("param1"));
       mt =
-  ParseAndTestAspects("text/example;param1*=utf-8''value2;param1=dummy");
+        ParseAndTestAspects("text/example;param1*=utf-8''value2;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("value2", parameters.get("param1"));
       mt =
-  ParseAndTestAspects("text/example;param1=dummy;param1*=utf-8''value2");
+        ParseAndTestAspects("text/example;param1=dummy;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value2", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+        ParseAndTestAspects(
+  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+        ParseAndTestAspects(
+  "text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
-      mt =
-  ParseAndTestAspects("text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
+      mt = ParseAndTestAspects(
+  "text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
-      mt =
-  ParseAndTestAspects("text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
+      mt = ParseAndTestAspects(
+  "text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
     }
@@ -400,22 +402,26 @@ import com.upokecenter.mail.*;
       Map<String, String> parameters;
       mt =
 
-  ParseAndTestAspects("text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
+        ParseAndTestAspects(
+  "text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ParseAndTestAspects("text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+        ParseAndTestAspects(
+  "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       for (String str : ContentDispositionTest.NoParams) {
@@ -426,8 +432,9 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(0, keys.size());
         Assert.assertEquals("x/y", mt.getTypeAndSubType());
       }
-      mt =
-  ParseAndTestAspects("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
+      String mts = "text/plain; charset*0=ab;charset*1*=iso-8859-1'en";
+      mts += "'xyz";
+      mt = ParseAndTestAspects(mts);
       {
         String stringTemp = mt.GetParameter("charset");
         Assert.assertEquals(
@@ -443,8 +450,8 @@ import com.upokecenter.mail.*;
       }
       mt =
 
-  ParseAndTestAspects("text/plain;" +
-"\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+        ParseAndTestAspects("text/plain;" +
+          "\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
         String stringTemp = mt.GetParameter("charset");
         Assert.assertEquals(
@@ -480,7 +487,7 @@ import com.upokecenter.mail.*;
 
     private static void TestPercentEncodingOne(String expected, String input) {
       MediaType cd = ParseAndTestAspects("text/plain; filename*=utf-8''" +
-           input);
+          input);
       Assert.assertEquals(expected, cd.GetParameter("filename"));
     }
 
@@ -507,70 +514,70 @@ import com.upokecenter.mail.*;
       // not implemented yet
     }
 
-@Test
-public void TestHasStructuredSuffix() {
-  MediaType mt;
-  mt = MediaType.Parse("example/b+xml");
-  if (!(mt.HasStructuredSuffix("xml"))) {
+    @Test
+    public void TestHasStructuredSuffix() {
+      MediaType mt;
+      mt = MediaType.Parse("example/b+xml");
+      if (!(mt.HasStructuredSuffix("xml"))) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/b+xml");
-  if (!(mt.HasStructuredSuffix("XML"))) {
+      mt = MediaType.Parse("example/b+xml");
+      if (!(mt.HasStructuredSuffix("XML"))) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/b+xml");
-  if (!(mt.HasStructuredSuffix("xMl"))) {
+      mt = MediaType.Parse("example/b+xml");
+      if (!(mt.HasStructuredSuffix("xMl"))) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/+xml");
-  if (mt.HasStructuredSuffix("xml")) {
+      mt = MediaType.Parse("example/+xml");
+      if (mt.HasStructuredSuffix("xml")) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/bxml");
-  if (mt.HasStructuredSuffix("xml")) {
+      mt = MediaType.Parse("example/bxml");
+      if (mt.HasStructuredSuffix("xml")) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/b-xml");
-  if (mt.HasStructuredSuffix("xml")) {
+      mt = MediaType.Parse("example/b-xml");
+      if (mt.HasStructuredSuffix("xml")) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/xml");
-  if (mt.HasStructuredSuffix("xml")) {
+      mt = MediaType.Parse("example/xml");
+      if (mt.HasStructuredSuffix("xml")) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/xm");
-  if (mt.HasStructuredSuffix("xml")) {
+      mt = MediaType.Parse("example/xm");
+      if (mt.HasStructuredSuffix("xml")) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/x");
-  if (mt.HasStructuredSuffix("xml")) {
+      mt = MediaType.Parse("example/x");
+      if (mt.HasStructuredSuffix("xml")) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/b+XML");
-  if (!(mt.HasStructuredSuffix("xml"))) {
+      mt = MediaType.Parse("example/b+XML");
+      if (!(mt.HasStructuredSuffix("xml"))) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/b+XML");
-  if (!(mt.HasStructuredSuffix("XML"))) {
+      mt = MediaType.Parse("example/b+XML");
+      if (!(mt.HasStructuredSuffix("XML"))) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/bcd+xMl");
-  if (!(mt.HasStructuredSuffix("xml"))) {
+      mt = MediaType.Parse("example/bcd+xMl");
+      if (!(mt.HasStructuredSuffix("xml"))) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/+XML");
-  if (!(mt.HasStructuredSuffix("xml"))) {
+      mt = MediaType.Parse("example/+XML");
+      if (!(mt.HasStructuredSuffix("xml"))) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/b+xml");
-  if (mt.HasStructuredSuffix("xmc")) {
+      mt = MediaType.Parse("example/b+xml");
+      if (mt.HasStructuredSuffix("xmc")) {
  Assert.fail();
  }
-  mt = MediaType.Parse("example/b+xml");
-  if (mt.HasStructuredSuffix("gml")) {
+      mt = MediaType.Parse("example/b+xml");
+      if (mt.HasStructuredSuffix("gml")) {
  Assert.fail();
  }
-}
+    }
 
     @Test
     public void TestToSingleLineString() {

@@ -12,11 +12,10 @@ import java.io.*;
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
-    /**
-     * This is an internal API.
-     */
-  final class IdentityEncoder implements ICharacterEncoder
-  {
+  /**
+   * This is an internal API.
+   */
+  final class IdentityEncoder implements ICharacterEncoder {
     public int Encode(int c, IWriter s) {
       if (s == null) {
         throw new NullPointerException("s");

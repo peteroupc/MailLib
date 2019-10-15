@@ -6,8 +6,7 @@ namespace MailLibTest {
   public static class DictUtility {
     private const string HexAlphabet = "0123456789ABCDEF";
 
-    public static IList<IDictionary<String, String>>
-      DictList(
+    public static IList<IDictionary<String, String>> DictList (
       params IDictionary<String, String>[] dicts) {
       if (dicts == null) {
         throw new ArgumentNullException(nameof(dicts));
@@ -20,7 +19,7 @@ namespace MailLibTest {
       return list;
     }
 
-    public static IDictionary<string, string> MakeDict(
+    public static IDictionary<string, string> MakeDict (
       params string[] keyvalues) {
       if (keyvalues == null) {
         throw new ArgumentNullException(nameof(keyvalues));
@@ -35,8 +34,8 @@ namespace MailLibTest {
       return dict;
     }
 
-    public static string ToJSON(
-        IList<IDictionary<string, string>> dictlist) {
+    public static string ToJSON (
+      IList<IDictionary<string, string>> dictlist) {
       var sb = new StringBuilder().Append("[");
       if (dictlist == null) {
         throw new ArgumentNullException(nameof(dictlist));
@@ -59,36 +58,35 @@ namespace MailLibTest {
     }
 
     private static void JSONEscape(string str, StringBuilder sb) {
-        for (var j = 0; j < str.Length; ++j) {
-          if ((str[j] & 0xfc00) == 0xdc00 ||
-             ((str[j] & 0xfc00) == 0xd800 && (j == str.Length - 1 ||
-             (str[j + 1] & 0xfc00) != 0xdc00))) {
-            throw new ArgumentException("arr is invalid");
-          }
-          if (str[j] == '\"') {
-            sb.Append("\\\"");
-          } else if (str[j] == '\\') {
-            sb.Append("\\\\");
-          } else if (str[j] == '\r') {
-            sb.Append("\\r");
-          } else if (str[j] == '\n') {
-            sb.Append("\\n");
-          } else if (str[j] == '\t') {
-            sb.Append("\\t");
-          } else if (str[j] == 0x20 && j + 1 < str.Length && str[j + 1] ==
-0x20) {
-            sb.Append("\\u0020");
-          } else if (str[j] < 0x20 || str[j] >= 0x7f) {
-            var ch = (int)str[j];
-            sb.Append("\\u")
-               .Append(HexAlphabet[(ch >> 12) & 15])
-               .Append(HexAlphabet[(ch >> 8) & 15])
-               .Append(HexAlphabet[(ch >> 4) & 15])
-               .Append(HexAlphabet[ch & 15]);
-             } else {
-            sb.Append(str[j]);
-          }
+      for (var j = 0; j < str.Length; ++j) {
+        if ((str[j] & 0xfc00) == 0xdc00 ||
+          ((str[j] & 0xfc00) == 0xd800 && (j == str.Length - 1 ||
+              (str[j + 1] & 0xfc00) != 0xdc00))) {
+          throw new ArgumentException("arr is invalid");
         }
+        if (str[j] == '\"') {
+          sb.Append("\\\"");
+        } else if (str[j] == '\\') {
+          sb.Append("\\\\");
+        } else if (str[j] == '\r') {
+          sb.Append("\\r");
+        } else if (str[j] == '\n') {
+          sb.Append("\\n");
+        } else if (str[j] == '\t') {
+          sb.Append("\\t");
+        } else if (str[j] == 0x20 && j + 1 < str.Length && str[j + 1] ==
+          0x20) {
+          sb.Append("\\u0020");
+        } else if (str[j] < 0x20 || str[j] >= 0x7f) {
+          var ch = (int)str[j];
+          sb.Append("\\u")
+          .Append(HexAlphabet[(ch >> 12) & 15])
+          .Append(HexAlphabet[(ch >> 8) & 15])
+          .Append(HexAlphabet[(ch >> 4) & 15]).Append(HexAlphabet[ch & 15]);
+        } else {
+          sb.Append(str[j]);
+        }
+      }
     }
 
     public static string[] SetResource(
@@ -144,16 +142,16 @@ namespace MailLibTest {
       return sb.Append("]").ToString();
     }
 
-    public static IList<IDictionary<string, string>>
-         ParseJSONDictList(string str) {
+    public static IList<IDictionary<string, string>> ParseJSONDictList (
+      string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       var i = 0;
       var list = new List<IDictionary<string, string>>();
       while (i < str.Length && (
-         str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-         str[i] == 0x09)) {
+          str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+          str[i] == 0x09)) {
         ++i;
       }
       if (i >= str.Length || str[i] != '[') {
@@ -165,20 +163,20 @@ namespace MailLibTest {
       string[] stringArray = null;
       while (true) {
         while (i < str.Length && (
-           str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-           str[i] == 0x09)) {
+            str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+            str[i] == 0x09)) {
           ++i;
         }
         if (i >= str.Length || (
-          str[i] != ']' && str[i] != '[' && str[i] != 0x2c)) {
+            str[i] != ']' && str[i] != '[' && str[i] != 0x2c)) {
           throw new InvalidOperationException("Invalid JSON");
         }
         switch (str[i]) {
           case ']':
             ++i;
             while (i < str.Length && (
-              str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
-              == 0x09)) {
+                str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
+                == 0x09)) {
               ++i;
             }
             return i == str.Length ? list : null;
@@ -204,15 +202,15 @@ namespace MailLibTest {
     }
 
     public static string[] ParseJSONStringArray(string str) {
-       if (str == null) {
-         throw new ArgumentNullException(nameof(str));
-       }
-       var endPos = new int[] { 0 };
-       string[] ret = ParseJSONStringArray(str, endPos);
-       if (endPos[0] != str.Length) {
-         throw new InvalidOperationException("Invalid JSON");
-       }
-       return ret;
+      if (str == null) {
+        throw new ArgumentNullException(nameof(str));
+      }
+      var endPos = new int[] { 0 };
+      string[] ret = ParseJSONStringArray(str, endPos);
+      if (endPos[0] != str.Length) {
+        throw new InvalidOperationException("Invalid JSON");
+      }
+      return ret;
     }
     public static string[] ParseJSONStringArray(string str, int[] endPos) {
       if (str == null) {
@@ -226,26 +224,26 @@ namespace MailLibTest {
       var list = new List<string>();
       var sb = new StringBuilder();
       while (i < str.Length && (
-         str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-         str[i] == 0x09)) {
+          str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+          str[i] == 0x09)) {
         ++i;
       }
       if (i >= str.Length || str[i] != '[') {
         throw new InvalidOperationException("Invalid JSON: " +
-str.Substring(i));
+          str.Substring(i));
       }
       ++i;
       var endValue = false;
       while (true) {
         while (i < str.Length && (
-           str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-           str[i] == 0x09)) {
+            str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+            str[i] == 0x09)) {
           ++i;
         }
         if (i >= str.Length || (
-          str[i] != ']' && str[i] != '"' && str[i] != 0x2c)) {
+            str[i] != ']' && str[i] != '"' && str[i] != 0x2c)) {
           throw new InvalidOperationException("Invalid JSON:" +
-"\u0020" + str.Substring(i));
+            "\u0020" + str.Substring(i));
         }
         var si = (int)str[i];
         switch (si) {
@@ -253,8 +251,8 @@ str.Substring(i));
             // right square bracket
             ++i;
             while (i < str.Length && (
-              str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
-              == 0x09)) {
+                str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
+                == 0x09)) {
               ++i;
             }
             endPos[0] = i;
@@ -263,7 +261,7 @@ str.Substring(i));
             // comma
             if (!endValue) {
               throw new InvalidOperationException("Invalid JSON:" +
-"\u0020" + str.Substring(i));
+                "\u0020" + str.Substring(i));
             }
             ++i;
             endValue = false;
@@ -274,7 +272,7 @@ str.Substring(i));
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {
               throw new InvalidOperationException("Invalid JSON: bad string:" +
-"\u0020" + str.Substring(j));
+                "\u0020" + str.Substring(j));
             }
             endValue = true;
             list.Add(sb.ToString());
@@ -299,14 +297,14 @@ str.Substring(i));
       string str,
       int index,
       StringBuilder sb) {
-#if DEBUG
+      #if DEBUG
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
       if (sb == null) {
         throw new ArgumentNullException(nameof(sb));
       }
-#endif
+      #endif
 
       int c;
       sb.Remove(0, sb.Length);
@@ -353,81 +351,81 @@ str.Substring(i));
                 sb.Append('\t');
                 break;
               case 'u': { // Unicode escape
-                  c = 0;
-                  // Consists of 4 hex digits
-                  for (var i = 0; i < 4; ++i) {
-                    int ch = index >= str.Length ? -1 : str[index++];
-                    if (ch >= '0' && ch <= '9') {
-                      c <<= 4;
-                      c |= ch - '0';
-                    } else if (ch >= 'A' && ch <= 'F') {
-                      c <<= 4;
-                      c |= ch + 10 - 'A';
-                    } else if (ch >= 'a' && ch <= 'f') {
-                      c <<= 4;
-                      c |= ch + 10 - 'a';
-                    } else {
-                      return -1;
-                    }
-                  }
-                  if ((c & 0xf800) != 0xd800) {
-                    // Non-surrogate
-                    sb.Append((char)c);
-                  } else if ((c & 0xfc00) == 0xd800) {
-                    int ch = index >= str.Length ? -1 : str[index++];
-                    if (ch != '\\' ||
-                       (index >= str.Length ? -1 : str[index++]) != 'u') {
-                      return -1;
-                    }
-                    var c2 = 0;
-                    for (var i = 0; i < 4; ++i) {
-                      ch = index >= str.Length ? -1 : str[index++];
-                      if (ch >= '0' && ch <= '9') {
-                        c2 <<= 4;
-                        c2 |= ch - '0';
-                      } else if (ch >= 'A' && ch <= 'F') {
-                        c2 <<= 4;
-                        c2 |= ch + 10 - 'A';
-                      } else if (ch >= 'a' && ch <= 'f') {
-                        c2 <<= 4;
-                        c2 |= ch + 10 - 'a';
-                      } else {
-                        return -1;
-                      }
-                    }
-                    if ((c2 & 0xfc00) != 0xdc00) {
-                      return -1;
-                    } else {
-                      sb.Append((char)c);
-                      sb.Append((char)c2);
-                    }
+                c = 0;
+                // Consists of 4 hex digits
+                for (var i = 0; i < 4; ++i) {
+                  int ch = index >= str.Length ? -1 : str[index++];
+                  if (ch >= '0' && ch <= '9') {
+                    c <<= 4;
+                    c |= ch - '0';
+                  } else if (ch >= 'A' && ch <= 'F') {
+                    c <<= 4;
+                    c |= ch + 10 - 'A';
+                  } else if (ch >= 'a' && ch <= 'f') {
+                    c <<= 4;
+                    c |= ch + 10 - 'a';
                   } else {
                     return -1;
                   }
-                  break;
                 }
-              default: {
-                  // NOTE: Includes surrogate code
-                  // units
+                if ((c & 0xf800) != 0xd800) {
+                  // Non-surrogate
+                  sb.Append((char)c);
+                } else if ((c & 0xfc00) == 0xd800) {
+                  int ch = index >= str.Length ? -1 : str[index++];
+                  if (ch != '\\' ||
+                    (index >= str.Length ? -1 : str[index++]) != 'u') {
+                    return -1;
+                  }
+                  var c2 = 0;
+                  for (var i = 0; i < 4; ++i) {
+                    ch = index >= str.Length ? -1 : str[index++];
+                    if (ch >= '0' && ch <= '9') {
+                      c2 <<= 4;
+                      c2 |= ch - '0';
+                    } else if (ch >= 'A' && ch <= 'F') {
+                      c2 <<= 4;
+                      c2 |= ch + 10 - 'A';
+                    } else if (ch >= 'a' && ch <= 'f') {
+                      c2 <<= 4;
+                      c2 |= ch + 10 - 'a';
+                    } else {
+                      return -1;
+                    }
+                  }
+                  if ((c2 & 0xfc00) != 0xdc00) {
+                    return -1;
+                  } else {
+                    sb.Append((char)c);
+                    sb.Append((char)c2);
+                  }
+                } else {
                   return -1;
                 }
+                break;
+              }
+              default: {
+                // NOTE: Includes surrogate code
+                // units
+                return -1;
+              }
             }
             break;
           case 0x22: // double quote
             return index;
           default: {
-              // NOTE: Assumes the character reader
-              // throws an error on finding illegal surrogate
-              // pairs in the string or invalid encoding
-              // in the stream
-              if ((c >> 16) == 0) {
-                sb.Append((char)c);
-              } else {
-                sb.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
-                sb.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
-              }
-              break;
+            // NOTE: Assumes the character reader
+            // throws an error on finding illegal surrogate
+            // pairs in the string or invalid encoding
+            // in the stream
+            if ((c >> 16) == 0) {
+              sb.Append((char)c);
+            } else {
+              sb.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
+            break;
+          }
         }
       }
       return -1;

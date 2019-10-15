@@ -8,8 +8,8 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Mail {
-    /// <summary>Exception thrown when a message has invalid
-    /// syntax.</summary>
+  /// <summary>Exception thrown when a message has invalid
+  /// syntax.</summary>
 #if NET20 || NET40
 [Serializable]
 #endif
@@ -36,7 +36,7 @@ public sealed class MessageDataException : Exception {
       : base(message, innerException) {
     }
 
-#if NET20 || NET40
+    #if NET20 || NET40
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.MessageDataException'/> class. Uses the
     /// given serialization and streaming contexts.</summary>
@@ -46,9 +46,9 @@ public sealed class MessageDataException : Exception {
     /// System.Runtime.Serialization.StreamingContext object.</param>
     private MessageDataException(
       System.Runtime.Serialization.SerializationInfo info,
-      System.Runtime.Serialization.StreamingContext context)
-      : base(info, context) {
- }
-#endif
+      System.Runtime.Serialization.StreamingContext context):
+      base (info, context) {
+    }
+    #endif
   }
 }

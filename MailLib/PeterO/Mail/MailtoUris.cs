@@ -125,16 +125,16 @@ namespace PeterO.Mail {
         field = null;
       }
       if (!String.IsNullOrEmpty(field)) {
-          sb.Append(firstField ? "?body=" : "&body=");
-          firstField = false;
-          sb.Append(URIUtility.EncodeStringForURI(field));
+        sb.Append(firstField ? "?body=" : "&body=");
+        firstField = false;
+        sb.Append(URIUtility.EncodeStringForURI(field));
       }
       return sb.ToString();
     }
 
     public static Message MailtoUriMessage(string uri) {
-      string[] parts = URIUtility.SplitIRIToStrings(
-        uri);
+      string[] parts = URIUtility.SplitIRIToStrings (
+          uri);
       if (parts == null || parts[0] == null) {
         return null;
       }
@@ -146,7 +146,7 @@ namespace PeterO.Mail {
           // Extract the email address
           emails = URIUtility.PercentDecode(parts[2]);
           if (HeaderParser2.ParseHeaderEmail(emails, 0, emails.Length) !=
-                  emails.Length) {
+            emails.Length) {
             return null;
           }
         }
@@ -189,7 +189,7 @@ namespace PeterO.Mail {
             string name = query.Substring(startName, endName - startName);
             string value = query.Substring(startValue, endValue - startValue);
             name =
-     DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
+              DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
             value = URIUtility.PercentDecode(value);
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.
@@ -197,13 +197,13 @@ namespace PeterO.Mail {
             if (name.Equals("body", StringComparison.Ordinal)) {
               msg.SetTextBody(value);
             } else if (name.Equals("keywords", StringComparison.Ordinal) ||
-name.Equals("comments", StringComparison.Ordinal)) {
+              name.Equals("comments", StringComparison.Ordinal)) {
               string decoded = Message.DecodeHeaderValue(name, value);
               msg.AddHeader(name, decoded);
             } else if (name.Equals("subject", StringComparison.Ordinal) ||
-name.Equals("cc", StringComparison.Ordinal) ||
-name.Equals("bcc", StringComparison.Ordinal) ||
-name.Equals("in-reply-to", StringComparison.Ordinal)) {
+              name.Equals("cc", StringComparison.Ordinal) ||
+              name.Equals("bcc", StringComparison.Ordinal) ||
+              name.Equals("in-reply-to", StringComparison.Ordinal)) {
               string decoded = Message.DecodeHeaderValue(name, value);
               msg.SetHeader(name, decoded);
             } else if (name.Equals("to", StringComparison.Ordinal)) {

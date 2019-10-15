@@ -78,11 +78,10 @@ namespace PeterO.Mail {
           return true;
         } else if (c == 0x22) {
           // quoted string found, skip it
-          int
-si = HeaderParserUtility.ParseQuotedStringCore(
-      str,
-      index,
-      endIndex);
+          int si = HeaderParserUtility.ParseQuotedStringCore(
+            str,
+            index,
+            endIndex);
           if (si == index) {
             throw new InvalidOperationException("Internal error: " + str);
           }
@@ -129,7 +128,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             index = si;
           } else if (c == 0x22) {
             int
- si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+            si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
             if (si == index) {
               throw new InvalidOperationException("Internal error: " + str);
             }
@@ -237,11 +236,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             int startQuote = index;
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
-              builder.Append(
-         str.Substring(
-         startQuote + 1,
-         index - (startQuote + 1)));
-       } else {
+              builder.Append (
+                str.Substring (
+                  startQuote + 1,
+                  index - (startQuote + 1)));
+            } else {
               ++index;
             }
           } else {
@@ -256,11 +255,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
       return ParseDotAtomAfterCFWS(str, index, endIndex);
     }
 
-    public static IList<NamedAddress> ParseAddressList(
-  string str,
-  int index,
-  int endIndex,
-  IList<int[]> tokens) {
+    public static IList<NamedAddress> ParseAddressList (
+      string str,
+      int index,
+      int endIndex,
+      IList<int[]> tokens) {
       int lastIndex = index;
       IList<NamedAddress> addresses = new List<NamedAddress>();
       for (int i = 0; i < tokens.Count; ++i) {
@@ -276,7 +275,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             addresses.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
             // } catch (IndexOutOfRangeException ex) {
             // throw new InvalidOperationException(
-              // "str=" + str + " index=" + index, // ex);
+            // "str=" + str + " index=" + index, // ex);
             // }
             lastIndex = tokenEnd;
           }
@@ -307,11 +306,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
       }
     }
 
-    public static NamedAddress ParseAddress(
-  string str,
-  int index,
-  int endIndex,
-  IList<int[]> tokens) {
+    public static NamedAddress ParseAddress (
+      string str,
+      int index,
+      int endIndex,
+      IList<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.Count; ++i) {
         int tokenIndex = tokens[i][1];
@@ -329,11 +328,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
       return null;
     }
 
-    public static NamedAddress ParseGroup(
-  string str,
-  int index,
-  int endIndex,
-  IList<int[]> tokens) {
+    public static NamedAddress ParseGroup (
+      string str,
+      int index,
+      int endIndex,
+      IList<int[]> tokens) {
       string displayName = null;
       var haveDisplayName = false;
       IList<NamedAddress> mailboxes = new List<NamedAddress>();
@@ -361,11 +360,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
       return new NamedAddress(displayName, mailboxes);
     }
 
-    public static NamedAddress ParseMailbox(
-  string str,
-  int index,
-  int endIndex,
-  IList<int[]> tokens) {
+    public static NamedAddress ParseMailbox (
+      string str,
+      int index,
+      int endIndex,
+      IList<int[]> tokens) {
       string displayName = null;
       string localPart = null;
       string domain = null;
@@ -395,14 +394,14 @@ si = HeaderParserUtility.ParseQuotedStringCore(
           }
         }
       }
-#if DEBUG
+      #if DEBUG
       if (localPart == null) {
         throw new ArgumentException("localPart is null");
       }
       if (domain == null) {
         throw new ArgumentException("domain is null");
       }
-#endif
+      #endif
 
       return new NamedAddress(displayName, localPart, domain);
     }
@@ -428,20 +427,21 @@ si = HeaderParserUtility.ParseQuotedStringCore(
           ++index;
         }
         if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+              56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str[index] >= 1 &&
-          str[index]
-        <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14
-            &&
-     str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) ||
+              str[index]
+              <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index]
+>= 14 &&
+              str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) ||
             (str[index]
-     >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 55295) ||
+              >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index]
+<= 55295) ||
             (str[index] >= 57344 && str[index] <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str[index] >= 0 &&
-          str[index]
-          <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+              str[index]
+              <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -500,11 +500,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   do {
                     int indexStart4 = index;
                     while (index < endIndex && ((str[index] == 32) ||
-                (str[index] == 9))) {
+                        (str[index] == 9))) {
                       ++index;
                     }
                     if (index + 1 < endIndex && str[index] == 13 && str[index +
-                1] == 10) {
+                        1] == 10) {
                       index += 2;
                     } else {
                       index = indexStart4;
@@ -520,10 +520,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   }
                 } while (false);
                 if (index < endIndex && ((str[index] == 32) || (str[index] ==
-                  9))) {
+                      9))) {
                   ++index;
                   while (index < endIndex && ((str[index] == 32) || (str[index]
-                == 9))) {
+                        == 9))) {
                     ++index;
                   }
                 } else {
@@ -543,13 +543,13 @@ si = HeaderParserUtility.ParseQuotedStringCore(
               int indexTemp3 = index;
               do {
                 if (index < endIndex && ((str[index] >= 128 && str[index] <=
-                  55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                      55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3;
                   break;
                 }
                 if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                  str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                  str[index + 1] <= 57343))) {
+                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                      str[index + 1] <= 57343))) {
                   indexTemp3 += 2;
                   break;
                 }
@@ -567,20 +567,20 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                     indexTemp5 = index;
                     do {
                       if (index < endIndex && ((str[index] == 32) ||
-                      (str[index] == 9) || (str[index] >= 128 &&
-                      str[index] <= 55295) || (str[index] >= 57344 &&
-                      str[index] <= 65535))) {
+                          (str[index] == 9) || (str[index] >= 128 &&
+                            str[index] <= 55295) || (str[index] >= 57344 &&
+                            str[index] <= 65535))) {
                         ++indexTemp5;
                         break;
                       }
                       if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                      str[index + 1] <= 57343))) {
+                            str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                            str[index + 1] <= 57343))) {
                         indexTemp5 += 2;
                         break;
                       }
                       if (index < endIndex && (str[index] >= 33 && str[index] <=
-                      126)) {
+                          126)) {
                         ++indexTemp5;
                         break;
                       }
@@ -603,8 +603,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   break;
                 }
                 if (index < endIndex && ((str[index] >= 93 && str[index] <=
-                  126) || (str[index] >= 42 && str[index] <= 91) ||
-                  (str[index] >= 33 && str[index] <= 39))) {
+                      126) || (str[index] >= 42 && str[index] <= 91) ||
+                    (str[index] >= 33 && str[index] <= 39))) {
                   ++indexTemp3;
                   break;
                 }
@@ -637,11 +637,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
               do {
                 int indexStart3 = index;
                 while (index < endIndex && ((str[index] == 32) || (str[index] ==
-                  9))) {
+                      9))) {
                   ++index;
                 }
                 if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
-                == 10) {
+                  == 10) {
                   index += 2;
                 } else {
                   index = indexStart3;
@@ -659,7 +659,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
               ++index;
               while (index < endIndex && ((str[index] == 32) || (str[index] ==
-                9))) {
+                    9))) {
                 ++index;
               }
             } else {

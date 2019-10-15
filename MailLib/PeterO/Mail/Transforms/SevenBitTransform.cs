@@ -20,9 +20,9 @@ namespace PeterO.Mail.Transforms {
     public int ReadByte() {
       int ret = this.transform.ReadByte();
       if (ret > 0x80 || ret == 0) {
-          // NOTE: See definition of 7bit Data in RFC2045 sec. 2.7 (line length
-          // limits are not enforced here, though)
-          throw new MessageDataException("Invalid character in message body");
+        // NOTE: See definition of 7bit Data in RFC2045 sec. 2.7 (line length
+        // limits are not enforced here, though)
+        throw new MessageDataException("Invalid character in message body");
       }
       return ret;
     }

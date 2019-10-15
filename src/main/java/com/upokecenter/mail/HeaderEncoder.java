@@ -13,7 +13,7 @@ import com.upokecenter.util.*;
     private static final String HexChars = "0123456789ABCDEF";
     private static final int EncodedWordMaxLength = 75;
     private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
-            "jklmnopqrstuvwxyz0123456789+/";
+      "jklmnopqrstuvwxyz0123456789+/";
 
     private final StringBuilder builder;
     private int maxLineLength;
@@ -97,17 +97,17 @@ import com.upokecenter.util.*;
         if (writeSpace) {
           this.builder.append(" ");
         }
-        this.builder.append(
-  symbol.substring(
-    startIndex, (
-    startIndex)+(endIndex - startIndex)));
+        this.builder.append (
+          symbol.substring(
+            startIndex, (
+            startIndex)+(endIndex - startIndex)));
         this.column += (endIndex - startIndex) + spaceLength;
       } else {
         this.builder.append("\r\n ");
-        this.builder.append(
-  symbol.substring(
-    startIndex, (
-    startIndex)+(endIndex - startIndex)));
+        this.builder.append (
+          symbol.substring(
+            startIndex, (
+            startIndex)+(endIndex - startIndex)));
         this.column = 1 + (endIndex - startIndex);
       }
       return false; // No need to write space anymore
@@ -135,7 +135,7 @@ import com.upokecenter.util.*;
         boolean writeSpace = false;
         while (i < endIndex) {
           if (symbol.charAt(i) == '\r' && i + 1 < endIndex &&
-               symbol.charAt(i + 1) == '\n') {
+            symbol.charAt(i + 1) == '\n') {
             writeSpace = this.AppendSpaceAndSymbol(
               symbol,
               symbolBegin,
@@ -145,7 +145,7 @@ import com.upokecenter.util.*;
             i += 2;
             continue;
           } else if (structured && (symbol.charAt(i) == '<' || symbol.charAt(i) == '>' ||
-            symbol.charAt(i) == ',' || symbol.charAt(i) == ';')) {
+              symbol.charAt(i) == ',' || symbol.charAt(i) == ';')) {
             // Additional characters between which linear white space can
             // freely appear
             // in structured header fields. They are the intersection of RFC
@@ -172,10 +172,10 @@ import com.upokecenter.util.*;
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
             int si = symbol.charAt(i) == '"' ?
-HeaderParserUtility.ParseQuotedStringCore(
-              symbol,
-              i,
-              endIndex) : HeaderParser.ParseDomainLiteralCore(
+              HeaderParserUtility.ParseQuotedStringCore(
+                symbol,
+                i,
+                endIndex) : HeaderParser.ParseDomainLiteralCore (
                 symbol,
                 i,
                 endIndex,
@@ -186,9 +186,9 @@ HeaderParserUtility.ParseQuotedStringCore(
                 symbolBegin,
                 i,
                 writeSpace);
-              this.AppendQuotedStringOrDomain(
-  symbol.substring(i, (i)+(si - i)),
-  writeSpace);
+              this.AppendQuotedStringOrDomain (
+                symbol.substring(i, (i)+(si - i)),
+                writeSpace);
               writeSpace = false;
               i = si;
               symbolBegin = si;
@@ -216,8 +216,7 @@ HeaderParserUtility.ParseQuotedStringCore(
               ++i;
             }
           } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) !=
-'\t' &&
-                  symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+            '\t' && symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -254,7 +253,7 @@ HeaderParserUtility.ParseQuotedStringCore(
         boolean writeSpace = false;
         while (i < endIndex) {
           if (symbol.charAt(i) == '\r' && i + 1 < endIndex &&
-               symbol.charAt(i + 1) == '\n') {
+            symbol.charAt(i + 1) == '\n') {
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             symbolBegin = i + 2;
             i += 2;
@@ -274,8 +273,7 @@ HeaderParserUtility.ParseQuotedStringCore(
             }
             return false;
           } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) !=
-'\t' &&
-            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+            '\t' && symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             // Single space followed by character other than CR/LF/Tab
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             // AppendSpace();
@@ -323,7 +321,7 @@ HeaderParserUtility.ParseQuotedStringCore(
       int symbolBegin = 0;
       while (i < symbol.length()) {
         if (symbol.charAt(i) == '\r' &&
-            i + 1 < symbol.length() && symbol.charAt(i + 1) == '\n') {
+          i + 1 < symbol.length() && symbol.charAt(i + 1) == '\n') {
           writeSpace = this.AppendSpaceAndSymbol(
             symbol,
             symbolBegin,
@@ -370,9 +368,9 @@ HeaderParserUtility.ParseQuotedStringCore(
       boolean writeSpace) {
       var effectiveMaxLength = EncodedWordMaxLength;
       if (this.GetMaxLineLength() >= 0) {
-        effectiveMaxLength = Math.min(
-         effectiveMaxLength,
-         this.GetMaxLineLength());
+        effectiveMaxLength = Math.min (
+            effectiveMaxLength,
+            this.GetMaxLineLength());
       }
       if (currentWordLength == 0) {
         // 12 characters for prologue and epilogue
@@ -408,7 +406,8 @@ HeaderParserUtility.ParseQuotedStringCore(
                 return ret;
               }
               break;
-            default: return ret;
+            default:
+              return ret;
           }
         }
         return ret;
@@ -450,7 +449,7 @@ HeaderParserUtility.ParseQuotedStringCore(
           == 1;
         int unitLength = 1;
         unitLength = (ch == 0x20 || smallChar) ? 1 : ((ch <= 0x7f) ? 3 :
-          ((ch <= 0x7ff) ? 6 : ((ch <= 0xffff) ? 9 : 12)));
+            ((ch <= 0x7ff) ? 6 : ((ch <= 0xffff) ? 9 : 12)));
         if (!this.CanCharUnitFit(
           currentWordLength,
           unitLength,
@@ -505,15 +504,17 @@ HeaderParserUtility.ParseQuotedStringCore(
       int quantumCount = b64[2];
       if (quantumCount == 2) {
         this.builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
-        this.builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-          15)));
+        this.builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >>
+4) &
+              15)));
         this.builder.append((char)Base64Classic.charAt((b2 & 15) << 2));
         this.builder.append('=');
         this.column += 4;
       } else if (quantumCount == 1) {
         this.builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
-        this.builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-          15)));
+        this.builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >>
+4) &
+              15)));
         this.builder.append("==");
         this.column += 4;
       }
@@ -527,10 +528,12 @@ HeaderParserUtility.ParseQuotedStringCore(
           int b1 = b64[0];
           int b2 = b64[1];
           this.builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
-          this.builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-            15)));
-          this.builder.append((char)Base64Classic.charAt(((b2 & 15) << 2) + ((value >>
-            6) & 3)));
+          this.builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >>
+4) &
+                15)));
+          this.builder.append((char)Base64Classic.charAt(((b2 & 15) << 2) +
+((value >>
+                  6) & 3)));
           this.builder.append((char)Base64Classic.charAt(value & 63));
           this.column += 4;
           b64[2] = 0;
@@ -556,9 +559,9 @@ HeaderParserUtility.ParseQuotedStringCore(
           ++i;
         }
         int unitLength = (ch <= 0x7f) ? 1 : ((ch <= 0x7ff) ? 2 : ((ch <=
-          0xffff) ? 3 : 4));
+                0xffff) ? 3 : 4));
         int bytesNeeded = 4 + (base64state[2] +
-          unitLength > 3 ? 4 : 0);
+            unitLength > 3 ? 4 : 0);
         if (!this.CanCharUnitFit(
           currentWordLength,
           bytesNeeded,
@@ -617,7 +620,7 @@ HeaderParserUtility.ParseQuotedStringCore(
       int symbolBegin = 0;
       while (i < symbol.length()) {
         if (symbol.charAt(i) == '\r' && i + 1 < symbol.length() &&
-           symbol.charAt(i + 1) == '\n') {
+          symbol.charAt(i + 1) == '\n') {
           writeSpace = this.AppendSpaceAndSymbol(
             symbol,
             symbolBegin,
@@ -666,12 +669,11 @@ HeaderParserUtility.ParseQuotedStringCore(
       }
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) < 0x80 && str.charAt(i) > 0x20 && ValueAsciiAtext[(int)str.charAt(i) -
-0x20]
-          == 1) {
+            0x20] == 1) {
           // not simple if a word begins with "=?", an RFC
           // 2047 encoded word start
           if (count == 0 && str.charAt(i) == '=' &&
-              i + 1 < str.length() && str.charAt(i + 1) == '?') {
+            i + 1 < str.length() && str.charAt(i + 1) == '?') {
             return false;
           }
           ++count;
@@ -742,9 +744,9 @@ HeaderParserUtility.ParseQuotedStringCore(
             }
           }
           builder.append('"');
-          this.AppendQuotedStringOrDomain(
-  builder.toString(),
-  false);
+          this.AppendQuotedStringOrDomain (
+            builder.toString(),
+            false);
         }
       } else {
         this.AppendAsEncodedWords(phrase);
@@ -787,7 +789,7 @@ HeaderParserUtility.ParseQuotedStringCore(
     public HeaderEncoder AppendSymbolWithLength(String symbol, int length) {
       if (length > 0) {
         if (this.maxLineLength < 0 || this.column + length <=
-                this.maxLineLength) {
+          this.maxLineLength) {
           this.builder.append(symbol);
           this.column += length;
         } else {
@@ -856,7 +858,7 @@ HeaderParserUtility.ParseQuotedStringCore(
       for (int i = chunkLength; i < len;) {
         if (s.charAt(i) == 0x0d) {
           if (i + 2 >= len || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 && s.charAt(i +
-            2) != 0x20)) {
+                2) != 0x20)) {
             // bare CR, or CRLF not followed by SP/TAB
             return false;
           }
@@ -946,9 +948,10 @@ HeaderParserUtility.ParseQuotedStringCore(
         return "Content-ID";
       }
       return ret.equals("Mime-Version") ?
-"MIME-Version" :
-        (ret.equals("Message-Id") ? "Message-ID" :
-ret);
+        "MIME-Version" : (ret.equals("Message-Id") ?
+"Message-ID" :
+
+          ret);
     }
 
     public HeaderEncoder AppendFieldName(String fieldName) {

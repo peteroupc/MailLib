@@ -1,5 +1,5 @@
 namespace PeterO.Text {
-    /// <summary>Represents a Unicode normalization form.</summary>
+  /// <summary>Represents a Unicode normalization form.</summary>
   public enum Normalization {
     /// <summary>Normalization form C: canonical decomposition followed by
     /// canonical composition.</summary>

@@ -7,16 +7,16 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     * <p>Implements the Unicode normalization algorithm and contains methods and
-     * functionality to test and convert Unicode strings for Unicode
-     * normalization.</p> <p>NOTICE: While this class's source code is in
-     * the public domain, the class uses an class, called
-     * NormalizationData, that includes data derived from the Unicode
-     * Character Database. See the documentation for the NormalizerInput
-     * class for the permission notice for the Unicode Character
-     * Database.</p>
-     * @deprecated Use NormalizerInput instead; that class is much more flexible than
+  /**
+   * <p>Implements the Unicode normalization algorithm and contains methods and
+   * functionality to test and convert Unicode strings for Unicode
+   * normalization.</p> <p>NOTICE: While this class's source code is in the
+   * public domain, the class uses an class, called
+   * NormalizationData, that includes data derived from the Unicode
+   * Character Database. See the documentation for the NormalizerInput
+   * class for the permission notice for the Unicode Character
+   * Database.</p>
+   * @deprecated Use NormalizerInput instead; that class is much more flexible than
  * Normalizer.
  */
 @Deprecated
@@ -73,7 +73,7 @@ at: http://peteroupc.github.io/
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
      * @throws IllegalArgumentException Either {@code index} or {@code length} is less
-     * than 0 or greater than {@code chars} 's length, or {@code chars} ' s
+     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
      * length minus {@code index} is less than {@code length}.
      * @throws NullPointerException The parameter {@code chars} is null.
      */

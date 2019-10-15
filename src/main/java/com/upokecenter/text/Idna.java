@@ -7,35 +7,34 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     * <p>Contains methods that implement Internationalized Domain Names in
-     * Applications (IDNA). IDNA enables using a wider range of letters,
-     * numbers, and certain other characters in domain names. This class
-     * implements the 2008 revision of IDNA, also known as IDNA2008.</p>
-     * <p>The following summarizes the rules for domain names in IDNA2008;
-     * see RFC5890 for more information and additional terminology.</p>
-     * <p>A domain name is divided into one or more strings separated by
-     *  dots ("."), called <b>labels</b>. For IDNA2008's purposes, a valid
-     * label can be an <b>NR-LDH label</b>, an <b>A-label</b>, or a
-     * <b>U-label</b>.</p> <p>An LDH label contains only basic uppercase
-     *  letters, basic lowercase letters, basic digits, and/or "-", and
-     *  neither begins nor ends with "-". For example, "exa-mple",
-     *  "EXAMPLE", and "1example" are LDH labels, but not "-example".</p>
-     * <p>An NR-LDH label is an LDH label whose third and fourth characters
-     *  are not both "-". For example, "ex--ample" is not an NR-LDH
-     * label.</p> <p>A U-label contains one or more characters outside the
-     * Basic Latin range (U+0000 to U+007F) and meets IDNA2008 requirements
-     *  for labels with such characters. An example is "eá".</p> <p>An
-     *  A-label is an LDH label beginning with "xn--" in any combination of
-     * case, and is convertible to a U-label. An example is
-     *  "xn--e-ufa".</p> <p>An XN-label is an LDH label beginning with
-     *  "xn--" in any combination of case.</p> <p>NOTICE: While this class's
-     * source code is in the public domain, the class uses two internal
-     * classes, called <code>NormalizationData</code> and <code>IdnaData</code>, that
-     * include data derived from the Unicode Character Database. See the
-     * documentation for the NormalizerInput class for the permission
-     * notice for the Unicode Character Database.</p>
-     */
+  /**
+   * <p>Contains methods that implement Internationalized Domain Names in
+   * Applications (IDNA). IDNA enables using a wider range of letters,
+   * numbers, and certain other characters in domain names. This class
+   * implements the 2008 revision of IDNA, also known as IDNA2008.</p>
+   * <p>The following summarizes the rules for domain names in IDNA2008;
+   * see RFC5890 for more information and additional terminology.</p> <p>A
+   * domain name is divided into one or more strings separated by dots
+   *  ("."), called <b>labels</b>. For IDNA2008's purposes, a valid label
+   * can be an <b>NR-LDH label</b>, an <b>A-label</b>, or a
+   * <b>U-label</b>.</p> <p>An LDH label contains only basic uppercase
+   *  letters, basic lowercase letters, basic digits, and/or "-", and
+   *  neither begins nor ends with "-". For example, "exa-mple", "EXAMPLE",
+   *  and "1example" are LDH labels, but not "-example".</p> <p>An NR-LDH
+   * label is an LDH label whose third and fourth characters are not both
+   *  "-". For example, "ex--ample" is not an NR-LDH label.</p> <p>A U-label
+   * contains one or more characters outside the Basic Latin range (U+0000
+   * to U+007F) and meets IDNA2008 requirements for labels with such
+   *  characters. An example is "eá".</p> <p>An A-label is an LDH label
+   *  beginning with "xn--" in any combination of case, and is convertible
+   *  to a U-label. An example is "xn--e-ufa".</p> <p>An XN-label is an LDH
+   *  label beginning with "xn--" in any combination of case.</p> <p>NOTICE:
+   * While this class's source code is in the public domain, the class uses
+   * two internal classes, called <code>NormalizationData</code> and
+   * <code>IdnaData</code>, that include data derived from the Unicode Character
+   * Database. See the documentation for the NormalizerInput class for the
+   * permission notice for the Unicode Character Database.</p>
+   */
   public final class Idna {
 private Idna() {
 }
@@ -75,7 +74,7 @@ private Idna() {
       }
       int c = str.charAt(index - 1);
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-             (str.charAt(index - 2) & 0xfc00) == 0xd800) {
+        (str.charAt(index - 2) & 0xfc00) == 0xd800) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str.charAt(index - 2) & 0x3ff) << 10) + (c & 0x3ff);
       }
@@ -94,7 +93,7 @@ private Idna() {
       }
       int c = str.charAt(index);
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
-          (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
+        (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(index + 1) & 0x3ff);
       }
@@ -116,7 +115,8 @@ private Idna() {
       ByteData table = null;
       if (joiningTypes == null) {
         synchronized (syncRoot) {
-     joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
+          joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(
+  IdnaData.JoiningTypes)) : joiningTypes;
         }
       }
       table = joiningTypes;
@@ -127,7 +127,8 @@ private Idna() {
       ByteData table = null;
       if (valueZsChars == null) {
         synchronized (syncRoot) {
-     valueZsChars = (valueZsChars == null) ? (ByteData.Decompress(IdnaData.ZsCharacters)) : valueZsChars;
+          valueZsChars = (valueZsChars == null) ? (ByteData.Decompress(
+  IdnaData.ZsCharacters)) : valueZsChars;
         }
       }
       table = valueZsChars;
@@ -138,7 +139,8 @@ private Idna() {
       ByteData table = null;
       if (scripts == null) {
         synchronized (syncRoot) {
-        scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
+          scripts = (scripts == null) ? (ByteData.Decompress(
+  IdnaData.IdnaRelevantScripts)) : scripts;
         }
       }
       table = scripts;
@@ -293,8 +295,8 @@ private Idna() {
 
     private static String DecodeLabel(String str, int index, int endIndex) {
       if (endIndex - index > 4 && str.charAt(index) == 'x' &&
-          str.charAt(index + 1) == 'n' && str.charAt(index + 2) == '-' &&
-          str.charAt(index + 3) == '-') {
+        str.charAt(index + 1) == 'n' && str.charAt(index + 2) == '-' &&
+        str.charAt(index + 3) == '-') {
         return DomainUtility.PunycodeDecode(str, index + 4, endIndex);
       } else {
         return str.substring(index, (index)+(endIndex - index));
@@ -425,19 +427,19 @@ private Idna() {
             // Empty label
             return false;
           }
-          if (!IsValidLabel(
-  str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
-  lookupRules,
-  bidiRule)) {
+          if (!IsValidLabel (
+              str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
+              lookupRules,
+              bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
-      return (str.length() != lastIndex) && IsValidLabel(
-  str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
-  lookupRules,
-  bidiRule);
+      return (str.length() != lastIndex) && IsValidLabel (
+          str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
+          lookupRules,
+          bidiRule);
     }
 
     private static String ToLowerCaseAscii(String str) {
@@ -481,8 +483,8 @@ private Idna() {
       boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
         if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') ||
-            (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
-                    (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
+          (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
+          (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
           // LDH character
           continue;
         }
@@ -572,7 +574,7 @@ private Idna() {
         } else if (thisChar == 0x200c) {
           // Zero-width non-joiner
           if (UnicodeDatabase.GetCombiningClass(lastChar) != 9 &&
-              !IsValidConjunct(str, i)) {
+            !IsValidConjunct(str, i)) {
             return false;
           }
         } else if (thisChar == 0x375) {
@@ -812,7 +814,7 @@ private Idna() {
         }
         bidiClass = GetBidiClass(c);
         if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-          bidiClass == BidiClassAN)) {
+            bidiClass == BidiClassAN)) {
           found = true;
           break;
         }
@@ -840,7 +842,7 @@ private Idna() {
         }
         bidiClass = GetBidiClass(c);
         if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-          bidiClass == BidiClassAN)) {
+            bidiClass == BidiClassAN)) {
           if (bidiClass == BidiClassAN) {
             if (haveEN) {
               return false;
@@ -862,9 +864,9 @@ private Idna() {
           continue;
         }
         if (bidiClass == BidiClassES ||
-              bidiClass == BidiClassCS || bidiClass == BidiClassET ||
-              bidiClass == BidiClassON || bidiClass == BidiClassBN ||
-                 bidiClass == BidiClassNSM) {
+          bidiClass == BidiClassCS || bidiClass == BidiClassET ||
+          bidiClass == BidiClassON || bidiClass == BidiClassBN ||
+          bidiClass == BidiClassNSM) {
           continue;
         }
         return false;

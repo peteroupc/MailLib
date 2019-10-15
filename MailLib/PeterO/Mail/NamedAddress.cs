@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email address and a name for that address.
-    /// Can represent a group of email addresses instead.</summary>
+  /// <summary>Represents an email address and a name for that address.
+  /// Can represent a group of email addresses instead.</summary>
   public class NamedAddress {
     private readonly string displayName;
 
@@ -83,16 +83,16 @@ namespace PeterO.Mail {
       }
       var tokener = new Tokener();
       if (
-          HeaderParser.ParseHeaderTo(
-            addressValue,
-            0,
-            addressValue.Length,
-            tokener) != addressValue.Length) {
+        HeaderParser.ParseHeaderTo(
+          addressValue,
+          0,
+          addressValue.Length,
+          tokener) != addressValue.Length) {
         // Invalid syntax
         return list;
       }
-      list.AddRange(
-        HeaderParserUtility.ParseAddressList(
+      list.AddRange (
+        HeaderParserUtility.ParseAddressList (
           addressValue,
           0,
           addressValue.Length,
@@ -113,7 +113,7 @@ namespace PeterO.Mail {
         }
       }
       hashCode *= -1521134295 + (this.address == null ? 0 :
-        this.address.GetHashCode());
+          this.address.GetHashCode());
       hashCode *= -1521134295 + (this.isGroup ? 0 : 1);
       if (this.groupAddresses != null) {
         hashCode *= -1521134295 + this.groupAddresses.Count;
@@ -132,13 +132,14 @@ namespace PeterO.Mail {
     public override bool Equals(object obj) {
       var other = obj as NamedAddress;
       return other != null &&
-      (this.displayName == null ? other.displayName == null :
-        this.displayName.Equals(other.displayName, StringComparison.Ordinal)) &&
-   (this.address == null ? other.address == null :
-     this.address.Equals(other.address)) && this.isGroup == other.isGroup &&
-          (!this.isGroup || CollectionUtilities.ListEquals(
-            this.groupAddresses,
-            other.groupAddresses));
+        (this.displayName == null ? other.displayName == null :
+          this.displayName.Equals(other.displayName,
+  StringComparison.Ordinal)) && (this.address == null ? other.address == null :
+          this.address.Equals(other.address)) && this.isGroup ==
+other.isGroup &&
+        (!this.isGroup || CollectionUtilities.ListEquals(
+          this.groupAddresses,
+          other.groupAddresses));
     }
 
     /// <summary>Determines whether the email addresses stored this object
@@ -177,7 +178,7 @@ namespace PeterO.Mail {
     public string Name {
       get {
         return (this.displayName == null) ? ((this.address == null) ?
-                 String.Empty : this.address.ToString()) : this.displayName;
+            String.Empty : this.address.ToString()) : this.displayName;
       }
     }
 
@@ -274,7 +275,7 @@ namespace PeterO.Mail {
       } else {
         var sb = new StringBuilder();
         sb.Append(this.displayName).Append(" <")
-           .Append(this.address.ToString()).Append(">");
+        .Append(this.address.ToString()).Append(">");
         return sb.ToString();
       }
     }
@@ -318,11 +319,11 @@ namespace PeterO.Mail {
         address.Length) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
-      NamedAddress na = HeaderParserUtility.ParseAddress(
-  address,
-  0,
-  address.Length,
-  tokener.GetTokens());
+      NamedAddress na = HeaderParserUtility.ParseAddress (
+          address,
+          0,
+          address.Length,
+          tokener.GetTokens());
       if (na == null) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
@@ -442,8 +443,8 @@ namespace PeterO.Mail {
     public IList<NamedAddress> GroupAddresses {
       get {
         return new
-    System.Collections.ObjectModel.ReadOnlyCollection<NamedAddress>(
-  this.groupAddresses);
+          System.Collections.ObjectModel.ReadOnlyCollection<NamedAddress>(
+            this.groupAddresses);
       }
     }
   }

@@ -171,11 +171,10 @@ private HeaderFieldParsers() {
         // in brackets; they are invalid under
         // "IsValidDomainName" .
         domain = (Message.HasTextToEscape(domain) &&
-                  Idna.IsValidDomainName(domain, false)) ?
-          Idna.EncodeDomainName(domain) :
-              str.substring(
-                startIndex, (
-                startIndex)+(endIndex - startIndex));
+            Idna.IsValidDomainName(domain, false)) ?
+          Idna.EncodeDomainName(domain) : str.substring(
+            startIndex, (
+            startIndex)+(endIndex - startIndex));
         return Message.HasTextToEscape(domain) ? null : domain;
       }
 
@@ -185,8 +184,8 @@ private HeaderFieldParsers() {
         String str) {
         String originalString = str;
         if (str.indexOf(':') < 0 ||
-           str.indexOf('@') < 0 ||
-           !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+          str.indexOf('@') < 0 ||
+          !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
           // No colon or at-sign, or no text needs to be encoded
           return str;
         }
@@ -217,11 +216,11 @@ private HeaderFieldParsers() {
             // of the group's display name
             for (int[] token2 : tokens) {
               if (token2[0] == HeaderParserUtility.TokenPhrase &&
-                   displayNameEnd < 0) {
+                displayNameEnd < 0) {
                 displayNameEnd = token2[2];
               }
               if (token2[0] == HeaderParserUtility.TokenLocalPart &&
-                  token2[1] >= startIndex && token2[2] <= endIndex) {
+                token2[1] >= startIndex && token2[2] <= endIndex) {
                 // Local part within a group
                 if (Message.HasTextToEscape(
                   str,
@@ -240,7 +239,7 @@ private HeaderFieldParsers() {
               StringBuilder sb2 = new StringBuilder();
               for (int[] token2 : tokens) {
                 if (token2[0] == HeaderParserUtility.TokenDomain &&
-                   token2[1] >= startIndex && token2[2] <= endIndex) {
+                  token2[1] >= startIndex && token2[2] <= endIndex) {
                   // Domain within the group
                   String domain = EncodeDomain(str, token2[1], token2[2]);
                   if (domain == null) {
@@ -248,10 +247,10 @@ private HeaderFieldParsers() {
                     nonasciiDomains = true;
                     break;
                   }
-                  sb2.append(
-                  str.substring(
-                    localLastIndex, (
-                    localLastIndex)+(token2[1] - localLastIndex)));
+                  sb2.append (
+                    str.substring(
+                      localLastIndex, (
+                      localLastIndex)+(token2[1] - localLastIndex)));
                   sb2.append(domain);
                   localLastIndex = token2[2];
                 }
@@ -259,10 +258,10 @@ private HeaderFieldParsers() {
               nonasciiLocalParts = nonasciiDomains;
               if (!nonasciiLocalParts) {
                 // All of the domains could be converted to ASCII
-                sb2.append(
-                str.substring(
-                  localLastIndex, (
-                  localLastIndex)+(endIndex - localLastIndex)));
+                sb2.append (
+                  str.substring(
+                    localLastIndex, (
+                    localLastIndex)+(endIndex - localLastIndex)));
                 enc.AppendString(str, lastIndex, startIndex);
                 enc.AppendString(sb2.toString());
                 lastIndex = endIndex;
@@ -338,7 +337,7 @@ private HeaderFieldParsers() {
         String str) {
         String originalString = str;
         if (str.indexOf('@') < 0 ||
-           !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+          !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
           // No at-sign, or no text needs to be encoded
           return str;
         }
@@ -366,11 +365,11 @@ private HeaderFieldParsers() {
             for (int[] token2 : tokens) {
               hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
               if (token2[0] == HeaderParserUtility.TokenLocalPart &&
-              token2[1] >= startIndex && token2[2] <= endIndex &&
-              Message.HasTextToEscape(
-                str,
-                token2[1],
-                token2[2])) {
+                token2[1] >= startIndex && token2[2] <= endIndex &&
+                Message.HasTextToEscape(
+                  str,
+                  token2[1],
+                  token2[2])) {
                 nonasciiLocalPart = true;
                 break;
               }
@@ -389,10 +388,10 @@ private HeaderFieldParsers() {
                       nonasciiDomains = true;
                       break;
                     }
-                    sb2.append(
-                    str.substring(
-                      localLastIndex, (
-                      localLastIndex)+(token2[1] - localLastIndex)));
+                    sb2.append (
+                      str.substring(
+                        localLastIndex, (
+                        localLastIndex)+(token2[1] - localLastIndex)));
                     sb2.append(domain);
                     localLastIndex = token2[2];
                   }
@@ -401,10 +400,10 @@ private HeaderFieldParsers() {
               nonasciiLocalPart = nonasciiDomains;
               if (!nonasciiLocalPart) {
                 // All of the domains could be converted to ASCII
-                sb2.append(
-                str.substring(
-                  localLastIndex, (
-                  localLastIndex)+(endIndex - localLastIndex)));
+                sb2.append (
+                  str.substring(
+                    localLastIndex, (
+                    localLastIndex)+(endIndex - localLastIndex)));
                 enc.AppendString(str, lastIndex, startIndex);
                 enc.AppendString(sb2.toString());
                 lastIndex = endIndex;
@@ -512,7 +511,7 @@ private HeaderFieldParsers() {
           // DebugUtility.Log("" + token[0] + " [" +
           // (str.substring(token[1],(token[1])+(token[2]-token[1]))) + "]");
           if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
-                   lastIndex) {
+            lastIndex) {
             // This is a comment token
             int startIndex = token[1];
             endIndex = token[2];
@@ -687,10 +686,10 @@ private HeaderFieldParsers() {
         if (changed) {
           receivedPart = TrimFWSFromRight(receivedPart);
           return new HeaderEncoder().AppendFieldName(name)
-             .AppendString(receivedPart + datePart).toString();
-           } else {
+            .AppendString(receivedPart + datePart).toString();
+          } else {
           return new HeaderEncoder().AppendFieldName(name).toString() +
-             str;
+            str;
         }
       }
     }
@@ -715,14 +714,14 @@ private HeaderFieldParsers() {
     }
 
     static String DowngradeListHeaderIfNo(HeaderEncoder enc, String
-str) {
+      str) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       int index = HeaderParser.ParseCFWS(str, 0, str.length(), null);
       int noIndex = index;
       if (index + 1 < str.length() && str.charAt(index) == 'N' && str.charAt(index + 1) ==
-'O') {
+        'O') {
         index = HeaderParser.ParseCFWS(str, index + 2, str.length(), null);
         if (index != str.length()) {
           return null;
@@ -767,7 +766,7 @@ str) {
           index = HeaderParser.ParseFWS(str, index, str.length(), null);
           int c = str.charAt(index);
           if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() && (c &
-0xfc00) == 0xdc00) {
+              0xfc00) == 0xdc00) {
             sstr = str.substring(index, (index)+(2));
             enc.AppendSymbol(sstr);
             index += 2;
@@ -1069,7 +1068,7 @@ str) {
           return index;
         }
         int ret = (cd.getDispositionType().equals("no") ||
- cd.getDispositionType().equals("yes")) ? endIndex : index;
+            cd.getDispositionType().equals("yes")) ? endIndex : index;
         if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
             str,
@@ -1517,7 +1516,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderUserAgent(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderUserAgent(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1631,7 +1631,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderCancelKey(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderCancelKey(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1717,7 +1718,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderContentId(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderContentId(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1925,7 +1927,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderEncrypted(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderEncrypted(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -1945,7 +1948,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderInReplyTo(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderInReplyTo(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2037,7 +2041,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderMessageId(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderMessageId(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2271,7 +2276,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderObsoletes(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderObsoletes(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2405,7 +2411,8 @@ str) {
         int index,
         int endIndex,
         ITokener tokener) {
-        return HeaderParser.ParseHeaderXRicevuta(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderXRicevuta(str, index, endIndex,
+  tokener);
       }
     }
 
@@ -2452,7 +2459,7 @@ str) {
     }
 
     private static final IHeaderFieldParser Unstructured = new
-  UnstructuredHeaderField();
+    UnstructuredHeaderField();
 
     private static final Map<String, IHeaderFieldParser> FieldMap =
       CreateHeaderFieldList();
@@ -2497,7 +2504,7 @@ str) {
       fieldMap.put("generate-delivery-report",new HeaderGenerateDeliveryReport());
       fieldMap.put("incomplete-copy",new HeaderIncompleteCopy());
       fieldMap.put("prevent-nondelivery-report",new
-             HeaderPreventNondeliveryReport());
+      HeaderPreventNondeliveryReport());
       fieldMap.put("alternate-recipient",new HeaderAlternateRecipient());
       fieldMap.put("disclose-recipients",new HeaderDiscloseRecipients());
       fieldMap.put("expanded-date",new HeaderExpandedDate());
@@ -2514,7 +2521,7 @@ str) {
       fieldMap.put("accept-language",new HeaderAcceptLanguage());
       fieldMap.put("archived-at",new HeaderArchivedAt());
       fieldMap.put("arc-authentication-results",new
-             HeaderArcAuthenticationResults());
+      HeaderArcAuthenticationResults());
       fieldMap.put("authentication-results",new HeaderAuthenticationResults());
       fieldMap.put("base",new HeaderContentBase());
       fieldMap.put("bcc",new HeaderBcc());
@@ -2532,13 +2539,13 @@ str) {
       fieldMap.put("content-location",new HeaderContentLocation());
       fieldMap.put("content-md5",new HeaderContentMd5());
       fieldMap.put("content-transfer-encoding",new
-           HeaderContentTransferEncoding());
+      HeaderContentTransferEncoding());
       fieldMap.put("date",new HeaderDate());
       fieldMap.put("deferred-delivery",new HeaderDeferredDelivery());
       fieldMap.put("disposition-notification-options",new
-        HeaderDispositionNotificationOptions());
+      HeaderDispositionNotificationOptions());
       fieldMap.put("disposition-notification-to",new
-        HeaderDispositionNotificationTo());
+      HeaderDispositionNotificationTo());
       fieldMap.put("mmhs-authorizing-users",new HeaderMmhsAuthorizingUsers());
       fieldMap.put("dkim-signature",new HeaderDkimSignature());
       fieldMap.put("arc-message-signature",new HeaderArcMessageSignature());
@@ -2560,28 +2567,28 @@ str) {
       fieldMap.put("message-id",new HeaderMessageId());
       fieldMap.put("mime-version",new HeaderMimeVersion());
       fieldMap.put("mmhs-acp127-message-identifier",new
-        HeaderMmhsAcp127MessageIdentifier());
+      HeaderMmhsAcp127MessageIdentifier());
       fieldMap.put("mmhs-codress-message-indicator",new
-        HeaderMmhsCodressMessageIndicator());
+      HeaderMmhsCodressMessageIndicator());
       fieldMap.put("mmhs-copy-precedence",new HeaderMmhsCopyPrecedence());
       fieldMap.put("mmhs-exempted-address",new HeaderMmhsExemptedAddress());
       fieldMap.put("mmhs-extended-authorisation-info",new
-        HeaderMmhsExtendedAuthorisationInfo());
+      HeaderMmhsExtendedAuthorisationInfo());
       fieldMap.put("mmhs-handling-instructions",new
-             HeaderMmhsHandlingInstructions());
+      HeaderMmhsHandlingInstructions());
       fieldMap.put("mmhs-message-instructions",new
-           HeaderMmhsMessageInstructions());
+      HeaderMmhsMessageInstructions());
       fieldMap.put("mmhs-message-type",new HeaderMmhsMessageType());
       fieldMap.put("mmhs-originator-plad",new HeaderMmhsOriginatorPlad());
       fieldMap.put("mmhs-originator-reference",new
-           HeaderMmhsOriginatorReference());
+      HeaderMmhsOriginatorReference());
       fieldMap.put("mmhs-other-recipients-indicator-cc",new
-        HeaderMmhsOtherRecipientsIndicatorCc());
+      HeaderMmhsOtherRecipientsIndicatorCc());
       fieldMap.put("mmhs-other-recipients-indicator-to",new
-        HeaderMmhsOtherRecipientsIndicatorTo());
+      HeaderMmhsOtherRecipientsIndicatorTo());
       fieldMap.put("mmhs-primary-precedence",new HeaderMmhsPrimaryPrecedence());
       fieldMap.put("mmhs-subject-indicator-codes",new
-        HeaderMmhsSubjectIndicatorCodes());
+      HeaderMmhsSubjectIndicatorCodes());
       fieldMap.put("mt-priority",new HeaderMtPriority());
       fieldMap.put("obsoletes",new HeaderObsoletes());
       fieldMap.put("original-from",new HeaderFrom());
@@ -2592,7 +2599,7 @@ str) {
       fieldMap.put("references",new HeaderInReplyTo());
       fieldMap.put("reply-to",new HeaderResentTo());
       fieldMap.put("require-recipient-valid-since",new
-        HeaderRequireRecipientValidSince());
+      HeaderRequireRecipientValidSince());
       fieldMap.put("resent-bcc",new HeaderBcc());
       fieldMap.put("resent-cc",new HeaderResentTo());
       fieldMap.put("resent-date",new HeaderDate());

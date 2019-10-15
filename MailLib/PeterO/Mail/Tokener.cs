@@ -19,11 +19,11 @@ namespace PeterO.Mail {
     public void RestoreState(int state) {
       #if DEBUG
       if (state > this.tokenStack.Count) {
-        throw new ArgumentException("state (" + state + ") is more than " +
+        throw new ArgumentException("state(" + state + ") is more than " +
           this.tokenStack.Count);
       }
       if (state < 0) {
-      throw new ArgumentException("state (" + state + ") is less than " +
+        throw new ArgumentException("state(" + state + ") is less than " +
           "0");
       }
       #endif

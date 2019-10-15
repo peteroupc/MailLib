@@ -9,10 +9,10 @@ at: http://peteroupc.github.io/
 
 import java.util.*;
 
-    /**
-     * Represents an email address and a name for that address. Can represent a
-     * group of email addresses instead.
-     */
+  /**
+   * Represents an email address and a name for that address. Can represent a
+   * group of email addresses instead.
+   */
   public class NamedAddress {
     private final String displayName;
 
@@ -82,16 +82,16 @@ import java.util.*;
       }
       Tokener tokener = new Tokener();
       if (
-          HeaderParser.ParseHeaderTo(
-            addressValue,
-            0,
-            addressValue.length(),
-            tokener) != addressValue.length()) {
+        HeaderParser.ParseHeaderTo(
+          addressValue,
+          0,
+          addressValue.length(),
+          tokener) != addressValue.length()) {
         // Invalid syntax
         return list;
       }
       list.addAll(
-        HeaderParserUtility.ParseAddressList(
+        HeaderParserUtility.ParseAddressList (
           addressValue,
           0,
           addressValue.length(),
@@ -114,7 +114,7 @@ import java.util.*;
         }
       }
       valueHashCode *= -1521134295 + (this.address == null ? 0 :
-        this.address.hashCode());
+          this.address.hashCode());
       valueHashCode *= -1521134295 + (this.isGroup ? 0 : 1);
       if (this.groupAddresses != null) {
         valueHashCode *= -1521134295 + this.groupAddresses.size();
@@ -133,13 +133,13 @@ import java.util.*;
     @Override public boolean equals(Object obj) {
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
       return other != null &&
-      (this.displayName == null ? other.displayName == null :
-        this.displayName.equals(other.displayName)) &&
-   (this.address == null ? other.address == null :
-     this.address.equals(other.address)) && this.isGroup == other.isGroup &&
-          (!this.isGroup || CollectionUtilities.ListEquals(
-            this.groupAddresses,
-            other.groupAddresses));
+        (this.displayName == null ? other.displayName == null :
+          this.displayName.equals(other.displayName)) && (this.address == null ? other.address == null :
+          this.address.equals(other.address)) && this.isGroup ==
+other.isGroup &&
+        (!this.isGroup || CollectionUtilities.ListEquals(
+          this.groupAddresses,
+          other.groupAddresses));
     }
 
     /**
@@ -180,7 +180,7 @@ import java.util.*;
      */
     public final String getName() {
         return (this.displayName == null) ? ((this.address == null) ?
-                 "" : this.address.toString()) : this.displayName;
+            "" : this.address.toString()) : this.displayName;
       }
 
     /**
@@ -276,7 +276,7 @@ import java.util.*;
       } else {
         StringBuilder sb = new StringBuilder();
         sb.append(this.displayName).append(" <")
-           .append(this.address.toString()).append(">");
+        .append(this.address.toString()).append(">");
         return sb.toString();
       }
     }
@@ -318,11 +318,11 @@ import java.util.*;
         address.length()) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
-      NamedAddress na = HeaderParserUtility.ParseAddress(
-  address,
-  0,
-  address.length(),
-  tokener.GetTokens());
+      NamedAddress na = HeaderParserUtility.ParseAddress (
+          address,
+          0,
+          address.length(),
+          tokener.GetTokens());
       if (na == null) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
@@ -437,6 +437,6 @@ import java.util.*;
      */
     public final List<NamedAddress> getGroupAddresses() {
         return java.util.Collections.unmodifiableList(
-  this.groupAddresses);
+            this.groupAddresses);
       }
   }

@@ -120,9 +120,9 @@ import com.upokecenter.text.*;
  Assert.fail();
  }
       try {
-        NormalizerInput.IsNormalized(
-  (ICharacterInput)null,
-  Normalization.NFC);
+        NormalizerInput.IsNormalized (
+          (ICharacterInput)null,
+          Normalization.NFC);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -132,27 +132,27 @@ import com.upokecenter.text.*;
       }
 
       if (!(
-  NormalizerInput.IsNormalized(
-    "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-    Normalization.NFC))) {
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFC))) {
  Assert.fail();
  }
       if (!(
-      NormalizerInput.IsNormalized(
-        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-        Normalization.NFD))) {
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFD))) {
  Assert.fail();
  }
       if (!(
-      NormalizerInput.IsNormalized(
-        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-        Normalization.NFKC))) {
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFKC))) {
  Assert.fail();
  }
       if (!(
-      NormalizerInput.IsNormalized(
-        "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-        Normalization.NFKD))) {
+        NormalizerInput.IsNormalized(
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+          Normalization.NFKD))) {
  Assert.fail();
  }
     }

@@ -7,8 +7,7 @@ private DictUtility() {
 }
     private static final String HexAlphabet = "0123456789ABCDEF";
 
-    public static List<Map<String, String>>
-      DictList(
+    public static List<Map<String, String>> DictList (
       Map<String, String>... dicts) {
       if (dicts == null) {
         throw new NullPointerException("dicts");
@@ -37,7 +36,7 @@ private DictUtility() {
     }
 
     public static String ToJSON(
-        List<Map<String, String>> dictlist) {
+      List<Map<String, String>> dictlist) {
       StringBuilder sb = new StringBuilder().append("[");
       if (dictlist == null) {
         throw new NullPointerException("dictlist");
@@ -60,36 +59,35 @@ private DictUtility() {
     }
 
     private static void JSONEscape(String str, StringBuilder sb) {
-        for (int j = 0; j < str.length(); ++j) {
-          if ((str.charAt(j) & 0xfc00) == 0xdc00 ||
-             ((str.charAt(j) & 0xfc00) == 0xd800 && (j == str.length() - 1 ||
-             (str.charAt(j + 1) & 0xfc00) != 0xdc00))) {
-            throw new IllegalArgumentException("arr is invalid");
-          }
-          if (str.charAt(j) == '\"') {
-            sb.append("\\\"");
-          } else if (str.charAt(j) == '\\') {
-            sb.append("\\\\");
-          } else if (str.charAt(j) == '\r') {
-            sb.append("\\r");
-          } else if (str.charAt(j) == '\n') {
-            sb.append("\\n");
-          } else if (str.charAt(j) == '\t') {
-            sb.append("\\t");
-          } else if (str.charAt(j) == 0x20 && j + 1 < str.length() && str.charAt(j + 1) ==
-0x20) {
-            sb.append("\\u0020");
-          } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
-            int ch = (int)str.charAt(j);
-            sb.append("\\u")
-               .append(HexAlphabet.charAt((ch >> 12) & 15))
-               .append(HexAlphabet.charAt((ch >> 8) & 15))
-               .append(HexAlphabet.charAt((ch >> 4) & 15))
-               .append(HexAlphabet.charAt(ch & 15));
-             } else {
-            sb.append(str.charAt(j));
-          }
+      for (int j = 0; j < str.length(); ++j) {
+        if ((str.charAt(j) & 0xfc00) == 0xdc00 ||
+          ((str.charAt(j) & 0xfc00) == 0xd800 && (j == str.length() - 1 ||
+              (str.charAt(j + 1) & 0xfc00) != 0xdc00))) {
+          throw new IllegalArgumentException("arr is invalid");
         }
+        if (str.charAt(j) == '\"') {
+          sb.append("\\\"");
+        } else if (str.charAt(j) == '\\') {
+          sb.append("\\\\");
+        } else if (str.charAt(j) == '\r') {
+          sb.append("\\r");
+        } else if (str.charAt(j) == '\n') {
+          sb.append("\\n");
+        } else if (str.charAt(j) == '\t') {
+          sb.append("\\t");
+        } else if (str.charAt(j) == 0x20 && j + 1 < str.length() && str.charAt(j + 1) ==
+          0x20) {
+          sb.append("\\u0020");
+        } else if (str.charAt(j) < 0x20 || str.charAt(j) >= 0x7f) {
+          int ch = (int)str.charAt(j);
+          sb.append("\\u")
+          .append(HexAlphabet.charAt((ch >> 12) & 15))
+          .append(HexAlphabet.charAt((ch >> 8) & 15))
+          .append(HexAlphabet.charAt((ch >> 4) & 15)).append(HexAlphabet.charAt(ch & 15));
+        } else {
+          sb.append(str.charAt(j));
+        }
+      }
     }
 
     public static String[] SetResource(
@@ -144,16 +142,16 @@ private DictUtility() {
       return sb.append("]").toString();
     }
 
-    public static List<Map<String, String>>
-         ParseJSONDictList(String str) {
+    public static List<Map<String, String>> ParseJSONDictList (
+      String str) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       int i = 0;
       ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
       while (i < str.length() && (
-         str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-         str.charAt(i) == 0x09)) {
+          str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+          str.charAt(i) == 0x09)) {
         ++i;
       }
       if (i >= str.length() || str.charAt(i) != '[') {
@@ -165,20 +163,20 @@ private DictUtility() {
       String[] stringArray = null;
       while (true) {
         while (i < str.length() && (
-           str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-           str.charAt(i) == 0x09)) {
+            str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+            str.charAt(i) == 0x09)) {
           ++i;
         }
         if (i >= str.length() || (
-          str.charAt(i) != ']' && str.charAt(i) != '[' && str.charAt(i) != 0x2c)) {
+            str.charAt(i) != ']' && str.charAt(i) != '[' && str.charAt(i) != 0x2c)) {
           throw new IllegalStateException("Invalid JSON");
         }
         switch (str.charAt(i)) {
           case ']':
             ++i;
             while (i < str.length() && (
-              str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
-              == 0x09)) {
+                str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
+                == 0x09)) {
               ++i;
             }
             return i == str.length() ? list : null;
@@ -204,15 +202,15 @@ private DictUtility() {
     }
 
     public static String[] ParseJSONStringArray(String str) {
-       if (str == null) {
-         throw new NullPointerException("str");
-       }
-       int[] endPos = new int[] { 0 };
-       String[] ret = ParseJSONStringArray(str, endPos);
-       if (endPos[0] != str.length()) {
-         throw new IllegalStateException("Invalid JSON");
-       }
-       return ret;
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      int[] endPos = new int[] { 0 };
+      String[] ret = ParseJSONStringArray(str, endPos);
+      if (endPos[0] != str.length()) {
+        throw new IllegalStateException("Invalid JSON");
+      }
+      return ret;
     }
     public static String[] ParseJSONStringArray(String str, int[] endPos) {
       if (str == null) {
@@ -226,26 +224,26 @@ private DictUtility() {
       ArrayList<String> list = new ArrayList<String>();
       StringBuilder sb = new StringBuilder();
       while (i < str.length() && (
-         str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-         str.charAt(i) == 0x09)) {
+          str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+          str.charAt(i) == 0x09)) {
         ++i;
       }
       if (i >= str.length() || str.charAt(i) != '[') {
         throw new IllegalStateException("Invalid JSON: " +
-str.substring(i));
+          str.substring(i));
       }
       ++i;
       boolean endValue = false;
       while (true) {
         while (i < str.length() && (
-           str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-           str.charAt(i) == 0x09)) {
+            str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+            str.charAt(i) == 0x09)) {
           ++i;
         }
         if (i >= str.length() || (
-          str.charAt(i) != ']' && str.charAt(i) != '"' && str.charAt(i) != 0x2c)) {
+            str.charAt(i) != ']' && str.charAt(i) != '"' && str.charAt(i) != 0x2c)) {
           throw new IllegalStateException("Invalid JSON:" +
-"\u0020" + str.substring(i));
+            "\u0020" + str.substring(i));
         }
         int si = (int)str.charAt(i);
         switch (si) {
@@ -253,8 +251,8 @@ str.substring(i));
             // right square bracket
             ++i;
             while (i < str.length() && (
-              str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
-              == 0x09)) {
+                str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
+                == 0x09)) {
               ++i;
             }
             endPos[0] = i;
@@ -263,7 +261,7 @@ str.substring(i));
             // comma
             if (!endValue) {
               throw new IllegalStateException("Invalid JSON:" +
-"\u0020" + str.substring(i));
+                "\u0020" + str.substring(i));
             }
             ++i;
             endValue = false;
@@ -274,7 +272,7 @@ str.substring(i));
             i = ParseJSONString(str, i + 1, sb);
             if (i < 0) {
               throw new IllegalStateException("Invalid JSON: bad String:" +
-"\u0020" + str.substring(j));
+                "\u0020" + str.substring(j));
             }
             endValue = true;
             list.add(sb.toString());
@@ -344,81 +342,81 @@ str.substring(i));
                 sb.append('\t');
                 break;
               case 'u': { // Unicode escape
-                  c = 0;
-                  // Consists of 4 hex digits
-                  for (int i = 0; i < 4; ++i) {
-                    int ch = index >= str.length() ? -1 : str.charAt(index++);
-                    if (ch >= '0' && ch <= '9') {
-                      c <<= 4;
-                      c |= ch - '0';
-                    } else if (ch >= 'A' && ch <= 'F') {
-                      c <<= 4;
-                      c |= ch + 10 - 'A';
-                    } else if (ch >= 'a' && ch <= 'f') {
-                      c <<= 4;
-                      c |= ch + 10 - 'a';
-                    } else {
-                      return -1;
-                    }
-                  }
-                  if ((c & 0xf800) != 0xd800) {
-                    // Non-surrogate
-                    sb.append((char)c);
-                  } else if ((c & 0xfc00) == 0xd800) {
-                    int ch = index >= str.length() ? -1 : str.charAt(index++);
-                    if (ch != '\\' ||
-                       (index >= str.length() ? -1 : str.charAt(index++)) != 'u') {
-                      return -1;
-                    }
-                    int c2 = 0;
-                    for (int i = 0; i < 4; ++i) {
-                      ch = index >= str.length() ? -1 : str.charAt(index++);
-                      if (ch >= '0' && ch <= '9') {
-                        c2 <<= 4;
-                        c2 |= ch - '0';
-                      } else if (ch >= 'A' && ch <= 'F') {
-                        c2 <<= 4;
-                        c2 |= ch + 10 - 'A';
-                      } else if (ch >= 'a' && ch <= 'f') {
-                        c2 <<= 4;
-                        c2 |= ch + 10 - 'a';
-                      } else {
-                        return -1;
-                      }
-                    }
-                    if ((c2 & 0xfc00) != 0xdc00) {
-                      return -1;
-                    } else {
-                      sb.append((char)c);
-                      sb.append((char)c2);
-                    }
+                c = 0;
+                // Consists of 4 hex digits
+                for (int i = 0; i < 4; ++i) {
+                  int ch = index >= str.length() ? -1 : str.charAt(index++);
+                  if (ch >= '0' && ch <= '9') {
+                    c <<= 4;
+                    c |= ch - '0';
+                  } else if (ch >= 'A' && ch <= 'F') {
+                    c <<= 4;
+                    c |= ch + 10 - 'A';
+                  } else if (ch >= 'a' && ch <= 'f') {
+                    c <<= 4;
+                    c |= ch + 10 - 'a';
                   } else {
                     return -1;
                   }
-                  break;
                 }
-              default: {
-                  // NOTE: Includes surrogate code
-                  // units
+                if ((c & 0xf800) != 0xd800) {
+                  // Non-surrogate
+                  sb.append((char)c);
+                } else if ((c & 0xfc00) == 0xd800) {
+                  int ch = index >= str.length() ? -1 : str.charAt(index++);
+                  if (ch != '\\' ||
+                    (index >= str.length() ? -1 : str.charAt(index++)) != 'u') {
+                    return -1;
+                  }
+                  int c2 = 0;
+                  for (int i = 0; i < 4; ++i) {
+                    ch = index >= str.length() ? -1 : str.charAt(index++);
+                    if (ch >= '0' && ch <= '9') {
+                      c2 <<= 4;
+                      c2 |= ch - '0';
+                    } else if (ch >= 'A' && ch <= 'F') {
+                      c2 <<= 4;
+                      c2 |= ch + 10 - 'A';
+                    } else if (ch >= 'a' && ch <= 'f') {
+                      c2 <<= 4;
+                      c2 |= ch + 10 - 'a';
+                    } else {
+                      return -1;
+                    }
+                  }
+                  if ((c2 & 0xfc00) != 0xdc00) {
+                    return -1;
+                  } else {
+                    sb.append((char)c);
+                    sb.append((char)c2);
+                  }
+                } else {
                   return -1;
                 }
+                break;
+              }
+              default: {
+                // NOTE: Includes surrogate code
+                // units
+                return -1;
+              }
             }
             break;
           case 0x22: // double quote
             return index;
           default: {
-              // NOTE: Assumes the character reader
-              // throws an error on finding illegal surrogate
-              // pairs in the String or invalid encoding
-              // in the stream
-              if ((c >> 16) == 0) {
-                sb.append((char)c);
-              } else {
-                sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
-                sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
-              }
-              break;
+            // NOTE: Assumes the character reader
+            // throws an error on finding illegal surrogate
+            // pairs in the String or invalid encoding
+            // in the stream
+            if ((c >> 16) == 0) {
+              sb.append((char)c);
+            } else {
+              sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
+            break;
+          }
         }
       }
       return -1;

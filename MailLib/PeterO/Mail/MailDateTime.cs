@@ -3,8 +3,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Contains methods for parsing and generating date-time
-    /// strings following the Internet Message Format (RFC 5322).</summary>
+  /// <summary>Contains methods for parsing and generating date-time
+  /// strings following the Internet Message Format (RFC 5322).</summary>
   public static class MailDateTime {
     private static string[] valueDaysOfWeek = {
       "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
@@ -47,8 +47,8 @@ namespace PeterO.Mail {
       }
       bool leap = IsLeapYear(dateTime[0]);
       if (dateTime[0] < 1900) {
-         // NOTE: RFC 5322 allows for only years 1900 or greater.
-         return false;
+        // NOTE: RFC 5322 allows for only years 1900 or greater.
+        return false;
       }
       if (dateTime[1] == 4 || dateTime[1] == 6 || dateTime[1] == 9 ||
         dateTime[1] == 11) {
@@ -65,11 +65,11 @@ namespace PeterO.Mail {
         }
       }
       int maxSecond = (dateTime[3] == 23 && dateTime[4] == 59) ?
-          60 : 59;
+        60 : 59;
       return !(dateTime[3] < 0 || dateTime[4] < 0 || dateTime[5] < 0 ||
-dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] > maxSecond ||
-dateTime[6] < 0 || dateTime[7] <= -1440 ||
-        dateTime[7] >= 1440);
+          dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] > maxSecond ||
+          dateTime[6] < 0 || dateTime[7] <= -1440 ||
+          dateTime[7] >= 1440);
     }
 
     private static bool IsLeapYear(int yr) {
@@ -82,11 +82,11 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
 
     internal static void AddMinutes(int[] dateTime, int minutes) {
       if (minutes < -1439) {
-        throw new ArgumentException("minutes (" + minutes +
+        throw new ArgumentException("minutes(" + minutes +
           ") is not greater or equal to " + (-1439));
       }
       if (minutes > 1439) {
-        throw new ArgumentException("minutes (" + minutes +
+        throw new ArgumentException("minutes(" + minutes +
           ") is not less or equal to 1439");
       }
       int homi = (dateTime[3] * 60) + dateTime[4];
@@ -190,10 +190,10 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       addon += totdays[mo - 1]; /* The day of the week increases by
                 the number of days in all the months up till now */
       addon += da; // the day of week advances for each day
-                   /* Now as we all know, 2000-01-01 is a Saturday. Using this
-                   as our reference point, and the knowledge that we want to
-                   return 0..6 for Sunday..Saturday,
-                   we find out that we need to compensate by adding 6. */
+      /* Now as we all know, 2000-01-01 is a Saturday. Using this
+      as our reference point, and the knowledge that we want to
+      return 0..6 for Sunday..Saturday,
+      we find out that we need to compensate by adding 6. */
       addon += 6;
       return addon % 7; /* the remainder after dividing by 7
                     gives the day of week */
@@ -316,18 +316,18 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
     /// syntactically invalid, or if the string's year would overflow the
     /// range of a 32-bit signed integer.</returns>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
-    if (String.IsNullOrEmpty(str)) {
-      return null;
-    }
-    var ret = new int[8];
-    if (ParseHeaderExpandedDate(
-      str,
-      0,
-      str.Length,
-      ret,
-      parseObsoleteZones) == str.Length) {
-      return ret;
-    } else {
+      if (String.IsNullOrEmpty(str)) {
+        return null;
+      }
+      var ret = new int[8];
+      if (ParseHeaderExpandedDate(
+        str,
+        0,
+        str.Length,
+        ret,
+        parseObsoleteZones) == str.Length) {
+        return ret;
+      } else {
         return null;
       }
     }
@@ -353,12 +353,12 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       int[] ret,
       bool parseObsoleteZones) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
-        indexTemp2, indexTemp3, indexTemp4;
+          indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
-        = -1, second = -1, offset = -1, yearDigits = 0;
+                = -1, second = -1, offset = -1, yearDigits = 0;
       indexStart = index;
       indexTemp = index;
-// DebugUtility.Log("zone " + (str.Substring(index)));
+      // DebugUtility.Log("zone " + (str.Substring(index)));
       do {
         do {
           indexTemp2 = index;
@@ -444,7 +444,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             break;
           }
         } while (false);
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         day = 0;
         // NOTE: Day can have a leading zero (e.g., 05).
@@ -475,58 +475,58 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             month = 1;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 70 &&
-                (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) ==
-                    66) {
+            (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) ==
+            66) {
             month = 2;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
-                (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) ==
-                    82) {
+            (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) ==
+            82) {
             month = 3;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 65 &&
-                (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) ==
-                    82) {
+            (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) ==
+            82) {
             month = 4;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
-                (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) ==
-                    89) {
+            (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) ==
+            89) {
             month = 5;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 74 &&
-                (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) ==
-                    78) {
+            (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) ==
+            78) {
             month = 6;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 74 &&
-                (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) ==
-                    76) {
+            (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) ==
+            76) {
             month = 7;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 65 &&
-                (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) ==
-                    71) {
+            (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) ==
+            71) {
             month = 8;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 83 &&
-                (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) ==
-                    80) {
+            (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) ==
+            80) {
             month = 9;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 79 &&
-                (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) ==
-                    84) {
+            (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) ==
+            84) {
             month = 10;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 78 &&
-                (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) ==
-                    86) {
+            (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) ==
+            86) {
             month = 11;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str[index] & ~32) == 68 &&
-                (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) ==
-                    67) {
+            (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) ==
+            67) {
             month = 12;
             indexTemp2 += 3;
           }
@@ -537,7 +537,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             break;
           }
         } while (false);
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         if (index == indexStart) {
           break;
         }
@@ -545,7 +545,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         yearDigits = 0;
         year = 0;
         if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-          (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+            (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           year *= 10;
           year += ((int)str[index]) - 48;
           year *= 10;
@@ -556,7 +556,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           index = indexStart;
           break;
         }
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
           yearDigits = Math.Min(yearDigits + 1, 4);
           if (year > Int32.MaxValue / 10) {
@@ -571,7 +571,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           year += ((int)str[index]) - 48;
           ++index;
         }
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         if (yearDigits == 3 || (yearDigits == 2 && year >= 50)) {
           year += 1900;
         } else if (yearDigits == 2) {
@@ -582,7 +582,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           return indexStart;
         }
         bool leap = year % 4 == 0 && (year % 100 != 0 || year %
-          400 == 0);
+            400 == 0);
         if (month == 4 || month == 6 || month == 9 || month == 11) {
           if (day > 30) {
             return indexStart;
@@ -596,11 +596,11 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             return indexStart;
           }
         }
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         hour = minute = second = 0;
         if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-          (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+            (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           hour *= 10;
           hour += ((int)str[index]) - 48;
           hour *= 10;
@@ -613,7 +613,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           index = indexStart;
           break;
         }
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index < endIndex && (str[index] == 58)) {
           ++index;
@@ -621,10 +621,10 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           index = indexStart;
           break;
         }
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-          (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+            (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           minute *= 10;
           minute += ((int)str[index]) - 48;
           minute *= 10;
@@ -639,7 +639,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           break;
         }
         second = 0;
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         do {
           indexTemp2 = index;
           do {
@@ -653,7 +653,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             }
             index = HeaderParser.ParseCFWS(str, index, endIndex, null);
             if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <=
-              57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+                  57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
               second *= 10;
               second += ((int)str[index]) - 48;
               second *= 10;
@@ -679,7 +679,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
             break;
           }
         } while (false);
-// DebugUtility.Log("zone " + (str.Substring(index)));
+        // DebugUtility.Log("zone " + (str.Substring(index)));
         do {
           indexTemp2 = index;
           do {
@@ -710,13 +710,13 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
                 break;
               }
               if (index + 3 < endIndex && ((str[index] >= 48 && str[index]
-                <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57) ||
-                (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index +
-                3] >= 48 && str[index + 3] <= 57))) {
+                    <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57) ||
+                  (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index +
+                      3] >= 48 && str[index + 3] <= 57))) {
                 int offsethr = (((int)str[index] - 48) * 10) +
-                    ((int)str[index + 1] - 48);
+                  ((int)str[index + 1] - 48);
                 int offsetmin = (((int)str[index + 2] - 48) * 10) +
-                    ((int)str[index + 3] - 48);
+                  ((int)str[index + 3] - 48);
                 if (offsetmin >= 60) {
                   return indexStart;
                 }
@@ -745,7 +745,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
                 indexTemp4 = index;
                 if (parseObsoleteZones) {
                   if (index + 1 < endIndex && (str[index] & ~32) == 85 &&
-                  (str[index + 1] & ~32) == 84) {
+                    (str[index + 1] & ~32) == 84) {
                     offset = 0;
                     indexTemp4 += 2;
                   } else if (index + 2 < endIndex && (str[index] & ~32) == 71 &&
@@ -794,9 +794,10 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
                     offset = -7 * 60;
                     indexTemp4 += 3;
                   } else if (index < endIndex && ((str[index] >= 65 &&
-                 str[index] <= 73) || (str[index] >= 75 && str[index] <= 90) ||
-                (str[index] >= 97 && str[index] <= 105) || (str[index]
-                    >= 107 && str[index] <= 122))) {
+                        str[index] <= 73) || (str[index] >= 75 && str[index]
+<= 90) ||
+                      (str[index] >= 97 && str[index] <= 105) || (str[index]
+                        >= 107 && str[index] <= 122))) {
                     offset = 0;
                     ++indexTemp4;
                   }
@@ -866,23 +867,26 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       var index = 0;
       int endIndex = v.Length;
       if (endIndex - index > 28 && ((v[index] >= 33 && v[index] <= 126) &&
-        (v[index + 1] >= 33 && v[index + 1] <= 126) && (v[index + 2] >= 33 &&
-        v[index + 2] <= 126)) && (endIndex - index > 4 && v[index + 3] ==
-        44 && v[index + 4] == 32) && ((v[index + 5] >= 48 && v[index + 5] <=
-        57) && (v[index + 6] >= 48 && v[index + 6] <= 57)) && (v[index + 7]
-        == 32) && ((v[index + 8] >= 33 && v[index + 8] <= 126) && (v[index +
-        9] >= 33 && v[index + 9] <= 126) && (v[index + 10] >= 33 && v[index +
-        10] <= 126)) && (v[index + 11] == 32) && ((v[index + 12] >= 48 &&
-        v[index + 12] <= 57) && (v[index + 13] >= 48 && v[index + 13] <= 57) &&
-        (v[index + 14] >= 48 && v[index + 14] <= 57) && (v[index + 15] >=
-        48 && v[index + 15] <= 57)) && (v[index + 16] == 32) && ((v[index +
-        17] >= 48 && v[index + 17] <= 57) && (v[index + 18] >= 48 && v[index +
-        18] <= 57)) && (v[index + 19] == 58) && ((v[index + 20] >= 48 &&
-        v[index + 20] <= 57) && (v[index + 21] >= 48 && v[index + 21] <=
-        57)) && (v[index + 22] == 58) && ((v[index + 23] >= 48 && v[index +
-        23] <= 57) && (v[index + 24] >= 48 && v[index + 24] <= 57)) &&
+          (v[index + 1] >= 33 && v[index + 1] <= 126) && (v[index + 2] >= 33 &&
+            v[index + 2] <= 126)) && (endIndex - index > 4 && v[index + 3] ==
+          44 && v[index + 4] == 32) && ((v[index + 5] >= 48 && v[index + 5] <=
+            57) && (v[index + 6] >= 48 && v[index + 6] <= 57)) && (v[index + 7]
+          == 32) && ((v[index + 8] >= 33 && v[index + 8] <= 126) && (v[index +
+              9] >= 33 && v[index + 9] <= 126) && (v[index + 10] >= 33 &&
+v[index +
+              10] <= 126)) && (v[index + 11] == 32) && ((v[index + 12] >= 48 &&
+            v[index + 12] <= 57) && (v[index + 13] >= 48 && v[index + 13] <=
+57) &&
+          (v[index + 14] >= 48 && v[index + 14] <= 57) && (v[index + 15] >=
+            48 && v[index + 15] <= 57)) && (v[index + 16] == 32) && ((v[index +
+              17] >= 48 && v[index + 17] <= 57) && (v[index + 18] >= 48 &&
+v[index +
+              18] <= 57)) && (v[index + 19] == 58) && ((v[index + 20] >= 48 &&
+            v[index + 20] <= 57) && (v[index + 21] >= 48 && v[index + 21] <=
+            57)) && (v[index + 22] == 58) && ((v[index + 23] >= 48 && v[index +
+              23] <= 57) && (v[index + 24] >= 48 && v[index + 24] <= 57)) &&
         (v[index + 25] == 32) && (v[index + 26] == 71) && (v[index + 27] ==
-        77) && (v[index + 28] == 84)) {
+          77) && (v[index + 28] == 84)) {
         if (index + 29 != endIndex) {
           return null;
         }
@@ -893,8 +897,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
           return null;
         }
         int year = ((v[index + 12] - '0') * 1000) +
-              ((v[index + 13] - '0') * 100) + ((v[index + 14] - '0') * 10) +
-              (v[index + 15] - '0');
+          ((v[index + 13] - '0') * 100) + ((v[index + 14] - '0') * 10) +
+          (v[index + 15] - '0');
         if (year < 1900) {
           return null;
         }
@@ -902,25 +906,28 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int minute = ((v[index + 20] - '0') * 10) + (v[index + 21] - '0');
         int second = ((v[index + 23] - '0') * 10) + (v[index + 24] - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret : null;
+        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret :
+null;
       }
       // ASCTIME
       if (endIndex - index > 23 && ((v[index] >= 33 && v[index] <= 126) &&
-        (v[index + 1] >= 33 && v[index + 1] <= 126) && (v[index + 2] >= 33 &&
-        v[index + 2] <= 126)) && (v[index + 3] == 32) && ((v[index + 4]
-        >= 33 && v[index + 4] <= 126) && (v[index + 5] >= 33 && v[index + 5]
-        <= 126) && (v[index + 6] >= 33 && v[index + 6] <= 126)) && (v[index +
-        7] == 32) && ((v[index + 8] >= 48 && v[index + 8] <= 57) ||
-        (v[index + 8] == 32)) && (v[index + 9] >= 48 && v[index + 9] <= 57) &&
+          (v[index + 1] >= 33 && v[index + 1] <= 126) && (v[index + 2] >= 33 &&
+            v[index + 2] <= 126)) && (v[index + 3] == 32) && ((v[index + 4]
+            >= 33 && v[index + 4] <= 126) && (v[index + 5] >= 33 && v[index + 5]
+            <= 126) && (v[index + 6] >= 33 && v[index + 6] <= 126)) &&
+(v[index +
+            7] == 32) && ((v[index + 8] >= 48 && v[index + 8] <= 57) ||
+          (v[index + 8] == 32)) && (v[index + 9] >= 48 && v[index + 9] <= 57) &&
         (v[index + 10] == 32) && ((v[index + 11] >= 48 && v[index + 11]
-        <= 57) && (v[index + 12] >= 48 && v[index + 12] <= 57)) && (v[index +
-        13] == 58) && ((v[index + 14] >= 48 && v[index + 14] <= 57) &&
-        (v[index + 15] >= 48 && v[index + 15] <= 57)) && (v[index + 16] ==
-        58) && ((v[index + 17] >= 48 && v[index + 17] <= 57) && (v[index +
-        18] >= 48 && v[index + 18] <= 57)) && (v[index + 19] == 32) &&
+            <= 57) && (v[index + 12] >= 48 && v[index + 12] <= 57)) &&
+(v[index +
+            13] == 58) && ((v[index + 14] >= 48 && v[index + 14] <= 57) &&
+          (v[index + 15] >= 48 && v[index + 15] <= 57)) && (v[index + 16] ==
+          58) && ((v[index + 17] >= 48 && v[index + 17] <= 57) && (v[index +
+              18] >= 48 && v[index + 18] <= 57)) && (v[index + 19] == 32) &&
         ((v[index + 20] >= 48 && v[index + 20] <= 57) && (v[index + 21] >=
-        48 && v[index + 21] <= 57) && (v[index + 22] >= 48 && v[index + 22]
-        <= 57) && (v[index + 23] >= 48 && v[index + 23] <= 57))) {
+            48 && v[index + 21] <= 57) && (v[index + 22] >= 48 && v[index + 22]
+            <= 57) && (v[index + 23] >= 48 && v[index + 23] <= 57))) {
         if (index + 24 != endIndex) {
           return null;
         }
@@ -932,8 +939,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int day = (v[index + 8] == 32 ? 0 : (v[index + 8] - '0') * 10) +
           (v[index + 9] - '0');
         int year = ((v[index + 20] - '0') * 1000) +
-    ((v[index + 21] - '0') * 100) + ((v[index + 22] - '0') * 10) +
-    (v[index + 23] - '0');
+          ((v[index + 21] - '0') * 100) + ((v[index + 22] - '0') * 10) +
+          (v[index + 23] - '0');
         if (year < 1900) {
           return null;
         }
@@ -941,7 +948,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         int minute = ((v[index + 14] - '0') * 10) + (v[index + 15] - '0');
         int second = ((v[index + 17] - '0') * 10) + (v[index + 18] - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
-        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret : null;
+        return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret :
+null;
       }
       // RFC 850
       int dowLong = ParseDOWLong(v, index, endIndex);
@@ -951,20 +959,23 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       string dowNameLong = dowNamesLong[dowLong];
       index += dowNameLong.Length;
       if (endIndex - index > 23 && (endIndex - index > 1 && v[index] == 44 &&
-        v[index + 1] == 32) && ((v[index + 2] >= 48 && v[index + 2] <=
-        57) && (v[index + 3] >= 48 && v[index + 3] <= 57)) && (v[index + 4]
-        == 45) && ((v[index + 5] >= 33 && v[index + 5] <= 126) && (v[index +
-        6] >= 33 && v[index + 6] <= 126) && (v[index + 7] >= 33 && v[index +
-        7] <= 126)) && (v[index + 8] == 45) && ((v[index + 9] >= 48 &&
-        v[index + 9] <= 57) && (v[index + 10] >= 48 && v[index + 10] <= 57)) &&
+          v[index + 1] == 32) && ((v[index + 2] >= 48 && v[index + 2] <=
+            57) && (v[index + 3] >= 48 && v[index + 3] <= 57)) && (v[index + 4]
+          == 45) && ((v[index + 5] >= 33 && v[index + 5] <= 126) && (v[index +
+              6] >= 33 && v[index + 6] <= 126) && (v[index + 7] >= 33 &&
+v[index +
+              7] <= 126)) && (v[index + 8] == 45) && ((v[index + 9] >= 48 &&
+            v[index + 9] <= 57) && (v[index + 10] >= 48 && v[index + 10] <=
+57)) &&
         (v[index + 11] == 32) && ((v[index + 12] >= 48 && v[index + 12]
-        <= 57) && (v[index + 13] >= 48 && v[index + 13] <= 57)) && (v[index +
-        14] == 58) && ((v[index + 15] >= 48 && v[index + 15] <= 57) &&
-        (v[index + 16] >= 48 && v[index + 16] <= 57)) && (v[index + 17] ==
-        58) && ((v[index + 18] >= 48 && v[index + 18] <= 57) && (v[index +
-        19] >= 48 && v[index + 19] <= 57)) && (v[index + 20] == 32) &&
+            <= 57) && (v[index + 13] >= 48 && v[index + 13] <= 57)) &&
+(v[index +
+            14] == 58) && ((v[index + 15] >= 48 && v[index + 15] <= 57) &&
+          (v[index + 16] >= 48 && v[index + 16] <= 57)) && (v[index + 17] ==
+          58) && ((v[index + 18] >= 48 && v[index + 18] <= 57) && (v[index +
+              19] >= 48 && v[index + 19] <= 57)) && (v[index + 20] == 32) &&
         (v[index + 21] == 71) && (v[index + 22] == 77) && (v[index + 23] ==
-        84)) {
+          84)) {
         int idx = index + 2;
         index += 24;
         if (index != endIndex) {
@@ -990,7 +1001,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
         }
         int[] ret = { convertedYear, month, day, hour, minute, second, 0, 0 };
         return (dowLong == GetDayOfWeek(ret) &&
-             IsValidDateTime(ret)) ? ret : null;
+            IsValidDateTime(ret)) ? ret : null;
       }
       return null;
     }
@@ -1016,7 +1027,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       for (var i = 0; i < 12; ++i) {
         string monthName = monthNames[i];
         if (v[index] == monthName[0] &&
-           v[index + 1] == monthName[1] && v[index + 2] == monthName[2]) {
+          v[index + 1] == monthName[1] && v[index + 2] == monthName[2]) {
           return i + 1;
         }
       }
@@ -1030,7 +1041,7 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       for (var i = 0; i < 7; ++i) {
         string dowName = dowNames[i];
         if (v[index] == dowName[0] &&
-            v[index + 1] == dowName[1] && v[index + 2] == dowName[2]) {
+          v[index + 1] == dowName[1] && v[index + 2] == dowName[2]) {
           return i;
         }
       }
@@ -1044,8 +1055,8 @@ dateTime[6] < 0 || dateTime[7] <= -1440 ||
       for (var i = 0; i < 7; ++i) {
         string dowName = dowNamesLong[i];
         if (endIndex - index >= dowName.Length &&
-           v.Substring(index, dowName.Length).Equals(dowName,
-  StringComparison.Ordinal)) {
+          v.Substring(index, dowName.Length).Equals(dowName,
+            StringComparison.Ordinal)) {
           return i;
         }
       }

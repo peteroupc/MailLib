@@ -15,7 +15,8 @@ namespace MailLibTest {
       return mt;
     }
 
-    private static MediaType ParseAndTestAspects(string s, MediaType defvalue) {
+    private static MediaType ParseAndTestAspects(string s,
+      MediaType defvalue) {
       MediaType mt = MediaType.Parse(s, defvalue);
       if (mt == null) {
         TestAspects(mt);
@@ -46,11 +47,11 @@ namespace MailLibTest {
     [Test]
     public void TestEquals() {
       MediaType mt =
-          ParseAndTestAspects("text/example;param1=value1;param2=value2");
+        ParseAndTestAspects("text/example;param1=value1;param2=value2");
       MediaType mt2 =
-           ParseAndTestAspects("text/example;param2=value2;param1=value1");
+        ParseAndTestAspects("text/example;param2=value2;param1=value1");
       MediaType mt3 =
-           ParseAndTestAspects("text/example;param1=value2;param2=value2");
+        ParseAndTestAspects("text/example;param1=value2;param2=value2");
       TestCommon.AssertEqualsHashCode(mt, mt2);
       TestCommon.AssertEqualsHashCode(mt, mt3);
       TestCommon.AssertEqualsHashCode(mt3, mt2);
@@ -58,10 +59,10 @@ namespace MailLibTest {
       Assert.IsFalse(mt.Equals(mt3));
       Assert.IsFalse(mt2.Equals(mt3));
       foreach (IDictionary<string, string> dictI in
-ResourceUtil.GetDictList("mediatypes")) {
+        ResourceUtil.GetDictList("mediatypes")) {
         foreach (IDictionary<string, string> dictJ in
-ResourceUtil.GetDictList("mediatypes")) {
-          TestCommon.AssertEqualsHashCode(
+          ResourceUtil.GetDictList("mediatypes")) {
+          TestCommon.AssertEqualsHashCode (
             ParseAndTestAspects(dictI["name"]),
             ParseAndTestAspects(dictJ["name"]));
         }
@@ -117,33 +118,33 @@ ResourceUtil.GetDictList("mediatypes")) {
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/plain; CHARSET=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/plain; ChArSeT=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/plain; charset=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       // Note that MIME implicitly allows whitespace around the equal sign
       {
         string stringTemp = ParseAndTestAspects("text/plain; charset = UTF-8")
-.GetCharset();
+          .GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
       }
       {
         string stringTemp =
-                 ParseAndTestAspects("text/plain; charset (cmt) = (cmt) UTF-8")
-                    .GetCharset();
+          ParseAndTestAspects("text/plain; charset(cmt) =(cmt) UTF-8")
+          .GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
@@ -151,14 +152,14 @@ ResourceUtil.GetDictList("mediatypes")) {
       {
         // NOTE: 'UTF-8' (with single quotes) is now treated as unknown
         string stringTemp = ParseAndTestAspects("text/plain; charset='UTF-8'")
-.GetCharset();
+          .GetCharset();
         Assert.AreEqual(
           String.Empty,
           stringTemp);
       }
       {
-        string stringTemp = ParseAndTestAspects("text/plain; charset=\"UTF-8\"")
-.GetCharset();
+        string stringTemp = "text/plain; charset=\"UTF-8\"";
+        ParseAndTestAspects(stringTemp).GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
@@ -166,7 +167,7 @@ ResourceUtil.GetDictList("mediatypes")) {
       {
         string stringTemp =
           ParseAndTestAspects("text/plain; foo=\"\\\"\"; charset=\"UTF-8\"")
-.GetCharset();
+          .GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
@@ -174,31 +175,30 @@ ResourceUtil.GetDictList("mediatypes")) {
       {
         string stringTemp =
           ParseAndTestAspects("text/plain; foo=\"; charset=\\\"UTF-8\\\"\"")
-.GetCharset();
+          .GetCharset();
         Assert.AreEqual(
           "us-ascii",
           stringTemp);
       }
       {
         string stringTemp =
-              ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
-           .GetCharset();
+          ParseAndTestAspects("text/plain; foo='; charset=\"UTF-8\"")
+          .GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
       }
       {
         string stringTemp =
-                ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
-                 .GetCharset();
+          ParseAndTestAspects("text/plain; foo=bar; charset=\"UTF-8\"")
+          .GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
       }
       {
         string stringTemp = ParseAndTestAspects("text/plain;" +
-"\u0020charset=\"UTF-\\8\"")
-   .GetCharset();
+            "\u0020charset=\"UTF-\\8\"").GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
@@ -212,42 +212,42 @@ ResourceUtil.GetDictList("mediatypes")) {
       {
         object objectTemp = String.Empty;
         object objectTemp2 = ParseAndTestAspects("text/xyz")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/xyz;charset=UTF-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/xyz;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = String.Empty;
         object objectTemp2 = ParseAndTestAspects("text/xyz;chabset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/xml;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("text/plain;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         string stringTemp = ParseAndTestAspects("text/plain;chabset=utf-8")
-      .GetCharset();
+          .GetCharset();
         Assert.AreEqual(
           "us-ascii",
           stringTemp);
@@ -255,25 +255,25 @@ ResourceUtil.GetDictList("mediatypes")) {
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("image/xml;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = String.Empty;
         object objectTemp2 = ParseAndTestAspects("image/xml;chabset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = "utf-8";
         object objectTemp2 = ParseAndTestAspects("image/plain;charset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         object objectTemp = String.Empty;
         object objectTemp2 = ParseAndTestAspects("image/plain;chabset=utf-8")
-        .GetCharset();
+          .GetCharset();
         Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
@@ -281,9 +281,9 @@ ResourceUtil.GetDictList("mediatypes")) {
     [Test]
     public void TestGetParameter() {
       foreach (IDictionary<string, string> dict in
-ResourceUtil.GetDictList("paramtypes")) {
+        ResourceUtil.GetDictList("paramtypes")) {
         MediaType mt = ParseAndTestAspects("x/x" + dict["params"]);
-        Assert.AreEqual(
+        Assert.AreEqual (
           dict["filename"],
           mt.GetParameter("filename"));
       }
@@ -291,7 +291,7 @@ ResourceUtil.GetDictList("paramtypes")) {
     [Test]
     public void TestIsMultipart() {
       foreach (IDictionary<string, string> dict in
-ResourceUtil.GetDictList("mediatypes")) {
+        ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         object objectTemp = dict["multipart"].Equals("1",
             StringComparison.Ordinal);
@@ -302,16 +302,16 @@ ResourceUtil.GetDictList("mediatypes")) {
     [Test]
     public void TestIsText() {
       foreach (IDictionary<string, string> dict in
-ResourceUtil.GetDictList("mediatypes")) {
+        ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(dict["text"].Equals("1", StringComparison.Ordinal),
-  mt.IsText);
+          mt.IsText);
       }
     }
     [Test]
     public void TestParameters() {
       MediaType mt =
-          ParseAndTestAspects("text/example;param1=value1;param2=value2");
+        ParseAndTestAspects("text/example;param1=value1;param2=value2");
       IDictionary<string, string> parameters;
       parameters = mt.Parameters;
       Assert.IsTrue(parameters.ContainsKey("param1"));
@@ -341,8 +341,8 @@ ResourceUtil.GetDictList("mediatypes")) {
       mt = ParseAndTestAspects("text/example;param1*=utf-8'en'value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
-      mt =
-  ParseAndTestAspects("text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
+      mt = ParseAndTestAspects(
+  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt = ParseAndTestAspects("text/example;param1*=iso-8859-1''valu%e72");
@@ -364,29 +364,31 @@ ResourceUtil.GetDictList("mediatypes")) {
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u004e2", parameters["param1"]);
       mt =
-  ParseAndTestAspects("text/example;param1*=utf-8''value2;param1=dummy");
+        ParseAndTestAspects("text/example;param1*=utf-8''value2;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
       mt =
-  ParseAndTestAspects("text/example;param1=dummy;param1*=utf-8''value2");
+        ParseAndTestAspects("text/example;param1=dummy;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+        ParseAndTestAspects(
+  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+        ParseAndTestAspects(
+  "text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
-      mt =
-  ParseAndTestAspects("text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
+      mt = ParseAndTestAspects(
+  "text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
-      mt =
-  ParseAndTestAspects("text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
+      mt = ParseAndTestAspects(
+  "text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
     }
@@ -399,22 +401,26 @@ ResourceUtil.GetDictList("mediatypes")) {
       IDictionary<string, string> parameters;
       mt =
 
-  ParseAndTestAspects("text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
+        ParseAndTestAspects(
+  "text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
+        ParseAndTestAspects(
+  "text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ParseAndTestAspects("text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+        ParseAndTestAspects(
+  "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       foreach (var str in ContentDispositionTest.NoParams) {
@@ -425,8 +431,9 @@ ResourceUtil.GetDictList("mediatypes")) {
         Assert.AreEqual(0, keys.Count);
         Assert.AreEqual("x/y", mt.TypeAndSubType);
       }
-      mt =
-  ParseAndTestAspects("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
+      string mts = "text/plain; charset*0=ab;charset*1*=iso-8859-1'en";
+      mts += "'xyz";
+      mt = ParseAndTestAspects(mts);
       {
         string stringTemp = mt.GetParameter("charset");
         Assert.AreEqual(
@@ -442,8 +449,8 @@ ResourceUtil.GetDictList("mediatypes")) {
       }
       mt =
 
-  ParseAndTestAspects("text/plain;" +
-"\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+        ParseAndTestAspects("text/plain;" +
+          "\u0020charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
         string stringTemp = mt.GetParameter("charset");
         Assert.AreEqual(
@@ -477,14 +484,14 @@ ResourceUtil.GetDictList("mediatypes")) {
 
     private static void TestPercentEncodingOne(string expected, string input) {
       MediaType cd = ParseAndTestAspects("text/plain; filename*=utf-8''" +
-           input);
+          input);
       Assert.AreEqual(expected, cd.GetParameter("filename"));
     }
 
     [Test]
     public void TestSubType() {
       foreach (IDictionary<string, string> dict in
-ResourceUtil.GetDictList("mediatypes")) {
+        ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(
           dict["subtype"],
@@ -494,7 +501,7 @@ ResourceUtil.GetDictList("mediatypes")) {
     [Test]
     public void TestTopLevelType() {
       foreach (IDictionary<string, string> dict in
-ResourceUtil.GetDictList("mediatypes")) {
+        ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(
           dict["toplevel"],
@@ -506,45 +513,45 @@ ResourceUtil.GetDictList("mediatypes")) {
       // not implemented yet
     }
 
-[Test]
-public void TestHasStructuredSuffix() {
-  MediaType mt;
-  mt = MediaType.Parse("example/b+xml");
-  Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/b+xml");
-  Assert.IsTrue(mt.HasStructuredSuffix("XML"));
-  mt = MediaType.Parse("example/b+xml");
-  Assert.IsTrue(mt.HasStructuredSuffix("xMl"));
-  mt = MediaType.Parse("example/+xml");
-  Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/bxml");
-  Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/b-xml");
-  Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/xml");
-  Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/xm");
-  Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/x");
-  Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/b+XML");
-  Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/b+XML");
-  Assert.IsTrue(mt.HasStructuredSuffix("XML"));
-  mt = MediaType.Parse("example/bcd+xMl");
-  Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/+XML");
-  Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-  mt = MediaType.Parse("example/b+xml");
-  Assert.IsFalse(mt.HasStructuredSuffix("xmc"));
-  mt = MediaType.Parse("example/b+xml");
-  Assert.IsFalse(mt.HasStructuredSuffix("gml"));
-}
+    [Test]
+    public void TestHasStructuredSuffix() {
+      MediaType mt;
+      mt = MediaType.Parse("example/b+xml");
+      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/b+xml");
+      Assert.IsTrue(mt.HasStructuredSuffix("XML"));
+      mt = MediaType.Parse("example/b+xml");
+      Assert.IsTrue(mt.HasStructuredSuffix("xMl"));
+      mt = MediaType.Parse("example/+xml");
+      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/bxml");
+      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/b-xml");
+      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/xml");
+      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/xm");
+      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/x");
+      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/b+XML");
+      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/b+XML");
+      Assert.IsTrue(mt.HasStructuredSuffix("XML"));
+      mt = MediaType.Parse("example/bcd+xMl");
+      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/+XML");
+      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
+      mt = MediaType.Parse("example/b+xml");
+      Assert.IsFalse(mt.HasStructuredSuffix("xmc"));
+      mt = MediaType.Parse("example/b+xml");
+      Assert.IsFalse(mt.HasStructuredSuffix("gml"));
+    }
 
     [Test]
     public void TestToSingleLineString() {
       foreach (IDictionary<string, string> dict in
-ResourceUtil.GetDictList("mediatypes")) {
+        ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         string str = mt.ToSingleLineString();
         Assert.IsFalse(str.IndexOf("\r", StringComparison.Ordinal) >= 0);
@@ -554,7 +561,7 @@ ResourceUtil.GetDictList("mediatypes")) {
     [Test]
     public void TestTypeAndSubType() {
       foreach (IDictionary<string, string> dict in
-ResourceUtil.GetDictList("mediatypes")) {
+        ResourceUtil.GetDictList("mediatypes")) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         Assert.AreEqual(
           dict["toplevel"] + "/" + dict["subtype"],

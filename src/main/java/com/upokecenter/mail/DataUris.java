@@ -23,8 +23,8 @@ private DataUris() {
         throw new NullPointerException("uri");
       }
       String url = uri;
-      String[] parts = URIUtility.SplitIRIToStrings(
-      url);
+      String[] parts = URIUtility.SplitIRIToStrings (
+          url);
       if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
@@ -37,8 +37,8 @@ private DataUris() {
         String mediaType = path.substring(0, mediaTypePart);
         // Strip out ";base64" at end
         if (mediaType.length() >= 7 &&
-      DataUtilities.ToLowerCaseAscii(mediaType.substring(mediaType.length() -
-             7)).equals(";base64")) {
+          DataUtilities.ToLowerCaseAscii(mediaType.substring(
+  mediaType.length() - 7)).equals(";base64")) {
           mediaType = mediaType.substring(0, mediaType.length() - 7);
         }
         if (mediaType.length() == 0 || mediaType.charAt(0) == ';') {
@@ -130,8 +130,8 @@ private DataUris() {
         throw new NullPointerException("uri");
       }
       String url = uri;
-      String[] parts = URIUtility.SplitIRIToStrings(
-      url);
+      String[] parts = URIUtility.SplitIRIToStrings (
+          url);
       if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
       }
@@ -141,7 +141,7 @@ private DataUris() {
         if (mediaTypePart == -1) {
           return null;
         }
-        boolean usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii(
+        boolean usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii (
             path.substring(
               mediaTypePart - 7, (
               mediaTypePart - 7)+(7))).equals(";base64");
@@ -165,10 +165,10 @@ private DataUris() {
             }
           }
           if (hasPercent) {
-            payload = URIUtility.PercentDecode(
-         path.substring(
-                mediaTypePart + 1, (
-                mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
+            payload = URIUtility.PercentDecode (
+                path.substring(
+                  mediaTypePart + 1, (
+                  mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
             payloadIndex = 0;
           }
           base64Length = payload.length() - payloadIndex;
@@ -179,13 +179,17 @@ private DataUris() {
             boolean lastBlock = i + 4 >= payload.length();
             int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
             b1 = (payload.charAt(i) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i)];
-            b2 = (payload.charAt(i + 1) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 1)];
+            b2 = (payload.charAt(i + 1) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
+1)];
             if (lastBlock && payload.charAt(i + 2) == '=' && payload.charAt(i + 3) == '=') {
             } else if (lastBlock && path.charAt(i + 3) == '=') {
-              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
+              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
+2)];
             } else {
-              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 2)];
-              b4 = (payload.charAt(i + 3) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i + 3)];
+              b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
+2)];
+              b4 = (payload.charAt(i + 3) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
+3)];
             }
             if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0) {
               return null;
@@ -205,7 +209,7 @@ private DataUris() {
               // NOTE: No further character checking done here
               // because splitURI already did all needed pct-encoding checking
               aw.write((byte)((ToHex(path.charAt(i + 1)) << 4) + ToHex(path.charAt(i +
-                    2))));
+                      2))));
               i += 3;
             } else if (path.charAt(i) >= 0x80) {
               // RFC 2397 allows only "safe" ASCII here
@@ -233,10 +237,12 @@ private DataUris() {
         switch (quantumCount) {
           case 2:
             builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
-            builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-              15)));
-            builder.append((char)Base64Classic.charAt(((b2 & 15) << 2) + ((value >>
-              6) & 3)));
+            builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4)
+&
+                  15)));
+            builder.append((char)Base64Classic.charAt(((b2 & 15) << 2) + ((value
+>>
+                    6) & 3)));
             builder.append((char)Base64Classic.charAt(value & 63));
             quantumCount = 0;
             break;
@@ -253,13 +259,13 @@ private DataUris() {
       if (quantumCount == 2) {
         builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
         builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-          15)));
+              15)));
         builder.append((char)Base64Classic.charAt((b2 & 15) << 2));
         builder.append('=');
       } else if (quantumCount == 1) {
         builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
         builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-          15)));
+              15)));
         builder.append("==");
       }
     }
@@ -274,9 +280,9 @@ private DataUris() {
       if (textString == null) {
         throw new NullPointerException("textString");
       }
-      return MakeDataUri(
-        DataUtilities.GetUtf8Bytes(textString, true),
-        MediaType.Parse("text/plain;charset=utf-8"));
+      return MakeDataUri (
+          DataUtilities.GetUtf8Bytes(textString, true),
+          MediaType.Parse("text/plain;charset=utf-8"));
     }
 
     /**

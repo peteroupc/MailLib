@@ -8,8 +8,8 @@ at: http://peteroupc.github.io/
 using System;
 
 namespace PeterO.Mail {
-    /// <summary>Specifies the context where an encoded word under RFC 2047
-    /// can appear.</summary>
+  /// <summary>Specifies the context where an encoded word under RFC 2047
+  /// can appear.</summary>
   internal enum EncodedWordContext {
     /// <summary>In an unstructured header field's value.</summary>
     Unstructured,

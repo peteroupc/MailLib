@@ -57,10 +57,10 @@ import com.upokecenter.mail.*;
       IByteReader input,
       boolean allowBareLfCr) {
  this(
-  input,
-  allowBareLfCr,
-  MaxLineLength,
-  false);
+          input,
+          allowBareLfCr,
+          MaxLineLength,
+          false);
     }
 
     public QuotedPrintableTransform(
@@ -68,10 +68,10 @@ import com.upokecenter.mail.*;
       boolean allowBareLfCr,
       int maxLineLength) {
  this(
-  input,
-  allowBareLfCr,
-  maxLineLength,
-  false);
+          input,
+          allowBareLfCr,
+          maxLineLength,
+          false);
     }
 
     private void ResizeBuffer(int size) {
@@ -112,7 +112,7 @@ import com.upokecenter.mail.*;
           return -1;
         }
         if (!this.checkStrictEncoding && this.printable[c] == 1 &&
-       this.maxLineSize < 0) {
+          this.maxLineSize < 0) {
           return c;
         }
         if (c == 0x0d) {
@@ -144,7 +144,7 @@ import com.upokecenter.mail.*;
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           }
           int b1 = this.ReadInputByte();
@@ -166,12 +166,13 @@ import com.upokecenter.mail.*;
               continue;
             }
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
+                this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
                   throw new
-              MessageDataException("Encoded quoted-printable line too long");
+                  MessageDataException("Encoded quoted-printable line too" +
+"\u0020long");
                 }
               }
               this.unget = true;
@@ -181,16 +182,17 @@ import com.upokecenter.mail.*;
               this.unget = true;
               return '=';
             } else {
-            throw new
-              MessageDataException("CR not followed by LF in quoted-printable");
+              throw new
+              MessageDataException("CR not followed by LF in" +
+"\u0020quoted-printable");
             }
           } else if (b1 == -1) {
             // Equals sign at end, ignore
             return -1;
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > MaxLineLength ||
-              this.maxLineSize < 0)) {
+                this.maxLineSize > MaxLineLength ||
+                this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -201,8 +203,9 @@ import com.upokecenter.mail.*;
               this.unget = true;
               return '=';
             } else {
-               throw new
-  MessageDataException("Invalid hex character in quoted-printable");
+              throw new
+              MessageDataException("Invalid hex character in" +
+"\u0020quoted-printable");
             }
           }
           int b2 = this.ReadInputByte();
@@ -218,7 +221,7 @@ import com.upokecenter.mail.*;
             c |= b2 + 10 - 'a';
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
+                this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -227,7 +230,8 @@ import com.upokecenter.mail.*;
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
                   throw new
-              MessageDataException("Encoded quoted-printable line too long");
+                  MessageDataException("Encoded quoted-printable line too" +
+"\u0020long");
                 }
               }
               this.ResizeBuffer(1);
@@ -235,13 +239,13 @@ import com.upokecenter.mail.*;
               return '=';
             }
             throw new
-           MessageDataException("Invalid hex character in quoted-printable");
+            MessageDataException("Invalid hex character in quoted-printable");
           }
           if (this.maxLineSize >= 0) {
             this.lineCharCount += 2;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           }
           return c;
@@ -256,7 +260,7 @@ import com.upokecenter.mail.*;
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           }
           // In most cases, though, there will only be
@@ -322,7 +326,7 @@ import com.upokecenter.mail.*;
               ++this.lineCharCount;
               if (this.lineCharCount > this.maxLineSize) {
                 throw new
-            MessageDataException("Encoded quoted-printable line too long");
+                MessageDataException("Encoded quoted-printable line too long");
               }
             }
             c2 = this.ReadInputByte();
@@ -346,10 +350,11 @@ import com.upokecenter.mail.*;
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           } else {
-       throw new MessageDataException("Invalid character in quoted-printable");
+            throw new MessageDataException("Invalid character in" +
+"\u0020quoted-printable");
           }
         } else {
           // Any other character
@@ -357,7 +362,7 @@ import com.upokecenter.mail.*;
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
               throw new
-          MessageDataException("Encoded quoted-printable line too long");
+              MessageDataException("Encoded quoted-printable line too long");
             }
           } else if (this.checkStrictEncoding && (c >= 0x7f || c < 0x20)) {
             throw new MessageDataException("Invalid character");

@@ -8,13 +8,12 @@ private ResourceUtil() {
 }
     public static String[] GetStrings(String name) {
       AppResources resources = new AppResources("Resources");
-      return DictUtility.ParseJSONStringArray(
-        resources.GetString(name));
+      return DictUtility.ParseJSONStringArray (
+          resources.GetString(name));
     }
-    public static List<Map<String, String>>
-           GetDictList(String name) {
+    public static List<Map<String, String>> GetDictList(String name) {
       AppResources resources = new AppResources("Resources");
-      return DictUtility.ParseJSONDictList(
-        resources.GetString(name));
+      return DictUtility.ParseJSONDictList (
+          resources.GetString(name));
     }
   }

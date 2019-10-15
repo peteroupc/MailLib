@@ -58,48 +58,49 @@ namespace PeterO.Mail {
       }
     }
 
-  /// <summary>Returns whether this media type's subtype has the given
-  /// structured syntax suffix.</summary>
-  /// <param name='suffix'>A text string identifying a structured syntax
-  /// suffix without the starting "+". Examples include "xml" and "json".
-  /// The suffix is compared to the end of the media type's subtype using
-  /// a basic case-insensitive comparison. (Two strings are equal in such
-  /// a comparison, if they match after converting the basic upper-case
-  /// letters A to Z (U+0041 to U+005A) in both strings to basic
-  /// lower-case letters.).</param>
-  /// <returns>True if the media type's subtype ends with, but does not
-  /// consist of, "+" followed by the <paramref name='suffix'/> parameter
-  /// (using a basic case-insensitive comparison); otherwise,
-  /// <c>false</c>. For example, returns false if <paramref
-  /// name='suffix'/> is "xml" and the subtype is "+xml", but returns
-  /// true if <paramref name='suffix'/> is "xml" and the subtype is
-  /// "example+xml". Returns false if <paramref name='suffix'/> is null
-  /// or an empty string.</returns>
-  public bool HasStructuredSuffix(string suffix) {
-  if (String.IsNullOrEmpty(suffix) || suffix.Length >= this.subType.Length ||
-      suffix.Length + 1 >= this.subType.Length) {
-    return false;
-  }
-  int j = this.subType.Length - 1 - suffix.Length;
-  if (this.subType[j] == '+') {
-    ++j;
-    for (var i = 0; i < suffix.Length; ++i) {
-      int c = this.subType[j + i];
-      int c2 = suffix[i];
-      if (c >= 0x41 && c <= 0x5a) {
-        c += 0x20;
-      }
-      if (c2 >= 0x41 && c2 <= 0x5a) {
-        c2 += 0x20;
-      }
-      if (c != c2) {
+    /// <summary>Returns whether this media type's subtype has the given
+    /// structured syntax suffix.</summary>
+    /// <param name='suffix'>A text string identifying a structured syntax
+    /// suffix without the starting "+". Examples include "xml" and "json".
+    /// The suffix is compared to the end of the media type's subtype using
+    /// a basic case-insensitive comparison. (Two strings are equal in such
+    /// a comparison, if they match after converting the basic upper-case
+    /// letters A to Z (U+0041 to U+005A) in both strings to basic
+    /// lower-case letters.).</param>
+    /// <returns>True if the media type's subtype ends with, but does not
+    /// consist of, "+" followed by the <paramref name='suffix'/> parameter
+    /// (using a basic case-insensitive comparison); otherwise,
+    /// <c>false</c>. For example, returns false if <paramref
+    /// name='suffix'/> is "xml" and the subtype is "+xml", but returns
+    /// true if <paramref name='suffix'/> is "xml" and the subtype is
+    /// "example+xml". Returns false if <paramref name='suffix'/> is null
+    /// or an empty string.</returns>
+    public bool HasStructuredSuffix(string suffix) {
+      if (String.IsNullOrEmpty(suffix) || suffix.Length >=
+this.subType.Length ||
+        suffix.Length + 1 >= this.subType.Length) {
         return false;
       }
+      int j = this.subType.Length - 1 - suffix.Length;
+      if (this.subType[j] == '+') {
+        ++j;
+        for (var i = 0; i < suffix.Length; ++i) {
+          int c = this.subType[j + i];
+          int c2 = suffix[i];
+          if (c >= 0x41 && c <= 0x5a) {
+            c += 0x20;
+          }
+          if (c2 >= 0x41 && c2 <= 0x5a) {
+            c2 += 0x20;
+          }
+          if (c != c2) {
+            return false;
+          }
+        }
+        return true;
+      }
+      return false;
     }
-    return true;
-  }
-  return false;
-}
 
     #region Equals and GetHashCode implementation
 
@@ -115,9 +116,9 @@ namespace PeterO.Mail {
         return false;
       }
       return this.topLevelType.Equals(other.topLevelType,
-  StringComparison.Ordinal) &&
+          StringComparison.Ordinal) &&
         this.subType.Equals(other.subType, StringComparison.Ordinal) &&
-          CollectionUtilities.MapEquals(this.parameters, other.parameters);
+        CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
     /// <summary>Calculates the hash code of this object. The exact
@@ -130,13 +131,13 @@ namespace PeterO.Mail {
       if (this.topLevelType != null) {
         for (var i = 0; i < this.topLevelType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-                    this.topLevelType[i]));
+                this.topLevelType[i]));
         }
       }
       if (this.subType != null) {
         for (var i = 0; i < this.subType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-                    this.subType[i]));
+                this.subType[i]));
         }
       }
       if (this.parameters != null) {
@@ -179,10 +180,10 @@ namespace PeterO.Mail {
       }
     }
 
-    internal MediaType(
-  string type,
-  string subtype,
-  IDictionary<string, string> parameters) {
+    internal MediaType (
+      string type,
+      string subtype,
+      IDictionary<string, string> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
       this.parameters = new Dictionary<string, string>(parameters);
@@ -242,7 +243,7 @@ namespace PeterO.Mail {
           // Non-ASCII (allowed in internationalized email headers under
           // RFC6532)
           if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && (s[i2 + 1] &
-            0xfc00) == 0xdc00) {
+              0xfc00) == 0xdc00) {
             i2 += 2;
           } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
@@ -274,7 +275,7 @@ namespace PeterO.Mail {
         char c = s[index + 1];
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
         if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && (s[index + 2] &
-          0xfc00) == 0xdc00) {
+            0xfc00) == 0xdc00) {
           return index + 3;
         }
         if ((c & 0xf800) == 0xd800) {
@@ -399,8 +400,8 @@ namespace PeterO.Mail {
     // in such values)
     private static bool IsIsecnOfUrlPathAndAttrValueChar(int c) {
       return c >= 33 && c <= 126 && ((c >= 'A' && c <= 'Z') ||
-                    (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
-                    "!$&*+-._~".IndexOf((char)c) >= 0);
+          (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+          "!$&*+-._~".IndexOf((char)c) >= 0);
     }
 
     private static void PctAppend(StringBuilder sb, int w) {
@@ -426,12 +427,12 @@ namespace PeterO.Mail {
       int index = startPos;
       var sb = new StringBuilder();
       while (index < str.Length && (maxLineLength < 0 || column <=
-        maxLineLength)) {
+          maxLineLength)) {
         int c = str[index];
         bool first = index == 0;
         int contin = (index == 0) ? 7 : 0;
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
-            (str[index + 1] & 0xfc00) == 0xdc00) {
+          (str[index + 1] & 0xfc00) == 0xdc00) {
           c = 0x10000 + ((c & 0x3ff) << 10) + (str[index + 1] & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
@@ -490,7 +491,7 @@ namespace PeterO.Mail {
       string str,
       HeaderEncoder sa,
       bool uriSafe) {
-#if DEBUG
+      #if DEBUG
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
@@ -503,7 +504,7 @@ namespace PeterO.Mail {
       if (name.Length == 0) {
         throw new ArgumentException("name" + " is empty.");
       }
-#endif
+      #endif
 
       int column = sa.GetColumn();
       // Check if parameter is short enough for the column that
@@ -520,8 +521,9 @@ namespace PeterO.Mail {
           if (contin > 0) {
             sa.AppendSymbol(";");
           }
-          sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) + "*")
-     .AppendSymbol("=");
+          sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) +
+"*")
+          .AppendSymbol("=");
           index = EncodeContinuation(str, index, sa, uriSafe);
           ++contin;
         }
@@ -551,7 +553,7 @@ namespace PeterO.Mail {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
-          (!IsAttributeChar(c))) {
+(!IsAttributeChar(c))) {
           simple = false;
         }
       }
@@ -584,12 +586,12 @@ namespace PeterO.Mail {
       return sa.TryAppendSymbol(sb.ToString());
     }
 
-    internal static void AppendParameters(
+    internal static void AppendParameters (
       IDictionary<string, string> parameters,
       HeaderEncoder sa) {
       AppendParameters(parameters, sa, false);
     }
-    internal static void AppendParameters(
+    internal static void AppendParameters (
       IDictionary<string, string> parameters,
       HeaderEncoder sa,
       bool uriSafe) {
@@ -667,7 +669,7 @@ namespace PeterO.Mail {
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
-           ValueSpecials.IndexOf(c) >= 0)) {
+            ValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {
@@ -694,7 +696,7 @@ namespace PeterO.Mail {
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          AttrValueSpecials.IndexOf(c) >= 0)) {
+            AttrValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -717,7 +719,7 @@ namespace PeterO.Mail {
         return i;
       }
       if (i + 1 < endIndex && str[i] == '*' && str[i + 1] >= '1' && str[i +
-        1] <= '9') {
+          1] <= '9') {
         // other-sections
         if (builder != null) {
           builder.Append('*');
@@ -759,14 +761,14 @@ namespace PeterO.Mail {
         char c = str[i];
         // See RFC6838
         if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
-          c <= '9')) {
+            c <= '9')) {
           if (builder != null) {
             builder.Append(c);
           }
           ++i;
           ++count;
         } else if (count > 0 && (c == (c & 0x7f) && specials.IndexOf(c) >=
-              0)) {
+            0)) {
           if (builder != null) {
             builder.Append(c);
           }
@@ -807,7 +809,7 @@ namespace PeterO.Mail {
           return true;
         }
         if (sub.Equals("xml-external-parsed-entity",
-  StringComparison.Ordinal)) {
+            StringComparison.Ordinal)) {
           return true;
         }
         if (sub.Equals("vnd.in3d.3dml", StringComparison.Ordinal)) {
@@ -823,11 +825,11 @@ namespace PeterO.Mail {
           return true;
         }
         if (sub.Equals("vnd.net2phone.commcenter.command",
-  StringComparison.Ordinal)) {
+            StringComparison.Ordinal)) {
           return true;
         }
         if (sub.Equals("vnd.radisys.msml-basic-layout",
-  StringComparison.Ordinal)) {
+            StringComparison.Ordinal)) {
           return true;
         }
         if (sub.Equals("vnd.wap.si", StringComparison.Ordinal)) {
@@ -855,12 +857,12 @@ namespace PeterO.Mail {
     /// for that parameter given the media type (e.g., "us-ascii" if the
     /// media type is "text/plain"; see RFC2046), or the empty string if
     /// there is none.</returns>
-#if CODE_ANALYSIS
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design", "CA1024",
-  Justification="This method has different semantics from " +
-    "GetParameter(\"charset\").")]
-#endif
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage (
+        "Microsoft.Design", "CA1024",
+        Justification = "This method has different semantics from " +
+          "GetParameter(\"charset\").")]
+    #endif
     public string GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
       // media types, so that there is no default charset for as yet
@@ -972,52 +974,62 @@ namespace PeterO.Mail {
           string sub = this.SubType;
           // Media types that assume a default of US-ASCII
           if (sub.Equals("plain", StringComparison.Ordinal) ||
-  sub.Equals("sgml", StringComparison.Ordinal) ||
-  sub.Equals("troff", StringComparison.Ordinal) ||
-  sub.Equals("example", StringComparison.Ordinal) ||
-  sub.Equals("dns", StringComparison.Ordinal) ||
-  sub.Equals("mizar", StringComparison.Ordinal) ||
-  sub.Equals("prs.prop.logic", StringComparison.Ordinal) ||
-  sub.Equals("vnd.ascii-art", StringComparison.Ordinal) ||
-  sub.Equals("vnd.dmclientscript", StringComparison.Ordinal) ||
-  sub.Equals("prs.lines.tag", StringComparison.Ordinal) ||
-  sub.Equals("vnd.latex-z", StringComparison.Ordinal) ||
-  sub.Equals("rfc822-headers", StringComparison.Ordinal) ||
-  sub.Equals("vnd.dvb.subtitle", StringComparison.Ordinal) ||
-  sub.Equals("vnd.fly", StringComparison.Ordinal) ||
-  sub.Equals("directory", StringComparison.Ordinal) ||
-  sub.Equals("css", StringComparison.Ordinal) ||
-  sub.Equals("richtext", StringComparison.Ordinal) ||
-  sub.Equals("enriched", StringComparison.Ordinal) ||
-  sub.Equals("tab-separated-values", StringComparison.Ordinal) ||
-  sub.Equals("vnd.in3d.spot", StringComparison.Ordinal) ||
-  sub.Equals("vnd.abc", StringComparison.Ordinal) ||
-  sub.Equals("vnd.wap.wmlscript", StringComparison.Ordinal) ||
-  sub.Equals("vnd.curl", StringComparison.Ordinal) ||
-  sub.Equals("vnd.fmi.flexstor", StringComparison.Ordinal) ||
-  sub.Equals("uri-list", StringComparison.Ordinal) ||
-  sub.Equals("vnd.si.uricatalogue", StringComparison.Ordinal)) {
+                     sub.Equals("sgml", StringComparison.Ordinal) ||
+                     sub.Equals("troff", StringComparison.Ordinal) ||
+                     sub.Equals("example", StringComparison.Ordinal) ||
+                     sub.Equals("dns", StringComparison.Ordinal) ||
+                     sub.Equals("mizar", StringComparison.Ordinal) ||
+                     sub.Equals("prs.prop.logic", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.ascii-art", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.dmclientscript",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("prs.lines.tag", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.latex-z", StringComparison.Ordinal) ||
+                     sub.Equals("rfc822-headers", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.dvb.subtitle", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.fly", StringComparison.Ordinal) ||
+                     sub.Equals("directory", StringComparison.Ordinal) ||
+                     sub.Equals("css", StringComparison.Ordinal) ||
+                     sub.Equals("richtext", StringComparison.Ordinal) ||
+                     sub.Equals("enriched", StringComparison.Ordinal) ||
+                     sub.Equals("tab-separated-values",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("vnd.in3d.spot", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.abc", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.wap.wmlscript",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("vnd.curl", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.fmi.flexstor", StringComparison.Ordinal) ||
+                     sub.Equals("uri-list", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.si.uricatalogue",
+                     StringComparison.Ordinal)) {
             return "us-ascii";
           }
           // Media types that assume a default of UTF-8
           if (sub.Equals("vcard", StringComparison.Ordinal) ||
-  sub.Equals("jcr-cnd", StringComparison.Ordinal) ||
-  sub.Equals("n3", StringComparison.Ordinal) ||
-  sub.Equals("turtle", StringComparison.Ordinal) ||
-  sub.Equals("strings", StringComparison.Ordinal) ||
-  sub.Equals("vnd.debian.copyright", StringComparison.Ordinal) ||
-  sub.Equals("provenance-notation", StringComparison.Ordinal) ||
-  sub.Equals("csv", StringComparison.Ordinal) ||
-  sub.Equals("calendar", StringComparison.Ordinal) ||
-  sub.Equals("vnd.a", StringComparison.Ordinal) ||
-  sub.Equals("parameters", StringComparison.Ordinal) ||
-  sub.Equals("prs.fallenstein.rst", StringComparison.Ordinal) ||
-  sub.Equals("vnd.esmertec.theme.descriptor", StringComparison.Ordinal) ||
-  sub.Equals("vnd.trolltech.linguist", StringComparison.Ordinal) ||
-  sub.Equals("csv-schema", StringComparison.Ordinal) ||
-  sub.Equals("vnd.graphviz", StringComparison.Ordinal) ||
-  sub.Equals("cache-manifest", StringComparison.Ordinal) ||
-  sub.Equals("vnd.sun.j2me.app-descriptor", StringComparison.Ordinal)) {
+                     sub.Equals("jcr-cnd", StringComparison.Ordinal) ||
+                     sub.Equals("n3", StringComparison.Ordinal) ||
+                     sub.Equals("turtle", StringComparison.Ordinal) ||
+                     sub.Equals("strings", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.debian.copyright",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("provenance-notation",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("csv", StringComparison.Ordinal) ||
+                     sub.Equals("calendar", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.a", StringComparison.Ordinal) ||
+                     sub.Equals("parameters", StringComparison.Ordinal) ||
+                     sub.Equals("prs.fallenstein.rst",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("vnd.esmertec.theme.descriptor",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("vnd.trolltech.linguist",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("csv-schema", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.graphviz", StringComparison.Ordinal) ||
+                     sub.Equals("cache-manifest", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.sun.j2me.app-descriptor",
+                     StringComparison.Ordinal)) {
             return "utf-8";
           }
         }
@@ -1048,7 +1060,8 @@ namespace PeterO.Mail {
       return this.parameters.ContainsKey(name) ? this.parameters[name] : null;
     }
 
-    private static string DecodeRfc2231Extension(string value, bool httpRules) {
+    private static string DecodeRfc2231Extension(string value,
+      bool httpRules) {
       int firstQuote = value.IndexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
@@ -1064,9 +1077,9 @@ namespace PeterO.Mail {
         // charset is omitted, which is not allowed under RFC8187
         return null;
       }
-      string language = value.Substring(
-  firstQuote + 1,
-  secondQuote - (firstQuote + 1));
+      string language = value.Substring (
+          firstQuote + 1,
+          secondQuote - (firstQuote + 1));
       if (language.Length > 0 &&
         !LanguageTags.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
@@ -1103,9 +1116,9 @@ namespace PeterO.Mail {
         return USAsciiEncoding;
       }
       string charset = value.Substring(0, firstQuote);
-      string language = value.Substring(
-  firstQuote + 1,
-  secondQuote - (firstQuote + 1));
+      string language = value.Substring (
+          firstQuote + 1,
+          secondQuote - (firstQuote + 1));
       if (language.Length > 0 &&
         !LanguageTags.IsPotentiallyValidLanguageTag(language)) {
         // not a valid language tag
@@ -1127,14 +1140,14 @@ namespace PeterO.Mail {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeToString(
-        charset,
-        new PercentEncodingStringTransform(value));
+      return (quote >= 0) ? null : Encodings.DecodeToString (
+          charset,
+          new PercentEncodingStringTransform(value));
     }
 
-    private static bool ExpandRfc2231Extensions(
-  IDictionary<string, string> parameters,
-  bool httpRules) {
+    private static bool ExpandRfc2231Extensions (
+      IDictionary<string, string> parameters,
+      bool httpRules) {
       if (parameters.Count == 0) {
         return true;
       }
@@ -1169,14 +1182,14 @@ namespace PeterO.Mail {
         }
         // name*0 or name*0*
         if (!httpRules && asterisk > 0 && ((asterisk == name.Length - 2 &&
-          name[asterisk + 1] == '0') || (asterisk == name.Length - 3 &&
-          name[asterisk + 1] == '0' && name[asterisk + 2] == '*'))) {
+              name[asterisk + 1] == '0') || (asterisk == name.Length - 3 &&
+              name[asterisk + 1] == '0' && name[asterisk + 2] == '*'))) {
           string realName = name.Substring(0, asterisk);
           // NOTE: 'httpRules' for DecodeRfc2231Extension is false
           string realValue = (asterisk == name.Length - 3) ?
             DecodeRfc2231Extension(value, false) : value;
-          ICharacterEncoding charsetUsed = GetRfc2231Charset(
-            (asterisk == name.Length - 3) ? value : null);
+          ICharacterEncoding charsetUsed = GetRfc2231Charset (
+              (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
           var pindex = 1;
           var builder = new StringBuilder();
@@ -1247,23 +1260,23 @@ namespace PeterO.Mail {
       return index;
     }
 
-    internal static bool ParseParameters(
-  string str,
-  int index,
-  int endIndex,
-  bool httpRules,
-  IDictionary<string, string> parameters) {
+    internal static bool ParseParameters (
+      string str,
+      int index,
+      int endIndex,
+      bool httpRules,
+      IDictionary<string, string> parameters) {
       var duplicateAttributes = new Dictionary<string, string>();
       var hasDuplicateAttributes = false;
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
         index = httpRules ? SkipOws(str, index, endIndex) :
-              HeaderParser.ParseCFWS(
-                str,
-                index,
-                endIndex,
-                null);
+          HeaderParser.ParseCFWS(
+            str,
+            index,
+            endIndex,
+            null);
         if (index >= endIndex) {
           // No more parameters
           return ExpandRfc2231Extensions(parameters, httpRules);
@@ -1273,11 +1286,11 @@ namespace PeterO.Mail {
         }
         ++index;
         index = httpRules ? SkipOws(str, index, endIndex) :
-              HeaderParser.ParseCFWS(
-                str,
-                index,
-                endIndex,
-                null);
+          HeaderParser.ParseCFWS(
+            str,
+            index,
+            endIndex,
+            null);
         var builder = new StringBuilder();
         // NOTE:
         // 1. RFC6838 restricts the format of parameter names to the same
@@ -1350,7 +1363,8 @@ namespace PeterO.Mail {
           // If the attribute name ends with '*' the value may not be a quoted
           // string because of RFC2231; if this happens, ignore the attribute
           if (attribute[attribute.Length - 1] != '*' &&
-   (!hasDuplicateAttributes || !duplicateAttributes.ContainsKey(attribute))) {
+            (!hasDuplicateAttributes || !duplicateAttributes.ContainsKey(
+  attribute))) {
             parameters[attribute] = builder.ToString();
           }
           index = qs;
@@ -1362,7 +1376,7 @@ namespace PeterO.Mail {
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);
         if (qs != index) {
           if (!hasDuplicateAttributes ||
-                  !duplicateAttributes.ContainsKey(attribute)) {
+            !duplicateAttributes.ContainsKey(attribute)) {
             parameters[attribute] = builder.ToString();
           }
           index = qs;
@@ -1393,7 +1407,8 @@ namespace PeterO.Mail {
       if (i == i2) {
         return null;
       }
-      string subType = DataUtilities.ToLowerCaseAscii(str.Substring(i, i2 - i));
+      string subType = DataUtilities.ToLowerCaseAscii(str.Substring(i, i2
+- i));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
@@ -1412,7 +1427,8 @@ namespace PeterO.Mail {
         index,
         endIndex,
         HttpRules,
-        parameters) ? new MediaType(topLevelType, subType, parameters) : null;
+        parameters) ? new MediaType(topLevelType, subType, parameters) :
+null;
     }
 
     /// <summary>Specifies the media type "text/plain" and the "charset"
@@ -1424,16 +1440,16 @@ namespace PeterO.Mail {
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
         "text",
-        "plain").SetParameter(
-        "charset",
-        "us-ascii").ToMediaType();
+        "plain").SetParameter (
+      "charset",
+      "us-ascii").ToMediaType();
 
-#if CODE_ANALYSIS
+    #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
-#endif
+      Justification = "This instance is immutable")]
+    #endif
 
     /// <summary>Specifies the media type "text/plain" and the "charset"
     /// parameter "utf-8", used for plain text data that may contain
@@ -1442,9 +1458,9 @@ namespace PeterO.Mail {
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
         "text",
-        "plain").SetParameter(
-        "charset",
-        "utf-8").ToMediaType();
+        "plain").SetParameter (
+      "charset",
+      "utf-8").ToMediaType();
 
     /// <summary>Specifies the media type "message/rfc822", used for
     /// Internet mail messages.</summary>
@@ -1455,12 +1471,12 @@ namespace PeterO.Mail {
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
-#if CODE_ANALYSIS
+    #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
-      Justification="This instance is immutable")]
-#endif
+      Justification = "This instance is immutable")]
+    #endif
 
     /// <summary>Specifies the media type "application/octet-stream", used
     /// for arbitrary binary data.</summary>

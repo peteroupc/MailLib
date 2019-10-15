@@ -4,8 +4,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Contains methods for parsing and matching language
-    /// tags.</summary>
+  /// <summary>Contains methods for parsing and matching language
+  /// tags.</summary>
   public static class LanguageTags {
     /// <summary>Returns whether the given string is a basic language range
     /// under RFC 4647. Examples include "*", "en-us", and "fr".</summary>
@@ -45,7 +45,7 @@ namespace PeterO.Mail {
           continue;
         }
         if (extended && c == '*' && count == 0 && (i + 1 == str.Length ||
-          str[i + 1] == '-')) {
+            str[i + 1] == '-')) {
           ++count;
           ++i;
           continue;
@@ -54,7 +54,7 @@ namespace PeterO.Mail {
           return false;
         }
         if (!first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-          (c >= '0' && c <= '9'))) {
+            (c >= '0' && c <= '9'))) {
           return false;
         }
         if (count >= 8) {
@@ -70,7 +70,7 @@ namespace PeterO.Mail {
       // NOTE: Includes obsolete syntax under RFC 5322 (with errata)
       while (index < endIndex) {
         if (endIndex - index > 1 && str[index] == 0x0d && str[index + 1] ==
-              0x0a) {
+          0x0a) {
           index += 2;
         }
         if (str[index] == 0x09 || str[index] == 0x20) {
@@ -115,18 +115,18 @@ namespace PeterO.Mail {
           ++index;
         }
         if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+              56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str[index] >= 1 &&
-          str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) ||
-          (str[index] >= 14 && str[index] <= 31) || (str[index] >= 33 &&
-          str[index] <= 39) || (str[index] >= 42 && str[index] <= 91) ||
-          (str[index] >= 93 && str[index] <= 55295) || (str[index] >= 57344 &&
-          str[index] <= 65535))) {
+              str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) ||
+            (str[index] >= 14 && str[index] <= 31) || (str[index] >= 33 &&
+              str[index] <= 39) || (str[index] >= 42 && str[index] <= 91) ||
+            (str[index] >= 93 && str[index] <= 55295) || (str[index] >= 57344 &&
+              str[index] <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str[index] >= 0 &&
-          str[index] <= 55295) || (str[index] >= 57344 && str[index] <=
-          65535))) {
+              str[index] <= 55295) || (str[index] >= 57344 && str[index] <=
+              65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -168,16 +168,19 @@ namespace PeterO.Mail {
       while (i <= str.Length) {
         if (i == str.Length || str[i] == '-') {
           if (count == 4 && lastSubtagLength >= 2) {
-            sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 4, 1)));
-            sb.Append(DataUtilities.ToLowerCaseAscii(str.Substring(i - 3, 3)));
+            sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 4,
+  1)));
+            sb.Append(DataUtilities.ToLowerCaseAscii(str.Substring(i - 3,
+  3)));
           } else if (count == 2 && lastSubtagLength >= 2) {
-            sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 2, 2)));
+            sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 2,
+  2)));
           } else {
-            sb.Append(
-          DataUtilities.ToLowerCaseAscii(
-          str.Substring(
-            i - count,
-            count)));
+            sb.Append (
+              DataUtilities.ToLowerCaseAscii (
+                str.Substring(
+                  i - count,
+                  count)));
           }
           lastSubtagLength = count;
           count = 0;
@@ -196,7 +199,7 @@ namespace PeterO.Mail {
     private static int SkipLDHSequence(string str, int index, int endIndex) {
       while (index < endIndex) {
         if ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 &&
-          str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) ||
+            str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) ||
           (str[index] == 45)) {
           ++index;
         } else {
@@ -215,7 +218,7 @@ namespace PeterO.Mail {
     /// <returns>A list of language tags. Returns an empty list if
     /// <paramref name='str'/> is null or the empty string, or null if
     /// <paramref name='str'/> syntactically invalid.</returns>
-    public static IList<string> GetLanguageList(
+    public static IList<string> GetLanguageList (
       string str) {
       string tag = null;
       var first = true;
@@ -284,7 +287,7 @@ namespace PeterO.Mail {
     /// the order in which they appeared in the given string. Returns null
     /// if <paramref name='str'/> is null or syntactically
     /// invalid.</returns>
-    public static IList<StringAndQuality> GetRangeListWithQuality(
+    public static IList<StringAndQuality> GetRangeListWithQuality (
       string str) {
       string tag = null;
       var first = true;
@@ -335,7 +338,7 @@ namespace PeterO.Mail {
               int[] mults = { 100, 10, 1 };
               for (var i = 0; i < 3; ++i) {
                 if (index < str.Length &&
-                (str[index] >= '0' || str[index] <= '9')) {
+                  (str[index] >= '0' || str[index] <= '9')) {
                   qvalue += mults[i] * (str[index] - '0');
                   ++index;
                 } else {
@@ -369,7 +372,7 @@ namespace PeterO.Mail {
         return true;
       }
       if (tagLowerCased.Length > rangeLowerCased.Length &&
-          tagLowerCased[rangeLowerCased.Length] == '-') {
+        tagLowerCased[rangeLowerCased.Length] == '-') {
         string prefix = tagLowerCased.Substring(0, rangeLowerCased.Length);
         if (rangeLowerCased.Equals(prefix, StringComparison.Ordinal)) {
           return true;
@@ -387,7 +390,7 @@ namespace PeterO.Mail {
         return false;
       }
       if (!rangeSub[0].Equals("*", StringComparison.Ordinal) &&
-!rangeSub[0].Equals(tagSub[0], StringComparison.Ordinal)) {
+        !rangeSub[0].Equals(tagSub[0], StringComparison.Ordinal)) {
         return false;
       }
       var rangeIndex = 1;
@@ -437,11 +440,11 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic or extended
     /// language range, or <paramref name='languages'/> contains a value
     /// that is not a potentially valid language tag.</exception>
-    public static IList<string> LanguageTagFilter(
-           IList<string> ranges,
-           IList<string> languages,
-           bool extended,
-           bool matchStarAtEnd) {
+    public static IList<string> LanguageTagFilter (
+      IList<string> ranges,
+      IList<string> languages,
+      bool extended,
+      bool matchStarAtEnd) {
       if (ranges == null) {
         throw new ArgumentNullException(nameof(ranges));
       }
@@ -505,7 +508,7 @@ namespace PeterO.Mail {
       var i = 0;
       for (i = range.Length - 1; i >= 0; --i) {
         if (range[i] == '-' && i >= 2 &&
-            range[i - 1] != '-' && range[i - 2] != '-') {
+          range[i - 1] != '-' && range[i - 2] != '-') {
           return range.Substring(0, i);
         }
       }
@@ -523,11 +526,11 @@ namespace PeterO.Mail {
     /// name='range'/> is not a basic language range, or <paramref
     /// name='tag'/> is not a potentially valid language tag.</exception>
     public static bool MatchesLanguageTag(string range, string tag) {
-      IList<string> tags = LanguageTagFilter(
-        new List<string>(new string[] { range }),
-        new List<string>(new string[] { tag }),
-        false,
-        false);
+      IList<string> tags = LanguageTagFilter (
+          new List<string>(new string[] { range }),
+          new List<string>(new string[] { tag }),
+          false,
+          false);
       return tags.Count > 0;
     }
 
@@ -548,10 +551,10 @@ namespace PeterO.Mail {
     /// name='range'/> is not a basic language range, or <paramref
     /// name='languages'/> contains a value that is not a potentially valid
     /// language tag.</exception>
-    public static string LanguageTagLookup(
-  string range,
-  IList<string> languages,
-  string defaultValue) {
+    public static string LanguageTagLookup (
+      string range,
+      IList<string> languages,
+      string defaultValue) {
       return LanguageTagLookup(range, languages, defaultValue, false);
     }
 
@@ -574,10 +577,10 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic language
     /// range, or <paramref name='languages'/> contains a value that is not
     /// a potentially valid language tag.</exception>
-    public static string LanguageTagLookup(
-  IList<string> ranges,
-  IList<string> languages,
-  string defaultValue) {
+    public static string LanguageTagLookup (
+      IList<string> ranges,
+      IList<string> languages,
+      string defaultValue) {
       return LanguageTagLookup(ranges, languages, defaultValue, false);
     }
 
@@ -597,9 +600,9 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic language
     /// range, or <paramref name='languages'/> contains a value that is not
     /// a potentially valid language tag.</exception>
-    public static IList<string> LanguageTagFilter(
-  IList<string> ranges,
-  IList<string> languages) {
+    public static IList<string> LanguageTagFilter (
+      IList<string> ranges,
+      IList<string> languages) {
       return LanguageTagFilter(ranges, languages, false, false);
     }
 
@@ -622,16 +625,16 @@ namespace PeterO.Mail {
     /// name='range'/> is not a basic or extended language range, or
     /// <paramref name='languages'/> contains a value that is not a
     /// potentially valid language tag.</exception>
-    public static string LanguageTagLookup(
-  string range,
-  IList<string> languages,
-  string defaultValue,
-  bool extended) {
-      return LanguageTagLookup(
-        new List<string>(new string[] { range }),
-        languages,
-        defaultValue,
-        extended);
+    public static string LanguageTagLookup (
+      string range,
+      IList<string> languages,
+      string defaultValue,
+      bool extended) {
+      return LanguageTagLookup (
+          new List<string>(new string[] { range }),
+          languages,
+          defaultValue,
+          extended);
     }
 
     /// <summary>Does a language tag lookup (under RFC 4647) for a matching
@@ -655,11 +658,11 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic or extended
     /// language range, or <paramref name='languages'/> contains a value
     /// that is not a potentially valid language tag.</exception>
-    public static string LanguageTagLookup(
-         IList<string> ranges,
-         IList<string> languages,
-         string defaultValue,
-         bool extended) {
+    public static string LanguageTagLookup (
+      IList<string> ranges,
+      IList<string> languages,
+      string defaultValue,
+      bool extended) {
       if (ranges == null) {
         throw new ArgumentNullException(nameof(ranges));
       }
@@ -722,7 +725,7 @@ namespace PeterO.Mail {
         char c1 = str[index];
         char c2 = str[index + 1];
         if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2
-          >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
+              >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
             // case AA: a 2-letter language
@@ -757,16 +760,16 @@ namespace PeterO.Mail {
           // is necessary because it would otherwise be rejected
           // by the code that checks extended language subtags)
           if (str.Equals("sgn-be-fr", StringComparison.Ordinal) ||
-str.Equals("sgn-be-nl", StringComparison.Ordinal) ||
-str.Equals("sgn-ch-de", StringComparison.Ordinal) ||
-str.Equals("en-gb-oed", StringComparison.Ordinal) ||
-str.Equals("zh-min-nan", StringComparison.Ordinal)) {
+            str.Equals("sgn-be-nl", StringComparison.Ordinal) ||
+            str.Equals("sgn-ch-de", StringComparison.Ordinal) ||
+            str.Equals("en-gb-oed", StringComparison.Ordinal) ||
+            str.Equals("zh-min-nan", StringComparison.Ordinal)) {
             return true;
           }
           // More complex cases
-          string[] splitString = ParserUtility.SplitAt(
-  str.Substring(startIndex, endIndex - startIndex),
-  "-");
+          string[] splitString = ParserUtility.SplitAt (
+              str.Substring(startIndex, endIndex - startIndex),
+              "-");
           if (splitString.Length == 0) {
             return false;
           }
@@ -822,7 +825,7 @@ str.Equals("zh-min-nan", StringComparison.Ordinal)) {
               }
               ++splitIndex;
             } else if (len == 4 &&
-                 (curString[0] >= '0' && curString[0] <= '9')) {
+              (curString[0] >= '0' && curString[0] <= '9')) {
               variants = variants ?? new List<string>();
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
@@ -844,7 +847,7 @@ str.Equals("zh-min-nan", StringComparison.Ordinal)) {
             string curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (LengthIfAllAlphaNum(curString) == 1 &&
-                    !curString.Equals("x", StringComparison.Ordinal)) {
+              !curString.Equals("x", StringComparison.Ordinal)) {
               variants = variants ?? new List<string>();
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
@@ -876,7 +879,8 @@ str.Equals("zh-min-nan", StringComparison.Ordinal)) {
           // optional private use
           if (splitIndex < splitLength) {
             int curIndex = splitIndex;
-            if (splitString[splitIndex].Equals("x", StringComparison.Ordinal)) {
+            if (splitString[splitIndex].Equals("x",
+  StringComparison.Ordinal)) {
               ++splitIndex;
               var havetoken = false;
               while (splitIndex < splitLength) {
@@ -930,18 +934,18 @@ str.Equals("zh-min-nan", StringComparison.Ordinal)) {
           // grandfathered language tags
           str = DataUtilities.ToLowerCaseAscii(str);
           return str.Equals("i-ami", StringComparison.Ordinal) ||
-str.Equals("i-bnn", StringComparison.Ordinal) ||
-          str.Equals("i-default", StringComparison.Ordinal) ||
-str.Equals("i-enochian", StringComparison.Ordinal) ||
-          str.Equals("i-hak", StringComparison.Ordinal) ||
-str.Equals("i-klingon", StringComparison.Ordinal) ||
-          str.Equals("i-lux", StringComparison.Ordinal) ||
-str.Equals("i-navajo", StringComparison.Ordinal) ||
-          str.Equals("i-mingo", StringComparison.Ordinal) ||
-str.Equals("i-pwn", StringComparison.Ordinal) ||
-          str.Equals("i-tao", StringComparison.Ordinal) ||
-str.Equals("i-tay", StringComparison.Ordinal) ||
-          str.Equals("i-tsu", StringComparison.Ordinal);
+            str.Equals("i-bnn", StringComparison.Ordinal) ||
+            str.Equals("i-default", StringComparison.Ordinal) ||
+            str.Equals("i-enochian", StringComparison.Ordinal) ||
+            str.Equals("i-hak", StringComparison.Ordinal) ||
+            str.Equals("i-klingon", StringComparison.Ordinal) ||
+            str.Equals("i-lux", StringComparison.Ordinal) ||
+            str.Equals("i-navajo", StringComparison.Ordinal) ||
+            str.Equals("i-mingo", StringComparison.Ordinal) ||
+            str.Equals("i-pwn", StringComparison.Ordinal) ||
+            str.Equals("i-tao", StringComparison.Ordinal) ||
+            str.Equals("i-tay", StringComparison.Ordinal) ||
+            str.Equals("i-tsu", StringComparison.Ordinal);
         }
         return false;
       }
@@ -964,7 +968,7 @@ str.Equals("i-tay", StringComparison.Ordinal) ||
       for (int i = 0; i < len; ++i) {
         char c1 = str[i];
         if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1
-          >= '0' && c1 <= '9'))) {
+              >= '0' && c1 <= '9'))) {
           return 0;
         }
       }

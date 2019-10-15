@@ -140,16 +140,16 @@ namespace MailLibTest {
         throw new ArgumentNullException(nameof(expectedStr));
       }
       if (!expectedStr.Equals(actualStr, StringComparison.Ordinal)) {
-        Assert.Fail(
-  "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
-    "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
+        Assert.Fail (
+          "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
+          "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
     }
 
     public static void AssertEqual(int expected, int actual, string msg) {
       if (expected != actual) {
-        Assert.Fail(
-  "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
+        Assert.Fail (
+          "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
 
@@ -161,14 +161,14 @@ namespace MailLibTest {
         throw new ArgumentNullException(nameof(actual));
       }
       if (expected.Length != actual.Length) {
-        Assert.Fail(
+        Assert.Fail (
           "\nexpected: " + ToString(expected) + "\n" + "\nwas: " +
-            ToString(actual) + "\n" + msg);
+          ToString(actual) + "\n" + msg);
       }
       for (int i = 0; i < expected.Length; ++i) {
         if (expected[i] != actual[i]) {
           Assert.Fail("\nexpected: " + ToString(expected) + "\n" +
-                "\nwas: " + ToString(actual) + "\n" + msg);
+            "\nwas: " + ToString(actual) + "\n" + msg);
         }
       }
     }
@@ -221,11 +221,11 @@ namespace MailLibTest {
           "_\u96e3\uc972+67 Tqd R_.",
           stringTemp);
       }
-      Assert.IsFalse(
+      Assert.IsFalse (
         NormalizerInput.IsNormalized(str, Normalization.NFC));
       this.TestIdempotent(str, Normalization.NFC);
       str = "_\u96e3\uc972+67 Tqd R_._";
-      Assert.IsTrue(
+      Assert.IsTrue (
         NormalizerInput.IsNormalized(str, Normalization.NFC));
       this.TestIdempotent(str, Normalization.NFC);
     }
@@ -311,33 +311,33 @@ namespace MailLibTest {
     }
     /*
 
-[Test]
-public void TestNormD() {
-  var cp = new int[1];
+    [Test]
+    public void TestNormD() {
+    var cp = new int[1];
       int[] pairs = NormalizationData.ComposedPairs;
       for (var i = 0; i < pairs.Length; i += 3) {
         int p1 = pairs[i];
         int p2 = pairs[i + 1];
         int p3 = pairs[i + 2];
         if (IsSpecialChar(p1) ||
-IsSpecialChar(p2) ||
-IsSpecialChar(p3)) {
+    IsSpecialChar(p2) ||
+    IsSpecialChar(p3)) {
           Console.WriteLine("{0:X4},{1:X4},{2:X4}", p1, p2, p3);
         }
       }
-  for (var i = 0; i < 0x110000; ++i) {
-    if ((i & 0xf800) == 0xd800) {
-      continue;
-    }
+    for (var i = 0; i < 0x110000; ++i) {
+      if ((i & 0xf800) == 0xd800) {
+        continue;
+      }
           cp[0] = i;
           string codePointString = ToCodePointString(cp);
     string nfc = NormalizerInput.Normalize(codePointString,
             Normalization.NFD);
     string nfd = NormalizerInput.Normalize(codePointString,
             Normalization.NFD);
-string nfdfs = NormalizerInput.Normalize(codePointString,
+    string nfdfs = NormalizerInput.Normalize(codePointString,
             Normalization.NFDForFilesystems);
-   Assert.IsTrue(nfdfs.Length > 0,
+    Assert.IsTrue(nfdfs.Length > 0,
             EncodingTest.EscapeString(codePointString));
           if (!nfc.Equals(codePointString)) {
             continue;
@@ -351,7 +351,7 @@ string nfdfs = NormalizerInput.Normalize(codePointString,
           }
         }
     }
-*/
+    */
     [Test]
     [Timeout(60000)]
     public void NormTest() {
@@ -432,22 +432,22 @@ string nfdfs = NormalizerInput.Normalize(codePointString,
             Assert.Fail(TestCommon.IntToString(i));
           }
           string imsg = TestCommon.IntToString(i);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFC),
-  imsg);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFD),
-  imsg);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFKC),
-  imsg);
-          AssertEqual(
-  cpstr,
-  NormalizerInput.Normalize(cpstr, Normalization.NFKD),
-  imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFC),
+            imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFD),
+            imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFKC),
+            imsg);
+          AssertEqual (
+            cpstr,
+            NormalizerInput.Normalize(cpstr, Normalization.NFKD),
+            imsg);
         }
       }
     }

@@ -9,7 +9,8 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO {
-  internal sealed class ReadOnlyMap<TKey, TValue> : IDictionary<TKey, TValue> {
+  internal sealed class ReadOnlyMap<TKey, TValue> :
+    IDictionary<TKey, TValue> {
     private readonly IDictionary<TKey, TValue> wrapped;
 
     public ReadOnlyMap(IDictionary<TKey, TValue> wrapped) {
@@ -90,7 +91,7 @@ namespace PeterO {
       return this.wrapped.GetEnumerator();
     }
     System.Collections.IEnumerator
-      System.Collections.IEnumerable.GetEnumerator() {
+    System.Collections.IEnumerable.GetEnumerator() {
       return this.wrapped.GetEnumerator();
     }
   }

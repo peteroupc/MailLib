@@ -12,9 +12,9 @@ import java.util.*;
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
-    /**
-     * Represents an email address.
-     */
+  /**
+   * Represents an email address.
+   */
   public class Address {
     private final String localPart;
 
@@ -105,7 +105,7 @@ import com.upokecenter.text.*;
       // we check if the length exceeds that number (thus excluding the space
       // character of a folded line).
       if (DataUtilities.GetUtf8Length(lp, true) >
-    Message.MaxHardHeaderLineLength - 1) {
+        Message.MaxHardHeaderLineLength - 1) {
         return true;
       }
       if (DataUtilities.GetUtf8Length(domainstr, true) >
@@ -113,7 +113,7 @@ import com.upokecenter.text.*;
         return true;
       }
       return (DataUtilities.GetUtf8Length(domain2, true) >
-        Message.MaxHardHeaderLineLength - 1) ? true : false;
+          Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 
     /**
@@ -154,7 +154,7 @@ import com.upokecenter.text.*;
      * enclosed in parentheses are also not allowed.
      * @throws NullPointerException The parameter {@code addressValue} is null.
      * @throws IllegalArgumentException AddressValue is empty.; Address doesn't contain a
-     * '@' sign; Invalid local part; Expected '@' sign after local part;
+     * '@'sign; Invalid local part; Expected '@'sign after local part;
      * Expected domain after '@'; Invalid domain; Address too long.
      */
     public Address(String addressValue) {
@@ -165,7 +165,7 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("addressValue is empty.");
       }
       if (addressValue.indexOf('@') < 0) {
-        throw new IllegalArgumentException("Address doesn't contain a '@' sign");
+        throw new IllegalArgumentException("Address doesn't contain a '@'sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
         addressValue,
@@ -176,8 +176,8 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("Invalid local part");
       }
       if (localPartEnd >= addressValue.length() ||
-     addressValue.charAt(localPartEnd) != '@') {
-        throw new IllegalArgumentException("Expected '@' sign after local part");
+        addressValue.charAt(localPartEnd) != '@') {
+        throw new IllegalArgumentException("Expected '@'sign after local part");
       }
       if (localPartEnd + 1 == addressValue.length()) {
         throw new IllegalArgumentException("Expected domain after '@'");

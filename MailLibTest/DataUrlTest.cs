@@ -9,20 +9,20 @@ namespace MailLibTest {
   [TestFixture]
   public class DataUrlTest {
     private void TestMatchBasicNone(string[] langranges, string str) {
-      IList<string> r = LanguageTags.LanguageTagFilter(
-        new List<string>(langranges),
-        new List<string>(new string[] { str }),
-        false,
-        false);
+      IList<string> r = LanguageTags.LanguageTagFilter (
+          new List<string>(langranges),
+          new List<string>(new string[] { str }),
+          false,
+          false);
       Assert.AreEqual(0, r.Count);
     }
 
     private void TestMatchBasicContained(string[] langranges, string str) {
-      IList<string> r = LanguageTags.LanguageTagFilter(
-        new List<string>(langranges),
-        new List<string>(new string[] { str }),
-        false,
-        false);
+      IList<string> r = LanguageTags.LanguageTagFilter (
+          new List<string>(langranges),
+          new List<string>(new string[] { str }),
+          false,
+          false);
       Assert.IsTrue(r.Count > 0);
     }
     [Test]
@@ -72,11 +72,10 @@ namespace MailLibTest {
       Message msg;
       this.TestMailToOne("mailto:me@example.com");
       this.TestMailToOne("mailto:you@example.com?subject=current-issue");
-      msg =
-  this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-hijk");
+      msg = this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-hijk");
       Assert.AreEqual("x abcdefg-hijk", msg.BodyString);
-      msg =
-  this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
+      msg = this.TestMailToOne(
+  "mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
       Assert.AreEqual("x abcdefg-h\r\nijk", msg.BodyString);
       // ----
       msg = this.TestMailToOne("mailto:e%25f@m.example");
@@ -130,7 +129,8 @@ namespace MailLibTest {
       Assert.AreEqual("b\u00e7", msg.BodyString);
       msg =
 
-  this.TestMailToOne("mailto:me@example.com?subject=%3D%3futf-8%3fQ%3fb%3dC3%3dA7%3f%3d");
+        this.TestMailToOne(
+  "mailto:me@example.com?subject=%3D%3futf-8%3fQ%3fb%3dC3%3dA7%3f%3d");
       Console.Write(msg.GetHeader("subject"));
     }
   }

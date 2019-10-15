@@ -9,65 +9,63 @@ package com.upokecenter.text;
 
 import java.util.*;
 
-    /**
-     * <p>A character input class that implements the Unicode normalization
-     * algorithm and contains methods and functionality to test and convert
-     * text strings for normalization. This is similar to the deprecated
-     * Normalizer class, except it implements the ICharacterInput
-     * interface.</p> <ul> <li><b>NFD</b> (Normalization Form D) decomposes
-     * combined forms to their constituent characters (E plus acute, for
-     * example), then reorders combining marks to a standardized order.
-     * This is called canonical decomposition.</li> <li><b>NFC</b> does
-     * canonical decomposition, then combines certain constituent
-     * characters to their composites (E-acute, for example). This is
-     * called canonical composition.</li> <li>Two normalization forms,
-     * <b>NFKC</b> and <b>NFKD</b>, are similar to NFC and NFD, except they
-     *  also "decompose" certain characters, such as ligatures, font or
-     * positional variants, and subscripts, whose visual distinction can
-     * matter in some contexts. This is called compatibility
-     * decomposition.</li></ul> <p>For more information, see Standard Annex
-     * 15 at <code>http://www.unicode.org/reports/tr15/</code>.</p> <p><b>Thread
-     * safety:</b> This class is mutable; its properties can be changed.
-     * None of its instance methods are designed to be thread safe.
-     * Therefore, access to objects from this class must be synchronized if
-     * multiple threads can access them at the same time.</p> <p>NOTICE:
-     * While this class's source code is in the public domain, the class
-     * uses an class, called NormalizationData, that includes data
-     * derived from the Unicode Character Database. In case doing so is
-     * required, the permission notice for the Unicode Character Database
-     * is given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE.</p>
-     * <p>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
-     * Distributed under the Terms of Use in
-     * http://www.unicode.org/copyright.html.</p> <p>Permission is hereby
-     * granted, free of charge, to any person obtaining a copy of the
-     *  Unicode data files and any associated documentation (the "Data
-     *  Files") or Unicode software and any associated documentation (the
-     *  "Software") to deal in the Data Files or Software without
-     * restriction, including without limitation the rights to use, copy,
-     * modify, merge, publish, distribute, and/or sell copies of the Data
-     * Files or Software, and to permit persons to whom the Data Files or
-     * Software are furnished to do so, provided that (a) this copyright
-     * and permission notice appear with all copies of the Data Files or
-     * Software, (b) this copyright and permission notice appear in
-     * associated documentation, and (c) there is clear notice in each
-     * modified Data File or in the Software as well as in the
-     * documentation associated with the Data File(s) or Software that the
-     * data or software has been modified.</p> <p>THE DATA FILES AND
-     *  SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-     * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-     * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-     * NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE
-     * COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR
-     * ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY
-     * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
-     * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-     * ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-     * OF THE DATA FILES OR SOFTWARE.</p> <p>Except as contained in this
-     * notice, the name of a copyright holder shall not be used in
-     * advertising or otherwise to promote the sale, use or other dealings
-     * in these Data Files or Software without prior written authorization
-     * of the copyright holder.</p>
-     * @deprecated Renamed to NormalizerInput.
+  /**
+   * <p>A character input class that implements the Unicode normalization
+   * algorithm and contains methods and functionality to test and convert
+   * text strings for normalization. This is similar to the deprecated
+   * Normalizer class, except it implements the ICharacterInput
+   * interface.</p> <ul> <li><b>NFD</b> (Normalization Form D) decomposes
+   * combined forms to their constituent characters (E plus acute, for
+   * example), then reorders combining marks to a standardized order. This
+   * is called canonical decomposition.</li> <li><b>NFC</b> does canonical
+   * decomposition, then combines certain constituent characters to their
+   * composites (E-acute, for example). This is called canonical
+   * composition.</li> <li>Two normalization forms, <b>NFKC</b> and
+   *  <b>NFKD</b>, are similar to NFC and NFD, except they also "decompose"
+   * certain characters, such as ligatures, font or positional variants,
+   * and subscripts, whose visual distinction can matter in some contexts.
+   * This is called compatibility decomposition.</li></ul> <p>For more
+   * information, see Standard Annex 15 at
+   * <code>http://www.unicode.org/reports/tr15/</code>.</p> <p><b>Thread
+   * safety:</b> This class is mutable; its properties can be changed. None
+   * of its instance methods are designed to be thread safe. Therefore,
+   * access to objects from this class must be synchronized if multiple
+   * threads can access them at the same time.</p> <p>NOTICE: While this
+   * class's source code is in the public domain, the class uses an
+   * class, called NormalizationData, that includes data derived
+   * from the Unicode Character Database. In case doing so is required, the
+   * permission notice for the Unicode Character Database is given
+   * here:</p> <p>COPYRIGHT AND PERMISSION NOTICE.</p> <p>Copyright (c)
+   * 1991-2014 Unicode, Inc. All rights reserved. Distributed under the
+   * Terms of Use in http://www.unicode.org/copyright.html.</p>
+   * <p>Permission is hereby granted, free of charge, to any person
+   * obtaining a copy of the Unicode data files and any associated
+   *  documentation (the "Data Files") or Unicode software and any
+   *  associated documentation (the "Software") to deal in the Data Files or
+   * Software without restriction, including without limitation the rights
+   * to use, copy, modify, merge, publish, distribute, and/or sell copies
+   * of the Data Files or Software, and to permit persons to whom the Data
+   * Files or Software are furnished to do so, provided that (a) this
+   * copyright and permission notice appear with all copies of the Data
+   * Files or Software, (b) this copyright and permission notice appear in
+   * associated documentation, and (c) there is clear notice in each
+   * modified Data File or in the Software as well as in the documentation
+   * associated with the Data File(s) or Software that the data or software
+   *  has been modified.</p> <p>THE DATA FILES AND SOFTWARE ARE PROVIDED "AS
+   *  IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+   * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+   * PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO
+   * EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE
+   * LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+   * DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+   * PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+   * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+   * PERFORMANCE OF THE DATA FILES OR SOFTWARE.</p> <p>Except as contained
+   * in this notice, the name of a copyright holder shall not be used in
+   * advertising or otherwise to promote the sale, use or other dealings in
+   * these Data Files or Software without prior written authorization of
+   * the copyright holder.</p>
+   * @deprecated Renamed to NormalizerInput.
  */
 @Deprecated
   public final class NormalizingCharacterInput implements ICharacterInput {
@@ -79,10 +77,10 @@ import java.util.*;
      * @param str The parameter {@code str} is a text string.
      */
     public NormalizingCharacterInput(
-  String str) {
+      String str) {
  this(
-  str,
-  Normalization.NFC);
+          str,
+          Normalization.NFC);
     }
 
     /**
@@ -91,10 +89,10 @@ import java.util.*;
      * @param input The parameter {@code input} is an ICharacterInput object.
      */
     public NormalizingCharacterInput(
-  ICharacterInput input) {
+      ICharacterInput input) {
  this(
-  input,
-  Normalization.NFC);
+          input,
+          Normalization.NFC);
     }
 
     /**
@@ -113,8 +111,8 @@ import java.util.*;
      * @param form The parameter {@code form} is a Normalization object.
      */
     public NormalizingCharacterInput(
-    List<Integer> characterList,
-    Normalization form) {
+      List<Integer> characterList,
+      Normalization form) {
  this(new PartialListCharacterInput(characterList), form);
     }
 
@@ -285,9 +283,9 @@ import java.util.*;
  */
 @Deprecated
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
-      return IsNormalized(
-  new PartialListCharacterInput(charList),
-  form);
+      return IsNormalized (
+          new PartialListCharacterInput(charList),
+          form);
     }
 
     /**
@@ -310,7 +308,7 @@ import java.util.*;
      * source is reached.
      * @throws NullPointerException The parameter {@code chars} is null.
      * @throws IllegalArgumentException Either {@code index} or {@code length} is less
-     * than 0 or greater than {@code chars} 's length, or {@code chars} ' s
+     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
      * length minus {@code index} is less than {@code length}.
      */
     public int Read(int[] chars, int index, int length) {

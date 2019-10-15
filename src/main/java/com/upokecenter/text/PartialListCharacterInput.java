@@ -12,23 +12,23 @@ import java.util.*;
         throw new NullPointerException("ilist");
       }
       if (start < 0) {
-      throw new IllegalArgumentException("start (" + start + ") is less than " +
+        throw new IllegalArgumentException("start(" + start + ") is less than " +
           "0");
       }
       if (start > ilist.size()) {
-        throw new IllegalArgumentException("start (" + start + ") is more than " +
+        throw new IllegalArgumentException("start(" + start + ") is more than " +
           ilist.size());
       }
       if (length < 0) {
-    throw new IllegalArgumentException("length (" + length + ") is less than " +
+        throw new IllegalArgumentException("length(" + length + ") is less than " +
           "0");
       }
       if (length > ilist.size()) {
-        throw new IllegalArgumentException("length (" + length + ") is more than " +
+        throw new IllegalArgumentException("length(" + length + ") is more than " +
           ilist.size());
       }
       if (ilist.size() - start < length) {
-        throw new IllegalArgumentException("ilist's length minus " + start + " (" +
+        throw new IllegalArgumentException("ilist's length minus " + start + "(" +
           (ilist.size() - start) + ") is less than " + length);
       }
       this.ilist = ilist;
@@ -54,23 +54,23 @@ import java.util.*;
         throw new NullPointerException("buf");
       }
       if (offset < 0) {
-    throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+        throw new IllegalArgumentException("offset(" + offset + ") is less than " +
           "0");
       }
       if (offset > buf.length) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
+        throw new IllegalArgumentException("offset(" + offset + ") is more than " +
           buf.length);
       }
       if (unitCount < 0) {
-        throw new IllegalArgumentException("unitCount (" + unitCount +
+        throw new IllegalArgumentException("unitCount(" + unitCount +
           ") is less than " + "0");
       }
       if (unitCount > buf.length) {
-        throw new IllegalArgumentException("unitCount (" + unitCount +
+        throw new IllegalArgumentException("unitCount(" + unitCount +
           ") is more than " + buf.length);
       }
       if (buf.length - offset < unitCount) {
-        throw new IllegalArgumentException("buf's length minus " + offset + " (" +
+        throw new IllegalArgumentException("buf's length minus " + offset + "(" +
           (buf.length - offset) + ") is less than " + unitCount);
       }
       if (unitCount == 0) {

@@ -46,7 +46,7 @@ namespace PeterO.Mail.Transforms {
       int endIndex = this.input.Length;
       while (true) {
         int c = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] :
-             -1;
+          -1;
         if (c < 0) {
           // End of stream
           return -1;

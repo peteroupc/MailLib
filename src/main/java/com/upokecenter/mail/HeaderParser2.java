@@ -10,7 +10,7 @@ private HeaderParser2() {
     public static int ParseAddrSpec(String str, int index, int endIndex) {
       int indexStart, indexStart3, indexTemp2, indexTemp3, tx2;
       indexStart = index;
-      tx2 = ParseLocalPart(str, index, endIndex);
+      tx2 = ParseLocalPart (str, index, endIndex);
       if (tx2 == index) {
         return indexStart;
       }
@@ -22,16 +22,17 @@ private HeaderParser2() {
       }
       indexTemp2 = index;
       do {
-        indexTemp3 = ParseDotAtomText(str, index, endIndex);
+        indexTemp3 = ParseDotAtomText (str, index, endIndex);
         if (indexTemp3 != index) {
-          indexTemp2 = indexTemp3; break;
+          indexTemp2 = indexTemp3;
+          break;
         }
         indexTemp3 = index;
         do {
           indexStart3 = index;
           if (index + 1 < endIndex && (str.charAt(index) == 91) && ((str.charAt(index + 1)
-            >= 33 && str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 94 &&
-            str.charAt(index + 1) <= 126))) {
+                >= 33 && str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 94 &&
+                str.charAt(index + 1) <= 126))) {
             index += 2;
           } else {
             break;
@@ -39,13 +40,15 @@ private HeaderParser2() {
           if (index < endIndex && (str.charAt(index) == 93)) {
             ++index;
           } else {
-            index = indexStart3; break;
+            index = indexStart3;
+            break;
           }
           indexTemp3 = index;
           index = indexStart3;
         } while (false);
         if (indexTemp3 != index) {
-          indexTemp2 = indexTemp3; break;
+          indexTemp2 = indexTemp3;
+          break;
         }
       } while (false);
       if (indexTemp2 != index) {
@@ -59,18 +62,18 @@ private HeaderParser2() {
       int indexStart, indexStart2, indexTemp2;
       indexStart = index;
       if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
-        (str.charAt(index) == 33) || (str.charAt(index) >= 35 && str.charAt(index) <= 39) ||
-        (str.charAt(index) >= 42 && str.charAt(index) <= 43) || (str.charAt(index) == 45) ||
-        (str.charAt(index) >= 47 && str.charAt(index) <= 57) || (str.charAt(index) == 61) ||
-        (str.charAt(index) == 63) || (str.charAt(index) >= 94 && str.charAt(index) <= 126) ||
-        (str.charAt(index) >= 128 && str.charAt(index) <= 65535))) {
-        ++index;
-        while (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
           (str.charAt(index) == 33) || (str.charAt(index) >= 35 && str.charAt(index) <= 39) ||
           (str.charAt(index) >= 42 && str.charAt(index) <= 43) || (str.charAt(index) == 45) ||
           (str.charAt(index) >= 47 && str.charAt(index) <= 57) || (str.charAt(index) == 61) ||
           (str.charAt(index) == 63) || (str.charAt(index) >= 94 && str.charAt(index) <= 126) ||
           (str.charAt(index) >= 128 && str.charAt(index) <= 65535))) {
+        ++index;
+        while (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+            (str.charAt(index) == 33) || (str.charAt(index) >= 35 && str.charAt(index) <= 39) ||
+            (str.charAt(index) >= 42 && str.charAt(index) <= 43) || (str.charAt(index) == 45) ||
+            (str.charAt(index) >= 47 && str.charAt(index) <= 57) || (str.charAt(index) == 61) ||
+            (str.charAt(index) == 63) || (str.charAt(index) >= 94 && str.charAt(index) <= 126) ||
+            (str.charAt(index) >= 128 && str.charAt(index) <= 65535))) {
           ++index;
         }
       } else {
@@ -86,23 +89,24 @@ private HeaderParser2() {
             break;
           }
           if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
-            (str.charAt(index) == 33) || (str.charAt(index) >= 35 && str.charAt(index) <= 39) ||
-            (str.charAt(index) >= 42 && str.charAt(index) <= 43) || (str.charAt(index) == 45) ||
-            (str.charAt(index) >= 47 && str.charAt(index) <= 57) || (str.charAt(index) == 61) ||
-            (str.charAt(index) == 63) || (str.charAt(index) >= 94 && str.charAt(index) <= 126) ||
-            (str.charAt(index) >= 128 && str.charAt(index) <= 65535))) {
+              (str.charAt(index) == 33) || (str.charAt(index) >= 35 && str.charAt(index) <= 39) ||
+              (str.charAt(index) >= 42 && str.charAt(index) <= 43) || (str.charAt(index) == 45) ||
+              (str.charAt(index) >= 47 && str.charAt(index) <= 57) || (str.charAt(index) == 61) ||
+              (str.charAt(index) == 63) || (str.charAt(index) >= 94 && str.charAt(index) <= 126) ||
+              (str.charAt(index) >= 128 && str.charAt(index) <= 65535))) {
             ++index;
             while (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <=
-              90) || (str.charAt(index) == 33) || (str.charAt(index) >= 35 && str.charAt(index)
-              <= 39) || (str.charAt(index) >= 42 && str.charAt(index) <= 43) ||
-              (str.charAt(index) == 45) || (str.charAt(index) >= 47 && str.charAt(index) <= 57) ||
-              (str.charAt(index) == 61) || (str.charAt(index) == 63) || (str.charAt(index) >=
-              94 && str.charAt(index) <= 126) || (str.charAt(index) >= 128 && str.charAt(index)
-              <= 65535))) {
+                  90) || (str.charAt(index) == 33) || (str.charAt(index) >= 35 && str.charAt(index)
+                  <= 39) || (str.charAt(index) >= 42 && str.charAt(index) <= 43) ||
+                (str.charAt(index) == 45) || (str.charAt(index) >= 47 && str.charAt(index) <= 57) ||
+                (str.charAt(index) == 61) || (str.charAt(index) == 63) || (str.charAt(index) >=
+                  94 && str.charAt(index) <= 126) || (str.charAt(index) >= 128 && str.charAt(index)
+                  <= 65535))) {
               ++index;
             }
           } else {
-            index = indexStart2; break;
+            index = indexStart2;
+            break;
           }
           indexTemp2 = index;
           index = indexStart2;
@@ -118,7 +122,7 @@ private HeaderParser2() {
     public static int ParseHeaderEmail(String str, int index, int endIndex) {
       int indexStart, indexStart2, indexTemp2, tx2, tx3;
       indexStart = index;
-      tx2 = ParseAddrSpec(str, index, endIndex);
+      tx2 = ParseAddrSpec (str, index, endIndex);
       if (tx2 == index) {
         return indexStart;
       }
@@ -132,9 +136,10 @@ private HeaderParser2() {
           } else {
             break;
           }
-          tx3 = ParseAddrSpec(str, index, endIndex);
+          tx3 = ParseAddrSpec (str, index, endIndex);
           if (tx3 == index) {
-            index = indexStart2; break;
+            index = indexStart2;
+            break;
           }
           index = tx3;
           indexTemp2 = index;
@@ -149,27 +154,27 @@ private HeaderParser2() {
       return index;
     }
     public static int ParseLocalPart(String str, int index, int endIndex) {
-      int indexTemp2 = ParseDotAtomText(str, index, endIndex);
+      int indexTemp2 = ParseDotAtomText (str, index, endIndex);
       if (indexTemp2 != index) {
         return indexTemp2;
       }
-      indexTemp2 = ParseQuotedStringCore(str, index, endIndex);
+      indexTemp2 = ParseQuotedStringCore (str, index, endIndex);
       return (indexTemp2 != index) ? (indexTemp2) : (index);
     }
     public static int ParseQcontent(String str, int index, int endIndex) {
       if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
-        str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index) <= 126) ||
-        (str.charAt(index) >= 128 && str.charAt(index) <= 65535))) {
+            str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index) <= 126) ||
+          (str.charAt(index) >= 128 && str.charAt(index) <= 65535))) {
         ++index;
       } else if (index + 1 < endIndex && ((str.charAt(index) == 92) && ((str.charAt(index +
-        1) >= 33 && str.charAt(index + 1) <= 126) || (str.charAt(index + 1) >= 128 &&
-        str.charAt(index + 1) <= 65535)))) {
+                1) >= 33 && str.charAt(index + 1) <= 126) || (str.charAt(index + 1) >= 128 &&
+              str.charAt(index + 1) <= 65535)))) {
         index += 2;
       }
       return index;
     }
     public static int ParseQuotedStringCore(String str, int index, int
-         endIndex) {
+      endIndex) {
       int indexStart, indexTemp2;
       indexStart = index;
       if (index < endIndex && (str.charAt(index) == 34)) {
@@ -178,7 +183,7 @@ private HeaderParser2() {
         return indexStart;
       }
       while (true) {
-        indexTemp2 = ParseQcontent(str, index, endIndex);
+        indexTemp2 = ParseQcontent (str, index, endIndex);
         if (indexTemp2 != index) {
           index = indexTemp2;
         } else {

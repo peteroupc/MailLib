@@ -79,11 +79,10 @@ private HeaderParserUtility() {
           return true;
         } else if (c == 0x22) {
           // quoted String found, skip it
-          int
-si = HeaderParserUtility.ParseQuotedStringCore(
-      str,
-      index,
-      endIndex);
+          int si = HeaderParserUtility.ParseQuotedStringCore(
+            str,
+            index,
+            endIndex);
           if (si == index) {
             throw new IllegalStateException("Internal error: " + str);
           }
@@ -130,7 +129,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             index = si;
           } else if (c == 0x22) {
             int
- si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+            si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
             if (si == index) {
               throw new IllegalStateException("Internal error: " + str);
             }
@@ -238,11 +237,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             int startQuote = index;
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
-              builder.append(
-         str.substring(
-         startQuote + 1, (
-         startQuote + 1)+(index - (startQuote + 1))));
-       } else {
+              builder.append (
+                str.substring(
+                  startQuote + 1, (
+                  startQuote + 1)+(index - (startQuote + 1))));
+            } else {
               ++index;
             }
           } else {
@@ -258,10 +257,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static List<NamedAddress> ParseAddressList(
-  String str,
-  int index,
-  int endIndex,
-  List<int[]> tokens) {
+      String str,
+      int index,
+      int endIndex,
+      List<int[]> tokens) {
       int lastIndex = index;
       List<NamedAddress> addresses = new ArrayList<NamedAddress>();
       for (int i = 0; i < tokens.size(); ++i) {
@@ -277,7 +276,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             addresses.add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
             // } catch (IndexOutOfRangeException ex) {
             // throw new IllegalStateException(
-              // "str=" + str + " index=" + index, // ex);
+            // "str=" + str + " index=" + index, // ex);
             // }
             lastIndex = tokenEnd;
           }
@@ -309,10 +308,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static NamedAddress ParseAddress(
-  String str,
-  int index,
-  int endIndex,
-  List<int[]> tokens) {
+      String str,
+      int index,
+      int endIndex,
+      List<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.size(); ++i) {
         int tokenIndex = tokens.get(i)[1];
@@ -331,10 +330,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static NamedAddress ParseGroup(
-  String str,
-  int index,
-  int endIndex,
-  List<int[]> tokens) {
+      String str,
+      int index,
+      int endIndex,
+      List<int[]> tokens) {
       String displayName = null;
       boolean haveDisplayName = false;
       List<NamedAddress> mailboxes = new ArrayList<NamedAddress>();
@@ -363,10 +362,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
     }
 
     public static NamedAddress ParseMailbox(
-  String str,
-  int index,
-  int endIndex,
-  List<int[]> tokens) {
+      String str,
+      int index,
+      int endIndex,
+      List<int[]> tokens) {
       String displayName = null;
       String localPart = null;
       String domain = null;
@@ -421,20 +420,21 @@ si = HeaderParserUtility.ParseQuotedStringCore(
           ++index;
         }
         if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
-          56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+              56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 &&
-          str.charAt(index)
-        <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14
-            &&
-     str.charAt(index) <= 31) || (str.charAt(index) >= 33 && str.charAt(index) <= 39) ||
+              str.charAt(index)
+              <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index)
+>= 14 &&
+              str.charAt(index) <= 31) || (str.charAt(index) >= 33 && str.charAt(index) <= 39) ||
             (str.charAt(index)
-     >= 42 && str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index) <= 55295) ||
+              >= 42 && str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index)
+<= 55295) ||
             (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 &&
-          str.charAt(index)
-          <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+              str.charAt(index)
+              <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -493,11 +493,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   do {
                     int indexStart4 = index;
                     while (index < endIndex && ((str.charAt(index) == 32) ||
-                (str.charAt(index) == 9))) {
+                        (str.charAt(index) == 9))) {
                       ++index;
                     }
                     if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index +
-                1) == 10) {
+                        1) == 10) {
                       index += 2;
                     } else {
                       index = indexStart4;
@@ -513,10 +513,10 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   }
                 } while (false);
                 if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                  9))) {
+                      9))) {
                   ++index;
                   while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index)
-                == 9))) {
+                        == 9))) {
                     ++index;
                   }
                 } else {
@@ -536,13 +536,13 @@ si = HeaderParserUtility.ParseQuotedStringCore(
               int indexTemp3 = index;
               do {
                 if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <=
-                  55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+                      55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
                   ++indexTemp3;
                   break;
                 }
                 if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-                  str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
-                  str.charAt(index + 1) <= 57343))) {
+                      str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                      str.charAt(index + 1) <= 57343))) {
                   indexTemp3 += 2;
                   break;
                 }
@@ -560,20 +560,20 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                     indexTemp5 = index;
                     do {
                       if (index < endIndex && ((str.charAt(index) == 32) ||
-                      (str.charAt(index) == 9) || (str.charAt(index) >= 128 &&
-                      str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
-                      str.charAt(index) <= 65535))) {
+                          (str.charAt(index) == 9) || (str.charAt(index) >= 128 &&
+                            str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
+                            str.charAt(index) <= 65535))) {
                         ++indexTemp5;
                         break;
                       }
                       if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-                      str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
-                      str.charAt(index + 1) <= 57343))) {
+                            str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                            str.charAt(index + 1) <= 57343))) {
                         indexTemp5 += 2;
                         break;
                       }
                       if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <=
-                      126)) {
+                          126)) {
                         ++indexTemp5;
                         break;
                       }
@@ -596,8 +596,8 @@ si = HeaderParserUtility.ParseQuotedStringCore(
                   break;
                 }
                 if (index < endIndex && ((str.charAt(index) >= 93 && str.charAt(index) <=
-                  126) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
-                  (str.charAt(index) >= 33 && str.charAt(index) <= 39))) {
+                      126) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
+                    (str.charAt(index) >= 33 && str.charAt(index) <= 39))) {
                   ++indexTemp3;
                   break;
                 }
@@ -630,11 +630,11 @@ si = HeaderParserUtility.ParseQuotedStringCore(
               do {
                 int indexStart3 = index;
                 while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                  9))) {
+                      9))) {
                   ++index;
                 }
                 if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
-                == 10) {
+                  == 10) {
                   index += 2;
                 } else {
                   index = indexStart3;
@@ -652,7 +652,7 @@ si = HeaderParserUtility.ParseQuotedStringCore(
             if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
               ++index;
               while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                9))) {
+                    9))) {
                 ++index;
               }
             } else {

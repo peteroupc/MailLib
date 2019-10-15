@@ -127,16 +127,16 @@ private MailtoUris() {
         field = null;
       }
       if (!((field) == null || (field).length() == 0)) {
-          sb.append(firstField ? "?body=" : "&body=");
-          firstField = false;
-          sb.append(URIUtility.EncodeStringForURI(field));
+        sb.append(firstField ? "?body=" : "&body=");
+        firstField = false;
+        sb.append(URIUtility.EncodeStringForURI(field));
       }
       return sb.toString();
     }
 
     public static Message MailtoUriMessage(String uri) {
-      String[] parts = URIUtility.SplitIRIToStrings(
-        uri);
+      String[] parts = URIUtility.SplitIRIToStrings (
+          uri);
       if (parts == null || parts[0] == null) {
         return null;
       }
@@ -148,7 +148,7 @@ private MailtoUris() {
           // Extract the email address
           emails = URIUtility.PercentDecode(parts[2]);
           if (HeaderParser2.ParseHeaderEmail(emails, 0, emails.length()) !=
-                  emails.length()) {
+            emails.length()) {
             return null;
           }
         }
@@ -191,7 +191,7 @@ private MailtoUris() {
             String name = query.substring(startName, (startName)+(endName - startName));
             String value = query.substring(startValue, (startValue)+(endValue - startValue));
             name =
-     DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
+              DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
             value = URIUtility.PercentDecode(value);
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.
@@ -199,13 +199,13 @@ private MailtoUris() {
             if (name.equals("body")) {
               msg.SetTextBody(value);
             } else if (name.equals("keywords") ||
-name.equals("comments")) {
+              name.equals("comments")) {
               String decoded = Message.DecodeHeaderValue(name, value);
               msg.AddHeader(name, decoded);
             } else if (name.equals("subject") ||
-name.equals("cc") ||
-name.equals("bcc") ||
-name.equals("in-reply-to")) {
+              name.equals("cc") ||
+              name.equals("bcc") ||
+              name.equals("in-reply-to")) {
               String decoded = Message.DecodeHeaderValue(name, value);
               msg.SetHeader(name, decoded);
             } else if (name.equals("to")) {

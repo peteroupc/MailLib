@@ -10,9 +10,9 @@ at: http://peteroupc.github.io/
 import java.util.*;
 import com.upokecenter.util.*;
 
-    /**
-     * A mutable data type that allows a content disposition to be built.
-     */
+  /**
+   * A mutable data type that allows a content disposition to be built.
+   */
   public class DispositionBuilder {
     private final Map<String, String> parameters;
     private String type;
@@ -176,7 +176,7 @@ public final void setDispositionType(String value) {
       if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
         name.length()) {
         throw new IllegalArgumentException("Not a well-formed parameter name: " +
-            name);
+          name);
       }
       this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
       return this;

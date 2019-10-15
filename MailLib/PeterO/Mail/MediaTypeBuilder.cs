@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>A mutable media type object.</summary>
+  /// <summary>A mutable media type object.</summary>
   public sealed class MediaTypeBuilder {
     private readonly IDictionary<string, string> parameters;
     private string type;
@@ -91,7 +91,7 @@ namespace PeterO.Mail {
     /// <value><c>true</c> If this is a text media type; otherwise,
     /// <c>false</c>.</value>
     [Obsolete("Instead of using this property, use the TopLevelType " +
-     "property and compare the result with the exact string 'text'.")]
+        "property and compare the result with the exact string 'text'.")]
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text", StringComparison.Ordinal);
@@ -103,7 +103,7 @@ namespace PeterO.Mail {
     /// <value><c>true</c> If this is a multipart media type; otherwise,
     /// <c>false</c>.</value>
     [Obsolete("Instead of using this property, use the TopLevelType " +
-     "property and compare the result with the exact string 'multipart'.")]
+        "property and compare the result with the exact string 'multipart'.")]
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart", StringComparison.Ordinal);
@@ -139,7 +139,8 @@ namespace PeterO.Mail {
       }
       if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
         str.Length) {
-        throw new ArgumentException("Not a well-formed top level type: " + str);
+        throw new ArgumentException("Not a well-formed top level type: " +
+str);
       }
       this.type = DataUtilities.ToLowerCaseAscii(str);
       return this;
@@ -189,7 +190,7 @@ namespace PeterO.Mail {
       }
       if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
         name.Length) {
-      throw new ArgumentException("Not a well-formed parameter name: " +
+        throw new ArgumentException("Not a well-formed parameter name: " +
           name);
       }
       this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;

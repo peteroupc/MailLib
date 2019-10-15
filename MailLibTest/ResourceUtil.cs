@@ -7,14 +7,13 @@ namespace MailLibTest {
   public static class ResourceUtil {
     public static string[] GetStrings(string name) {
       var resources = new AppResources("Resources");
-      return DictUtility.ParseJSONStringArray(
-        resources.GetString(name));
+      return DictUtility.ParseJSONStringArray (
+          resources.GetString(name));
     }
-    public static IList<IDictionary<string, string>>
-           GetDictList(string name) {
+    public static IList<IDictionary<string, string>> GetDictList(string name) {
       var resources = new AppResources("Resources");
-      return DictUtility.ParseJSONDictList(
-        resources.GetString(name));
+      return DictUtility.ParseJSONDictList (
+          resources.GetString(name));
     }
   }
 }

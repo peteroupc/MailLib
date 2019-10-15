@@ -4,9 +4,9 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Contains methods for parsing and matching language tags.
-     */
+  /**
+   * Contains methods for parsing and matching language tags.
+   */
   public final class LanguageTags {
 private LanguageTags() {
 }
@@ -52,7 +52,7 @@ private LanguageTags() {
           continue;
         }
         if (extended && c == '*' && count == 0 && (i + 1 == str.length() ||
-          str.charAt(i + 1) == '-')) {
+            str.charAt(i + 1) == '-')) {
           ++count;
           ++i;
           continue;
@@ -61,7 +61,7 @@ private LanguageTags() {
           return false;
         }
         if (!first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-          (c >= '0' && c <= '9'))) {
+            (c >= '0' && c <= '9'))) {
           return false;
         }
         if (count >= 8) {
@@ -77,7 +77,7 @@ private LanguageTags() {
       // NOTE: Includes obsolete syntax under RFC 5322 (with errata)
       while (index < endIndex) {
         if (endIndex - index > 1 && str.charAt(index) == 0x0d && str.charAt(index + 1) ==
-              0x0a) {
+          0x0a) {
           index += 2;
         }
         if (str.charAt(index) == 0x09 || str.charAt(index) == 0x20) {
@@ -122,18 +122,18 @@ private LanguageTags() {
           ++index;
         }
         if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
-          56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+              56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 &&
-          str.charAt(index) <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) ||
-          (str.charAt(index) >= 14 && str.charAt(index) <= 31) || (str.charAt(index) >= 33 &&
-          str.charAt(index) <= 39) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
-          (str.charAt(index) >= 93 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
-          str.charAt(index) <= 65535))) {
+              str.charAt(index) <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) ||
+            (str.charAt(index) >= 14 && str.charAt(index) <= 31) || (str.charAt(index) >= 33 &&
+              str.charAt(index) <= 39) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
+            (str.charAt(index) >= 93 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
+              str.charAt(index) <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 &&
-          str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
-          65535))) {
+              str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
+              65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -182,11 +182,11 @@ private LanguageTags() {
           } else if (count == 2 && lastSubtagLength >= 2) {
             sb.append(DataUtilities.ToUpperCaseAscii(str.substring(i - 2, (i - 2)+(2))));
           } else {
-            sb.append(
-          DataUtilities.ToLowerCaseAscii(
-          str.substring(
-            i - count, (
-            i - count)+(count))));
+            sb.append (
+              DataUtilities.ToLowerCaseAscii (
+                str.substring(
+                  i - count, (
+                  i - count)+(count))));
           }
           lastSubtagLength = count;
           count = 0;
@@ -205,7 +205,7 @@ private LanguageTags() {
     private static int SkipLDHSequence(String str, int index, int endIndex) {
       while (index < endIndex) {
         if ((str.charAt(index) >= 65 && str.charAt(index) <= 90) || (str.charAt(index) >= 97 &&
-          str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
+            str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
           (str.charAt(index) == 45)) {
           ++index;
         } else {
@@ -344,7 +344,7 @@ private LanguageTags() {
               int[] mults = { 100, 10, 1 };
               for (int i = 0; i < 3; ++i) {
                 if (index < str.length() &&
-                (str.charAt(index) >= '0' || str.charAt(index) <= '9')) {
+                  (str.charAt(index) >= '0' || str.charAt(index) <= '9')) {
                   qvalue += mults[i] * (str.charAt(index) - '0');
                   ++index;
                 } else {
@@ -378,7 +378,7 @@ private LanguageTags() {
         return true;
       }
       if (tagLowerCased.length() > rangeLowerCased.length() &&
-          tagLowerCased.charAt(rangeLowerCased.length()) == '-') {
+        tagLowerCased.charAt(rangeLowerCased.length()) == '-') {
         String prefix = tagLowerCased.substring(0, rangeLowerCased.length());
         if (rangeLowerCased.equals(prefix)) {
           return true;
@@ -396,7 +396,7 @@ private LanguageTags() {
         return false;
       }
       if (!rangeSub[0].equals("*") &&
-!rangeSub[0].equals(tagSub[0])) {
+        !rangeSub[0].equals(tagSub[0])) {
         return false;
       }
       int rangeIndex = 1;
@@ -446,10 +446,10 @@ private LanguageTags() {
      * contains a value that is not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
-           List<String> ranges,
-           List<String> languages,
-           boolean extended,
-           boolean matchStarAtEnd) {
+      List<String> ranges,
+      List<String> languages,
+      boolean extended,
+      boolean matchStarAtEnd) {
       if (ranges == null) {
         throw new NullPointerException("ranges");
       }
@@ -513,7 +513,7 @@ private LanguageTags() {
       int i = 0;
       for (i = range.length() - 1; i >= 0; --i) {
         if (range.charAt(i) == '-' && i >= 2 &&
-            range.charAt(i - 1) != '-' && range.charAt(i - 2) != '-') {
+          range.charAt(i - 1) != '-' && range.charAt(i - 2) != '-') {
           return range.substring(0, i);
         }
       }
@@ -532,11 +532,11 @@ private LanguageTags() {
      * tag.
      */
     public static boolean MatchesLanguageTag(String range, String tag) {
-      List<String> tags = LanguageTagFilter(
-        Arrays.asList(new String[] { range }),
-        Arrays.asList(new String[] { tag }),
-        false,
-        false);
+      List<String> tags = LanguageTagFilter (
+          Arrays.asList(new String[] { range }),
+          Arrays.asList(new String[] { tag }),
+          false,
+          false);
       return tags.size() > 0;
     }
 
@@ -556,9 +556,9 @@ private LanguageTags() {
      * potentially valid language tag.
      */
     public static String LanguageTagLookup(
-  String range,
-  List<String> languages,
-  String defaultValue) {
+      String range,
+      List<String> languages,
+      String defaultValue) {
       return LanguageTagLookup(range, languages, defaultValue, false);
     }
 
@@ -580,9 +580,9 @@ private LanguageTags() {
      * that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
-  List<String> ranges,
-  List<String> languages,
-  String defaultValue) {
+      List<String> ranges,
+      List<String> languages,
+      String defaultValue) {
       return LanguageTagLookup(ranges, languages, defaultValue, false);
     }
 
@@ -602,8 +602,8 @@ private LanguageTags() {
      * that is not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
-  List<String> ranges,
-  List<String> languages) {
+      List<String> ranges,
+      List<String> languages) {
       return LanguageTagFilter(ranges, languages, false, false);
     }
 
@@ -624,15 +624,15 @@ private LanguageTags() {
      * is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
-  String range,
-  List<String> languages,
-  String defaultValue,
-  boolean extended) {
-      return LanguageTagLookup(
-        Arrays.asList(new String[] { range }),
-        languages,
-        defaultValue,
-        extended);
+      String range,
+      List<String> languages,
+      String defaultValue,
+      boolean extended) {
+      return LanguageTagLookup (
+          Arrays.asList(new String[] { range }),
+          languages,
+          defaultValue,
+          extended);
     }
 
     /**
@@ -655,10 +655,10 @@ private LanguageTags() {
      * contains a value that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
-         List<String> ranges,
-         List<String> languages,
-         String defaultValue,
-         boolean extended) {
+      List<String> ranges,
+      List<String> languages,
+      String defaultValue,
+      boolean extended) {
       if (ranges == null) {
         throw new NullPointerException("ranges");
       }
@@ -722,7 +722,7 @@ private LanguageTags() {
         char c1 = str.charAt(index);
         char c2 = str.charAt(index + 1);
         if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2
-          >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
+              >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
             // case AA: a 2-letter language
@@ -757,16 +757,16 @@ private LanguageTags() {
           // is necessary because it would otherwise be rejected
           // by the code that checks extended language subtags)
           if (str.equals("sgn-be-fr") ||
-str.equals("sgn-be-nl") ||
-str.equals("sgn-ch-de") ||
-str.equals("en-gb-oed") ||
-str.equals("zh-min-nan")) {
+            str.equals("sgn-be-nl") ||
+            str.equals("sgn-ch-de") ||
+            str.equals("en-gb-oed") ||
+            str.equals("zh-min-nan")) {
             return true;
           }
           // More complex cases
-          String[] splitString = ParserUtility.SplitAt(
-  str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
-  "-");
+          String[] splitString = ParserUtility.SplitAt (
+              str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
+              "-");
           if (splitString.length == 0) {
             return false;
           }
@@ -822,7 +822,7 @@ str.equals("zh-min-nan")) {
               }
               ++splitIndex;
             } else if (len == 4 &&
-                 (curString.charAt(0) >= '0' && curString.charAt(0) <= '9')) {
+              (curString.charAt(0) >= '0' && curString.charAt(0) <= '9')) {
               variants = (variants == null) ? (new ArrayList<String>()) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
@@ -844,7 +844,7 @@ str.equals("zh-min-nan")) {
             String curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (LengthIfAllAlphaNum(curString) == 1 &&
-                    !curString.equals("x")) {
+              !curString.equals("x")) {
               variants = (variants == null) ? (new ArrayList<String>()) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
@@ -930,18 +930,18 @@ str.equals("zh-min-nan")) {
           // grandfathered language tags
           str = DataUtilities.ToLowerCaseAscii(str);
           return str.equals("i-ami") ||
-str.equals("i-bnn") ||
-          str.equals("i-default") ||
-str.equals("i-enochian") ||
-          str.equals("i-hak") ||
-str.equals("i-klingon") ||
-          str.equals("i-lux") ||
-str.equals("i-navajo") ||
-          str.equals("i-mingo") ||
-str.equals("i-pwn") ||
-          str.equals("i-tao") ||
-str.equals("i-tay") ||
-          str.equals("i-tsu");
+            str.equals("i-bnn") ||
+            str.equals("i-default") ||
+            str.equals("i-enochian") ||
+            str.equals("i-hak") ||
+            str.equals("i-klingon") ||
+            str.equals("i-lux") ||
+            str.equals("i-navajo") ||
+            str.equals("i-mingo") ||
+            str.equals("i-pwn") ||
+            str.equals("i-tao") ||
+            str.equals("i-tay") ||
+            str.equals("i-tsu");
         }
         return false;
       }
@@ -964,7 +964,7 @@ str.equals("i-tay") ||
       for (int i = 0; i < len; ++i) {
         char c1 = str.charAt(i);
         if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1
-          >= '0' && c1 <= '9'))) {
+              >= '0' && c1 <= '9'))) {
           return 0;
         }
       }

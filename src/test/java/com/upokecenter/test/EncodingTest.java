@@ -26,7 +26,7 @@ import com.upokecenter.text.*;
       String problemChars = " \t\u0000\u0010\u001b\u001f" +
         "\u007f\u008f\u009f%\\/*?|:<>\"\u0028\u0029" +
         "\u00a0\u3000\u180e\u1680\u2000\u200b\u205f\u202f\ufeff" +
-         "\ufffe\uffff\ufdd0\ufdef";
+        "\ufffe\uffff\ufdd0\ufdef";
       for (int i = 0; i < count; ++i) {
         int ch = 0;
         ui = rnd.UniformInt(100);
@@ -136,8 +136,8 @@ import com.upokecenter.text.*;
             builder.append(")");
             int mm1 = Math.max(0, index + 1 - 30);
             String ss = str.substring(
-           mm1, (
-           mm1)+((index + 1) - mm1));
+                mm1, (
+                mm1)+((index + 1) - mm1));
             builder.append("\n");
             builder.append(ss);
             System.out.println(builder.toString());
@@ -159,7 +159,7 @@ import com.upokecenter.text.*;
           hasNonWhiteSpace = false;
           hasLongWord = false;
           startsWithSpace |= index < endIndex && (str.charAt(index) == ' ' ||
-            str.charAt(index) == '\t');
+              str.charAt(index) == '\t');
           if (!startsWithSpace) {
             colon = false;
           }
@@ -167,16 +167,16 @@ import com.upokecenter.text.*;
         }
         if (c == '\r') {
           test = str.substring(
-            Math.max(index + 2 - 30, 0), (
-            Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+              Math.max(index + 2 - 30, 0), (
+              Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
           System.out.println(fn +
             ":\n--Bare CR: [" + test + "] index = " + index);
           return 0;
         }
         if (c == '\n') {
           test = str.substring(
-            Math.max(index + 2 - 30, 0), (
-            Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+              Math.max(index + 2 - 30, 0), (
+              Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
           System.out.println(fn +
             ":\n--Bare LF: [" + test + "] index = " + index);
           return 0;
@@ -189,15 +189,15 @@ import com.upokecenter.text.*;
           if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
             str.charAt(index - 1) == 0x0d) {
             System.out.println(fn +
-  ":\n--End of line, whitespace, or start of message before colon");
+              ":\n--End of line, whitespace, or start of message before colon");
             return 0;
           }
           if (str.charAt(index + 1) != 0x20 &&
             !(str.charAt(index + 1) == 0x0d && index + 2 < str.length() && str.charAt(index +
-              2) == 0x0a)) {
+                2) == 0x0a)) {
             test = str.substring(
-  Math.max(index + 2 - 30, 0), (
-  Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+                Math.max(index + 2 - 30, 0), (
+                Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
             System.out.println(fn +
               ":\n--No space/line break after header name and colon: (" +
               str.charAt(index + 1) + ") [" + test + "] index = " + index);
@@ -208,7 +208,7 @@ import com.upokecenter.text.*;
         if (c == 0 || c == 0x7f) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
-          builder.append(fn + ": CTL in message (0x");
+          builder.append(fn + ": CTL in message(0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
@@ -218,7 +218,7 @@ import com.upokecenter.text.*;
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
-          builder.append(fn + ": CTL in header (0x");
+          builder.append(fn + ": CTL in header(0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
@@ -233,7 +233,7 @@ import com.upokecenter.text.*;
           ++wordLength;
           hasNonWhiteSpace = true;
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength &&
-            wordLength > 78);
+              wordLength > 78);
         }
         int maxLineLength = 998;
         if (!headers && (!hasLongWord && !hasMessageType)) {
@@ -246,15 +246,15 @@ import com.upokecenter.text.*;
           if (lineLength > 998) {
             if (headers) {
               System.out.println(fn +
-                   ":\n--Line length exceeded in valueHeader(" +
-                    maxLineLength + " " +
-                    str.substring(index - 78,(index - 78)+(78)) + ", " + lineLength + ")");
+                ":\n--Line length exceeded in valueHeader(" +
+                maxLineLength + " " +
+                str.substring(index - 78,(index - 78)+(78)) + ", " + lineLength + ")");
               return 0;
             }
             if (!meetsLineLength && !mllmessage) {
-              System.out.println(fn + ":\n--Line length exceeded (" +
-               maxLineLength + " " +
-               str.substring(index - 78,(index - 78)+(78)) + ", " + lineLength + ")");
+              System.out.println(fn + ":\n--Line length exceeded(" +
+                maxLineLength + " " +
+                str.substring(index - 78,(index - 78)+(78)) + ", " + lineLength + ")");
               mllmessage = true;
             }
           }
@@ -300,12 +300,12 @@ import com.upokecenter.text.*;
       }
       if (expectedBytes.length != actualBytes.length) {
         Assert.fail("\nexpected: " + toString(expectedBytes) + "\n" +
-                    "\nwas: " + toString(actualBytes) + "\n" + msg);
+          "\nwas: " + toString(actualBytes) + "\n" + msg);
       }
       for (int i = 0; i < expectedBytes.length; ++i) {
         if (expectedBytes[i] != actualBytes[i]) {
           Assert.fail("\nexpected: " + toString(expectedBytes) + "\n" +
-                    "\nwas: " + toString(actualBytes) + "\n" + msg);
+            "\nwas: " + toString(actualBytes) + "\n" + msg);
         }
       }
     }
@@ -329,22 +329,22 @@ import com.upokecenter.text.*;
     @Test
     public void TestHeaderFields() {
       String ValueTestString =
-       "From: Joe P Customer <customer@example.com>, " +
-       "Jane W Customer <jane@example.com>\r\n\r\nTest";
+        "From: Joe P Customer <customer@example.com>, " +
+        "Jane W Customer <jane@example.com>\r\n\r\nTest";
       Message msg = MessageTest.MessageFromString(ValueTestString);
       List<NamedAddress> addresses = msg.GetAddresses("from");
       Assert.assertEquals(2, addresses.size());
       {
         String stringTemp = addresses.get(0).toString();
-        Assert.assertEquals(
-  "Joe P Customer <customer@example.com>",
-  stringTemp);
+        Assert.assertEquals (
+          "Joe P Customer <customer@example.com>",
+          stringTemp);
       }
       {
         String stringTemp = addresses.get(1).toString();
-        Assert.assertEquals(
-  "Jane W Customer <jane@example.com>",
-  stringTemp);
+        Assert.assertEquals (
+          "Jane W Customer <jane@example.com>",
+          stringTemp);
       }
     }
 
@@ -360,7 +360,7 @@ import com.upokecenter.text.*;
         {
           Object objectTemp = null;
           Object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
-                    "@example.com");
+            "@example.com");
           Assert.assertEquals(objectTemp, objectTemp2);
         }
       } catch (IllegalArgumentException ex) {
@@ -405,17 +405,17 @@ import com.upokecenter.text.*;
 
     @Test
     public void TestBase64() {
-      TestBase64Decode(
+      TestBase64Decode (
         new byte[] { 0, 16, 1  }, "ABAB");
       TestBase64Decode(new byte[] { 0, 16, 1, 93  }, "ABABXX==");
-      TestBase64Decode(
-     new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235 },
-     "qazxswedcvfr");
-      TestBase64Decode(
+      TestBase64Decode (
+        new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235 },
+        "qazxswedcvfr");
+      TestBase64Decode (
         new byte[] { (byte)255, (byte)239, (byte)254, 103  }, "/+/+Zz==");
-      TestBase64Decode(
+      TestBase64Decode (
         new byte[] { 0, 16, 1, 93  }, "ABABXX===");
-      TestBase64Decode(
+      TestBase64Decode (
         new byte[] { 0, 16, 1, 93  }, "ABABXX");
       TestBase64Decode(new byte[] { 0  }, "AA==");
       TestBase64Decode(new byte[] { 1  }, "AQ==");
@@ -1188,16 +1188,15 @@ import com.upokecenter.text.*;
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
-      Assert.assertEquals(
-  DataUtilities.GetUtf8String(expected, true),
-  DataUtilities.GetUtf8String(actual, true));
+      Assert.assertEquals (
+        DataUtilities.GetUtf8String(expected, true),
+        DataUtilities.GetUtf8String(actual, true));
     }
 
     private static byte[] DowngradeDeliveryStatus(String str) {
       String msgstr = "From: xy@x.example\r\nMIME-Version: 1.0\r\n" +
-        "Content-Type: message/global-delivery-status\r\n"
-    +
-    "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
+        "Content-Type: message/global-delivery-status\r\n" +
+        "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
       Message msg = MessageTest.MessageFromString(msgstr);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
@@ -1215,19 +1214,19 @@ import com.upokecenter.text.*;
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
-          ("Original-Recipient: " + expected) + "\r\n" +
-          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
+        ("Original-Recipient: " + expected) + "\r\n" +
+        ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\nOriginal-Recipient: " + actual +
-  "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore2: Y\r\n";
+        "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore2: Y\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n" +
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore2: Y\r\n" : "X-Ignore: X\r\n" +
-          ("Original-Recipient: " + expected) + "\r\n" +
-          ("Final-Recipient: " + expected) + "\r\nX-Ignore2: Y\r\n";
+        ("Original-Recipient: " + expected) + "\r\n" +
+        ("Final-Recipient: " + expected) + "\r\nX-Ignore2: Y\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
@@ -1236,10 +1235,10 @@ import com.upokecenter.text.*;
         "\r\nX-Ignore: Y\r\n\r\n";
       if (encap) {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
-                 ("Downgraded-Original-Recipient: " + expected) +
-                 "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
-                 "\r\nX-Ignore: Y\r\n\r\n";
-               } else {
+          ("Downgraded-Original-Recipient: " + expected) +
+          "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
+          "\r\nX-Ignore: Y\r\n\r\n";
+        } else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
@@ -1261,15 +1260,15 @@ import com.upokecenter.text.*;
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
-          ("Original-Recipient: " + expected) + "\r\n" +
-          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
+        ("Original-Recipient: " + expected) + "\r\n" +
+        ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       String actualString = DataUtilities.GetUtf8String(bytes, false);
       if (!expectedDSN.equals(actualString)) {
         expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
-        ("Downgraded-Original-Recipient: " + expected) +
-        "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
-        "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
+          ("Downgraded-Original-Recipient: " + expected) +
+          "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
+          "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
           ("Original-reciPient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       }
@@ -1290,21 +1289,21 @@ import com.upokecenter.text.*;
     @Test
     public void TestDowngradeReceived() {
       String date = "; Sun, 01 Jul 2018 00:00:00 +0000";
-      TestDowngradeReceivedOne(
-  "from example.com id example for <me@example.com>" + date,
-  "from example.com id example for <me@example.com>" + date);
-      TestDowngradeReceivedOne(
-  "from e\u00e7f.example id example for <me@example.com>" + date,
-  "from xn--ef-4ia.example id example for <me@example.com>" + date);
-      TestDowngradeReceivedOne(
-  "from example.com id exa\u00e7fple for <me@example.com>" + date,
-  "from example.com for <me@example.com>" + date);
-      TestDowngradeReceivedOne(
-  "from example.com id example for <me@exa\u00e7fple.example>" + date,
-  "from example.com id example for <me@xn--exafple-wxa.example>" + date);
-      TestDowngradeReceivedOne(
-  "from example.com id example for <m\u00e7f@example.com>" + date,
-  "from example.com id example" + date);
+      TestDowngradeReceivedOne (
+        "from example.com id example for <me@example.com>" + date,
+        "from example.com id example for <me@example.com>" + date);
+      TestDowngradeReceivedOne (
+        "from e\u00e7f.example id example for <me@example.com>" + date,
+        "from xn--ef-4ia.example id example for <me@example.com>" + date);
+      TestDowngradeReceivedOne (
+        "from example.com id exa\u00e7fple for <me@example.com>" + date,
+        "from example.com for <me@example.com>" + date);
+      TestDowngradeReceivedOne (
+        "from example.com id example for <me@exa\u00e7fple.example>" + date,
+        "from example.com id example for <me@xn--exafple-wxa.example>" + date);
+      TestDowngradeReceivedOne (
+        "from example.com id example for <m\u00e7f@example.com>" + date,
+        "from example.com id example" + date);
     }
 
     @Test(timeout = 25000)
@@ -1318,19 +1317,19 @@ import com.upokecenter.text.*;
         "utf-8; x@x\u00be.example");
       {
         String objectTemp = "utf-8; x@x" + ValueHexstart + "BE}" +
-             ValueHexstart + "FF20}.example";
+          ValueHexstart + "FF20}.example";
         String objectTemp2 = "utf-8; x@x\u00be\uff20.example";
         TestDowngradeDSNOne(objectTemp, objectTemp2);
       }
-      TestDowngradeDSNOne(
-  "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
-  "(\u00be) utf-8; x@x.example");
-      TestDowngradeDSNOne(
-  "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
-  "(\u00be) rfc822; x@x.example");
+      TestDowngradeDSNOne (
+        "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
+        "(\u00be) utf-8; x@x.example");
+      TestDowngradeDSNOne (
+        "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
+        "(\u00be) rfc822; x@x.example");
       {
         String stringTemp =
-  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); e";
+          "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); e";
 
         String stringTemp2 = "(\u00be) rfc822(\u00be); e";
         TestDowngradeDSNOne(stringTemp, stringTemp2);
@@ -1338,14 +1337,14 @@ import com.upokecenter.text.*;
 
       {
         String stringTemp =
-                  "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
-                    ValueHexstart + "BE}" + ValueHexstart + "FF20}.example";
+          "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
+          ValueHexstart + "BE}" + ValueHexstart + "FF20}.example";
         String stringTemp2 = "(\u00be) utf-8(\u00be); x@x\u00be\uff20.example";
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
-      TestDowngradeDSNOne(
-  "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_m=C2=BE?=",
-  "(\u00be) rfc822; m\u00be");
+      TestDowngradeDSNOne (
+        "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_m=C2=BE?=",
+        "(\u00be) rfc822; m\u00be");
     }
 
     private static void TestValidLanguageTag(boolean expectedValid, String str) {
@@ -1521,8 +1520,8 @@ import com.upokecenter.text.*;
       TestDecodeQuotedPrintable("te==20", "te= ");
       TestDecodeQuotedPrintable("te===20", "te== ");
       TestDecodeQuotedPrintable("te==xy", "te==xy");
-      // here, the first '=' starts a malformed sequence, so is
-      // ((output instanceof is) ? (is)output : null); the second '=' starts a soft line break,
+      // here, the first '='starts a malformed sequence, so is
+      // ((output instanceof is) ? (is)output : null); the second '='starts a soft line break,
       // so is ignored
       TestDecodeQuotedPrintable("te==", "te=");
       TestDecodeQuotedPrintable("te==\r\nst", "te=st");
@@ -1590,21 +1589,21 @@ import com.upokecenter.text.*;
     public static void TestEncodedWordsPhrase(String expected, String input) {
       String str = "From: " + input + " <test@example.com>\r\n\r\nTest";
       Message msg = MessageTest.MessageFromString(str);
-      Assert.assertEquals(
+      Assert.assertEquals (
         expected + " <test@example.com>",
         msg.GetHeader("from"));
     }
 
     private static void TestDecodeStructured(String ex, String input) {
       String str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
-       "Content-Language: " + input + "\r\n\r\nBody";
+        "Content-Language: " + input + "\r\n\r\nBody";
       Message msg = MessageTest.MessageFromString(str);
       Assert.assertEquals(ex, msg.GetHeader("content-language"));
     }
 
     private static void TestDecodeUnstructured(String ex, String input) {
       String str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
-       "Subject: " + input + "\r\n\r\nBody";
+        "Subject: " + input + "\r\n\r\nBody";
       Message msg = MessageTest.MessageFromString(str);
       Assert.assertEquals(ex, msg.GetHeader("subject"));
     }
@@ -1625,35 +1624,37 @@ import com.upokecenter.text.*;
     public static void TestEncodedWordsOne(String expected, String input) {
       String ValuePar = "(";
       TestDecodeUnstructured(expected, input);
-      TestDecodeStructured(
-  "(" + expected + ") en",
-  "(" + input + ") en");
-      TestDecodeStructured(
-  "(" + expected + ") en",
-  " (" + input + ") en");
-      TestDecodeStructured(
-  ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
-  " (comment (cmt " + input + ")comment) en");
-      TestDecodeStructured(
-     ValuePar + "comment " + ValuePar + "=?bad?= " + expected + ")comment) en",
-     " (comment (=?bad?= " + input + ")comment) en");
-      TestDecodeStructured(
-   ValuePar + "comment " + ValuePar + "" + expected + ")comment) en",
-   " (comment (" + input + ")comment) en");
-      TestDecodeStructured(
-  "(" + expected + "()) en",
-  " (" + input + "()) en");
-      TestDecodeStructured(
-  "en (" + expected + ")",
-  " en (" + input + ")");
+      TestDecodeStructured (
+        "(" + expected + ") en",
+        "(" + input + ") en");
+      TestDecodeStructured (
+        "(" + expected + ") en",
+        " (" + input + ") en");
+      TestDecodeStructured (
+        ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
+        " (comment (cmt " + input + ")comment) en");
+      TestDecodeStructured (
+        ValuePar + "comment " + ValuePar + "=?bad?= " + expected +
+")comment) en",
+        " (comment (=?bad?= " + input + ")comment) en");
+      TestDecodeStructured (
+        ValuePar + "comment " + ValuePar + "" + expected +
+")comment) en",
+        " (comment (" + input + ")comment) en");
+      TestDecodeStructured (
+        "(" + expected + "()) en",
+        " (" + input + "()) en");
+      TestDecodeStructured (
+        "en (" + expected + ")",
+        " en (" + input + ")");
     }
 
     @Test
     public void TestEncodedPhrase2() {
       {
-        String stringTemp = DowngradeHeaderField(
-  "subject",
-  "(tes\u00bet) x@x.example");
+        String stringTemp = DowngradeHeaderField (
+            "subject",
+            "(tes\u00bet) x@x.example");
         Assert.assertEquals(
           "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
           stringTemp);
@@ -1665,7 +1666,7 @@ import com.upokecenter.text.*;
       String ValueSep = ", ";
       {
         String objectTemp = "x <x@example.com>" + ValueSep +
-                "\"X\" <y@example.com>";
+          "\"X\" <y@example.com>";
         String strparam = "x <x@example.com>, \"X\" <y@example.com>";
         Object objectTemp2 = DowngradeHeaderField(
           "to",
@@ -1674,7 +1675,7 @@ import com.upokecenter.text.*;
       }
       {
         String objectTemp = "x <x@example.com>" + ValueSep +
-            "=?utf-8?Q?=C2=BE?= <y@example.com>";
+          "=?utf-8?Q?=C2=BE?= <y@example.com>";
         String strparam = "x <x@example.com>, \u00be <y@example.com>";
         Object objectTemp2 = DowngradeHeaderField(
           "to",
@@ -1683,17 +1684,17 @@ import com.upokecenter.text.*;
       }
       {
         String objectTemp = "x <x@example.com>" + ValueSep +
-            "=?utf-8?Q?=C2=BE?= <y@example.com>";
-        Object objectTemp2 = DowngradeHeaderField(
-  "to",
-  "x <x@example.com>" + ValueSep + "\"\u00be\" <y@example.com>");
+          "=?utf-8?Q?=C2=BE?= <y@example.com>";
+        Object objectTemp2 = DowngradeHeaderField (
+            "to",
+            "x <x@example.com>" + ValueSep + "\"\u00be\" <y@example.com>");
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         String objectTemp = "x <x@example.com>" + ValueSep +
           "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>";
-        Object objectTemp2 = DowngradeHeaderField(
-  "to",
+        Object objectTemp2 = DowngradeHeaderField (
+            "to",
   "x <x@example.com>" + ValueSep + "x\u00e1 x x\u00e1 <y@example.com>");
         Assert.assertEquals(objectTemp, objectTemp2);
       }
@@ -1703,7 +1704,7 @@ import com.upokecenter.text.*;
           "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
         {
           Object objectTemp =
-"g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
+            "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
 
           Object objectTemp2 = stringTemp;
           Assert.assertEquals(objectTemp, objectTemp2);
@@ -1715,7 +1716,7 @@ import com.upokecenter.text.*;
           "g: x@example.com" + ValueSep + "x@\u0300.example;");
         {
           Object objectTemp =
-"g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
+            "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
 
           Object objectTemp2 = stringTemp;
           Assert.assertEquals(objectTemp, objectTemp2);
@@ -1723,40 +1724,40 @@ import com.upokecenter.text.*;
       }
       {
         String objectTemp = "g: x@example.com" + ValueSep +
-            "x@xn--e-ufa.example;";
+          "x@xn--e-ufa.example;";
         Object objectTemp2 = DowngradeHeaderField(
           "to",
           "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "sender",
-  "x <x@e\u00e1.example>");
-        Assert.assertEquals(
-  "x <x@xn--e-ufa.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "sender",
+            "x <x@e\u00e1.example>");
+        Assert.assertEquals (
+          "x <x@xn--e-ufa.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "sender",
-  "x\u00e1 x x\u00e1 <x@example.com>");
-        Assert.assertEquals(
-  "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "sender",
+            "x\u00e1 x x\u00e1 <x@example.com>");
+        Assert.assertEquals (
+          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "sender",
-  "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "sender",
+            "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "sender",
-  "x <x\u00e1y@example.com>");
+        String stringTemp = DowngradeHeaderField (
+            "sender",
+            "x <x\u00e1y@example.com>");
         Assert.assertEquals(
           "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
           stringTemp);
@@ -1822,7 +1823,8 @@ public final void setValueMessage(Message value) {
       System.out.println(headerName);
       System.out.println(headerValue);
       System.out.println(hinfo.getValueHeader());
-      NamedAddress address = new NamedAddress(hinfo.getValueMessage().GetHeader(headerName));
+      NamedAddress address = new NamedAddress(hinfo.getValueMessage().GetHeader(
+  headerName));
       Assert.assertEquals(displayName, address.getDisplayName());
       Assert.assertEquals(localPart, address.getAddress().getLocalPart());
       Assert.assertEquals(domain, address.getAddress().getDomain());
@@ -1839,125 +1841,125 @@ public final void setValueMessage(Message value) {
     @Test
     public void TestDowngradeAddress() {
       for (String valueHeader : addressHeaderFields) {
-        TestDowngradeAddressOne(
-  valueHeader,
-  "down\u00begrade <down@example.com>",
-  "down\u00begrade",
-  "down",
-  "example.com");
-        TestDowngradeAddressOne(
-  valueHeader,
-  "downgrade <down@example.c\u00e7m>",
-  "downgrade",
-  "down",
-  "example.c\u00e7m");
-        TestDowngradeAddressOne(
-  valueHeader,
-  "downgrade <down@c\u00e7m.example>",
-  "downgrade",
-  "down",
-  "c\u00e7m.example");
+        TestDowngradeAddressOne (
+          valueHeader,
+          "down\u00begrade <down@example.com>",
+          "down\u00begrade",
+          "down",
+          "example.com");
+        TestDowngradeAddressOne (
+          valueHeader,
+          "downgrade <down@example.c\u00e7m>",
+          "downgrade",
+          "down",
+          "example.c\u00e7m");
+        TestDowngradeAddressOne (
+          valueHeader,
+          "downgrade <down@c\u00e7m.example>",
+          "downgrade",
+          "down",
+          "c\u00e7m.example");
       }
     }
 
     @Test(timeout = 5000)
     public void TestCommentsToWords2() {
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(test) x@x.example");
-        Assert.assertEquals(
-  "(test) x@x.example",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(test) x@x.example");
+        Assert.assertEquals (
+          "(test) x@x.example",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(tes\u00bet) x@x.example");
-        Assert.assertEquals(
-  "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(tes\u00bet) x@x.example");
+        Assert.assertEquals (
+          "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "content-language",
-  "(tes\u00bet) en");
-        Assert.assertEquals(
-  "(=?utf-8?Q?tes=C2=BEt?=) en",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "content-language",
+            "(tes\u00bet) en");
+        Assert.assertEquals (
+          "(=?utf-8?Q?tes=C2=BEt?=) en",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) Test <x@x.example>");
-        Assert.assertEquals(
-  "(comment) Test <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) Test <x@x.example>");
+        Assert.assertEquals (
+          "(comment) Test <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) Tes\u00bet <x@x.example>");
-        Assert.assertEquals(
-  "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) Tes\u00bet <x@x.example>");
+        Assert.assertEquals (
+          "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) Tes\u00bet Subject <x@x.example>");
-        Assert.assertEquals(
-        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) Tes\u00bet Subject <x@x.example>");
+        Assert.assertEquals (
+          "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) Test Sub\u00beject <x@x.example>");
-        Assert.assertEquals(
-        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) Test Sub\u00beject <x@x.example>");
+        Assert.assertEquals (
+          "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) \"Tes\u00bet\" <x@x.example>");
-        Assert.assertEquals(
-  "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) \"Tes\u00bet\" <x@x.example>");
+        Assert.assertEquals (
+          "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
-        Assert.assertEquals(
-        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) \"Tes\u00bet Subject\" <x@x.example>");
+        Assert.assertEquals (
+          "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) \"Test Sub\u00beject\" <x@x.example>");
-        Assert.assertEquals(
-        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) \"Test Sub\u00beject\" <x@x.example>");
+        Assert.assertEquals (
+          "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         {
           Object objectTemp =
-                    "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
+            "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
 
           Object objectTemp2 = stringTemp;
           Assert.assertEquals(objectTemp, objectTemp2);
         }
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
         {
           Object objectTemp =
             "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>";
@@ -1967,82 +1969,82 @@ public final void setValueMessage(Message value) {
         }
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-        Assert.assertEquals(
-        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+          stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
-        Assert.assertEquals(
-  "Test <x@x.example>",
-  stringTemp);
+        Assert.assertEquals (
+          "Test <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "Tes\u00bet <x@x.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "Tes\u00bet <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "Tes\u00bet Subject <x@x.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "Tes\u00bet Subject <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "Test Sub\u00beject <x@x.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "Test Sub\u00beject <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "\"Tes\u00bet\" <x@x.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "\"Tes\u00bet\" <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "\"Tes\u00bet Subject\" <x@x.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "\"Tes\u00bet Subject\" <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "\"Test Sub\u00beject\" <x@x.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "\"Test Sub\u00beject\" <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "\"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
-        Assert.assertEquals(
-  "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-  stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "\"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
+          stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField(
-  "from",
-  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-        Assert.assertEquals(
-        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        stringTemp);
+        String stringTemp = DowngradeHeaderField (
+            "from",
+            "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+        Assert.assertEquals (
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+          stringTemp);
       }
     }
 
@@ -2069,7 +2071,7 @@ public final void setValueMessage(Message value) {
       // CR and LF, should not be directly representable
       TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=", "=?utf-8?q?x_=0D=0A?=");
       // Parentheses
-      TestEncodedWordsPhrase("\"x (y)\"", "=?utf-8?q?x_=28y=29?=");
+      TestEncodedWordsPhrase("\"x(y)\"", "=?utf-8?q?x_=28y=29?=");
       // Colons and angle brackets
       TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
@@ -2080,9 +2082,9 @@ public final void setValueMessage(Message value) {
         "\"=?utf-8?q?xyz?=\"",
         "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
-      TestEncodedWordsPhrase(
-  "me (x) \"x:y\"",
-  "=?utf-8?q?me?= (x) \"x:y\"");
+      TestEncodedWordsPhrase (
+        "me (x) \"x:y\"",
+        "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
       TestEncodedWordsPhrase(
         "me \"x:y\"",
@@ -2128,24 +2130,24 @@ public final void setValueMessage(Message value) {
         "\"=?bad1?= y =?bad3?=\"",
         "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase(
-  "xy\u0020(sss)",
-  "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-      TestEncodedWordsPhrase(
-  "x\u0020(sss)\u0020y",
-  "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase(
-  "x\u0020(z)\u0020y",
-  "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase(
-   "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
-   "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase(
-  "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
-  "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase(
-  "=?us-ascii?q?x?=" + ValuePar + "z) y",
-  "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase (
+        "xy\u0020(sss)",
+        "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+      TestEncodedWordsPhrase (
+        "x\u0020(sss)\u0020y",
+        "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase (
+        "x\u0020(z)\u0020y",
+        "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase (
+        "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
+        "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
+      TestEncodedWordsPhrase (
+        "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
+        "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
+      TestEncodedWordsPhrase (
+        "=?us-ascii?q?x?=" + ValuePar + "z) y",
+        "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
       TestEncodedWordsOne("abcde abcde", "abcde abcde");
       TestEncodedWordsOne("abcde", "abcde");
@@ -2167,9 +2169,9 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsOne(
         "=?x-undefined?q?abcde?=",
         "=?x-undefined?q?abcde?=");
-      TestEncodedWordsOne(
-  "=?utf-8?Q?" + Repeat("x", 200) + "?=",
-  "=?utf-8?Q?" + Repeat("x", 200) + "?=");
+      TestEncodedWordsOne (
+        "=?utf-8?Q?" + Repeat("x", 200) + "?=",
+        "=?utf-8?Q?" + Repeat("x", 200) + "?=");
       TestEncodedWordsPhrase(
         "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
         "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
@@ -2283,8 +2285,8 @@ public final void setValueMessage(Message value) {
       String input = ToQPString(bytes);
       String msgString;
       Message msg;
-      MediaType mediatype = MediaType.Parse(
-        text ? "text/plain;charset=iso-8859-1" : "application/octet-stream");
+      MediaType mediatype = MediaType.Parse (
+          text ? "text/plain;charset=iso-8859-1" : "application/octet-stream");
       msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: " + mediatype + "s\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -2389,8 +2391,8 @@ public final void setValueMessage(Message value) {
       TestEncodedBytesRoundTrip("The Best\r\n.\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.\rAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.");
-      TestEncodedBytesRoundTrip(
-    "The Best\r\n--=_Boundary00000000--\r\nAnother");
+      TestEncodedBytesRoundTrip (
+        "The Best\r\n--=_Boundary00000000--\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--=_Bomb\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary--\r\nAnother");
