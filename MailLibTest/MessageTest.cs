@@ -18,7 +18,9 @@ namespace MailLibTest {
         "-- NOT A BOUNDARY --\r\n--NOT A BOUNDARY EITHER\r\n--BOUNDARY--";
       Message msg = MessageFromString(msgstr);
       Console.WriteLine(msg.ContentType);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
     }
 
     public static void TestExtractHeaderOne(
@@ -29,7 +31,9 @@ namespace MailLibTest {
         Assert.AreEqual(expected, Message.ExtractHeader(null, name));
       } else {
         byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
-        Assert.AreEqual(expected, Message.ExtractHeader(bytes, name));
+        Assert.AreEqual(
+          expected,
+          Message.ExtractHeader(bytes, name));
       }
     }
 
@@ -210,7 +214,9 @@ namespace MailLibTest {
           msgstring,
           false,
           "TestGenerate") == 2;
-        Assert.IsTrue(boolTemp, msgstring);
+        Assert.IsTrue(
+          boolTemp,
+          msgstring);
       }
       if (MessageGenerate(mtmessage) == null) {
         Assert.Fail();
@@ -246,13 +252,19 @@ namespace MailLibTest {
       string longvalue = "name1<name1@example.com>,name2<name2@example.com>," +
         "name3<name3@example.com>,name4<name4@example.com>";
       msg = new Message();
-      msg.SetHeader("to", longvalue);
+      msg.SetHeader(
+        "to",
+        longvalue);
       MessageGenerate(msg);
       msg = new Message();
-      msg.SetHeader("cc", longvalue);
+      msg.SetHeader(
+        "cc",
+        longvalue);
       MessageGenerate(msg);
       msg = new Message();
-      msg.SetHeader("bcc", longvalue);
+      msg.SetHeader(
+        "bcc",
+        longvalue);
       MessageGenerate(msg);
     }
 
@@ -376,7 +388,9 @@ namespace MailLibTest {
               MediaType.Parse("text/troff;charset=us-ascii");
             string fn = null;
             msg = new Message().SetTextBody(stringBody);
-            Assert.AreEqual("text/plain", msg.ContentType.TypeAndSubType);
+            Assert.AreEqual(
+              "text/plain",
+              msg.ContentType.TypeAndSubType);
             switch (phase) {
               case 0:
               case 1:
@@ -386,7 +400,9 @@ namespace MailLibTest {
               case 3:
                 mt = MediaType.TextPlainAscii;
                 fn = "example.txt";
-                msg.AddAttachment(ms, fn);
+                msg.AddAttachment(
+                  ms,
+                  fn);
                 break;
               case 4:
               case 5:
@@ -401,7 +417,9 @@ namespace MailLibTest {
               case 9:
                 mt = MediaType.TextPlainAscii;
                 fn = "example.txt";
-                msg.AddInline(ms, fn);
+                msg.AddInline(
+                  ms,
+                  fn);
                 break;
               case 10:
               case 11:
@@ -409,7 +427,9 @@ namespace MailLibTest {
                 msg.AddInline(ms, mt, fn);
                 break;
             }
-            Assert.AreEqual("multipart/mixed", msg.ContentType.TypeAndSubType);
+            Assert.AreEqual(
+              "multipart/mixed",
+              msg.ContentType.TypeAndSubType);
             Assert.AreEqual(2, msg.Parts.Count);
             Assert.AreEqual(
               "text/plain",
@@ -417,7 +437,9 @@ namespace MailLibTest {
             Assert.AreEqual(
               "inline",
               msg.Parts[0].ContentDisposition.DispositionType);
-            Assert.AreEqual(stringBody, msg.Parts[0].GetBodyString());
+            Assert.AreEqual(
+              stringBody,
+              msg.Parts[0].GetBodyString());
             Assert.AreEqual(
               mt.TypeAndSubType,
               msg.Parts[1].ContentType.TypeAndSubType);
@@ -544,7 +566,9 @@ namespace MailLibTest {
       foreach (string msgstr in messages) {
         try {
           byte[] data = DataUtilities.GetUtf8Bytes(msgstr, true);
-          Assert.AreEqual(null, new Message(data));
+          Assert.AreEqual(
+            null,
+            new Message(data));
           Assert.Fail("Should have failed");
         } catch (MessageDataException) {
           // NOTE: Intentionally empty
@@ -560,12 +584,16 @@ namespace MailLibTest {
       string param,
       string expected) {
       MediaType mt = MediaType.Parse("text/plain" + mtype);
-      Assert.AreEqual(expected, mt.GetParameter(param));
+      Assert.AreEqual(
+        expected,
+        mt.GetParameter(param));
       var valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain" + mtype + "\r\n\r\nTest";
       Message msg = MessageFromString(valueMessageString);
       mt = msg.ContentType;
-      Assert.AreEqual(expected, mt.GetParameter(param));
+      Assert.AreEqual(
+        expected,
+        mt.GetParameter(param));
     }
 
     private static void TestRfc2231ExtensionContentDisposition(
@@ -573,13 +601,17 @@ namespace MailLibTest {
       string param,
       string expected) {
       ContentDisposition mt = ContentDisposition.Parse("inline" + mtype);
-      Assert.AreEqual(expected, mt.GetParameter(param));
+      Assert.AreEqual(
+        expected,
+        mt.GetParameter(param));
       var valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain\r\nContent-Disposition: inline" + mtype +
         "\r\n\r\nTest";
       Message msg = MessageFromString(valueMessageString);
       mt = msg.ContentDisposition;
-      Assert.AreEqual(expected, mt.GetParameter(param));
+      Assert.AreEqual(
+        expected,
+        mt.GetParameter(param));
     }
 
     /*
@@ -618,7 +650,9 @@ namespace MailLibTest {
       string mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt +
         "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
       Message msg = MessageFromString(mtstring);
-      Assert.AreEqual(topLevel, msg.ContentType.TopLevelType);
+      Assert.AreEqual(
+        topLevel,
+        msg.ContentType.TopLevelType);
       Assert.AreEqual(sub, msg.ContentType.SubType);
       Assert.AreEqual (
         value,
@@ -634,7 +668,9 @@ namespace MailLibTest {
         "\r\nContent-Disposition: " + mt +
         "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
       Message msg = MessageFromString(mtstring);
-      Assert.AreEqual(topLevel, msg.ContentDisposition.DispositionType);
+      Assert.AreEqual(
+        topLevel,
+        msg.ContentDisposition.DispositionType);
       Assert.AreEqual (
         value,
         msg.ContentDisposition.GetParameter("z"),
@@ -653,14 +689,18 @@ namespace MailLibTest {
         object objectTemp2 = new NamedAddress(
           "Me ",
           "me@example.com").ToString();
-        Assert.AreEqual(objectTemp, objectTemp2);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
       }
       {
         object objectTemp = "\" Me\" <me@example.com>";
         object objectTemp2 = new NamedAddress(
           " Me",
           "me@example.com").ToString();
-        Assert.AreEqual(objectTemp, objectTemp2);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
       }
 
       try {
@@ -791,7 +831,9 @@ namespace MailLibTest {
       }
       try {
         const string ValueSt = "Me <me@example.com>, Fred <fred@example.com>";
-        Assert.AreEqual(null, new NamedAddress(ValueSt));
+        Assert.AreEqual(
+          null,
+          new NamedAddress(ValueSt));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -1185,19 +1227,19 @@ namespace MailLibTest {
       }
     }
 
+    private static bool EqualsStr(string a, string b) {
+      return a.Equals(b, StringComparison.Ordinal);
+    }
+
     internal static bool HasNestedMessageType(Message message) {
-      if (message.ContentType.TopLevelType.Equals("message",
-          StringComparison.Ordinal)) {
-        return (!message.ContentType.SubType.Equals("global",
-              StringComparison.Ordinal)) &&
-((!message.ContentType.SubType.Equals("global-headers",
-
-                StringComparison.Ordinal)) &&
-(message.ContentType.SubType.Equals("global-delivery-status",
-
-                StringComparison.Ordinal) || message.ContentType.SubType.Equals(
-                  "global-disposition-notification",
-                  StringComparison.Ordinal)));
+      if (EqualsStr(message.ContentType.TopLevelType, "message")) {
+        return !EqualsStr(message.ContentType.SubType.Equals, "global") &&
+          !EqualsStr(message.ContentType.SubType.Equals, "global-headers") &&
+          !EqualsStr(
+            message.ContentType.SubType.Equals,
+            "global-delivery-status") && !EqualsStr(
+            message.ContentType.SubType.Equals,
+            "global-disposition-notification");
       }
       foreach (Message part in message.Parts) {
         if (HasNestedMessageType(part)) {
@@ -1220,9 +1262,12 @@ namespace MailLibTest {
       msg2 = new Message(msg.GenerateBytes());
       {
         object objectTemp = body;
-        object objectTemp2 = DataUtilities.GetUtf8String(msg2.GetBody(),
-  false);
-  Assert.AreEqual(objectTemp, objectTemp2);
+        object objectTemp2 = DataUtilities.GetUtf8String(
+          msg2.GetBody(),
+          false);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
 }
       body = EncodingTest.Repeat (
           EncodingTest.Repeat("a", 76) + "\r\n",
@@ -1241,67 +1286,105 @@ namespace MailLibTest {
       int[] date;
       msg.SetHeader("date", "Sat, 1 Jan 2000 12:34:56 +1034");
       date = msg.GetDate();
-      Assert.AreEqual(2000, date[0]);
+      Assert.AreEqual(
+        2000,
+        date[0]);
       Assert.AreEqual(1, date[1]);
-      Assert.AreEqual(1, date[2]);
+      Assert.AreEqual(
+        1,
+        date[2]);
       Assert.AreEqual(12, date[3]);
-      Assert.AreEqual(34, date[4]);
+      Assert.AreEqual(
+        34,
+        date[4]);
       Assert.AreEqual(56, date[5]);
-      Assert.AreEqual(0, date[6]);
+      Assert.AreEqual(
+        0,
+        date[6]);
       Assert.AreEqual((10 * 60) + 34, date[7]);
       msg.SetHeader("date", "Mon, 1 Jan 1900 23:59:60 -1034");
       date = msg.GetDate();
-      Assert.AreEqual(1900, date[0]);
+      Assert.AreEqual(
+        1900,
+        date[0]);
       Assert.AreEqual(1, date[1]);
-      Assert.AreEqual(1, date[2]);
+      Assert.AreEqual(
+        1,
+        date[2]);
       Assert.AreEqual(23, date[3]);
-      Assert.AreEqual(59, date[4]);
+      Assert.AreEqual(
+        59,
+        date[4]);
       Assert.AreEqual(60, date[5]);
-      Assert.AreEqual(0, date[6]);
+      Assert.AreEqual(
+        0,
+        date[6]);
       Assert.AreEqual(-((10 * 60) + 34), date[7]);
       msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 12:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 12:34:56 +1034");
       date = msg.GetDate();
-      Assert.AreEqual(2000, date[0]);
+      Assert.AreEqual(
+        2000,
+        date[0]);
       Assert.AreEqual(1, date[1]);
-      Assert.AreEqual(1, date[2]);
+      Assert.AreEqual(
+        1,
+        date[2]);
       msg.SetHeader("date", "32 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "30 Feb 2000 12:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "30 Feb 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "1 Feb 999999999999999999999 12:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Feb 999999999999999999999 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 24:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 24:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:60:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:60:56 +1034");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:01:61 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:61 +1034");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1099");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:01 +1099");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1060");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:01 +1060");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
 
-      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1061");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:01 +1061");
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
@@ -1507,14 +1590,18 @@ namespace MailLibTest {
           message += "Epilogue";
           Message msg;
           msg = MessageFromString(message);
-          Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
+          Assert.AreEqual(
+            "multipart",
+            msg.ContentType.TopLevelType);
           {
             string stringTemp = msg.ContentType.GetParameter("boundary");
             Assert.AreEqual(
               "b1",
               stringTemp);
           }
-          Assert.AreEqual(1, msg.Parts.Count);
+          Assert.AreEqual(
+            1,
+            msg.Parts.Count);
           Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
           {
             string stringTemp = msg.Parts[0].GetBodyString();
@@ -1547,7 +1634,9 @@ namespace MailLibTest {
       Console.WriteLine(message);
       Message msg;
       msg = MessageFromString(message);
-      Assert.AreEqual(3, msg.Parts.Count);
+      Assert.AreEqual(
+        3,
+        msg.Parts.Count);
       Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
       {
         string stringTemp = msg.Parts[0].GetBodyString();
@@ -1578,7 +1667,9 @@ namespace MailLibTest {
       message += "Epilogue\r\n";
       message += "--b1--\r\n";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
       {
         string stringTemp = msg.Parts[0].GetBodyString();
@@ -1603,14 +1694,18 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual(
+        "multipart",
+        msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
           "b1",
           stringTemp);
       }
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
       {
         string stringTemp = msg.Parts[0].GetBodyString();
@@ -1628,7 +1723,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -1643,7 +1740,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       {
         string stringTemp = msg.Parts[0].GetBodyString();
         Assert.AreEqual(
@@ -1659,7 +1758,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       {
         string stringTemp = msg.Parts[0].GetBodyString();
         Assert.AreEqual(
@@ -1674,21 +1775,31 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual(
+        "multipart",
+        msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
           "b1",
           stringTemp);
       }
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual("application", msg.Parts[0].ContentType.TopLevelType);
       bodyBytes = msg.Parts[0].GetBody();
-      Assert.AreEqual(0, bodyBytes[0]);
+      Assert.AreEqual(
+        0,
+        bodyBytes[0]);
       Assert.AreEqual(16, bodyBytes[1]);
-      Assert.AreEqual(1, bodyBytes[2]);
+      Assert.AreEqual(
+        1,
+        bodyBytes[2]);
       Assert.AreEqual(93, bodyBytes[3]);
-      Assert.AreEqual(4, bodyBytes.Length);
+      Assert.AreEqual(
+        4,
+        bodyBytes.Length);
       // Base64 body part II
       message = messageStart;
       message += "Content-Type: application/octet-stream\r\n";
@@ -1697,21 +1808,31 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual(
+        "multipart",
+        msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
           "b1",
           stringTemp);
       }
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual("application", msg.Parts[0].ContentType.TopLevelType);
       bodyBytes = msg.Parts[0].GetBody();
-      Assert.AreEqual(0, bodyBytes[0]);
+      Assert.AreEqual(
+        0,
+        bodyBytes[0]);
       Assert.AreEqual(16, bodyBytes[1]);
-      Assert.AreEqual(1, bodyBytes[2]);
+      Assert.AreEqual(
+        1,
+        bodyBytes[2]);
       Assert.AreEqual(93, bodyBytes[3]);
-      Assert.AreEqual(4, bodyBytes.Length);
+      Assert.AreEqual(
+        4,
+        bodyBytes.Length);
       // Base64 in nested body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1723,22 +1844,34 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual(
+        "multipart",
+        msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
           "b1",
           stringTemp);
       }
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Message part = msg.Parts[0];
-      Assert.AreEqual("application", part.Parts[0].ContentType.TopLevelType);
+      Assert.AreEqual(
+        "application",
+        part.Parts[0].ContentType.TopLevelType);
       bodyBytes = part.Parts[0].GetBody();
-      Assert.AreEqual(0, bodyBytes[0]);
+      Assert.AreEqual(
+        0,
+        bodyBytes[0]);
       Assert.AreEqual(16, bodyBytes[1]);
-      Assert.AreEqual(1, bodyBytes[2]);
+      Assert.AreEqual(
+        1,
+        bodyBytes[2]);
       Assert.AreEqual(93, bodyBytes[3]);
-      Assert.AreEqual(4, bodyBytes.Length);
+      Assert.AreEqual(
+        4,
+        bodyBytes.Length);
       // Nested Multipart body part II
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1749,7 +1882,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -1947,7 +2082,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -1964,7 +2101,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -1986,7 +2125,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(2, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -2011,7 +2152,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -2030,7 +2173,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -2049,7 +2194,9 @@ namespace MailLibTest {
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(
+        1,
+        msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       {
         string stringTemp = msg.Parts[0].Parts[0].GetBodyString();
@@ -2070,10 +2217,12 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
+      string hdrvalue = "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x" +
+        "\u0020(y) h.a=me@example.com";
       try {
-        msg.SetHeader (
+        msg.SetHeader(
           "authentication-results",
-  "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
+          hdrvalue);
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2351,11 +2500,15 @@ namespace MailLibTest {
       msg = "From: x1@example.com\r\nFrom: x2.example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
   "from");
-      Assert.AreEqual("x1@example.com", msg);
+      Assert.AreEqual(
+        "x1@example.com",
+        msg);
       msg = "From: x1.example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
   "from");
-      Assert.AreEqual("x2@example.com", msg);
+      Assert.AreEqual(
+        "x2@example.com",
+        msg);
     }
 
     [Test]
@@ -2424,7 +2577,9 @@ namespace MailLibTest {
     [Test]
     public void TestContentHeadersOnlyInBodyParts() {
       var msg = new Message().SetTextAndHtml("Hello", "Hello");
-      msg.SetHeader("mime-version", "1.0");
+      msg.SetHeader(
+        "mime-version",
+        "1.0");
       msg.Parts[0].SetHeader("mime-version", "1.0");
       {
         string stringTemp = msg.GetHeader("mime-version");
@@ -2445,7 +2600,9 @@ namespace MailLibTest {
           "1.0",
           stringTemp);
       }
-      Assert.AreEqual(null, msg.Parts[0].GetHeader("mime-version"));
+      Assert.AreEqual(
+        null,
+        msg.Parts[0].GetHeader("mime-version"));
     }
 
     [Test]
@@ -2625,7 +2782,9 @@ namespace MailLibTest {
         .SetParameter("name", input).ToString() +
         "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);
-      Assert.AreEqual(expected, msg.FileName);
+      Assert.AreEqual(
+        expected,
+        msg.FileName);
     }
     [Test]
     public void TestFileName() {
@@ -2641,7 +2800,9 @@ namespace MailLibTest {
       Message msg = MessageFromString(valueMessageString);
       MessageFromString(MessageGenerate(msg));
       IList<NamedAddress> fromaddrs = msg.GetAddresses("from");
-      Assert.AreEqual(1, fromaddrs.Count);
+      Assert.AreEqual(
+        1,
+        fromaddrs.Count);
     }
 
     [Test]
@@ -3039,7 +3200,9 @@ namespace MailLibTest {
       string header,
       string value) {
       msg.SetHeader(header, value);
-      Assert.AreEqual(value, msg.GetHeader(header));
+      Assert.AreEqual(
+        value,
+        msg.GetHeader(header));
     }
 
     private static void TestSetHeaderInvalid(
@@ -3082,8 +3245,9 @@ namespace MailLibTest {
         msg,
         "to",
         "\"Example E. Example\" <example@EXAMPLE.COM>");
-      TestSetHeaderOne(msg, "to", "\"Example, Example\"" +
-"\u0020<example@example.com>");
+      string hdrvalue = "\"Example, Example\"" +
+"\u0020<example@example.com>";
+      TestSetHeaderOne(msg, "to", hdrvalue);
       TestSetHeaderOne (
         msg,
         "to",
@@ -3102,9 +3266,13 @@ namespace MailLibTest {
     public void TestSubject() {
       var msg = new Message();
       msg.Subject = "Test";
-      Assert.AreEqual("Test", msg.Subject);
+      Assert.AreEqual(
+        "Test",
+        msg.Subject);
       msg.Subject = "Test2";
-      Assert.AreEqual("Test2", msg.Subject);
+      Assert.AreEqual(
+        "Test2",
+        msg.Subject);
     }
     [Test]
     public void TestToAddresses() {
@@ -3147,19 +3315,25 @@ namespace MailLibTest {
       var msg = new Message();
       msg = new Message(msg.GenerateBytes());
       byte[] bytes = msg.GetBody();
-      Assert.AreEqual(0, bytes.Length);
+      Assert.AreEqual(
+        0,
+        bytes.Length);
     }
 
     [Test]
     public void TestTwoToFields() {
       var msg = new Message();
-      msg.AddHeader("to", "a@example.com");
+      msg.AddHeader(
+        "to",
+        "a@example.com");
       msg.AddHeader("to", "b@example.com");
       string msggen = msg.Generate();
       int io = msggen.IndexOf(
         "To: a@example.com\u002c b@example.com",
         StringComparison.Ordinal);
-      Assert.AreEqual(-1, io);
+      Assert.AreEqual(
+        -1,
+        io);
     }
 
     [Test]
@@ -3167,13 +3341,21 @@ namespace MailLibTest {
       int[] dtime;
       dtime = MailDateTime.ParseDateStringHttp (
           "Mon\u002c 06 May 2019 01:23:45 GMT");
-      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(
+        2019,
+        dtime[0]);
       Assert.AreEqual(5, dtime[1]);
-      Assert.AreEqual(6, dtime[2]);
+      Assert.AreEqual(
+        6,
+        dtime[2]);
       Assert.AreEqual(1, dtime[3]);
-      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(
+        23,
+        dtime[4]);
       Assert.AreEqual(45, dtime[5]);
-      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(
+        0,
+        dtime[6]);
       Assert.AreEqual(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp (
           "Tue\u002c 06 May 2019 01:23:45 GMT");
@@ -3197,13 +3379,21 @@ namespace MailLibTest {
       }
       dtime = MailDateTime.ParseDateStringHttp (
           "Monday\u002c 06-May-19 01:23:45 GMT");
-      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(
+        2019,
+        dtime[0]);
       Assert.AreEqual(5, dtime[1]);
-      Assert.AreEqual(6, dtime[2]);
+      Assert.AreEqual(
+        6,
+        dtime[2]);
       Assert.AreEqual(1, dtime[3]);
-      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(
+        23,
+        dtime[4]);
       Assert.AreEqual(45, dtime[5]);
-      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(
+        0,
+        dtime[6]);
       Assert.AreEqual(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp (
           "Tuesday\u002c 06-May-19 01:23:45 GMT");
@@ -3222,22 +3412,38 @@ namespace MailLibTest {
       }
       dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45" +
 "\u00202019");
-      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(
+        2019,
+        dtime[0]);
       Assert.AreEqual(5, dtime[1]);
-      Assert.AreEqual(6, dtime[2]);
+      Assert.AreEqual(
+        6,
+        dtime[2]);
       Assert.AreEqual(1, dtime[3]);
-      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(
+        23,
+        dtime[4]);
       Assert.AreEqual(45, dtime[5]);
-      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(
+        0,
+        dtime[6]);
       Assert.AreEqual(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
-      Assert.AreEqual(2019, dtime[0]);
+      Assert.AreEqual(
+        2019,
+        dtime[0]);
       Assert.AreEqual(5, dtime[1]);
-      Assert.AreEqual(13, dtime[2]);
+      Assert.AreEqual(
+        13,
+        dtime[2]);
       Assert.AreEqual(1, dtime[3]);
-      Assert.AreEqual(23, dtime[4]);
+      Assert.AreEqual(
+        23,
+        dtime[4]);
       Assert.AreEqual(45, dtime[5]);
-      Assert.AreEqual(0, dtime[6]);
+      Assert.AreEqual(
+        0,
+        dtime[6]);
       Assert.AreEqual(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
       if (dtime != null) {

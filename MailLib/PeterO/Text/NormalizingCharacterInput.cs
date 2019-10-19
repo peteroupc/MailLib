@@ -126,12 +126,20 @@ namespace PeterO.Text {
     /// class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
-    /// <param name='index'>The parameter <paramref name='index'/> is a
-    /// 32-bit signed integer.</param>
-    /// <param name='length'>The parameter <paramref name='length'/> is a
-    /// 32-bit signed integer.</param>
+    /// <param name='index'>An index, starting at 0, showing where the
+    /// desired portion of <paramref name='str'/> begins.</param>
+    /// <param name='length'>The length, in code units, of the desired
+    /// portion of <paramref name='str'/> (but not more than <paramref
+    /// name='str'/> 's length).</param>
     /// <param name='form'>The parameter <paramref name='form'/> is a
     /// Normalization object.</param>
+    /// <exception cref='ArgumentException'>Either <paramref name='index'/>
+    /// or <paramref name='length'/> is less than 0 or greater than
+    /// <paramref name='str'/> 's length, or <paramref name='str'/> 's
+    /// length minus <paramref name='index'/> is less than <paramref
+    /// name='length'/>.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public NormalizingCharacterInput(
       string str,
       int index,

@@ -17,17 +17,25 @@ import com.upokecenter.mail.*;
       String expectedOutput,
       String input) {
       Message msg = MarkdownMessage(input);
-      Assert.assertEquals(expectedOutput, msg.GetFormattedBodyString());
+      Assert.assertEquals(
+        expectedOutput,
+        msg.GetFormattedBodyString());
     }
 
     @Test
     public void TestMarkdown() {
       TestMarkdownOne("<p><em>Text</em></p>", "_Text_");
-      TestMarkdownOne("<p>1.5 xyz</p>", "1.5 xyz");
+      TestMarkdownOne(
+        "<p>1.5 xyz</p>",
+        "1.5 xyz");
       TestMarkdownOne("<p><em>Text</em></p>", "*Text*");
-      TestMarkdownOne("<p><strong>Text</strong></p>", "__Text__");
+      TestMarkdownOne(
+        "<p><strong>Text</strong></p>",
+        "__Text__");
       TestMarkdownOne("<p><strong>Text</strong></p>", "**Text**");
-      TestMarkdownOne("<p><s>Text</s></p>", "<s>Text</s>");
+      TestMarkdownOne(
+        "<p><s>Text</s></p>",
+        "<s>Text</s>");
       TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
       TestMarkdownOne (
         "<p><a href=\"x\" title=\"z\">y</a></p>",
@@ -35,7 +43,9 @@ import com.upokecenter.mail.*;
       TestMarkdownOne (
         "<p><img src=\"x\" alt=\"y\" /></p>",
         "![y](x)");
-      TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
+      TestMarkdownOne(
+        "<p><a href=\"x\">y</a></p>",
+        "[y](x)");
       TestMarkdownOne (
         "<p><img src=\"x\" alt=\"y\" title=\"z\" /></p>",
         "![y](x \"z\")");
@@ -105,9 +115,14 @@ import com.upokecenter.mail.*;
       TestMarkdownOne (
         "<ul><li><p>A</p><p>B\r\nC</p></li><li>B</li></ul>",
         "* A\r\n\r\n\u0020 \u0020 B\r\nC\r\n* B");
-      TestMarkdownOne (
-  "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>",
-  "* A\r\n\r\n\t> C\r\n\t> D\r\n* B");
+      {
+        String objectTemp =
+  "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>";
+        String objectTemp2 = "* A\r\n\r\n\t> C\r\n\t> D\r\n* B";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
       TestMarkdownOne (
         "<ul><li><p>A</p><pre><code>C\r\nD</code></pre></li><li>B</li></ul>",
         "* A\r\n\r\n\t\tC\r\n\t\tD\r\n* B");
@@ -117,9 +132,14 @@ import com.upokecenter.mail.*;
       TestMarkdownOne (
         "<p>A</p><pre><code>C\r\n\tD</code></pre>",
         "A\r\n\r\n\tC\r\n\t\tD");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com/\">http://www.example.com/</a></p>",
-  "<http://www.example.com/>");
+      {
+        String objectTemp = "<p><a" +
+"\u0020href=\"http://www.example.com/\">http://www.example.com/</a></p>";
+        String objectTemp2 = "<http://www.example.com/>";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
       // NOTE: Obfuscation of email addresses with
       // automatic link syntax is deliberately not supported.
       TestMarkdownOne (
@@ -217,68 +237,149 @@ import com.upokecenter.mail.*;
         "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\u005btest]: http://www.example.com \"Title\"");
+  "[Linktext][TeSt]\r\n\u005btest]: http://www.example.com\u0020\"Title\"");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com> \"Title\"");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com 'Title'");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\r\n \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>",
-  "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n(Not a title)");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n \"Title\"");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com\r\n 'Title'");
+  "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com>\u0020\"Title\"");
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com 'Title'";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n \u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u0020 \u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a" +
+"\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n(Not a title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n \"Title\"";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n 'Title'";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\u005btest]: http://www.example.com");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext] \u005bTeSt]\r\n\u005btest]: http://www.example.com \"Title\"");
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
+"\u0020http://www.example.com \"Title\"";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext] \u005bTeSt]\r\n\u005btest]: <http://www.example.com> \"Title\"");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com 'Title'");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
-        "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext] \u005bTeSt]\r\n\r\n \u005btest]: http://www.example.com (Title)");
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
+"\u0020<http://www.example.com> \"Title\"";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com 'Title'";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><a href=\"http://www.example.com\"" +
+"\u0020title=\"Title\">Linktext</a></p>";
+        String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n \u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
       {
         String objectTemp = "<p><a href=\"http://www.example.com\"" +
           "\u0020title=\"Title\">Linktext</a></p>";
         String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u0020" +
           "\u0020\u005btest]: " + "http://www.example.com (Title)";
-        TestMarkdownOne(objectTemp, objectTemp2);
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
       }
+
       {
         String objectTemp = "<p><a" +
           "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
@@ -286,7 +387,9 @@ import com.upokecenter.mail.*;
         String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
           "\u0020http://www.example.com\r\n(No" +
           "t a title)";
-        TestMarkdownOne(objectTemp, objectTemp2);
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
       }
       {
         String objectTemp = "<p><a href=\"http://www.example.com\" " +
@@ -294,7 +397,9 @@ import com.upokecenter.mail.*;
         String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: " +
           "http://www.example.com\r\n" +
           "\u0020(Title)";
-        TestMarkdownOne(objectTemp, objectTemp2);
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
       }
       {
         String objectTemp = "<p><a href=\"http://www.example.com\"" +
@@ -302,7 +407,9 @@ import com.upokecenter.mail.*;
         String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
           "\u0020http://www.example.com\r\n" +
           " \"Title\"";
-        TestMarkdownOne(objectTemp, objectTemp2);
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
       }
       {
         String objectTemp = "<p><a href=\"http://www.example.com\"" +
@@ -310,7 +417,9 @@ import com.upokecenter.mail.*;
         String objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
           " http://www.example.com\r\n" +
           " 'Title'";
-        TestMarkdownOne(objectTemp, objectTemp2);
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
       }
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">tEsT</a></p>",
@@ -341,7 +450,7 @@ import com.upokecenter.mail.*;
         "[tEsT][]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">tEsT</a></p><p>(Not a title)</p>",
-  "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n(Not a title)");
+  "[tEsT][]\r\n\r\n\u005btest]:\u0020http://www.example.com\r\n(Not a title)");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");
@@ -359,46 +468,99 @@ import com.upokecenter.mail.*;
         "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com");
       TestMarkdownOne (
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\u005btest]: http://www.example.com \"Title\"");
+  "![tEsT][]\r\n\u005btest]:\u0020http://www.example.com \"Title\"");
       TestMarkdownOne (
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
         "![tEsT][]\r\n\r\n\u005btest]: <http://www.example.com>");
       TestMarkdownOne (
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\u005btest]: <http://www.example.com> \"Title\"");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com 'Title'");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\r\n \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p><p>(Not a title)</p>",
-  "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n(Not a title)");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n \"Title\"");
-      TestMarkdownOne (
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n 'Title'");
+  "![tEsT][]\r\n\u005btest]:\u0020<http://www.example.com> \"Title\"");
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com 'Title'";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n \u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n\u0020 \u005btest]:" +
+"\u0020http://www.example.com (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" /></p><p>(Not a title)</p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n(Not a title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n (Title)";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n \"Title\"";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
+      {
+        String objectTemp = "<p><img src=\"http://www.example.com\"" +
+"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        String objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
+"\u0020http://www.example.com\r\n 'Title'";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
     }
     @Test
     public void TestMarkdown3() {
       TestMarkdownOne (
   "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
   "> A\r\n> > B\r\n> \r\n> C");
-      TestMarkdownOne (
-  "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>",
-  "> A\r\n> > B\r\n> C");
+      {
+        String objectTemp =
+"<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>";
+        String objectTemp2 = "> A\r\n> > B\r\n> C";
+        TestMarkdownOne(
+          objectTemp,
+          objectTemp2);
+      }
     }
     @Test(timeout = 5000)
     public void TestMarkdown4() {

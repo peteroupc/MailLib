@@ -73,10 +73,20 @@ namespace MailLibTest {
       this.TestMailToOne("mailto:me@example.com");
       this.TestMailToOne("mailto:you@example.com?subject=current-issue");
       msg = this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-hijk");
-      Assert.AreEqual("x abcdefg-hijk", msg.BodyString);
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "x abcdefg-hijk",
+          stringTemp);
+}
       msg = this.TestMailToOne(
   "mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
-      Assert.AreEqual("x abcdefg-h\r\nijk", msg.BodyString);
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "x abcdefg-h\r\nijk",
+          stringTemp);
+}
       // ----
       msg = this.TestMailToOne("mailto:e%25f@m.example");
       {
@@ -126,7 +136,12 @@ namespace MailLibTest {
           stringTemp);
       }
       msg = this.TestMailToOne("mailto:me@example.com?body=b%c3%a7");
-      Assert.AreEqual("b\u00e7", msg.BodyString);
+      {
+        string stringTemp = msg.GetBodyString();
+        Assert.AreEqual(
+          "b\u00e7",
+          stringTemp);
+}
       msg =
 
         this.TestMailToOne(

@@ -139,11 +139,21 @@ Deprecated.
 
 * <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>index</code> - The parameter <code>index</code> is a 32-bit signed integer.
+* <code>index</code> - An index, starting at 0, showing where the desired portion of
+ <code>str</code> begins.
 
-* <code>length</code> - The parameter <code>length</code> is a 32-bit signed integer.
+* <code>length</code> - The length, in code units, of the desired portion of <code>
+ str</code> (but not more than <code>str</code> 's length).
 
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
+
+**Throws:**
+
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
+ than 0 or greater than <code>str</code> 's length, or <code>str</code> 's
+ length minus <code>index</code> is less than <code>length</code>.
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput​(java.lang.String str, Normalization form)

@@ -120,9 +120,15 @@ import java.util.*;
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizingCharacterInput} class.
      * @param str The parameter {@code str} is a text string.
-     * @param index The parameter {@code index} is a 32-bit signed integer.
-     * @param length The parameter {@code length} is a 32-bit signed integer.
+     * @param index An index, starting at 0, showing where the desired portion of
+     * {@code str} begins.
+     * @param length The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
      * @param form The parameter {@code form} is a Normalization object.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
+     * than 0 or greater than {@code str} 's length, or {@code str} 's
+     * length minus {@code index} is less than {@code length}.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public NormalizingCharacterInput(
       String str,

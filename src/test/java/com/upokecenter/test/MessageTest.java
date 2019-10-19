@@ -17,7 +17,9 @@ import com.upokecenter.mail.*;
         "-- NOT A BOUNDARY --\r\n--NOT A BOUNDARY EITHER\r\n--BOUNDARY--";
       Message msg = MessageFromString(msgstr);
       System.out.println(msg.getContentType());
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
     }
 
     public static void TestExtractHeaderOne(
@@ -28,7 +30,9 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(expected, Message.ExtractHeader(null, name));
       } else {
         byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
-        Assert.assertEquals(expected, Message.ExtractHeader(bytes, name));
+        Assert.assertEquals(
+          expected,
+          Message.ExtractHeader(bytes, name));
       }
     }
 
@@ -213,8 +217,10 @@ import com.upokecenter.mail.*;
           msgstring,
           false,
           "TestGenerate") == 2;
-        if (!(boolTemp)) {
- Assert.fail(msgstring);
+        if (!(
+          boolTemp)) {
+ Assert.fail(
+          msgstring);
  }
       }
       if (MessageGenerate(mtmessage) == null) {
@@ -251,13 +257,19 @@ import com.upokecenter.mail.*;
       String longvalue = "name1<name1@example.com>,name2<name2@example.com>," +
         "name3<name3@example.com>,name4<name4@example.com>";
       msg = new Message();
-      msg.SetHeader("to", longvalue);
+      msg.SetHeader(
+        "to",
+        longvalue);
       MessageGenerate(msg);
       msg = new Message();
-      msg.SetHeader("cc", longvalue);
+      msg.SetHeader(
+        "cc",
+        longvalue);
       MessageGenerate(msg);
       msg = new Message();
-      msg.SetHeader("bcc", longvalue);
+      msg.SetHeader(
+        "bcc",
+        longvalue);
       MessageGenerate(msg);
     }
 
@@ -393,7 +405,9 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
               MediaType.Parse("text/troff;charset=us-ascii");
             String fn = null;
             msg = new Message().SetTextBody(stringBody);
-            Assert.assertEquals("text/plain", msg.getContentType().getTypeAndSubType());
+            Assert.assertEquals(
+              "text/plain",
+              msg.getContentType().getTypeAndSubType());
             switch (phase) {
               case 0:
               case 1:
@@ -403,7 +417,9 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
               case 3:
                 mt = MediaType.TextPlainAscii;
                 fn = "example.txt";
-                msg.AddAttachment(ms, fn);
+                msg.AddAttachment(
+                  ms,
+                  fn);
                 break;
               case 4:
               case 5:
@@ -418,7 +434,9 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
               case 9:
                 mt = MediaType.TextPlainAscii;
                 fn = "example.txt";
-                msg.AddInline(ms, fn);
+                msg.AddInline(
+                  ms,
+                  fn);
                 break;
               case 10:
               case 11:
@@ -426,7 +444,9 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
                 msg.AddInline(ms, mt, fn);
                 break;
             }
-            Assert.assertEquals("multipart/mixed", msg.getContentType().getTypeAndSubType());
+            Assert.assertEquals(
+              "multipart/mixed",
+              msg.getContentType().getTypeAndSubType());
             Assert.assertEquals(2, msg.getParts().size());
             Assert.assertEquals(
               "text/plain",
@@ -434,7 +454,9 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
             Assert.assertEquals(
               "inline",
               msg.getParts().get(0).getContentDisposition().getDispositionType());
-            Assert.assertEquals(stringBody, msg.getParts().get(0).GetBodyString());
+            Assert.assertEquals(
+              stringBody,
+              msg.getParts().get(0).GetBodyString());
             Assert.assertEquals(
               mt.getTypeAndSubType(),
               msg.getParts().get(1).getContentType().getTypeAndSubType());
@@ -567,7 +589,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (String msgstr : messages) {
         try {
           byte[] data = DataUtilities.GetUtf8Bytes(msgstr, true);
-          Assert.assertEquals(null, new Message(data));
+          Assert.assertEquals(
+            null,
+            new Message(data));
           Assert.fail("Should have failed");
         } catch (MessageDataException ex) {
           // NOTE: Intentionally empty
@@ -583,12 +607,16 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String param,
       String expected) {
       MediaType mt = MediaType.Parse("text/plain" + mtype);
-      Assert.assertEquals(expected, mt.GetParameter(param));
+      Assert.assertEquals(
+        expected,
+        mt.GetParameter(param));
       String valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain" + mtype + "\r\n\r\nTest";
       Message msg = MessageFromString(valueMessageString);
       mt = msg.getContentType();
-      Assert.assertEquals(expected, mt.GetParameter(param));
+      Assert.assertEquals(
+        expected,
+        mt.GetParameter(param));
     }
 
     private static void TestRfc2231ExtensionContentDisposition(
@@ -596,13 +624,17 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String param,
       String expected) {
       ContentDisposition mt = ContentDisposition.Parse("inline" + mtype);
-      Assert.assertEquals(expected, mt.GetParameter(param));
+      Assert.assertEquals(
+        expected,
+        mt.GetParameter(param));
       String valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain\r\nContent-Disposition: inline" + mtype +
         "\r\n\r\nTest";
       Message msg = MessageFromString(valueMessageString);
       mt = msg.getContentDisposition();
-      Assert.assertEquals(expected, mt.GetParameter(param));
+      Assert.assertEquals(
+        expected,
+        mt.GetParameter(param));
     }
 
     /*
@@ -641,7 +673,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt +
         "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
       Message msg = MessageFromString(mtstring);
-      Assert.assertEquals(topLevel, msg.getContentType().getTopLevelType());
+      Assert.assertEquals(
+        topLevel,
+        msg.getContentType().getTopLevelType());
       Assert.assertEquals(sub, msg.getContentType().getSubType());
       Assert.assertEquals (
         value,
@@ -657,7 +691,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         "\r\nContent-Disposition: " + mt +
         "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
       Message msg = MessageFromString(mtstring);
-      Assert.assertEquals(topLevel, msg.getContentDisposition().getDispositionType());
+      Assert.assertEquals(
+        topLevel,
+        msg.getContentDisposition().getDispositionType());
       Assert.assertEquals (
         value,
         msg.getContentDisposition().GetParameter("z"),
@@ -676,14 +712,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Object objectTemp2 = new NamedAddress(
           "Me ",
           "me@example.com").toString();
-        Assert.assertEquals(objectTemp, objectTemp2);
+        Assert.assertEquals(
+          objectTemp,
+          objectTemp2);
       }
       {
         Object objectTemp = "\" Me\" <me@example.com>";
         Object objectTemp2 = new NamedAddress(
           " Me",
           "me@example.com").toString();
-        Assert.assertEquals(objectTemp, objectTemp2);
+        Assert.assertEquals(
+          objectTemp,
+          objectTemp2);
       }
 
       try {
@@ -814,7 +854,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         String ValueSt = "Me <me@example.com>, Fred <fred@example.com>";
-        Assert.assertEquals(null, new NamedAddress(ValueSt));
+        Assert.assertEquals(
+          null,
+          new NamedAddress(ValueSt));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -1210,12 +1252,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+    private static boolean EqualsStr(String a, String b) {
+      return a.equals(b);
+    }
+
     static boolean HasNestedMessageType(Message message) {
-      if (message.getContentType().getTopLevelType().equals("message")) {
-        return (!message.getContentType().getSubType().equals("global")) &&
-((!message.getContentType().getSubType().equals("global-headers")) &&
-(message.getContentType().getSubType().equals("global-delivery-status") || message.getContentType().getSubType().equals(
-                  "global-disposition-notification")));
+      if (EqualsStr(message.getContentType().getTopLevelType(), "message")) {
+        return !EqualsStr(message.getContentType().getSubType().equals, "global") &&
+          !EqualsStr(message.getContentType().getSubType().equals, "global-headers") &&
+          !EqualsStr(
+            message.getContentType().getSubType().equals,
+            "global-delivery-status") && !EqualsStr(
+            message.getContentType().getSubType().equals,
+            "global-disposition-notification");
       }
       for (Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {
@@ -1238,9 +1287,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg2 = new Message(msg.GenerateBytes());
       {
         Object objectTemp = body;
-        Object objectTemp2 = DataUtilities.GetUtf8String(msg2.GetBody(),
-  false);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.GetUtf8String(
+          msg2.GetBody(),
+          false);
+        Assert.assertEquals(
+          objectTemp,
+          objectTemp2);
 }
       body = EncodingTest.Repeat (
           EncodingTest.Repeat("a", 76) + "\r\n",
@@ -1259,67 +1311,105 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int[] date;
       msg.SetHeader("date", "Sat, 1 Jan 2000 12:34:56 +1034");
       date = msg.GetDate();
-      Assert.assertEquals(2000, date[0]);
+      Assert.assertEquals(
+        2000,
+        date[0]);
       Assert.assertEquals(1, date[1]);
-      Assert.assertEquals(1, date[2]);
+      Assert.assertEquals(
+        1,
+        date[2]);
       Assert.assertEquals(12, date[3]);
-      Assert.assertEquals(34, date[4]);
+      Assert.assertEquals(
+        34,
+        date[4]);
       Assert.assertEquals(56, date[5]);
-      Assert.assertEquals(0, date[6]);
+      Assert.assertEquals(
+        0,
+        date[6]);
       Assert.assertEquals((10 * 60) + 34, date[7]);
       msg.SetHeader("date", "Mon, 1 Jan 1900 23:59:60 -1034");
       date = msg.GetDate();
-      Assert.assertEquals(1900, date[0]);
+      Assert.assertEquals(
+        1900,
+        date[0]);
       Assert.assertEquals(1, date[1]);
-      Assert.assertEquals(1, date[2]);
+      Assert.assertEquals(
+        1,
+        date[2]);
       Assert.assertEquals(23, date[3]);
-      Assert.assertEquals(59, date[4]);
+      Assert.assertEquals(
+        59,
+        date[4]);
       Assert.assertEquals(60, date[5]);
-      Assert.assertEquals(0, date[6]);
+      Assert.assertEquals(
+        0,
+        date[6]);
       Assert.assertEquals(-((10 * 60) + 34), date[7]);
       msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 12:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 12:34:56 +1034");
       date = msg.GetDate();
-      Assert.assertEquals(2000, date[0]);
+      Assert.assertEquals(
+        2000,
+        date[0]);
       Assert.assertEquals(1, date[1]);
-      Assert.assertEquals(1, date[2]);
+      Assert.assertEquals(
+        1,
+        date[2]);
       msg.SetHeader("date", "32 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "30 Feb 2000 12:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "30 Feb 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "1 Feb 999999999999999999999 12:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Feb 999999999999999999999 12:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 24:34:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 24:34:56 +1034");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:60:56 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:60:56 +1034");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:01:61 +1034");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:61 +1034");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1099");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:01 +1099");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
-      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1060");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:01 +1060");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
 
-      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1061");
+      msg.SetHeader(
+        "date",
+        "1 Jan 2000 01:01:01 +1061");
       if (msg.GetDate() != null) {
         Assert.fail();
       }
@@ -1525,14 +1615,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           message += "Epilogue";
           Message msg;
           msg = MessageFromString(message);
-          Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+          Assert.assertEquals(
+            "multipart",
+            msg.getContentType().getTopLevelType());
           {
             String stringTemp = msg.getContentType().GetParameter("boundary");
             Assert.assertEquals(
               "b1",
               stringTemp);
           }
-          Assert.assertEquals(1, msg.getParts().size());
+          Assert.assertEquals(
+            1,
+            msg.getParts().size());
           Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
           {
             String stringTemp = msg.getParts().get(0).GetBodyString();
@@ -1565,7 +1659,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       System.out.println(message);
       Message msg;
       msg = MessageFromString(message);
-      Assert.assertEquals(3, msg.getParts().size());
+      Assert.assertEquals(
+        3,
+        msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
       {
         String stringTemp = msg.getParts().get(0).GetBodyString();
@@ -1596,7 +1692,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "Epilogue\r\n";
       message += "--b1--\r\n";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
       {
         String stringTemp = msg.getParts().get(0).GetBodyString();
@@ -1621,14 +1719,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals(
+        "multipart",
+        msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
           "b1",
           stringTemp);
       }
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
       {
         String stringTemp = msg.getParts().get(0).GetBodyString();
@@ -1646,7 +1748,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -1661,7 +1765,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       {
         String stringTemp = msg.getParts().get(0).GetBodyString();
         Assert.assertEquals(
@@ -1677,7 +1783,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       {
         String stringTemp = msg.getParts().get(0).GetBodyString();
         Assert.assertEquals(
@@ -1692,21 +1800,31 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals(
+        "multipart",
+        msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
           "b1",
           stringTemp);
       }
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       bodyBytes = msg.getParts().get(0).GetBody();
-      Assert.assertEquals(0, bodyBytes[0]);
+      Assert.assertEquals(
+        0,
+        bodyBytes[0]);
       Assert.assertEquals(16, bodyBytes[1]);
-      Assert.assertEquals(1, bodyBytes[2]);
+      Assert.assertEquals(
+        1,
+        bodyBytes[2]);
       Assert.assertEquals(93, bodyBytes[3]);
-      Assert.assertEquals(4, bodyBytes.length);
+      Assert.assertEquals(
+        4,
+        bodyBytes.length);
       // Base64 body part II
       message = messageStart;
       message += "Content-Type: application/octet-stream\r\n";
@@ -1715,21 +1833,31 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals(
+        "multipart",
+        msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
           "b1",
           stringTemp);
       }
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       bodyBytes = msg.getParts().get(0).GetBody();
-      Assert.assertEquals(0, bodyBytes[0]);
+      Assert.assertEquals(
+        0,
+        bodyBytes[0]);
       Assert.assertEquals(16, bodyBytes[1]);
-      Assert.assertEquals(1, bodyBytes[2]);
+      Assert.assertEquals(
+        1,
+        bodyBytes[2]);
       Assert.assertEquals(93, bodyBytes[3]);
-      Assert.assertEquals(4, bodyBytes.length);
+      Assert.assertEquals(
+        4,
+        bodyBytes.length);
       // Base64 in nested body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1741,22 +1869,34 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals(
+        "multipart",
+        msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
           "b1",
           stringTemp);
       }
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Message part = msg.getParts().get(0);
-      Assert.assertEquals("application", part.getParts().get(0).getContentType().getTopLevelType());
+      Assert.assertEquals(
+        "application",
+        part.getParts().get(0).getContentType().getTopLevelType());
       bodyBytes = part.getParts().get(0).GetBody();
-      Assert.assertEquals(0, bodyBytes[0]);
+      Assert.assertEquals(
+        0,
+        bodyBytes[0]);
       Assert.assertEquals(16, bodyBytes[1]);
-      Assert.assertEquals(1, bodyBytes[2]);
+      Assert.assertEquals(
+        1,
+        bodyBytes[2]);
       Assert.assertEquals(93, bodyBytes[3]);
-      Assert.assertEquals(4, bodyBytes.length);
+      Assert.assertEquals(
+        4,
+        bodyBytes.length);
       // Nested Multipart body part II
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1767,7 +1907,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -1965,7 +2107,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -1982,7 +2126,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -2004,7 +2150,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(2, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -2029,7 +2177,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -2048,7 +2198,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -2067,7 +2219,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(
+        1,
+        msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       {
         String stringTemp = msg.getParts().get(0).getParts().get(0).GetBodyString();
@@ -2088,10 +2242,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+      String hdrvalue = "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x" +
+        "\u0020(y) h.a=me@example.com";
       try {
-        msg.SetHeader (
+        msg.SetHeader(
           "authentication-results",
-  "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
+          hdrvalue);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -2371,11 +2527,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg = "From: x1@example.com\r\nFrom: x2.example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
   "from");
-      Assert.assertEquals("x1@example.com", msg);
+      Assert.assertEquals(
+        "x1@example.com",
+        msg);
       msg = "From: x1.example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
   "from");
-      Assert.assertEquals("x2@example.com", msg);
+      Assert.assertEquals(
+        "x2@example.com",
+        msg);
     }
 
     @Test
@@ -2448,7 +2608,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestContentHeadersOnlyInBodyParts() {
       Message msg = new Message().SetTextAndHtml("Hello", "Hello");
-      msg.SetHeader("mime-version", "1.0");
+      msg.SetHeader(
+        "mime-version",
+        "1.0");
       msg.getParts().get(0).SetHeader("mime-version", "1.0");
       {
         String stringTemp = msg.GetHeader("mime-version");
@@ -2469,7 +2631,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           "1.0",
           stringTemp);
       }
-      Assert.assertEquals(null, msg.getParts().get(0).GetHeader("mime-version"));
+      Assert.assertEquals(
+        null,
+        msg.getParts().get(0).GetHeader("mime-version"));
     }
 
     @Test
@@ -2648,7 +2812,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         .SetParameter("name", input).toString() +
         "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);
-      Assert.assertEquals(expected, msg.getFileName());
+      Assert.assertEquals(
+        expected,
+        msg.getFileName());
     }
     @Test
     public void TestFileName() {
@@ -2664,7 +2830,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Message msg = MessageFromString(valueMessageString);
       MessageFromString(MessageGenerate(msg));
       List<NamedAddress> fromaddrs = msg.GetAddresses("from");
-      Assert.assertEquals(1, fromaddrs.size());
+      Assert.assertEquals(
+        1,
+        fromaddrs.size());
     }
 
     @Test
@@ -3062,7 +3230,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String header,
       String value) {
       msg.SetHeader(header, value);
-      Assert.assertEquals(value, msg.GetHeader(header));
+      Assert.assertEquals(
+        value,
+        msg.GetHeader(header));
     }
 
     private static void TestSetHeaderInvalid(
@@ -3105,8 +3275,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         msg,
         "to",
         "\"Example E. Example\" <example@EXAMPLE.COM>");
-      TestSetHeaderOne(msg, "to", "\"Example, Example\"" +
-"\u0020<example@example.com>");
+      String hdrvalue = "\"Example, Example\"" +
+"\u0020<example@example.com>";
+      TestSetHeaderOne(msg, "to", hdrvalue);
       TestSetHeaderOne (
         msg,
         "to",
@@ -3125,9 +3296,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestSubject() {
       Message msg = new Message();
       msg.setSubject("Test");
-      Assert.assertEquals("Test", msg.getSubject());
+      Assert.assertEquals(
+        "Test",
+        msg.getSubject());
       msg.setSubject("Test2");
-      Assert.assertEquals("Test2", msg.getSubject());
+      Assert.assertEquals(
+        "Test2",
+        msg.getSubject());
     }
     @Test
     public void TestToAddresses() {
@@ -3170,18 +3345,24 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Message msg = new Message();
       msg = new Message(msg.GenerateBytes());
       byte[] bytes = msg.GetBody();
-      Assert.assertEquals(0, bytes.length);
+      Assert.assertEquals(
+        0,
+        bytes.length);
     }
 
     @Test
     public void TestTwoToFields() {
       Message msg = new Message();
-      msg.AddHeader("to", "a@example.com");
+      msg.AddHeader(
+        "to",
+        "a@example.com");
       msg.AddHeader("to", "b@example.com");
       String msggen = msg.Generate();
       int io = msggen.indexOf(
         "To: a@example.com\u002c b@example.com");
-      Assert.assertEquals(-1, io);
+      Assert.assertEquals(
+        -1,
+        io);
     }
 
     @Test
@@ -3189,13 +3370,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int[] dtime;
       dtime = MailDateTime.ParseDateStringHttp (
           "Mon\u002c 06 May 2019 01:23:45 GMT");
-      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(
+        2019,
+        dtime[0]);
       Assert.assertEquals(5, dtime[1]);
-      Assert.assertEquals(6, dtime[2]);
+      Assert.assertEquals(
+        6,
+        dtime[2]);
       Assert.assertEquals(1, dtime[3]);
-      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(
+        23,
+        dtime[4]);
       Assert.assertEquals(45, dtime[5]);
-      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(
+        0,
+        dtime[6]);
       Assert.assertEquals(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp (
           "Tue\u002c 06 May 2019 01:23:45 GMT");
@@ -3219,13 +3408,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       dtime = MailDateTime.ParseDateStringHttp (
           "Monday\u002c 06-May-19 01:23:45 GMT");
-      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(
+        2019,
+        dtime[0]);
       Assert.assertEquals(5, dtime[1]);
-      Assert.assertEquals(6, dtime[2]);
+      Assert.assertEquals(
+        6,
+        dtime[2]);
       Assert.assertEquals(1, dtime[3]);
-      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(
+        23,
+        dtime[4]);
       Assert.assertEquals(45, dtime[5]);
-      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(
+        0,
+        dtime[6]);
       Assert.assertEquals(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp (
           "Tuesday\u002c 06-May-19 01:23:45 GMT");
@@ -3244,22 +3441,38 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45" +
 "\u00202019");
-      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(
+        2019,
+        dtime[0]);
       Assert.assertEquals(5, dtime[1]);
-      Assert.assertEquals(6, dtime[2]);
+      Assert.assertEquals(
+        6,
+        dtime[2]);
       Assert.assertEquals(1, dtime[3]);
-      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(
+        23,
+        dtime[4]);
       Assert.assertEquals(45, dtime[5]);
-      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(
+        0,
+        dtime[6]);
       Assert.assertEquals(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp("Mon May 13 01:23:45 2019");
-      Assert.assertEquals(2019, dtime[0]);
+      Assert.assertEquals(
+        2019,
+        dtime[0]);
       Assert.assertEquals(5, dtime[1]);
-      Assert.assertEquals(13, dtime[2]);
+      Assert.assertEquals(
+        13,
+        dtime[2]);
       Assert.assertEquals(1, dtime[3]);
-      Assert.assertEquals(23, dtime[4]);
+      Assert.assertEquals(
+        23,
+        dtime[4]);
       Assert.assertEquals(45, dtime[5]);
-      Assert.assertEquals(0, dtime[6]);
+      Assert.assertEquals(
+        0,
+        dtime[6]);
       Assert.assertEquals(0, dtime[7]);
       dtime = MailDateTime.ParseDateStringHttp("Tue May 13 01:23:45 2019");
       if (dtime != null) {

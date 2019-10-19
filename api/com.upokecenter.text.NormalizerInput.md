@@ -158,6 +158,14 @@ Initializes a new instance of the <code>NormalizerInput</code> class. Uses a por
 * <code>form</code> - Specifies the normalization form to use when normalizing the
  text.
 
+**Throws:**
+
+* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
+ than 0 or greater than <code>str</code> 's length, or <code>str</code> 's
+ length minus <code>index</code> is less than <code>length</code>.
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+
 ### NormalizerInput
     public NormalizerInput​(java.lang.String str, Normalization form)
 Initializes a new instance of the <code>NormalizerInput</code> class.

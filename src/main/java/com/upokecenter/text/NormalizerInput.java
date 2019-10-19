@@ -258,6 +258,10 @@ package com.upokecenter.text;
      * (but not more than {@code str} 's length).
      * @param form Specifies the normalization form to use when normalizing the
      * text.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
+     * than 0 or greater than {@code str} 's length, or {@code str} 's
+     * length minus {@code index} is less than {@code length}.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public NormalizerInput(
       String str,

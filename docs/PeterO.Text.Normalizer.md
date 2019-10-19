@@ -106,7 +106,7 @@ Either  <i>index</i>
  or  <i>length</i>
  is less than 0 or greater than  <i>chars</i>
  's length, or  <i>chars</i>
- ' s length minus  <i>index</i>
+ 's length minus  <i>index</i>
  is less than  <i>length</i>
 .
 

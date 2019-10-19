@@ -334,7 +334,9 @@ namespace MailLibTest {
         "Jane W Customer <jane@example.com>\r\n\r\nTest";
       Message msg = MessageTest.MessageFromString(ValueTestString);
       IList<NamedAddress> addresses = msg.GetAddresses("from");
-      Assert.AreEqual(2, addresses.Count);
+      Assert.AreEqual(
+        2,
+        addresses.Count);
       {
         string stringTemp = addresses[0].ToString();
         Assert.AreEqual (
@@ -352,7 +354,9 @@ namespace MailLibTest {
     [Test]
     public void TestPunycodeDecode() {
       string str = DowngradeHeaderField("from", "example@e\u00e1");
-      Assert.AreEqual("example@xn--e-ufa", str);
+      Assert.AreEqual(
+        "example@xn--e-ufa",
+        str);
     }
 
     [Test]
@@ -362,7 +366,9 @@ namespace MailLibTest {
           object objectTemp = null;
           object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
             "@example.com");
-          Assert.AreEqual(objectTemp, objectTemp2);
+          Assert.AreEqual(
+            objectTemp,
+            objectTemp2);
         }
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -377,7 +383,9 @@ namespace MailLibTest {
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: base64\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(expected, msg.GetBody());
+      AssertEqual(
+        expected,
+        msg.GetBody());
     }
 
     private static void TestDecodeQuotedPrintable(
@@ -387,7 +395,9 @@ namespace MailLibTest {
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(DataUtilities.GetUtf8Bytes(expected, true), msg.GetBody());
+      AssertEqual(
+        DataUtilities.GetUtf8Bytes(expected, true),
+        msg.GetBody());
     }
 
     public static void TestFailQuotedPrintableNonLenient(string input) {
@@ -418,261 +428,517 @@ namespace MailLibTest {
         new byte[] { 0, 16, 1, 93 }, "ABABXX===");
       TestBase64Decode (
         new byte[] { 0, 16, 1, 93 }, "ABABXX");
-      TestBase64Decode(new byte[] { 0 }, "AA==");
+      TestBase64Decode(
+        new byte[] { 0 },
+        "AA==");
       TestBase64Decode(new byte[] { 1 }, "AQ==");
-      TestBase64Decode(new byte[] { 2 }, "Ag==");
+      TestBase64Decode(
+        new byte[] { 2 },
+        "Ag==");
       TestBase64Decode(new byte[] { 3 }, "Aw==");
-      TestBase64Decode(new byte[] { 4 }, "BA==");
+      TestBase64Decode(
+        new byte[] { 4 },
+        "BA==");
       TestBase64Decode(new byte[] { 5 }, "BQ==");
-      TestBase64Decode(new byte[] { 6 }, "Bg==");
+      TestBase64Decode(
+        new byte[] { 6 },
+        "Bg==");
       TestBase64Decode(new byte[] { 7 }, "Bw==");
-      TestBase64Decode(new byte[] { 8 }, "CA==");
+      TestBase64Decode(
+        new byte[] { 8 },
+        "CA==");
       TestBase64Decode(new byte[] { 9 }, "CQ==");
-      TestBase64Decode(new byte[] { 10 }, "Cg==");
+      TestBase64Decode(
+        new byte[] { 10 },
+        "Cg==");
       TestBase64Decode(new byte[] { 11 }, "Cw==");
-      TestBase64Decode(new byte[] { 12 }, "DA==");
+      TestBase64Decode(
+        new byte[] { 12 },
+        "DA==");
       TestBase64Decode(new byte[] { 13 }, "DQ==");
-      TestBase64Decode(new byte[] { 14 }, "Dg==");
+      TestBase64Decode(
+        new byte[] { 14 },
+        "Dg==");
       TestBase64Decode(new byte[] { 15 }, "Dw==");
-      TestBase64Decode(new byte[] { 16 }, "EA==");
+      TestBase64Decode(
+        new byte[] { 16 },
+        "EA==");
       TestBase64Decode(new byte[] { 17 }, "EQ==");
-      TestBase64Decode(new byte[] { 18 }, "Eg==");
+      TestBase64Decode(
+        new byte[] { 18 },
+        "Eg==");
       TestBase64Decode(new byte[] { 19 }, "Ew==");
-      TestBase64Decode(new byte[] { 20 }, "FA==");
+      TestBase64Decode(
+        new byte[] { 20 },
+        "FA==");
       TestBase64Decode(new byte[] { 21 }, "FQ==");
-      TestBase64Decode(new byte[] { 22 }, "Fg==");
+      TestBase64Decode(
+        new byte[] { 22 },
+        "Fg==");
       TestBase64Decode(new byte[] { 23 }, "Fw==");
-      TestBase64Decode(new byte[] { 24 }, "GA==");
+      TestBase64Decode(
+        new byte[] { 24 },
+        "GA==");
       TestBase64Decode(new byte[] { 25 }, "GQ==");
-      TestBase64Decode(new byte[] { 26 }, "Gg==");
+      TestBase64Decode(
+        new byte[] { 26 },
+        "Gg==");
       TestBase64Decode(new byte[] { 27 }, "Gw==");
-      TestBase64Decode(new byte[] { 28 }, "HA==");
+      TestBase64Decode(
+        new byte[] { 28 },
+        "HA==");
       TestBase64Decode(new byte[] { 29 }, "HQ==");
-      TestBase64Decode(new byte[] { 30 }, "Hg==");
+      TestBase64Decode(
+        new byte[] { 30 },
+        "Hg==");
       TestBase64Decode(new byte[] { 31 }, "Hw==");
-      TestBase64Decode(new byte[] { 32 }, "IA==");
+      TestBase64Decode(
+        new byte[] { 32 },
+        "IA==");
       TestBase64Decode(new byte[] { 33 }, "IQ==");
-      TestBase64Decode(new byte[] { 34 }, "Ig==");
+      TestBase64Decode(
+        new byte[] { 34 },
+        "Ig==");
       TestBase64Decode(new byte[] { 35 }, "Iw==");
-      TestBase64Decode(new byte[] { 36 }, "JA==");
+      TestBase64Decode(
+        new byte[] { 36 },
+        "JA==");
       TestBase64Decode(new byte[] { 37 }, "JQ==");
-      TestBase64Decode(new byte[] { 38 }, "Jg==");
+      TestBase64Decode(
+        new byte[] { 38 },
+        "Jg==");
       TestBase64Decode(new byte[] { 39 }, "Jw==");
-      TestBase64Decode(new byte[] { 40 }, "KA==");
+      TestBase64Decode(
+        new byte[] { 40 },
+        "KA==");
       TestBase64Decode(new byte[] { 41 }, "KQ==");
-      TestBase64Decode(new byte[] { 42 }, "Kg==");
+      TestBase64Decode(
+        new byte[] { 42 },
+        "Kg==");
       TestBase64Decode(new byte[] { 43 }, "Kw==");
-      TestBase64Decode(new byte[] { 44 }, "LA==");
+      TestBase64Decode(
+        new byte[] { 44 },
+        "LA==");
       TestBase64Decode(new byte[] { 45 }, "LQ==");
-      TestBase64Decode(new byte[] { 46 }, "Lg==");
+      TestBase64Decode(
+        new byte[] { 46 },
+        "Lg==");
       TestBase64Decode(new byte[] { 47 }, "Lw==");
-      TestBase64Decode(new byte[] { 48 }, "MA==");
+      TestBase64Decode(
+        new byte[] { 48 },
+        "MA==");
       TestBase64Decode(new byte[] { 49 }, "MQ==");
-      TestBase64Decode(new byte[] { 50 }, "Mg==");
+      TestBase64Decode(
+        new byte[] { 50 },
+        "Mg==");
       TestBase64Decode(new byte[] { 51 }, "Mw==");
-      TestBase64Decode(new byte[] { 52 }, "NA==");
+      TestBase64Decode(
+        new byte[] { 52 },
+        "NA==");
       TestBase64Decode(new byte[] { 53 }, "NQ==");
-      TestBase64Decode(new byte[] { 54 }, "Ng==");
+      TestBase64Decode(
+        new byte[] { 54 },
+        "Ng==");
       TestBase64Decode(new byte[] { 55 }, "Nw==");
-      TestBase64Decode(new byte[] { 56 }, "OA==");
+      TestBase64Decode(
+        new byte[] { 56 },
+        "OA==");
       TestBase64Decode(new byte[] { 57 }, "OQ==");
-      TestBase64Decode(new byte[] { 58 }, "Og==");
+      TestBase64Decode(
+        new byte[] { 58 },
+        "Og==");
       TestBase64Decode(new byte[] { 59 }, "Ow==");
-      TestBase64Decode(new byte[] { 60 }, "PA==");
+      TestBase64Decode(
+        new byte[] { 60 },
+        "PA==");
       TestBase64Decode(new byte[] { 61 }, "PQ==");
-      TestBase64Decode(new byte[] { 62 }, "Pg==");
+      TestBase64Decode(
+        new byte[] { 62 },
+        "Pg==");
       TestBase64Decode(new byte[] { 63 }, "Pw==");
-      TestBase64Decode(new byte[] { 64 }, "QA==");
+      TestBase64Decode(
+        new byte[] { 64 },
+        "QA==");
       TestBase64Decode(new byte[] { 65 }, "QQ==");
-      TestBase64Decode(new byte[] { 66 }, "Qg==");
+      TestBase64Decode(
+        new byte[] { 66 },
+        "Qg==");
       TestBase64Decode(new byte[] { 67 }, "Qw==");
-      TestBase64Decode(new byte[] { 68 }, "RA==");
+      TestBase64Decode(
+        new byte[] { 68 },
+        "RA==");
       TestBase64Decode(new byte[] { 69 }, "RQ==");
-      TestBase64Decode(new byte[] { 70 }, "Rg==");
+      TestBase64Decode(
+        new byte[] { 70 },
+        "Rg==");
       TestBase64Decode(new byte[] { 71 }, "Rw==");
-      TestBase64Decode(new byte[] { 72 }, "SA==");
+      TestBase64Decode(
+        new byte[] { 72 },
+        "SA==");
       TestBase64Decode(new byte[] { 73 }, "SQ==");
-      TestBase64Decode(new byte[] { 74 }, "Sg==");
+      TestBase64Decode(
+        new byte[] { 74 },
+        "Sg==");
       TestBase64Decode(new byte[] { 75 }, "Sw==");
-      TestBase64Decode(new byte[] { 76 }, "TA==");
+      TestBase64Decode(
+        new byte[] { 76 },
+        "TA==");
       TestBase64Decode(new byte[] { 77 }, "TQ==");
-      TestBase64Decode(new byte[] { 78 }, "Tg==");
+      TestBase64Decode(
+        new byte[] { 78 },
+        "Tg==");
       TestBase64Decode(new byte[] { 79 }, "Tw==");
-      TestBase64Decode(new byte[] { 80 }, "UA==");
+      TestBase64Decode(
+        new byte[] { 80 },
+        "UA==");
       TestBase64Decode(new byte[] { 81 }, "UQ==");
-      TestBase64Decode(new byte[] { 82 }, "Ug==");
+      TestBase64Decode(
+        new byte[] { 82 },
+        "Ug==");
       TestBase64Decode(new byte[] { 83 }, "Uw==");
-      TestBase64Decode(new byte[] { 84 }, "VA==");
+      TestBase64Decode(
+        new byte[] { 84 },
+        "VA==");
       TestBase64Decode(new byte[] { 85 }, "VQ==");
-      TestBase64Decode(new byte[] { 86 }, "Vg==");
+      TestBase64Decode(
+        new byte[] { 86 },
+        "Vg==");
       TestBase64Decode(new byte[] { 87 }, "Vw==");
-      TestBase64Decode(new byte[] { 88 }, "WA==");
+      TestBase64Decode(
+        new byte[] { 88 },
+        "WA==");
       TestBase64Decode(new byte[] { 89 }, "WQ==");
-      TestBase64Decode(new byte[] { 90 }, "Wg==");
+      TestBase64Decode(
+        new byte[] { 90 },
+        "Wg==");
       TestBase64Decode(new byte[] { 91 }, "Ww==");
-      TestBase64Decode(new byte[] { 92 }, "XA==");
+      TestBase64Decode(
+        new byte[] { 92 },
+        "XA==");
       TestBase64Decode(new byte[] { 93 }, "XQ==");
-      TestBase64Decode(new byte[] { 94 }, "Xg==");
+      TestBase64Decode(
+        new byte[] { 94 },
+        "Xg==");
       TestBase64Decode(new byte[] { 95 }, "Xw==");
-      TestBase64Decode(new byte[] { 96 }, "YA==");
+      TestBase64Decode(
+        new byte[] { 96 },
+        "YA==");
       TestBase64Decode(new byte[] { 97 }, "YQ==");
-      TestBase64Decode(new byte[] { 98 }, "Yg==");
+      TestBase64Decode(
+        new byte[] { 98 },
+        "Yg==");
       TestBase64Decode(new byte[] { 99 }, "Yw==");
-      TestBase64Decode(new byte[] { 100 }, "ZA==");
+      TestBase64Decode(
+        new byte[] { 100 },
+        "ZA==");
       TestBase64Decode(new byte[] { 101 }, "ZQ==");
-      TestBase64Decode(new byte[] { 102 }, "Zg==");
+      TestBase64Decode(
+        new byte[] { 102 },
+        "Zg==");
       TestBase64Decode(new byte[] { 103 }, "Zw==");
-      TestBase64Decode(new byte[] { 104 }, "aA==");
+      TestBase64Decode(
+        new byte[] { 104 },
+        "aA==");
       TestBase64Decode(new byte[] { 105 }, "aQ==");
-      TestBase64Decode(new byte[] { 106 }, "ag==");
+      TestBase64Decode(
+        new byte[] { 106 },
+        "ag==");
       TestBase64Decode(new byte[] { 107 }, "aw==");
-      TestBase64Decode(new byte[] { 108 }, "bA==");
+      TestBase64Decode(
+        new byte[] { 108 },
+        "bA==");
       TestBase64Decode(new byte[] { 109 }, "bQ==");
-      TestBase64Decode(new byte[] { 110 }, "bg==");
+      TestBase64Decode(
+        new byte[] { 110 },
+        "bg==");
       TestBase64Decode(new byte[] { 111 }, "bw==");
-      TestBase64Decode(new byte[] { 112 }, "cA==");
+      TestBase64Decode(
+        new byte[] { 112 },
+        "cA==");
       TestBase64Decode(new byte[] { 113 }, "cQ==");
-      TestBase64Decode(new byte[] { 114 }, "cg==");
+      TestBase64Decode(
+        new byte[] { 114 },
+        "cg==");
       TestBase64Decode(new byte[] { 115 }, "cw==");
-      TestBase64Decode(new byte[] { 116 }, "dA==");
+      TestBase64Decode(
+        new byte[] { 116 },
+        "dA==");
       TestBase64Decode(new byte[] { 117 }, "dQ==");
-      TestBase64Decode(new byte[] { 118 }, "dg==");
+      TestBase64Decode(
+        new byte[] { 118 },
+        "dg==");
       TestBase64Decode(new byte[] { 119 }, "dw==");
-      TestBase64Decode(new byte[] { 120 }, "eA==");
+      TestBase64Decode(
+        new byte[] { 120 },
+        "eA==");
       TestBase64Decode(new byte[] { 121 }, "eQ==");
-      TestBase64Decode(new byte[] { 122 }, "eg==");
+      TestBase64Decode(
+        new byte[] { 122 },
+        "eg==");
       TestBase64Decode(new byte[] { 123 }, "ew==");
-      TestBase64Decode(new byte[] { 124 }, "fA==");
+      TestBase64Decode(
+        new byte[] { 124 },
+        "fA==");
       TestBase64Decode(new byte[] { 125 }, "fQ==");
-      TestBase64Decode(new byte[] { 126 }, "fg==");
+      TestBase64Decode(
+        new byte[] { 126 },
+        "fg==");
       TestBase64Decode(new byte[] { 127 }, "fw==");
-      TestBase64Decode(new byte[] { 128 }, "gA==");
+      TestBase64Decode(
+        new byte[] { 128 },
+        "gA==");
       TestBase64Decode(new byte[] { 129 }, "gQ==");
-      TestBase64Decode(new byte[] { 130 }, "gg==");
+      TestBase64Decode(
+        new byte[] { 130 },
+        "gg==");
       TestBase64Decode(new byte[] { 131 }, "gw==");
-      TestBase64Decode(new byte[] { 132 }, "hA==");
+      TestBase64Decode(
+        new byte[] { 132 },
+        "hA==");
       TestBase64Decode(new byte[] { 133 }, "hQ==");
-      TestBase64Decode(new byte[] { 134 }, "hg==");
+      TestBase64Decode(
+        new byte[] { 134 },
+        "hg==");
       TestBase64Decode(new byte[] { 135 }, "hw==");
-      TestBase64Decode(new byte[] { 136 }, "iA==");
+      TestBase64Decode(
+        new byte[] { 136 },
+        "iA==");
       TestBase64Decode(new byte[] { 137 }, "iQ==");
-      TestBase64Decode(new byte[] { 138 }, "ig==");
+      TestBase64Decode(
+        new byte[] { 138 },
+        "ig==");
       TestBase64Decode(new byte[] { 139 }, "iw==");
-      TestBase64Decode(new byte[] { 140 }, "jA==");
+      TestBase64Decode(
+        new byte[] { 140 },
+        "jA==");
       TestBase64Decode(new byte[] { 141 }, "jQ==");
-      TestBase64Decode(new byte[] { 142 }, "jg==");
+      TestBase64Decode(
+        new byte[] { 142 },
+        "jg==");
       TestBase64Decode(new byte[] { 143 }, "jw==");
-      TestBase64Decode(new byte[] { 144 }, "kA==");
+      TestBase64Decode(
+        new byte[] { 144 },
+        "kA==");
       TestBase64Decode(new byte[] { 145 }, "kQ==");
-      TestBase64Decode(new byte[] { 146 }, "kg==");
+      TestBase64Decode(
+        new byte[] { 146 },
+        "kg==");
       TestBase64Decode(new byte[] { 147 }, "kw==");
-      TestBase64Decode(new byte[] { 148 }, "lA==");
+      TestBase64Decode(
+        new byte[] { 148 },
+        "lA==");
       TestBase64Decode(new byte[] { 149 }, "lQ==");
-      TestBase64Decode(new byte[] { 150 }, "lg==");
+      TestBase64Decode(
+        new byte[] { 150 },
+        "lg==");
       TestBase64Decode(new byte[] { 151 }, "lw==");
-      TestBase64Decode(new byte[] { 152 }, "mA==");
+      TestBase64Decode(
+        new byte[] { 152 },
+        "mA==");
       TestBase64Decode(new byte[] { 153 }, "mQ==");
-      TestBase64Decode(new byte[] { 154 }, "mg==");
+      TestBase64Decode(
+        new byte[] { 154 },
+        "mg==");
       TestBase64Decode(new byte[] { 155 }, "mw==");
-      TestBase64Decode(new byte[] { 156 }, "nA==");
+      TestBase64Decode(
+        new byte[] { 156 },
+        "nA==");
       TestBase64Decode(new byte[] { 157 }, "nQ==");
-      TestBase64Decode(new byte[] { 158 }, "ng==");
+      TestBase64Decode(
+        new byte[] { 158 },
+        "ng==");
       TestBase64Decode(new byte[] { 159 }, "nw==");
-      TestBase64Decode(new byte[] { 160 }, "oA==");
+      TestBase64Decode(
+        new byte[] { 160 },
+        "oA==");
       TestBase64Decode(new byte[] { 161 }, "oQ==");
-      TestBase64Decode(new byte[] { 162 }, "og==");
+      TestBase64Decode(
+        new byte[] { 162 },
+        "og==");
       TestBase64Decode(new byte[] { 163 }, "ow==");
-      TestBase64Decode(new byte[] { 164 }, "pA==");
+      TestBase64Decode(
+        new byte[] { 164 },
+        "pA==");
       TestBase64Decode(new byte[] { 165 }, "pQ==");
-      TestBase64Decode(new byte[] { 166 }, "pg==");
+      TestBase64Decode(
+        new byte[] { 166 },
+        "pg==");
       TestBase64Decode(new byte[] { 167 }, "pw==");
-      TestBase64Decode(new byte[] { 168 }, "qA==");
+      TestBase64Decode(
+        new byte[] { 168 },
+        "qA==");
       TestBase64Decode(new byte[] { 169 }, "qQ==");
-      TestBase64Decode(new byte[] { 170 }, "qg==");
+      TestBase64Decode(
+        new byte[] { 170 },
+        "qg==");
       TestBase64Decode(new byte[] { 171 }, "qw==");
-      TestBase64Decode(new byte[] { 172 }, "rA==");
+      TestBase64Decode(
+        new byte[] { 172 },
+        "rA==");
       TestBase64Decode(new byte[] { 173 }, "rQ==");
-      TestBase64Decode(new byte[] { 174 }, "rg==");
+      TestBase64Decode(
+        new byte[] { 174 },
+        "rg==");
       TestBase64Decode(new byte[] { 175 }, "rw==");
-      TestBase64Decode(new byte[] { 176 }, "sA==");
+      TestBase64Decode(
+        new byte[] { 176 },
+        "sA==");
       TestBase64Decode(new byte[] { 177 }, "sQ==");
-      TestBase64Decode(new byte[] { 178 }, "sg==");
+      TestBase64Decode(
+        new byte[] { 178 },
+        "sg==");
       TestBase64Decode(new byte[] { 179 }, "sw==");
-      TestBase64Decode(new byte[] { 180 }, "tA==");
+      TestBase64Decode(
+        new byte[] { 180 },
+        "tA==");
       TestBase64Decode(new byte[] { 181 }, "tQ==");
-      TestBase64Decode(new byte[] { 182 }, "tg==");
+      TestBase64Decode(
+        new byte[] { 182 },
+        "tg==");
       TestBase64Decode(new byte[] { 183 }, "tw==");
-      TestBase64Decode(new byte[] { 184 }, "uA==");
+      TestBase64Decode(
+        new byte[] { 184 },
+        "uA==");
       TestBase64Decode(new byte[] { 185 }, "uQ==");
-      TestBase64Decode(new byte[] { 186 }, "ug==");
+      TestBase64Decode(
+        new byte[] { 186 },
+        "ug==");
       TestBase64Decode(new byte[] { 187 }, "uw==");
-      TestBase64Decode(new byte[] { 188 }, "vA==");
+      TestBase64Decode(
+        new byte[] { 188 },
+        "vA==");
       TestBase64Decode(new byte[] { 189 }, "vQ==");
-      TestBase64Decode(new byte[] { 190 }, "vg==");
+      TestBase64Decode(
+        new byte[] { 190 },
+        "vg==");
       TestBase64Decode(new byte[] { 191 }, "vw==");
-      TestBase64Decode(new byte[] { 192 }, "wA==");
+      TestBase64Decode(
+        new byte[] { 192 },
+        "wA==");
       TestBase64Decode(new byte[] { 193 }, "wQ==");
-      TestBase64Decode(new byte[] { 194 }, "wg==");
+      TestBase64Decode(
+        new byte[] { 194 },
+        "wg==");
       TestBase64Decode(new byte[] { 195 }, "ww==");
-      TestBase64Decode(new byte[] { 196 }, "xA==");
+      TestBase64Decode(
+        new byte[] { 196 },
+        "xA==");
       TestBase64Decode(new byte[] { 197 }, "xQ==");
-      TestBase64Decode(new byte[] { 198 }, "xg==");
+      TestBase64Decode(
+        new byte[] { 198 },
+        "xg==");
       TestBase64Decode(new byte[] { 199 }, "xw==");
-      TestBase64Decode(new byte[] { 200 }, "yA==");
+      TestBase64Decode(
+        new byte[] { 200 },
+        "yA==");
       TestBase64Decode(new byte[] { 201 }, "yQ==");
-      TestBase64Decode(new byte[] { 202 }, "yg==");
+      TestBase64Decode(
+        new byte[] { 202 },
+        "yg==");
       TestBase64Decode(new byte[] { 203 }, "yw==");
-      TestBase64Decode(new byte[] { 204 }, "zA==");
+      TestBase64Decode(
+        new byte[] { 204 },
+        "zA==");
       TestBase64Decode(new byte[] { 205 }, "zQ==");
-      TestBase64Decode(new byte[] { 206 }, "zg==");
+      TestBase64Decode(
+        new byte[] { 206 },
+        "zg==");
       TestBase64Decode(new byte[] { 207 }, "zw==");
-      TestBase64Decode(new byte[] { 208 }, "0A==");
+      TestBase64Decode(
+        new byte[] { 208 },
+        "0A==");
       TestBase64Decode(new byte[] { 209 }, "0Q==");
-      TestBase64Decode(new byte[] { 210 }, "0g==");
+      TestBase64Decode(
+        new byte[] { 210 },
+        "0g==");
       TestBase64Decode(new byte[] { 211 }, "0w==");
-      TestBase64Decode(new byte[] { 212 }, "1A==");
+      TestBase64Decode(
+        new byte[] { 212 },
+        "1A==");
       TestBase64Decode(new byte[] { 213 }, "1Q==");
-      TestBase64Decode(new byte[] { 214 }, "1g==");
+      TestBase64Decode(
+        new byte[] { 214 },
+        "1g==");
       TestBase64Decode(new byte[] { 215 }, "1w==");
-      TestBase64Decode(new byte[] { 216 }, "2A==");
+      TestBase64Decode(
+        new byte[] { 216 },
+        "2A==");
       TestBase64Decode(new byte[] { 217 }, "2Q==");
-      TestBase64Decode(new byte[] { 218 }, "2g==");
+      TestBase64Decode(
+        new byte[] { 218 },
+        "2g==");
       TestBase64Decode(new byte[] { 219 }, "2w==");
-      TestBase64Decode(new byte[] { 220 }, "3A==");
+      TestBase64Decode(
+        new byte[] { 220 },
+        "3A==");
       TestBase64Decode(new byte[] { 221 }, "3Q==");
-      TestBase64Decode(new byte[] { 222 }, "3g==");
+      TestBase64Decode(
+        new byte[] { 222 },
+        "3g==");
       TestBase64Decode(new byte[] { 223 }, "3w==");
-      TestBase64Decode(new byte[] { 224 }, "4A==");
+      TestBase64Decode(
+        new byte[] { 224 },
+        "4A==");
       TestBase64Decode(new byte[] { 225 }, "4Q==");
-      TestBase64Decode(new byte[] { 226 }, "4g==");
+      TestBase64Decode(
+        new byte[] { 226 },
+        "4g==");
       TestBase64Decode(new byte[] { 227 }, "4w==");
-      TestBase64Decode(new byte[] { 228 }, "5A==");
+      TestBase64Decode(
+        new byte[] { 228 },
+        "5A==");
       TestBase64Decode(new byte[] { 229 }, "5Q==");
-      TestBase64Decode(new byte[] { 230 }, "5g==");
+      TestBase64Decode(
+        new byte[] { 230 },
+        "5g==");
       TestBase64Decode(new byte[] { 231 }, "5w==");
-      TestBase64Decode(new byte[] { 232 }, "6A==");
+      TestBase64Decode(
+        new byte[] { 232 },
+        "6A==");
       TestBase64Decode(new byte[] { 233 }, "6Q==");
-      TestBase64Decode(new byte[] { 234 }, "6g==");
+      TestBase64Decode(
+        new byte[] { 234 },
+        "6g==");
       TestBase64Decode(new byte[] { 235 }, "6w==");
-      TestBase64Decode(new byte[] { 236 }, "7A==");
+      TestBase64Decode(
+        new byte[] { 236 },
+        "7A==");
       TestBase64Decode(new byte[] { 237 }, "7Q==");
-      TestBase64Decode(new byte[] { 238 }, "7g==");
+      TestBase64Decode(
+        new byte[] { 238 },
+        "7g==");
       TestBase64Decode(new byte[] { 239 }, "7w==");
-      TestBase64Decode(new byte[] { 240 }, "8A==");
+      TestBase64Decode(
+        new byte[] { 240 },
+        "8A==");
       TestBase64Decode(new byte[] { 241 }, "8Q==");
-      TestBase64Decode(new byte[] { 242 }, "8g==");
+      TestBase64Decode(
+        new byte[] { 242 },
+        "8g==");
       TestBase64Decode(new byte[] { 243 }, "8w==");
-      TestBase64Decode(new byte[] { 244 }, "9A==");
+      TestBase64Decode(
+        new byte[] { 244 },
+        "9A==");
       TestBase64Decode(new byte[] { 245 }, "9Q==");
-      TestBase64Decode(new byte[] { 246 }, "9g==");
+      TestBase64Decode(
+        new byte[] { 246 },
+        "9g==");
       TestBase64Decode(new byte[] { 247 }, "9w==");
-      TestBase64Decode(new byte[] { 248 }, "+A==");
+      TestBase64Decode(
+        new byte[] { 248 },
+        "+A==");
       TestBase64Decode(new byte[] { 249 }, "+Q==");
-      TestBase64Decode(new byte[] { 250 }, "+g==");
+      TestBase64Decode(
+        new byte[] { 250 },
+        "+g==");
       TestBase64Decode(new byte[] { 251 }, "+w==");
-      TestBase64Decode(new byte[] { 252 }, "/A==");
+      TestBase64Decode(
+        new byte[] { 252 },
+        "/A==");
       TestBase64Decode(new byte[] { 253 }, "/Q==");
-      TestBase64Decode(new byte[] { 254 }, "/g==");
+      TestBase64Decode(
+        new byte[] { 254 },
+        "/g==");
       TestBase64Decode(new byte[] { 255 }, "/w==");
       TestBase64Decode(new byte[] { 0, 2 }, "AAI=");
       TestBase64Decode(new byte[] { 1, 3 }, "AQM=");
@@ -1219,7 +1485,9 @@ namespace MailLibTest {
         ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
-      AssertUtf8Equal(expectedBytes, bytes);
+      AssertUtf8Equal(
+        expectedBytes,
+        bytes);
       dsn = "X-Ignore: X\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore2: Y\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n" +
@@ -1230,7 +1498,9 @@ namespace MailLibTest {
         ("Final-Recipient: " + expected) + "\r\nX-Ignore2: Y\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
-      AssertUtf8Equal(expectedBytes, bytes);
+      AssertUtf8Equal(
+        expectedBytes,
+        bytes);
       dsn = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: " +
         actual + "\r\nFinal-Recipient: " + actual +
         "\r\nX-Ignore: Y\r\n\r\n";
@@ -1246,7 +1516,9 @@ namespace MailLibTest {
       }
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
-      AssertUtf8Equal(expectedBytes, bytes);
+      AssertUtf8Equal(
+        expectedBytes,
+        bytes);
       dsn = "X-Ignore: X\r\n\r\nOriginal-reciPient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       // NOTE: If a header field needs downgrading, header field
@@ -1274,17 +1546,23 @@ namespace MailLibTest {
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       }
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
-      AssertUtf8Equal(expectedBytes, bytes);
+      AssertUtf8Equal(
+        expectedBytes,
+        bytes);
     }
 
     private static void TestDowngradeReceivedOne(
       string input,
       string expected) {
       var msg = new Message();
-      msg.SetHeader("received", input);
+      msg.SetHeader(
+        "received",
+        input);
       msg = new Message(DataUtilities.GetUtf8Bytes(msg.Generate(), true));
       string output = msg.GetHeader("received");
-      Assert.AreEqual(expected, output);
+      Assert.AreEqual(
+        expected,
+        output);
     }
 
     [Test]
@@ -1321,7 +1599,9 @@ namespace MailLibTest {
         string objectTemp = "utf-8; x@x" + ValueHexstart + "BE}" +
           ValueHexstart + "FF20}.example";
         string objectTemp2 = "utf-8; x@x\u00be\uff20.example";
-        TestDowngradeDSNOne(objectTemp, objectTemp2);
+        TestDowngradeDSNOne(
+          objectTemp,
+          objectTemp2);
       }
       TestDowngradeDSNOne (
         "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
@@ -1334,7 +1614,9 @@ namespace MailLibTest {
           "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); e";
 
         string stringTemp2 = "(\u00be) rfc822(\u00be); e";
-        TestDowngradeDSNOne(stringTemp, stringTemp2);
+        TestDowngradeDSNOne(
+          stringTemp,
+          stringTemp2);
       }
 
       {
@@ -1342,7 +1624,9 @@ namespace MailLibTest {
           "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
           ValueHexstart + "BE}" + ValueHexstart + "FF20}.example";
         string stringTemp2 = "(\u00be) utf-8(\u00be); x@x\u00be\uff20.example";
-        TestDowngradeDSNOne(stringTemp, stringTemp2);
+        TestDowngradeDSNOne(
+          stringTemp,
+          stringTemp2);
       }
       TestDowngradeDSNOne (
         "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_m=C2=BE?=",
@@ -1362,134 +1646,218 @@ namespace MailLibTest {
     [Test]
     public void TestLanguageTags() {
       TestValidLanguageTag(true, "en-a-bb-x-y-z");
-      TestValidLanguageTag(true, "zh-min-nan");
+      TestValidLanguageTag(
+        true,
+        "zh-min-nan");
       {
         var objectTemp = false;
         string objectTemp2 = "0-xx-xx";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "9-xx-xx");
+      TestValidLanguageTag(
+        false,
+        "9-xx-xx");
       {
         var objectTemp = false;
         string objectTemp2 = "a-xx-xx";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "x-xx-xx");
+      TestValidLanguageTag(
+        true,
+        "x-xx-xx");
       {
         var objectTemp = true;
         string objectTemp2 = "en-US-u-islamcal";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
       {
         string stringTemp2 = "zh-CN-a-myext-x-private";
-        TestValidLanguageTag(true, stringTemp2);
+        TestValidLanguageTag(
+          true,
+          stringTemp2);
       }
       {
         var objectTemp = true;
         string objectTemp2 = "en-a-myext-b-another";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "de-419-DE");
+      TestValidLanguageTag(
+        false,
+        "de-419-DE");
       {
         var objectTemp = false;
         string objectTemp2 = "a-DE";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "ar-a-aaa-b-bbb-a-ccc");
+      TestValidLanguageTag(
+        false,
+        "ar-a-aaa-b-bbb-a-ccc");
       {
         var objectTemp = true;
         string objectTemp2 = "en";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "qbb-us");
+      TestValidLanguageTag(
+        true,
+        "qbb-us");
       {
         var objectTemp = true;
         string objectTemp2 = "zh-yue";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "en-us");
+      TestValidLanguageTag(
+        true,
+        "en-us");
       {
         var objectTemp = false;
         string objectTemp2 = "e0-us";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "en-gb-1999");
+      TestValidLanguageTag(
+        true,
+        "en-gb-1999");
       {
         var objectTemp = true;
         string objectTemp2 = "en-gb-1999-1998";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "en-gb-1999-1999");
+      TestValidLanguageTag(
+        false,
+        "en-gb-1999-1999");
       {
         var objectTemp = true;
         string objectTemp2 = "en-gb-oed";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "sr-Latn-RS");
+      TestValidLanguageTag(
+        true,
+        "sr-Latn-RS");
       {
         var objectTemp = false;
         string objectTemp2 = "x-aaaaaaaaa-y-z";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "x-aaaaaaaa-y-z");
+      TestValidLanguageTag(
+        true,
+        "x-aaaaaaaa-y-z");
       {
         var objectTemp = false;
         string objectTemp2 = "a-b-x-y-z";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "a-bb-xx-yy-zz");
+      TestValidLanguageTag(
+        false,
+        "a-bb-xx-yy-zz");
       {
         var objectTemp = false;
         string objectTemp2 = "a-bb-x-y-z";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "a-x-y-z");
+      TestValidLanguageTag(
+        false,
+        "a-x-y-z");
       {
         var objectTemp = true;
         string objectTemp2 = "x-x-y-z";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "i-lojban");
+      TestValidLanguageTag(
+        false,
+        "i-lojban");
       {
         var objectTemp = true;
         string objectTemp2 = "i-klingon";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "art-lojban");
+      TestValidLanguageTag(
+        true,
+        "art-lojban");
       {
         var objectTemp = true;
         string objectTemp2 = "sgn-be-fr";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "no-bok");
+      TestValidLanguageTag(
+        true,
+        "no-bok");
       {
         var objectTemp = false;
         string objectTemp2 = "z-xx-xx";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "en-aaa-bbbb-x-xxx-yyy-zzz");
+      TestValidLanguageTag(
+        true,
+        "en-aaa-bbbb-x-xxx-yyy-zzz");
       {
         var objectTemp = true;
         string objectTemp2 = "en-aaa-bbbb-x-x-y-z";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "en-aaa-bbb");
+      TestValidLanguageTag(
+        false,
+        "en-aaa-bbb");
       {
         var objectTemp = false;
         string objectTemp2 = "en-aaa-bbb-ccc";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(true, "en-aaa-bbbb");
+      TestValidLanguageTag(
+        true,
+        "en-aaa-bbbb");
       {
         var objectTemp = true;
         string objectTemp2 = "en-aaa-bbbb-cc";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
-      TestValidLanguageTag(false, "en-aaa-bbb-");
+      TestValidLanguageTag(
+        false,
+        "en-aaa-bbb-");
       {
         var objectTemp = false;
         string objectTemp2 = "en-aaa-bbb-ccc-";
-        TestValidLanguageTag(objectTemp, objectTemp2);
+        TestValidLanguageTag(
+          objectTemp,
+          objectTemp2);
       }
     }
 
@@ -1498,48 +1866,84 @@ namespace MailLibTest {
 
     public void TestDecodeQuotedPrintable() {
       TestDecodeQuotedPrintable("test", "test");
-      TestDecodeQuotedPrintable("te \tst", "te \tst");
+      TestDecodeQuotedPrintable(
+        "te \tst",
+        "te \tst");
       TestDecodeQuotedPrintable("te=20", "te ");
-      TestDecodeQuotedPrintable("te=09", "te\t");
+      TestDecodeQuotedPrintable(
+        "te=09",
+        "te\t");
       TestDecodeQuotedPrintable("te ", "te");
-      TestDecodeQuotedPrintable("te\t", "te");
+      TestDecodeQuotedPrintable(
+        "te\t",
+        "te");
       TestDecodeQuotedPrintable("te=61st", "teast");
-      TestDecodeQuotedPrintable("te=3dst", "te=st");
+      TestDecodeQuotedPrintable(
+        "te=3dst",
+        "te=st");
       TestDecodeQuotedPrintable("te=c2=a0st", "te\u00a0st");
-      TestDecodeQuotedPrintable("te=3Dst", "te=st");
+      TestDecodeQuotedPrintable(
+        "te=3Dst",
+        "te=st");
       TestDecodeQuotedPrintable("te=0D=0Ast", "te\r\nst");
-      TestDecodeQuotedPrintable("te=0Dst", "te\rst");
+      TestDecodeQuotedPrintable(
+        "te=0Dst",
+        "te\rst");
       TestDecodeQuotedPrintable("te=0Ast", "te\nst");
-      TestDecodeQuotedPrintable("te=C2=A0st", "te\u00a0st");
+      TestDecodeQuotedPrintable(
+        "te=C2=A0st",
+        "te\u00a0st");
       TestDecodeQuotedPrintable("te=3st", "te=3st");
-      TestDecodeQuotedPrintable("te==C2=A0st", "te=\u00a0st");
+      TestDecodeQuotedPrintable(
+        "te==C2=A0st",
+        "te=\u00a0st");
       TestDecodeQuotedPrintable(Repeat("a", 100), Repeat("a", 100));
-      TestDecodeQuotedPrintable("te\r\nst", "te\r\nst");
+      TestDecodeQuotedPrintable(
+        "te\r\nst",
+        "te\r\nst");
       TestDecodeQuotedPrintable("te=\r\nst", "test");
-      TestDecodeQuotedPrintable("te=xy", "te=xy");
+      TestDecodeQuotedPrintable(
+        "te=xy",
+        "te=xy");
       TestDecodeQuotedPrintable("te\u000cst", "test");
-      TestDecodeQuotedPrintable("te\u007fst", "test");
+      TestDecodeQuotedPrintable(
+        "te\u007fst",
+        "test");
       TestDecodeQuotedPrintable("te\u00a0st", "test");
-      TestDecodeQuotedPrintable("te==20", "te= ");
+      TestDecodeQuotedPrintable(
+        "te==20",
+        "te= ");
       TestDecodeQuotedPrintable("te===20", "te== ");
-      TestDecodeQuotedPrintable("te==xy", "te==xy");
+      TestDecodeQuotedPrintable(
+        "te==xy",
+        "te==xy");
       // here, the first '='starts a malformed sequence, so is
       // output as is; the second '='starts a soft line break,
       // so is ignored
       TestDecodeQuotedPrintable("te==", "te=");
-      TestDecodeQuotedPrintable("te==\r\nst", "te=st");
+      TestDecodeQuotedPrintable(
+        "te==\r\nst",
+        "te=st");
       TestDecodeQuotedPrintable("te=3", "te=3");
-      TestDecodeQuotedPrintable("te w\r\nst", "te w\r\nst");
+      TestDecodeQuotedPrintable(
+        "te w\r\nst",
+        "te w\r\nst");
       TestDecodeQuotedPrintable("te =\r\nst", "te st");
     }
     [Test]
     public void TestSpaceBeforeBreakQuotedPrintable() {
       TestDecodeQuotedPrintable("te \r\nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te\t \r\nst", "te\r\nst");
+      TestDecodeQuotedPrintable(
+        "te\t \r\nst",
+        "te\r\nst");
       TestDecodeQuotedPrintable("te \t\r\nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te \r\n", "te\r\n");
+      TestDecodeQuotedPrintable(
+        "te \r\n",
+        "te\r\n");
       TestDecodeQuotedPrintable("te\t \r\n", "te\r\n");
-      TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
+      TestDecodeQuotedPrintable(
+        "te \t\r\n",
+        "te\r\n");
     }
     [Test]
     [Timeout(5000)]
@@ -1548,31 +1952,49 @@ namespace MailLibTest {
       // list of section 6.7 of RFC 2045, which suggests excluding
       // bare CR and bare LF from the decoded data.
       TestDecodeQuotedPrintable("te\rst", "test");
-      TestDecodeQuotedPrintable("te\nst", "test");
+      TestDecodeQuotedPrintable(
+        "te\nst",
+        "test");
       // Space/tab followed by CR or LF. In this
       // case, the space/tab is kept, but not the CR or LF.
       // See point 4 of second numbered list and point
       // 3 of first numbered list.
       TestDecodeQuotedPrintable("te \t\nst", "te \tst");
-      TestDecodeQuotedPrintable("te \t\rst", "te \tst");
+      TestDecodeQuotedPrintable(
+        "te \t\rst",
+        "te \tst");
       TestDecodeQuotedPrintable("te\t \nst", "te\t st");
-      TestDecodeQuotedPrintable("te\t \rst", "te\t st");
+      TestDecodeQuotedPrintable(
+        "te\t \rst",
+        "te\t st");
       TestDecodeQuotedPrintable("te \rst", "te st");
-      TestDecodeQuotedPrintable("te \nst", "te st");
+      TestDecodeQuotedPrintable(
+        "te \nst",
+        "te st");
       TestDecodeQuotedPrintable("te\t\rst", "te\tst");
-      TestDecodeQuotedPrintable("te\t\nst", "te\tst");
+      TestDecodeQuotedPrintable(
+        "te\t\nst",
+        "te\tst");
       TestDecodeQuotedPrintable("te \r =\r\nst", "te\u0020\u0020st");
-      TestDecodeQuotedPrintable("te \n =\r\nst", "te\u0020\u0020st");
+      TestDecodeQuotedPrintable(
+        "te \n =\r\nst",
+        "te\u0020\u0020st");
       TestDecodeQuotedPrintable("te\t\r =\r\nst", "te\t\u0020st");
-      TestDecodeQuotedPrintable("te \n\t=\r\nst", "te\u0020\tst");
+      TestDecodeQuotedPrintable(
+        "te \n\t=\r\nst",
+        "te\u0020\tst");
       // See points 5 and 2 of second numbered list;
       // this implementation follows a mix of these
       // suggestions by outputting "=" when "=\r" not
       // followed by "\n" appears, and when "=\n" appears
       TestDecodeQuotedPrintable("te=\rst", "te=st");
-      TestDecodeQuotedPrintable("te=\nst", "te=st");
+      TestDecodeQuotedPrintable(
+        "te=\nst",
+        "te=st");
       TestDecodeQuotedPrintable("te=\r", "te=");
-      TestDecodeQuotedPrintable("te=\n", "te=");
+      TestDecodeQuotedPrintable(
+        "te=\n",
+        "te=");
     }
     [Test]
     public void TestNonLenientQuotedPrintable() {
@@ -1602,22 +2024,30 @@ namespace MailLibTest {
       string str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Language: " + input + "\r\n\r\nBody";
       Message msg = MessageTest.MessageFromString(str);
-      Assert.AreEqual(ex, msg.GetHeader("content-language"));
+      Assert.AreEqual(
+        ex,
+        msg.GetHeader("content-language"));
     }
 
     private static void TestDecodeUnstructured(string ex, string input) {
       string str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Subject: " + input + "\r\n\r\nBody";
       Message msg = MessageTest.MessageFromString(str);
-      Assert.AreEqual(ex, msg.GetHeader("subject"));
+      Assert.AreEqual(
+        ex,
+        msg.GetHeader("subject"));
     }
 
     [Test]
     public void TestHeaderParsingRfc2047() {
       string tmp = "=?utf-8?q??=\r\n \r\nX-Ignore: 1";
-      TestDecodeUnstructured("=?utf-8?q??= ", tmp);
+      TestDecodeUnstructured(
+        "=?utf-8?q??= ",
+        tmp);
       tmp = "=?utf-8?q??=\r\n \r\n ABC";
-      TestDecodeUnstructured("=?utf-8?q??=\u0020\u0020ABC", tmp);
+      TestDecodeUnstructured(
+        "=?utf-8?q??=\u0020\u0020ABC",
+        tmp);
     }
 
     [Test]
@@ -1627,7 +2057,9 @@ namespace MailLibTest {
 
     public static void TestEncodedWordsOne(string expected, string input) {
       const string ValuePar = "(";
-      TestDecodeUnstructured(expected, input);
+      TestDecodeUnstructured(
+        expected,
+        input);
       TestDecodeStructured (
         "(" + expected + ") en",
         "(" + input + ") en");
@@ -1675,7 +2107,9 @@ namespace MailLibTest {
         object objectTemp2 = DowngradeHeaderField(
           "to",
           strparam);
-        Assert.AreEqual(objectTemp, objectTemp2);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
       }
       {
         string objectTemp = "x <x@example.com>" + ValueSep +
@@ -1684,7 +2118,9 @@ namespace MailLibTest {
         object objectTemp2 = DowngradeHeaderField(
           "to",
           strparam);
-        Assert.AreEqual(objectTemp, objectTemp2);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
       }
       {
         string objectTemp = "x <x@example.com>" + ValueSep +
@@ -1692,15 +2128,21 @@ namespace MailLibTest {
         object objectTemp2 = DowngradeHeaderField (
             "to",
             "x <x@example.com>" + ValueSep + "\"\u00be\" <y@example.com>");
-        Assert.AreEqual(objectTemp, objectTemp2);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
       }
       {
         string objectTemp = "x <x@example.com>" + ValueSep +
           "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>";
-        object objectTemp2 = DowngradeHeaderField (
-            "to",
-  "x <x@example.com>" + ValueSep + "x\u00e1 x x\u00e1 <y@example.com>");
-        Assert.AreEqual(objectTemp, objectTemp2);
+        string hdrvalue = "x <x@example.com>" + ValueSep +
+          "x\u00e1 x x\u00e1 <y@example.com>";
+        object objectTemp2 = DowngradeHeaderField(
+          "to",
+          hdrvalue);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
       }
       {
         string stringTemp = DowngradeHeaderField(
@@ -1711,7 +2153,9 @@ namespace MailLibTest {
             "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
 
           object objectTemp2 = stringTemp;
-          Assert.AreEqual(objectTemp, objectTemp2);
+          Assert.AreEqual(
+            objectTemp,
+            objectTemp2);
         }
       }
       {
@@ -1723,7 +2167,9 @@ namespace MailLibTest {
             "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
 
           object objectTemp2 = stringTemp;
-          Assert.AreEqual(objectTemp, objectTemp2);
+          Assert.AreEqual(
+            objectTemp,
+            objectTemp2);
         }
       }
       {
@@ -1732,7 +2178,9 @@ namespace MailLibTest {
         object objectTemp2 = DowngradeHeaderField(
           "to",
           "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
-        Assert.AreEqual(objectTemp, objectTemp2);
+        Assert.AreEqual(
+          objectTemp,
+          objectTemp2);
       }
       {
         string stringTemp = DowngradeHeaderField (
@@ -1835,9 +2283,13 @@ namespace MailLibTest {
       Console.WriteLine(hinfo.ValueHeader);
       var address = new NamedAddress(hinfo.ValueMessage.GetHeader(
   headerName));
-      Assert.AreEqual(displayName, address.DisplayName);
+      Assert.AreEqual(
+        displayName,
+        address.DisplayName);
       Assert.AreEqual(localPart, address.Address.LocalPart);
-      Assert.AreEqual(domain, address.Address.Domain);
+      Assert.AreEqual(
+        domain,
+        address.Address.Domain);
     }
 
     private static string[] addressHeaderFields = {
@@ -1964,7 +2416,9 @@ namespace MailLibTest {
             "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
 
           object objectTemp2 = stringTemp;
-          Assert.AreEqual(objectTemp, objectTemp2);
+          Assert.AreEqual(
+            objectTemp,
+            objectTemp2);
         }
       }
       {
@@ -1976,7 +2430,9 @@ namespace MailLibTest {
             "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>";
 
           object objectTemp2 = stringTemp;
-          Assert.AreEqual(objectTemp, objectTemp2);
+          Assert.AreEqual(
+            objectTemp,
+            objectTemp2);
         }
       }
       {
@@ -2117,9 +2573,13 @@ namespace MailLibTest {
       // not explicitly disallow the behavior being tested below, which
       // is that ill-formed escape sequences are left unescaped.
       TestEncodedWordsPhrase("example=", "=?utf-8?Q?example=?=");
-      TestEncodedWordsPhrase("example=a", "=?utf-8?Q?example=a?=");
+      TestEncodedWordsPhrase(
+        "example=a",
+        "=?utf-8?Q?example=a?=");
       TestEncodedWordsPhrase("example=A", "=?utf-8?Q?example=A?=");
-      TestEncodedWordsPhrase("example=9", "=?utf-8?Q?example=9?=");
+      TestEncodedWordsPhrase(
+        "example=9",
+        "=?utf-8?Q?example=9?=");
       TestEncodedWordsPhrase("example=w", "=?utf-8?Q?example=w?=");
     }
 
@@ -2127,9 +2587,13 @@ namespace MailLibTest {
     [Timeout(5000)]
     public void TestEncodedWords() {
       const string ValuePar = "(";
-      TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase(
+        "(sss) y",
+        "(sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
-      TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase(
+        "xy",
+        "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "=?bad1?= =?bad2?= =?bad3?=",
         "=?bad1?= =?bad2?= =?bad3?=");
@@ -2141,7 +2605,9 @@ namespace MailLibTest {
       TestEncodedWordsPhrase(
         "\"=?bad1?= y =?bad3?=\"",
         "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
-      TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase(
+        "xy",
+        "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase (
         "xy\u0020(sss)",
         "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
@@ -2160,23 +2626,37 @@ namespace MailLibTest {
       TestEncodedWordsPhrase (
         "=?us-ascii?q?x?=" + ValuePar + "z) y",
         "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
+      TestEncodedWordsOne(
+        "x y",
+        "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
       TestEncodedWordsOne("abcde abcde", "abcde abcde");
-      TestEncodedWordsOne("abcde", "abcde");
+      TestEncodedWordsOne(
+        "abcde",
+        "abcde");
       TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
       TestEncodedWordsOne(
         "=?utf-8?Q?abcde?=extra",
         "=?utf-8?Q?abcde?=extra");
       TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
-      TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
+      TestEncodedWordsOne(
+        "ab\u00a0de",
+        "=?utf-8?Q?ab=C2=A0de?=");
       TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+      TestEncodedWordsOne(
+        "x y",
+        "x =?utf-8?Q?y?=");
       TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
-      TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+      TestEncodedWordsOne(
+        "x y",
+        "=?utf-8?Q?x?= y");
       TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
-      TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
-      TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+      TestEncodedWordsOne(
+        "xy",
+        "=?utf-8?Q?x?= =?utf-8?Q?y?=");
       TestEncodedWordsOne("abc de", "=?utf-8?Q?abc=20de?=");
-      TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
+      TestEncodedWordsOne(
+        "abc de",
+        "=?utf-8?Q?abc_de?=");
       TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       TestEncodedWordsOne(
         "=?x-undefined?q?abcde?=",
@@ -2189,13 +2669,19 @@ namespace MailLibTest {
         "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
       // Language embedded in encoded word
       TestEncodedWordsOne("x", "=?utf-8*en?Q?x?=");
-      TestEncodedWordsOne("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
+      TestEncodedWordsOne(
+        "=?x-unknown*en?Q?x?=",
+        "=?x-unknown*en?Q?x?=");
       TestEncodedWordsOne("x", "=?utf-8*en-us?Q?x?=");
-      TestEncodedWordsOne("x", "=?utf-8*i-default?Q?x?=");
+      TestEncodedWordsOne(
+        "x",
+        "=?utf-8*i-default?Q?x?=");
       TestEncodedWordsOne(
         "=?utf-8*i-unknown?Q?x?=",
         "=?utf-8*i-unknown?Q?x?=");
-      TestEncodedWordsOne("=?*en?Q?x?=", "=?*en?Q?x?=");
+      TestEncodedWordsOne(
+        "=?*en?Q?x?=",
+        "=?*en?Q?x?=");
       TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
 
@@ -2332,7 +2818,9 @@ namespace MailLibTest {
           str,
           true,
           true);
-        TestEncodedBytesRoundTrip(objectTemp, true);
+        TestEncodedBytesRoundTrip(
+          objectTemp,
+          true);
       }
     }
 
@@ -2352,7 +2840,9 @@ namespace MailLibTest {
       var rnd = new RandomGenerator();
       for (var i = 0; i < 10000; ++i) {
         byte[] bytes = RandomBytes(rnd);
-        TestEncodedBytesRoundTrip(bytes, false);
+        TestEncodedBytesRoundTrip(
+          bytes,
+          false);
       }
     }
 
@@ -2417,7 +2907,9 @@ namespace MailLibTest {
       var msg = new Message();
       string tmp =
         "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
-      msg.SetHeader("received", tmp);
+      msg.SetHeader(
+        "received",
+        tmp);
     }
   }
 }

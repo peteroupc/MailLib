@@ -292,6 +292,13 @@ namespace PeterO.Text {
     /// 's length).</param>
     /// <param name='form'>Specifies the normalization form to use when
     /// normalizing the text.</param>
+    /// <exception cref='ArgumentException'>Either <paramref name='index'/>
+    /// or <paramref name='length'/> is less than 0 or greater than
+    /// <paramref name='str'/> 's length, or <paramref name='str'/> 's
+    /// length minus <paramref name='index'/> is less than <paramref
+    /// name='length'/>.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public NormalizerInput(
       string str,
       int index,

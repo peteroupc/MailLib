@@ -461,16 +461,24 @@ this.subType.Length ||
           PctAppend(sb, c);
         } else if (c <= 0x7ff) {
           PctAppend(sb, 0xc0 | ((c >> 6) & 0x1f));
-          PctAppend(sb, 0x80 | (c & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | (c & 0x3f));
         } else if (c <= 0xffff) {
           PctAppend(sb, 0xe0 | ((c >> 12) & 0x0f));
-          PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | ((c >> 6) & 0x3f));
           PctAppend(sb, 0x80 | (c & 0x3f));
         } else {
           PctAppend(sb, 0xf0 | ((c >> 18) & 0x07));
-          PctAppend(sb, 0x80 | ((c >> 12) & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | ((c >> 12) & 0x3f));
           PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
-          PctAppend(sb, 0x80 | (c & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | (c & 0x3f));
           ++index; // Because it uses 2 surrogates
         }
         ++index;
@@ -621,7 +629,9 @@ this.subType.Length ||
       // space).
       var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
-      AppendParameters(this.parameters, sa);
+      AppendParameters(
+        this.parameters,
+        sa);
       return sa.ToString();
     }
 
@@ -635,7 +645,9 @@ this.subType.Length ||
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
-      AppendParameters(this.parameters, sa);
+      AppendParameters(
+        this.parameters,
+        sa);
       return sa.ToString();
     }
 
@@ -1347,7 +1359,9 @@ this.subType.Length ||
           // No more parameters
           return ExpandRfc2231Extensions(parameters, httpRules);
         }
-        builder.Remove(0, builder.Length);
+        builder.Remove(
+          0,
+          builder.Length);
         int qs;
         // try getting the value quoted
         qs = SkipQuotedString(
@@ -1370,7 +1384,9 @@ this.subType.Length ||
           index = qs;
           continue;
         }
-        builder.Remove(0, builder.Length);
+        builder.Remove(
+          0,
+          builder.Length);
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);

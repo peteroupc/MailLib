@@ -185,7 +185,9 @@ namespace PeterO.Text {
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
     };
 
-    internal static string PunycodeDecode(string str, int index,
+    internal static string PunycodeDecode(
+      string str,
+      int index,
       int endIndex) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));

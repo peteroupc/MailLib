@@ -563,7 +563,9 @@ namespace PeterO.Mail {
     private string GetBodyStringNoThrow() {
       IList<string> bodyStrings = new List<string>();
       IList<MediaType> mediaTypes = new List<MediaType>();
-      this.GetBodyStrings(bodyStrings, mediaTypes);
+      this.GetBodyStrings(
+        bodyStrings,
+        mediaTypes);
       if (bodyStrings.Count > 0) {
         return bodyStrings[0];
       } else {
@@ -605,7 +607,9 @@ namespace PeterO.Mail {
     /// <returns>The return value is not documented yet.</returns>
     public IList<Message> GetAttachments() {
       var list = new List<Message>();
-      this.AccumulateAttachments(list, true);
+      this.AccumulateAttachments(
+        list,
+        true);
       return list;
     }
 
@@ -1136,7 +1140,9 @@ namespace PeterO.Mail {
     private string GetFormattedBodyStringNoThrow() {
       var bodyStrings = new List<string>();
       var mediaTypes = new List<MediaType>();
-      this.GetBodyStrings(bodyStrings, mediaTypes);
+      this.GetBodyStrings(
+        bodyStrings,
+        mediaTypes);
       if (bodyStrings.Count == 0) {
         return null;
       }
@@ -1234,7 +1240,9 @@ namespace PeterO.Mail {
             IList<Message> thisParts = this.Parts;
             thisParts.Clear();
           }
-          this.SetHeader("content-type", this.contentType.ToString());
+          this.SetHeader(
+            "content-type",
+            this.contentType.ToString());
         }
       }
     }
@@ -1425,7 +1433,9 @@ namespace PeterO.Mail {
     /// can't be generated.</exception>
     public string Generate() {
       var aw = new ArrayWriter();
-      this.Generate(aw, 0);
+      this.Generate(
+        aw,
+        0);
       return DataUtilities.GetUtf8String(aw.ToArray(), false);
     }
 
@@ -1434,7 +1444,9 @@ namespace PeterO.Mail {
     /// <returns>The generated message as a byte array.</returns>
     public byte[] GenerateBytes() {
       var aw = new ArrayWriter();
-      this.Generate(aw, 0);
+      this.Generate(
+        aw,
+        0);
       return aw.ToArray();
     }
 
@@ -1993,7 +2005,9 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(mediaType));
       }
       Message bodyPart = NewBodyPart();
-      bodyPart.SetHeader("content-id", this.GenerateMessageID());
+      bodyPart.SetHeader(
+        "content-id",
+        this.GenerateMessageID());
       // NOTE: Using the setter because it also adds a Content-Type
       // header field
       bodyPart.ContentType = mediaType;
@@ -2545,14 +2559,18 @@ namespace PeterO.Mail {
       }
       var msg = new Message();
       msg.ContentType = MediaType.Parse("multipart/multilingual");
-      msg.SetHeader("from", fromHeader);
+      msg.SetHeader(
+        "from",
+        fromHeader);
       msg.ContentDisposition = ContentDisposition.Parse("inline");
       string toHeader = messages[0].GetHeader("to");
       Message preface;
       if (toHeader != null) {
         msg.SetHeader("to", toHeader);
       }
-      msg.SetHeader("subject", prefaceSubject.ToString());
+      msg.SetHeader(
+        "subject",
+        prefaceSubject.ToString());
       preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
       preface.SetTextBody(prefaceBody.ToString());
       for (var i = 0; i < messages.Count; ++i) {
@@ -2566,7 +2584,9 @@ namespace PeterO.Mail {
           mt = MediaType.Parse("message/global");
         }
         Message part = msg.AddInline(mt);
-        part.SetHeader("content-language", languages[i]);
+        part.SetHeader(
+          "content-language",
+          languages[i]);
         part.SetBody(DataUtilities.GetUtf8Bytes(msgstring, true));
       }
       return msg;
@@ -3321,7 +3341,9 @@ LiberalSevenBitTransform(stream)) :
               // Possible Mbox convention
               var possibleMbox = true;
               var isFromField = false;
-              sb.Remove(0, sb.Length);
+              sb.Remove(
+                0,
+                sb.Length);
               while (true) {
                 c = stream.ReadByte();
                 if (c == -1) {
@@ -3718,7 +3740,9 @@ LiberalSevenBitTransform(stream)) :
       string boundary = String.Empty;
       if (isMultipart) {
         boundary = GenerateBoundary(depth);
-        builder.SetParameter("boundary", boundary);
+        builder.SetParameter(
+          "boundary",
+          boundary);
       } else {
         if (builder.TopLevelType.Equals("message", StringComparison.Ordinal)) {
           if (builder.SubType.Equals("delivery-status",
@@ -3945,7 +3969,9 @@ TransferEncodingToUse (
               downgraded);
           }
         }
-        AppendAscii(output, "\r\n");
+        AppendAscii(
+          output,
+          "\r\n");
       }
       if (!haveFrom && depth == 0) {
         // Output a synthetic From field if it doesn't
@@ -3967,7 +3993,9 @@ TransferEncodingToUse (
         AppendAscii (
           output,
           HeaderEncoder.EncodeField("Message-ID", this.GenerateMessageID()));
-        AppendAscii(output, "\r\n");
+        AppendAscii(
+          output,
+          "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         AppendAscii(output, "MIME-Version: 1.0\r\n");
@@ -4021,10 +4049,14 @@ TransferEncodingToUse (
             AppendAscii(output, "\r\n");
           }
           writeNewLine = true;
-          AppendAscii(output, "--" + boundary + "\r\n");
+          AppendAscii(
+            output,
+            "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
         }
-        AppendAscii(output, "\r\n--" + boundary + "--");
+        AppendAscii(
+          output,
+          "\r\n--" + boundary + "--");
       }
     }
 
@@ -4221,8 +4253,11 @@ TransferEncodingToUse (
         string value = this.headers[i + 1];
         if (name.Equals("content-transfer-encoding",
             StringComparison.Ordinal)) {
-          int startIndex = HeaderParser.ParseCFWS(value, 0, value.Length,
-  null);
+          int startIndex = HeaderParser.ParseCFWS(
+            value,
+            0,
+            value.Length,
+            null);
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
           // subtypes
@@ -4398,7 +4433,9 @@ TransferEncodingToUse (
     private void ReadMessage(IByteReader stream) {
       try {
         ReadHeaders(stream, this.headers, true);
-        this.ProcessHeaders(false, false);
+        this.ProcessHeaders(
+          false,
+          false);
         if (this.contentType.IsMultipart) {
           this.ReadMultipartBody(stream);
         } else {
@@ -4489,7 +4526,9 @@ TransferEncodingToUse (
               bool parentIsDigest = ctype.SubType.Equals("digest",
                   StringComparison.Ordinal) && ctype.IsMultipart;
               ReadHeaders(stream, msg.headers, false);
-              msg.ProcessHeaders(true, parentIsDigest);
+              msg.ProcessHeaders(
+                true,
+                parentIsDigest);
               entry = new MessageStackEntry(msg);
               // Add the body part to the multipart
               // message's list of parts

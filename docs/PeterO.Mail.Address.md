@@ -30,7 +30,7 @@ The parameter  <i>addressValue</i>
  is null.
 
  * System.ArgumentException:
-AddressValue is empty.; Address doesn't contain a '@' sign; Invalid local part; Expected '@' sign after local part; Expected domain after '@'; Invalid domain; Address too long.
+AddressValue is empty.; Address doesn't contain a '@'sign; Invalid local part; Expected '@'sign after local part; Expected domain after '@'; Invalid domain; Address too long.
 
 <a id="Domain"></a>
 ### Domain

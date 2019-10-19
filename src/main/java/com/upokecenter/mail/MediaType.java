@@ -455,16 +455,24 @@ this.subType.length() ||
           PctAppend(sb, c);
         } else if (c <= 0x7ff) {
           PctAppend(sb, 0xc0 | ((c >> 6) & 0x1f));
-          PctAppend(sb, 0x80 | (c & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | (c & 0x3f));
         } else if (c <= 0xffff) {
           PctAppend(sb, 0xe0 | ((c >> 12) & 0x0f));
-          PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | ((c >> 6) & 0x3f));
           PctAppend(sb, 0x80 | (c & 0x3f));
         } else {
           PctAppend(sb, 0xf0 | ((c >> 18) & 0x07));
-          PctAppend(sb, 0x80 | ((c >> 12) & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | ((c >> 12) & 0x3f));
           PctAppend(sb, 0x80 | ((c >> 6) & 0x3f));
-          PctAppend(sb, 0x80 | (c & 0x3f));
+          PctAppend(
+            sb,
+            0x80 | (c & 0x3f));
           ++index; // Because it uses 2 surrogates
         }
         ++index;
@@ -602,7 +610,9 @@ this.subType.length() ||
       // space).
       HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
-      AppendParameters(this.parameters, sa);
+      AppendParameters(
+        this.parameters,
+        sa);
       return sa.toString();
     }
 
@@ -618,7 +628,9 @@ this.subType.length() ||
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       HeaderEncoder sa = new HeaderEncoder(-1, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
-      AppendParameters(this.parameters, sa);
+      AppendParameters(
+        this.parameters,
+        sa);
       return sa.toString();
     }
 
@@ -1312,7 +1324,9 @@ this.subType.length() ||
           // No more parameters
           return ExpandRfc2231Extensions(parameters, httpRules);
         }
-        builder.delete(0, builder.length());
+        builder.delete(
+          0, (
+          0)+(builder.length()));
         int qs;
         // try getting the value quoted
         qs = SkipQuotedString(
@@ -1335,7 +1349,9 @@ this.subType.length() ||
           index = qs;
           continue;
         }
-        builder.delete(0, builder.length());
+        builder.delete(
+          0, (
+          0)+(builder.length()));
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);

@@ -108,6 +108,21 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+Either  <i>index</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>str</i>
+ 's length, or  <i>str</i>
+ 's length minus  <i>index</i>
+ is less than  <i>length</i>
+.
+
+ * System.ArgumentNullException:
+The parameter  <i>str</i>
+ is null.
+
 <a id="Void_ctor_System_String_PeterO_Text_Normalization"></a>
 ### NormalizerInput Constructor
 
@@ -240,7 +255,7 @@ Either  <i>index</i>
  or  <i>length</i>
  is less than 0 or greater than  <i>chars</i>
  's length, or  <i>chars</i>
- ' s length minus  <i>index</i>
+ 's length minus  <i>index</i>
  is less than  <i>length</i>
 .
 

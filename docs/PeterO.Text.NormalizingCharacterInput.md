@@ -99,14 +99,30 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
  * <i>str</i>: The parameter  <i>str</i>
  is a text string.
 
- * <i>index</i>: The parameter  <i>index</i>
- is a 32-bit signed integer.
+ * <i>index</i>: An index, starting at 0, showing where the desired portion of  <i>str</i>
+ begins.
 
- * <i>length</i>: The parameter  <i>length</i>
- is a 32-bit signed integer.
+ * <i>length</i>: The length, in code units, of the desired portion of  <i>str</i>
+ (but not more than  <i>str</i>
+ 's length).
 
  * <i>form</i>: The parameter  <i>form</i>
  is a Normalization object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+Either  <i>index</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>str</i>
+ 's length, or  <i>str</i>
+ 's length minus  <i>index</i>
+ is less than  <i>length</i>
+.
+
+ * System.ArgumentNullException:
+The parameter  <i>str</i>
+ is null.
 
 <a id="Void_ctor_System_String_PeterO_Text_Normalization"></a>
 ### NormalizingCharacterInput Constructor
@@ -385,7 +401,7 @@ Either  <i>index</i>
  or  <i>length</i>
  is less than 0 or greater than  <i>chars</i>
  's length, or  <i>chars</i>
- ' s length minus  <i>index</i>
+ 's length minus  <i>index</i>
  is less than  <i>length</i>
 .
 

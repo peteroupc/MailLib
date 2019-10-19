@@ -539,7 +539,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private String GetBodyStringNoThrow() {
       List<String> bodyStrings = new ArrayList<String>();
       List<MediaType> mediaTypes = new ArrayList<MediaType>();
-      this.GetBodyStrings(bodyStrings, mediaTypes);
+      this.GetBodyStrings(
+        bodyStrings,
+        mediaTypes);
       if (bodyStrings.size() > 0) {
         return bodyStrings.get(0);
       } else {
@@ -582,7 +584,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      */
     public List<Message> GetAttachments() {
       ArrayList<Message> list = new ArrayList<Message>();
-      this.AccumulateAttachments(list, true);
+      this.AccumulateAttachments(
+        list,
+        true);
       return list;
     }
 
@@ -1100,7 +1104,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private String GetFormattedBodyStringNoThrow() {
       ArrayList<String> bodyStrings = new ArrayList<String>();
       ArrayList<MediaType> mediaTypes = new ArrayList<MediaType>();
-      this.GetBodyStrings(bodyStrings, mediaTypes);
+      this.GetBodyStrings(
+        bodyStrings,
+        mediaTypes);
       if (bodyStrings.size() == 0) {
         return null;
       }
@@ -1189,7 +1195,9 @@ public final void setContentType(MediaType value) {
             List<Message> thisParts = this.getParts();
             thisParts.clear();
           }
-          this.SetHeader("content-type", this.contentType.toString());
+          this.SetHeader(
+            "content-type",
+            this.contentType.toString());
         }
       }
 
@@ -1370,7 +1378,9 @@ public final void setSubject(String value) {
      */
     public String Generate() {
       ArrayWriter aw = new ArrayWriter();
-      this.Generate(aw, 0);
+      this.Generate(
+        aw,
+        0);
       return DataUtilities.GetUtf8String(aw.ToArray(), false);
     }
 
@@ -1381,7 +1391,9 @@ public final void setSubject(String value) {
      */
     public byte[] GenerateBytes() {
       ArrayWriter aw = new ArrayWriter();
-      this.Generate(aw, 0);
+      this.Generate(
+        aw,
+        0);
       return aw.ToArray();
     }
 
@@ -1921,7 +1933,9 @@ public final void setSubject(String value) {
         throw new NullPointerException("mediaType");
       }
       Message bodyPart = NewBodyPart();
-      bodyPart.SetHeader("content-id", this.GenerateMessageID());
+      bodyPart.SetHeader(
+        "content-id",
+        this.GenerateMessageID());
       // NOTE: Using the setter because it also adds a Content-Type
       // header field
       bodyPart.setContentType(mediaType);
@@ -2473,14 +2487,18 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       }
       Message msg = new Message();
       msg.setContentType(MediaType.Parse("multipart/multilingual"));
-      msg.SetHeader("from", fromHeader);
+      msg.SetHeader(
+        "from",
+        fromHeader);
       msg.setContentDisposition(ContentDisposition.Parse("inline"));
       String toHeader = messages.get(0).GetHeader("to");
       Message preface;
       if (toHeader != null) {
         msg.SetHeader("to", toHeader);
       }
-      msg.SetHeader("subject", prefaceSubject.toString());
+      msg.SetHeader(
+        "subject",
+        prefaceSubject.toString());
       preface = msg.AddInline(MediaType.Parse("text/plain;charset=utf-8"));
       preface.SetTextBody(prefaceBody.toString());
       for (int i = 0; i < messages.size(); ++i) {
@@ -2494,7 +2512,9 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           mt = MediaType.Parse("message/global");
         }
         Message part = msg.AddInline(mt);
-        part.SetHeader("content-language", languages.get(i));
+        part.SetHeader(
+          "content-language",
+          languages.get(i));
         part.SetBody(DataUtilities.GetUtf8Bytes(msgstring, true));
       }
       return msg;
@@ -3246,7 +3266,9 @@ LiberalSevenBitTransform(stream)) :
               // Possible Mbox convention
               boolean possibleMbox = true;
               boolean isFromField = false;
-              sb.delete(0, sb.length());
+              sb.delete(
+                0, (
+                0)+(sb.length()));
               while (true) {
                 c = stream.read();
                 if (c == -1) {
@@ -3636,7 +3658,9 @@ LiberalSevenBitTransform(stream)) :
       String boundary = "";
       if (isMultipart) {
         boundary = GenerateBoundary(depth);
-        builder.SetParameter("boundary", boundary);
+        builder.SetParameter(
+          "boundary",
+          boundary);
       } else {
         if (builder.getTopLevelType().equals("message")) {
           if (builder.getSubType().equals("delivery-status") ||
@@ -3814,7 +3838,9 @@ TransferEncodingToUse (
               downgraded);
           }
         }
-        AppendAscii(output, "\r\n");
+        AppendAscii(
+          output,
+          "\r\n");
       }
       if (!haveFrom && depth == 0) {
         // Output a synthetic From field if it doesn't
@@ -3836,7 +3862,9 @@ TransferEncodingToUse (
         AppendAscii (
           output,
           HeaderEncoder.EncodeField("Message-ID", this.GenerateMessageID()));
-        AppendAscii(output, "\r\n");
+        AppendAscii(
+          output,
+          "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         AppendAscii(output, "MIME-Version: 1.0\r\n");
@@ -3889,10 +3917,14 @@ TransferEncodingToUse (
             AppendAscii(output, "\r\n");
           }
           writeNewLine = true;
-          AppendAscii(output, "--" + boundary + "\r\n");
+          AppendAscii(
+            output,
+            "--" + boundary + "\r\n");
           part.Generate(output, depth + 1);
         }
-        AppendAscii(output, "\r\n--" + boundary + "--");
+        AppendAscii(
+          output,
+          "\r\n--" + boundary + "--");
       }
     }
 
@@ -4085,8 +4117,11 @@ TransferEncodingToUse (
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
         if (name.equals("content-transfer-encoding")) {
-          int startIndex = HeaderParser.ParseCFWS(value, 0, value.length(),
-  null);
+          int startIndex = HeaderParser.ParseCFWS(
+            value,
+            0,
+            value.length(),
+            null);
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
           // subtypes
@@ -4246,7 +4281,9 @@ TransferEncodingToUse (
     private void ReadMessage(IByteReader stream) {
       try {
         ReadHeaders(stream, this.headers, true);
-        this.ProcessHeaders(false, false);
+        this.ProcessHeaders(
+          false,
+          false);
         if (this.contentType.isMultipart()) {
           this.ReadMultipartBody(stream);
         } else {
@@ -4315,7 +4352,9 @@ TransferEncodingToUse (
               MediaType ctype = parentMessage.getContentType();
               boolean parentIsDigest = ctype.getSubType().equals("digest") && ctype.isMultipart();
               ReadHeaders(stream, msg.headers, false);
-              msg.ProcessHeaders(true, parentIsDigest);
+              msg.ProcessHeaders(
+                true,
+                parentIsDigest);
               entry = new MessageStackEntry(msg);
               // Add the body part to the multipart
               // message's list of parts

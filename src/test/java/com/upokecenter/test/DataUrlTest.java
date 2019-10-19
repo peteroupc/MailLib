@@ -77,10 +77,20 @@ import com.upokecenter.mail.*;
       this.TestMailToOne("mailto:me@example.com");
       this.TestMailToOne("mailto:you@example.com?subject=current-issue");
       msg = this.TestMailToOne("mailto:you@example.com?body=x%20abcdefg-hijk");
-      Assert.assertEquals("x abcdefg-hijk", msg.getBodyString());
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "x abcdefg-hijk",
+          stringTemp);
+}
       msg = this.TestMailToOne(
   "mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
-      Assert.assertEquals("x abcdefg-h\r\nijk", msg.getBodyString());
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "x abcdefg-h\r\nijk",
+          stringTemp);
+}
       // ----
       msg = this.TestMailToOne("mailto:e%25f@m.example");
       {
@@ -130,7 +140,12 @@ import com.upokecenter.mail.*;
           stringTemp);
       }
       msg = this.TestMailToOne("mailto:me@example.com?body=b%c3%a7");
-      Assert.assertEquals("b\u00e7", msg.getBodyString());
+      {
+        String stringTemp = msg.GetBodyString();
+        Assert.assertEquals(
+          "b\u00e7",
+          stringTemp);
+}
       msg =
 
         this.TestMailToOne(

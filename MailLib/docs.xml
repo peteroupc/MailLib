@@ -757,7 +757,7 @@
             comments enclosed in parentheses are also not allowed.</param>
             <exception cref='ArgumentNullException'>The parameter <paramref name='addressValue'/> is null.</exception>
             <exception cref='ArgumentException'>AddressValue is empty.; Address
-            doesn't contain a '@' sign; Invalid local part; Expected '@' sign
+            doesn't contain a '@'sign; Invalid local part; Expected '@'sign
             after local part; Expected domain after '@'; Invalid domain;
             Address too long.</exception>
 
@@ -4111,11 +4111,13 @@
             <para>A U-label contains one or more characters outside the Basic
             Latin range (U+0000 to U+007F) and meets IDNA2008 requirements for
             labels with such characters. An example is "eá".</para>
-            <para>An A-label is an LDH label beginning with "xn--" in any
-            combination of case, and is convertible to a U-label. An example is
+            <para>An A-label is an LDH label beginning with "xn--" where the
+            letters can be any combination of basic upper-case and/or basic
+            lower-case letters, and is convertible to a U-label. An example is
             "xn--e-ufa".</para>
-            <para>An XN-label is an LDH label beginning with "xn--" in any
-            combination of case.</para>
+            <para>An XN-label is an LDH label beginning with "xn--" where the
+            letters can be any combination of basic upper-case and/or basic
+            lower-case letters.</para>
             <para>NOTICE: While this class's source code is in the public
             domain, the class uses two internal classes, called
             <c>NormalizationData</c> and <c>IdnaData</c>, that include data
@@ -4263,7 +4265,7 @@
             the source is reached.</returns>
             <exception cref='ArgumentException'>Either <paramref name='index'/>
             or <paramref name='length'/> is less than 0 or greater than
-            <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s
+            <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
             length minus <paramref name='index'/> is less than <paramref name='length'/>.</exception>
             <exception cref='ArgumentNullException'>The parameter <paramref name='chars'/> is null.</exception>
 
@@ -4404,6 +4406,11 @@
             's length).</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
+            <exception cref='ArgumentException'>Either <paramref name='index'/>
+            or <paramref name='length'/> is less than 0 or greater than
+            <paramref name='str'/> 's length, or <paramref name='str'/> 's
+            length minus <paramref name='index'/> is less than <paramref name='length'/>.</exception>
+            <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
 
 </doc>
 <doc name="M:PeterO.Text.NormalizerInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
@@ -4457,7 +4464,7 @@
             <exception cref='ArgumentNullException'>The parameter <paramref name='chars'/> is null.</exception>
             <exception cref='ArgumentException'>Either <paramref name='index'/>
             or <paramref name='length'/> is less than 0 or greater than
-            <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s
+            <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
             length minus <paramref name='index'/> is less than <paramref name='length'/>.</exception>
 
 </doc>
@@ -4602,12 +4609,17 @@
             class.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
-            <param name='index'>The parameter <paramref name='index'/> is a
-            32-bit signed integer.</param>
-            <param name='length'>The parameter <paramref name='length'/> is a
-            32-bit signed integer.</param>
+            <param name='index'>An index, starting at 0, showing where the
+            desired portion of <paramref name='str'/> begins.</param>
+            <param name='length'>The length, in code units, of the desired
+            portion of <paramref name='str'/> (but not more than <paramref name='str'/> 's length).</param>
             <param name='form'>The parameter <paramref name='form'/> is a
             Normalization object.</param>
+            <exception cref='ArgumentException'>Either <paramref name='index'/>
+            or <paramref name='length'/> is less than 0 or greater than
+            <paramref name='str'/> 's length, or <paramref name='str'/> 's
+            length minus <paramref name='index'/> is less than <paramref name='length'/>.</exception>
+            <exception cref='ArgumentNullException'>The parameter <paramref name='str'/> is null.</exception>
 
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
@@ -4710,7 +4722,7 @@
             <exception cref='ArgumentNullException'>The parameter <paramref name='chars'/> is null.</exception>
             <exception cref='ArgumentException'>Either <paramref name='index'/>
             or <paramref name='length'/> is less than 0 or greater than
-            <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s
+            <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
             length minus <paramref name='index'/> is less than <paramref name='length'/>.</exception>
 
 </doc>
