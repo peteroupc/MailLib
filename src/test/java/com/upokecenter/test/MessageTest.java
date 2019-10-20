@@ -1258,12 +1258,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     static boolean HasNestedMessageType(Message message) {
       if (EqualsStr(message.getContentType().getTopLevelType(), "message")) {
-        return !EqualsStr(message.getContentType().getSubType().equals, "global") &&
-          !EqualsStr(message.getContentType().getSubType().equals, "global-headers") &&
+        return !EqualsStr(message.getContentType().getSubType(), "global") &&
+          !EqualsStr(message.getContentType().getSubType(), "global-headers") &&
           !EqualsStr(
-            message.getContentType().getSubType().equals,
+            message.getContentType().getSubType(),
             "global-delivery-status") && !EqualsStr(
-            message.getContentType().getSubType().equals,
+            message.getContentType().getSubType(),
             "global-disposition-notification");
       }
       for (Message part : message.getParts()) {

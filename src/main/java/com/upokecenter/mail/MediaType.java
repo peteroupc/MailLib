@@ -1388,8 +1388,8 @@ this.subType.length() ||
       if (i == i2) {
         return null;
       }
-      String subType = DataUtilities.ToLowerCaseAscii(str.substring(i, (i)+(i2
-- i)));
+      String subType = DataUtilities.ToLowerCaseAscii(
+        str.substring(i, (i)+(i2 - i)));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);

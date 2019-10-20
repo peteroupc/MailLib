@@ -529,8 +529,10 @@ EncodedWordContext.Comment &&
           if (index == endIndex) {
             builder.append(str.substring(oldIndex, (oldIndex)+(index - oldIndex)));
           } else {
-            builder.append(str.substring(oldIndex, (oldIndex)+(whitespaceStart -
-oldIndex)));
+            String appendstr = str.substring(
+              oldIndex, (
+              oldIndex)+(whitespaceStart - oldIndex));
+            builder.append(appendstr);
           }
         }
         lastWordWasEncodedWord = acceptedEncodedWord;
@@ -652,8 +654,10 @@ oldIndex)));
         if (token[0] == HeaderParserUtility.TokenComment && withComments) {
           // This is a comment token
           int startIndex = token[1];
-          builder.append(str.substring(lastIndex, (lastIndex)+(startIndex + 1 -
-lastIndex)));
+          String appendstr = str.substring(
+            lastIndex, (
+            lastIndex)+(startIndex + 1 - lastIndex));
+          builder.append(appendstr);
           String newComment = Rfc2047.DecodeEncodedWords(
             str,
             startIndex + 1,

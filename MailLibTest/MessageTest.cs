@@ -1233,12 +1233,12 @@ namespace MailLibTest {
 
     internal static bool HasNestedMessageType(Message message) {
       if (EqualsStr(message.ContentType.TopLevelType, "message")) {
-        return !EqualsStr(message.ContentType.SubType.Equals, "global") &&
-          !EqualsStr(message.ContentType.SubType.Equals, "global-headers") &&
+        return !EqualsStr(message.ContentType.SubType, "global") &&
+          !EqualsStr(message.ContentType.SubType, "global-headers") &&
           !EqualsStr(
-            message.ContentType.SubType.Equals,
+            message.ContentType.SubType,
             "global-delivery-status") && !EqualsStr(
-            message.ContentType.SubType.Equals,
+            message.ContentType.SubType,
             "global-disposition-notification");
       }
       foreach (Message part in message.Parts) {

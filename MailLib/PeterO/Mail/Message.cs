@@ -1320,8 +1320,10 @@ namespace PeterO.Mail {
       get {
         var list = new List<KeyValuePair<string, string>>();
         for (int i = 0; i < this.headers.Count; i += 2) {
-          list.Add (
-            new KeyValuePair<string, string>(this.headers[i], this.headers[i+ 1]));
+          var kp = new KeyValuePair<string, string>(
+            this.headers[i],
+            this.headers[i + 1]);
+          list.Add(kp);
         }
         return list;
       }

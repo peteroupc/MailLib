@@ -107,11 +107,12 @@ namespace PeterO.Mail {
     private int AddByteInternal(IWriter output, int b) {
       int ib = b & 0xff;
       if (this.quantumCount == 2) {
+        byte al = this.alphabet[((this.byte1 & 3) << 4) +
+          ((this.byte2 >> 4) & 15)];
         int ret = this.LineAwareAppendFour (
             output,
             this.alphabet[(this.byte1 >> 2) & 63],
-            this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
-15)],
+            al,
             this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)],
             this.alphabet[ib & 63]);
         this.byte1 = -1;

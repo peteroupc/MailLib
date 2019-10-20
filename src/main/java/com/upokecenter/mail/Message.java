@@ -1270,8 +1270,10 @@ public final void setContentType(MediaType value) {
     public final List<Map.Entry<String, String>> getHeaderFields() {
         ArrayList<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>();
         for (int i = 0; i < this.headers.size(); i += 2) {
-          list.add(
-            new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
+          Map.Entry<String, String> kp = new AbstractMap.SimpleImmutableEntry<String, String>(
+            this.headers.get(i),
+            this.headers.get(i + 1));
+          list.add(kp);
         }
         return list;
       }

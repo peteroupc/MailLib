@@ -547,8 +547,10 @@ EncodedWordContext.Comment &&
           if (index == endIndex) {
             builder.Append(str.Substring(oldIndex, index - oldIndex));
           } else {
-            builder.Append(str.Substring(oldIndex, whitespaceStart -
-oldIndex));
+            string appendstr = str.Substring(
+              oldIndex,
+              whitespaceStart - oldIndex);
+            builder.Append(appendstr);
           }
         }
         lastWordWasEncodedWord = acceptedEncodedWord;
@@ -672,8 +674,10 @@ oldIndex));
         if (token[0] == HeaderParserUtility.TokenComment && withComments) {
           // This is a comment token
           int startIndex = token[1];
-          builder.Append(str.Substring(lastIndex, startIndex + 1 -
-lastIndex));
+          string appendstr = str.Substring(
+            lastIndex,
+            startIndex + 1 - lastIndex);
+          builder.Append(appendstr);
           string newComment = Rfc2047.DecodeEncodedWords(
             str,
             startIndex + 1,

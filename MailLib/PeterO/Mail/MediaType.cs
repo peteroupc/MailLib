@@ -1423,8 +1423,8 @@ this.subType.Length ||
       if (i == i2) {
         return null;
       }
-      string subType = DataUtilities.ToLowerCaseAscii(str.Substring(i, i2
-- i));
+      string subType = DataUtilities.ToLowerCaseAscii(
+        str.Substring(i, i2 - i));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
