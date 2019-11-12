@@ -741,7 +741,7 @@ Gets the byte array for this message's body. This method doesn' t make a
     public int[] GetDate()
 Gets the date and time extracted from this message's Date header field (the
   value of which is found as though GetHeader("date") were called).
- See <b>MailDateTime.ParseDateString(boolean)</b> for more
+ See <b>MailDateTime.ParseDateString(string, boolean)</b> for more
  information on the format of the date-time array returned by this
  method.
 
@@ -756,8 +756,8 @@ Sets this message's Date header field to the given date and time.
 **Parameters:**
 
 * <code>dateTime</code> - An array containing at least eight elements expressing a
- date and time. See <b>MailDateTime.ParseDateString(boolean)</b> for
- more information on this parameter.
+ date and time. See <b>MailDateTime.ParseDateString(string,
+ boolean)</b> for more information on this parameter.
 
 **Returns:**
 
@@ -767,7 +767,7 @@ Sets this message's Date header field to the given date and time.
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> contains fewer than
  eight elements or contains invalid values (see
- MailDateTime.ParseString(boolean)).
+ MailDateTime.ParseDateString(string, boolean)).
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>dateTime</code> is null.
 

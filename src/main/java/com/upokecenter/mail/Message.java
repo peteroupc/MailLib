@@ -1411,7 +1411,7 @@ public final void setSubject(String value) {
     /**
      * Gets the date and time extracted from this message's Date header field (the
      *  value of which is found as though GetHeader("date") were called).
-     * See <b>MailDateTime.ParseDateString(boolean)</b> for more
+     * See <b>MailDateTime.ParseDateString(string, boolean)</b> for more
      * information on the format of the date-time array returned by this
      * method.
      * @return An array of 32-bit unsigned integers.
@@ -1425,12 +1425,12 @@ public final void setSubject(String value) {
     /**
      * Sets this message's Date header field to the given date and time.
      * @param dateTime An array containing at least eight elements expressing a
-     * date and time. See <b>MailDateTime.ParseDateString(boolean)</b> for
-     * more information on this parameter.
+     * date and time. See <b>MailDateTime.ParseDateString(string,
+     * boolean)</b> for more information on this parameter.
      * @return This object.
      * @throws IllegalArgumentException The parameter {@code dateTime} contains fewer than
      * eight elements or contains invalid values (see
-     * MailDateTime.ParseString(boolean)).
+     * MailDateTime.ParseDateString(string, boolean)).
      * @throws NullPointerException The parameter {@code dateTime} is null.
      */
     public Message SetDate(int[] dateTime) {

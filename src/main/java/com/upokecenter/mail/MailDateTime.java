@@ -22,11 +22,11 @@ private MailDateTime() {
      * Generates a date-time string following the Internet Message Format (RFC
      * 5322) from an 8-element array.
      * @param dateTime The date and time in the form of an 8-element array. See
-     * {@code ParseDateString(boolean)} for information on the format of
-     * this parameter.
+     * {@code ParseDateString(string, boolean)} for information on the
+     * format of this parameter.
      * @return A date-time string.
      * @throws IllegalArgumentException The parameter {@code dateTime} is null or invalid
-     * (see {@code ParseDateString(boolean)}).
+     * (see {@code ParseDateString(string, boolean)}).
      */
     public static String GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
@@ -207,12 +207,12 @@ private MailDateTime() {
      * Generates a date-time string following the Internet Message Format (RFC
      * 5322) from an 8-element array.
      * @param dateTime The date and time in the form of an 8-element array. See
-     * {@code ParseDateString(boolean)} for information on the format of
-     * this parameter.
+     * {@code ParseDateString(string, boolean)} for information on the
+     * format of this parameter.
      * @param gmt If true, uses the string "GMT" as the time zone offset.
      * @return A date-time string.
      * @throws IllegalArgumentException The parameter {@code dateTime} is null or invalid
-     * (see {@code ParseDateString(boolean)}).
+     * (see {@code ParseDateString(string, boolean)}).
      * @throws NullPointerException The parameter {@code dateTime} is null.
      */
     public static String GenerateDateString(int[] dateTime, boolean gmt) {
@@ -334,8 +334,8 @@ private MailDateTime() {
      * Gets the date and time extracted from a date-time string following the
      * Internet Message Format (RFC 5322). Obsolete time zone strings are
      * not allowed to appear in the date-time string. See
-     * <code>ParseDateString(boolean)</code> for information on this method's
-     * return value.
+     * <code>ParseDateString(string, boolean)</code> for information on this
+     * method's return value.
      * @param str A date-time string.
      * @return An 8-element array containing the date and time, or {@code null} if
      * {@code str} is null, empty, or syntactically invalid, or if the
@@ -859,7 +859,7 @@ private MailDateTime() {
      * 7231).
      * @param v A date-time string.
      * @return An array of 8 elements as specified in the {@code
-     * ParseDateString(boolean)} method.
+     * ParseDateString(string, boolean)} method.
      */
     public static int[] ParseDateStringHttp(String v) {
       if (v == null) {

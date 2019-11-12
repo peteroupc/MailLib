@@ -237,13 +237,13 @@ import com.upokecenter.mail.*;
         "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\u005btest]: http://www.example.com\u0020\"Title\"");
+        "[Linktext][TeSt]\r\n\u005btest]: http://www.example.com\u0020\"Title\"");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
-  "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com>\u0020\"Title\"");
+        "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com>\u0020\"Title\"");
       {
         String objectTemp = "<p><a href=\"http://www.example.com\"" +
 "\u0020title=\"Title\">Linktext</a></p>";
@@ -450,7 +450,7 @@ import com.upokecenter.mail.*;
         "[tEsT][]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\">tEsT</a></p><p>(Not a title)</p>",
-  "[tEsT][]\r\n\r\n\u005btest]:\u0020http://www.example.com\r\n(Not a title)");
+        "[tEsT][]\r\n\r\n\u005btest]:\u0020http://www.example.com\r\n(Not a title)");
       TestMarkdownOne (
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");
@@ -468,13 +468,13 @@ import com.upokecenter.mail.*;
         "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com");
       TestMarkdownOne (
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\u005btest]:\u0020http://www.example.com \"Title\"");
+        "![tEsT][]\r\n\u005btest]:\u0020http://www.example.com \"Title\"");
       TestMarkdownOne (
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
         "![tEsT][]\r\n\r\n\u005btest]: <http://www.example.com>");
       TestMarkdownOne (
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-  "![tEsT][]\r\n\u005btest]:\u0020<http://www.example.com> \"Title\"");
+        "![tEsT][]\r\n\u005btest]:\u0020<http://www.example.com> \"Title\"");
       {
         String objectTemp = "<p><img src=\"http://www.example.com\"" +
 "\u0020alt=\"tEsT\" title=\"Title\" /></p>";

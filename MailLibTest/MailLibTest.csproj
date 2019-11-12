@@ -58,7 +58,7 @@
       <HintPath>..\packages\PeterO.Encoding.0.5.1\lib\net40\Encoding.dll</HintPath>
     </Reference>
 
-  <AdditionalFiles Include='stylecop.json'/><AdditionalFiles Include='rules.ruleset'/><PackageReference Include='NUnit'><Version>3.12.0</Version></PackageReference><PackageReference Include='StyleCop.Analyzers'><Version>1.1.118</Version></PackageReference><PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers'><Version>2.9.6</Version></PackageReference><PackageReference Include='PeterO.DataUtilities'>
+  <AdditionalFiles Include='stylecop.json'/><AdditionalFiles Include='rules.ruleset'/><PackageReference Include='NUnit'><Version>3.12.0</Version></PackageReference><PackageReference Include='StyleCop.Analyzers'><Version>1.1.118</Version></PackageReference><PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers'><Version>2.9.7</Version></PackageReference><PackageReference Include='PeterO.DataUtilities'>
   <Version>1.0.0</Version>
 </PackageReference>
 <PackageReference Include='PeterO.URIUtility'>

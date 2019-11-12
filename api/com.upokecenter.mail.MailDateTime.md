@@ -36,8 +36,8 @@ Generates a date-time string following the Internet Message Format (RFC
 **Parameters:**
 
 * <code>dateTime</code> - The date and time in the form of an 8-element array. See
- <code>ParseDateString(boolean)</code> for information on the format of
- this parameter.
+ <code>ParseDateString(string, boolean)</code> for information on the
+ format of this parameter.
 
 **Returns:**
 
@@ -46,7 +46,7 @@ Generates a date-time string following the Internet Message Format (RFC
 **Throws:**
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or invalid
- (see <code>ParseDateString(boolean)</code>).
+ (see <code>ParseDateString(string, boolean)</code>).
 
 ### GenerateDateString
     public static java.lang.String GenerateDateString​(int[] dateTime, boolean gmt)
@@ -56,8 +56,8 @@ Generates a date-time string following the Internet Message Format (RFC
 **Parameters:**
 
 * <code>dateTime</code> - The date and time in the form of an 8-element array. See
- <code>ParseDateString(boolean)</code> for information on the format of
- this parameter.
+ <code>ParseDateString(string, boolean)</code> for information on the
+ format of this parameter.
 
 * <code>gmt</code> - If true, uses the string "GMT" as the time zone offset.
 
@@ -68,7 +68,7 @@ Generates a date-time string following the Internet Message Format (RFC
 **Throws:**
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or invalid
- (see <code>ParseDateString(boolean)</code>).
+ (see <code>ParseDateString(string, boolean)</code>).
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>dateTime</code> is null.
 
@@ -119,8 +119,8 @@ Gets the date and time extracted from a date-time string following the
 Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322). Obsolete time zone strings are
  not allowed to appear in the date-time string. See
- <code>ParseDateString(boolean)</code> for information on this method's
- return value.
+ <code>ParseDateString(string, boolean)</code> for information on this
+ method's return value.
 
 **Parameters:**
 
@@ -144,4 +144,4 @@ Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC
 **Returns:**
 
 * An array of 8 elements as specified in the <code>
- ParseDateString(boolean)</code> method.
+ ParseDateString(string, boolean)</code> method.

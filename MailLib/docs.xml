@@ -1640,11 +1640,11 @@
             <summary>Generates a date-time string following the Internet
             Message Format (RFC 5322) from an 8-element array.</summary>
             <param name='dateTime'>The date and time in the form of an
-            8-element array. See <c>ParseDateString(bool)</c> for information
+            8-element array. See <c>ParseDateString(string, bool)</c> for information
             on the format of this parameter.</param>
             <returns>A date-time string.</returns>
             <exception cref='ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid (see
-            <c>ParseDateString(bool)</c> ).</exception>
+            <c>ParseDateString(string, bool)</c> ).</exception>
 
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)">
@@ -1652,13 +1652,13 @@
             <summary>Generates a date-time string following the Internet
             Message Format (RFC 5322) from an 8-element array.</summary>
             <param name='dateTime'>The date and time in the form of an
-            8-element array. See <c>ParseDateString(bool)</c> for information
+            8-element array. See <c>ParseDateString(string, bool)</c> for information
             on the format of this parameter.</param>
             <param name='gmt'>If true, uses the string "GMT" as the time zone
             offset.</param>
             <returns>A date-time string.</returns>
             <exception cref='ArgumentException'>The parameter <paramref name='dateTime'/> is null or invalid (see
-            <c>ParseDateString(bool)</c> ).</exception>
+            <c>ParseDateString(string, bool)</c> ).</exception>
             <exception cref='ArgumentNullException'>The parameter <paramref name='dateTime'/> is null.</exception>
 
 </doc>
@@ -1667,7 +1667,7 @@
             <summary>Gets the date and time extracted from a date-time string
             following the Internet Message Format (RFC 5322). Obsolete time
             zone strings are not allowed to appear in the date-time string. See
-            <c>ParseDateString(bool)</c> for information on this method's
+            <c>ParseDateString(string, bool)</c> for information on this method's
             return value.</summary>
             <param name='str'>A date-time string.</param>
             <returns>An 8-element array containing the date and time, or
@@ -1725,7 +1725,7 @@
             by HTTP/1.1 (RFC 7231).</summary>
             <param name='v'>A date-time string.</param>
             <returns>An array of 8 elements as specified in the
-            <c>ParseDateString(bool)</c> method.</returns>
+            <c>ParseDateString(string, bool)</c> method.</returns>
 
 </doc>
 <doc name="T:PeterO.Mail.MediaType">
@@ -2804,7 +2804,7 @@
             <summary>Gets the date and time extracted from this message's Date
             header field (the value of which is found as though
             GetHeader("date") were called). See
-            <b>MailDateTime.ParseDateString(bool)</b> for more information on
+            <b>MailDateTime.ParseDateString(string, bool)</b> for more information on
             the format of the date-time array returned by this
             method.</summary>
             <returns>An array of 32-bit unsigned integers.</returns>
@@ -3036,11 +3036,11 @@
             and time.</summary>
             <param name='dateTime'>An array containing at least eight elements
             expressing a date and time. See
-            <b>MailDateTime.ParseDateString(bool)</b> for more information on
+            <b>MailDateTime.ParseDateString(string, bool)</b> for more information on
             this parameter.</param>
             <returns>This object.</returns>
             <exception cref='ArgumentException'>The parameter <paramref name='dateTime'/> contains fewer than eight elements or contains
-            invalid values (see <b>MailDateTime.ParseString(bool)</b> ).</exception>
+            invalid values (see <b>MailDateTime.ParseDateString(string, bool)</b> ).</exception>
             <exception cref='ArgumentNullException'>The parameter <paramref name='dateTime'/> is null.</exception>
 
 </doc>

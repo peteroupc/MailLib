@@ -1462,8 +1462,8 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from this message's Date
     /// header field (the value of which is found as though
     /// GetHeader("date") were called). See
-    /// <b>MailDateTime.ParseDateString(bool)</b> for more information on
-    /// the format of the date-time array returned by this
+    /// <b>MailDateTime.ParseDateString(string, bool)</b> for more
+    /// information on the format of the date-time array returned by this
     /// method.</summary>
     /// <returns>An array of 32-bit unsigned integers.</returns>
     public int[] GetDate() {
@@ -1476,13 +1476,13 @@ namespace PeterO.Mail {
     /// and time.</summary>
     /// <param name='dateTime'>An array containing at least eight elements
     /// expressing a date and time. See
-    /// <b>MailDateTime.ParseDateString(bool)</b> for more information on
-    /// this parameter.</param>
+    /// <b>MailDateTime.ParseDateString(string, bool)</b> for more
+    /// information on this parameter.</param>
     /// <returns>This object.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='dateTime'/> contains fewer than eight elements or contains
-    /// invalid values (see <b>MailDateTime.ParseString(bool)</b>
-    /// ).</exception>
+    /// invalid values (see <b>MailDateTime.ParseDateString(string,
+    /// bool)</b> ).</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dateTime'/> is null.</exception>
     public Message SetDate(int[] dateTime) {

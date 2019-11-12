@@ -18,12 +18,12 @@ namespace PeterO.Mail {
     /// <summary>Generates a date-time string following the Internet
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
-    /// 8-element array. See <c>ParseDateString(bool)</c> for information
-    /// on the format of this parameter.</param>
+    /// 8-element array. See <c>ParseDateString(string, bool)</c> for
+    /// information on the format of this parameter.</param>
     /// <returns>A date-time string.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='dateTime'/> is null or invalid (see
-    /// <c>ParseDateString(bool)</c> ).</exception>
+    /// <c>ParseDateString(string, bool)</c> ).</exception>
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
     }
@@ -202,14 +202,14 @@ namespace PeterO.Mail {
     /// <summary>Generates a date-time string following the Internet
     /// Message Format (RFC 5322) from an 8-element array.</summary>
     /// <param name='dateTime'>The date and time in the form of an
-    /// 8-element array. See <c>ParseDateString(bool)</c> for information
-    /// on the format of this parameter.</param>
+    /// 8-element array. See <c>ParseDateString(string, bool)</c> for
+    /// information on the format of this parameter.</param>
     /// <param name='gmt'>If true, uses the string "GMT" as the time zone
     /// offset.</param>
     /// <returns>A date-time string.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='dateTime'/> is null or invalid (see
-    /// <c>ParseDateString(bool)</c> ).</exception>
+    /// <c>ParseDateString(string, bool)</c> ).</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dateTime'/> is null.</exception>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
@@ -335,8 +335,8 @@ namespace PeterO.Mail {
     /// <summary>Gets the date and time extracted from a date-time string
     /// following the Internet Message Format (RFC 5322). Obsolete time
     /// zone strings are not allowed to appear in the date-time string. See
-    /// <c>ParseDateString(bool)</c> for information on this method's
-    /// return value.</summary>
+    /// <c>ParseDateString(string, bool)</c> for information on this
+    /// method's return value.</summary>
     /// <param name='str'>A date-time string.</param>
     /// <returns>An 8-element array containing the date and time, or
     /// <c>null</c> if <paramref name='str'/> is null, empty, or
@@ -859,7 +859,7 @@ namespace PeterO.Mail {
     /// by HTTP/1.1 (RFC 7231).</summary>
     /// <param name='v'>A date-time string.</param>
     /// <returns>An array of 8 elements as specified in the
-    /// <c>ParseDateString(bool)</c> method.</returns>
+    /// <c>ParseDateString(string, bool)</c> method.</returns>
     public static int[] ParseDateStringHttp(string v) {
       if (v == null) {
         return null;
