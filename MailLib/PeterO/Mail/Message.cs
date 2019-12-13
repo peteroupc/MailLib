@@ -511,7 +511,7 @@ namespace PeterO.Mail {
       return false;
     }
 
-    private void GetBodyStrings (
+    private void GetBodyStrings(
       IList<string> bodyStrings,
       IList<MediaType> mediaTypes) {
       if (this.ContentDisposition != null &&
@@ -573,7 +573,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private void AccumulateAttachments (
+    private void AccumulateAttachments(
       IList<Message> attachments,
       bool root) {
       if (this.ContentDisposition != null &&
@@ -702,7 +702,7 @@ namespace PeterO.Mail {
         while (nextIndex < length) {
           char c2 = value[nextIndex];
           if (c == c2) {
-            return Encodings.ResolveAlias (
+            return Encodings.ResolveAlias(
                 value.Substring(
                   index,
                   nextIndex - index));
@@ -1150,10 +1150,10 @@ namespace PeterO.Mail {
       MediaType mt = mediaTypes[0];
       string fmt = mt.GetParameter("format");
       string dsp = mt.GetParameter("delsp");
-      bool formatFlowed = DataUtilities.ToLowerCaseAscii (
+      bool formatFlowed = DataUtilities.ToLowerCaseAscii(
           fmt == null ? "fixed" : fmt)
         .Equals("flowed", StringComparison.Ordinal);
-      bool delSp = DataUtilities.ToLowerCaseAscii (
+      bool delSp = DataUtilities.ToLowerCaseAscii(
           dsp == null ? "no" : dsp).Equals("yes", StringComparison.Ordinal);
       if (mt.TypeAndSubType.Equals("text/plain", StringComparison.Ordinal)) {
         if (formatFlowed) {
@@ -1208,7 +1208,7 @@ namespace PeterO.Mail {
           this.RemoveHeader("content-disposition");
         } else if (!value.Equals(this.contentDisposition)) {
           this.contentDisposition = value;
-          this.SetHeader (
+          this.SetHeader(
             "content-disposition",
             this.contentDisposition.ToString());
         }
@@ -1496,7 +1496,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("Invalid year: " +
           ParserUtility.IntToString(dateTime[0]));
       }
-      return this.SetHeader (
+      return this.SetHeader(
           "date",
           MailDateTime.GenerateDateString(dateTime));
     }
@@ -1924,7 +1924,7 @@ namespace PeterO.Mail {
       markdownMessage.ContentType = MediaType.Parse(mtypestr);
       // Take advantage of SetTextBody's line break conversion
       string markdownText = markdownMessage.GetBodyString();
-      Message htmlMessage = NewBodyPart().SetHtmlBody (
+      Message htmlMessage = NewBodyPart().SetHtmlBody(
           FormatFlowed.MarkdownText(markdownText, 0));
       mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.ContentType = MediaType.Parse(mtypestr);
@@ -2088,7 +2088,7 @@ namespace PeterO.Mail {
 
     private static MediaType SuggestMediaType(string filename) {
       if (!String.IsNullOrEmpty(filename)) {
-        string ext = DataUtilities.ToLowerCaseAscii (
+        string ext = DataUtilities.ToLowerCaseAscii(
             ExtensionName(filename));
         if (ext.Equals(".doc", StringComparison.Ordinal) ||
           ext.Equals(".dot", StringComparison.Ordinal)) {
@@ -2214,7 +2214,7 @@ namespace PeterO.Mail {
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     public Message AddAttachment(Stream inputStream, string filename) {
-      return this.AddBodyPart (
+      return this.AddBodyPart(
           inputStream,
           SuggestMediaType(filename),
           filename,
@@ -2270,7 +2270,8 @@ namespace PeterO.Mail {
     ///  The following example (written in C# for the.NET
     /// version) is an extension method that adds an inline
     /// body part from a byte array to a message.
-    /// <code>public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
+    /// <code>public static Message AddInlineFromBytes(this Message msg, byte[]
+    /// bytes,
     /// MediaType mediaType) { using (MemoryStream fs = new MemoryStream(bytes))
     /// { return msg.AddInline(fs, mediaType); } }</code>
     ///  .
@@ -2301,7 +2302,7 @@ namespace PeterO.Mail {
     /// <exception cref='PeterO.Mail.MessageDataException'>An I/O error
     /// occurred.</exception>
     public Message AddInline(Stream inputStream, string filename) {
-      return this.AddBodyPart (
+      return this.AddBodyPart(
           inputStream,
           SuggestMediaType(filename),
           filename,
@@ -2354,11 +2355,11 @@ namespace PeterO.Mail {
       if (cttEnd != ctt.Length) {
         return String.Empty;
       }
-      return DataUtilities.ToLowerCaseAscii (
+      return DataUtilities.ToLowerCaseAscii(
           ctt.Substring(index, cttEnd - index));
     }
 
-    /// <summary>Selects a body part for a multiple-language message (
+    /// <summary>Selects a body part for a multiple-language message(
     /// <c>multipart/multilingual</c> ) according to the given language
     /// priority list.</summary>
     /// <param name='languages'>A list of basic language ranges, sorted in
@@ -2372,12 +2373,12 @@ namespace PeterO.Mail {
     /// language is "zxx", or the second body part otherwise.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='languages'/> is null.</exception>
-    public Message SelectLanguageMessage (
+    public Message SelectLanguageMessage(
       IList<string> languages) {
       return this.SelectLanguageMessage(languages, false);
     }
 
-    /// <summary>Selects a body part for a multiple-language message (
+    /// <summary>Selects a body part for a multiple-language message(
     /// <c>multipart/multilingual</c> ) according to the given language
     /// priority list and original-language preference.</summary>
     /// <param name='languages'>A list of basic language ranges, sorted in
@@ -2395,7 +2396,7 @@ namespace PeterO.Mail {
     /// language is "zxx", or the second body part otherwise.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='languages'/> is null.</exception>
-    public Message SelectLanguageMessage (
+    public Message SelectLanguageMessage(
       IList<string> languages,
       bool preferOriginals) {
       if (this.ContentType.TypeAndSubType.Equals("multipart/multilingual",
@@ -2434,7 +2435,7 @@ namespace PeterO.Mail {
         Message firstmsg = this.Parts[1];
         Message lastPart = this.Parts[this.Parts.Count - 1];
         IList<string> zxx = new List<string>(new string[] { "zxx" });
-        clang = LanguageTags.GetLanguageList (
+        clang = LanguageTags.GetLanguageList(
             lastPart.GetHeader("content-language"));
         if (clang != null) {
           filt = LanguageTags.LanguageTagFilter(zxx, clang);
@@ -2482,7 +2483,7 @@ namespace PeterO.Mail {
     /// the language tag "zzx" not appearing alone or at the end of the
     /// language tag list, or the first message contains no From header
     /// field.</exception>
-    public static Message MakeMultilingualMessage (
+    public static Message MakeMultilingualMessage(
       IList<Message> messages,
       IList<string> languages) {
       if (messages == null) {
@@ -2505,14 +2506,14 @@ namespace PeterO.Mail {
           throw new ArgumentException("A message in 'messages' is null");
         }
         if (i > 0 && !HasSameAddresses(messages[0], messages[i])) {
-          throw new ArgumentException (
+          throw new ArgumentException(
             "Each message doesn't contain the same email addresses");
         }
       }
       foreach (string lang in languages) {
         IList<string> langtags = LanguageTags.GetLanguageList(lang);
         if (langtags == null) {
-          throw new ArgumentException (
+          throw new ArgumentException(
             lang + " is an invalid list of language tags");
         }
       }
@@ -2731,7 +2732,7 @@ namespace PeterO.Mail {
         }
         int headerValueStart = index;
         int headerValueEnd = index;
-        string fieldName = DataUtilities.ToLowerCaseAscii (
+        string fieldName = DataUtilities.ToLowerCaseAscii(
             DataUtilities.GetUtf8String(
               bytes,
               headerNameStart,
@@ -2992,11 +2993,11 @@ namespace PeterO.Mail {
             // 2.3.1 and 2.3.2, which uses the conventions in RFC
             // 822, where linear white space can appear between lexical
             // tokens of a header field).
-            EncodeCommentsInText (
+            EncodeCommentsInText(
               encoder,
               HeaderEncoder.TrimLeadingFWS(typePart + builder));
           } else {
-            EncodeCommentsInText (
+            EncodeCommentsInText(
               encoder,
               HeaderEncoder.TrimLeadingFWS(headerValue));
           }
@@ -3274,7 +3275,7 @@ LiberalSevenBitTransform(stream)) :
       return transform;
     }
 
-    private static void ReadHeaders (
+    private static void ReadHeaders(
       IByteReader stream,
       ICollection<string> headerList,
       bool start) {
@@ -3349,7 +3350,7 @@ LiberalSevenBitTransform(stream)) :
               while (true) {
                 c = stream.ReadByte();
                 if (c == -1) {
-                  throw new MessageDataException (
+                  throw new MessageDataException(
                     "Premature end before all headers were read (Mbox" +
 "\u0020convention)");
                 } else if (c == ':' && possibleMbox) {
@@ -3782,7 +3783,7 @@ LiberalSevenBitTransform(stream)) :
               builder.ToString() + ", " + this.ContentType);
             #else
 {
-              throw new MessageDataException ("Message body can't be encoded");
+              throw new MessageDataException("Message body can't be encoded");
             }
             #endif
           }
@@ -3801,7 +3802,7 @@ LiberalSevenBitTransform(stream)) :
               StringComparison.Ordinal) &&
             !builder.SubType.Equals("global-delivery-status",
               StringComparison.Ordinal))) ? EncodingSevenBit :
-TransferEncodingToUse (
+TransferEncodingToUse(
           bodyToWrite,
           depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       string encodingString = "7bit";
@@ -3908,7 +3909,7 @@ TransferEncodingToUse (
                 value = String.Empty;
                 if (!name.Equals("from", StringComparison.Ordinal) &&
                   !name.Equals("sender", StringComparison.Ordinal)) {
-                  value = GenerateAddressList (
+                  value = GenerateAddressList(
                       NamedAddress.ParseAddresses(value));
                 }
                 if (value.Length == 0) {
@@ -3918,7 +3919,7 @@ TransferEncodingToUse (
               }
             } else if (headerIndex <= 10) {
               // Resent-* fields can appear more than once
-              value = GenerateAddressList (
+              value = GenerateAddressList(
                   NamedAddress.ParseAddresses(value));
               if (value.Length == 0) {
                 // No addresses, synthesize a field
@@ -3952,7 +3953,7 @@ TransferEncodingToUse (
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
-              downgraded = HeaderEncoder.EncodeFieldAsEncodedWords (
+              downgraded = HeaderEncoder.EncodeFieldAsEncodedWords(
                   "downgraded-" + name,
                   ParserUtility.TrimSpaceAndTab(value));
             } else {
@@ -3961,7 +3962,7 @@ TransferEncodingToUse (
                 name + "\n" + downgraded;
               throw new MessageDataException(exText);
               #else
-              throw new MessageDataException (
+              throw new MessageDataException(
                 "Header field still has non-Ascii or controls");
               #endif
             }
@@ -3984,7 +3985,7 @@ TransferEncodingToUse (
         AppendAscii(output, "Date: ");
         // NOTE: Use global rather than local time; there are overriding
         // reasons not to use local time, despite the SHOULD in RFC 5322
-        string dateString = MailDateTime.GenerateDateString (
+        string dateString = MailDateTime.GenerateDateString(
             DateTimeUtilities.GetCurrentGlobalTime());
         AppendAscii(
           output,
@@ -3992,7 +3993,7 @@ TransferEncodingToUse (
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        AppendAscii (
+        AppendAscii(
           output,
           HeaderEncoder.EncodeField("Message-ID", this.GenerateMessageID()));
         AppendAscii(
@@ -4135,8 +4136,8 @@ TransferEncodingToUse (
           }
           string headerValue = this.headers[i + 1];
           if (
-            HeaderFieldParsers.GetParser (
-              name).Parse (
+            HeaderFieldParsers.GetParser(
+              name).Parse(
               headerValue,
               0,
               headerValue.Length,
@@ -4273,7 +4274,7 @@ TransferEncodingToUse (
                 value,
                 endIndex,
                 value.Length,
-                null) == value.Length) ? value.Substring (
+                null) == value.Length) ? value.Substring(
               startIndex,
               endIndex - startIndex) : String.Empty;
         }
@@ -4478,7 +4479,7 @@ TransferEncodingToUse (
             #if DEBUG
             aw.Write(buffer, 0, bufferCount);
             buffer = aw.ToArray();
-            string ss = DataUtilities.GetUtf8String (
+            string ss = DataUtilities.GetUtf8String(
                 buffer,
                 Math.Max(buffer.Length - 35, 0),
                 Math.Min(buffer.Length, 35),
@@ -4590,7 +4591,7 @@ TransferEncodingToUse (
             #if DEBUG
             aw.Write(buffer, 0, bufferCount);
             buffer = aw.ToArray();
-            string ss = DataUtilities.GetUtf8String (
+            string ss = DataUtilities.GetUtf8String(
                 buffer,
                 Math.Max(buffer.Length - 35, 0),
                 Math.Min(buffer.Length, 35),
@@ -4623,7 +4624,7 @@ TransferEncodingToUse (
 
     private string SynthesizeField(string name) {
       var encoder = new HeaderEncoder(76, 0).AppendFieldName(name);
-      string fullField = ParserUtility.Implode (
+      string fullField = ParserUtility.Implode(
           this.GetMultipleHeaders(name),
           "\u002c ");
       string lcname = DataUtilities.ToLowerCaseAscii(name);

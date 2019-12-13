@@ -674,7 +674,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         while (nextIndex < length) {
           char c2 = value.charAt(nextIndex);
           if (c == c2) {
-            return Encodings.ResolveAlias (
+            return Encodings.ResolveAlias(
                 value.substring(
                   index, (
                   index)+(nextIndex - index)));
@@ -1114,10 +1114,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       MediaType mt = mediaTypes.get(0);
       String fmt = mt.GetParameter("format");
       String dsp = mt.GetParameter("delsp");
-      boolean formatFlowed = DataUtilities.ToLowerCaseAscii (
+      boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
           fmt == null ? "fixed" : fmt)
         .equals("flowed");
-      boolean delSp = DataUtilities.ToLowerCaseAscii (
+      boolean delSp = DataUtilities.ToLowerCaseAscii(
           dsp == null ? "no" : dsp).equals("yes");
       if (mt.getTypeAndSubType().equals("text/plain")) {
         if (formatFlowed) {
@@ -1166,7 +1166,7 @@ public final void setContentDisposition(ContentDisposition value) {
           this.RemoveHeader("content-disposition");
         } else if (!value.equals(this.contentDisposition)) {
           this.contentDisposition = value;
-          this.SetHeader (
+          this.SetHeader(
             "content-disposition",
             this.contentDisposition.toString());
         }
@@ -1444,7 +1444,7 @@ public final void setSubject(String value) {
         throw new IllegalArgumentException("Invalid year: " +
           ParserUtility.IntToString(dateTime[0]));
       }
-      return this.SetHeader (
+      return this.SetHeader(
           "date",
           MailDateTime.GenerateDateString(dateTime));
     }
@@ -1852,7 +1852,7 @@ public final void setSubject(String value) {
       markdownMessage.setContentType(MediaType.Parse(mtypestr));
       // Take advantage of SetTextBody's line break conversion
       String markdownText = markdownMessage.GetBodyString();
-      Message htmlMessage = NewBodyPart().SetHtmlBody (
+      Message htmlMessage = NewBodyPart().SetHtmlBody(
           FormatFlowed.MarkdownText(markdownText, 0));
       mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.setContentType(MediaType.Parse(mtypestr));
@@ -2024,7 +2024,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     private static MediaType SuggestMediaType(String filename) {
       if (!((filename) == null || (filename).length() == 0)) {
-        String ext = DataUtilities.ToLowerCaseAscii (
+        String ext = DataUtilities.ToLowerCaseAscii(
             ExtensionName(filename));
         if (ext.equals(".doc") ||
           ext.equals(".dot")) {
@@ -2150,7 +2150,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, String filename) {
-      return this.AddBodyPart (
+      return this.AddBodyPart(
           inputStream,
           SuggestMediaType(filename),
           filename,
@@ -2236,7 +2236,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
      * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, String filename) {
-      return this.AddBodyPart (
+      return this.AddBodyPart(
           inputStream,
           SuggestMediaType(filename),
           filename,
@@ -2286,12 +2286,12 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       if (cttEnd != ctt.length()) {
         return "";
       }
-      return DataUtilities.ToLowerCaseAscii (
+      return DataUtilities.ToLowerCaseAscii(
           ctt.substring(index, (index)+(cttEnd - index)));
     }
 
     /**
-     * Selects a body part for a multiple-language message (
+     * Selects a body part for a multiple-language message(
      * <code>multipart/multilingual</code>) according to the given language
      * priority list.
      * @param languages A list of basic language ranges, sorted in descending order
@@ -2310,7 +2310,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Selects a body part for a multiple-language message (
+     * Selects a body part for a multiple-language message(
      * <code>multipart/multilingual</code>) according to the given language
      * priority list and original-language preference.
      * @param languages A list of basic language ranges, sorted in descending order
@@ -2365,7 +2365,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         Message firstmsg = this.getParts().get(1);
         Message lastPart = this.getParts().get(this.getParts().size() - 1);
         List<String> zxx = Arrays.asList(new String[] { "zxx" });
-        clang = LanguageTags.GetLanguageList (
+        clang = LanguageTags.GetLanguageList(
             lastPart.GetHeader("content-language"));
         if (clang != null) {
           filt = LanguageTags.LanguageTagFilter(zxx, clang);
@@ -2433,14 +2433,14 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           throw new IllegalArgumentException("A message in 'messages' is null");
         }
         if (i > 0 && !HasSameAddresses(messages.get(0), messages.get(i))) {
-          throw new IllegalArgumentException (
+          throw new IllegalArgumentException(
             "Each message doesn't contain the same email addresses");
         }
       }
       for (String lang : languages) {
         List<String> langtags = LanguageTags.GetLanguageList(lang);
         if (langtags == null) {
-          throw new IllegalArgumentException (
+          throw new IllegalArgumentException(
             lang + " is an invalid list of language tags");
         }
       }
@@ -2658,7 +2658,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         }
         int headerValueStart = index;
         int headerValueEnd = index;
-        String fieldName = DataUtilities.ToLowerCaseAscii (
+        String fieldName = DataUtilities.ToLowerCaseAscii(
             DataUtilities.GetUtf8String(
               bytes,
               headerNameStart,
@@ -2917,11 +2917,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
             // 2.3.1 and 2.3.2, which uses the conventions in RFC
             // 822, where linear white space can appear between lexical
             // tokens of a header field).
-            EncodeCommentsInText (
+            EncodeCommentsInText(
               encoder,
               HeaderEncoder.TrimLeadingFWS(typePart + builder));
           } else {
-            EncodeCommentsInText (
+            EncodeCommentsInText(
               encoder,
               HeaderEncoder.TrimLeadingFWS(headerValue));
           }
@@ -3274,7 +3274,7 @@ LiberalSevenBitTransform(stream)) :
               while (true) {
                 c = stream.read();
                 if (c == -1) {
-                  throw new MessageDataException (
+                  throw new MessageDataException(
                     "Premature end before all headers were read (Mbox" +
 "\u0020convention)");
                 } else if (c == ':' && possibleMbox) {
@@ -3697,7 +3697,7 @@ LiberalSevenBitTransform(stream)) :
             !builder.getSubType().equals("global-headers") &&
             !builder.getSubType().equals("global-disposition-notification") &&
             !builder.getSubType().equals("global-delivery-status"))) ? EncodingSevenBit :
-TransferEncodingToUse (
+TransferEncodingToUse(
           bodyToWrite,
           depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       String encodingString = "7bit";
@@ -3788,7 +3788,7 @@ TransferEncodingToUse (
                 value = "";
                 if (!name.equals("from") &&
                   !name.equals("sender")) {
-                  value = GenerateAddressList (
+                  value = GenerateAddressList(
                       NamedAddress.ParseAddresses(value));
                 }
                 if (value.length() == 0) {
@@ -3798,7 +3798,7 @@ TransferEncodingToUse (
               }
             } else if (headerIndex <= 10) {
               // Resent-* fields can appear more than once
-              value = GenerateAddressList (
+              value = GenerateAddressList(
                   NamedAddress.ParseAddresses(value));
               if (value.length() == 0) {
                 // No addresses, synthesize a field
@@ -3829,7 +3829,7 @@ TransferEncodingToUse (
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
-              downgraded = HeaderEncoder.EncodeFieldAsEncodedWords (
+              downgraded = HeaderEncoder.EncodeFieldAsEncodedWords(
                   "downgraded-" + name,
                   ParserUtility.TrimSpaceAndTab(value));
             } else {
@@ -3853,7 +3853,7 @@ TransferEncodingToUse (
         AppendAscii(output, "Date: ");
         // NOTE: Use global rather than local time; there are overriding
         // reasons not to use local time, despite the SHOULD in RFC 5322
-        String dateString = MailDateTime.GenerateDateString (
+        String dateString = MailDateTime.GenerateDateString(
             DateTimeUtilities.GetCurrentGlobalTime());
         AppendAscii(
           output,
@@ -3861,7 +3861,7 @@ TransferEncodingToUse (
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        AppendAscii (
+        AppendAscii(
           output,
           HeaderEncoder.EncodeField("Message-ID", this.GenerateMessageID()));
         AppendAscii(
@@ -4003,8 +4003,8 @@ TransferEncodingToUse (
           }
           String headerValue = this.headers.get(i + 1);
           if (
-            HeaderFieldParsers.GetParser (
-              name).Parse (
+            HeaderFieldParsers.GetParser(
+              name).Parse(
               headerValue,
               0,
               headerValue.length(),
@@ -4432,7 +4432,7 @@ TransferEncodingToUse (
 
     private String SynthesizeField(String name) {
       HeaderEncoder encoder = new HeaderEncoder(76, 0).AppendFieldName(name);
-      String fullField = ParserUtility.Implode (
+      String fullField = ParserUtility.Implode(
           this.GetMultipleHeaders(name),
           "\u002c ");
       String lcname = DataUtilities.ToLowerCaseAscii(name);

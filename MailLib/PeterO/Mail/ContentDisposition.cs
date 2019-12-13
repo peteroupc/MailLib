@@ -20,7 +20,7 @@ namespace PeterO.Mail {
   /// <para><b>About the "filename" parameter</b></para>
   /// <para>The "filename" parameter of a content disposition suggests a
   /// name to use when saving data to a file. For the "filename"
-  /// parameter, the GetParameter method and Parameters property (
+  /// parameter, the GetParameter method and Parameters property(
   /// <c>getParameters</c> ) method in Java) do not adapt that
   /// parameter's value using the ContentDisposition.MakeFilename method.
   /// Thus, for example, the "filename" parameter, if any, returned by
@@ -74,7 +74,9 @@ namespace PeterO.Mail {
     /// <param name='obj'>The parameter <paramref name='obj'/> is an
     /// arbitrary object.</param>
     /// <returns><c>true</c> if the objects are equal; otherwise,
-    /// <c>false</c>.</returns>
+    /// <c>false</c>. In this method, two objects are not equal if they
+    /// don't have the same type or if one is null and the other
+    /// isn't.</returns>
     public override bool Equals(object obj) {
       var other = obj as ContentDisposition;
       if (other == null) {
@@ -127,7 +129,7 @@ namespace PeterO.Mail {
       }
     }
 
-    internal ContentDisposition (
+    internal ContentDisposition(
       string type,
       IDictionary<string, string> parameters) {
       if (type == null) {
@@ -305,7 +307,7 @@ namespace PeterO.Mail {
     /// empty string, or is syntactically invalid, or if the parameter's
     /// year would overflow a 32-bit signed integer.</returns>
     public int[] GetCreationDate() {
-      return MailDateTime.ParseDateString (
+      return MailDateTime.ParseDateString(
           this.GetParameter("creation-date"),
           true);
     }
@@ -322,7 +324,7 @@ namespace PeterO.Mail {
     /// an empty string, or is syntactically invalid, or if the parameter's
     /// year would overflow a 32-bit signed integer.</returns>
     public int[] GetModificationDate() {
-      return MailDateTime.ParseDateString (
+      return MailDateTime.ParseDateString(
           this.GetParameter("modification-date"),
           true);
     }
@@ -339,7 +341,7 @@ namespace PeterO.Mail {
     /// string, or is syntactically invalid, or if the parameter's year
     /// would overflow a 32-bit signed integer.</returns>
     public int[] GetReadDate() {
-      return MailDateTime.ParseDateString (
+      return MailDateTime.ParseDateString(
           this.GetParameter("read-date"),
           true);
     }
@@ -411,13 +413,13 @@ namespace PeterO.Mail {
         index,
         endIndex,
         HttpRules,
-        parameters) ? new ContentDisposition (
+        parameters) ? new ContentDisposition(
           dispoType,
           parameters) : null;
     }
 
     private static ContentDisposition Build(string name) {
-      return new ContentDisposition (
+      return new ContentDisposition(
           name,
           new Dictionary<string, string>());
     }

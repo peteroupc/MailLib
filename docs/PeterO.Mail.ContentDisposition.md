@@ -6,7 +6,7 @@ Specifies how a message body should be displayed or handled by a mail user agent
 
 <b>About the "filename" parameter</b>
 
-The "filename" parameter of a content disposition suggests a name to use when saving data to a file. For the "filename" parameter, the GetParameter method and Parameters property (  `getParameters`  ) method in Java) do not adapt that parameter's value using the ContentDisposition.MakeFilename method. Thus, for example, the "filename" parameter, if any, returned by this method could have an arbitrary length, be encoded using RFC 2047 encoded words (which some email and HTTP implementations still like to write out in headers, even though that RFC says encoded words "MUST NOT appear within a 'quoted-string'"; see ContentDisposition.MakeFilename), or not be usable as is as a file name.
+The "filename" parameter of a content disposition suggests a name to use when saving data to a file. For the "filename" parameter, the GetParameter method and Parameters property(  `getParameters`  ) method in Java) do not adapt that parameter's value using the ContentDisposition.MakeFilename method. Thus, for example, the "filename" parameter, if any, returned by this method could have an arbitrary length, be encoded using RFC 2047 encoded words (which some email and HTTP implementations still like to write out in headers, even though that RFC says encoded words "MUST NOT appear within a 'quoted-string'"; see ContentDisposition.MakeFilename), or not be usable as is as a file name.
 
 <b>Example:</b> An example of RFC 2047 encoded words is:
 
@@ -115,7 +115,7 @@ Determines whether this object and another object are equal.
 
 <b>Return Value:</b>
 
- `true`  if the objects are equal; otherwise,  `false` .
+ `true`  if the objects are equal; otherwise,  `false` . In this method, two objects are not equal if they don't have the same type or if one is null and the other isn't.
 
 <a id="GetCreationDate"></a>
 ### GetCreationDate

@@ -19,7 +19,7 @@ import com.upokecenter.text.*;
    *  DispositionBuilder class.</p> <p><b>About the "filename"
    *  parameter</b></p> <p>The "filename" parameter of a content disposition
    *  suggests a name to use when saving data to a file. For the "filename"
-   * parameter, the GetParameter method and Parameters property (
+   * parameter, the GetParameter method and Parameters property(
    * <code>getParameters</code>) method in Java) do not adapt that parameter's
    * value using the ContentDisposition.MakeFilename method. Thus, for
    *  example, the "filename" parameter, if any, returned by this method
@@ -64,7 +64,9 @@ import com.upokecenter.text.*;
     /**
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return {@code true} if the objects are equal; otherwise, {@code false}.
+     * @return {@code true} if the objects are equal; otherwise, {@code false}. In
+     * this method, two objects are not equal if they don't have the same
+     * type or if one is null and the other isn't.
      */
     @Override public boolean equals(Object obj) {
       ContentDisposition other = ((obj instanceof ContentDisposition) ? (ContentDisposition)obj : null);
@@ -114,7 +116,7 @@ import com.upokecenter.text.*;
         return this.dispositionType.equals("attachment");
       }
 
-    ContentDisposition (
+    ContentDisposition(
       String type,
       Map<String, String> parameters) {
       if (type == null) {
@@ -225,7 +227,7 @@ import com.upokecenter.text.*;
      * 4.5.1 (<code>application/octet-stream</code> subtype in Content-Type
      *  header field) cites an earlier RFC 1341, which "defined the use of a
      * 'NAME' parameter which gave a <i>suggested</i> file name to be used
-     *  if the data were written to a file". Also, RFC 2183 sec. 2.3 (
+     *  if the data were written to a file". Also, RFC 2183 sec. 2.3(
      * <code>filename</code> parameter in Content-Disposition) confirms that the
      *  " <i>suggested</i> filename" in the <code>filename</code> parameter
      *  "should be <i>used as a basis</i> for the actual filename, where
@@ -284,7 +286,7 @@ import com.upokecenter.text.*;
      * overflow a 32-bit signed integer.
      */
     public int[] GetCreationDate() {
-      return MailDateTime.ParseDateString (
+      return MailDateTime.ParseDateString(
           this.GetParameter("creation-date"),
           true);
     }
@@ -302,7 +304,7 @@ import com.upokecenter.text.*;
      * would overflow a 32-bit signed integer.
      */
     public int[] GetModificationDate() {
-      return MailDateTime.ParseDateString (
+      return MailDateTime.ParseDateString(
           this.GetParameter("modification-date"),
           true);
     }
@@ -320,7 +322,7 @@ import com.upokecenter.text.*;
      * a 32-bit signed integer.
      */
     public int[] GetReadDate() {
-      return MailDateTime.ParseDateString (
+      return MailDateTime.ParseDateString(
           this.GetParameter("read-date"),
           true);
     }
@@ -391,13 +393,13 @@ import com.upokecenter.text.*;
         index,
         endIndex,
         HttpRules,
-        parameters) ? new ContentDisposition (
+        parameters) ? new ContentDisposition(
           dispoType,
           parameters) : null;
     }
 
     private static ContentDisposition Build(String name) {
-      return new ContentDisposition (
+      return new ContentDisposition(
           name,
           new HashMap<String, String>());
     }

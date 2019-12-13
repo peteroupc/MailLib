@@ -94,8 +94,8 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[Parts](#Parts)</code> - Gets a list of all the parts of this message.
 * <code>[RemoveHeader(int)](#RemoveHeader_int)</code> - Removes a header field by index.
 * <code>[RemoveHeader(string)](#RemoveHeader_string)</code> - Removes all instances of the given header field from this message.
-* <code>[SelectLanguageMessage(System.Collections.Generic.IList)](#SelectLanguageMessage_System_Collections_Generic_IList)</code> - Selects a body part for a multiple-language message ( multipart/multilingual ) according to the given language priority list.
-* <code>[SelectLanguageMessage(System.Collections.Generic.IList, bool)](#SelectLanguageMessage_System_Collections_Generic_IList_bool)</code> - Selects a body part for a multiple-language message ( multipart/multilingual ) according to the given language priority list and original-language preference.
+* <code>[SelectLanguageMessage(System.Collections.Generic.IList)](#SelectLanguageMessage_System_Collections_Generic_IList)</code> - Selects a body part for a multiple-language message( multipart/multilingual ) according to the given language priority list.
+* <code>[SelectLanguageMessage(System.Collections.Generic.IList, bool)](#SelectLanguageMessage_System_Collections_Generic_IList_bool)</code> - Selects a body part for a multiple-language message( multipart/multilingual ) according to the given language priority list and original-language preference.
 * <code>[SetBody(byte[])](#SetBody_byte)</code> - Sets the body of this message to the given byte array.
 * <code>[SetCurrentDate()](#SetCurrentDate)</code> - Sets this message's Date header field to the current time as its value, with an unspecified time zone offset.
 * <code>[SetDate(int[])](#SetDate_int)</code> - Sets this message's Date header field to the given date and time.
@@ -502,7 +502,8 @@ Adds an inline body part to this message in the form of data from the given read
 
  The following example (written in C# for the.NET version) is an extension method that adds an inline body part from a byte array to a message.
 
-    public static Message AddInlineFromBytes(this Message msg, byte[] bytes,
+    public static Message AddInlineFromBytes(this Message msg, byte[]
+                bytes,
                 MediaType mediaType) { using (MemoryStream fs = new MemoryStream(bytes))
                 { return msg.AddInline(fs, mediaType); } }
 
@@ -822,7 +823,7 @@ This message is a multipart message without a supported body part; or this messa
 
     public int[] GetDate();
 
-Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called). See <b>MailDateTime.ParseDateString(bool)</b> for more information on the format of the date-time array returned by this method.
+Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called). See <b>MailDateTime.ParseDateString(string, bool)</b> for more information on the format of the date-time array returned by this method.
 
 <b>Return Value:</b>
 
@@ -1011,7 +1012,7 @@ The parameter  <i>name</i>
     public PeterO.Mail.Message SelectLanguageMessage(
         System.Collections.Generic.IList languages);
 
-Selects a body part for a multiple-language message (  `multipart/multilingual`  ) according to the given language priority list.
+Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the given language priority list.
 
 <b>Parameters:</b>
 
@@ -1034,7 +1035,7 @@ The parameter  <i>languages</i>
         System.Collections.Generic.IList languages,
         bool preferOriginals);
 
-Selects a body part for a multiple-language message (  `multipart/multilingual`  ) according to the given language priority list and original-language preference.
+Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the given language priority list and original-language preference.
 
 <b>Parameters:</b>
 
@@ -1095,7 +1096,7 @@ Sets this message's Date header field to the given date and time.
 
 <b>Parameters:</b>
 
- * <i>dateTime</i>: An array containing at least eight elements expressing a date and time. See <b>MailDateTime.ParseDateString(bool)</b> for more information on this parameter.
+ * <i>dateTime</i>: An array containing at least eight elements expressing a date and time. See <b>MailDateTime.ParseDateString(string, bool)</b> for more information on this parameter.
 
 <b>Return Value:</b>
 
@@ -1105,7 +1106,7 @@ This object.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- contains fewer than eight elements or contains invalid values (see <b>MailDateTime.ParseString(bool)</b> ).
+ contains fewer than eight elements or contains invalid values (see <b>MailDateTime.ParseDateString(string, bool)</b> ).
 
  * System.ArgumentNullException:
 The parameter  <i>dateTime</i>

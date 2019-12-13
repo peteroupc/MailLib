@@ -91,8 +91,8 @@ namespace PeterO.Mail {
         // Invalid syntax
         return list;
       }
-      list.AddRange (
-        HeaderParserUtility.ParseAddressList (
+      list.AddRange(
+        HeaderParserUtility.ParseAddressList(
           addressValue,
           0,
           addressValue.Length,
@@ -319,7 +319,7 @@ other.isGroup &&
         address.Length) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
-      NamedAddress na = HeaderParserUtility.ParseAddress (
+      NamedAddress na = HeaderParserUtility.ParseAddress(
           address,
           0,
           address.Length,

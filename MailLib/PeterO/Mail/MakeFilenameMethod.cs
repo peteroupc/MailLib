@@ -585,7 +585,8 @@ BEncodingStringTransform(data) :
             // "'" starts a filename string in BASH and possibly other shells
             builder.Append('_');
           } else if (c == '#') {
-            // Fragment identifier for URIs
+            // Fragment identifier for URIs; starts a comment
+            // in BASH and possibly other shells
             builder.Append('_');
           } else if (c == '$') {
             // '$'starts a variable in BASH and possibly other shells

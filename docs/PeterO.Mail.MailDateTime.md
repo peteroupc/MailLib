@@ -21,7 +21,7 @@ Generates a date-time string following the Internet Message Format (RFC 5322) fr
 
 <b>Parameters:</b>
 
- * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
+ * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(string, bool)`  for information on the format of this parameter.
 
 <b>Return Value:</b>
 
@@ -31,7 +31,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid (see  `ParseDateString(bool)`  ).
+ is null or invalid (see  `ParseDateString(string, bool)`  ).
 
 <a id="GenerateDateString_int_bool"></a>
 ### GenerateDateString
@@ -44,7 +44,7 @@ Generates a date-time string following the Internet Message Format (RFC 5322) fr
 
 <b>Parameters:</b>
 
- * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(bool)`  for information on the format of this parameter.
+ * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(string, bool)`  for information on the format of this parameter.
 
  * <i>gmt</i>: If true, uses the string "GMT" as the time zone offset.
 
@@ -56,7 +56,7 @@ A date-time string.
 
  * System.ArgumentException:
 The parameter  <i>dateTime</i>
- is null or invalid (see  `ParseDateString(bool)`  ).
+ is null or invalid (see  `ParseDateString(string, bool)`  ).
 
  * System.ArgumentNullException:
 The parameter  <i>dateTime</i>
@@ -68,7 +68,7 @@ The parameter  <i>dateTime</i>
     public static int[] ParseDateString(
         string str);
 
-Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(bool)`  for information on this method's return value.
+Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(string, bool)`  for information on this method's return value.
 
 <b>Parameters:</b>
 
@@ -131,4 +131,4 @@ Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC 7231).
 
 <b>Return Value:</b>
 
-An array of 8 elements as specified in the  `ParseDateString(bool)`  method.
+An array of 8 elements as specified in the  `ParseDateString(string, bool)`  method.

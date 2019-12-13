@@ -234,12 +234,12 @@ Use GetAddresses(\To\) instead.
 * `Message RemoveHeader​(java.lang.String name)`<br>
  Removes all instances of the given header field from this message.
 * `Message SelectLanguageMessage​(java.util.List<java.lang.String> languages) multipart/multilingual`<br>
- Selects a body part for a multiple-language message (
+ Selects a body part for a multiple-language message(
  multipart/multilingual) according to the given language
  priority list.
 * `Message SelectLanguageMessage​(java.util.List<java.lang.String> languages,
                      boolean preferOriginals) multipart/multilingual`<br>
- Selects a body part for a multiple-language message (
+ Selects a body part for a multiple-language message(
  multipart/multilingual) according to the given language
  priority list and original-language preference.
 * `Message SetBody​(byte[] bytes)`<br>
@@ -1369,7 +1369,7 @@ Adds an inline body part to this message in the form of data from the given
 
 ### SelectLanguageMessage
     public Message SelectLanguageMessage​(java.util.List<java.lang.String> languages)
-Selects a body part for a multiple-language message (
+Selects a body part for a multiple-language message(
  <code>multipart/multilingual</code>) according to the given language
  priority list.
 
@@ -1393,7 +1393,7 @@ Selects a body part for a multiple-language message (
 
 ### SelectLanguageMessage
     public Message SelectLanguageMessage​(java.util.List<java.lang.String> languages, boolean preferOriginals)
-Selects a body part for a multiple-language message (
+Selects a body part for a multiple-language message(
  <code>multipart/multilingual</code>) according to the given language
  priority list and original-language preference.
 

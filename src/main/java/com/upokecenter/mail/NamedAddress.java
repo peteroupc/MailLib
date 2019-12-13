@@ -91,7 +91,7 @@ import java.util.*;
         return list;
       }
       list.addAll(
-        HeaderParserUtility.ParseAddressList (
+        HeaderParserUtility.ParseAddressList(
           addressValue,
           0,
           addressValue.length(),
@@ -318,7 +318,7 @@ other.isGroup &&
         address.length()) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
-      NamedAddress na = HeaderParserUtility.ParseAddress (
+      NamedAddress na = HeaderParserUtility.ParseAddress(
           address,
           0,
           address.length(),
