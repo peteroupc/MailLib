@@ -338,13 +338,13 @@ import com.upokecenter.text.*;
         addresses.size());
       {
         String stringTemp = addresses.get(0).toString();
-        Assert.assertEquals (
+        Assert.assertEquals(
           "Joe P Customer <customer@example.com>",
           stringTemp);
       }
       {
         String stringTemp = addresses.get(1).toString();
-        Assert.assertEquals (
+        Assert.assertEquals(
           "Jane W Customer <jane@example.com>",
           stringTemp);
       }
@@ -415,17 +415,17 @@ import com.upokecenter.text.*;
 
     @Test
     public void TestBase64() {
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 0, 16, 1  }, "ABAB");
       TestBase64Decode(new byte[] { 0, 16, 1, 93  }, "ABABXX==");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235 },
         "qazxswedcvfr");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { (byte)255, (byte)239, (byte)254, 103  }, "/+/+Zz==");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 0, 16, 1, 93  }, "ABABXX===");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 0, 16, 1, 93  }, "ABABXX");
       TestBase64Decode(
         new byte[] { 0 },
@@ -1454,7 +1454,7 @@ import com.upokecenter.text.*;
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
-      Assert.assertEquals (
+      Assert.assertEquals(
         DataUtilities.GetUtf8String(expected, true),
         DataUtilities.GetUtf8String(actual, true));
     }
@@ -1567,19 +1567,19 @@ import com.upokecenter.text.*;
     @Test
     public void TestDowngradeReceived() {
       String date = "; Sun, 01 Jul 2018 00:00:00 +0000";
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id example for <me@example.com>" + date,
         "from example.com id example for <me@example.com>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from e\u00e7f.example id example for <me@example.com>" + date,
         "from xn--ef-4ia.example id example for <me@example.com>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id exa\u00e7fple for <me@example.com>" + date,
         "from example.com for <me@example.com>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id example for <me@exa\u00e7fple.example>" + date,
         "from example.com id example for <me@xn--exafple-wxa.example>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id example for <m\u00e7f@example.com>" + date,
         "from example.com id example" + date);
     }
@@ -1601,10 +1601,10 @@ import com.upokecenter.text.*;
           objectTemp,
           objectTemp2);
       }
-      TestDowngradeDSNOne (
+      TestDowngradeDSNOne(
         "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
         "(\u00be) utf-8; x@x.example");
-      TestDowngradeDSNOne (
+      TestDowngradeDSNOne(
         "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
         "(\u00be) rfc822; x@x.example");
       {
@@ -1626,7 +1626,7 @@ import com.upokecenter.text.*;
           stringTemp,
           stringTemp2);
       }
-      TestDowngradeDSNOne (
+      TestDowngradeDSNOne(
         "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_m=C2=BE?=",
         "(\u00be) rfc822; m\u00be");
     }
@@ -2011,7 +2011,7 @@ import com.upokecenter.text.*;
     public static void TestEncodedWordsPhrase(String expected, String input) {
       String str = "From: " + input + " <test@example.com>\r\n\r\nTest";
       Message msg = MessageTest.MessageFromString(str);
-      Assert.assertEquals (
+      Assert.assertEquals(
         expected + " <test@example.com>",
         msg.GetHeader("from"));
     }
@@ -2056,27 +2056,27 @@ import com.upokecenter.text.*;
       TestDecodeUnstructured(
         expected,
         input);
-      TestDecodeStructured (
+      TestDecodeStructured(
         "(" + expected + ") en",
         "(" + input + ") en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         "(" + expected + ") en",
         " (" + input + ") en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
         " (comment (cmt " + input + ")comment) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "=?bad?= " + expected +
 ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "" + expected +
 ")comment) en",
         " (comment (" + input + ")comment) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         "(" + expected + "()) en",
         " (" + input + "()) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         "en (" + expected + ")",
         " en (" + input + ")");
     }
@@ -2084,7 +2084,7 @@ import com.upokecenter.text.*;
     @Test
     public void TestEncodedPhrase2() {
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "subject",
             "(tes\u00bet) x@x.example");
         Assert.assertEquals(
@@ -2121,7 +2121,7 @@ import com.upokecenter.text.*;
       {
         String objectTemp = "x <x@example.com>" + ValueSep +
           "=?utf-8?Q?=C2=BE?= <y@example.com>";
-        Object objectTemp2 = DowngradeHeaderField (
+        Object objectTemp2 = DowngradeHeaderField(
             "to",
             "x <x@example.com>" + ValueSep + "\"\u00be\" <y@example.com>");
         Assert.assertEquals(
@@ -2179,31 +2179,31 @@ import com.upokecenter.text.*;
           objectTemp2);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "sender",
             "x <x@e\u00e1.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "x <x@xn--e-ufa.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "sender",
             "x\u00e1 x x\u00e1 <x@example.com>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "sender",
             "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "sender",
             "x <x\u00e1y@example.com>");
         Assert.assertEquals(
@@ -2293,19 +2293,19 @@ public final void setValueMessage(Message value) {
     @Test
     public void TestDowngradeAddress() {
       for (String valueHeader : addressHeaderFields) {
-        TestDowngradeAddressOne (
+        TestDowngradeAddressOne(
           valueHeader,
           "down\u00begrade <down@example.com>",
           "down\u00begrade",
           "down",
           "example.com");
-        TestDowngradeAddressOne (
+        TestDowngradeAddressOne(
           valueHeader,
           "downgrade <down@example.c\u00e7m>",
           "downgrade",
           "down",
           "example.c\u00e7m");
-        TestDowngradeAddressOne (
+        TestDowngradeAddressOne(
           valueHeader,
           "downgrade <down@c\u00e7m.example>",
           "downgrade",
@@ -2317,87 +2317,87 @@ public final void setValueMessage(Message value) {
     @Test(timeout = 5000)
     public void TestCommentsToWords2() {
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(test) x@x.example");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(test) x@x.example",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(tes\u00bet) x@x.example");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "content-language",
             "(tes\u00bet) en");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(=?utf-8?Q?tes=C2=BEt?=) en",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Test <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(comment) Test <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Tes\u00bet <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Tes\u00bet Subject <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Test Sub\u00beject <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet\" <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet Subject\" <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Test Sub\u00beject\" <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         {
@@ -2411,7 +2411,7 @@ public final void setValueMessage(Message value) {
         }
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
         {
@@ -2425,80 +2425,80 @@ public final void setValueMessage(Message value) {
         }
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
           stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "Test <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "Tes\u00bet <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "Tes\u00bet Subject <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "Test Sub\u00beject <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet\" <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet Subject\" <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "\"Test Sub\u00beject\" <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField (
+        String stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-        Assert.assertEquals (
+        Assert.assertEquals(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
           stringTemp);
       }
@@ -2527,7 +2527,7 @@ public final void setValueMessage(Message value) {
       // CR and LF, should not be directly representable
       TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=", "=?utf-8?q?x_=0D=0A?=");
       // Parentheses
-      TestEncodedWordsPhrase("\"x(y)\"", "=?utf-8?q?x_=28y=29?=");
+      TestEncodedWordsPhrase("\"x\u0020(y)\"", "=?utf-8?q?x_=28y=29?=");
       // Colons and angle brackets
       TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
@@ -2538,7 +2538,7 @@ public final void setValueMessage(Message value) {
         "\"=?utf-8?q?xyz?=\"",
         "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "me (x) \"x:y\"",
         "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
@@ -2596,22 +2596,22 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsPhrase(
         "xy",
         "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "xy\u0020(sss)",
         "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "x\u0020(sss)\u0020y",
         "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "x\u0020(z)\u0020y",
         "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "z) y",
         "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsOne(
@@ -2649,7 +2649,7 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsOne(
         "=?x-undefined?q?abcde?=",
         "=?x-undefined?q?abcde?=");
-      TestEncodedWordsOne (
+      TestEncodedWordsOne(
         "=?utf-8?Q?" + Repeat("x", 200) + "?=",
         "=?utf-8?Q?" + Repeat("x", 200) + "?=");
       TestEncodedWordsPhrase(
@@ -2771,7 +2771,7 @@ public final void setValueMessage(Message value) {
       String input = ToQPString(bytes);
       String msgString;
       Message msg;
-      MediaType mediatype = MediaType.Parse (
+      MediaType mediatype = MediaType.Parse(
           text ? "text/plain;charset=iso-8859-1" : "application/octet-stream");
       msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: " + mediatype + "s\r\n" +
@@ -2881,7 +2881,7 @@ public final void setValueMessage(Message value) {
       TestEncodedBytesRoundTrip("The Best\r\n.\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.\rAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.");
-      TestEncodedBytesRoundTrip (
+      TestEncodedBytesRoundTrip(
         "The Best\r\n--=_Boundary00000000--\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--=_Bomb\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary\r\nAnother");

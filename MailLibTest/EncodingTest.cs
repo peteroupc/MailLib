@@ -136,7 +136,7 @@ namespace MailLibTest {
             builder.Append(ValueHex[((int)c) & 15]);
             builder.Append(")");
             int mm1 = Math.Max(0, index + 1 - 30);
-            string ss = str.Substring (
+            string ss = str.Substring(
                 mm1,
                 (index + 1) - mm1);
             builder.Append("\n");
@@ -167,7 +167,7 @@ namespace MailLibTest {
           continue;
         }
         if (c == '\r') {
-          test = str.Substring (
+          test = str.Substring(
               Math.Max(index + 2 - 30, 0),
               Math.Min(index + 2, 30));
           Console.WriteLine(fn +
@@ -175,7 +175,7 @@ namespace MailLibTest {
           return 0;
         }
         if (c == '\n') {
-          test = str.Substring (
+          test = str.Substring(
               Math.Max(index + 2 - 30, 0),
               Math.Min(index + 2, 30));
           Console.WriteLine(fn +
@@ -196,7 +196,7 @@ namespace MailLibTest {
           if (str[index + 1] != 0x20 &&
             !(str[index + 1] == 0x0d && index + 2 < str.Length && str[index +
                 2] == 0x0a)) {
-            test = str.Substring (
+            test = str.Substring(
                 Math.Max(index + 2 - 30, 0),
                 Math.Min(index + 2, 30));
             Console.WriteLine(fn +
@@ -339,13 +339,13 @@ namespace MailLibTest {
         addresses.Count);
       {
         string stringTemp = addresses[0].ToString();
-        Assert.AreEqual (
+        Assert.AreEqual(
           "Joe P Customer <customer@example.com>",
           stringTemp);
       }
       {
         string stringTemp = addresses[1].ToString();
-        Assert.AreEqual (
+        Assert.AreEqual(
           "Jane W Customer <jane@example.com>",
           stringTemp);
       }
@@ -416,17 +416,17 @@ namespace MailLibTest {
 
     [Test]
     public void TestBase64() {
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 0, 16, 1 }, "ABAB");
       TestBase64Decode(new byte[] { 0, 16, 1, 93 }, "ABABXX==");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 169, 172, 241, 179, 7, 157, 114, 247, 235 },
         "qazxswedcvfr");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 255, 239, 254, 103 }, "/+/+Zz==");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 0, 16, 1, 93 }, "ABABXX===");
-      TestBase64Decode (
+      TestBase64Decode(
         new byte[] { 0, 16, 1, 93 }, "ABABXX");
       TestBase64Decode(
         new byte[] { 0 },
@@ -1455,7 +1455,7 @@ namespace MailLibTest {
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
-      Assert.AreEqual (
+      Assert.AreEqual(
         DataUtilities.GetUtf8String(expected, true),
         DataUtilities.GetUtf8String(actual, true));
     }
@@ -1568,19 +1568,19 @@ namespace MailLibTest {
     [Test]
     public void TestDowngradeReceived() {
       string date = "; Sun, 01 Jul 2018 00:00:00 +0000";
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id example for <me@example.com>" + date,
         "from example.com id example for <me@example.com>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from e\u00e7f.example id example for <me@example.com>" + date,
         "from xn--ef-4ia.example id example for <me@example.com>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id exa\u00e7fple for <me@example.com>" + date,
         "from example.com for <me@example.com>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id example for <me@exa\u00e7fple.example>" + date,
         "from example.com id example for <me@xn--exafple-wxa.example>" + date);
-      TestDowngradeReceivedOne (
+      TestDowngradeReceivedOne(
         "from example.com id example for <m\u00e7f@example.com>" + date,
         "from example.com id example" + date);
     }
@@ -1603,10 +1603,10 @@ namespace MailLibTest {
           objectTemp,
           objectTemp2);
       }
-      TestDowngradeDSNOne (
+      TestDowngradeDSNOne(
         "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
         "(\u00be) utf-8; x@x.example");
-      TestDowngradeDSNOne (
+      TestDowngradeDSNOne(
         "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
         "(\u00be) rfc822; x@x.example");
       {
@@ -1628,7 +1628,7 @@ namespace MailLibTest {
           stringTemp,
           stringTemp2);
       }
-      TestDowngradeDSNOne (
+      TestDowngradeDSNOne(
         "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_m=C2=BE?=",
         "(\u00be) rfc822; m\u00be");
     }
@@ -2015,7 +2015,7 @@ namespace MailLibTest {
     public static void TestEncodedWordsPhrase(string expected, string input) {
       string str = "From: " + input + " <test@example.com>\r\n\r\nTest";
       Message msg = MessageTest.MessageFromString(str);
-      Assert.AreEqual (
+      Assert.AreEqual(
         expected + " <test@example.com>",
         msg.GetHeader("from"));
     }
@@ -2060,27 +2060,27 @@ namespace MailLibTest {
       TestDecodeUnstructured(
         expected,
         input);
-      TestDecodeStructured (
+      TestDecodeStructured(
         "(" + expected + ") en",
         "(" + input + ") en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         "(" + expected + ") en",
         " (" + input + ") en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
         " (comment (cmt " + input + ")comment) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "=?bad?= " + expected +
 ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         ValuePar + "comment " + ValuePar + String.Empty + expected +
 ")comment) en",
         " (comment (" + input + ")comment) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         "(" + expected + "()) en",
         " (" + input + "()) en");
-      TestDecodeStructured (
+      TestDecodeStructured(
         "en (" + expected + ")",
         " en (" + input + ")");
     }
@@ -2088,7 +2088,7 @@ namespace MailLibTest {
     [Test]
     public void TestEncodedPhrase2() {
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "subject",
             "(tes\u00bet) x@x.example");
         Assert.AreEqual(
@@ -2125,7 +2125,7 @@ namespace MailLibTest {
       {
         string objectTemp = "x <x@example.com>" + ValueSep +
           "=?utf-8?Q?=C2=BE?= <y@example.com>";
-        object objectTemp2 = DowngradeHeaderField (
+        object objectTemp2 = DowngradeHeaderField(
             "to",
             "x <x@example.com>" + ValueSep + "\"\u00be\" <y@example.com>");
         Assert.AreEqual(
@@ -2183,31 +2183,31 @@ namespace MailLibTest {
           objectTemp2);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "sender",
             "x <x@e\u00e1.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "x <x@xn--e-ufa.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "sender",
             "x\u00e1 x x\u00e1 <x@example.com>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "sender",
             "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "sender",
             "x <x\u00e1y@example.com>");
         Assert.AreEqual(
@@ -2303,19 +2303,19 @@ namespace MailLibTest {
     [Test]
     public void TestDowngradeAddress() {
       foreach (string valueHeader in addressHeaderFields) {
-        TestDowngradeAddressOne (
+        TestDowngradeAddressOne(
           valueHeader,
           "down\u00begrade <down@example.com>",
           "down\u00begrade",
           "down",
           "example.com");
-        TestDowngradeAddressOne (
+        TestDowngradeAddressOne(
           valueHeader,
           "downgrade <down@example.c\u00e7m>",
           "downgrade",
           "down",
           "example.c\u00e7m");
-        TestDowngradeAddressOne (
+        TestDowngradeAddressOne(
           valueHeader,
           "downgrade <down@c\u00e7m.example>",
           "downgrade",
@@ -2328,87 +2328,87 @@ namespace MailLibTest {
     [Timeout(5000)]
     public void TestCommentsToWords2() {
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(test) x@x.example");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(test) x@x.example",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(tes\u00bet) x@x.example");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "content-language",
             "(tes\u00bet) en");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(=?utf-8?Q?tes=C2=BEt?=) en",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Test <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(comment) Test <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Tes\u00bet <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Tes\u00bet Subject <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) Test Sub\u00beject <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet\" <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet Subject\" <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Test Sub\u00beject\" <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         {
@@ -2422,7 +2422,7 @@ namespace MailLibTest {
         }
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
         {
@@ -2436,80 +2436,80 @@ namespace MailLibTest {
         }
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
           stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "Test <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "Tes\u00bet <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "Tes\u00bet Subject <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "Test Sub\u00beject <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet\" <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet Subject\" <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "\"Test Sub\u00beject\" <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
           stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField (
+        string stringTemp = DowngradeHeaderField(
             "from",
             "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-        Assert.AreEqual (
+        Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
           stringTemp);
       }
@@ -2538,7 +2538,7 @@ namespace MailLibTest {
       // CR and LF, should not be directly representable
       TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=", "=?utf-8?q?x_=0D=0A?=");
       // Parentheses
-      TestEncodedWordsPhrase("\"x(y)\"", "=?utf-8?q?x_=28y=29?=");
+      TestEncodedWordsPhrase("\"x\u0020(y)\"", "=?utf-8?q?x_=28y=29?=");
       // Colons and angle brackets
       TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
@@ -2549,7 +2549,7 @@ namespace MailLibTest {
         "\"=?utf-8?q?xyz?=\"",
         "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "me (x) \"x:y\"",
         "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
@@ -2608,22 +2608,22 @@ namespace MailLibTest {
       TestEncodedWordsPhrase(
         "xy",
         "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "xy\u0020(sss)",
         "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "x\u0020(sss)\u0020y",
         "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "x\u0020(z)\u0020y",
         "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase (
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "z) y",
         "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsOne(
@@ -2661,7 +2661,7 @@ namespace MailLibTest {
       TestEncodedWordsOne(
         "=?x-undefined?q?abcde?=",
         "=?x-undefined?q?abcde?=");
-      TestEncodedWordsOne (
+      TestEncodedWordsOne(
         "=?utf-8?Q?" + Repeat("x", 200) + "?=",
         "=?utf-8?Q?" + Repeat("x", 200) + "?=");
       TestEncodedWordsPhrase(
@@ -2784,7 +2784,7 @@ namespace MailLibTest {
       string input = ToQPString(bytes);
       string msgString;
       Message msg;
-      MediaType mediatype = MediaType.Parse (
+      MediaType mediatype = MediaType.Parse(
           text ? "text/plain;charset=iso-8859-1" : "application/octet-stream");
       msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: " + mediatype + "s\r\n" +
@@ -2895,7 +2895,7 @@ namespace MailLibTest {
       TestEncodedBytesRoundTrip("The Best\r\n.\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.\rAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.");
-      TestEncodedBytesRoundTrip (
+      TestEncodedBytesRoundTrip(
         "The Best\r\n--=_Boundary00000000--\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--=_Bomb\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary\r\nAnother");

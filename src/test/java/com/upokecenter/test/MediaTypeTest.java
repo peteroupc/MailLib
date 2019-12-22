@@ -63,7 +63,7 @@ import com.upokecenter.mail.*;
  }
       for (Map<String, String> dictI : ResourceUtil.GetDictList("mediatypes")) {
         for (Map<String, String> dictJ : ResourceUtil.GetDictList("mediatypes")) {
-          TestCommon.AssertEqualsHashCode (
+          TestCommon.AssertEqualsHashCode(
             ParseAndTestAspects(dictI.get("name")),
             ParseAndTestAspects(dictJ.get("name")));
         }
@@ -283,7 +283,7 @@ import com.upokecenter.mail.*;
     public void TestGetParameter() {
       for (Map<String, String> dict : ResourceUtil.GetDictList("paramtypes")) {
         MediaType mt = ParseAndTestAspects("x/x" + dict.get("params"));
-        Assert.assertEquals (
+        Assert.assertEquals(
           dict.get("filename"),
           mt.GetParameter("filename"));
       }
@@ -514,69 +514,51 @@ import com.upokecenter.mail.*;
       // not implemented yet
     }
 
+    private static void AssertHasSuffixTrue(MediaType mt, String s) {
+      if (!mt.HasStructuredSuffix(s)) {
+         Assert.fail("mt=" + mt + ", s=" + s);
+      }
+    }
+
+    private static void AssertHasSuffixFalse(MediaType mt, String s) {
+      if (mt == null || mt.HasStructuredSuffix(s)) {
+         Assert.fail("mt=" + mt + ", s=" + s);
+      }
+    }
+
     @Test
     public void TestHasStructuredSuffix() {
       MediaType mt;
-      mt = MediaType.Parse("example/b+xml");
-      if (!(mt.HasStructuredSuffix("xml"))) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/b+xml");
-      if (!(mt.HasStructuredSuffix("XML"))) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/b+xml");
-      if (!(mt.HasStructuredSuffix("xMl"))) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/+xml");
-      if (mt.HasStructuredSuffix("xml")) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/bxml");
-      if (mt.HasStructuredSuffix("xml")) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/b-xml");
-      if (mt.HasStructuredSuffix("xml")) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/xml");
-      if (mt.HasStructuredSuffix("xml")) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/xm");
-      if (mt.HasStructuredSuffix("xml")) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/x");
-      if (mt.HasStructuredSuffix("xml")) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/b+XML");
-      if (!(mt.HasStructuredSuffix("xml"))) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/b+XML");
-      if (!(mt.HasStructuredSuffix("XML"))) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/bcd+xMl");
-      if (!(mt.HasStructuredSuffix("xml"))) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/+XML");
-      if (!(mt.HasStructuredSuffix("xml"))) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/b+xml");
-      if (mt.HasStructuredSuffix("xmc")) {
- Assert.fail();
- }
-      mt = MediaType.Parse("example/b+xml");
-      if (mt.HasStructuredSuffix("gml")) {
- Assert.fail();
- }
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixTrue(mt, "XML");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixTrue(mt, "xMl");
+      mt = MediaType.Parse("example/+xml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/bxml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/b-xml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/xml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/xm", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/x", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/b+XML", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/b+XML", null);
+      AssertHasSuffixTrue(mt, "XML");
+      mt = MediaType.Parse("example/bcd+xMl", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/+XML", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixFalse(mt, "xmc");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixFalse(mt, "gml");
     }
 
     @Test

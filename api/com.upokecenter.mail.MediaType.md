@@ -28,7 +28,8 @@
  Specifies the media type "message/rfc822", used for Internet mail messages.
 * `static MediaType TextPlainAscii`<br>
  Specifies the media type "text/plain" and the "charset" parameter
-  "US-ASCII", used for plain text data.
+  "US-ASCII", used for plain text data that contains only characters
+ within the basic Latin range (U+0000 to U+007F).
 * `static MediaType TextPlainUtf8`<br>
  Specifies the media type "text/plain" and the "charset" parameter "utf-8",
  used for plain text data that may contain characters outside the
@@ -84,7 +85,8 @@
 ### TextPlainAscii
     public static final MediaType TextPlainAscii
 Specifies the media type "text/plain" and the "charset" parameter
-  "US-ASCII", used for plain text data.
+  "US-ASCII", used for plain text data that contains only characters
+ within the basic Latin range (U+0000 to U+007F).
 ### TextPlainUtf8
     public static final MediaType TextPlainUtf8
 Specifies the media type "text/plain" and the "charset" parameter "utf-8",

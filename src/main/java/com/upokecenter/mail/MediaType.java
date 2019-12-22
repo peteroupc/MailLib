@@ -172,7 +172,7 @@ this.subType.length() ||
         return this.getTopLevelType().equals("multipart");
       }
 
-    MediaType (
+    MediaType(
       String type,
       String subtype,
       Map<String, String> parameters) {
@@ -784,7 +784,7 @@ this.subType.length() ||
       // procedures for determining the charset from the payload
       // if no charset is given or supported in the charset
       // parameter.
-      // NOTE: Up to date as of Sep. 4, 2019
+      // NOTE: Up to date as of Dec. 16, 2019
       if (this.isText()) {
         String sub = this.getSubType();
         if (sub.equals("html")) {
@@ -857,7 +857,7 @@ this.subType.length() ||
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Sep. 3, 2019, are listed below:
+      // December 16, 2019, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -929,7 +929,7 @@ this.subType.length() ||
       // -- csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
       // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
       // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5),
-      // csv-schema*(5)
+      // csv-schema*(5), vtt*(5), vnd.ficlab.flt*(5)
       //
       // * Required parameter.
       // ** No explicit default, but says that "[t]he charset supported
@@ -995,6 +995,8 @@ this.subType.length() ||
                      sub.equals("strings") ||
                      sub.equals("vnd.debian.copyright") ||
                      sub.equals("provenance-notation") ||
+                     sub.equals("vtt") ||
+                     sub.equals("vnd.ficlab.flt") ||
                      sub.equals("csv") ||
                      sub.equals("calendar") ||
                      sub.equals("vnd.a") ||
@@ -1117,7 +1119,7 @@ this.subType.length() ||
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeToString (
+      return (quote >= 0) ? null : Encodings.DecodeToString(
           charset,
           new PercentEncodingStringTransform(value));
     }
@@ -1165,7 +1167,7 @@ this.subType.length() ||
           // NOTE: 'httpRules' for DecodeRfc2231Extension is false
           String realValue = (asterisk == name.length() - 3) ?
             DecodeRfc2231Extension(value, false) : value;
-          ICharacterEncoding charsetUsed = GetRfc2231Charset (
+          ICharacterEncoding charsetUsed = GetRfc2231Charset(
               (asterisk == name.length() - 3) ? value : null);
           parameters.remove(name);
           int pindex = 1;
@@ -1414,13 +1416,14 @@ null;
 
     /**
      * Specifies the media type "text/plain" and the "charset" parameter
-     *  "US-ASCII", used for plain text data.
+     *  "US-ASCII", used for plain text data that contains only characters
+     * within the basic Latin range (U+0000 to U+007F).
      */
 
     public static final MediaType TextPlainAscii =
       new MediaTypeBuilder(
         "text",
-        "plain").SetParameter (
+        "plain").SetParameter(
       "charset",
       "us-ascii").ToMediaType();
 
@@ -1432,7 +1435,7 @@ null;
     public static final MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
         "text",
-        "plain").SetParameter (
+        "plain").SetParameter(
       "charset",
       "utf-8").ToMediaType();
 

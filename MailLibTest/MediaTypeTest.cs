@@ -62,7 +62,7 @@ namespace MailLibTest {
         ResourceUtil.GetDictList("mediatypes")) {
         foreach (IDictionary<string, string> dictJ in
           ResourceUtil.GetDictList("mediatypes")) {
-          TestCommon.AssertEqualsHashCode (
+          TestCommon.AssertEqualsHashCode(
             ParseAndTestAspects(dictI["name"]),
             ParseAndTestAspects(dictJ["name"]));
         }
@@ -283,7 +283,7 @@ namespace MailLibTest {
       foreach (IDictionary<string, string> dict in
         ResourceUtil.GetDictList("paramtypes")) {
         MediaType mt = ParseAndTestAspects("x/x" + dict["params"]);
-        Assert.AreEqual (
+        Assert.AreEqual(
           dict["filename"],
           mt.GetParameter("filename"));
       }
@@ -513,39 +513,51 @@ namespace MailLibTest {
       // not implemented yet
     }
 
+    private static void AssertHasSuffixTrue(MediaType mt, string s) {
+      if (!mt.HasStructuredSuffix(s)) {
+         Assert.Fail("mt=" + mt + ", s=" + s);
+      }
+    }
+
+    private static void AssertHasSuffixFalse(MediaType mt, string s) {
+      if (mt == null || mt.HasStructuredSuffix(s)) {
+         Assert.Fail("mt=" + mt + ", s=" + s);
+      }
+    }
+
     [Test]
     public void TestHasStructuredSuffix() {
       MediaType mt;
-      mt = MediaType.Parse("example/b+xml");
-      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/b+xml");
-      Assert.IsTrue(mt.HasStructuredSuffix("XML"));
-      mt = MediaType.Parse("example/b+xml");
-      Assert.IsTrue(mt.HasStructuredSuffix("xMl"));
-      mt = MediaType.Parse("example/+xml");
-      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/bxml");
-      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/b-xml");
-      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/xml");
-      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/xm");
-      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/x");
-      Assert.IsFalse(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/b+XML");
-      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/b+XML");
-      Assert.IsTrue(mt.HasStructuredSuffix("XML"));
-      mt = MediaType.Parse("example/bcd+xMl");
-      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/+XML");
-      Assert.IsTrue(mt.HasStructuredSuffix("xml"));
-      mt = MediaType.Parse("example/b+xml");
-      Assert.IsFalse(mt.HasStructuredSuffix("xmc"));
-      mt = MediaType.Parse("example/b+xml");
-      Assert.IsFalse(mt.HasStructuredSuffix("gml"));
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixTrue(mt, "XML");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixTrue(mt, "xMl");
+      mt = MediaType.Parse("example/+xml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/bxml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/b-xml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/xml", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/xm", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/x", null);
+      AssertHasSuffixFalse(mt, "xml");
+      mt = MediaType.Parse("example/b+XML", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/b+XML", null);
+      AssertHasSuffixTrue(mt, "XML");
+      mt = MediaType.Parse("example/bcd+xMl", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/+XML", null);
+      AssertHasSuffixTrue(mt, "xml");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixFalse(mt, "xmc");
+      mt = MediaType.Parse("example/b+xml", null);
+      AssertHasSuffixFalse(mt, "gml");
     }
 
     [Test]

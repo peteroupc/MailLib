@@ -448,7 +448,7 @@ namespace PeterO.Mail {
     private static bool DefinesCharsetParameter(MediaType mt) {
       // All media types that specify a charset parameter, either as a
       // required or an optional parameter.
-      // NOTE: Up-to-date as of August 26, 2019
+      // NOTE: Up-to-date as of December 16, 2019
       if (mt.HasStructuredSuffix("xml") ||
         mt.TopLevelType.Equals("text", StringComparison.Ordinal) ||
         mt.TypeAndSubType.Equals("image/vnd.wap.wbmp",
@@ -820,7 +820,7 @@ namespace PeterO.Mail {
         return position;
       }
       b = data[position] & 0xff;
-      if (b == 0x22 || b == 0x27) { // have quoted _string
+      if (b == 0x22 || b == 0x27) { // have quoted string
         ++position;
         while (true) {
           if (position >= length) {

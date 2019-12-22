@@ -247,7 +247,7 @@ private HeaderFieldParsers() {
                     nonasciiDomains = true;
                     break;
                   }
-                  sb2.append (
+                  sb2.append(
                     str.substring(
                       localLastIndex, (
                       localLastIndex)+(token2[1] - localLastIndex)));
@@ -258,7 +258,7 @@ private HeaderFieldParsers() {
               nonasciiLocalParts = nonasciiDomains;
               if (!nonasciiLocalParts) {
                 // All of the domains could be converted to ASCII
-                sb2.append (
+                sb2.append(
                   str.substring(
                     localLastIndex, (
                     localLastIndex)+(endIndex - localLastIndex)));
@@ -388,7 +388,7 @@ private HeaderFieldParsers() {
                       nonasciiDomains = true;
                       break;
                     }
-                    sb2.append (
+                    sb2.append(
                       str.substring(
                         localLastIndex, (
                         localLastIndex)+(token2[1] - localLastIndex)));
@@ -400,7 +400,7 @@ private HeaderFieldParsers() {
               nonasciiLocalPart = nonasciiDomains;
               if (!nonasciiLocalPart) {
                 // All of the domains could be converted to ASCII
-                sb2.append (
+                sb2.append(
                   str.substring(
                     localLastIndex, (
                     localLastIndex)+(endIndex - localLastIndex)));
@@ -1060,8 +1060,7 @@ private HeaderFieldParsers() {
         // first character must be a space (since this is a Netnews header
         // field), and a limited selection of "disposition types" is valid;
         // however, the initial space is not checked here, a behavior
-        // allowed by RFC
-        // 5536 sec. 2.2
+        // allowed by RFC 5536 sec. 2.2
         String s = str.substring(index, (index)+(endIndex - index));
         ContentDisposition cd = ContentDisposition.Parse(s, null);
         if (cd == null) {

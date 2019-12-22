@@ -438,7 +438,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private static boolean DefinesCharsetParameter(MediaType mt) {
       // All media types that specify a charset parameter, either as a
       // required or an optional parameter.
-      // NOTE: Up-to-date as of August 26, 2019
+      // NOTE: Up-to-date as of December 16, 2019
       if (mt.HasStructuredSuffix("xml") ||
         mt.getTopLevelType().equals("text") ||
         mt.getTypeAndSubType().equals("image/vnd.wap.wbmp")) {
@@ -792,7 +792,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return position;
       }
       b = data[position] & 0xff;
-      if (b == 0x22 || b == 0x27) { // have quoted _string
+      if (b == 0x22 || b == 0x27) { // have quoted String
         ++position;
         while (true) {
           if (position >= length) {

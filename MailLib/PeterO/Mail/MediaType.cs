@@ -180,7 +180,7 @@ this.subType.Length ||
       }
     }
 
-    internal MediaType (
+    internal MediaType(
       string type,
       string subtype,
       IDictionary<string, string> parameters) {
@@ -594,12 +594,12 @@ this.subType.Length ||
       return sa.TryAppendSymbol(sb.ToString());
     }
 
-    internal static void AppendParameters (
+    internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa) {
       AppendParameters(parameters, sa, false);
     }
-    internal static void AppendParameters (
+    internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa,
       bool uriSafe) {
@@ -802,7 +802,7 @@ this.subType.Length ||
       // procedures for determining the charset from the payload
       // if no charset is given or supported in the charset
       // parameter.
-      // NOTE: Up to date as of Sep. 4, 2019
+      // NOTE: Up to date as of Dec. 16, 2019
       if (this.IsText) {
         string sub = this.SubType;
         if (sub.Equals("html", StringComparison.Ordinal)) {
@@ -870,7 +870,7 @@ this.subType.Length ||
     /// media type is "text/plain"; see RFC2046), or the empty string if
     /// there is none.</returns>
     #if CODE_ANALYSIS
-    [System.Diagnostics.CodeAnalysis.SuppressMessage (
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Microsoft.Design", "CA1024",
         Justification = "This method has different semantics from " +
           "GetParameter(\"charset\").")]
@@ -883,7 +883,7 @@ this.subType.Length ||
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Sep. 3, 2019, are listed below:
+      // December 16, 2019, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -955,7 +955,7 @@ this.subType.Length ||
       // -- csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
       // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
       // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5),
-      // csv-schema*(5)
+      // csv-schema*(5), vtt*(5), vnd.ficlab.flt*(5)
       //
       // * Required parameter.
       // ** No explicit default, but says that "[t]he charset supported
@@ -1027,6 +1027,8 @@ this.subType.Length ||
                      StringComparison.Ordinal) ||
                      sub.Equals("provenance-notation",
                      StringComparison.Ordinal) ||
+                     sub.Equals("vtt", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.ficlab.flt", StringComparison.Ordinal) ||
                      sub.Equals("csv", StringComparison.Ordinal) ||
                      sub.Equals("calendar", StringComparison.Ordinal) ||
                      sub.Equals("vnd.a", StringComparison.Ordinal) ||
@@ -1089,7 +1091,7 @@ this.subType.Length ||
         // charset is omitted, which is not allowed under RFC8187
         return null;
       }
-      string language = value.Substring (
+      string language = value.Substring(
           firstQuote + 1,
           secondQuote - (firstQuote + 1));
       if (language.Length > 0 &&
@@ -1128,7 +1130,7 @@ this.subType.Length ||
         return USAsciiEncoding;
       }
       string charset = value.Substring(0, firstQuote);
-      string language = value.Substring (
+      string language = value.Substring(
           firstQuote + 1,
           secondQuote - (firstQuote + 1));
       if (language.Length > 0 &&
@@ -1152,12 +1154,12 @@ this.subType.Length ||
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeToString (
+      return (quote >= 0) ? null : Encodings.DecodeToString(
           charset,
           new PercentEncodingStringTransform(value));
     }
 
-    private static bool ExpandRfc2231Extensions (
+    private static bool ExpandRfc2231Extensions(
       IDictionary<string, string> parameters,
       bool httpRules) {
       if (parameters.Count == 0) {
@@ -1200,7 +1202,7 @@ this.subType.Length ||
           // NOTE: 'httpRules' for DecodeRfc2231Extension is false
           string realValue = (asterisk == name.Length - 3) ?
             DecodeRfc2231Extension(value, false) : value;
-          ICharacterEncoding charsetUsed = GetRfc2231Charset (
+          ICharacterEncoding charsetUsed = GetRfc2231Charset(
               (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
           var pindex = 1;
@@ -1272,7 +1274,7 @@ this.subType.Length ||
       return index;
     }
 
-    internal static bool ParseParameters (
+    internal static bool ParseParameters(
       string str,
       int index,
       int endIndex,
@@ -1448,7 +1450,9 @@ null;
     }
 
     /// <summary>Specifies the media type "text/plain" and the "charset"
-    /// parameter "US-ASCII", used for plain text data.</summary>
+    /// parameter "US-ASCII", used for plain text data that contains only
+    /// characters within the basic Latin range (U+0000 to
+    /// U+007F).</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
@@ -1456,7 +1460,7 @@ null;
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
         "text",
-        "plain").SetParameter (
+        "plain").SetParameter(
       "charset",
       "us-ascii").ToMediaType();
 
@@ -1474,7 +1478,7 @@ null;
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
         "text",
-        "plain").SetParameter (
+        "plain").SetParameter(
       "charset",
       "utf-8").ToMediaType();
 
