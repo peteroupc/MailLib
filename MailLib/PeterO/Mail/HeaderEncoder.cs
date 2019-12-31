@@ -97,14 +97,14 @@ namespace PeterO.Mail {
         if (writeSpace) {
           this.builder.Append(" ");
         }
-        this.builder.Append (
+        this.builder.Append(
           symbol.Substring(
             startIndex,
             endIndex - startIndex));
         this.column += (endIndex - startIndex) + spaceLength;
       } else {
         this.builder.Append("\r\n ");
-        this.builder.Append (
+        this.builder.Append(
           symbol.Substring(
             startIndex,
             endIndex - startIndex));
@@ -175,7 +175,7 @@ namespace PeterO.Mail {
               HeaderParserUtility.ParseQuotedStringCore(
                 symbol,
                 i,
-                endIndex) : HeaderParser.ParseDomainLiteralCore (
+                endIndex) : HeaderParser.ParseDomainLiteralCore(
                 symbol,
                 i,
                 endIndex,
@@ -186,7 +186,7 @@ namespace PeterO.Mail {
                 symbolBegin,
                 i,
                 writeSpace);
-              this.AppendQuotedStringOrDomain (
+              this.AppendQuotedStringOrDomain(
                 symbol.Substring(i, si - i),
                 writeSpace);
               writeSpace = false;
@@ -368,12 +368,10 @@ namespace PeterO.Mail {
       int currentWordLength,
       int unitLength,
       bool writeSpace) {
-      var effectiveMaxLength = EncodedWordMaxLength;
-      if (this.GetMaxLineLength() >= 0) {
-        effectiveMaxLength = Math.Min (
+      int effectiveMaxLength = (this.GetMaxLineLength() >= 0) ?
+        Math.Min(
             effectiveMaxLength,
-            this.GetMaxLineLength());
-      }
+            this.GetMaxLineLength()) : EncodedWordMaxLength;
       if (currentWordLength == 0) {
         // 12 characters for prologue and epilogue
         var extraSpace = 0;
@@ -746,7 +744,7 @@ namespace PeterO.Mail {
             }
           }
           builder.Append('"');
-          this.AppendQuotedStringOrDomain (
+          this.AppendQuotedStringOrDomain(
             builder.ToString(),
             false);
         }

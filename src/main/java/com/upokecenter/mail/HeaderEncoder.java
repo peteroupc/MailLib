@@ -97,14 +97,14 @@ import com.upokecenter.util.*;
         if (writeSpace) {
           this.builder.append(" ");
         }
-        this.builder.append (
+        this.builder.append(
           symbol.substring(
             startIndex, (
             startIndex)+(endIndex - startIndex)));
         this.column += (endIndex - startIndex) + spaceLength;
       } else {
         this.builder.append("\r\n ");
-        this.builder.append (
+        this.builder.append(
           symbol.substring(
             startIndex, (
             startIndex)+(endIndex - startIndex)));
@@ -175,7 +175,7 @@ import com.upokecenter.util.*;
               HeaderParserUtility.ParseQuotedStringCore(
                 symbol,
                 i,
-                endIndex) : HeaderParser.ParseDomainLiteralCore (
+                endIndex) : HeaderParser.ParseDomainLiteralCore(
                 symbol,
                 i,
                 endIndex,
@@ -186,7 +186,7 @@ import com.upokecenter.util.*;
                 symbolBegin,
                 i,
                 writeSpace);
-              this.AppendQuotedStringOrDomain (
+              this.AppendQuotedStringOrDomain(
                 symbol.substring(i, (i)+(si - i)),
                 writeSpace);
               writeSpace = false;
@@ -366,12 +366,10 @@ import com.upokecenter.util.*;
       int currentWordLength,
       int unitLength,
       boolean writeSpace) {
-      var effectiveMaxLength = EncodedWordMaxLength;
-      if (this.GetMaxLineLength() >= 0) {
-        effectiveMaxLength = Math.min (
+      int effectiveMaxLength = (this.GetMaxLineLength() >= 0) ?
+        Math.min(
             effectiveMaxLength,
-            this.GetMaxLineLength());
-      }
+            this.GetMaxLineLength()) : EncodedWordMaxLength;
       if (currentWordLength == 0) {
         // 12 characters for prologue and epilogue
         int extraSpace = 0;
@@ -744,7 +742,7 @@ import com.upokecenter.util.*;
             }
           }
           builder.append('"');
-          this.AppendQuotedStringOrDomain (
+          this.AppendQuotedStringOrDomain(
             builder.toString(),
             false);
         }

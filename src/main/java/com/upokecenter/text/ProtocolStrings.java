@@ -26,7 +26,24 @@ package com.upokecenter.text;
    * for authentication or authorization purposes, or to avoid creating
    * multiple items that use the same string, rather than, say, to
    * comparisons of names or parts of names for the purpose of showing
-   * matching records.</li></ul></p>
+   * matching records.</li></ul> <p><b>Security Considerations</b></p>
+   * <p>Many of the methods in this class take text strings and output text
+   * strings. However, specifying text strings as these methods do is not
+   * ideal if the string represents a password or other sensitive data,
+   * since strings are immutable in.NET and Java, so that they can't be
+   * modified, and the memory they occupy is not guaranteed to be cleared
+   * in a timely fashion due to garbage collection.</p> <p>The methods in
+   *  this class are not guaranteed to be "constant-time"
+   * (non-data-dependent) for all relevant inputs. Neither are string
+   * comparison methods (such as string.equals) necessarily guaranteed to
+   *  be "constant-time". Certain attacks that involve encrypted
+   * communications have exploited the timing and other aspects of such
+   * communications to derive keying material or cleartext indirectly, or
+   * for example, to leak information about whether a user name and
+   * password were accepted by the server, or whether a user name or
+   * display name was already taken. This is an important consideration
+   * especially for strings representing account identifiers or passwords,
+   * even when comparing two such strings of the same length.</p></p>
    */
   public final class ProtocolStrings {
 private ProtocolStrings() {
@@ -167,7 +184,7 @@ private ProtocolStrings() {
       StringBuilder sb = null;
       while (i < str.length()) {
         if (str.charAt(i) == ' ') {
-          String part = UserpartEnforce (
+          String part = UserpartEnforce(
               str.substring(lastPos, (lastPos)+(i - lastPos)),
               preserveCase);
           if (part == null) {
@@ -191,7 +208,7 @@ private ProtocolStrings() {
         return UserpartEnforce(str, preserveCase);
       }
       if (lastPos != str.length()) {
-        String part = UserpartEnforce (
+        String part = UserpartEnforce(
             str.substring(lastPos, (lastPos)+(str.length() - lastPos)),
             preserveCase);
         if (part == null) {
@@ -206,12 +223,7 @@ private ProtocolStrings() {
     /**
      * Checks the validity of a string serving as an arbitrary single-line sequence
      * of characters, such as a passphrase. This checking is done using the
-     * OpaqueString profile in RFC 8265. (REMARK: Specifying a string as
-     * this method does is not ideal if the string represents a password or
-     * other sensitive data, since strings are immutable in.NET and Java,
-     * so that its contents cannot be cleared when done. An application
-     * concerned about security may want to reimplement this method by
-     * passing a clearable array of characters rather than a text string.).
+     * OpaqueString profile in RFC 8265.
      * @param str A string to prepare that represents an arbitrary single-line
      * sequence of characters entered by a user.
      * @return A string prepared under the OpaqueString profile in RFC 8265.

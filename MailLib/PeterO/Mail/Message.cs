@@ -423,6 +423,10 @@ namespace PeterO.Mail {
     /// <exception cref='NotSupportedException'>See the
     /// <c>GetBodyString()</c> method.</exception>
     [Obsolete("Use GetBodyString() instead.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Naming",
+      "CA1721",
+      Justification = "This property is obsolete.")]
     public string BodyString {
       get {
         return this.GetBodyString();
@@ -526,7 +530,8 @@ namespace PeterO.Mail {
         if (mt.SubType.Equals("alternative",
             StringComparison.Ordinal)) {
           // Navigate the parts in reverse order
-          for (var i = parts.Count - 1; i >= 0; --i) {
+          int i = parts.Count - 1;
+          for (; i >= 0; --i) {
             int oldCount = bodyStrings.Count;
             parts[i].GetBodyStrings(bodyStrings, mediaTypes);
             if (oldCount != bodyStrings.Count) {
@@ -584,7 +589,8 @@ namespace PeterO.Mail {
       MediaType mt = this.ContentType;
       if (mt.SubType.Equals("alternative", StringComparison.Ordinal)) {
         // Navigate the parts in reverse order
-        for (var i = this.parts.Count - 1; i >= 0; --i) {
+        int i = parts.Count - 1;
+        for (; i >= 0; --i) {
           if (this.GetBodyStringNoThrow() != null) {
             this.parts[i].AccumulateAttachments(attachments, false);
             break;
@@ -893,7 +899,7 @@ namespace PeterO.Mail {
     // layer's encoding is not overridden by the end user
     private static string GuessHtmlEncoding(byte[] data) {
       var b = 0;
-      var count = Math.Min(data.Length, 1024);
+      int count = Math.Min(data.Length, 1024);
       var position = 0;
       while (position < count) {
         if (position + 4 <= count && data[position + 0] == 0x3c &&
@@ -2018,7 +2024,7 @@ namespace PeterO.Mail {
           using (var ms = new MemoryStream()) {
             if (mediaType.IsMultipart) {
               try {
-                var transform = DataIO.ToReader(inputStream);
+                IByteReader transform = DataIO.ToReader(inputStream);
                 bodyPart.ReadMultipartBody(transform);
               } catch (InvalidOperationException ex) {
                 throw new MessageDataException(ex.Message, ex);
@@ -4341,7 +4347,8 @@ TransferEncodingToUse(
                 // - The charset is present but unrecognized or empty, or
                 // - The charset is absent and the media type has
                 // no default charset assumed for it.
-                if (ctype.Parameters.ContainsKey("charset")) {
+                IDictionary<string, string> params = ctype.Parameters;
+                if (parameters.ContainsKey("charset")) {
                   // The charset is present but unrecognized or
                   // empty; treat the content as application/octet-stream
                   // for conformance with RFC 2049.

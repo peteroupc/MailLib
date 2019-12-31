@@ -416,6 +416,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * @deprecated Use GetBodyString() instead.
  */
 @Deprecated
+
     public final String getBodyString() {
         return this.GetBodyString();
       }
@@ -503,7 +504,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         List<Message> parts = this.getParts();
         if (mt.getSubType().equals("alternative")) {
           // Navigate the parts in reverse order
-          for (var i = parts.size() - 1; i >= 0; --i) {
+          int i = parts.size() - 1;
+          for (; i >= 0; --i) {
             int oldCount = bodyStrings.size();
             parts.get(i).GetBodyStrings(bodyStrings, mediaTypes);
             if (oldCount != bodyStrings.size()) {
@@ -560,7 +562,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       MediaType mt = this.getContentType();
       if (mt.getSubType().equals("alternative")) {
         // Navigate the parts in reverse order
-        for (var i = this.parts.size() - 1; i >= 0; --i) {
+        int i = parts.size() - 1;
+        for (; i >= 0; --i) {
           if (this.GetBodyStringNoThrow() != null) {
             this.parts.get(i).AccumulateAttachments(attachments, false);
             break;
@@ -865,7 +868,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     // layer's encoding is not overridden by the end user
     private static String GuessHtmlEncoding(byte[] data) {
       int b = 0;
-      var count = Math.min(data.length, 1024);
+      int count = Math.min(data.length, 1024);
       int position = 0;
       while (position < count) {
         if (position + 4 <= count && data[position + 0] == 0x3c &&
@@ -1950,7 +1953,7 @@ ms = new java.io.ByteArrayOutputStream();
 
             if (mediaType.isMultipart()) {
               try {
-                var transform = DataIO.ToReader(inputStream);
+                IByteReader transform = DataIO.ToReader(inputStream);
                 bodyPart.ReadMultipartBody(transform);
               } catch (IllegalStateException ex) {
                 throw new MessageDataException(ex.getMessage(), ex);
@@ -4201,7 +4204,8 @@ TransferEncodingToUse(
                 // - The charset is present but unrecognized or empty, or
                 // - The charset is absent and the media type has
                 // no default charset assumed for it.
-                if (ctype.getParameters().ContainsKey("charset")) {
+                Map<String, String> params = ctype.getParameters();
+                if (parameters.ContainsKey("charset")) {
                   // The charset is present but unrecognized or
                   // empty; treat the content as application/octet-stream
                   // for conformance with RFC 2049.

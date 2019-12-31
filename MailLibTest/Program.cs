@@ -12,14 +12,9 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-      var strs = new string[0];
-      Console.WriteLine("------");
-      foreach (var s in strs) {
-        var sc = PeterO.Mail.ContentDisposition.MakeFilename(s);
-        Console.WriteLine(s);
-        Console.WriteLine(sc);
-        Console.WriteLine(s == sc);
-      }
+      new MediaTypeTest().TestHasStructuredSuffix();
+      new MediaTypeTest().TestGetCharset();
+      new MessageTest().TestAddAttachment();
     }
   }
 }

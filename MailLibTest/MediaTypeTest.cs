@@ -159,7 +159,7 @@ namespace MailLibTest {
       }
       {
         string stringTemp = "text/plain; charset=\"UTF-8\"";
-        ParseAndTestAspects(stringTemp).GetCharset();
+        stringTemp = ParseAndTestAspects(stringTemp).GetCharset();
         Assert.AreEqual(
           "utf-8",
           stringTemp);
@@ -514,13 +514,13 @@ namespace MailLibTest {
     }
 
     private static void AssertHasSuffixTrue(MediaType mt, string s) {
-      if (!mt.HasStructuredSuffix(s)) {
+      if (mt == null || !mt.HasStructuredSuffix(s)) {
          Assert.Fail("mt=" + mt + ", s=" + s);
       }
     }
 
     private static void AssertHasSuffixFalse(MediaType mt, string s) {
-      if (mt == null || mt.HasStructuredSuffix(s)) {
+      if (mt != null && mt.HasStructuredSuffix(s)) {
          Assert.Fail("mt=" + mt + ", s=" + s);
       }
     }
@@ -553,7 +553,7 @@ namespace MailLibTest {
       mt = MediaType.Parse("example/bcd+xMl", null);
       AssertHasSuffixTrue(mt, "xml");
       mt = MediaType.Parse("example/+XML", null);
-      AssertHasSuffixTrue(mt, "xml");
+      AssertHasSuffixFalse(mt, "xml");
       mt = MediaType.Parse("example/b+xml", null);
       AssertHasSuffixFalse(mt, "xmc");
       mt = MediaType.Parse("example/b+xml", null);

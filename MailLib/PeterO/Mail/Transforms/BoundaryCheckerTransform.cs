@@ -100,7 +100,7 @@ namespace PeterO.Mail.Transforms {
       IByteReader stream,
       string initialBoundary) {
       this.input = stream;
-      this.boundaries = new List<string>();
+      this.boundaries = new List<string>(4);
       this.started = true;
       this.boundaries.Add(initialBoundary);
     }

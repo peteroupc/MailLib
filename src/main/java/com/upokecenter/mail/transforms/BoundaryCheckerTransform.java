@@ -93,7 +93,7 @@ import com.upokecenter.mail.*;
       IByteReader stream,
       String initialBoundary) {
       this.input = stream;
-      this.boundaries = new ArrayList<String>();
+      this.boundaries = new ArrayList<String>(4);
       this.started = true;
       this.boundaries.add(initialBoundary);
     }

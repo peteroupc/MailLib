@@ -160,7 +160,7 @@ import com.upokecenter.mail.*;
       }
       {
         String stringTemp = "text/plain; charset=\"UTF-8\"";
-        ParseAndTestAspects(stringTemp).GetCharset();
+        stringTemp = ParseAndTestAspects(stringTemp).GetCharset();
         Assert.assertEquals(
           "utf-8",
           stringTemp);
@@ -515,13 +515,13 @@ import com.upokecenter.mail.*;
     }
 
     private static void AssertHasSuffixTrue(MediaType mt, String s) {
-      if (!mt.HasStructuredSuffix(s)) {
+      if (mt == null || !mt.HasStructuredSuffix(s)) {
          Assert.fail("mt=" + mt + ", s=" + s);
       }
     }
 
     private static void AssertHasSuffixFalse(MediaType mt, String s) {
-      if (mt == null || mt.HasStructuredSuffix(s)) {
+      if (mt != null && mt.HasStructuredSuffix(s)) {
          Assert.fail("mt=" + mt + ", s=" + s);
       }
     }
@@ -554,7 +554,7 @@ import com.upokecenter.mail.*;
       mt = MediaType.Parse("example/bcd+xMl", null);
       AssertHasSuffixTrue(mt, "xml");
       mt = MediaType.Parse("example/+XML", null);
-      AssertHasSuffixTrue(mt, "xml");
+      AssertHasSuffixFalse(mt, "xml");
       mt = MediaType.Parse("example/b+xml", null);
       AssertHasSuffixFalse(mt, "xmc");
       mt = MediaType.Parse("example/b+xml", null);

@@ -26,7 +26,7 @@ This type is immutable, meaning its values can't be changed once it's created. T
 * <code>[Parse(string)](#Parse_string)</code> - Parses a media type string and returns a media type object.
 * <code>[Parse(string, PeterO.Mail.MediaType)](#Parse_string_PeterO_Mail_MediaType)</code> - Parses a media type string and returns a media type object, or the default value if the string is invalid.
 * <code>[SubType](#SubType)</code> - Gets this media type's subtype (for example, "plain" in "text/plain").
-* <code>[public static readonly PeterO.Mail.MediaType TextPlainAscii;](#TextPlainAscii)</code> - Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
+* <code>[public static readonly PeterO.Mail.MediaType TextPlainAscii;](#TextPlainAscii)</code> - Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data that contains only characters within the basic Latin range (U+0000 to U+007F).
 * <code>[public static readonly PeterO.Mail.MediaType TextPlainUtf8;](#TextPlainUtf8)</code> - Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
 * <code>[TopLevelType](#TopLevelType)</code> - Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic").
 * <code>[ToSingleLineString()](#ToSingleLineString)</code> - Converts this media type to a text string form suitable for inserting in HTTP headers.
@@ -53,7 +53,7 @@ Specifies the media type "message/rfc822", used for Internet mail messages.
 
     public static readonly PeterO.Mail.MediaType TextPlainAscii;
 
-Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
+Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data that contains only characters within the basic Latin range (U+0000 to U+007F).
 
 <a id="TextPlainUtf8"></a>
 ### TextPlainUtf8
