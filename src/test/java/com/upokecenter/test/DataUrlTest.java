@@ -8,7 +8,7 @@ import com.upokecenter.mail.*;
 
   public class DataUrlTest {
     private void TestMatchBasicNone(String[] langranges, String str) {
-      List<String> r = LanguageTags.LanguageTagFilter (
+      List<String> r = LanguageTags.LanguageTagFilter(
           Arrays.asList(langranges),
           Arrays.asList(new String[] { str }),
           false,
@@ -17,7 +17,7 @@ import com.upokecenter.mail.*;
     }
 
     private void TestMatchBasicContained(String[] langranges, String str) {
-      List<String> r = LanguageTags.LanguageTagFilter (
+      List<String> r = LanguageTags.LanguageTagFilter(
           Arrays.asList(langranges),
           Arrays.asList(new String[] { str }),
           false,

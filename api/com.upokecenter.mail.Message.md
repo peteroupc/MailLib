@@ -450,7 +450,8 @@ Gets a list of descendant body parts of this message that are considered
 
 **Returns:**
 
-* The return value is not documented yet.
+* A list of descendant body parts of this message that are considered
+ attachments.
 
 ### GetBodyString
     public java.lang.String GetBodyString()

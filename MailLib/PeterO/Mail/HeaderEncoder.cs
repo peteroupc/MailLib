@@ -370,7 +370,7 @@ namespace PeterO.Mail {
       bool writeSpace) {
       int effectiveMaxLength = (this.GetMaxLineLength() >= 0) ?
         Math.Min(
-            effectiveMaxLength,
+            EncodedWordMaxLength,
             this.GetMaxLineLength()) : EncodedWordMaxLength;
       if (currentWordLength == 0) {
         // 12 characters for prologue and epilogue

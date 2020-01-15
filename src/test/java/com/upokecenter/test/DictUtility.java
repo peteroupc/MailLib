@@ -7,7 +7,7 @@ private DictUtility() {
 }
     private static final String HexAlphabet = "0123456789ABCDEF";
 
-    public static List<Map<String, String>> DictList (
+    public static List<Map<String, String>> DictList(
       Map<String, String>... dicts) {
       if (dicts == null) {
         throw new NullPointerException("dicts");
@@ -142,7 +142,7 @@ private DictUtility() {
       return sb.append("]").toString();
     }
 
-    public static List<Map<String, String>> ParseJSONDictList (
+    public static List<Map<String, String>> ParseJSONDictList(
       String str) {
       if (str == null) {
         throw new NullPointerException("str");

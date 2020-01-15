@@ -139,7 +139,7 @@ import com.upokecenter.text.*;
         throw new NullPointerException("expectedStr");
       }
       if (!expectedStr.equals(actualStr)) {
-        Assert.fail (
+        Assert.fail(
           "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
           "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
@@ -147,7 +147,7 @@ import com.upokecenter.text.*;
 
     public static void AssertEqual(int expected, int actual, String msg) {
       if (expected != actual) {
-        Assert.fail (
+        Assert.fail(
           "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
@@ -160,7 +160,7 @@ import com.upokecenter.text.*;
         throw new NullPointerException("actual");
       }
       if (expected.length != actual.length) {
-        Assert.fail (
+        Assert.fail(
           "\nexpected: " + toString(expected) + "\n" + "\nwas: " +
           toString(actual) + "\n" + msg);
       }
@@ -437,19 +437,19 @@ import com.upokecenter.text.*;
             Assert.fail(TestCommon.IntToString(i));
           }
           String imsg = TestCommon.IntToString(i);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFC),
             imsg);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFD),
             imsg);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFKC),
             imsg);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFKD),
             imsg);

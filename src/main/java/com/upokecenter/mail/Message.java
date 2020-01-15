@@ -562,7 +562,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       MediaType mt = this.getContentType();
       if (mt.getSubType().equals("alternative")) {
         // Navigate the parts in reverse order
-        int i = parts.size() - 1;
+        int i = this.parts.size() - 1;
         for (; i >= 0; --i) {
           if (this.GetBodyStringNoThrow() != null) {
             this.parts.get(i).AccumulateAttachments(attachments, false);
@@ -583,7 +583,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * part that has a content disposition with a type other than inline.
      * This message itself is not included in the list even if it's an
      * attachment as just defined.
-     * @return The return value is not documented yet.
+     * @return A list of descendant body parts of this message that are considered
+     * attachments.
      */
     public List<Message> GetAttachments() {
       ArrayList<Message> list = new ArrayList<Message>();
@@ -4204,8 +4205,8 @@ TransferEncodingToUse(
                 // - The charset is present but unrecognized or empty, or
                 // - The charset is absent and the media type has
                 // no default charset assumed for it.
-                Map<String, String> params = ctype.getParameters();
-                if (parameters.ContainsKey("charset")) {
+                Map<String, String> parameters = ctype.getParameters();
+                if (parameters.containsKey("charset")) {
                   // The charset is present but unrecognized or
                   // empty; treat the content as application/octet-stream
                   // for conformance with RFC 2049.

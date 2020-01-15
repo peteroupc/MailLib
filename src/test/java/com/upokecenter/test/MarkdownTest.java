@@ -37,82 +37,82 @@ import com.upokecenter.mail.*;
         "<p><s>Text</s></p>",
         "<s>Text</s>");
       TestMarkdownOne("<p><a href=\"x\">y</a></p>", "[y](x)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"x\" title=\"z\">y</a></p>",
         "[y](x \"z\")");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><img src=\"x\" alt=\"y\" /></p>",
         "![y](x)");
       TestMarkdownOne(
         "<p><a href=\"x\">y</a></p>",
         "[y](x)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><img src=\"x\" alt=\"y\" title=\"z\" /></p>",
         "![y](x \"z\")");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>ABC</li></ul>",
         "* ABC");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "* A\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ol><li>A</li><li>B</li></ol>",
         "0. A\r\n1. B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ol><li>A</li><li>B</li></ol>",
         "1. A\r\n2. B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ol><li>A</li><li>B</li></ol>",
         "1. A\r\n999999999999. B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "+ A\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "- A\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "* A\r\n+ B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "+ A\r\n+ B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "- A\r\n+ B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "* A\r\n- B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "+ A\r\n- B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li><li>B</li></ul>",
         "- A\r\n- B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li><p>A</p></li><li><p>B</p></li></ul>",
         "* A\r\n\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li><p>A</p></li><li><p>B</p></li></ul>",
         "* A\r\n \r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li><p>A</p></li><li><p>B</p></li></ul>",
         "* A\r\n\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A\r\nB\r\nC</li><li>B</li></ul>",
         "* A\r\nB\r\nC\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A\r\nB\r\nC</li><li>B</li></ul>",
         "* A\r\n B\r\n C\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li><p>A</p><p>B</p></li><li>B</li></ul>",
         "* A\r\n\r\n\tB\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li>A</li></ul><p>\u0020\u0020\u0020B</p><ul><li>B</li></ul>",
         "* A\r\n\r\n\u0020\u0020\u0020B\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li><p>A</p><p>B</p></li><li>B</li></ul>",
         "* A\r\n\r\n\u0020 \u0020 B\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li><p>A</p><p>B\r\nC</p></li><li>B</li></ul>",
         "* A\r\n\r\n\u0020 \u0020 B\r\nC\r\n* B");
       {
@@ -123,13 +123,13 @@ import com.upokecenter.mail.*;
           objectTemp,
           objectTemp2);
       }
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<ul><li><p>A</p><pre><code>C\r\nD</code></pre></li><li>B</li></ul>",
         "* A\r\n\r\n\t\tC\r\n\t\tD\r\n* B");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><pre><code>C\r\nD</code></pre>",
         "A\r\n\r\n\tC\r\n\tD");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><pre><code>C\r\n\tD</code></pre>",
         "A\r\n\r\n\tC\r\n\t\tD");
       {
@@ -142,106 +142,106 @@ import com.upokecenter.mail.*;
       }
       // NOTE: Obfuscation of email addresses with
       // automatic link syntax is deliberately not supported.
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"mailto:me@example.com\">me@example.com</a></p>",
         "<me@example.com>");
     }
     @Test
     public void TestMarkdownAmpersand() {
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>e&mdash;</p>",
         "e&mdash;");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>e&amp;</p>",
         "e&amp;");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><pre><code>C&amp;\r\n\tD</code></pre>",
         "A\r\n\r\n\tC&\r\n\t\tD");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>e&amp;x</p>",
         "e&x");
     }
     @Test
     public void TestMarkdownRefLinks() {
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\u005btest]: http://www.example.com \"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u005btest]: <http://www.example.com>");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\u005btest]: <http://www.example.com> \"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u005btest]: http://www.example.com 'Title'");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p><p>(Not a title)</p>",
         "test\r\n\r\n\u005btest]: http://www.example.com\r\n(Not a title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u005btest]: http://www.example.com\r\n \"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n\u005btest]: http://www.example.com\r\n 'Title'");
     }
     @Test
     public void TestMarkdown2() {
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><hr/>",
         "A\r\n\r\n***");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><hr/>",
         "A\r\n\r\n---");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><hr/>",
         "A\r\n\r\n___");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><hr/>",
         "A\r\n\r\n* * *");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><hr/>",
         "A\r\n\r\n- - -");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A</p><hr/>",
         "A\r\n\r\n_ _ _");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<blockquote><p>A\r\nB</p><p>C</p></blockquote>",
         "> A\r\n> B\r\n> \r\n> C");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<blockquote><p>A\r\nB\r\nC</p></blockquote>",
         "> A\r\nB\r\nC");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\u005btest]: http://www.example.com\u0020\"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com>\u0020\"Title\"");
       {
@@ -316,10 +316,10 @@ import com.upokecenter.mail.*;
           objectTemp,
           objectTemp2);
       }
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com");
       {
@@ -331,7 +331,7 @@ import com.upokecenter.mail.*;
           objectTemp,
           objectTemp2);
       }
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
       {
@@ -421,58 +421,58 @@ import com.upokecenter.mail.*;
           objectTemp,
           objectTemp2);
       }
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">tEsT</a></p>",
         "[tEsT][]\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\u005btest]: http://www.example.com \"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: <http://www.example.com>");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\u005btest]: <http://www.example.com> \"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com 'Title'");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">tEsT</a></p><p>(Not a title)</p>",
         "[tEsT][]\r\n\r\n\u005btest]:\u0020http://www.example.com\r\n(Not a title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n \"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n 'Title'");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
         "![tEsT][]\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
         "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
         "![tEsT][]\r\n\u005btest]:\u0020http://www.example.com \"Title\"");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
         "![tEsT][]\r\n\r\n\u005btest]: <http://www.example.com>");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
         "![tEsT][]\r\n\u005btest]:\u0020<http://www.example.com> \"Title\"");
       {
@@ -550,7 +550,7 @@ import com.upokecenter.mail.*;
     }
     @Test
     public void TestMarkdown3() {
-      TestMarkdownOne (
+      TestMarkdownOne(
   "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
   "> A\r\n> > B\r\n> \r\n> C");
       {
@@ -564,52 +564,52 @@ import com.upokecenter.mail.*;
     }
     @Test(timeout = 5000)
     public void TestMarkdown4() {
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<blockquote><pre><code>Code</code></pre></blockquote>",
         "> \tCode");
     }
     @Test(timeout = 5000)
     public void TestMarkdown5() {
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<h1>Test</h1>",
         "# Test #");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<h1>Test</h1>",
         "# Test ##");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<h1>Test</h1>",
         "# Test #####");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<h1>Test</h1>",
         "# Test ##########");
     }
     @Test(timeout = 5000)
     public void TestMarkdown6() {
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A<br/>\r\nB</p>",
         "A\u0020 \r\nB");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A \r\nB</p>",
         "A \r\nB");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>A<br/>\r\nB</p>",
         "A\u0020 \r\nB");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<h1>A</h1><p>A</p>",
         "A\r\n===\r\n\r\nA");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<h2>A</h2><p>A</p>",
         "A\r\n---\r\n\r\nA");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>C <code>abc</code> D</p>",
         "C `abc` D");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>C <code>abc</code> D</p>",
         "C ``abc`` D");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>C <code> &#x60; </code> D</p>",
         "C `` ` `` D");
-      TestMarkdownOne (
+      TestMarkdownOne(
         "<p>C &#x60;<code>abc</code> D</p>",
         "C \\``abc` D");
     }

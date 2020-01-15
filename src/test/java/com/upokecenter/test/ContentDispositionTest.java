@@ -78,7 +78,7 @@ import com.upokecenter.text.*;
     public void TestGetParameter() {
       for (Map<String, String> dict : ResourceUtil.GetDictList("paramtypes")) {
         ContentDisposition mt = ParseAndTestAspects("inline" + dict.get("params"));
-        Assert.assertEquals (
+        Assert.assertEquals(
           dict.get("filename"),
           mt.GetParameter("filename"));
       }
@@ -312,14 +312,14 @@ import com.upokecenter.text.*;
           (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
 0xfeff ||
           (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
-          FailFilename (
+          FailFilename(
             filename,
             str,
             "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
         }
         // Code points that decompose to "bad" characters
         if (c == 0x1fef) {
-          FailFilename (
+          FailFilename(
             filename,
             str,
             "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
@@ -355,7 +355,7 @@ import com.upokecenter.text.*;
       // Assert that MakeFilename is idempotent
       String newstr = ContentDisposition.MakeFilename(str);
       if (!newstr.equals(str)) {
-        FailFilename (
+        FailFilename(
           filename,
           str,
           "Not idempotent:\nnewname_=" + EncodingTest.EscapeString(newstr));
@@ -372,7 +372,7 @@ import com.upokecenter.text.*;
     @Test(timeout = 200000)
     public void TestMakeFilename() {
       RandomGenerator rnd = new RandomGenerator(new XorShift128Plus(false));
-      Assert.assertEquals (
+      Assert.assertEquals(
         "",
         ContentDisposition.MakeFilename(null));
       for (int i = 0; i < 10000; ++i) {
@@ -388,7 +388,7 @@ import com.upokecenter.text.*;
       // "my\ufffdfile\ufffdname\ud800\udc00.txt",
       // "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
       for (int i = 0; i < filenames.length; i += 2) {
-        String str = ContentDisposition.MakeFilename (
+        String str = ContentDisposition.MakeFilename(
             filenames[i]);
         Assert.assertEquals(filenames[i], filenames[i + 1], str);
         AssertGoodFilename(filenames[i]);

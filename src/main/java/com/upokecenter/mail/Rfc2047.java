@@ -488,7 +488,7 @@ EncodedWordContext.Comment &&
           (!acceptedEncodedWord || !lastWordWasEncodedWord)) {
           // Append whitespace as long as it doesn't occur between two
           // encoded words
-          builder.append (
+          builder.append(
             str.substring(
               whitespaceStart, (
               whitespaceStart)+(whitespaceEnd - whitespaceStart)));

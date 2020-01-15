@@ -429,7 +429,7 @@ private Idna() {
             // Empty label
             return false;
           }
-          if (!IsValidLabel (
+          if (!IsValidLabel(
               str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
               lookupRules,
               bidiRule)) {
@@ -438,7 +438,7 @@ private Idna() {
           lastIndex = i + 1;
         }
       }
-      return (str.length() != lastIndex) && IsValidLabel (
+      return (str.length() != lastIndex) && IsValidLabel(
           str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
           lookupRules,
           bidiRule);

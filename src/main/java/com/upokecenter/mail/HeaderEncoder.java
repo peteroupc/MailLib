@@ -368,7 +368,7 @@ import com.upokecenter.util.*;
       boolean writeSpace) {
       int effectiveMaxLength = (this.GetMaxLineLength() >= 0) ?
         Math.min(
-            effectiveMaxLength,
+            EncodedWordMaxLength,
             this.GetMaxLineLength()) : EncodedWordMaxLength;
       if (currentWordLength == 0) {
         // 12 characters for prologue and epilogue

@@ -17,12 +17,13 @@ namespace PeterO.Mail {
 
     /// <summary>Generates a string containing the display names of the
     /// given named-address objects, separated by commas. The generated
-    /// string is intended to be displayed to end users, not
-    /// parsed.</summary>
-    /// <param name='addresses'>The parameter <paramref name='addresses'/>
-    /// is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
-    /// object.</param>
-    /// <returns>The return value is not documented yet.</returns>
+    /// string is intended to be displayed to end users, and is not
+    /// intended to be parsed by computer programs. If a named address has
+    /// no display name, its email address is used as the display
+    /// name.</summary>
+    /// <param name='addresses'>A list of named address objects.</param>
+    /// <returns>A string containing the display names of the given
+    /// named-address objects, separated by commas.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>
     public static string ToDisplayStringShort(IList<NamedAddress> addresses) {
@@ -41,12 +42,11 @@ namespace PeterO.Mail {
 
     /// <summary>Generates a string containing the display names and email
     /// addresses of the given named-address objects, separated by commas.
-    /// The generated string is intended to be displayed to end users, not
-    /// parsed.</summary>
-    /// <param name='addresses'>The parameter <paramref name='addresses'/>
-    /// is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
-    /// object.</param>
-    /// <returns>The return value is not documented yet.</returns>
+    /// The generated string is intended to be displayed to end users, and
+    /// is not intended to be parsed by computer programs.</summary>
+    /// <param name='addresses'>A list of named address objects.</param>
+    /// <returns>A string containing the display names and email addresses
+    /// of the given named-address objects, separated by commas.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>
     public static string ToDisplayString(IList<NamedAddress> addresses) {
@@ -254,8 +254,9 @@ other.isGroup &&
 
     /// <summary>Converts this named-address object to a text string
     /// intended for display to end users. The returned string is not
-    /// intended to be parsed.</summary>
-    /// <returns>The return value is not documented yet.</returns>
+    /// intended to be parsed by computer programs.</summary>
+    /// <returns>A text string of this named-address object, intended for
+    /// display to end-users.</returns>
     public string ToDisplayString() {
       if (this.IsGroup) {
         var sb = new StringBuilder();

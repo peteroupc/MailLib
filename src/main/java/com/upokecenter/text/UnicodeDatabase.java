@@ -31,7 +31,7 @@ private UnicodeDatabase() {
       }
       if (classes == null) {
         synchronized (ValueSyncRoot) {
-          classes = (classes == null) ? (ByteData.Decompress (
+          classes = (classes == null) ? (ByteData.Decompress(
               NormalizationData.CombiningClasses)) : classes;
         }
       }
@@ -208,7 +208,7 @@ private UnicodeDatabase() {
       }
       if (casedprop == null) {
         synchronized (ValueSyncRoot) {
-          casedprop = (casedprop == null) ? (ByteData.Decompress (
+          casedprop = (casedprop == null) ? (ByteData.Decompress(
               NormalizationData.CaseProperty)) : casedprop;
         }
       }

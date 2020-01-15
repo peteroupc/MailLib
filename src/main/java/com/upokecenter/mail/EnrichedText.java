@@ -519,7 +519,7 @@ p +
                         currentBuilder.append("<span>");
                       }
                     } else if (lastCommand.equals("color")) {
-                      p = ParseColor (
+                      p = ParseColor(
                           DataUtilities.ToLowerCaseAscii(p),
                           0,
                           p.length());
@@ -532,7 +532,7 @@ p +
                     } else if (lastCommand.equals("lang")) {
                       if (SkipLang(p, 0, p.length()) == p.length()) {
                         currentBuilder.append("<span lang=' " +
-DataUtilities.ToLowerCaseAscii (
+DataUtilities.ToLowerCaseAscii(
                 p) + "'> ");
                       } else {
                         currentBuilder.append("<span>");

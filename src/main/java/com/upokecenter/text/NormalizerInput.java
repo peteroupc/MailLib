@@ -377,7 +377,7 @@ package com.upokecenter.text;
       Normalization form) {
       int i = 0;
       int ch;
-      NormalizerInput input = new NormalizerInput (
+      NormalizerInput input = new NormalizerInput(
         new PartialArrayCharacterInput(charArray, start, length),
         form);
       while ((ch = input.ReadChar()) >= 0) {
@@ -408,7 +408,7 @@ package com.upokecenter.text;
       if (str.length() <= 1024 && IsNormalized(str, form)) {
         return str;
       }
-      return Encodings.InputToString (
+      return Encodings.InputToString(
           new NormalizerInput(str, form));
     }
 
@@ -757,7 +757,7 @@ package com.upokecenter.text;
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.max (
+      count = Math.max(
           0,
           Math.min(this.processedIndex - this.flushIndex, length - total));
       System.arraycopy(this.buffer, this.flushIndex, chars, index, count);

@@ -182,8 +182,8 @@ private LanguageTags() {
           } else if (count == 2 && lastSubtagLength >= 2) {
             sb.append(DataUtilities.ToUpperCaseAscii(str.substring(i - 2, (i - 2)+(2))));
           } else {
-            sb.append (
-              DataUtilities.ToLowerCaseAscii (
+            sb.append(
+              DataUtilities.ToLowerCaseAscii(
                 str.substring(
                   i - count, (
                   i - count)+(count))));
@@ -532,7 +532,7 @@ private LanguageTags() {
      * tag.
      */
     public static boolean MatchesLanguageTag(String range, String tag) {
-      List<String> tags = LanguageTagFilter (
+      List<String> tags = LanguageTagFilter(
           Arrays.asList(new String[] { range }),
           Arrays.asList(new String[] { tag }),
           false,
@@ -628,7 +628,7 @@ private LanguageTags() {
       List<String> languages,
       String defaultValue,
       boolean extended) {
-      return LanguageTagLookup (
+      return LanguageTagLookup(
           Arrays.asList(new String[] { range }),
           languages,
           defaultValue,
@@ -764,7 +764,7 @@ private LanguageTags() {
             return true;
           }
           // More complex cases
-          String[] splitString = ParserUtility.SplitAt (
+          String[] splitString = ParserUtility.SplitAt(
               str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
               "-");
           if (splitString.length == 0) {

@@ -120,7 +120,7 @@ import com.upokecenter.text.*;
  Assert.fail();
  }
       try {
-        NormalizerInput.IsNormalized (
+        NormalizerInput.IsNormalized(
           (ICharacterInput)null,
           Normalization.NFC);
         Assert.fail("Should have failed");

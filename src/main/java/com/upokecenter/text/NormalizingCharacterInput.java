@@ -289,7 +289,7 @@ import java.util.*;
  */
 @Deprecated
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
-      return IsNormalized (
+      return IsNormalized(
           new PartialListCharacterInput(charList),
           form);
     }

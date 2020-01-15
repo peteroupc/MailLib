@@ -182,7 +182,7 @@ BEncodingStringTransform(data) :
                 state = 0;
               } else {
                 if (!haveSpace) {
-                  builder.append (
+                  builder.append(
                     str.substring(
                       markStart, (
                       markStart)+(wordStart - markStart)));
@@ -247,7 +247,7 @@ BEncodingStringTransform(data) :
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
       int quote = paramValue.indexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeToString (
+      return (quote >= 0) ? null : Encodings.DecodeToString(
           cs,
           new PercentEncodingStringTransform(paramValue));
     }
@@ -366,7 +366,7 @@ BEncodingStringTransform(data) :
           // This is the only kind of character in Unicode with this
           // normalization property.
           StringBuilder tsb = new StringBuilder().append((char)c);
-          String tss = NormalizerInput.Normalize (
+          String tss = NormalizerInput.Normalize(
               tsb.toString(),
               Normalization.NFD);
           if (tss.indexOf((char)0x338) >= 0) {
@@ -448,7 +448,7 @@ BEncodingStringTransform(data) :
         // too, to use quotes around a filename parameter AND use
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
-        String charset = Encodings.ResolveAliasForEmail (
+        String charset = Encodings.ResolveAliasForEmail(
             str.substring(
               0, (
               0)+(index)));

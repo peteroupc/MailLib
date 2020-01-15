@@ -202,16 +202,18 @@ Initializes a new instance of the <code>NamedAddress</code>
     public static java.lang.String ToDisplayStringShort​(java.util.List<NamedAddress> addresses)
 Generates a string containing the display names of the given named-address
  objects, separated by commas. The generated string is intended to be
- displayed to end users, not parsed.
+ displayed to end users, and is not intended to be parsed by computer
+ programs. If a named address has no display name, its email address
+ is used as the display name.
 
 **Parameters:**
 
-* <code>addresses</code> - The parameter <code>addresses</code> is
- a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
+* <code>addresses</code> - A list of named address objects.
 
 **Returns:**
 
-* The return value is not documented yet.
+* A string containing the display names of the given named-address
+ objects, separated by commas.
 
 **Throws:**
 
@@ -221,16 +223,17 @@ Generates a string containing the display names of the given named-address
     public static java.lang.String ToDisplayString​(java.util.List<NamedAddress> addresses)
 Generates a string containing the display names and email addresses of the
  given named-address objects, separated by commas. The generated
- string is intended to be displayed to end users, not parsed.
+ string is intended to be displayed to end users, and is not intended
+ to be parsed by computer programs.
 
 **Parameters:**
 
-* <code>addresses</code> - The parameter <code>addresses</code> is
- a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
+* <code>addresses</code> - A list of named address objects.
 
 **Returns:**
 
-* The return value is not documented yet.
+* A string containing the display names and email addresses of the
+ given named-address objects, separated by commas.
 
 **Throws:**
 
@@ -359,11 +362,13 @@ Converts this object to a text string. This will generally be the form of
 ### ToDisplayString
     public java.lang.String ToDisplayString()
 Converts this named-address object to a text string intended for display to
- end users. The returned string is not intended to be parsed.
+ end users. The returned string is not intended to be parsed by
+ computer programs.
 
 **Returns:**
 
-* The return value is not documented yet.
+* A text string of this named-address object, intended for display to
+ end-users.
 
 ### getGroupAddresses
     public final java.util.List<NamedAddress> getGroupAddresses()

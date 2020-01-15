@@ -19,10 +19,12 @@ import java.util.*;
     /**
      * Generates a string containing the display names of the given named-address
      * objects, separated by commas. The generated string is intended to be
-     * displayed to end users, not parsed.
-     * @param addresses The parameter {@code addresses} is
-     * a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
-     * @return The return value is not documented yet.
+     * displayed to end users, and is not intended to be parsed by computer
+     * programs. If a named address has no display name, its email address
+     * is used as the display name.
+     * @param addresses A list of named address objects.
+     * @return A string containing the display names of the given named-address
+     * objects, separated by commas.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */
     public static String ToDisplayStringShort(List<NamedAddress> addresses) {
@@ -42,10 +44,11 @@ import java.util.*;
     /**
      * Generates a string containing the display names and email addresses of the
      * given named-address objects, separated by commas. The generated
-     * string is intended to be displayed to end users, not parsed.
-     * @param addresses The parameter {@code addresses} is
-     * a.getCollections().getGeneric().getIList() {PeterO.Mail.NamedAddress} object.
-     * @return The return value is not documented yet.
+     * string is intended to be displayed to end users, and is not intended
+     * to be parsed by computer programs.
+     * @param addresses A list of named address objects.
+     * @return A string containing the display names and email addresses of the
+     * given named-address objects, separated by commas.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */
     public static String ToDisplayString(List<NamedAddress> addresses) {
@@ -254,8 +257,10 @@ other.isGroup &&
 
     /**
      * Converts this named-address object to a text string intended for display to
-     * end users. The returned string is not intended to be parsed.
-     * @return The return value is not documented yet.
+     * end users. The returned string is not intended to be parsed by
+     * computer programs.
+     * @return A text string of this named-address object, intended for display to
+     * end-users.
      */
     public String ToDisplayString() {
       if (this.isGroup()) {

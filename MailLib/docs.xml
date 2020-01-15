@@ -2767,7 +2767,8 @@
             content disposition with a type other than inline. This message
             itself is not included in the list even if it's an attachment as
             just defined.</summary>
-            <returns>The return value is not documented yet.</returns>
+            <returns>A list of descendant body parts of this message that are
+            considered attachments.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.Message.GetBody">
@@ -3456,20 +3457,20 @@
 
             <summary>Converts this named-address object to a text string
             intended for display to end users. The returned string is not
-            intended to be parsed.</summary>
-            <returns>The return value is not documented yet.</returns>
+            intended to be parsed by computer programs.</summary>
+            <returns>A text string of this named-address object, intended for
+            display to end-users.</returns>
 
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.ToDisplayString(System.Collections.Generic.IList{PeterO.Mail.NamedAddress})">
 
             <summary>Generates a string containing the display names and email
             addresses of the given named-address objects, separated by commas.
-            The generated string is intended to be displayed to end users, not
-            parsed.</summary>
-            <param name='addresses'>The parameter <paramref name='addresses'/>
-            is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
-            object.</param>
-            <returns>The return value is not documented yet.</returns>
+            The generated string is intended to be displayed to end users, and
+            is not intended to be parsed by computer programs.</summary>
+            <param name='addresses'>A list of named address objects.</param>
+            <returns>A string containing the display names and email addresses
+            of the given named-address objects, separated by commas.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='addresses'/> is null.</exception>
 
 </doc>
@@ -3477,12 +3478,13 @@
 
             <summary>Generates a string containing the display names of the
             given named-address objects, separated by commas. The generated
-            string is intended to be displayed to end users, not
-            parsed.</summary>
-            <param name='addresses'>The parameter <paramref name='addresses'/>
-            is a.Collections.Generic.IList{PeterO.Mail.NamedAddress}
-            object.</param>
-            <returns>The return value is not documented yet.</returns>
+            string is intended to be displayed to end users, and is not
+            intended to be parsed by computer programs. If a named address has
+            no display name, its email address is used as the display
+            name.</summary>
+            <param name='addresses'>A list of named address objects.</param>
+            <returns>A string containing the display names of the given
+            named-address objects, separated by commas.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='addresses'/> is null.</exception>
 
 </doc>
@@ -4781,9 +4783,26 @@
             avoid creating multiple items that use the same string, rather
             than, say, to comparisons of names or parts of names for the
             purpose of showing matching records.</item></list>
-<para>Many of the methods in this class take text strings and output text strings.  However, specifying text strings as these methods do is not ideal if the string represents a password or other sensitive data, since strings are immutable in .NET and Java, so that they can't be modified, and the memory they occupy is not guaranteed to be cleared in a timely fashion due to garbage collection. </para>
-<para>The methods in this class are not guaranteed to be "constant-time" (non-data-dependent) for all relevant inputs.  Neither are string comparison methods (such as String.Equals) necessarily guaranteed to be "constant-time". Certain attacks that involve encrypted communications have exploited the timing and other aspects of such communications to derive keying material or cleartext indirectly, or for example, to leak information about whether a user name and password were accepted by the server, or whether a user name or display name was already taken.  This is an important consideration especially for strings representing account identifiers or passwords, even when comparing two such strings of the same length.</para>
-</remarks>
+            <para><b>Security Considerations</b></para>
+            <para>Many of the methods in this class take text strings and
+            output text strings. However, specifying text strings as these
+            methods do is not ideal if the string represents a password or
+            other sensitive data, since strings are immutable in.NET and Java,
+            so that they can't be modified, and the memory they occupy is not
+            guaranteed to be cleared in a timely fashion due to garbage
+            collection.</para>
+            <para>The methods in this class are not guaranteed to be
+            "constant-time" (non-data-dependent) for all relevant inputs.
+            Neither are string comparison methods (such as String.Equals)
+            necessarily guaranteed to be "constant-time". Certain attacks that
+            involve encrypted communications have exploited the timing and
+            other aspects of such communications to derive keying material or
+            cleartext indirectly, or for example, to leak information about
+            whether a user name and password were accepted by the server, or
+            whether a user name or display name was already taken. This is an
+            important consideration especially for strings representing account
+            identifiers or passwords, even when comparing two such strings of
+            the same length.</para></remarks>
 
 </doc>
 <doc name="M:PeterO.Text.ProtocolStrings.IsInFreeformClass(System.String)">
@@ -4856,7 +4875,8 @@
 
             <summary>Checks the validity of a string serving as an arbitrary
             single-line sequence of characters, such as a passphrase. This
-            checking is done using the OpaqueString profile in RFC 8265.</summary>
+            checking is done using the OpaqueString profile in RFC
+            8265.</summary>
             <param name='str'>A string to prepare that represents an arbitrary
             single-line sequence of characters entered by a user.</param>
             <returns>A string prepared under the OpaqueString profile in RFC

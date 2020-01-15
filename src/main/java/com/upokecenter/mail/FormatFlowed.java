@@ -96,7 +96,7 @@ private FormatFlowed() {
             haveParagraph = false;
             endedParagraph = true;
             paragraph.delete(0, paragraph.length());
-            formatted.append (
+            formatted.append(
               HtmlEscape(str.substring(index, (index)+(lineEnd - index))))
             .append("</p>");
           }
@@ -122,7 +122,7 @@ private FormatFlowed() {
               } else {
                 if (index < lineEnd) {
                   formatted.append("<tt>");
-                  formatted.append (
+                  formatted.append(
                     HtmlEscape(str.substring(index, (index)+(lineEnd - index))));
                   formatted.append("</tt>");
                 }
@@ -295,7 +295,7 @@ private FormatFlowed() {
           return null;
         }
         int urlStart = index;
-        String label = DataUtilities.ToLowerCaseAscii (
+        String label = DataUtilities.ToLowerCaseAscii(
             str.substring(labelStart, (labelStart)+(labelEnd - labelStart)));
         String url = str.substring(urlStart, (urlStart)+(str.length() - urlStart));
         String[] urltitle = SplitUrl(url, true);
@@ -604,7 +604,7 @@ private FormatFlowed() {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii (
+            urlText = DataUtilities.ToLowerCaseAscii(
                 ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
             if (links.containsKey(urlText)) {
               urlTitle = links.get(urlText);
@@ -687,7 +687,7 @@ private FormatFlowed() {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii (
+            urlText = DataUtilities.ToLowerCaseAscii(
                 ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
             if (links.containsKey(urlText)) {
               urlTitle = links.get(urlText);
@@ -1130,8 +1130,8 @@ private FormatFlowed() {
             formatted.append(HtmlEscape(qs.toString()));
             formatted.append("</code></pre>");
           } else {
-            formatted.append (
-              MarkdownText (
+            formatted.append(
+              MarkdownText(
                 qs.toString(),
                 depth + 1,
                 true,
@@ -1189,7 +1189,7 @@ private FormatFlowed() {
                 formatted.append(qs.toString());
                 formatted.append("</code></pre>");
               } else {
-                qss2 = MarkdownText (
+                qss2 = MarkdownText(
                     qs.toString(),
                     depth + 1,
                     wrapLinesInParas,
@@ -1234,7 +1234,7 @@ private FormatFlowed() {
           }
           i = qi - 1;
           // DebugUtility.Log("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
-          String qss = MarkdownText (
+          String qss = MarkdownText(
               qs.toString(),
               depth + 1,
               wrapLinesInParas,

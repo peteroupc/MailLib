@@ -237,7 +237,7 @@ private HeaderParserUtility() {
             int startQuote = index;
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
-              builder.append (
+              builder.append(
                 str.substring(
                   startQuote + 1, (
                   startQuote + 1)+(index - (startQuote + 1))));

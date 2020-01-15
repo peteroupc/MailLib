@@ -120,7 +120,7 @@ import com.upokecenter.text.*;
           "TeSt",
           stringTemp);
       }
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.UserpartEnforce("Te St", false));
       {
@@ -142,34 +142,34 @@ import com.upokecenter.text.*;
           "x\u03c2",
           stringTemp);
       }
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.UsernameEnforce(null));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.UsernameEnforce(""));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.UserpartEnforce(null));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.UserpartEnforce(""));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.OpaqueStringEnforce(null));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.OpaqueStringEnforce(""));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.NicknameEnforce(null));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.NicknameEnforce(""));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.NicknameForComparison(null));
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.NicknameForComparison(""));
       {
@@ -206,7 +206,7 @@ import com.upokecenter.text.*;
           "a b ccccc test",
           stringTemp);
       }
-      Assert.assertEquals (
+      Assert.assertEquals(
         null,
         ProtocolStrings.OpaqueStringEnforce("a\ntest"));
       {

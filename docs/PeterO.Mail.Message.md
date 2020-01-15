@@ -778,7 +778,7 @@ Gets a list of descendant body parts of this message that are considered attachm
 
 <b>Return Value:</b>
 
-The return value is not documented yet.
+A list of descendant body parts of this message that are considered attachments.
 
 <a id="GetBody"></a>
 ### GetBody

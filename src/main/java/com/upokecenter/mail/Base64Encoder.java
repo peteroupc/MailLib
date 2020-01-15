@@ -111,7 +111,7 @@ import com.upokecenter.text.*;
       if (this.quantumCount == 2) {
         byte al = this.alphabet[((this.byte1 & 3) << 4) +
           ((this.byte2 >> 4) & 15)];
-        int ret = this.LineAwareAppendFour (
+        int ret = this.LineAwareAppendFour(
             output,
             this.alphabet[(this.byte1 >> 2) & 63],
             al,
@@ -155,7 +155,7 @@ import com.upokecenter.text.*;
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
         byte c2 = this.alphabet[(this.byte1 & 3) << 4];
         if (this.padding) {
-          count += this.LineAwareAppendFour (
+          count += this.LineAwareAppendFour(
               output,
               c1,
               c2,

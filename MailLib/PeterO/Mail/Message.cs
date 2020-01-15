@@ -589,7 +589,7 @@ namespace PeterO.Mail {
       MediaType mt = this.ContentType;
       if (mt.SubType.Equals("alternative", StringComparison.Ordinal)) {
         // Navigate the parts in reverse order
-        int i = parts.Count - 1;
+        int i = this.parts.Count - 1;
         for (; i >= 0; --i) {
           if (this.GetBodyStringNoThrow() != null) {
             this.parts[i].AccumulateAttachments(attachments, false);
@@ -610,7 +610,8 @@ namespace PeterO.Mail {
     /// content disposition with a type other than inline. This message
     /// itself is not included in the list even if it's an attachment as
     /// just defined.</summary>
-    /// <returns>The return value is not documented yet.</returns>
+    /// <returns>A list of descendant body parts of this message that are
+    /// considered attachments.</returns>
     public IList<Message> GetAttachments() {
       var list = new List<Message>();
       this.AccumulateAttachments(
@@ -4347,7 +4348,7 @@ TransferEncodingToUse(
                 // - The charset is present but unrecognized or empty, or
                 // - The charset is absent and the media type has
                 // no default charset assumed for it.
-                IDictionary<string, string> params = ctype.Parameters;
+                IDictionary<string, string> parameters = ctype.Parameters;
                 if (parameters.ContainsKey("charset")) {
                   // The charset is present but unrecognized or
                   // empty; treat the content as application/octet-stream

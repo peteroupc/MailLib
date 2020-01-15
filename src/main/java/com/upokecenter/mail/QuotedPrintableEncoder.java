@@ -173,7 +173,7 @@ import com.upokecenter.text.*;
             } else {
               // NOTE: Cannot be encoded using lower-case hexadecimal
               // characters
-              count += this.IncrementAndAppendChars (
+              count += this.IncrementAndAppendChars(
                   output,
                   HexAlphabet.charAt((c >> 4) & 15),
                   HexAlphabet.charAt(c & 15));
