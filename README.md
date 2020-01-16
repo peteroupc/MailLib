@@ -70,6 +70,16 @@ An example of reading an email message from a file:
 Release Notes
 ---------
 
+Version 0.15.0:
+
+- Email message Date/Time validity was restricted slightly
+- DataUtilities moved to a separate library
+- GetBodyString and GetFormattedBodyString changed behavior and functionality
+- BodyString property is deprecated
+- GetAttachments method added to Message class
+- NamedAddress received new string preparation methods
+- Update media types
+
 Version 0.14.0:
 
 - Message class can now convert Markdown to HTML, with new method SetTextAndMarkdown

@@ -54,8 +54,8 @@ public sealed class MessageDataException : Exception {
     /// System.Runtime.Serialization.StreamingContext object.</param>
     private MessageDataException(
       System.Runtime.Serialization.SerializationInfo info,
-      System.Runtime.Serialization.StreamingContext context):
-      base (info, context) {
+      System.Runtime.Serialization.StreamingContext context)
+      : base(info, context) {
     }
     #endif
   }

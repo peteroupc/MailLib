@@ -15,25 +15,23 @@
     <Description>A .NET library for parsing and generating Internet email messages.</Description>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageReleaseNotes>
-Version 0.14.0:
+Version 0.15.0:
 
-- Message class can now convert Markdown to HTML, with new method SetTextAndMarkdown
-- Unicode data updated to latest version of Unicode
-- Date headers in generated messages (Generate()) are in global time
-- DataUrls class is now called DataUris; DataUrls is now deprecated.
-- Changes in algorithm used by ContentDisposition.MakeFilename
-- Add Message.ExtractHeaderField method
-- Changed ParseDateString and GenerateDateString to allow only years 1900 or greater and to fix bugs.
-- Deprecated IsText and IsMultipart in MediaTypeBuilder
-- Bug fixes
+- Email message Date/Time validity was restricted slightly
+- DataUtilities moved to a separate library
+- GetBodyString and GetFormattedBodyString changed behavior and functionality
+- BodyString property is deprecated
+- GetAttachments method added to Message class
+- NamedAddress received new string preparation methods
+- Update media types
 
 </PackageReleaseNotes>
     <Copyright>Written by Peter O. in 2013-2018.  Any copyright is released to the Public Domain.
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See
        https://github.com/peteroupc/MailLib/LICENSE.md for more information.)</Copyright>
     <PackOnBuild>true</PackOnBuild>
-    <Version>0.14.0</Version>
-    <PackageVersion>0.14.0</PackageVersion>
+    <Version>0.15.0</Version>
+    <PackageVersion>0.15.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>

@@ -1,2 +1,2 @@
-[assembly: System.CLSCompliant (true)]
-[assembly: System.Reflection.AssemblyVersion ("0.1")]
+[assembly: System.CLSCompliant(true)]
+[assembly: System.Reflection.AssemblyVersion("0.1")]
