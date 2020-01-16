@@ -1,13 +1,11 @@
 <package
-><metadata><version>0.14.0</version><id>PeterO.MailLib</id><requireLicenseAcceptance>false</requireLicenseAcceptance><releaseNotes>Version 0.14.0:
+><metadata><version>0.15.0</version><id>PeterO.MailLib</id><requireLicenseAcceptance>false</requireLicenseAcceptance><releaseNotes>Version 0.15.0:
 
-- Message class can now convert Markdown to HTML, with new method SetTextAndMarkdown
-- Unicode data updated to latest version of Unicode
-- Date headers in generated messages (Generate()) are in global time
-- DataUrls class is now called DataUris; DataUrls is now deprecated.
-- Changes in algorithm used by ContentDisposition.MakeFilename
-- Add Message.ExtractHeaderField method
-- Changed ParseDateString and GenerateDateString to allow only years 1900 or greater and to fix bugs.
-- Deprecated IsText and IsMultipart in MediaTypeBuilder
-- Bug fixes</releaseNotes><summary></summary><license type='file'>LICENSE.md</license><projectUrl>https://github.com/peteroupc/MailLib</projectUrl><authors>Peter Occil</authors><description>A .NET library for parsing and generating Internet email messages.</description><owners>Peter Occil</owners><title>MailLib Library</title><tags>email mail mime parser charset charsets</tags><dependencies><group><dependency id='PeterO.Encoding' version='0.5.1' /></group></dependencies></metadata><files><file src='LICENSE.md' /><file src='MailLib/bin/Release/netstandard1.0/MailLib.dll' target='/lib/netstandard1.0' /><file src='MailLib/bin/Release/netstandard1.0/MailLib.xml' target='/lib/netstandard1.0' /><file src='MailLib20/bin/Release/MailLib.dll' target='/lib/net20' /><file src='MailLib20/bin/Release/MailLib.xml' target='/lib/net20' /><file src='MailLib40/bin/Release/MailLib.dll' target='/lib/net40' /><file src='MailLib40/bin/Release/MailLib.xml' target='/lib/net40' /></files></package
+- Email message Date/Time validity was restricted slightly
+- DataUtilities moved to a separate library
+- GetBodyString and GetFormattedBodyString changed behavior and functionality
+- BodyString property is deprecated
+- GetAttachments method added to Message class
+- NamedAddress received new string preparation methods
+- Update media types</releaseNotes><summary></summary><license type='file'>LICENSE.md</license><projectUrl>https://github.com/peteroupc/MailLib</projectUrl><authors>Peter Occil</authors><description>A .NET library for parsing and generating Internet email messages.</description><owners>Peter Occil</owners><title>MailLib Library</title><tags>email mail mime parser charset charsets</tags><dependencies><group><dependency id='PeterO.DataUtilities' version='1.0.0' /><dependency id='PeterO.URIUtility' version='1.0.0' /><dependency id='PeterO.Encoding' version='0.5.1' /></group></dependencies></metadata><files><file src='LICENSE.md' /><file src='MailLib/bin/Release/netstandard1.0/MailLib.dll' target='/lib/netstandard1.0' /><file src='MailLib/bin/Release/netstandard1.0/MailLib.xml' target='/lib/netstandard1.0' /><file src='MailLib20/bin/Release/MailLib.dll' target='/lib/net20' /><file src='MailLib20/bin/Release/MailLib.xml' target='/lib/net20' /><file src='MailLib40/bin/Release/MailLib.dll' target='/lib/net40' /><file src='MailLib40/bin/Release/MailLib.xml' target='/lib/net40' /></files></package
 >
