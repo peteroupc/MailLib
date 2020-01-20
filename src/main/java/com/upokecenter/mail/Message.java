@@ -50,10 +50,12 @@ import com.upokecenter.text.*;
    *  <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
    *  charset is declared to be <code>us-ascii</code>, "windows-1252",
    *  "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
-   * <li>(d) In non-MIME message bodies and in text/plain message bodies.
-   * Any bytes greater than 127 are replaced with the substitute character
-   *  byte (0x1a).</li> <li>If the message starts with the word "From" (and
-   * no other case variations of that word) followed by one or more space
+   * <li>(d) In text/plain message bodies. Any bytes greater than 127 are
+   * replaced with the substitute character byte (0x1a).</li> <li>(e) In
+   * MIME message bodies (this is not a deviation from MIME, though). Any
+   * bytes greater than 127 are replaced with the substitute character byte
+   *  (0x1a).</li> <li>If the message starts with the word "From" (and no
+   * other case variations of that word) followed by one or more space
    * (U+0020) not followed by colon, that text and the rest of the text is
    * skipped up to and including a line feed (U+000A). (See also RFC 4155,
    *  which describes the so-called "mbox" convention with "From" lines of
@@ -490,6 +492,28 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return false;
     }
 
+    private static String InputToStringWithHint(
+          ICharacterInput reader,
+          int capacityHint) {
+      StringBuilder builder = new StringBuilder(capacityHint);
+      while (true) {
+        if (reader == null) {
+          throw new NullPointerException("reader");
+        }
+        int c = reader.ReadChar();
+        if (c < 0) {
+          break;
+        }
+        if (c <= 0xffff) {
+          builder.append((char)c);
+        } else if (c <= 0x10ffff) {
+          builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+          builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+        }
+      }
+      return builder.toString();
+    }
+
     private void GetBodyStrings(
       List<String> bodyStrings,
       List<MediaType> mediaTypes) {
@@ -531,9 +555,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         charset = Encodings.GetEncoding(charsetName);
       }
       if (charset != null) {
-        bodyStrings.add(Encodings.DecodeToString(
+        int capacityHint = this.body.length < Integer.MAX_VALUE / 2 ?
+            Math.min(this.body.length * 2, this.body.length + 32) :
+            this.body.length;
+        ICharacterInput cinput = Encodings.GetDecoderInput(
             charset,
-            DataIO.ToReader(this.body)));
+            DataIO.ToReader(this.body));
+        bodyStrings.add(InputToStringWithHint(
+            cinput,
+            capacityHint));
         mediaTypes.add(this.getContentType());
       }
     }
@@ -3203,6 +3233,38 @@ LiberalSevenBitTransform(stream)) :
       return transform;
     }
 
+    private static final class StringBuilderKeepBuffer {
+      // To maintain control over how a String
+      // builder's capacity is handled when the
+      // String builder is "reset"
+      private char[] buffer = new char[64];
+      private int ptr = 0;
+      public void Reset() {
+        this.ptr = 0;
+      }
+      public final boolean isEmpty() {
+          return this.buffer.length == 0;
+        }
+      @Override public String toString() {
+        return new String(this.buffer, 0, this.ptr);
+      }
+      private void Grow() {
+        int newlen = (this.buffer.length >= (Integer.MAX_VALUE >> 1)) ?
+          Integer.MAX_VALUE : this.buffer.length * 2;
+        char[] newbuffer = new char[newlen];
+        System.arraycopy(this.buffer, 0, newbuffer, 0, this.buffer.length);
+        this.buffer = newbuffer;
+      }
+      public void AppendChar(char c) {
+        if (this.ptr < this.buffer.length) {
+          this.buffer[this.ptr++] = c;
+        } else {
+          this.Grow();
+          this.buffer[this.ptr++] = c;
+        }
+      }
+    }
+
     private static void ReadHeaders(
       IByteReader stream,
       Collection<String> headerList,
@@ -3210,12 +3272,12 @@ LiberalSevenBitTransform(stream)) :
       // Line length in OCTETS, not characters
       int lineCount = 0;
       int[] bytesRead = new int[1];
-      StringBuilder sb = new StringBuilder();
+      StringBuilderKeepBuffer sb = new StringBuilderKeepBuffer();
       int ss = 0;
       boolean ungetLast = false;
       int lastByte = 0;
       while (true) {
-        sb.delete(0, sb.length());
+        sb.Reset();
         boolean first = true;
         boolean endOfHeaders = false;
         boolean wsp = false;
@@ -3259,7 +3321,7 @@ LiberalSevenBitTransform(stream)) :
             if (c >= 'A' && c <= 'Z') {
               c += 0x20;
             }
-            sb.append((char)c);
+            sb.AppendChar((char)c);
           } else if (!first && c == ':') {
             if (lineCount > Message.MaxHardHeaderLineLength) {
               // MaxHardHeaderLineLength octets includes the colon
@@ -3272,9 +3334,7 @@ LiberalSevenBitTransform(stream)) :
               // Possible Mbox convention
               boolean possibleMbox = true;
               boolean isFromField = false;
-              sb.delete(
-                0, (
-                0)+(sb.length()));
+              sb.Reset();
               while (true) {
                 c = stream.read();
                 if (c == -1) {
@@ -3284,7 +3344,10 @@ LiberalSevenBitTransform(stream)) :
                 } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
-                  sb.append("from");
+                  sb.AppendChar('f');
+                  sb.AppendChar('r');
+                  sb.AppendChar('o');
+                  sb.AppendChar('m');
                   start = false;
                   wsp = false;
                   first = true;
@@ -3314,7 +3377,7 @@ LiberalSevenBitTransform(stream)) :
         if (endOfHeaders) {
           break;
         }
-        if (sb.length() == 0) {
+        if (sb.isEmpty()) {
           throw new MessageDataException("Empty header field name");
         }
         // Set the header field name to the
@@ -3322,7 +3385,7 @@ LiberalSevenBitTransform(stream)) :
         String fieldName = sb.toString();
         // Clear the String builder to read the
         // header field's value
-        sb.delete(0, sb.length());
+        sb.Reset();
         // Skip initial spaces in the header field value,
         // to keep them from being added by the String builder
         while (true) {
@@ -3394,8 +3457,8 @@ LiberalSevenBitTransform(stream)) :
                 if (c2 == 0x20 || c2 == 0x09) {
                   ++lineCount;
                   // Don't write SPACE as the first character of the value
-                  if (c2 != 0x20 || sb.length() != 0) {
-                    sb.append((char)c2);
+                  if (c2 != 0x20 || !sb.isEmpty()) {
+                    sb.AppendChar((char)c2);
                   }
                   haveFWS = true;
                 } else {
@@ -3415,7 +3478,7 @@ LiberalSevenBitTransform(stream)) :
               // This ends the header field
               break;
             }
-            sb.append('\r');
+            sb.AppendChar('\r');
             ungetLast = true;
             lastByte = c;
             ++lineCount; // Increment for the CR
@@ -3430,7 +3493,7 @@ LiberalSevenBitTransform(stream)) :
           // case the bytes are not valid UTF-8, a replacement character
           // will be output
           if (c < 0x80) {
-            sb.append((char)c);
+            sb.AppendChar((char)c);
             ++lineCount;
           } else {
             int[] state = { lineCount, c, 1 };
@@ -3441,10 +3504,10 @@ LiberalSevenBitTransform(stream)) :
             ungetLast = state[2] == 1;
             lastByte = state[1];
             if (c <= 0xffff) {
-              sb.append((char)c);
+              sb.AppendChar((char)c);
             } else if (c <= 0x10ffff) {
-              sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
-              sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+              sb.AppendChar((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.AppendChar((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }

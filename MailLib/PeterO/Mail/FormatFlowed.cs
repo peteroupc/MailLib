@@ -5,7 +5,7 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal static class FormatFlowed {
-    private static string HtmlEscape(string str) {
+    private static void AppendHtmlEscape(StringBuilder sb, string str) {
       var i = 0;
       for (; i < str.Length; ++i) {
         if (str[i] == '&' || str[i] == '<' || str[i] == '>') {
@@ -13,33 +13,48 @@ namespace PeterO.Mail {
         }
       }
       if (i == str.Length) {
-        return str;
+        sb.Append(str);
+        return;
       }
-      var sb = new StringBuilder();
-      sb.Append(str.Substring(0, i));
+      sb.Append(str, 0, i);
+      int lastI = i;
       for (; i < str.Length; ++i) {
         switch (str[i]) {
           case '&':
+            if (lastI < i) {
+              sb.Append(str, lastI, i - lastI);
+              lastI = i + 1;
+            }
             sb.Append("&amp;");
             break;
           case '<':
+            if (lastI < i) {
+              sb.Append(str, lastI, i - lastI);
+              lastI = i + 1;
+            }
             sb.Append("&lt;");
             break;
           case '>':
+            if (lastI < i) {
+              sb.Append(str, lastI, i - lastI);
+              lastI = i + 1;
+            }
             sb.Append("&gt;");
-            break;
-          default:
-            sb.Append(str[i]);
             break;
         }
       }
-      return sb.ToString();
+      if (lastI < str.Length) {
+        sb.Append(str, lastI, str.Length - lastI);
+      }
     }
 
     public static string NonFormatFlowedText(string str) {
-      var sb = new StringBuilder();
+      int sblength = str.Length < Int32.MaxValue / 2 ?
+         Math.Min(str.Length * 2, str.Length + 64) :
+         str.Length;
+      var sb = new StringBuilder(sblength);
       sb.Append("<pre>");
-      sb.Append(HtmlEscape(str));
+      AppendHtmlEscape(sb, str);
       sb.Append("</pre>");
       return sb.ToString();
     }
@@ -82,21 +97,21 @@ namespace PeterO.Mail {
             // Signature line reached, or
             // change in quote depth, or fixed after flowed
             if (haveParagraph) {
-              formatted.Append("<p>")
-              .Append(HtmlEscape(paragraph.ToString()))
-              .Append("</p>");
+              formatted.Append("<p>");
+              AppendHtmlEscape(formatted, paragraph.ToString());
+              formatted.Append("</p>");
               haveParagraph = false;
               endedParagraph = true;
               paragraph.Remove(0, paragraph.Length);
             }
           } else if (haveParagraph && (!flowed || lastLine)) {
-            formatted.Append("<p>").Append(HtmlEscape(paragraph.ToString()));
+            formatted.Append("<p>");
+            AppendHtmlEscape(formatted, paragraph.ToString());
             haveParagraph = false;
             endedParagraph = true;
             paragraph.Remove(0, paragraph.Length);
-            formatted.Append (
-              HtmlEscape(str.Substring(index, lineEnd - index)))
-            .Append("</p>");
+            AppendHtmlEscape(formatted, str.Substring(index, lineEnd - index));
+            formatted.Append("</p>");
           }
           if (lastQuotes < quotes) {
             var k = 0;
@@ -120,8 +135,11 @@ namespace PeterO.Mail {
               } else {
                 if (index < lineEnd) {
                   formatted.Append("<tt>");
-                  formatted.Append (
-                    HtmlEscape(str.Substring(index, lineEnd - index)));
+                  {
+                    string s = str.Substring(index, lineEnd -
+index);
+AppendHtmlEscape(formatted, s);
+}
                   formatted.Append("</tt>");
                 }
                 if (!lastLine) {
@@ -257,7 +275,7 @@ namespace PeterO.Mail {
           ++index;
         }
         return (
-            index != str.Length) ? null : str.Substring (
+            index != str.Length) ? null : str.Substring(
             titleStart,
             titleEnd - titleStart);
       }
@@ -293,7 +311,7 @@ namespace PeterO.Mail {
           return null;
         }
         int urlStart = index;
-        string label = DataUtilities.ToLowerCaseAscii (
+        string label = DataUtilities.ToLowerCaseAscii(
             str.Substring(labelStart, labelEnd - labelStart));
         string url = str.Substring(urlStart, str.Length - urlStart);
         string[] urltitle = SplitUrl(url, true);
@@ -367,7 +385,7 @@ namespace PeterO.Mail {
       return (str.Length >= 4 && str[0] == ' ' && str[1] == ' ' &&
           str[2] == ' ' && str[3] == ' ') ? true : false;
     }
-    private static string ReplaceTwoOrMoreSpacesWithBR (
+    private static string ReplaceTwoOrMoreSpacesWithBR(
       string str) {
       if (String.IsNullOrEmpty(str)) {
         return String.Empty;
@@ -525,7 +543,7 @@ namespace PeterO.Mail {
               ++qi;
             }
             if (qi == urlText.Length - 1) {
-              titleText = urlText.Substring (
+              titleText = urlText.Substring(
                   possibleTitleStart,
                   (urlText.Length - 1) - possibleTitleStart);
               urlText = urlText.Substring(0, possibleUrlEnd);
@@ -550,7 +568,7 @@ namespace PeterO.Mail {
       return (index < str.Length && str[index] == '[') ? index : (-1);
     }
 
-    private static string ReplaceImageLinks (
+    private static string ReplaceImageLinks(
       string str,
       IDictionary<string, string[]> links) {
       if (str.IndexOf('!') < 0) {
@@ -602,7 +620,7 @@ namespace PeterO.Mail {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii (
+            urlText = DataUtilities.ToLowerCaseAscii(
                 String.IsNullOrEmpty(urlText) ? linkText : urlText);
             if (links.ContainsKey(urlText)) {
               urlTitle = links[urlText];
@@ -627,7 +645,7 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    private static string ReplaceInlineLinks (
+    private static string ReplaceInlineLinks(
       string str,
       IDictionary<string, string[]> links) {
       if (str.IndexOf('[') < 0) {
@@ -685,7 +703,7 @@ namespace PeterO.Mail {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii (
+            urlText = DataUtilities.ToLowerCaseAscii(
                 String.IsNullOrEmpty(urlText) ? linkText : urlText);
             if (links.ContainsKey(urlText)) {
               urlTitle = links[urlText];
@@ -722,7 +740,7 @@ namespace PeterO.Mail {
       sb.Append(hex[c & 15]).Append(";");
     }
 
-    private static string CodeSpansAndEscapes (
+    private static string CodeSpansAndEscapes(
       string str) {
       var sb = new StringBuilder();
       for (var i = 0; i < str.Length; ++i) {
@@ -853,7 +871,7 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    private static string ReplaceAutomaticLinks (
+    private static string ReplaceAutomaticLinks(
       string str) {
       if (str.IndexOf('<') < 0) {
         return str;
@@ -904,7 +922,8 @@ namespace PeterO.Mail {
             } else if (payload.IndexOf(':') >= 1) {
               sb.Append("<a href=\"");
               sb.Append(HtmlEscapeStrong(payload));
-              sb.Append("\">").Append(HtmlEscapeStrong(payload))
+              sb.Append("\">");
+              sb.Append(HtmlEscapeStrong(payload))
               .Append("</a>");
               i = linkEnd;
               continue;
@@ -916,7 +935,7 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    private static string FormatParagraph (
+    private static string FormatParagraph(
       string str,
       IDictionary<string, string[]> links) {
       str = CodeSpansAndEscapes(str);
@@ -1036,7 +1055,7 @@ namespace PeterO.Mail {
         StripListItemStart(line);
     }
 
-    private static string MarkdownText (
+    private static string MarkdownText(
       string str,
       int depth,
       bool alwaysUseParas,
@@ -1125,11 +1144,11 @@ namespace PeterO.Mail {
           formatted.Append("<blockquote>");
           if (depth > 10) {
             formatted.Append("<pre><code>");
-            formatted.Append(HtmlEscape(qs.ToString()));
+            AppendHtmlEscape(formatted, qs.ToString());
             formatted.Append("</code></pre>");
           } else {
-            formatted.Append (
-              MarkdownText (
+            formatted.Append(
+              MarkdownText(
                 qs.ToString(),
                 depth + 1,
                 true,
@@ -1187,7 +1206,7 @@ namespace PeterO.Mail {
                 formatted.Append(qs.ToString());
                 formatted.Append("</code></pre>");
               } else {
-                qss2 = MarkdownText (
+                qss2 = MarkdownText(
                     qs.ToString(),
                     depth + 1,
                     wrapLinesInParas,
@@ -1232,7 +1251,7 @@ namespace PeterO.Mail {
           }
           i = qi - 1;
           // DebugUtility.Log("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
-          string qss = MarkdownText (
+          string qss = MarkdownText(
               qs.ToString(),
               depth + 1,
               wrapLinesInParas,
@@ -1276,7 +1295,7 @@ namespace PeterO.Mail {
           }
           i = qi - 1;
           formatted.Append("<pre><code>");
-          formatted.Append(HtmlEscape(qs.ToString()));
+          AppendHtmlEscape(formatted, qs.ToString());
           formatted.Append("</code></pre>");
         } else {
           if (!IsBlankishLine(line)) {

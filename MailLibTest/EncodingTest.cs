@@ -2585,6 +2585,17 @@ namespace MailLibTest {
 
     [Test]
     [Timeout(5000)]
+    public void TestEncodedWordsLegacyCharset() {
+      TestEncodedWordsPhrase(
+        "abcdefg",
+        "=?ISO-2022-JP?Q?abcdefg?=");
+      TestEncodedWordsPhrase(
+        "abcdefghi09876543",
+        "=?ISO-2022-JP?Q?abcdefghi09876543?=");
+    }
+
+    [Test]
+    [Timeout(5000)]
     public void TestEncodedWords() {
       const string ValuePar = "(";
       TestEncodedWordsPhrase(

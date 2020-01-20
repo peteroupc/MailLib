@@ -61,9 +61,11 @@ namespace PeterO.Mail {
   /// <item>(c) If the content type is "text/html" and the charset is
   /// declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
   /// "iso-8859-*" (all single byte encodings).</item>
-  /// <item>(d) In non-MIME message bodies and in text/plain message
-  /// bodies. Any bytes greater than 127 are replaced with the substitute
-  /// character byte (0x1a).</item>
+  /// <item>(d) In text/plain message bodies. Any bytes greater than 127
+  /// are replaced with the substitute character byte (0x1a).</item>
+  /// <item>(e) In MIME message bodies (this is not a deviation from
+  /// MIME, though). Any bytes greater than 127 are replaced with the
+  /// substitute character byte (0x1a).</item>
   /// <item>If the message starts with the word "From" (and no other case
   /// variations of that word) followed by one or more space (U+0020) not
   /// followed by colon, that text and the rest of the text is skipped up
@@ -515,6 +517,28 @@ namespace PeterO.Mail {
       return false;
     }
 
+    private static string InputToStringWithHint(
+          ICharacterInput reader,
+          int capacityHint) {
+      var builder = new StringBuilder(capacityHint);
+      while (true) {
+        if (reader == null) {
+          throw new ArgumentNullException(nameof(reader));
+        }
+        int c = reader.ReadChar();
+        if (c < 0) {
+          break;
+        }
+        if (c <= 0xffff) {
+          builder.Append((char)c);
+        } else if (c <= 0x10ffff) {
+          builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+          builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+        }
+      }
+      return builder.ToString();
+    }
+
     private void GetBodyStrings(
       IList<string> bodyStrings,
       IList<MediaType> mediaTypes) {
@@ -558,9 +582,15 @@ namespace PeterO.Mail {
         charset = Encodings.GetEncoding(charsetName);
       }
       if (charset != null) {
-        bodyStrings.Add(Encodings.DecodeToString(
+        int capacityHint = this.body.Length < Int32.MaxValue / 2 ?
+            Math.Min(this.body.Length * 2, this.body.Length + 32) :
+            this.body.Length;
+        ICharacterInput cinput = Encodings.GetDecoderInput(
             charset,
-            DataIO.ToReader(this.body)));
+            DataIO.ToReader(this.body));
+        bodyStrings.Add(InputToStringWithHint(
+            cinput,
+            capacityHint));
         mediaTypes.Add(this.ContentType);
       }
     }
@@ -3282,6 +3312,40 @@ LiberalSevenBitTransform(stream)) :
       return transform;
     }
 
+    private sealed class StringBuilderKeepBuffer {
+      // To maintain control over how a string
+      // builder's capacity is handled when the
+      // string builder is "reset"
+      private char[] buffer = new char[64];
+      private int ptr = 0;
+      public void Reset() {
+        this.ptr = 0;
+      }
+      public bool IsEmpty {
+        get {
+          return this.buffer.Length == 0;
+        }
+      }
+      public override string ToString() {
+        return new String(this.buffer, 0, this.ptr);
+      }
+      private void Grow() {
+        int newlen = (this.buffer.Length >= (Int32.MaxValue >> 1)) ?
+          Int32.MaxValue : this.buffer.Length * 2;
+        var newbuffer = new char[newlen];
+        Array.Copy(this.buffer, 0, newbuffer, 0, this.buffer.Length);
+        this.buffer = newbuffer;
+      }
+      public void AppendChar(char c) {
+        if (this.ptr < this.buffer.Length) {
+          this.buffer[this.ptr++] = c;
+        } else {
+          this.Grow();
+          this.buffer[this.ptr++] = c;
+        }
+      }
+    }
+
     private static void ReadHeaders(
       IByteReader stream,
       ICollection<string> headerList,
@@ -3289,12 +3353,12 @@ LiberalSevenBitTransform(stream)) :
       // Line length in OCTETS, not characters
       var lineCount = 0;
       var bytesRead = new int[1];
-      var sb = new StringBuilder();
+      var sb = new StringBuilderKeepBuffer();
       var ss = 0;
       var ungetLast = false;
       var lastByte = 0;
       while (true) {
-        sb.Remove(0, sb.Length);
+        sb.Reset();
         var first = true;
         var endOfHeaders = false;
         var wsp = false;
@@ -3338,7 +3402,7 @@ LiberalSevenBitTransform(stream)) :
             if (c >= 'A' && c <= 'Z') {
               c += 0x20;
             }
-            sb.Append((char)c);
+            sb.AppendChar((char)c);
           } else if (!first && c == ':') {
             if (lineCount > Message.MaxHardHeaderLineLength) {
               // MaxHardHeaderLineLength octets includes the colon
@@ -3351,9 +3415,7 @@ LiberalSevenBitTransform(stream)) :
               // Possible Mbox convention
               var possibleMbox = true;
               var isFromField = false;
-              sb.Remove(
-                0,
-                sb.Length);
+              sb.Reset();
               while (true) {
                 c = stream.ReadByte();
                 if (c == -1) {
@@ -3363,7 +3425,10 @@ LiberalSevenBitTransform(stream)) :
                 } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
-                  sb.Append("from");
+                  sb.AppendChar('f');
+                  sb.AppendChar('r');
+                  sb.AppendChar('o');
+                  sb.AppendChar('m');
                   start = false;
                   wsp = false;
                   first = true;
@@ -3393,7 +3458,7 @@ LiberalSevenBitTransform(stream)) :
         if (endOfHeaders) {
           break;
         }
-        if (sb.Length == 0) {
+        if (sb.IsEmpty) {
           throw new MessageDataException("Empty header field name");
         }
         // Set the header field name to the
@@ -3401,7 +3466,7 @@ LiberalSevenBitTransform(stream)) :
         string fieldName = sb.ToString();
         // Clear the string builder to read the
         // header field's value
-        sb.Remove(0, sb.Length);
+        sb.Reset();
         // Skip initial spaces in the header field value,
         // to keep them from being added by the string builder
         while (true) {
@@ -3473,8 +3538,8 @@ LiberalSevenBitTransform(stream)) :
                 if (c2 == 0x20 || c2 == 0x09) {
                   ++lineCount;
                   // Don't write SPACE as the first character of the value
-                  if (c2 != 0x20 || sb.Length != 0) {
-                    sb.Append((char)c2);
+                  if (c2 != 0x20 || !sb.IsEmpty) {
+                    sb.AppendChar((char)c2);
                   }
                   haveFWS = true;
                 } else {
@@ -3494,7 +3559,7 @@ LiberalSevenBitTransform(stream)) :
               // This ends the header field
               break;
             }
-            sb.Append('\r');
+            sb.AppendChar('\r');
             ungetLast = true;
             lastByte = c;
             ++lineCount; // Increment for the CR
@@ -3509,7 +3574,7 @@ LiberalSevenBitTransform(stream)) :
           // case the bytes are not valid UTF-8, a replacement character
           // will be output
           if (c < 0x80) {
-            sb.Append((char)c);
+            sb.AppendChar((char)c);
             ++lineCount;
           } else {
             int[] state = { lineCount, c, 1 };
@@ -3520,10 +3585,10 @@ LiberalSevenBitTransform(stream)) :
             ungetLast = state[2] == 1;
             lastByte = state[1];
             if (c <= 0xffff) {
-              sb.Append((char)c);
+              sb.AppendChar((char)c);
             } else if (c <= 0x10ffff) {
-              sb.Append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
-              sb.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+              sb.AppendChar((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              sb.AppendChar((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }

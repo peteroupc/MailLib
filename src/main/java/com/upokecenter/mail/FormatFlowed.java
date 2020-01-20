@@ -7,7 +7,7 @@ import com.upokecenter.util.*;
   final class FormatFlowed {
 private FormatFlowed() {
 }
-    private static String HtmlEscape(String str) {
+    private static void AppendHtmlEscape(StringBuilder sb, String str) {
       int i = 0;
       for (; i < str.length(); ++i) {
         if (str.charAt(i) == '&' || str.charAt(i) == '<' || str.charAt(i) == '>') {
@@ -15,33 +15,48 @@ private FormatFlowed() {
         }
       }
       if (i == str.length()) {
-        return str;
+        sb.append(str);
+        return;
       }
-      StringBuilder sb = new StringBuilder();
-      sb.append(str.substring(0, i));
+      sb.append(str, 0, i);
+      int lastI = i;
       for (; i < str.length(); ++i) {
         switch (str.charAt(i)) {
           case '&':
+            if (lastI < i) {
+              sb.append(str, lastI, (lastI)+(i - lastI));
+              lastI = i + 1;
+            }
             sb.append("&amp;");
             break;
           case '<':
+            if (lastI < i) {
+              sb.append(str, lastI, (lastI)+(i - lastI));
+              lastI = i + 1;
+            }
             sb.append("&lt;");
             break;
           case '>':
+            if (lastI < i) {
+              sb.append(str, lastI, (lastI)+(i - lastI));
+              lastI = i + 1;
+            }
             sb.append("&gt;");
-            break;
-          default:
-            sb.append(str.charAt(i));
             break;
         }
       }
-      return sb.toString();
+      if (lastI < str.length()) {
+        sb.append(str, lastI, (lastI)+(str.length() - lastI));
+      }
     }
 
     public static String NonFormatFlowedText(String str) {
-      StringBuilder sb = new StringBuilder();
+      int sblength = str.length() < Integer.MAX_VALUE / 2 ?
+         Math.min(str.length() * 2, str.length() + 64) :
+         str.length();
+      StringBuilder sb = new StringBuilder(sblength);
       sb.append("<pre>");
-      sb.append(HtmlEscape(str));
+      AppendHtmlEscape(sb, str);
       sb.append("</pre>");
       return sb.toString();
     }
@@ -84,21 +99,21 @@ private FormatFlowed() {
             // Signature line reached, or
             // change in quote depth, or fixed after flowed
             if (haveParagraph) {
-              formatted.append("<p>")
-              .append(HtmlEscape(paragraph.toString()))
-              .append("</p>");
+              formatted.append("<p>");
+              AppendHtmlEscape(formatted, paragraph.toString());
+              formatted.append("</p>");
               haveParagraph = false;
               endedParagraph = true;
               paragraph.delete(0, paragraph.length());
             }
           } else if (haveParagraph && (!flowed || lastLine)) {
-            formatted.append("<p>").append(HtmlEscape(paragraph.toString()));
+            formatted.append("<p>");
+            AppendHtmlEscape(formatted, paragraph.toString());
             haveParagraph = false;
             endedParagraph = true;
             paragraph.delete(0, paragraph.length());
-            formatted.append(
-              HtmlEscape(str.substring(index, (index)+(lineEnd - index))))
-            .append("</p>");
+            AppendHtmlEscape(formatted, str.substring(index, (index)+(lineEnd - index)));
+            formatted.append("</p>");
           }
           if (lastQuotes < quotes) {
             int k = 0;
@@ -122,8 +137,11 @@ private FormatFlowed() {
               } else {
                 if (index < lineEnd) {
                   formatted.append("<tt>");
-                  formatted.append(
-                    HtmlEscape(str.substring(index, (index)+(lineEnd - index))));
+                  {
+                    String s = str.substring(index, (index)+(lineEnd -
+index));
+AppendHtmlEscape(formatted, s);
+}
                   formatted.append("</tt>");
                 }
                 if (!lastLine) {
@@ -906,7 +924,8 @@ private FormatFlowed() {
             } else if (payload.indexOf(':') >= 1) {
               sb.append("<a href=\"");
               sb.append(HtmlEscapeStrong(payload));
-              sb.append("\">").append(HtmlEscapeStrong(payload))
+              sb.append("\">");
+              sb.append(HtmlEscapeStrong(payload))
               .append("</a>");
               i = linkEnd;
               continue;
@@ -1127,7 +1146,7 @@ private FormatFlowed() {
           formatted.append("<blockquote>");
           if (depth > 10) {
             formatted.append("<pre><code>");
-            formatted.append(HtmlEscape(qs.toString()));
+            AppendHtmlEscape(formatted, qs.toString());
             formatted.append("</code></pre>");
           } else {
             formatted.append(
@@ -1278,7 +1297,7 @@ private FormatFlowed() {
           }
           i = qi - 1;
           formatted.append("<pre><code>");
-          formatted.append(HtmlEscape(qs.toString()));
+          AppendHtmlEscape(formatted, qs.toString());
           formatted.append("</code></pre>");
         } else {
           if (!IsBlankishLine(line)) {

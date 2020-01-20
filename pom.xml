@@ -122,7 +122,7 @@
     <dependency>
       <groupId>com.github.peteroupc</groupId>
       <artifactId>encoding</artifactId>
-      <version>0.6.0</version>
+      <version>0.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.github.peteroupc</groupId>

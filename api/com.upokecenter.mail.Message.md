@@ -37,10 +37,12 @@ Represents an email message, and contains methods and properties for
   <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
   charset is declared to be <code>us-ascii</code>, "windows-1252",
   "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
- <li>(d) In non-MIME message bodies and in text/plain message bodies.
- Any bytes greater than 127 are replaced with the substitute character
-  byte (0x1a).</li> <li>If the message starts with the word "From" (and
- no other case variations of that word) followed by one or more space
+ <li>(d) In text/plain message bodies. Any bytes greater than 127 are
+ replaced with the substitute character byte (0x1a).</li> <li>(e) In
+ MIME message bodies (this is not a deviation from MIME, though). Any
+ bytes greater than 127 are replaced with the substitute character byte
+  (0x1a).</li> <li>If the message starts with the word "From" (and no
+ other case variations of that word) followed by one or more space
  (U+0020) not followed by colon, that text and the rest of the text is
  skipped up to and including a line feed (U+000A). (See also RFC 4155,
   which describes the so-called "mbox" convention with "From" lines of

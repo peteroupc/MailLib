@@ -30,7 +30,9 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (c) If the content type is "text/html" and the charset is declared to be  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
 
- * (d) In non-MIME message bodies and in text/plain message bodies. Any bytes greater than 127 are replaced with the substitute character byte (0x1a).
+ * (d) In text/plain message bodies. Any bytes greater than 127 are replaced with the substitute character byte (0x1a).
+
+ * (e) In MIME message bodies (this is not a deviation from MIME, though). Any bytes greater than 127 are replaced with the substitute character byte (0x1a).
 
  * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U+000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
 

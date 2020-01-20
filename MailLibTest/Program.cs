@@ -12,9 +12,8 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-      new MediaTypeTest().TestHasStructuredSuffix();
-      new MediaTypeTest().TestGetCharset();
-      new MessageTest().TestAddAttachment();
+      new UnitTest1().TestMessageCoaHtml();
+      new UnitTest1().TestMessageCore();
     }
   }
 }
