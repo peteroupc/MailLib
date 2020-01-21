@@ -52,8 +52,8 @@ private FormatFlowed() {
 
     public static String NonFormatFlowedText(String str) {
       int sblength = str.length() < Integer.MAX_VALUE / 2 ?
-         Math.min(str.length() * 2, str.length() + 64) :
-         str.length();
+        Math.min(str.length() * 2, str.length() + 64) :
+        str.length();
       StringBuilder sb = new StringBuilder(sblength);
       sb.append("<pre>");
       AppendHtmlEscape(sb, str);
@@ -112,7 +112,8 @@ private FormatFlowed() {
             haveParagraph = false;
             endedParagraph = true;
             paragraph.delete(0, paragraph.length());
-            AppendHtmlEscape(formatted, str.substring(index, (index)+(lineEnd - index)));
+            AppendHtmlEscape(formatted, str.substring(index, (index)+(lineEnd -
+index)));
             formatted.append("</p>");
           }
           if (lastQuotes < quotes) {
@@ -139,9 +140,9 @@ private FormatFlowed() {
                   formatted.append("<tt>");
                   {
                     String s = str.substring(index, (index)+(lineEnd -
-index));
-AppendHtmlEscape(formatted, s);
-}
+                        index));
+                    AppendHtmlEscape(formatted, s);
+                  }
                   formatted.append("</tt>");
                 }
                 if (!lastLine) {

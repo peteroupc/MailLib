@@ -2184,12 +2184,11 @@
             <item>(c) If the content type is "text/html" and the charset is
             declared to be <c>us-ascii</c>, "windows-1252", "windows-1251", or
             "iso-8859-*" (all single byte encodings).</item>
-            <item>(d) In text/plain message
-            bodies. Any bytes greater than 127 are replaced with the substitute
-            character byte (0x1a).</item>
-            <item>(e) In MIME message bodies (this is not a deviation from MIME,
-            though). Any bytes greater than 127 are replaced with the substitute
-            character byte (0x1a).</item>
+            <item>(d) In text/plain message bodies. Any bytes greater than 127
+            are replaced with the substitute character byte (0x1a).</item>
+            <item>(e) In MIME message bodies (this is not a deviation from
+            MIME, though). Any bytes greater than 127 are replaced with the
+            substitute character byte (0x1a).</item>
             <item>If the message starts with the word "From" (and no other case
             variations of that word) followed by one or more space (U+0020) not
             followed by colon, that text and the rest of the text is skipped up

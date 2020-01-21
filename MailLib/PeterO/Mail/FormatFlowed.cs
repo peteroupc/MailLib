@@ -50,8 +50,8 @@ namespace PeterO.Mail {
 
     public static string NonFormatFlowedText(string str) {
       int sblength = str.Length < Int32.MaxValue / 2 ?
-         Math.Min(str.Length * 2, str.Length + 64) :
-         str.Length;
+        Math.Min(str.Length * 2, str.Length + 64) :
+        str.Length;
       var sb = new StringBuilder(sblength);
       sb.Append("<pre>");
       AppendHtmlEscape(sb, str);
@@ -110,7 +110,8 @@ namespace PeterO.Mail {
             haveParagraph = false;
             endedParagraph = true;
             paragraph.Remove(0, paragraph.Length);
-            AppendHtmlEscape(formatted, str.Substring(index, lineEnd - index));
+            AppendHtmlEscape(formatted, str.Substring(index, lineEnd -
+index));
             formatted.Append("</p>");
           }
           if (lastQuotes < quotes) {
@@ -137,9 +138,9 @@ namespace PeterO.Mail {
                   formatted.Append("<tt>");
                   {
                     string s = str.Substring(index, lineEnd -
-index);
-AppendHtmlEscape(formatted, s);
-}
+                        index);
+                    AppendHtmlEscape(formatted, s);
+                  }
                   formatted.Append("</tt>");
                 }
                 if (!lastLine) {
