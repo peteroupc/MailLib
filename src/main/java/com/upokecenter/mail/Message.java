@@ -1,6 +1,6 @@
 package com.upokecenter.mail;
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -1061,7 +1061,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         if (position + 2 <= count && (b >= 0xc2 && b <= 0xdf) &&
           ((data[position + 1] & 0xff) >= 0x80 && (data[position + 1] & 0xff) <=
             0xbf)) {
-          // DebugUtility.Log("%02X %02X",data[position],data[position+1]);
+          // System.out.println("%02X %02X",data[position],data[position+1]);
           position += 2;
           maybeUtf8 = 1;
         } else if (position + 3 <= count && (b >= 0xe0 && b <= 0xef) &&
@@ -1069,7 +1069,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             0xbf)) {
           int startbyte = (b == 0xe0) ? 0xa0 : 0x80;
           int endbyte = (b == 0xed) ? 0x9f : 0xbf;
-          // DebugUtility.Log("%02X %02X %02X"
+          // System.out.println("%02X %02X %02X"
           // , data[position], data[position + 1], data[position + 2]);
           if ((data[position + 1] & 0xff) < startbyte ||
             (data[position + 1] & 0xff) > endbyte) {
@@ -1085,7 +1085,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             0xbf)) {
           int startbyte = (b == 0xf0) ? 0x90 : 0x80;
           int endbyte = (b == 0xf4) ? 0x8f : 0xbf;
-          // DebugUtility.Log("%02X %02X %02X %02X"
+          // System.out.println("%02X %02X %02X %02X"
           // , data[position], data[position + 1], data[position + 2],
           // data[position + 3]);
           if ((data[position + 1] & 0xff) < startbyte ||
@@ -3498,7 +3498,7 @@ LiberalSevenBitTransform(stream)) :
           } else {
             int[] state = { lineCount, c, 1 };
             c = ReadUtf8Char(stream, state);
-            // DebugUtility.Log("c=" + c + "," + lineCount + "," +
+            // System.out.println("c=" + c + "," + lineCount + "," +
             // state[0]+ ","+state[1]+","+state[2]);
             lineCount = state[0];
             ungetLast = state[2] == 1;
@@ -3878,7 +3878,7 @@ TransferEncodingToUse(
         if (HeaderEncoder.CanOutputRaw(rawField)) {
           AppendAscii(output, rawField);
         } else {
-          // DebugUtility.Log("Can't output '"+name+"' raw");
+          // System.out.println("Can't output '"+name+"' raw");
           String downgraded = HeaderFieldParsers.GetParser(name)
             .DowngradeHeaderField(name, value);
           if (
@@ -4045,7 +4045,7 @@ TransferEncodingToUse(
         builder.append(".local.invalid");
       }
       builder.append(">");
-      // DebugUtility.Log(builder.toString());
+      // System.out.println(builder.toString());
       return builder.toString();
     }
 
@@ -4238,7 +4238,7 @@ TransferEncodingToUse(
             this.transferEncoding = EncodingBase64;
           } else {
             // Unrecognized transfer encoding
-            // DebugUtility.Log("unrecognized: " + value);
+            // System.out.println("unrecognized: " + value);
             this.transferEncoding = EncodingUnknown;
           }
           haveContentEncoding = true;

@@ -1,6 +1,6 @@
 package com.upokecenter.text;
 /*
-  Written by Peter O. in 2014.
+  Written by Peter O.
   Any copyright is dedicated to the Public Domain.
   http://creativecommons.org/publicdomain/zero/1.0/
   If you like this, you should donate to Peter O.
@@ -145,7 +145,7 @@ package com.upokecenter.text;
       }
       int starterPos = 0;
       int retval = length;
-      // DebugUtility.Log ("buf=" + (EC(array,0,length)));
+      // System.out.println ("buf=" + (EC(array,0,length)));
       int starter = array[0];
       int last = UnicodeDatabase.GetCombiningClass(starter);
       if (last != 0) {
@@ -200,7 +200,7 @@ package com.upokecenter.text;
         }
         last = valuecc;
       }
-      // DebugUtility.Log ("bufend=" + (EC (array, 0, length)));
+      // System.out.println ("bufend=" + (EC (array, 0, length)));
       if (composed) {
         int j = 0;
         for (int i = 0; i < endPos; ++i) {
@@ -427,7 +427,7 @@ package com.upokecenter.text;
       if (str == null) {
         throw new NullPointerException("str");
       }
-      // DebugUtility.Log (str);
+      // System.out.println (str);
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       int lastQcsIndex = 0;
       boolean haveNonQcs = false;
@@ -470,7 +470,7 @@ package com.upokecenter.text;
         } else {
           haveNonQcs = true;
         }
-        // DebugUtility.Log ("ch=" + (// EC (c)) + " qcs=" + isQcs + " lastqcs="
+        // System.out.println ("ch=" + (// EC (c)) + " qcs=" + isQcs + " lastqcs="
         // + lastQcs + " nqs=" + nonQcsStart);
         if (c >= 0x10000) {
           ++i;
@@ -639,7 +639,7 @@ package com.upokecenter.text;
       if (this.processedIndex == this.flushIndex && this.flushIndex == 0) {
         while (total < length) {
           int c = this.GetNextChar();
-          // DebugUtility.Log ("read: " + (EC(c)));
+          // System.out.println ("read: " + (EC(c)));
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
@@ -651,14 +651,14 @@ package com.upokecenter.text;
             } else {
               while (total < length) {
                 int c2 = this.GetNextChar();
-                // DebugUtility.Log ("read in qcs: " + (EC (c)));
+                // System.out.println ("read in qcs: " + (EC (c)));
                 if (c2 < 0) {
                   chars[index] = c;
                   ++total;
                   return total;
                 } else {
                   this.PrependTwo(c, c2);
-                  // DebugUtility.Log ("prepending: " + (EC (c)) + ", " + (EC
+                  // System.out.println ("prepending: " + (EC (c)) + ", " + (EC
                   // (c2)));
                   break;
                 }
@@ -667,7 +667,7 @@ package com.upokecenter.text;
             }
           } else {
             this.PrependOne(c);
-            // DebugUtility.Log ("prepending: " + (EC (c)));
+            // System.out.println ("prepending: " + (EC (c)));
             break;
           }
         }
@@ -682,7 +682,7 @@ package com.upokecenter.text;
         if (count < 0) {
           count = 0;
         }
-        // DebugUtility.Log ("B count=" + count);
+        // System.out.println ("B count=" + count);
         if (count != 0) {
           // Fill buffer with processed code points
           System.arraycopy(this.buffer, this.flushIndex, chars, index, count);
@@ -700,7 +700,7 @@ package com.upokecenter.text;
         // buffer have been fully processed
         while (total < length && this.processedIndex == this.endIndex) {
           int c = this.GetNextChar();
-          // DebugUtility.Log ("B read: " + (EC(c)));
+          // System.out.println ("B read: " + (EC(c)));
           if (c < 0) {
             this.endOfString = true;
             break;
@@ -713,14 +713,14 @@ package com.upokecenter.text;
             } else {
               while (total < length) {
                 int c2 = this.GetNextChar();
-                // DebugUtility.Log ("B read in qcs: " + (EC(c)));
+                // System.out.println ("B read in qcs: " + (EC(c)));
                 if (c2 < 0) {
                   chars[index] = c;
                   ++total;
                   return total;
                 } else {
                   this.PrependTwo(c, c2);
-                  // DebugUtility.Log ("B prepending: " + (EC(c)) + ", " +
+                  // System.out.println ("B prepending: " + (EC(c)) + ", " +
                   // (// EC(c2)));
                   break;
                 }
@@ -729,7 +729,7 @@ package com.upokecenter.text;
             }
           } else {
             this.PrependOne(c);
-            // DebugUtility.Log ("B prepending: " + (EC(c)));
+            // System.out.println ("B prepending: " + (EC(c)));
             break;
           }
         }
@@ -775,7 +775,7 @@ package com.upokecenter.text;
         // or the end of the String is reached.
         while (this.endIndex + 18 <= this.buffer.length) {
           int c = this.GetNextChar();
-          // DebugUtility.Log ("C read: " + (EC(c)));
+          // System.out.println ("C read: " + (EC(c)));
           if (c < 0) {
             this.endOfString = true;
             break;
@@ -799,7 +799,7 @@ package com.upokecenter.text;
               UnicodeDatabase.IsQuickCheckStarter(
                 this.buffer[i],
                 this.form)) {
-              // DebugUtility.Log ("" + (EC (buffer [i])) + " is qcs");
+              // System.out.println ("" + (EC (buffer [i])) + " is qcs");
               if (decompForm) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
@@ -808,7 +808,7 @@ package com.upokecenter.text;
                   UnicodeDatabase.IsQuickCheckStarter(
                     this.buffer[i + 1],
                     this.form))) {
-                // DebugUtility.Log ("" + (EC (buffer [i +
+                // System.out.println ("" + (EC (buffer [i +
                 // 1])) + " (next) is qcs");
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
@@ -817,7 +817,7 @@ package com.upokecenter.text;
                 nextIsQCS = true;
               }
             } else {
-              // DebugUtility.Log ("" + (EC (buffer [i])) + " is not qcs");
+              // System.out.println ("" + (EC (buffer [i])) + " is not qcs");
               nextIsQCS = false;
             }
           }
@@ -838,17 +838,17 @@ package com.upokecenter.text;
       }
       // No data in buffer
       if (this.endIndex == 0) {
-        // DebugUtility.Log ("no data");
+        // System.out.println ("no data");
         return false;
       }
       this.flushIndex = 0;
-      // DebugUtility.Log ("reordering " + // (EC (buffer, 0, lastQcsIndex)) +
+      // System.out.println ("reordering " + // (EC (buffer, 0, lastQcsIndex)) +
       // " [" + this.form + "]");
       // Canonical reordering
       ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
       if (!IsDecompositionForm(this.form)) {
         // Composition
-        // DebugUtility.Log ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
+        // System.out.println ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");
         this.processedIndex = ComposeBuffer(
           this.buffer,

@@ -1,5 +1,5 @@
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -436,7 +436,7 @@ namespace PeterO.Text {
             // Empty label
             return false;
           }
-          if (!IsValidLabel (
+          if (!IsValidLabel(
               str.Substring(lastIndex, i - lastIndex),
               lookupRules,
               bidiRule)) {
@@ -445,7 +445,7 @@ namespace PeterO.Text {
           lastIndex = i + 1;
         }
       }
-      return (str.Length != lastIndex) && IsValidLabel (
+      return (str.Length != lastIndex) && IsValidLabel(
           str.Substring(lastIndex, str.Length - lastIndex),
           lookupRules,
           bidiRule);

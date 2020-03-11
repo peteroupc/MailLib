@@ -1,5 +1,5 @@
 /*
-  Written by Peter O. in 2014.
+  Written by Peter O.
   Any copyright is dedicated to the Public Domain.
   http://creativecommons.org/publicdomain/zero/1.0/
   If you like this, you should donate to Peter O.
@@ -263,8 +263,8 @@ namespace PeterO.Text {
     /// Form C.</summary>
     /// <param name='str'>A string specifying the text to
     /// normalize.</param>
-    public NormalizerInput (
-      string str) : this (
+    public NormalizerInput(
+      string str) : this(
           str,
           Normalization.NFC) {
     }
@@ -274,8 +274,8 @@ namespace PeterO.Text {
     /// Form C.</summary>
     /// <param name='input'>The parameter <paramref name='input'/> is an
     /// ICharacterInput object.</param>
-    public NormalizerInput (
-      ICharacterInput input) : this (
+    public NormalizerInput(
+      ICharacterInput input) : this(
           input,
           Normalization.NFC) {
     }
@@ -303,7 +303,7 @@ namespace PeterO.Text {
       string str,
       int index,
       int length,
-      Normalization form) : this (
+      Normalization form) : this(
           new StringCharacterInput2(str, index, length),
           form) {
     }
@@ -414,7 +414,7 @@ namespace PeterO.Text {
       Normalization form) {
       var i = 0;
       int ch;
-      var input = new NormalizerInput (
+      var input = new NormalizerInput(
         new PartialArrayCharacterInput(charArray, start, length),
         form);
       while ((ch = input.ReadChar()) >= 0) {
@@ -447,7 +447,7 @@ namespace PeterO.Text {
       if (str.Length <= 1024 && IsNormalized(str, form)) {
         return str;
       }
-      return Encodings.InputToString (
+      return Encodings.InputToString(
           new NormalizerInput(str, form));
     }
 
@@ -801,7 +801,7 @@ namespace PeterO.Text {
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.Max (
+      count = Math.Max(
           0,
           Math.Min(this.processedIndex - this.flushIndex, length - total));
       Array.Copy(this.buffer, this.flushIndex, chars, index, count);

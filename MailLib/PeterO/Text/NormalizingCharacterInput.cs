@@ -1,5 +1,5 @@
 /*
-  Written by Peter O. in 2014.
+  Written by Peter O.
   Any copyright is dedicated to the Public Domain.
   http://creativecommons.org/publicdomain/zero/1.0/
   If you like this, you should donate to Peter O.
@@ -82,8 +82,8 @@ namespace PeterO.Text {
     /// class.</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
     /// string.</param>
-    public NormalizingCharacterInput (
-      string str) : this (
+    public NormalizingCharacterInput(
+      string str) : this(
           str,
           Normalization.NFC) {
     }
@@ -93,8 +93,8 @@ namespace PeterO.Text {
     /// class.</summary>
     /// <param name='input'>The parameter <paramref name='input'/> is an
     /// ICharacterInput object.</param>
-    public NormalizingCharacterInput (
-      ICharacterInput input) : this (
+    public NormalizingCharacterInput(
+      ICharacterInput input) : this(
           input,
           Normalization.NFC) {
     }
@@ -115,7 +115,7 @@ namespace PeterO.Text {
     /// name='characterList'/> is an IList object.</param>
     /// <param name='form'>The parameter <paramref name='form'/> is a
     /// Normalization object.</param>
-    public NormalizingCharacterInput (
+    public NormalizingCharacterInput(
       IList<int> characterList,
       Normalization form)
       : this(new PartialListCharacterInput(characterList), form) {
@@ -303,7 +303,7 @@ namespace PeterO.Text {
     [Obsolete("Either convert the list to a string or wrap it in " +
         "an ICharacterInput and call the corresponding overload instead.")]
     public static bool IsNormalized(IList<int> charList, Normalization form) {
-      return IsNormalized (
+      return IsNormalized(
           new PartialListCharacterInput(charList),
           form);
     }

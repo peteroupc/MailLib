@@ -112,8 +112,8 @@ private FormatFlowed() {
             haveParagraph = false;
             endedParagraph = true;
             paragraph.delete(0, paragraph.length());
-            AppendHtmlEscape(formatted, str.substring(index, (index)+(lineEnd -
-index)));
+            String hesc = str.substring(index, (index)+(lineEnd - index));
+            AppendHtmlEscape(formatted, hesc);
             formatted.append("</p>");
           }
           if (lastQuotes < quotes) {
@@ -138,11 +138,8 @@ index)));
               } else {
                 if (index < lineEnd) {
                   formatted.append("<tt>");
-                  {
-                    String s = str.substring(index, (index)+(lineEnd -
-                        index));
-                    AppendHtmlEscape(formatted, s);
-                  }
+                  String s = str.substring(index, (index)+(lineEnd - index));
+                  AppendHtmlEscape(formatted, s);
                   formatted.append("</tt>");
                 }
                 if (!lastLine) {

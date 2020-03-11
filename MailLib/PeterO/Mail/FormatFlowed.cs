@@ -110,8 +110,8 @@ namespace PeterO.Mail {
             haveParagraph = false;
             endedParagraph = true;
             paragraph.Remove(0, paragraph.Length);
-            AppendHtmlEscape(formatted, str.Substring(index, lineEnd -
-index));
+            string hesc = str.Substring(index, lineEnd - index);
+            AppendHtmlEscape(formatted, hesc);
             formatted.Append("</p>");
           }
           if (lastQuotes < quotes) {
@@ -136,11 +136,8 @@ index));
               } else {
                 if (index < lineEnd) {
                   formatted.Append("<tt>");
-                  {
-                    string s = str.Substring(index, lineEnd -
-                        index);
-                    AppendHtmlEscape(formatted, s);
-                  }
+                  string s = str.Substring(index, lineEnd - index);
+                  AppendHtmlEscape(formatted, s);
                   formatted.Append("</tt>");
                 }
                 if (!lastLine) {
