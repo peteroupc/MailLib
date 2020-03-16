@@ -286,7 +286,6 @@ other.isGroup &&
     /// <list>
     /// <item><c>john@example.com</c></item>
     /// <item><c>"John Doe" &lt;john@example.com&gt;</c></item>
-    ///
     ///   <item><c>=?utf-8?q?John</c><c>=</c><c>27s_Office?=&lt;john@example.com&gt;</c></item>
     /// <item><c>John &lt;john@example.com&gt;</c></item>
     /// <item><c>"Group" : Tom &lt;tom@example.com&gt;, Jane
