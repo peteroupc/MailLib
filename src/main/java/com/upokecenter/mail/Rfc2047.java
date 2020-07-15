@@ -1,6 +1,6 @@
 package com.upokecenter.mail;
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -363,7 +363,7 @@ private Rfc2047() {
           }
           if (maybeWord) {
             // May be an encoded word
-            // DebugUtility.Log("maybe "
+            // System.out.println("maybe "
             // +str.substring(startIndex-2, (startIndex-2)+(afterLast-(startIndex-2))));
             index = startIndex;
             int i2;
@@ -412,7 +412,7 @@ private Rfc2047() {
               String encodedText = str.substring(
                   encodedTextStart, (
                   encodedTextStart)+((afterLast - 2) - encodedTextStart));
-              // DebugUtility.Log("enctext " + encodedText);
+              // System.out.println("enctext " + encodedText);
               int asterisk = charset.indexOf('*');
               if (asterisk >= 1) {
                 String language = charset.substring(

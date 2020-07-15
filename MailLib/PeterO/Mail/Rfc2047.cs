@@ -1,5 +1,5 @@
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -427,13 +427,13 @@ namespace PeterO.Mail {
               string charset = str.Substring(
                 startIndex,
                 charsetEnd - startIndex);
-              string encodedText = str.Substring (
+              string encodedText = str.Substring(
                   encodedTextStart,
                   (afterLast - 2) - encodedTextStart);
               // DebugUtility.Log("enctext " + encodedText);
               int asterisk = charset.IndexOf('*');
               if (asterisk >= 1) {
-                string language = charset.Substring (
+                string language = charset.Substring(
                     asterisk + 1,
                     charset.Length - (asterisk + 1));
                 charset = charset.Substring(0, asterisk);
@@ -460,7 +460,7 @@ BEncodingStringTransform(encodedText) :
                 }
                 if (encoding == null) {
                   // Console.WriteLine("Unknown charset " + charset);
-                  decodedWord = str.Substring (
+                  decodedWord = str.Substring(
                       startIndex - 2,
                       afterLast - (startIndex - 2));
                   acceptedEncodedWord = false;
@@ -490,12 +490,12 @@ EncodedWordContext.Comment &&
                   wordsWereDecoded = true;
                 }
               } else {
-                decodedWord = str.Substring (
+                decodedWord = str.Substring(
                     startIndex - 2,
                     afterLast - (startIndex - 2));
               }
             } else {
-              decodedWord = str.Substring (
+              decodedWord = str.Substring(
                   startIndex - 2,
                   afterLast - (startIndex - 2));
             }
@@ -506,7 +506,7 @@ EncodedWordContext.Comment &&
           (!acceptedEncodedWord || !lastWordWasEncodedWord)) {
           // Append whitespace as long as it doesn't occur between two
           // encoded words
-          builder.Append (
+          builder.Append(
             str.Substring(
               whitespaceStart,
               whitespaceEnd - whitespaceStart));
@@ -561,7 +561,7 @@ EncodedWordContext.Comment &&
           hasSuspiciousText || (
             retval.IndexOf(
               "=?",
-              StringComparison.Ordinal) >= 0 && retval.IndexOf (
+              StringComparison.Ordinal) >= 0 && retval.IndexOf(
               "?=",
               StringComparison.Ordinal) >= 0))) {
         if (context == EncodedWordContext.Comment) {
@@ -644,7 +644,7 @@ EncodedWordContext.Comment &&
       return -1;
     }
 
-    public static string DecodePhraseText (
+    public static string DecodePhraseText(
       string str,
       int index,
       int endIndex,
@@ -838,7 +838,7 @@ EncodedWordContext.Comment &&
       }
     }
 
-    public static void EncodePhraseText (
+    public static void EncodePhraseText(
       HeaderEncoder enc,
       string str,
       int index,

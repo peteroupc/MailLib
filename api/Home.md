@@ -14,8 +14,8 @@ Contains methods for parsing and generating Data URIs (uniform resource
 * [com.upokecenter.mail.DataUrls](com.upokecenter.mail.DataUrls.md) - Deprecated.
 Renamed to DataUris.
 
-* [com.upokecenter.mail.DispositionBuilder](com.upokecenter.mail.DispositionBuilder.md) -
-A mutable data type that allows a content disposition to be built.
+* [com.upokecenter.mail.DispositionBuilder](com.upokecenter.mail.DispositionBuilder.md) - Deprecated.
+Use ContentDisposition.Builder instead.
 
 * [com.upokecenter.mail.LanguageTags](com.upokecenter.mail.LanguageTags.md) -
 Contains methods for parsing and matching language tags.

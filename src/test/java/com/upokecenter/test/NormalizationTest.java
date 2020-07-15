@@ -339,9 +339,10 @@ import com.upokecenter.text.*;
             Normalization.NFD);
     String nfdfs = NormalizerInput.Normalize(codePointString,
             Normalization.NFDForFilesystems);
-    if (!(nfdfs.length() > 0)) {
+    if (!(
+      nfdfs.length() > 0)) {
  Assert.fail(
-            EncodingTest.EscapeString(codePointString));
+      EncodingTest.EscapeString(codePointString));
  }
           if (!nfc.equals(codePointString)) {
             continue;

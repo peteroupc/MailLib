@@ -357,7 +357,7 @@ private MailDateTime() {
                 = -1, second = -1, offset = -1, yearDigits = 0;
       indexStart = index;
       indexTemp = index;
-      // DebugUtility.Log("zone " + (str.substring(index)));
+      // System.out.println("zone " + (str.substring(index)));
       do {
         do {
           indexTemp2 = index;
@@ -443,7 +443,7 @@ private MailDateTime() {
             break;
           }
         } while (false);
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         day = 0;
         // NOTE: Day can have a leading zero (e.g., 05).
@@ -536,7 +536,7 @@ private MailDateTime() {
             break;
           }
         } while (false);
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         if (index == indexStart) {
           break;
         }
@@ -555,7 +555,7 @@ private MailDateTime() {
           index = indexStart;
           break;
         }
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         while (index < endIndex && (str.charAt(index) >= 48 && str.charAt(index) <= 57)) {
           yearDigits = Math.min(yearDigits + 1, 4);
           if (year > Integer.MAX_VALUE / 10) {
@@ -570,7 +570,7 @@ private MailDateTime() {
           year += ((int)str.charAt(index)) - 48;
           ++index;
         }
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         if (yearDigits == 3 || (yearDigits == 2 && year >= 50)) {
           year += 1900;
         } else if (yearDigits == 2) {
@@ -595,7 +595,7 @@ private MailDateTime() {
             return indexStart;
           }
         }
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         hour = minute = second = 0;
         if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
@@ -612,7 +612,7 @@ private MailDateTime() {
           index = indexStart;
           break;
         }
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index < endIndex && (str.charAt(index) == 58)) {
           ++index;
@@ -620,7 +620,7 @@ private MailDateTime() {
           index = indexStart;
           break;
         }
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
             (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
@@ -638,7 +638,7 @@ private MailDateTime() {
           break;
         }
         second = 0;
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         do {
           indexTemp2 = index;
           do {
@@ -678,7 +678,7 @@ private MailDateTime() {
             break;
           }
         } while (false);
-        // DebugUtility.Log("zone " + (str.substring(index)));
+        // System.out.println("zone " + (str.substring(index)));
         do {
           indexTemp2 = index;
           do {

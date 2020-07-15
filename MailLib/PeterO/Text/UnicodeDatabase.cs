@@ -30,7 +30,7 @@ namespace PeterO.Text {
       }
       if (classes == null) {
         lock (ValueSyncRoot) {
-          classes = classes ?? ByteData.Decompress (
+          classes = classes ?? ByteData.Decompress(
               NormalizationData.CombiningClasses);
         }
       }
@@ -207,7 +207,7 @@ namespace PeterO.Text {
       }
       if (casedprop == null) {
         lock (ValueSyncRoot) {
-          casedprop = casedprop ?? ByteData.Decompress (
+          casedprop = casedprop ?? ByteData.Decompress(
               NormalizationData.CaseProperty);
         }
       }

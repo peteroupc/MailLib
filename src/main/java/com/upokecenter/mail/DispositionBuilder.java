@@ -12,10 +12,11 @@ import com.upokecenter.util.*;
 
   /**
    * A mutable data type that allows a content disposition to be built.
-   */
+   * @deprecated Use ContentDisposition.Builder instead.
+ */
+@Deprecated
   public class DispositionBuilder {
-    private final Map<String, String> parameters;
-    private String type;
+    private final ContentDisposition.Builder builder;
 
     /**
      * Gets this value's disposition type, such as "inline" or "attachment".
@@ -26,10 +27,10 @@ import com.upokecenter.util.*;
      * empty string.
      */
     public final String getDispositionType() {
-        return this.type;
+        return this.builder.getDispositionType();
       }
 public final void setDispositionType(String value) {
-        this.SetDispositionType(value);
+        this.builder.SetDispositionType(value);
       }
 
     /**
@@ -38,8 +39,7 @@ public final void setDispositionType(String value) {
      *  type "attachment" .
      */
     public DispositionBuilder() {
-      this.parameters = new HashMap<String, String>();
-      this.type = "attachment";
+      this.builder = new ContentDisposition.Builder();
     }
 
     /**
@@ -50,11 +50,7 @@ public final void setDispositionType(String value) {
      * @throws NullPointerException The parameter {@code mt} is null.
      */
     public DispositionBuilder(ContentDisposition mt) {
-      if (mt == null) {
-        throw new NullPointerException("mt");
-      }
-      this.parameters = new HashMap<String, String>(mt.getParameters());
-      this.type = mt.getDispositionType();
+      this.builder = new ContentDisposition.Builder(mt);
     }
 
     /**
@@ -66,14 +62,7 @@ public final void setDispositionType(String value) {
      * @throws IllegalArgumentException Type is empty.
      */
     public DispositionBuilder(String type) {
-      if (type == null) {
-        throw new NullPointerException("type");
-      }
-      if (type.length() == 0) {
-        throw new IllegalArgumentException("type is empty.");
-      }
-      this.parameters = new HashMap<String, String>();
-      this.SetDispositionType(type);
+      this.builder = new ContentDisposition.Builder(type);
     }
 
     /**
@@ -83,7 +72,7 @@ public final void setDispositionType(String value) {
  */
 @Deprecated
     public final boolean isText() {
-        return this.getDispositionType().equals("text");
+        return this.builder.isText();
       }
 
     /**
@@ -94,7 +83,7 @@ public final void setDispositionType(String value) {
  */
 @Deprecated
     public final boolean isMultipart() {
-        return this.getDispositionType().equals("multipart");
+        return this.builder.isMultipart();
       }
 
     /**
@@ -102,7 +91,7 @@ public final void setDispositionType(String value) {
      * @return A MediaType object.
      */
     public ContentDisposition ToDisposition() {
-      return new ContentDisposition(this.type, this.parameters);
+        return this.builder.ToDisposition();
     }
 
     /**
@@ -116,18 +105,8 @@ public final void setDispositionType(String value) {
      * @throws IllegalArgumentException Str is empty.
      */
     public DispositionBuilder SetDispositionType(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (str.length() == 0) {
-        throw new IllegalArgumentException("str is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
-        str.length()) {
-        throw new IllegalArgumentException("Not a well-formed type: " + str);
-      }
-      this.type = DataUtilities.ToLowerCaseAscii(str);
-      return this;
+        this.builder.ToSetDispositionType(str);
+        return this;
     }
 
     /**
@@ -142,11 +121,8 @@ public final void setDispositionType(String value) {
      * @throws NullPointerException The parameter {@code name} is null.
      */
     public DispositionBuilder RemoveParameter(String name) {
-      if (name == null) {
-        throw new NullPointerException("name");
-      }
-      this.parameters.remove(DataUtilities.ToLowerCaseAscii(name));
-      return this;
+        this.builder.RemoveParameter(name);
+        return this;
     }
 
     /**
@@ -164,22 +140,8 @@ public final void setDispositionType(String value) {
      * well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
-      if (value == null) {
-        throw new NullPointerException("value");
-      }
-      if (name == null) {
-        throw new NullPointerException("name");
-      }
-      if (name.length() == 0) {
-        throw new IllegalArgumentException("name is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
-        name.length()) {
-        throw new IllegalArgumentException("Not a well-formed parameter name: " +
-          name);
-      }
-      this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
-      return this;
+        this.builder.SetParameter(name, value);
+        return this;
     }
 
     /**
@@ -187,6 +149,6 @@ public final void setDispositionType(String value) {
      * @return A string representation of this object.
      */
     @Override public String toString() {
-      return this.ToDisposition().toString();
+      return this.builder.ToDisposition().toString();
     }
   }

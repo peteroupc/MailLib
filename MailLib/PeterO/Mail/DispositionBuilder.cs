@@ -12,9 +12,9 @@ using PeterO;
 namespace PeterO.Mail {
   /// <summary>A mutable data type that allows a content disposition to
   /// be built.</summary>
+  [Obsolete("Use ContentDisposition.Builder instead.")]
   public class DispositionBuilder {
-    private readonly IDictionary<string, string> parameters;
-    private string type;
+    private readonly ContentDisposition.Builder builder;
 
     /// <summary>Gets or sets this value's disposition type, such as
     /// "inline" or "attachment".</summary>
@@ -26,11 +26,11 @@ namespace PeterO.Mail {
     /// the value is an empty string.</exception>
     public string DispositionType {
       get {
-        return this.type;
+        return this.builder.DispositionType;
       }
 
       set {
-        this.SetDispositionType(value);
+        this.builder.SetDispositionType(value);
       }
     }
 
@@ -38,8 +38,7 @@ namespace PeterO.Mail {
     /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the
     /// disposition type "attachment" .</summary>
     public DispositionBuilder() {
-      this.parameters = new Dictionary<string, string>();
-      this.type = "attachment";
+      this.builder = new ContentDisposition.Builder();
     }
 
     /// <summary>Initializes a new instance of the
@@ -50,11 +49,7 @@ namespace PeterO.Mail {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
-      if (mt == null) {
-        throw new ArgumentNullException(nameof(mt));
-      }
-      this.parameters = new Dictionary<string, string>(mt.Parameters);
-      this.type = mt.DispositionType;
+      this.builder = new ContentDisposition.Builder(mt);
     }
 
     /// <summary>Initializes a new instance of the
@@ -66,14 +61,7 @@ namespace PeterO.Mail {
     /// name='type'/> is null.</exception>
     /// <exception cref='ArgumentException'>Type is empty.</exception>
     public DispositionBuilder(string type) {
-      if (type == null) {
-        throw new ArgumentNullException(nameof(type));
-      }
-      if (type.Length == 0) {
-        throw new ArgumentException("type is empty.");
-      }
-      this.parameters = new Dictionary<string, string>();
-      this.SetDispositionType(type);
+      this.builder = new ContentDisposition.Builder(type);
     }
 
     /// <summary>Gets a value indicating whether this is a text media
@@ -84,7 +72,7 @@ namespace PeterO.Mail {
         "Irrelevant for content dispositions; will be removed in the future.")]
     public bool IsText {
       get {
-        return this.DispositionType.Equals("text", StringComparison.Ordinal);
+        return this.builder.IsText;
       }
     }
 
@@ -96,8 +84,7 @@ namespace PeterO.Mail {
         "\u0020future.")]
     public bool IsMultipart {
       get {
-        return this.DispositionType.Equals("multipart",
-            StringComparison.Ordinal);
+        return this.builder.IsMultipart;
       }
     }
 
@@ -105,7 +92,7 @@ namespace PeterO.Mail {
     /// object.</summary>
     /// <returns>A MediaType object.</returns>
     public ContentDisposition ToDisposition() {
-      return new ContentDisposition(this.type, this.parameters);
+        return this.builder.ToDisposition();
     }
 
     /// <summary>Sets the disposition type, such as "inline". This method
@@ -120,18 +107,8 @@ namespace PeterO.Mail {
     /// name='str'/> is null.</exception>
     /// <exception cref='ArgumentException'>Str is empty.</exception>
     public DispositionBuilder SetDispositionType(string str) {
-      if (str == null) {
-        throw new ArgumentNullException(nameof(str));
-      }
-      if (str.Length == 0) {
-        throw new ArgumentException("str is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
-        str.Length) {
-        throw new ArgumentException("Not a well-formed type: " + str);
-      }
-      this.type = DataUtilities.ToLowerCaseAscii(str);
-      return this;
+        this.builder.ToSetDispositionType(str);
+        return this;
     }
 
     /// <summary>Removes a parameter from this content disposition. Does
@@ -145,11 +122,8 @@ namespace PeterO.Mail {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
     public DispositionBuilder RemoveParameter(string name) {
-      if (name == null) {
-        throw new ArgumentNullException(nameof(name));
-      }
-      this.parameters.Remove(DataUtilities.ToLowerCaseAscii(name));
-      return this;
+        this.builder.RemoveParameter(name);
+        return this;
     }
 
     /// <summary>Sets a parameter of this content disposition.</summary>
@@ -167,28 +141,14 @@ namespace PeterO.Mail {
     /// name='name'/> is empty, or it isn't a well-formed parameter
     /// name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {
-      if (value == null) {
-        throw new ArgumentNullException(nameof(value));
-      }
-      if (name == null) {
-        throw new ArgumentNullException(nameof(name));
-      }
-      if (name.Length == 0) {
-        throw new ArgumentException("name is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
-        name.Length) {
-        throw new ArgumentException("Not a well-formed parameter name: " +
-          name);
-      }
-      this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;
-      return this;
+        this.builder.SetParameter(name, value);
+        return this;
     }
 
     /// <summary>Converts this object to a text string.</summary>
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
-      return this.ToDisposition().ToString();
+      return this.builder.ToDisposition().ToString();
     }
   }
 }

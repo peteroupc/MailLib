@@ -531,7 +531,7 @@ p +
                       }
                     } else if (lastCommand.Equals("color",
                         StringComparison.Ordinal)) {
-                      p = ParseColor (
+                      p = ParseColor(
                           DataUtilities.ToLowerCaseAscii(p),
                           0,
                           p.Length);
@@ -545,7 +545,7 @@ p +
                         StringComparison.Ordinal)) {
                       if (SkipLang(p, 0, p.Length) == p.Length) {
                         currentBuilder.Append("<span lang=' " +
-DataUtilities.ToLowerCaseAscii (
+DataUtilities.ToLowerCaseAscii(
                 p) + "'> ");
                       } else {
                         currentBuilder.Append("<span>");

@@ -1,23 +1,23 @@
-# com.upokecenter.mail.DispositionBuilder
+# com.upokecenter.mail.ContentDisposition.Builder
 
-    @Deprecated public class DispositionBuilder extends java.lang.Object
+    public final class ContentDisposition.Builder extends java.lang.Object
 
-Deprecated.
-Use ContentDisposition.Builder instead.
+A mutable data type that allows a content disposition to be built.
 
 ## Methods
 
-* `DispositionBuilder() DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the disposition
+* `Builder() DispositionBuilder`<br>
+ Initializes a new instance of the DispositionBuilder class using the disposition
   type "attachment" .
-* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the data from
+* `Builder​(ContentDisposition mt) DispositionBuilder`<br>
+ Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
-* `DispositionBuilder​(java.lang.String type) DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the given
- disposition type.
+* `Builder​(java.lang.String type)`<br>
+ Initializes a new instance of the {@link
+ com.upokecenter.mail.ContentDisposition.getBuilder()} class using the
+ given disposition type.
 * `java.lang.String getDispositionType()`<br>
- Deprecated. Gets this value's disposition type, such as "inline" or "attachment".
+ Gets this value's disposition type, such as "inline" or "attachment".
 * `boolean isMultipart()`<br>
  Deprecated.
 Irrelevant for content dispositions; will be removed in the future.
@@ -27,39 +27,41 @@ Irrelevant for content dispositions; will be removed in the future.
 Irrelevant for content dispositions; will be removed in the future.
  Irrelevant for content dispositions; will be removed in the future.
 * `DispositionBuilder RemoveParameter​(java.lang.String name)`<br>
- Deprecated. Removes a parameter from this content disposition.
+ Removes a parameter from this content disposition.
 * `void setDispositionType​(java.lang.String value)`<br>
- Deprecated.
 * `DispositionBuilder SetDispositionType​(java.lang.String str)`<br>
- Deprecated. Sets the disposition type, such as "inline".
+ Sets the disposition type, such as "inline".
 * `DispositionBuilder SetParameter​(java.lang.String name,
             java.lang.String value)`<br>
- Deprecated. Sets a parameter of this content disposition.
+ Sets a parameter of this content disposition.
 * `ContentDisposition ToDisposition()`<br>
- Deprecated. Converts this object to an immutable ContentDisposition object.
+ Converts this object to an immutable ContentDisposition object.
 * `java.lang.String toString()`<br>
- Deprecated. Converts this object to a text string.
+ Converts this object to a text string.
 
 ## Constructors
 
-* `DispositionBuilder() DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the disposition
+* `Builder() DispositionBuilder`<br>
+ Initializes a new instance of the DispositionBuilder class using the disposition
   type "attachment" .
-* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the data from
+* `Builder​(ContentDisposition mt) DispositionBuilder`<br>
+ Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
-* `DispositionBuilder​(java.lang.String type) DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the given
- disposition type.
+* `Builder​(java.lang.String type)`<br>
+ Initializes a new instance of the {@link
+ com.upokecenter.mail.ContentDisposition.getBuilder()} class using the
+ given disposition type.
 
 ## Method Details
 
-### DispositionBuilder
-    public DispositionBuilder()
-Deprecated.
-### DispositionBuilder
-    public DispositionBuilder​(ContentDisposition mt)
-Deprecated.
+### Builder
+    public Builder()
+Initializes a new instance of the <code>DispositionBuilder</code> class using the disposition
+  type "attachment" .
+### Builder
+    public Builder​(ContentDisposition mt)
+Initializes a new instance of the <code>DispositionBuilder</code> class using the data from
+ the given content disposition.
 
 **Parameters:**
 
@@ -69,9 +71,11 @@ Deprecated.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>mt</code> is null.
 
-### DispositionBuilder
-    public DispositionBuilder​(java.lang.String type)
-Deprecated.
+### Builder
+    public Builder​(java.lang.String type)
+Initializes a new instance of the {@link
+ com.upokecenter.mail.ContentDisposition.getBuilder()} class using the
+ given disposition type.
 
 **Parameters:**
 
@@ -85,7 +89,7 @@ Deprecated.
 
 ### getDispositionType
     public final java.lang.String getDispositionType()
-Deprecated.
+Gets this value's disposition type, such as "inline" or "attachment".
 
 **Returns:**
 
@@ -101,7 +105,6 @@ Deprecated.
 
 ### setDispositionType
     public final void setDispositionType​(java.lang.String value)
-Deprecated.
 ### isText
     @Deprecated public final boolean isText()
 Deprecated.
@@ -123,7 +126,7 @@ Irrelevant for content dispositions; will be removed in the future.
 
 ### ToDisposition
     public ContentDisposition ToDisposition()
-Deprecated.
+Converts this object to an immutable ContentDisposition object.
 
 **Returns:**
 
@@ -131,7 +134,10 @@ Deprecated.
 
 ### SetDispositionType
     public DispositionBuilder SetDispositionType​(java.lang.String str)
-Deprecated.
+Sets the disposition type, such as "inline". This method enables the pattern
+ of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
+ unlike with the DispositionType property in .NET or the
+ setDispositionType method (with small s) in Java.
 
 **Parameters:**
 
@@ -149,7 +155,8 @@ Deprecated.
 
 ### RemoveParameter
     public DispositionBuilder RemoveParameter​(java.lang.String name)
-Deprecated.
+Removes a parameter from this content disposition. Does nothing if the
+ parameter's name doesn't exist.
 
 **Parameters:**
 
@@ -169,7 +176,7 @@ Deprecated.
 
 ### SetParameter
     public DispositionBuilder SetParameter​(java.lang.String name, java.lang.String value)
-Deprecated.
+Sets a parameter of this content disposition.
 
 **Parameters:**
 
@@ -195,7 +202,7 @@ Deprecated.
 
 ### toString
     public java.lang.String toString()
-Deprecated.
+Converts this object to a text string.
 
 **Overrides:**
 

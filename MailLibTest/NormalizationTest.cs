@@ -140,7 +140,7 @@ namespace MailLibTest {
         throw new ArgumentNullException(nameof(expectedStr));
       }
       if (!expectedStr.Equals(actualStr, StringComparison.Ordinal)) {
-        Assert.Fail (
+        Assert.Fail(
           "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
           "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
@@ -148,7 +148,7 @@ namespace MailLibTest {
 
     public static void AssertEqual(int expected, int actual, string msg) {
       if (expected != actual) {
-        Assert.Fail (
+        Assert.Fail(
           "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
@@ -161,7 +161,7 @@ namespace MailLibTest {
         throw new ArgumentNullException(nameof(actual));
       }
       if (expected.Length != actual.Length) {
-        Assert.Fail (
+        Assert.Fail(
           "\nexpected: " + ToString(expected) + "\n" + "\nwas: " +
           ToString(actual) + "\n" + msg);
       }
@@ -221,11 +221,11 @@ namespace MailLibTest {
           "_\u96e3\uc972+67 Tqd R_.",
           stringTemp);
       }
-      Assert.IsFalse (
+      Assert.IsFalse(
         NormalizerInput.IsNormalized(str, Normalization.NFC));
       this.TestIdempotent(str, Normalization.NFC);
       str = "_\u96e3\uc972+67 Tqd R_._";
-      Assert.IsTrue (
+      Assert.IsTrue(
         NormalizerInput.IsNormalized(str, Normalization.NFC));
       this.TestIdempotent(str, Normalization.NFC);
     }
@@ -337,8 +337,9 @@ namespace MailLibTest {
             Normalization.NFD);
     string nfdfs = NormalizerInput.Normalize(codePointString,
             Normalization.NFDForFilesystems);
-    Assert.IsTrue(nfdfs.Length > 0,
-            EncodingTest.EscapeString(codePointString));
+    Assert.IsTrue(
+      nfdfs.Length > 0,
+      EncodingTest.EscapeString(codePointString));
           if (!nfc.Equals(codePointString)) {
             continue;
           }
@@ -432,19 +433,19 @@ namespace MailLibTest {
             Assert.Fail(TestCommon.IntToString(i));
           }
           string imsg = TestCommon.IntToString(i);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFC),
             imsg);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFD),
             imsg);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFKC),
             imsg);
-          AssertEqual (
+          AssertEqual(
             cpstr,
             NormalizerInput.Normalize(cpstr, Normalization.NFKD),
             imsg);

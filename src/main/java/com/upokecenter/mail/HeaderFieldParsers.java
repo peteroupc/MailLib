@@ -500,7 +500,7 @@ private HeaderFieldParsers() {
         if (endIndex != str.length()) {
           // The header field is syntactically invalid,
           // so don't decode any encoded words
-          // DebugUtility.Log("Invalid syntax: " + this.getClass().getName() +
+          // System.out.println("Invalid syntax: " + this.getClass().getName() +
           // ", " + str);
           return str;
         }
@@ -508,7 +508,7 @@ private HeaderFieldParsers() {
         // Get each relevant token sorted by starting index
         List<int[]> tokens = tokener.GetTokens();
         for (int[] token : tokens) {
-          // DebugUtility.Log("" + token[0] + " [" +
+          // System.out.println("" + token[0] + " [" +
           // (str.substring(token[1],(token[1])+(token[2]-token[1]))) + "]");
           if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
             lastIndex) {
@@ -951,7 +951,7 @@ private HeaderFieldParsers() {
         // they send (especially to add or remove whitespace in header
         // field values) except to add certain header fields at the top of
         // the message.
-        // DebugUtility.Log("before = "+str);
+        // System.out.println("before = "+str);
         String lcname = DataUtilities.ToLowerCaseAscii(name);
         HeaderEncoder enc = new HeaderEncoder(
           Message.MaxRecHeaderLineLength,
@@ -963,7 +963,7 @@ private HeaderFieldParsers() {
         } else {
           str = HeaderFieldParsers.DowngradeListHeader(enc, str);
         }
-        // DebugUtility.Log("after = "+str);
+        // System.out.println("after = "+str);
         return new HeaderEncoder().AppendFieldName(name) + str;
       }
 

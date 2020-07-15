@@ -1,5 +1,5 @@
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -236,8 +236,8 @@ namespace PeterO.Mail {
             int startQuote = index;
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
-              builder.Append (
-                str.Substring (
+              builder.Append(
+                str.Substring(
                   startQuote + 1,
                   index - (startQuote + 1)));
             } else {
@@ -255,7 +255,7 @@ namespace PeterO.Mail {
       return ParseDotAtomAfterCFWS(str, index, endIndex);
     }
 
-    public static IList<NamedAddress> ParseAddressList (
+    public static IList<NamedAddress> ParseAddressList(
       string str,
       int index,
       int endIndex,
@@ -306,7 +306,7 @@ namespace PeterO.Mail {
       }
     }
 
-    public static NamedAddress ParseAddress (
+    public static NamedAddress ParseAddress(
       string str,
       int index,
       int endIndex,
@@ -328,7 +328,7 @@ namespace PeterO.Mail {
       return null;
     }
 
-    public static NamedAddress ParseGroup (
+    public static NamedAddress ParseGroup(
       string str,
       int index,
       int endIndex,
@@ -360,7 +360,7 @@ namespace PeterO.Mail {
       return new NamedAddress(displayName, mailboxes);
     }
 
-    public static NamedAddress ParseMailbox (
+    public static NamedAddress ParseMailbox(
       string str,
       int index,
       int endIndex,

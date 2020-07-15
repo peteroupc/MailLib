@@ -216,8 +216,8 @@ private MailtoUris() {
                 emails += "," + decoded;
               }
             } else {
-              // DebugUtility.Log(name);
-              // DebugUtility.Log(value);
+              // System.out.println(name);
+              // System.out.println(value);
             }
           }
         }

@@ -181,7 +181,7 @@ BEncodingStringTransform(data) :
                 state = 0;
               } else {
                 if (!haveSpace) {
-                  builder.Append (
+                  builder.Append(
                     str.Substring(
                       markStart,
                       wordStart - markStart));
@@ -246,7 +246,7 @@ BEncodingStringTransform(data) :
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = cs ?? Encodings.GetEncoding("us-ascii", true);
       int quote = paramValue.IndexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeToString (
+      return (quote >= 0) ? null : Encodings.DecodeToString(
           cs,
           new PercentEncodingStringTransform(paramValue));
     }
@@ -365,7 +365,7 @@ BEncodingStringTransform(data) :
           // This is the only kind of character in Unicode with this
           // normalization property.
           var tsb = new StringBuilder().Append((char)c);
-          string tss = NormalizerInput.Normalize (
+          string tss = NormalizerInput.Normalize(
               tsb.ToString(),
               Normalization.NFD);
           if (tss.IndexOf((char)0x338) >= 0) {
@@ -447,7 +447,7 @@ BEncodingStringTransform(data) :
         // too, to use quotes around a filename parameter AND use
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
-        string charset = Encodings.ResolveAliasForEmail (
+        string charset = Encodings.ResolveAliasForEmail(
             str.Substring(
               0,
               index));
@@ -636,19 +636,19 @@ BEncodingStringTransform(data) :
           StringComparison.Ordinal) || strLower.Equals("clock$",
             StringComparison.Ordinal) || strLower.IndexOf(
               "nul.",
-              StringComparison.Ordinal) == 0 || strLower.Equals (
+              StringComparison.Ordinal) == 0 || strLower.Equals(
             "prn",
             StringComparison.Ordinal) || strLower.IndexOf(
               "prn.",
-              StringComparison.Ordinal) == 0 || strLower.IndexOf (
+              StringComparison.Ordinal) == 0 || strLower.IndexOf(
             "![",
             StringComparison.Ordinal) >= 0 || strLower.Equals(
               "aux",
-              StringComparison.Ordinal) || strLower.IndexOf (
+              StringComparison.Ordinal) || strLower.IndexOf(
             "aux.",
             StringComparison.Ordinal) == 0 || strLower.Equals(
               "con",
-              StringComparison.Ordinal) || strLower.IndexOf (
+              StringComparison.Ordinal) || strLower.IndexOf(
             "con.",
             StringComparison.Ordinal) == 0;
         // LPTn, COMn

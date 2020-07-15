@@ -1194,12 +1194,12 @@ private FormatFlowed() {
           boolean seenBlankishLine = false;
           boolean wrapLinesInParas = false;
 
-          // DebugUtility.Log("newlist");
+          // System.out.println("newlist");
           while (qi < lines.size()) {
             line = lines.get(qi);
             if (IsListLine(line, ordered)) {
               wrapLinesInParas |= seenBlankishLine;
-              // DebugUtility.Log("para=" + qs.toString());
+              // System.out.println("para=" + qs.toString());
               String qss2;
               if (depth >= 100) {
                 formatted.append("<pre><code>");
@@ -1221,8 +1221,8 @@ private FormatFlowed() {
               ++itemLineCount;
               seenBlankishLine = false;
             } else {
-              // DebugUtility.Log("[" + line + "]");
-              // DebugUtility.Log("blankish=" + IsBlankishLine(line));
+              // System.out.println("[" + line + "]");
+              // System.out.println("blankish=" + IsBlankishLine(line));
               if (IsBlankishLine(line)) {
                 seenBlankishLine = true;
                 ++qi;
@@ -1232,7 +1232,7 @@ private FormatFlowed() {
                 }
                 seenBlankishLine = false;
                 qs.append("\r\n").append(StripItemStart(line, ordered));
-                // DebugUtility.Log("qs=" + qs);
+                // System.out.println("qs=" + qs);
                 ++qi;
                 ++itemLineCount;
               } else if (seenBlankishLine) {
@@ -1243,20 +1243,20 @@ private FormatFlowed() {
                 }
                 seenBlankishLine = false;
                 qs.append("\r\n").append(StripItemStart(line, ordered));
-                // DebugUtility.Log("qs=" + qs);
+                // System.out.println("qs=" + qs);
                 ++qi;
                 ++itemLineCount;
               }
             }
           }
           i = qi - 1;
-          // DebugUtility.Log("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
+          // System.out.println("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
           String qss = MarkdownText(
               qs.toString(),
               depth + 1,
               wrapLinesInParas,
               links);
-          // DebugUtility.Log("formatted_listitem = "+qss);
+          // System.out.println("formatted_listitem = "+qss);
           formatted.append(qss);
           formatted.append("</li>");
           formatted.append(ordered ? "</ol>" : "</ul>");

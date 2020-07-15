@@ -9,7 +9,7 @@ namespace MailLibTest {
   [TestFixture]
   public class DataUrlTest {
     private void TestMatchBasicNone(string[] langranges, string str) {
-      IList<string> r = LanguageTags.LanguageTagFilter (
+      IList<string> r = LanguageTags.LanguageTagFilter(
           new List<string>(langranges),
           new List<string>(new string[] { str }),
           false,
@@ -18,7 +18,7 @@ namespace MailLibTest {
     }
 
     private void TestMatchBasicContained(string[] langranges, string str) {
-      IList<string> r = LanguageTags.LanguageTagFilter (
+      IList<string> r = LanguageTags.LanguageTagFilter(
           new List<string>(langranges),
           new List<string>(new string[] { str }),
           false,

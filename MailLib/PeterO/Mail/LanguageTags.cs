@@ -176,8 +176,8 @@ namespace PeterO.Mail {
             sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 2,
   2)));
           } else {
-            sb.Append (
-              DataUtilities.ToLowerCaseAscii (
+            sb.Append(
+              DataUtilities.ToLowerCaseAscii(
                 str.Substring(
                   i - count,
                   count)));
@@ -218,7 +218,7 @@ namespace PeterO.Mail {
     /// <returns>A list of language tags. Returns an empty list if
     /// <paramref name='str'/> is null or the empty string, or null if
     /// <paramref name='str'/> syntactically invalid.</returns>
-    public static IList<string> GetLanguageList (
+    public static IList<string> GetLanguageList(
       string str) {
       string tag = null;
       var first = true;
@@ -287,7 +287,7 @@ namespace PeterO.Mail {
     /// the order in which they appeared in the given string. Returns null
     /// if <paramref name='str'/> is null or syntactically
     /// invalid.</returns>
-    public static IList<StringAndQuality> GetRangeListWithQuality (
+    public static IList<StringAndQuality> GetRangeListWithQuality(
       string str) {
       string tag = null;
       var first = true;
@@ -440,7 +440,7 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic or extended
     /// language range, or <paramref name='languages'/> contains a value
     /// that is not a potentially valid language tag.</exception>
-    public static IList<string> LanguageTagFilter (
+    public static IList<string> LanguageTagFilter(
       IList<string> ranges,
       IList<string> languages,
       bool extended,
@@ -526,7 +526,7 @@ namespace PeterO.Mail {
     /// name='range'/> is not a basic language range, or <paramref
     /// name='tag'/> is not a potentially valid language tag.</exception>
     public static bool MatchesLanguageTag(string range, string tag) {
-      IList<string> tags = LanguageTagFilter (
+      IList<string> tags = LanguageTagFilter(
           new List<string>(new string[] { range }),
           new List<string>(new string[] { tag }),
           false,
@@ -551,7 +551,7 @@ namespace PeterO.Mail {
     /// name='range'/> is not a basic language range, or <paramref
     /// name='languages'/> contains a value that is not a potentially valid
     /// language tag.</exception>
-    public static string LanguageTagLookup (
+    public static string LanguageTagLookup(
       string range,
       IList<string> languages,
       string defaultValue) {
@@ -577,7 +577,7 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic language
     /// range, or <paramref name='languages'/> contains a value that is not
     /// a potentially valid language tag.</exception>
-    public static string LanguageTagLookup (
+    public static string LanguageTagLookup(
       IList<string> ranges,
       IList<string> languages,
       string defaultValue) {
@@ -600,7 +600,7 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic language
     /// range, or <paramref name='languages'/> contains a value that is not
     /// a potentially valid language tag.</exception>
-    public static IList<string> LanguageTagFilter (
+    public static IList<string> LanguageTagFilter(
       IList<string> ranges,
       IList<string> languages) {
       return LanguageTagFilter(ranges, languages, false, false);
@@ -625,12 +625,12 @@ namespace PeterO.Mail {
     /// name='range'/> is not a basic or extended language range, or
     /// <paramref name='languages'/> contains a value that is not a
     /// potentially valid language tag.</exception>
-    public static string LanguageTagLookup (
+    public static string LanguageTagLookup(
       string range,
       IList<string> languages,
       string defaultValue,
       bool extended) {
-      return LanguageTagLookup (
+      return LanguageTagLookup(
           new List<string>(new string[] { range }),
           languages,
           defaultValue,
@@ -658,7 +658,7 @@ namespace PeterO.Mail {
     /// name='ranges'/> contains a value that is not a basic or extended
     /// language range, or <paramref name='languages'/> contains a value
     /// that is not a potentially valid language tag.</exception>
-    public static string LanguageTagLookup (
+    public static string LanguageTagLookup(
       IList<string> ranges,
       IList<string> languages,
       string defaultValue,
@@ -767,7 +767,7 @@ namespace PeterO.Mail {
             return true;
           }
           // More complex cases
-          string[] splitString = ParserUtility.SplitAt (
+          string[] splitString = ParserUtility.SplitAt(
               str.Substring(startIndex, endIndex - startIndex),
               "-");
           if (splitString.Length == 0) {

@@ -222,7 +222,7 @@ import com.upokecenter.util.*;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
             symbolBegin = i;
           } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
-            // DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(// endIndex - i)));
+            // System.out.println("Special whitespace|" + symbol.substring(i,(i)+(// endIndex - i)));
             this.AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -281,7 +281,7 @@ import com.upokecenter.util.*;
             symbolBegin = i + 1;
             ++i;
           } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
-            /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex - i)));
+            /*System.out.println("Special whitespace|" + symbol.substring(i,(i)+(endIndex - i)));
                */
             this.AppendSpaceAndSymbol(
               symbol,
@@ -991,8 +991,8 @@ import com.upokecenter.util.*;
           return trialField;
         }
       }
-      // DebugUtility.Log("Must wrap '" + fieldName + "'");
-      // DebugUtility.Log(fieldValue);
+      // System.out.println("Must wrap '" + fieldName + "'");
+      // System.out.println(fieldValue);
       sa = new HeaderEncoder().AppendFieldName(fieldName);
       fieldValue = TrimLeadingFWS(fieldValue);
       sa.AppendString(fieldValue, 0, fieldValue.length(), structured);

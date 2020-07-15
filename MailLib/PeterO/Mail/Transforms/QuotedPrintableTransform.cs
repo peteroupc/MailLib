@@ -1,5 +1,5 @@
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -55,7 +55,7 @@ namespace PeterO.Mail.Transforms {
 
     public QuotedPrintableTransform(
       IByteReader input,
-      bool allowBareLfCr) : this (
+      bool allowBareLfCr) : this(
           input,
           allowBareLfCr,
           MaxLineLength,
@@ -65,7 +65,7 @@ namespace PeterO.Mail.Transforms {
     public QuotedPrintableTransform(
       IByteReader input,
       bool allowBareLfCr,
-      int maxLineLength) : this (
+      int maxLineLength) : this(
           input,
           allowBareLfCr,
           maxLineLength,

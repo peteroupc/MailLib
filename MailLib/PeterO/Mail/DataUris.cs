@@ -25,7 +25,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(uri));
       }
       string url = uri;
-      string[] parts = URIUtility.SplitIRIToStrings (
+      string[] parts = URIUtility.SplitIRIToStrings(
           url);
       if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
@@ -133,7 +133,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(uri));
       }
       string url = uri;
-      string[] parts = URIUtility.SplitIRIToStrings (
+      string[] parts = URIUtility.SplitIRIToStrings(
           url);
       if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
@@ -144,7 +144,7 @@ namespace PeterO.Mail {
         if (mediaTypePart == -1) {
           return null;
         }
-        bool usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii (
+        bool usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii(
             path.Substring(
               mediaTypePart - 7,
               7)).Equals(";base64", StringComparison.Ordinal);
@@ -168,8 +168,8 @@ namespace PeterO.Mail {
             }
           }
           if (hasPercent) {
-            payload = URIUtility.PercentDecode (
-                path.Substring (
+            payload = URIUtility.PercentDecode(
+                path.Substring(
                   mediaTypePart + 1,
                   path.Length - (mediaTypePart + 1)));
             payloadIndex = 0;
@@ -284,7 +284,7 @@ namespace PeterO.Mail {
       if (textString == null) {
         throw new ArgumentNullException(nameof(textString));
       }
-      return MakeDataUri (
+      return MakeDataUri(
           DataUtilities.GetUtf8Bytes(textString, true),
           MediaType.Parse("text/plain;charset=utf-8"));
     }

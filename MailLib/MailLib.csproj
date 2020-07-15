@@ -26,7 +26,7 @@ Version 0.15.0:
 - Update media types
 
 </PackageReleaseNotes>
-    <Copyright>Written by Peter O. in 2013-2018.  Any copyright is released to the Public Domain.
+    <Copyright>Written by Peter O.  Any copyright is released to the Public Domain.
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See
        https://github.com/peteroupc/MailLib/LICENSE.md for more information.)</Copyright>
     <PackOnBuild>true</PackOnBuild>
@@ -36,11 +36,11 @@ Version 0.15.0:
     <PackageTags>email mail mime parser charset charsets</PackageTags>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
 
-  <PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Debug|AnyCPU&apos; '>
+  <PropertyGroup Condition=' &apos;$(Configuration)&apos;==&apos;Debug&apos; '>
     <DebugType>full</DebugType>
     <DocumentationFile>bin\Debug\netstandard1.0\MailLib.xml</DocumentationFile>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
-  <PropertyGroup Condition=' &apos;$(Configuration)|$(Platform)&apos; == &apos;Release|AnyCPU&apos; '>
+  <PropertyGroup Condition=' &apos;$(Configuration)&apos;==&apos;Release&apos; '>
     <DebugType/>
     <DocumentationFile>bin\Release\netstandard1.0\MailLib.xml</DocumentationFile>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
@@ -49,9 +49,9 @@ Version 0.15.0:
     <EmbeddedResource Condition=' &apos;$(EnableDefaultEmbeddedResourceItems)&apos; == &apos;true&apos; ' Update='PeterO.Text.Encoders.AppResources.resx'>
       <LogicalName>PeterO.Text.Encoders.AppResources.resources</LogicalName>
     </EmbeddedResource>
-  <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.2.0-beta.113'/><AdditionalFiles Include='stylecop.json'/><PackageReference Include='PeterO.DataUtilities' Version='1.1.0'/>
+  <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.2.0-beta.164'/><AdditionalFiles Include='stylecop.json'/><PackageReference Include='PeterO.DataUtilities' Version='1.1.0'/>
 <PackageReference Include='PeterO.URIUtility' Version='1.0.0'/>
-<PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers' PrivateAssets='All' Version='2.9.8'/></ItemGroup>
+<PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers' PrivateAssets='All' Version='3.0.0'/></ItemGroup>
   <ItemGroup>
     <PackageReference Include='PeterO.Encoding' Version='0.6.0'/>
   <AdditionalFiles Include='rules.ruleset'/></ItemGroup>
