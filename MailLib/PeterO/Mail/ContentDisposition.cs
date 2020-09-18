@@ -615,7 +615,7 @@ namespace PeterO.Mail {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     /// <exception cref='ArgumentException'>Str is empty.</exception>
-    public DispositionBuilder SetDispositionType(string str) {
+    public Builder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
@@ -640,7 +640,7 @@ namespace PeterO.Mail {
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
-    public DispositionBuilder RemoveParameter(string name) {
+    public Builder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException(nameof(name));
       }
@@ -662,7 +662,7 @@ namespace PeterO.Mail {
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='name'/> is empty, or it isn't a well-formed parameter
     /// name.</exception>
-    public DispositionBuilder SetParameter(string name, string value) {
+    public Builder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
       }

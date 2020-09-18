@@ -15,7 +15,7 @@ namespace MailLibTest {
       string location,
       string cachedPath) {
       if (!File.Exists(cachedPath)) {
-        var request = WebRequest.Create (
+        var request = WebRequest.Create(
             new Uri(location));
         var response = request.GetResponse();
         using (var stream = response.GetResponseStream()) {

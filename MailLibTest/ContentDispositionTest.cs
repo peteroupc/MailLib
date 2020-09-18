@@ -76,7 +76,7 @@ namespace MailLibTest {
       foreach (IDictionary<string, string> dict in
         ResourceUtil.GetDictList("paramtypes")) {
         ContentDisposition mt = ParseAndTestAspects("inline" + dict["params"]);
-        Assert.AreEqual (
+        Assert.AreEqual(
           dict["filename"],
           mt.GetParameter("filename"));
       }
@@ -290,7 +290,7 @@ namespace MailLibTest {
           }
         }
       }
-      int bracketedText = str.IndexOf('[');
+      int bracketedText = str.IndexOf('[', StringComparison.Ordinal);
       if (bracketedText >= 0) {
         bracketedText = str.IndexOf(']', bracketedText);
         if (bracketedText >= 0) {
@@ -309,14 +309,14 @@ namespace MailLibTest {
           (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
 0xfeff ||
           (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
-          FailFilename (
+          FailFilename(
             filename,
             str,
             "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
         }
         // Code points that decompose to "bad" characters
         if (c == 0x1fef) {
-          FailFilename (
+          FailFilename(
             filename,
             str,
             "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
@@ -352,7 +352,7 @@ namespace MailLibTest {
       // Assert that MakeFilename is idempotent
       string newstr = ContentDisposition.MakeFilename(str);
       if (!newstr.Equals(str, StringComparison.Ordinal)) {
-        FailFilename (
+        FailFilename(
           filename,
           str,
           "Not idempotent:\nnewname_=" + EncodingTest.EscapeString(newstr));
@@ -370,7 +370,7 @@ namespace MailLibTest {
     [Timeout(200000)]
     public void TestMakeFilename() {
       var rnd = new RandomGenerator(new XorShift128Plus(false));
-      Assert.AreEqual (
+      Assert.AreEqual(
         String.Empty,
         ContentDisposition.MakeFilename(null));
       for (var i = 0; i < 10000; ++i) {
@@ -386,7 +386,7 @@ namespace MailLibTest {
       // "my\ufffdfile\ufffdname\ud800\udc00.txt",
       // "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
       for (var i = 0; i < filenames.Length; i += 2) {
-        string str = ContentDisposition.MakeFilename (
+        string str = ContentDisposition.MakeFilename(
             filenames[i]);
         Assert.AreEqual(
           filenames[i + 1],

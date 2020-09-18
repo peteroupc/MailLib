@@ -198,8 +198,8 @@ namespace MailLibTest {
         "y").SetParameter(
         "z",
         valueMessageString).ToString();
-      Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
-      Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
+      Assert.IsFalse(mtstring.Contains("\r\n\r\n", StringComparison.Ordinal));
+      Assert.IsFalse(mtstring.Contains("\r\n \r\n", StringComparison.Ordinal));
       {
         object objectTemp = valueMessageString;
         object objectTemp2 = MediaType.Parse(mtstring).GetParameter(

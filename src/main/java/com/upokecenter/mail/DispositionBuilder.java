@@ -105,7 +105,7 @@ public final void setDispositionType(String value) {
      * @throws IllegalArgumentException Str is empty.
      */
     public DispositionBuilder SetDispositionType(String str) {
-        this.builder.ToSetDispositionType(str);
+        this.builder.SetDispositionType(str);
         return this;
     }
 

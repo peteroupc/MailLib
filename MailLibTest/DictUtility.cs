@@ -6,7 +6,7 @@ namespace MailLibTest {
   public static class DictUtility {
     private const string HexAlphabet = "0123456789ABCDEF";
 
-    public static IList<IDictionary<String, String>> DictList (
+    public static IList<IDictionary<String, String>> DictList(
       params IDictionary<String, String>[] dicts) {
       if (dicts == null) {
         throw new ArgumentNullException(nameof(dicts));
@@ -19,7 +19,7 @@ namespace MailLibTest {
       return list;
     }
 
-    public static IDictionary<string, string> MakeDict (
+    public static IDictionary<string, string> MakeDict(
       params string[] keyvalues) {
       if (keyvalues == null) {
         throw new ArgumentNullException(nameof(keyvalues));
@@ -34,7 +34,7 @@ namespace MailLibTest {
       return dict;
     }
 
-    public static string ToJSON (
+    public static string ToJSON(
       IList<IDictionary<string, string>> dictlist) {
       var sb = new StringBuilder().Append("[");
       if (dictlist == null) {
@@ -102,7 +102,7 @@ namespace MailLibTest {
       if (value == null) {
         throw new ArgumentNullException(nameof(value));
       }
-      if (name.IndexOf('=') != -1) {
+      if (name.IndexOf('=', StringComparison.Ordinal) != -1) {
         throw new ArgumentException("name has an equal sign");
       }
       var sb = new StringBuilder();
@@ -142,7 +142,7 @@ namespace MailLibTest {
       return sb.Append("]").ToString();
     }
 
-    public static IList<IDictionary<string, string>> ParseJSONDictList (
+    public static IList<IDictionary<string, string>> ParseJSONDictList(
       string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));

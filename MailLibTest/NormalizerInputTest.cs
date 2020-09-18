@@ -108,7 +108,7 @@ namespace MailLibTest {
         "x\u0300\u0323",
         Normalization.NFC));
       try {
-        NormalizerInput.IsNormalized (
+        NormalizerInput.IsNormalized(
           (ICharacterInput)null,
           Normalization.NFC);
         Assert.Fail("Should have failed");
@@ -119,19 +119,19 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
 
-      Assert.IsTrue (
+      Assert.IsTrue(
         NormalizerInput.IsNormalized(
           "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
           Normalization.NFC));
-      Assert.IsTrue (
+      Assert.IsTrue(
         NormalizerInput.IsNormalized(
           "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
           Normalization.NFD));
-      Assert.IsTrue (
+      Assert.IsTrue(
         NormalizerInput.IsNormalized(
           "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
           Normalization.NFKC));
-      Assert.IsTrue (
+      Assert.IsTrue(
         NormalizerInput.IsNormalized(
           "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
           Normalization.NFKD));

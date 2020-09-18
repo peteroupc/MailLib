@@ -112,7 +112,7 @@ namespace MailLibTest {
       na = new NamedAddress("Me <test@EXAMPLE.COM>");
       {
         string stringTemp = na.ToString();
-        Assert.AreEqual (
+        Assert.AreEqual(
           "Me <test@EXAMPLE.COM>",
           stringTemp);
       }
@@ -170,7 +170,7 @@ namespace MailLibTest {
         string stringTemp = na.Address.ToString();
         Assert.AreEqual("me@example.com", stringTemp);
       }
-      na = new NamedAddress (
+      na = new NamedAddress(
         "(comment) Me (comment) <me@example.com> (comment)");
       Assert.AreEqual("Me", na.Name);
       Assert.IsFalse(na.IsGroup);
@@ -212,7 +212,7 @@ namespace MailLibTest {
       }
       {
         string stringTemp = na.ToString();
-        Assert.AreEqual (
+        Assert.AreEqual(
           "Me <me@example.com>",
           stringTemp);
       }
@@ -327,7 +327,7 @@ namespace MailLibTest {
       var result = new NamedAddress(ValueMbox);
       {
         string stringTemp = result.ToString();
-        Assert.AreEqual (
+        Assert.AreEqual(
           "Me <me@x.example>",
           stringTemp);
       }

@@ -19,8 +19,8 @@
   </ItemGroup>
       <ItemGroup>
         <PackageReference Include='NUnit' Version='3.12.0'/>
-        <PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers' PrivateAssets='All' Version='3.0.0'/>
-        <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.2.0-beta.164'/>
+        <PackageReference Include='Microsoft.CodeAnalysis.FxCopAnalyzers' PrivateAssets='All' Version='3.3.0'/>
+        <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.2.0-beta.205'/>
         <PackageReference Include='PeterO.DataUtilities' Version='1.1.0'/>
         <PackageReference Include='PeterO.URIUtility' Version='1.0.0'/>
         <PackageReference Include='PeterO.Encoding' Version='0.6.0'/>

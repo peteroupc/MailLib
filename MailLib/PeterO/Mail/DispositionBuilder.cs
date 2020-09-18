@@ -107,7 +107,7 @@ namespace PeterO.Mail {
     /// name='str'/> is null.</exception>
     /// <exception cref='ArgumentException'>Str is empty.</exception>
     public DispositionBuilder SetDispositionType(string str) {
-        this.builder.ToSetDispositionType(str);
+        this.builder.SetDispositionType(str);
         return this;
     }
 

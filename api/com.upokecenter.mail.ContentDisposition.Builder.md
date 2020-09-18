@@ -26,12 +26,12 @@ Irrelevant for content dispositions; will be removed in the future.
  Deprecated.
 Irrelevant for content dispositions; will be removed in the future.
  Irrelevant for content dispositions; will be removed in the future.
-* `DispositionBuilder RemoveParameter​(java.lang.String name)`<br>
+* `ContentDisposition.Builder RemoveParameter​(java.lang.String name)`<br>
  Removes a parameter from this content disposition.
 * `void setDispositionType​(java.lang.String value)`<br>
-* `DispositionBuilder SetDispositionType​(java.lang.String str)`<br>
+* `ContentDisposition.Builder SetDispositionType​(java.lang.String str)`<br>
  Sets the disposition type, such as "inline".
-* `DispositionBuilder SetParameter​(java.lang.String name,
+* `ContentDisposition.Builder SetParameter​(java.lang.String name,
             java.lang.String value)`<br>
  Sets a parameter of this content disposition.
 * `ContentDisposition ToDisposition()`<br>
@@ -133,7 +133,7 @@ Converts this object to an immutable ContentDisposition object.
 * A MediaType object.
 
 ### SetDispositionType
-    public DispositionBuilder SetDispositionType​(java.lang.String str)
+    public ContentDisposition.Builder SetDispositionType​(java.lang.String str)
 Sets the disposition type, such as "inline". This method enables the pattern
  of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
  unlike with the DispositionType property in .NET or the
@@ -154,7 +154,7 @@ Sets the disposition type, such as "inline". This method enables the pattern
 * <code>java.lang.IllegalArgumentException</code> - Str is empty.
 
 ### RemoveParameter
-    public DispositionBuilder RemoveParameter​(java.lang.String name)
+    public ContentDisposition.Builder RemoveParameter​(java.lang.String name)
 Removes a parameter from this content disposition. Does nothing if the
  parameter's name doesn't exist.
 
@@ -175,7 +175,7 @@ Removes a parameter from this content disposition. Does nothing if the
 * <code>java.lang.NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetParameter
-    public DispositionBuilder SetParameter​(java.lang.String name, java.lang.String value)
+    public ContentDisposition.Builder SetParameter​(java.lang.String name, java.lang.String value)
 Sets a parameter of this content disposition.
 
 **Parameters:**

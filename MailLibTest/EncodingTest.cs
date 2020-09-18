@@ -2265,8 +2265,8 @@ namespace MailLibTest {
       msgstr += "\r\nBody";
       Message msg = MessageTest.MessageFromString(msgstr);
       string gen = MessageTest.MessageGenerate(msg);
-      int io = gen.IndexOf('\r');
-      int colon = gen.IndexOf(':');
+      int io = gen.IndexOf('\r', StringComparison.Ordinal);
+      int colon = gen.IndexOf(':', StringComparison.Ordinal);
       gen = gen.Substring(colon + 2, io - (colon + 2));
       return new HeaderInfo(gen, MessageTest.MessageFromString(msgstr));
     }

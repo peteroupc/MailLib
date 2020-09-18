@@ -103,10 +103,10 @@ namespace MailLibTest {
         "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
       TestParseDomainNAOnly("(comment1) x(comment2)", "x");
-      TestParseDomainNAOnly (
+      TestParseDomainNAOnly(
         "(comment1) example (comment2) . (comment3) com",
         "example.com");
-      TestParseDomainNAOnly (
+      TestParseDomainNAOnly(
         "(co(mme)nt1) example (comment2) . (comment3) com",
         "example.com");
       TestParseDomainNAOnly("(comment1) [x](comment2)", "[x]");
@@ -136,10 +136,10 @@ namespace MailLibTest {
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
       TestParseLocalPartNAOnly("(comment1) x(comment2)", "x");
       TestParseLocalPartNAOnly("(comment1)x(comment2)", "x");
-      TestParseLocalPartNAOnly (
+      TestParseLocalPartNAOnly(
         "(comment1) example (comment2) . (comment3) com",
         "example.com");
-      TestParseLocalPartNAOnly (
+      TestParseLocalPartNAOnly(
         "(com(plex)comment) example (comment2) . (comment3) com",
         "example.com");
     }

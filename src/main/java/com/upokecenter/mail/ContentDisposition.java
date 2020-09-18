@@ -579,7 +579,7 @@ public final void setDispositionType(String value) {
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Str is empty.
      */
-    public DispositionBuilder SetDispositionType(String str) {
+    public Builder SetDispositionType(String str) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -605,7 +605,7 @@ public final void setDispositionType(String value) {
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
      */
-    public DispositionBuilder RemoveParameter(String name) {
+    public Builder RemoveParameter(String name) {
       if (name == null) {
         throw new NullPointerException("name");
       }
@@ -627,7 +627,7 @@ public final void setDispositionType(String value) {
      * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
      * well-formed parameter name.
      */
-    public DispositionBuilder SetParameter(String name, String value) {
+    public Builder SetParameter(String name, String value) {
       if (value == null) {
         throw new NullPointerException("value");
       }
