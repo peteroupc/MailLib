@@ -559,8 +559,7 @@ str[index + 2] <=
 == 84) ||
             ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 &&
               (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 &&
-              (str[index + 1] & ~32) == 69 &&
-              (str[index + 2] & ~32) == 67))) {
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
           index += 3;
         } else {
           index = indexStart;
@@ -2925,11 +2924,13 @@ str[index +
 str[index +
                   5] <= 122) || (str[index + 5] >= 47 && str[index + 5] <=
 57) || (str[index +
-                  5] == 43)) && ((str[index + 6] >= 65 && str[index + 6] <= 90) ||
+                  5] == 43)) && ((str[index + 6] >= 65 && str[index + 6] <=
+90) ||
               (str[index +
                   6] >= 97 && str[index + 6] <= 122) || (str[index + 6] >=
 47 && str[index +
-                  6] <= 57) || (str[index + 6] == 43)) && ((str[index + 7] >= 65 &&
+                  6] <= 57) || (str[index + 6] == 43)) && ((str[index + 7]
+>= 65 &&
                 str[index +
                   7] <= 90) || (str[index + 7] >= 97 && str[index + 7] <=
 122) || (str[index +
@@ -2940,8 +2941,7 @@ str[index +
                 str[index + 8] <= 122) || (str[index + 8] >= 47 && str[index+
 8] <= 57) ||
               (str[index + 8] == 43)) && ((str[index + 9] >= 65 && str[index+
-9] <= 90)
-              ||
+9] <= 90) ||
               (str[index + 9] >= 97 && str[index + 9] <= 122) || (str[index+
 9] >= 47 &&
                 str[index + 9] <= 57) || (str[index + 9] == 43)) &&
@@ -2952,62 +2952,63 @@ str[index + 10] <=
 (str[index + 10]
                 == 43)) && ((str[index + 11] >= 65 && str[index + 11] <= 90) ||
 (str[index +
-                  11] >= 97 && str[index + 11] <= 122) || (str[index + 11] >= 47 &&
+                  11] >= 97 && str[index + 11] <= 122) || (str[index + 11]
+>= 47 &&
                 str[index +
                   11] <= 57) || (str[index + 11] == 43)) && ((str[index +
 12] >= 65 &&
                 str[index + 12] <= 90) || (str[index + 12] >= 97 &&
-str[index + 12] <= 122)
-              ||
+str[index + 12] <= 122) ||
               (str[index + 12] >= 47 && str[index + 12] <= 57) || (str[index+
 12] ==
                 43)) && ((str[index + 13] >= 65 && str[index + 13] <= 90) ||
 (str[index +
-                  13] >= 97 && str[index + 13] <= 122) || (str[index + 13] >= 47 &&
+                  13] >= 97 && str[index + 13] <= 122) || (str[index + 13]
+>= 47 &&
                 str[index +
                   13] <= 57) || (str[index + 13] == 43)) && ((str[index +
 14] >= 65 &&
                 str[index + 14] <= 90) || (str[index + 14] >= 97 &&
-str[index + 14] <= 122)
-              ||
+str[index + 14] <= 122) ||
               (str[index + 14] >= 47 && str[index + 14] <= 57) || (str[index+
 14] ==
                 43)) && ((str[index + 15] >= 65 && str[index + 15] <= 90) ||
 (str[index +
-                  15] >= 97 && str[index + 15] <= 122) || (str[index + 15] >= 47 &&
+                  15] >= 97 && str[index + 15] <= 122) || (str[index + 15]
+>= 47 &&
                 str[index +
                   15] <= 57) || (str[index + 15] == 43)) && ((str[index +
 16] >= 65 &&
                 str[index + 16] <= 90) || (str[index + 16] >= 97 &&
-str[index + 16] <= 122)
-              ||
+str[index + 16] <= 122) ||
               (str[index + 16] >= 47 && str[index + 16] <= 57) || (str[index+
 16] ==
                 43)) && ((str[index + 17] >= 65 && str[index + 17] <= 90) ||
 (str[index +
-                  17] >= 97 && str[index + 17] <= 122) || (str[index + 17] >= 47 &&
+                  17] >= 97 && str[index + 17] <= 122) || (str[index + 17]
+>= 47 &&
                 str[index +
                   17] <= 57) || (str[index + 17] == 43)) && ((str[index +
 18] >= 65 &&
                 str[index + 18] <= 90) || (str[index + 18] >= 97 &&
-str[index + 18] <= 122)
-              ||
+str[index + 18] <= 122) ||
               (str[index + 18] >= 47 && str[index + 18] <= 57) || (str[index+
 18] ==
                 43)) && ((str[index + 19] >= 65 && str[index + 19] <= 90) ||
 (str[index +
-                  19] >= 97 && str[index + 19] <= 122) || (str[index + 19] >= 47 &&
+                  19] >= 97 && str[index + 19] <= 122) || (str[index + 19]
+>= 47 &&
                 str[index +
                   19] <= 57) || (str[index + 19] == 43)) && ((str[index +
 20] >= 65 &&
                 str[index + 20] <= 90) || (str[index + 20] >= 97 &&
-str[index + 20] <= 122)
-              ||
+str[index + 20] <= 122) ||
               (str[index + 20] >= 47 && str[index + 20] <= 57) || (str[index+
 20] ==
                 43)) && ((str[index + 21] >= 65 && str[index + 21] <= 90) ||
 (str[index +
-                  21] >= 97 && str[index + 21] <= 122) || (str[index + 21] >= 47 &&
+                  21] >= 97 && str[index + 21] <= 122) || (str[index + 21]
+>= 47 &&
                 str[index + 21] <= 57) || (str[index + 21] == 43)))) {
           index += 22;
         } else {
@@ -3086,8 +3087,7 @@ str[index]
             }
             if (endIndex - index > 4 && (str[index] & ~32) == 72 &&
               (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 77 &&
-              (str[index + 3] & ~32) == 65 &&
-              (str[index + 4] & ~32) == 78) {
+              (str[index + 3] & ~32) == 65 && (str[index + 4] & ~32) == 78) {
               indexTemp2 += 5;
               break;
             }
@@ -3931,8 +3931,7 @@ str[index] <=
 == 84) ||
             ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 &&
               (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 &&
-              (str[index + 1] & ~32) == 69 &&
-              (str[index + 2] & ~32) == 67))) {
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
           index += 3;
         } else {
           index = indexStart;
@@ -4961,8 +4960,7 @@ str[index] <= 58) ||
             }
             if (endIndex - index > 4 && (str[index] & ~32) == 70 &&
               (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 &&
-              (str[index + 3] & ~32) == 83 &&
-              (str[index + 4] & ~32) == 72) {
+              (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) == 72) {
               indexTemp2 += 5;
               break;
             }
@@ -5167,8 +5165,7 @@ str[index] <= 58) ||
 == 84) ||
             ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 &&
               (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 &&
-              (str[index + 1] & ~32) == 69 &&
-              (str[index + 2] & ~32) == 67))) {
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
           index += 3;
         } else {
           index = indexStart;
@@ -5464,8 +5461,7 @@ str[index] <= 58) ||
             }
             if (endIndex - index > 4 && (str[index] & ~32) == 68 &&
               (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 &&
-              (str[index + 3] & ~32) == 76 &&
-              (str[index + 4] & ~32) == 76) {
+              (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) == 76) {
               indexTemp2 += 5;
               break;
             }
@@ -5792,8 +5788,7 @@ str[index] <= 58) ||
             }
             if (endIndex - index > 4 && (str[index] & ~32) == 70 &&
               (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 &&
-              (str[index + 3] & ~32) == 83 &&
-              (str[index + 4] & ~32) == 72) {
+              (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) == 72) {
               indexTemp2 += 5;
               break;
             }
@@ -6688,8 +6683,7 @@ str[index]
 == 84) ||
             ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 &&
               (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 &&
-              (str[index + 1] & ~32) == 69 &&
-              (str[index + 2] & ~32) == 67))) {
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
           index += 3;
         } else {
           index = indexStart;
@@ -7145,8 +7139,7 @@ str[index] <= 46))) {
 == 84) ||
             ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 &&
               (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 &&
-              (str[index + 1] & ~32) == 69 &&
-              (str[index + 2] & ~32) == 67))) {
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
           index += 3;
         } else {
           index = indexStart;
@@ -10823,9 +10816,8 @@ str[index] <= 90) ||
                   ++indexTemp3;
                   while (indexTemp3 < endIndex && ((str[indexTemp3] == 33) ||
                       (str[indexTemp3] >= 35 && str[indexTemp3] <= 36) ||
-(str[indexTemp3] >= 45
-                        &&
-                        str[indexTemp3] <= 46) || (str[indexTemp3] >= 48 &&
+(str[indexTemp3] >= 45 &&
+                str[indexTemp3] <= 46) || (str[indexTemp3] >= 48 &&
 str[indexTemp3] <=
                         57) || (str[indexTemp3] >= 65 && str[indexTemp3] <=
 90) || (str[indexTemp3]
