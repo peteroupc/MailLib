@@ -155,7 +155,7 @@ namespace MailLibTest {
         "<p>e&amp;</p>",
         "e&amp;");
       TestMarkdownOne(
-        "<p>A</p><pre><code>C&amp;\r\n\tD</code></pre>",
+        "<p>A</p><pre><code>C&a" + "mp;\r\n\tD</code></pre>",
         "A\r\n\r\n\tC&\r\n\t\tD");
       TestMarkdownOne(
         "<p>e&amp;x</p>",

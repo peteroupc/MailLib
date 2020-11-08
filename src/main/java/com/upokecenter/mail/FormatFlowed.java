@@ -25,24 +25,25 @@ private FormatFlowed() {
           case '&':
             if (lastI < i) {
               sb.append(str, lastI, (lastI)+(i - lastI));
-              lastI = i + 1;
             }
+            lastI = i + 1;
             sb.append("&amp;");
             break;
           case '<':
             if (lastI < i) {
               sb.append(str, lastI, (lastI)+(i - lastI));
-              lastI = i + 1;
             }
+            lastI = i + 1;
             sb.append("&lt;");
             break;
           case '>':
             if (lastI < i) {
               sb.append(str, lastI, (lastI)+(i - lastI));
-              lastI = i + 1;
             }
+            lastI = i + 1;
             sb.append("&gt;");
             break;
+          default: break;
         }
       }
       if (lastI < str.length()) {
@@ -1294,8 +1295,10 @@ private FormatFlowed() {
             }
           }
           i = qi - 1;
+          // System.out.println("qs=" + (qs.toString()));
           formatted.append("<pre><code>");
           AppendHtmlEscape(formatted, qs.toString());
+          // System.out.println("qs2=" + (formatted.toString()));
           formatted.append("</code></pre>");
         } else {
           if (!IsBlankishLine(line)) {

@@ -23,24 +23,25 @@ namespace PeterO.Mail {
           case '&':
             if (lastI < i) {
               sb.Append(str, lastI, i - lastI);
-              lastI = i + 1;
             }
+            lastI = i + 1;
             sb.Append("&amp;");
             break;
           case '<':
             if (lastI < i) {
               sb.Append(str, lastI, i - lastI);
-              lastI = i + 1;
             }
+            lastI = i + 1;
             sb.Append("&lt;");
             break;
           case '>':
             if (lastI < i) {
               sb.Append(str, lastI, i - lastI);
-              lastI = i + 1;
             }
+            lastI = i + 1;
             sb.Append("&gt;");
             break;
+          default: break;
         }
       }
       if (lastI < str.Length) {
@@ -1292,8 +1293,10 @@ namespace PeterO.Mail {
             }
           }
           i = qi - 1;
+          // DebugUtility.Log("qs=" + (qs.ToString()));
           formatted.Append("<pre><code>");
           AppendHtmlEscape(formatted, qs.ToString());
+          // DebugUtility.Log("qs2=" + (formatted.ToString()));
           formatted.Append("</code></pre>");
         } else {
           if (!IsBlankishLine(line)) {
