@@ -10,7 +10,7 @@ import com.upokecenter.mail.*;
       String stringNull = null;
       ContentDisposition dispNull = null;
       try {
-        Assert.assertEquals(null, new DispositionBuilder(stringNull));
+        Assert.assertEquals(null, new ContentDisposition.Builder(stringNull));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -19,7 +19,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        Assert.assertEquals(null, new DispositionBuilder(dispNull));
+        Assert.assertEquals(null, new ContentDisposition.Builder(dispNull));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -28,7 +28,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        Assert.assertEquals(null, new DispositionBuilder(""));
+        Assert.assertEquals(null, new ContentDisposition.Builder(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -39,14 +39,14 @@ import com.upokecenter.mail.*;
     }
     @Test
     public void TestDispositionType() {
-      DispositionBuilder db = new DispositionBuilder();
+      ContentDisposition.Builder db = new ContentDisposition.Builder();
       db.SetDispositionType("inline");
       Assert.assertEquals("inline", db.getDispositionType());
     }
     @Test
     public void TestRemoveParameter() {
       try {
-        new DispositionBuilder().RemoveParameter(null);
+        new ContentDisposition.Builder().RemoveParameter(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -58,7 +58,7 @@ import com.upokecenter.mail.*;
     @Test
     public void TestSetDispositionType() {
       try {
-        new DispositionBuilder().SetDispositionType(null);
+        new ContentDisposition.Builder().SetDispositionType(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -67,7 +67,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new DispositionBuilder().SetDispositionType("");
+        new ContentDisposition.Builder().SetDispositionType("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -78,7 +78,7 @@ import com.upokecenter.mail.*;
     }
     @Test
     public void TestSetParameter() {
-      DispositionBuilder db = new DispositionBuilder().SetParameter("a", "b");
+      ContentDisposition.Builder db = new ContentDisposition.Builder().SetParameter("a", "b");
       {
         String stringTemp = db.ToDisposition().GetParameter("a");
         Assert.assertEquals(
@@ -88,7 +88,7 @@ import com.upokecenter.mail.*;
       db.SetParameter("a", "");
       Assert.assertEquals("", db.ToDisposition().GetParameter("a"));
       try {
-        new DispositionBuilder().SetParameter(null, null);
+        new ContentDisposition.Builder().SetParameter(null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -97,7 +97,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new DispositionBuilder().SetParameter(null, "test");
+        new ContentDisposition.Builder().SetParameter(null, "test");
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -106,7 +106,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new DispositionBuilder().SetParameter(null, "");
+        new ContentDisposition.Builder().SetParameter(null, "");
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -115,7 +115,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new DispositionBuilder().SetParameter("test", null);
+        new ContentDisposition.Builder().SetParameter("test", null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -124,13 +124,13 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new DispositionBuilder().SetParameter("test", "");
+        new ContentDisposition.Builder().SetParameter("test", "");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new DispositionBuilder().SetParameter("", "value");
+        new ContentDisposition.Builder().SetParameter("", "value");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -139,7 +139,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new DispositionBuilder().SetParameter("test\u00e0", "value");
+        new ContentDisposition.Builder().SetParameter("test\u00e0", "value");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -154,7 +154,7 @@ import com.upokecenter.mail.*;
     }
     @Test
     public void TestToString() {
-      DispositionBuilder disp = new DispositionBuilder();
+      ContentDisposition.Builder disp = new ContentDisposition.Builder();
       disp.SetDispositionType("attachment");
       disp.SetParameter("a", "b");
       {

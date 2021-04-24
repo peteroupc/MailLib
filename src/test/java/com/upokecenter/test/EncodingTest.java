@@ -1,7 +1,9 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -133,12 +135,12 @@ import com.upokecenter.text.*;
             builder.append(ValueHex.charAt(((int)c >> 8) & 15));
             builder.append(ValueHex.charAt(((int)c >> 4) & 15));
             builder.append(ValueHex.charAt(((int)c) & 15));
-            builder.append(")");
+            builder.append(')');
             int mm1 = Math.max(0, index + 1 - 30);
             String ss = str.substring(
                 mm1, (
                 mm1)+((index + 1) - mm1));
-            builder.append("\n");
+            builder.append('\n');
             builder.append(ss);
             System.out.println(builder.toString());
           }
@@ -211,7 +213,7 @@ import com.upokecenter.text.*;
           builder.append(fn + ": CTL in message(0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
-          builder.append(")");
+          builder.append(')');
           System.out.println(builder.toString());
           return 0;
         }
@@ -221,7 +223,7 @@ import com.upokecenter.text.*;
           builder.append(fn + ": CTL in header(0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
-          builder.append(")");
+          builder.append(')');
           System.out.println(builder.toString());
           return 0;
         }
@@ -268,7 +270,7 @@ import com.upokecenter.text.*;
     public static String toString(byte[] array) {
       StringBuilder builder = new StringBuilder();
       boolean first = true;
-      builder.append("[");
+      builder.append('[');
       if (array == null) {
         throw new NullPointerException("array");
       }
@@ -280,7 +282,7 @@ import com.upokecenter.text.*;
         builder.append(TestCommon.IntToString(vi));
         first = false;
       }
-      builder.append("]");
+      builder.append(']');
       return builder.toString();
     }
 

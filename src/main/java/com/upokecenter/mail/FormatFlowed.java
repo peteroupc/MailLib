@@ -632,10 +632,10 @@ private FormatFlowed() {
           }
           sb.append("<img src=\"")
           .append(HtmlEscapeStrong(urlTitle[0])).append("\" alt=\"")
-          .append(HtmlEscapeStrong(linkText)).append("\"");
+          .append(HtmlEscapeStrong(linkText)).append('\"');
           if (urlTitle[1] != null) {
             sb.append(" title=\"")
-            .append(HtmlEscapeStrong(urlTitle[1])).append("\"");
+            .append(HtmlEscapeStrong(urlTitle[1])).append('\"');
           }
           sb.append(" />");
           i = index;
@@ -714,12 +714,12 @@ private FormatFlowed() {
             }
           }
           sb.append("<a href=\"")
-          .append(HtmlEscapeStrong(urlTitle[0])).append("\"");
+          .append(HtmlEscapeStrong(urlTitle[0])).append('\"');
           if (urlTitle[1] != null) {
             sb.append(" title=\"")
-            .append(HtmlEscapeStrong(urlTitle[1])).append("\"");
+            .append(HtmlEscapeStrong(urlTitle[1])).append('\"');
           }
-          sb.append(">")
+          sb.append('>')
           .append(linkText).append("</a>");
           i = index;
         } else {
@@ -738,7 +738,7 @@ private FormatFlowed() {
       if (c >= 0x10) {
         sb.append(hex.charAt((c >> 4) & 15));
       }
-      sb.append(hex.charAt(c & 15)).append(";");
+      sb.append(hex.charAt(c & 15)).append(';');
     }
 
     private static String CodeSpansAndEscapes(
@@ -1272,9 +1272,9 @@ private FormatFlowed() {
           int heading = HeadingLevel(line);
           String stripped = StripHeadingStart(line);
           formatted.append("<h").append((char)('0' + heading))
-          .append(">").append(FormatParagraph(stripped, links))
+          .append('>').append(FormatParagraph(stripped, links))
           .append("</h").append((char)('0' + heading));
-          formatted.append(">");
+          formatted.append('>');
         } else if (IsCodeBlockLine(line)) {
           isSingleParagraph = false;
           if (haveParagraph) {

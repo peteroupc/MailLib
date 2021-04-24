@@ -173,7 +173,7 @@ private EnrichedText() {
           do {
             if (index + 1 < endIndex && str.charAt(index) == 60 && str.charAt(index + 1) ==
               60) {
-              currentBuilder.append("<");
+              currentBuilder.append('<');
               indexTemp2 += 2;
               break;
             }
@@ -573,12 +573,12 @@ DataUtilities.ToLowerCaseAscii(
                   }
                 }
                 if (withinParam && wasWithinParam) {
-                  currentBuilder.append("<");
+                  currentBuilder.append('<');
                   if (isEndTag) {
                     currentBuilder.append('/');
                   }
                   currentBuilder.append(command);
-                  currentBuilder.append(">");
+                  currentBuilder.append('>');
                 }
               } else {
                 index = indexStart3;

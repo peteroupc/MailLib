@@ -1,7 +1,9 @@
 package com.upokecenter.mail;
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -2508,14 +2510,14 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       }
       if (prefaceSubject.length() == 0) {
         prefaceSubject.append("Multilingual Message");
-        prefaceSubject.append("(");
+        prefaceSubject.append('(');
         for (int i = 0; i < languages.size(); ++i) {
           if (i > 0) {
             prefaceSubject.append(", ");
           }
           prefaceSubject.append(languages.get(i));
         }
-        prefaceSubject.append(")");
+        prefaceSubject.append(')');
       }
       String fromHeader = messages.get(0).GetHeader("from");
       if (fromHeader == null) {
@@ -4000,7 +4002,7 @@ TransferEncodingToUse(
     private String GenerateMessageID() {
       StringBuilder builder = new StringBuilder();
       int seq = 0;
-      builder.append("<");
+      builder.append('<');
       synchronized (ValueSequenceSync) {
         if (seqFirstTime) {
           msgidSequence = ValueMsgidRandom.nextInt(65536);
@@ -4035,7 +4037,7 @@ TransferEncodingToUse(
       if (addresses == null || addresses.size() == 0) {
         builder.append("@local.invalid");
       } else {
-        builder.append("@");
+        builder.append('@');
         seq = addresses.get(0).isGroup() ? addresses.get(0).getName().hashCode() :
           addresses.get(0).getAddress().toString().hashCode();
         for (int i = 0; i < 8; ++i) {
@@ -4044,7 +4046,7 @@ TransferEncodingToUse(
         }
         builder.append(".local.invalid");
       }
-      builder.append(">");
+      builder.append('>');
       // System.out.println(builder.toString());
       return builder.toString();
     }

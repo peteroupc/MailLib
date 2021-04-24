@@ -1,7 +1,9 @@
 package com.upokecenter.mail;
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -95,7 +97,7 @@ import com.upokecenter.util.*;
       if (this.maxLineLength < 0 || this.column + (endIndex - startIndex) +
         spaceLength <= this.maxLineLength) {
         if (writeSpace) {
-          this.builder.append(" ");
+          this.builder.append(' ');
         }
         this.builder.append(
           symbol.substring(

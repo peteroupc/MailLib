@@ -100,7 +100,7 @@ import com.upokecenter.text.*;
     public static String toString(int[] array) {
       StringBuilder builder = new StringBuilder();
       boolean first = true;
-      builder.append("[");
+      builder.append('[');
       if (array == null) {
         throw new NullPointerException("array");
       }
@@ -111,7 +111,7 @@ import com.upokecenter.text.*;
         builder.append(TestCommon.IntToString(v));
         first = false;
       }
-      builder.append("]");
+      builder.append(']');
       return builder.toString();
     }
 

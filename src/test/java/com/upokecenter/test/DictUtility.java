@@ -37,13 +37,13 @@ private DictUtility() {
 
     public static String ToJSON(
       List<Map<String, String>> dictlist) {
-      StringBuilder sb = new StringBuilder().append("[");
+      StringBuilder sb = new StringBuilder().append('[');
       if (dictlist == null) {
         throw new NullPointerException("dictlist");
       }
       for (int i = 0; i < dictlist.size(); ++i) {
         if (i > 0) {
-          sb.append(",");
+          sb.append(',');
         }
         Map<String, String> dict = dictlist.get(i);
         String[] larray = new String[dict.size() * 2];
@@ -55,7 +55,7 @@ private DictUtility() {
         }
         sb.append(ToJSON(larray));
       }
-      return sb.append("]").toString();
+      return sb.append(']').toString();
     }
 
     private static void JSONEscape(String str, StringBuilder sb) {
@@ -127,19 +127,19 @@ private DictUtility() {
     }
 
     public static String ToJSON(String[] arr) {
-      StringBuilder sb = new StringBuilder().append("[");
+      StringBuilder sb = new StringBuilder().append('[');
       if (arr == null) {
         throw new NullPointerException("arr");
       }
       for (int i = 0; i < arr.length; ++i) {
         if (i > 0) {
-          sb.append(",");
+          sb.append(',');
         }
-        sb.append("\"");
+        sb.append('\"');
         JSONEscape(arr[i], sb);
-        sb.append("\"");
+        sb.append('\"');
       }
-      return sb.append("]").toString();
+      return sb.append(']').toString();
     }
 
     public static List<Map<String, String>> ParseJSONDictList(

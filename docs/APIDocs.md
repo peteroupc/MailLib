@@ -4,11 +4,13 @@
 
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) - Specifies how a message body should be displayed or handled by a mail user agent.
 
+ * [PeterO.Mail.ContentDisposition.Builder](PeterO.Mail.ContentDisposition.Builder.md) - A mutable data type that allows a content disposition to be built.
+
  * [PeterO.Mail.DataUris](PeterO.Mail.DataUris.md) - Contains methods for parsing and generating Data URIs (uniform resource identifiers).
 
  * [PeterO.Mail.DataUrls](PeterO.Mail.DataUrls.md) - <b>Deprecated:</b> Renamed to DataUris.
 
- * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - A mutable data type that allows a content disposition to be built.
+ * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - <b>Deprecated:</b> Use ContentDisposition.Builder instead.
 
  * [PeterO.Mail.LanguageTags](PeterO.Mail.LanguageTags.md) - Contains methods for parsing and matching language tags.
 

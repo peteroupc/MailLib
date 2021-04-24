@@ -65,11 +65,11 @@ private MailtoUris() {
             {
               first = false;
             }
-            sb.append(",");
+            sb.append(',');
           }
           Address address = addr.getAddress();
           sb.append(URIUtility.EncodeStringForURI(address.getLocalPart()));
-          sb.append("@");
+          sb.append('@');
           sb.append(URIUtility.EncodeStringForURI(address.getDomain()));
         }
       } else {

@@ -1,6 +1,8 @@
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -2584,14 +2586,14 @@ namespace PeterO.Mail {
       }
       if (prefaceSubject.Length == 0) {
         prefaceSubject.Append("Multilingual Message");
-        prefaceSubject.Append("(");
+        prefaceSubject.Append('(');
         for (var i = 0; i < languages.Count; ++i) {
           if (i > 0) {
             prefaceSubject.Append(", ");
           }
           prefaceSubject.Append(languages[i]);
         }
-        prefaceSubject.Append(")");
+        prefaceSubject.Append(')');
       }
       string fromHeader = messages[0].GetHeader("from");
       if (fromHeader == null) {
@@ -4138,7 +4140,7 @@ TransferEncodingToUse(
     private string GenerateMessageID() {
       var builder = new StringBuilder();
       var seq = 0;
-      builder.Append("<");
+      builder.Append('<');
       lock (ValueSequenceSync) {
         if (seqFirstTime) {
           msgidSequence = ValueMsgidRandom.Next(65536);
@@ -4173,7 +4175,7 @@ TransferEncodingToUse(
       if (addresses == null || addresses.Count == 0) {
         builder.Append("@local.invalid");
       } else {
-        builder.Append("@");
+        builder.Append('@');
         seq = addresses[0].IsGroup ? addresses[0].Name.GetHashCode() :
           addresses[0].Address.ToString().GetHashCode();
         for (int i = 0; i < 8; ++i) {
@@ -4182,7 +4184,7 @@ TransferEncodingToUse(
         }
         builder.Append(".local.invalid");
       }
-      builder.Append(">");
+      builder.Append('>');
       // DebugUtility.Log(builder.ToString());
       return builder.ToString();
     }

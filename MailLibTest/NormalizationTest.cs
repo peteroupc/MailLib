@@ -101,7 +101,7 @@ namespace MailLibTest {
     public static string ToString(int[] array) {
       var builder = new StringBuilder();
       var first = true;
-      builder.Append("[");
+      builder.Append('[');
       if (array == null) {
         throw new ArgumentNullException(nameof(array));
       }
@@ -112,7 +112,7 @@ namespace MailLibTest {
         builder.Append(TestCommon.IntToString(v));
         first = false;
       }
-      builder.Append("]");
+      builder.Append(']');
       return builder.ToString();
     }
 

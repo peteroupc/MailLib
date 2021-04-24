@@ -1,7 +1,9 @@
 package com.upokecenter.test;
 /*
 Written in 2013-2018 by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -662,7 +664,8 @@ length);
       sb.append("new byte[] { ");
       for (int i = 0; i < length; ++i) {
         if (i > 0) {
-          sb.append(","); }
+          sb.append(',');
+        }
         if ((bytes[offset + i] & 0x80) != 0) {
           sb.append("(byte)0x");
         } else {
@@ -671,7 +674,7 @@ length);
         sb.append(ValueHex.charAt((bytes[offset + i] >> 4) & 0xf));
         sb.append(ValueHex.charAt(bytes[offset + i] & 0xf));
       }
-      sb.append("}");
+      sb.append('}');
       return sb.toString();
     }
 

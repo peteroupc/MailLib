@@ -36,13 +36,13 @@ namespace MailLibTest {
 
     public static string ToJSON(
       IList<IDictionary<string, string>> dictlist) {
-      var sb = new StringBuilder().Append("[");
+      var sb = new StringBuilder().Append('[');
       if (dictlist == null) {
         throw new ArgumentNullException(nameof(dictlist));
       }
       for (var i = 0; i < dictlist.Count; ++i) {
         if (i > 0) {
-          sb.Append(",");
+          sb.Append(',');
         }
         IDictionary<string, string> dict = dictlist[i];
         var larray = new string[dict.Count * 2];
@@ -54,7 +54,7 @@ namespace MailLibTest {
         }
         sb.Append(ToJSON(larray));
       }
-      return sb.Append("]").ToString();
+      return sb.Append(']').ToString();
     }
 
     private static void JSONEscape(string str, StringBuilder sb) {
@@ -127,19 +127,19 @@ namespace MailLibTest {
     }
 
     public static string ToJSON(string[] arr) {
-      var sb = new StringBuilder().Append("[");
+      var sb = new StringBuilder().Append('[');
       if (arr == null) {
         throw new ArgumentNullException(nameof(arr));
       }
       for (var i = 0; i < arr.Length; ++i) {
         if (i > 0) {
-          sb.Append(",");
+          sb.Append(',');
         }
-        sb.Append("\"");
+        sb.Append('\"');
         JSONEscape(arr[i], sb);
-        sb.Append("\"");
+        sb.Append('\"');
       }
-      return sb.Append("]").ToString();
+      return sb.Append(']').ToString();
     }
 
     public static IList<IDictionary<string, string>> ParseJSONDictList(

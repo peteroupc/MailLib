@@ -630,10 +630,10 @@ namespace PeterO.Mail {
           }
           sb.Append("<img src=\"")
           .Append(HtmlEscapeStrong(urlTitle[0])).Append("\" alt=\"")
-          .Append(HtmlEscapeStrong(linkText)).Append("\"");
+          .Append(HtmlEscapeStrong(linkText)).Append('\"');
           if (urlTitle[1] != null) {
             sb.Append(" title=\"")
-            .Append(HtmlEscapeStrong(urlTitle[1])).Append("\"");
+            .Append(HtmlEscapeStrong(urlTitle[1])).Append('\"');
           }
           sb.Append(" />");
           i = index;
@@ -712,12 +712,12 @@ namespace PeterO.Mail {
             }
           }
           sb.Append("<a href=\"")
-          .Append(HtmlEscapeStrong(urlTitle[0])).Append("\"");
+          .Append(HtmlEscapeStrong(urlTitle[0])).Append('\"');
           if (urlTitle[1] != null) {
             sb.Append(" title=\"")
-            .Append(HtmlEscapeStrong(urlTitle[1])).Append("\"");
+            .Append(HtmlEscapeStrong(urlTitle[1])).Append('\"');
           }
-          sb.Append(">")
+          sb.Append('>')
           .Append(linkText).Append("</a>");
           i = index;
         } else {
@@ -736,7 +736,7 @@ namespace PeterO.Mail {
       if (c >= 0x10) {
         sb.Append(hex[(c >> 4) & 15]);
       }
-      sb.Append(hex[c & 15]).Append(";");
+      sb.Append(hex[c & 15]).Append(';');
     }
 
     private static string CodeSpansAndEscapes(
@@ -1270,9 +1270,9 @@ namespace PeterO.Mail {
           int heading = HeadingLevel(line);
           string stripped = StripHeadingStart(line);
           formatted.Append("<h").Append((char)('0' + heading))
-          .Append(">").Append(FormatParagraph(stripped, links))
+          .Append('>').Append(FormatParagraph(stripped, links))
           .Append("</h").Append((char)('0' + heading));
-          formatted.Append(">");
+          formatted.Append('>');
         } else if (IsCodeBlockLine(line)) {
           isSingleParagraph = false;
           if (haveParagraph) {

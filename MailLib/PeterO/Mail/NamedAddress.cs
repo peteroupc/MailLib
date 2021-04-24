@@ -1,6 +1,8 @@
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -269,14 +271,14 @@ other.isGroup &&
           first = false;
           sb.Append(groupAddress.ToDisplayString());
         }
-        sb.Append(";");
+        sb.Append(';');
         return sb.ToString();
       } else if (this.displayName == null) {
         return this.address.ToString();
       } else {
         var sb = new StringBuilder();
         sb.Append(this.displayName).Append(" <")
-        .Append(this.address.ToString()).Append(">");
+        .Append(this.address.ToString()).Append('>');
         return sb.ToString();
       }
     }

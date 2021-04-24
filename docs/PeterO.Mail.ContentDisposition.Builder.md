@@ -1,8 +1,6 @@
-## PeterO.Mail.DispositionBuilder
+## PeterO.Mail.ContentDisposition.Builder
 
-    public class DispositionBuilder
-
-<b>Deprecated.</b> Use ContentDisposition.Builder instead.
+    public sealed class Builder
 
 A mutable data type that allows a content disposition to be built.
 
@@ -17,9 +15,9 @@ A mutable data type that allows a content disposition to be built.
 * <code>[ToString()](#ToString)</code> - Converts this object to a text string.
 
 <a id="Void_ctor_PeterO_Mail_ContentDisposition"></a>
-### DispositionBuilder Constructor
+### Builder Constructor
 
-    public DispositionBuilder(
+    public Builder(
         PeterO.Mail.ContentDisposition mt);
 
 Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the data from the given content disposition.
@@ -36,12 +34,12 @@ The parameter  <i>mt</i>
  is null.
 
 <a id="Void_ctor_System_String"></a>
-### DispositionBuilder Constructor
+### Builder Constructor
 
-    public DispositionBuilder(
+    public Builder(
         string type);
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the given disposition type.
+Initializes a new instance of the [PeterO.Mail.ContentDisposition.Builder](PeterO.Mail.ContentDisposition.Builder.md) class using the given disposition type.
 
 <b>Parameters:</b>
 
@@ -58,9 +56,9 @@ The parameter  <i>type</i>
 Type is empty.
 
 <a id="Void_ctor"></a>
-### DispositionBuilder Constructor
+### Builder Constructor
 
-    public DispositionBuilder();
+    public Builder();
 
 Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the disposition type "attachment" .
 
@@ -112,7 +110,7 @@ Gets a value indicating whether this is a text media type.
 <a id="RemoveParameter_string"></a>
 ### RemoveParameter
 
-    public PeterO.Mail.DispositionBuilder RemoveParameter(
+    public PeterO.Mail.ContentDisposition.Builder RemoveParameter(
         string name);
 
 Removes a parameter from this content disposition. Does nothing if the parameter's name doesn't exist.
@@ -134,7 +132,7 @@ The parameter  <i>name</i>
 <a id="SetDispositionType_string"></a>
 ### SetDispositionType
 
-    public PeterO.Mail.DispositionBuilder SetDispositionType(
+    public PeterO.Mail.ContentDisposition.Builder SetDispositionType(
         string str);
 
 Sets the disposition type, such as "inline". This method enables the pattern of method chaining (e.g.,  `new
@@ -161,7 +159,7 @@ Str is empty.
 <a id="SetParameter_string_string"></a>
 ### SetParameter
 
-    public PeterO.Mail.DispositionBuilder SetParameter(
+    public PeterO.Mail.ContentDisposition.Builder SetParameter(
         string name,
         string value);
 

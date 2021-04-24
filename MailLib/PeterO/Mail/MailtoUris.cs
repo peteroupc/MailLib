@@ -63,11 +63,11 @@ namespace PeterO.Mail {
             {
               first = false;
             }
-            sb.Append(",");
+            sb.Append(',');
           }
           Address address = addr.Address;
           sb.Append(URIUtility.EncodeStringForURI(address.LocalPart));
-          sb.Append("@");
+          sb.Append('@');
           sb.Append(URIUtility.EncodeStringForURI(address.Domain));
         }
       } else {

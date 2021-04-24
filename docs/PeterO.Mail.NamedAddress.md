@@ -36,7 +36,7 @@ Initializes a new instance of the [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAd
  *  `John <john@example.com>`
 
  *  `"Group" : Tom <tom@example.com>, Jane
-            <jane@example.com>;`
+             <jane@example.com>;`
 
 <b>Parameters:</b>
 

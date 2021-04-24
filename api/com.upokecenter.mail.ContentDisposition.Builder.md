@@ -7,8 +7,8 @@ A mutable data type that allows a content disposition to be built.
 ## Methods
 
 * `Builder() DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the disposition
-  type "attachment" .
+ Initializes a new instance of the DispositionBuilder class using the
+  disposition type "attachment" .
 * `Builder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
@@ -42,8 +42,8 @@ Irrelevant for content dispositions; will be removed in the future.
 ## Constructors
 
 * `Builder() DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class using the disposition
-  type "attachment" .
+ Initializes a new instance of the DispositionBuilder class using the
+  disposition type "attachment" .
 * `Builder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class using the data from
  the given content disposition.
@@ -56,8 +56,8 @@ Irrelevant for content dispositions; will be removed in the future.
 
 ### Builder
     public Builder()
-Initializes a new instance of the <code>DispositionBuilder</code> class using the disposition
-  type "attachment" .
+Initializes a new instance of the <code>DispositionBuilder</code> class using the
+  disposition type "attachment" .
 ### Builder
     public Builder​(ContentDisposition mt)
 Initializes a new instance of the <code>DispositionBuilder</code> class using the data from

@@ -169,7 +169,7 @@ namespace PeterO.Mail {
           do {
             if (index + 1 < endIndex && str[index] == 60 && str[index + 1] ==
               60) {
-              currentBuilder.Append("<");
+              currentBuilder.Append('<');
               indexTemp2 += 2;
               break;
             }
@@ -591,12 +591,12 @@ DataUtilities.ToLowerCaseAscii(
                   }
                 }
                 if (withinParam && wasWithinParam) {
-                  currentBuilder.Append("<");
+                  currentBuilder.Append('<');
                   if (isEndTag) {
                     currentBuilder.Append('/');
                   }
                   currentBuilder.Append(command);
-                  currentBuilder.Append(">");
+                  currentBuilder.Append('>');
                 }
               } else {
                 index = indexStart3;

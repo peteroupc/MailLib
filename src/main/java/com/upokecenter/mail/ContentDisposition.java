@@ -1,7 +1,9 @@
 package com.upokecenter.mail;
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -363,11 +365,11 @@ import com.upokecenter.text.*;
       HashMap<String, String> parameters = new HashMap<String, String>();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = MediaType.SkipMimeToken(
-        str,
-        index,
-        endIndex,
-        null,
-        HttpRules);
+          str,
+          index,
+          endIndex,
+          null,
+          HttpRules);
       if (i == index) {
         return null;
       }
@@ -379,8 +381,8 @@ import com.upokecenter.text.*;
         if (i3 == endIndex) {
           // at end
           return new ContentDisposition(
-            dispoType,
-            parameters);
+              dispoType,
+              parameters);
         }
         if (i3 < endIndex && str.charAt(i3) != ';') {
           // not followed by ";", so not a content disposition
@@ -389,11 +391,11 @@ import com.upokecenter.text.*;
       }
       index = i;
       return MediaType.ParseParameters(
-        str,
-        index,
-        endIndex,
-        HttpRules,
-        parameters) ? new ContentDisposition(
+          str,
+          index,
+          endIndex,
+          HttpRules,
+          parameters) ? new ContentDisposition(
           dispoType,
           parameters) : null;
     }
@@ -474,184 +476,183 @@ import com.upokecenter.text.*;
       return (dispo == null) ? (defaultValue) : dispo;
     }
 
-  /**
-   * A mutable data type that allows a content disposition to be built.
-   */
-  public final class Builder {
-    private final Map<String, String> parameters;
-    private String type;
-
     /**
-     * Gets this value's disposition type, such as "inline" or "attachment".
-     * @return This value's disposition type, such as "inline" or "attachment" .
-     * @throws NullPointerException The property is being set and the value is
-     * null.
-     * @throws IllegalArgumentException The property is being set and the value is an
-     * empty string.
+     * A mutable data type that allows a content disposition to be built.
      */
-    public final String getDispositionType() {
-        return this.type;
-      }
+    public final class Builder {
+      private final Map<String, String> parameters;
+      private String type;
+
+      /**
+       * Gets this value's disposition type, such as "inline" or "attachment".
+       * @return This value's disposition type, such as "inline" or "attachment" .
+       * @throws NullPointerException The property is being set and the value is
+       * null.
+       * @throws IllegalArgumentException The property is being set and the value is an
+       * empty string.
+       */
+      public final String getDispositionType() {
+          return this.type;
+        }
 public final void setDispositionType(String value) {
-        this.SetDispositionType(value);
+          this.SetDispositionType(value);
+        }
+
+      /**
+       * Initializes a new instance of the {@link
+       * com.upokecenter.mail.DispositionBuilder} class using the
+       *  disposition type "attachment" .
+       */
+      public Builder() {
+        this.parameters = new HashMap<String, String>();
+        this.type = "attachment";
       }
 
-    /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the disposition
-     *  type "attachment" .
-     */
-    public Builder() {
-      this.parameters = new HashMap<String, String>();
-      this.type = "attachment";
-    }
-
-    /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the data from
-     * the given content disposition.
-     * @param mt The parameter {@code mt} is a ContentDisposition object.
-     * @throws NullPointerException The parameter {@code mt} is null.
-     */
-    public Builder(ContentDisposition mt) {
-      if (mt == null) {
-        throw new NullPointerException("mt");
+      /**
+       * Initializes a new instance of the {@link
+       * com.upokecenter.mail.DispositionBuilder} class using the data from
+       * the given content disposition.
+       * @param mt The parameter {@code mt} is a ContentDisposition object.
+       * @throws NullPointerException The parameter {@code mt} is null.
+       */
+      public Builder(ContentDisposition mt) {
+        if (mt == null) {
+          throw new NullPointerException("mt");
+        }
+        this.parameters = new HashMap<String, String>(mt.getParameters());
+        this.type = mt.getDispositionType();
       }
-      this.parameters = new HashMap<String, String>(mt.getParameters());
-      this.type = mt.getDispositionType();
-    }
 
-    /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.ContentDisposition.getBuilder()} class using the
-     * given disposition type.
-     * @param type The parameter {@code type} is a text string.
-     * @throws NullPointerException The parameter {@code type} is null.
-     * @throws IllegalArgumentException Type is empty.
-     */
-    public Builder(String type) {
-      if (type == null) {
-        throw new NullPointerException("type");
+      /**
+       * Initializes a new instance of the {@link
+       * com.upokecenter.mail.ContentDisposition.getBuilder()} class using the
+       * given disposition type.
+       * @param type The parameter {@code type} is a text string.
+       * @throws NullPointerException The parameter {@code type} is null.
+       * @throws IllegalArgumentException Type is empty.
+       */
+      public Builder(String type) {
+        if (type == null) {
+          throw new NullPointerException("type");
+        }
+        if (type.length() == 0) {
+          throw new IllegalArgumentException("type is empty.");
+        }
+        this.parameters = new HashMap<String, String>();
+        this.SetDispositionType(type);
       }
-      if (type.length() == 0) {
-        throw new IllegalArgumentException("type is empty.");
-      }
-      this.parameters = new HashMap<String, String>();
-      this.SetDispositionType(type);
-    }
 
-    /**
-     * Gets a value indicating whether this is a text media type.
-     * @return {@code true} If this is a text media type; otherwise, {@code false}.
-     * @deprecated Irrelevant for content dispositions; will be removed in the future.
+      /**
+       * Gets a value indicating whether this is a text media type.
+       * @return {@code true} If this is a text media type; otherwise, {@code false}.
+       * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
  */
 @Deprecated
-    public final boolean isText() {
-        return this.getDispositionType().equals("text");
-      }
+      public final boolean isText() {
+          return this.getDispositionType().equals("text");
+        }
 
-    /**
-     * Gets a value indicating whether this is a multipart media type.
-     * @return {@code true} If this is a multipart media type; otherwise, {@code
-     * false}.
-     * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
+      /**
+       * Gets a value indicating whether this is a multipart media type.
+       * @return {@code true} If this is a multipart media type; otherwise, {@code
+       * false}.
+       * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
  */
-@Deprecated
-    public final boolean isMultipart() {
-        return this.getDispositionType().equals("multipart");
+@Deprecated public final boolean isMultipart() {
+          return this.getDispositionType().equals("multipart");
+        }
+
+      /**
+       * Converts this object to an immutable ContentDisposition object.
+       * @return A MediaType object.
+       */
+      public ContentDisposition ToDisposition() {
+        return new ContentDisposition(this.type, this.parameters);
       }
 
-    /**
-     * Converts this object to an immutable ContentDisposition object.
-     * @return A MediaType object.
-     */
-    public ContentDisposition ToDisposition() {
-      return new ContentDisposition(this.type, this.parameters);
-    }
+      /**
+       * Sets the disposition type, such as "inline". This method enables the pattern
+       * of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
+       * unlike with the DispositionType property in .NET or the
+       * setDispositionType method (with small s) in Java.
+       * @param str The parameter {@code str} is a text string.
+       * @return This instance.
+       * @throws NullPointerException The parameter {@code str} is null.
+       * @throws IllegalArgumentException Str is empty.
+       */
+      public Builder SetDispositionType(String str) {
+        if (str == null) {
+          throw new NullPointerException("str");
+        }
+        if (str.length() == 0) {
+          throw new IllegalArgumentException("str is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
+          str.length()) {
+          throw new IllegalArgumentException("Not a well-formed type: " + str);
+        }
+        this.type = DataUtilities.ToLowerCaseAscii(str);
+        return this;
+      }
 
-    /**
-     * Sets the disposition type, such as "inline". This method enables the pattern
-     * of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
-     * unlike with the DispositionType property in .NET or the
-     * setDispositionType method (with small s) in Java.
-     * @param str The parameter {@code str} is a text string.
-     * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException Str is empty.
-     */
-    public Builder SetDispositionType(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
+      /**
+       * Removes a parameter from this content disposition. Does nothing if the
+       * parameter's name doesn't exist.
+       * @param name The parameter to remove. The name is compared using a basic
+       * case-insensitive comparison. (Two strings are equal in such a
+       * comparison, if they match after converting the basic upper-case
+       * letters A to Z (U+0041 to U+005A) in both strings to basic
+       * lower-case letters.).
+       * @return This instance.
+       * @throws NullPointerException The parameter {@code name} is null.
+       */
+      public Builder RemoveParameter(String name) {
+        if (name == null) {
+          throw new NullPointerException("name");
+        }
+        this.parameters.remove(DataUtilities.ToLowerCaseAscii(name));
+        return this;
       }
-      if (str.length() == 0) {
-        throw new IllegalArgumentException("str is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
-        str.length()) {
-        throw new IllegalArgumentException("Not a well-formed type: " + str);
-      }
-      this.type = DataUtilities.ToLowerCaseAscii(str);
-      return this;
-    }
 
-    /**
-     * Removes a parameter from this content disposition. Does nothing if the
-     * parameter's name doesn't exist.
-     * @param name The parameter to remove. The name is compared using a basic
-     * case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U+0041 to U+005A) in both strings to basic
-     * lower-case letters.).
-     * @return This instance.
-     * @throws NullPointerException The parameter {@code name} is null.
-     */
-    public Builder RemoveParameter(String name) {
-      if (name == null) {
-        throw new NullPointerException("name");
+      /**
+       * Sets a parameter of this content disposition.
+       * @param name Name of the parameter to set. If this name already exists
+       * (compared using a basic case-insensitive comparison), it will be
+       * overwritten. (Two strings are equal in a basic case-insensitive
+       * comparison, if they match after converting the basic upper-case
+       * letters A to Z (U+0041 to U+005A) in both strings to basic
+       * lower-case letters.).
+       * @param value Value of the parameter to set.
+       * @return This instance.
+       * @throws NullPointerException Either {@code value} or {@code name} is null.
+       * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
+       * well-formed parameter name.
+       */
+      public Builder SetParameter(String name, String value) {
+        if (value == null) {
+          throw new NullPointerException("value");
+        }
+        if (name == null) {
+          throw new NullPointerException("name");
+        }
+        if (name.length() == 0) {
+          throw new IllegalArgumentException("name is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
+          name.length()) {
+          throw new IllegalArgumentException("Not a well-formed parameter name: " +
+            name);
+        }
+        this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
+        return this;
       }
-      this.parameters.remove(DataUtilities.ToLowerCaseAscii(name));
-      return this;
-    }
 
-    /**
-     * Sets a parameter of this content disposition.
-     * @param name Name of the parameter to set. If this name already exists
-     * (compared using a basic case-insensitive comparison), it will be
-     * overwritten. (Two strings are equal in a basic case-insensitive
-     * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U+0041 to U+005A) in both strings to basic
-     * lower-case letters.).
-     * @param value Value of the parameter to set.
-     * @return This instance.
-     * @throws NullPointerException Either {@code value} or {@code name} is null.
-     * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
-     * well-formed parameter name.
-     */
-    public Builder SetParameter(String name, String value) {
-      if (value == null) {
-        throw new NullPointerException("value");
+      /**
+       * Converts this object to a text string.
+       * @return A string representation of this object.
+       */
+      @Override public String toString() {
+        return this.ToDisposition().toString();
       }
-      if (name == null) {
-        throw new NullPointerException("name");
-      }
-      if (name.length() == 0) {
-        throw new IllegalArgumentException("name is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
-        name.length()) {
-        throw new IllegalArgumentException("Not a well-formed parameter name: " +
-          name);
-      }
-      this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
-      return this;
     }
-
-    /**
-     * Converts this object to a text string.
-     * @return A string representation of this object.
-     */
-    @Override public String toString() {
-      return this.ToDisposition().toString();
-    }
-  }
   }

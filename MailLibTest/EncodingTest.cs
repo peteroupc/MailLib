@@ -1,6 +1,8 @@
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -134,12 +136,12 @@ namespace MailLibTest {
             builder.Append(ValueHex[((int)c >> 8) & 15]);
             builder.Append(ValueHex[((int)c >> 4) & 15]);
             builder.Append(ValueHex[((int)c) & 15]);
-            builder.Append(")");
+            builder.Append(')');
             int mm1 = Math.Max(0, index + 1 - 30);
             string ss = str.Substring(
                 mm1,
                 (index + 1) - mm1);
-            builder.Append("\n");
+            builder.Append('\n');
             builder.Append(ss);
             Console.WriteLine(builder.ToString());
           }
@@ -212,7 +214,7 @@ namespace MailLibTest {
           builder.Append(fn + ": CTL in message(0x");
           builder.Append(ValueHex[((int)c >> 4) & 15]);
           builder.Append(ValueHex[((int)c) & 15]);
-          builder.Append(")");
+          builder.Append(')');
           Console.WriteLine(builder.ToString());
           return 0;
         }
@@ -222,7 +224,7 @@ namespace MailLibTest {
           builder.Append(fn + ": CTL in header(0x");
           builder.Append(ValueHex[((int)c >> 4) & 15]);
           builder.Append(ValueHex[((int)c) & 15]);
-          builder.Append(")");
+          builder.Append(')');
           Console.WriteLine(builder.ToString());
           return 0;
         }
@@ -269,7 +271,7 @@ namespace MailLibTest {
     public static String ToString(byte[] array) {
       var builder = new StringBuilder();
       var first = true;
-      builder.Append("[");
+      builder.Append('[');
       if (array == null) {
         throw new ArgumentNullException(nameof(array));
       }
@@ -281,7 +283,7 @@ namespace MailLibTest {
         builder.Append(TestCommon.IntToString(vi));
         first = false;
       }
-      builder.Append("]");
+      builder.Append(']');
       return builder.ToString();
     }
 
