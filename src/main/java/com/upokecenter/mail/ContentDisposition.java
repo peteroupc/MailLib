@@ -479,7 +479,7 @@ import com.upokecenter.text.*;
     /**
      * A mutable data type that allows a content disposition to be built.
      */
-    public final class Builder {
+    public static final class Builder {
       private final Map<String, String> parameters;
       private String type;
 

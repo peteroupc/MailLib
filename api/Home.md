@@ -7,6 +7,9 @@ Represents an email address.
 Specifies how a message body should be displayed or handled by a mail
  user agent.
 
+* [com.upokecenter.mail.ContentDisposition.Builder](com.upokecenter.mail.ContentDisposition.Builder.md) -
+A mutable data type that allows a content disposition to be built.
+
 * [com.upokecenter.mail.DataUris](com.upokecenter.mail.DataUris.md) -
 Contains methods for parsing and generating Data URIs (uniform resource
  identifiers).

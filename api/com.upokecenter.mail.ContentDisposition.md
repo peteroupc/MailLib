@@ -34,7 +34,7 @@
 
 ## Fields
 
-* `class  ContentDisposition.Builder`<br>
+* `static class  ContentDisposition.Builder`<br>
  A mutable data type that allows a content disposition to be built.
 * `static ContentDisposition Attachment`<br>
  The content disposition value "attachment" .
@@ -43,7 +43,7 @@
 
 ## Nested Classes
 
-* `class  ContentDisposition.Builder`<br>
+* `static class  ContentDisposition.Builder`<br>
  A mutable data type that allows a content disposition to be built.
 
 ## Methods

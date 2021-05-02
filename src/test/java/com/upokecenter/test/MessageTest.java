@@ -197,10 +197,10 @@ import com.upokecenter.mail.*;
         "y").SetParameter(
         "z",
         valueMessageString).toString();
-      if (mtstring.contains("\r\n\r\n", StringComparison.Ordinal)) {
+      if (mtstring.contains("\r\n\r\n")) {
  Assert.fail();
  }
-      if (mtstring.contains("\r\n \r\n", StringComparison.Ordinal)) {
+      if (mtstring.contains("\r\n \r\n")) {
  Assert.fail();
  }
       {

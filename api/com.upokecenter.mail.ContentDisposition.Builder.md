@@ -1,6 +1,6 @@
 # com.upokecenter.mail.ContentDisposition.Builder
 
-    public final class ContentDisposition.Builder extends java.lang.Object
+    public static final class ContentDisposition.Builder extends java.lang.Object
 
 A mutable data type that allows a content disposition to be built.
 
