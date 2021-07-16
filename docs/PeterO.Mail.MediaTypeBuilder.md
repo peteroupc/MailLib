@@ -2,6 +2,8 @@
 
     public sealed class MediaTypeBuilder
 
+<b>Deprecated.</b> Use MediaType.Builder instead.
+
 A mutable media type object.
 
 ### Member Summary

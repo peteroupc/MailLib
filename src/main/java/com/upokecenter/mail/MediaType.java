@@ -1515,7 +1515,7 @@ null;
      /**
       * A mutable data type that allows a media type object to be built.
       */
-      public static final class Builder {
+     public static final class Builder {
     private final Map<String, String> parameters;
     private String type;
     private String subtype;
@@ -1557,7 +1557,7 @@ public final void setSubType(String value) {
      * com.upokecenter.mail.MediaType.getBuilder()} class, using the type
      *  "application/octet-stream" .
      */
-    public MediaType.Builder() {
+    public Builder() {
       this.parameters = new HashMap<String, String>();
       this.type = "application";
       this.subtype = "octet-stream";
@@ -1570,7 +1570,7 @@ public final void setSubType(String value) {
      * @param mt The parameter {@code mt} is a MediaType object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
-    public MediaType.Builder(MediaType mt) {
+    public Builder(MediaType mt) {
       if (mt == null) {
         throw new NullPointerException("mt");
       }
@@ -1585,34 +1585,11 @@ public final void setSubType(String value) {
      * @param type The media type's top-level type.
      * @param subtype The media type's subtype.
      */
-    public MediaType.Builder(String type, String subtype) {
+    public Builder(String type, String subtype) {
       this.parameters = new HashMap<String, String>();
       this.SetTopLevelType(type);
       this.SetSubType(subtype);
     }
-
-    /**
-     * Gets a value indicating whether this is a text media type.
-     * @return {@code true} If this is a text media type; otherwise, {@code false}.
-     * @deprecated Instead of using this property, use the TopLevelType property and compare
- * the result with the exact String 'text'.
- */
-@Deprecated
-    public final boolean isText() {
-        return this.getTopLevelType().equals("text");
-      }
-
-    /**
-     * Gets a value indicating whether this is a multipart media type.
-     * @return {@code true} If this is a multipart media type; otherwise, {@code
-     * false}.
-     * @deprecated Instead of using this property, use the TopLevelType property and compare
- * the result with the exact String 'multipart'.
- */
-@Deprecated
-    public final boolean isMultipart() {
-        return this.getTopLevelType().equals("multipart");
-      }
 
     /**
      * Converts this builder to an immutable media type object.

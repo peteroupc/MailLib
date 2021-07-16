@@ -19,7 +19,7 @@ import com.upokecenter.mail.*;
     }
     @Test
     public void TestRemoveParameter() {
-      MediaTypeBuilder builder = new MediaTypeBuilder();
+      MediaType.Builder builder = new MediaType.Builder();
       try {
         builder.RemoveParameter(null);
         Assert.fail("Should have failed");
@@ -32,7 +32,7 @@ import com.upokecenter.mail.*;
     }
     @Test
     public void TestSetParameter() {
-      MediaTypeBuilder builder = new MediaTypeBuilder();
+      MediaType.Builder builder = new MediaType.Builder();
       builder.SetParameter("a", "b");
       {
         String stringTemp = builder.ToMediaType().GetParameter("a");
@@ -43,7 +43,7 @@ import com.upokecenter.mail.*;
       builder.SetParameter("a", "");
       Assert.assertEquals("", builder.ToMediaType().GetParameter("a"));
       try {
-        new MediaTypeBuilder().SetParameter(null, null);
+        new MediaType.Builder().SetParameter(null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -52,7 +52,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter(null, "test");
+        new MediaType.Builder().SetParameter(null, "test");
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -61,7 +61,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter(null, "");
+        new MediaType.Builder().SetParameter(null, "");
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -70,7 +70,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("test", null);
+        new MediaType.Builder().SetParameter("test", null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -79,13 +79,13 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("test", "");
+        new MediaType.Builder().SetParameter("test", "");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("", "value");
+        new MediaType.Builder().SetParameter("", "value");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -94,7 +94,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("test\u00e0", "value");
+        new MediaType.Builder().SetParameter("test\u00e0", "value");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty

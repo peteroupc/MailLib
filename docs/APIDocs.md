@@ -18,7 +18,9 @@
 
  * [PeterO.Mail.MediaType](PeterO.Mail.MediaType.md) - Specifies what kind of data a message body is.
 
- * [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) - A mutable media type object.
+ * [PeterO.Mail.MediaType.Builder](PeterO.Mail.MediaType.Builder.md) - A mutable data type that allows a media type object to be built.
+
+ * [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) - <b>Deprecated:</b> Use MediaType.Builder instead.
 
  * [PeterO.Mail.Message](PeterO.Mail.Message.md) - Represents an email message, and contains methods and properties for accessing and modifying email message data.
 

@@ -19,7 +19,7 @@ namespace MailLibTest {
     }
     [Test]
     public void TestRemoveParameter() {
-      var builder = new MediaTypeBuilder();
+      var builder = new MediaType.Builder();
       try {
         builder.RemoveParameter(null);
         Assert.Fail("Should have failed");
@@ -32,7 +32,7 @@ namespace MailLibTest {
     }
     [Test]
     public void TestSetParameter() {
-      var builder = new MediaTypeBuilder();
+      var builder = new MediaType.Builder();
       builder.SetParameter("a", "b");
       {
         string stringTemp = builder.ToMediaType().GetParameter("a");
@@ -43,7 +43,7 @@ namespace MailLibTest {
       builder.SetParameter("a", String.Empty);
       Assert.AreEqual(String.Empty, builder.ToMediaType().GetParameter("a"));
       try {
-        new MediaTypeBuilder().SetParameter(null, null);
+        new MediaType.Builder().SetParameter(null, null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -52,7 +52,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter(null, "test");
+        new MediaType.Builder().SetParameter(null, "test");
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -61,7 +61,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter(null, String.Empty);
+        new MediaType.Builder().SetParameter(null, String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -70,7 +70,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("test", null);
+        new MediaType.Builder().SetParameter("test", null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -79,13 +79,13 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("test", String.Empty);
+        new MediaType.Builder().SetParameter("test", String.Empty);
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter(String.Empty, "value");
+        new MediaType.Builder().SetParameter(String.Empty, "value");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -94,7 +94,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("test\u00e0", "value");
+        new MediaType.Builder().SetParameter("test\u00e0", "value");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty

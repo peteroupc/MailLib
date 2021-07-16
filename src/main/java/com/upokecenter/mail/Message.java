@@ -78,7 +78,11 @@ import com.upokecenter.text.*;
    * 6532.)</li></ul> <p>It would be appreciated if users of this library
    * contact the author if they find other ways in which this
    * implementation deviates from the mail specifications or other
-   * applicable specifications.</p> <p>This class currently doesn't support
+   * applicable specifications.</p> <p>If a MIME message or body part has
+   * an unrecognized transfer encoding, its content type is treated as
+   *  "application/octet-stream" rather than the declared content type (in
+   * accordance with MIME) and its transfer encoding is treated as 7bit (a
+   * clarification to MIME).</p> <p>This class currently doesn't support
    *  the "padding" parameter for message bodies with the media type
    *  "application/octet-stream" or treated as that media type (see RFC 2046
    * sec. 4.5.1).</p> <p>In this implementation, if the
@@ -4305,6 +4309,7 @@ TransferEncodingToUse(
       }
       if (this.transferEncoding == EncodingUnknown) {
         ctype = MediaType.ApplicationOctetStream;
+        this.transferEncoding = EncodingSevenBit;
       }
       if (!haveContentEncoding && ctype.getTypeAndSubType().equals(
         "message/rfc822")) {

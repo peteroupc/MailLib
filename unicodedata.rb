@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Written by Peter O.
 # Any copyright to this work is released to the Public Domain.
-# http://creativecommons.org/publicdomain/zero/1.0/
+# https://creativecommons.org/publicdomain/zero/1.0/
 #
 #
 

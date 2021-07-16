@@ -13,14 +13,16 @@
   type", for Multipurpose Internet Mail Extensions, the standard that
  introduced media types.</p> <p>This type is immutable, meaning its
  values can't be changed once it's created. To create a changeable
- media type object, use the MediaTypeBuilder class.</p> <p><b>Note:</b>
- According to RFC 2049, unrecognized subtypes of the top-level type
- <code>multipart</code> must be treated as <code>multipart/mixed</code> and
- unrecognized media types as the media type
+ media type object, use the MediaType.Builder class.</p>
+ <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
+ top-level type <code>multipart</code> must be treated as
+ <code>multipart/mixed</code> and unrecognized media types as the media type
  <code>application/octet-stream</code>.</p>
 
 ## Fields
 
+* `static class  MediaType.Builder`<br>
+ A mutable data type that allows a media type object to be built.
 * `static MediaType ApplicationOctetStream`<br>
  Specifies the media type "application/octet-stream", used for arbitrary
  binary data.
@@ -34,6 +36,11 @@
  Specifies the media type "text/plain" and the "charset" parameter "utf-8",
  used for plain text data that may contain characters outside the
  basic Latin range (U+0000 to U+007F).
+
+## Nested Classes
+
+* `static class  MediaType.Builder`<br>
+ A mutable data type that allows a media type object to be built.
 
 ## Methods
 

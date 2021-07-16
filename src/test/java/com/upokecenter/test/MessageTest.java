@@ -192,7 +192,7 @@ import com.upokecenter.mail.*;
     }
 
     private static void TestMediaTypeRoundTrip(String valueMessageString) {
-      String mtstring = new MediaTypeBuilder(
+      String mtstring = new MediaType.Builder(
         "x",
         "y").SetParameter(
         "z",
@@ -680,7 +680,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static void SingleTestMediaTypeEncodingMediaType(String value) {
-      MediaType mt = new MediaTypeBuilder("x", "y")
+      MediaType mt = new MediaType.Builder("x", "y")
       .SetParameter("z", value).ToMediaType();
       String topLevel = mt.getTopLevelType();
       String sub = mt.getSubType();
@@ -695,7 +695,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static void SingleTestMediaTypeEncodingDisposition(String value) {
-      ContentDisposition mt = new DispositionBuilder("inline")
+      ContentDisposition mt = new ContentDisposition.Builder("inline")
       .SetParameter("z", value).ToDisposition();
       String topLevel = mt.getDispositionType();
       String mtstring = "MIME-Version: 1.0\r\nContent-Type: text/plain" +
@@ -2300,21 +2300,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       {
-        String stringTemp = new MediaTypeBuilder().getTopLevelType();
+        String stringTemp = new MediaType.Builder().getTopLevelType();
         Assert.assertEquals(
           "application",
           stringTemp);
       }
       {
         String stringTemp = new
-        MediaTypeBuilder(MediaType.TextPlainAscii).getTopLevelType();
+        MediaType.Builder(MediaType.TextPlainAscii).getTopLevelType();
         Assert.assertEquals(
           "text",
           stringTemp);
       }
       {
         String stringTemp = new
-        MediaTypeBuilder(MediaType.TextPlainAscii).getSubType();
+        MediaType.Builder(MediaType.TextPlainAscii).getSubType();
         Assert.assertEquals(
           "plain",
           stringTemp);
@@ -2330,9 +2330,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
     @Test
     public void TestMediaTypeBuilder() {
-      MediaTypeBuilder builder;
+      MediaType.Builder builder;
       try {
-        Assert.assertEquals(null, new MediaTypeBuilder(null));
+        Assert.assertEquals(null, new MediaType.Builder(null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -2340,7 +2340,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      builder = new MediaTypeBuilder("text", "plain");
+      builder = new MediaType.Builder("text", "plain");
       try {
         builder.SetTopLevelType(null);
         Assert.fail("Should have failed");
@@ -2414,7 +2414,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType(null);
+        new MediaType.Builder().SetSubType(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -2423,7 +2423,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().RemoveParameter(null);
+        new MediaType.Builder().RemoveParameter(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -2432,19 +2432,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().RemoveParameter("");
+        new MediaType.Builder().RemoveParameter("");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().RemoveParameter("v");
+        new MediaType.Builder().RemoveParameter("v");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType("");
+        new MediaType.Builder().SetSubType("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -2453,7 +2453,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType("x;y");
+        new MediaType.Builder().SetSubType("x;y");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -2462,7 +2462,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType("x/y");
+        new MediaType.Builder().SetSubType("x/y");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -2471,13 +2471,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("x", "");
+        new MediaType.Builder().SetParameter("x", "");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("x;y", "v");
+        new MediaType.Builder().SetParameter("x;y", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -2486,7 +2486,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("x/y", "v");
+        new MediaType.Builder().SetParameter("x/y", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -2811,12 +2811,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Message msg;
       String valueMessageString = "From: x@example.com\r\nMIME-Version:" +
         "\u00201.0\r\n" + "Content-Type: text/plain\r\nContent-Disposition: " +
-        new DispositionBuilder("inline").SetParameter("filename", input)
+        new ContentDisposition.Builder("inline").SetParameter("filename", input)
         .toString() + "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);
       Assert.assertEquals(valueMessageString, expected, msg.getFileName());
       valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-        "Content-Type: " + new MediaTypeBuilder("text", "plain")
+        "Content-Type: " + new MediaType.Builder("text", "plain")
         .SetParameter("name", input).toString() +
         "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);

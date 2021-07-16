@@ -1566,7 +1566,7 @@ null;
 
      /// <summary>A mutable data type that allows a media type object to be
      /// built.</summary>
-      public sealed class Builder {
+     public sealed class Builder {
     private readonly IDictionary<string, string> parameters;
     private string type;
     private string subtype;
@@ -1609,7 +1609,7 @@ null;
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.MediaType.Builder'/> class, using the type
     /// "application/octet-stream" .</summary>
-    public MediaType.Builder() {
+    public Builder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "application";
       this.subtype = "octet-stream";
@@ -1622,7 +1622,7 @@ null;
     /// object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='mt'/> is null.</exception>
-    public MediaType.Builder(MediaType mt) {
+    public Builder(MediaType mt) {
       if (mt == null) {
         throw new ArgumentNullException(nameof(mt));
       }
@@ -1635,34 +1635,10 @@ null;
     /// <see cref='PeterO.Mail.MediaType.Builder'/> class.</summary>
     /// <param name='type'>The media type's top-level type.</param>
     /// <param name='subtype'>The media type's subtype.</param>
-    public MediaType.Builder(string type, string subtype) {
+    public Builder(string type, string subtype) {
       this.parameters = new Dictionary<string, string>();
       this.SetTopLevelType(type);
       this.SetSubType(subtype);
-    }
-
-    /// <summary>Gets a value indicating whether this is a text media
-    /// type.</summary>
-    /// <value><c>true</c> If this is a text media type; otherwise,
-    /// <c>false</c>.</value>
-    [Obsolete("Instead of using this property, use the TopLevelType " +
-        "property and compare the result with the exact string 'text'.")]
-    public bool IsText {
-      get {
-        return this.TopLevelType.Equals("text", StringComparison.Ordinal);
-      }
-    }
-
-    /// <summary>Gets a value indicating whether this is a multipart media
-    /// type.</summary>
-    /// <value><c>true</c> If this is a multipart media type; otherwise,
-    /// <c>false</c>.</value>
-    [Obsolete("Instead of using this property, use the TopLevelType " +
-        "property and compare the result with the exact string 'multipart'.")]
-    public bool IsMultipart {
-      get {
-        return this.TopLevelType.Equals("multipart", StringComparison.Ordinal);
-      }
     }
 
     /// <summary>Converts this builder to an immutable media type

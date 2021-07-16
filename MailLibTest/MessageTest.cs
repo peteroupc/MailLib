@@ -193,7 +193,7 @@ namespace MailLibTest {
     }
 
     private static void TestMediaTypeRoundTrip(string valueMessageString) {
-      string mtstring = new MediaTypeBuilder(
+      string mtstring = new MediaType.Builder(
         "x",
         "y").SetParameter(
         "z",
@@ -657,7 +657,7 @@ namespace MailLibTest {
     }
 
     private static void SingleTestMediaTypeEncodingMediaType(string value) {
-      MediaType mt = new MediaTypeBuilder("x", "y")
+      MediaType mt = new MediaType.Builder("x", "y")
       .SetParameter("z", value).ToMediaType();
       string topLevel = mt.TopLevelType;
       string sub = mt.SubType;
@@ -675,7 +675,7 @@ namespace MailLibTest {
     }
 
     private static void SingleTestMediaTypeEncodingDisposition(string value) {
-      ContentDisposition mt = new DispositionBuilder("inline")
+      ContentDisposition mt = new ContentDisposition.Builder("inline")
       .SetParameter("z", value).ToDisposition();
       string topLevel = mt.DispositionType;
       string mtstring = "MIME-Version: 1.0\r\nContent-Type: text/plain" +
@@ -2281,21 +2281,21 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       {
-        string stringTemp = new MediaTypeBuilder().TopLevelType;
+        string stringTemp = new MediaType.Builder().TopLevelType;
         Assert.AreEqual(
           "application",
           stringTemp);
       }
       {
         string stringTemp = new
-        MediaTypeBuilder(MediaType.TextPlainAscii).TopLevelType;
+        MediaType.Builder(MediaType.TextPlainAscii).TopLevelType;
         Assert.AreEqual(
           "text",
           stringTemp);
       }
       {
         string stringTemp = new
-        MediaTypeBuilder(MediaType.TextPlainAscii).SubType;
+        MediaType.Builder(MediaType.TextPlainAscii).SubType;
         Assert.AreEqual(
           "plain",
           stringTemp);
@@ -2309,9 +2309,9 @@ namespace MailLibTest {
     }
     [Test]
     public void TestMediaTypeBuilder() {
-      MediaTypeBuilder builder;
+      MediaType.Builder builder;
       try {
-        Assert.AreEqual(null, new MediaTypeBuilder(null));
+        Assert.AreEqual(null, new MediaType.Builder(null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -2319,7 +2319,7 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      builder = new MediaTypeBuilder("text", "plain");
+      builder = new MediaType.Builder("text", "plain");
       try {
         builder.SetTopLevelType(null);
         Assert.Fail("Should have failed");
@@ -2393,7 +2393,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType(null);
+        new MediaType.Builder().SetSubType(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -2402,7 +2402,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().RemoveParameter(null);
+        new MediaType.Builder().RemoveParameter(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -2411,19 +2411,19 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().RemoveParameter(String.Empty);
+        new MediaType.Builder().RemoveParameter(String.Empty);
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().RemoveParameter("v");
+        new MediaType.Builder().RemoveParameter("v");
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType(String.Empty);
+        new MediaType.Builder().SetSubType(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -2432,7 +2432,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType("x;y");
+        new MediaType.Builder().SetSubType("x;y");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -2441,7 +2441,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetSubType("x/y");
+        new MediaType.Builder().SetSubType("x/y");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -2450,13 +2450,13 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("x", String.Empty);
+        new MediaType.Builder().SetParameter("x", String.Empty);
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("x;y", "v");
+        new MediaType.Builder().SetParameter("x;y", "v");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -2465,7 +2465,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new MediaTypeBuilder().SetParameter("x/y", "v");
+        new MediaType.Builder().SetParameter("x/y", "v");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -2787,12 +2787,12 @@ namespace MailLibTest {
       Message msg;
       String valueMessageString = "From: x@example.com\r\nMIME-Version:" +
         "\u00201.0\r\n" + "Content-Type: text/plain\r\nContent-Disposition: " +
-        new DispositionBuilder("inline").SetParameter("filename", input)
+        new ContentDisposition.Builder("inline").SetParameter("filename", input)
         .ToString() + "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);
       Assert.AreEqual(expected, msg.FileName, valueMessageString);
       valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-        "Content-Type: " + new MediaTypeBuilder("text", "plain")
+        "Content-Type: " + new MediaType.Builder("text", "plain")
         .SetParameter("name", input).ToString() +
         "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);

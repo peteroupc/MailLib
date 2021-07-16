@@ -30,8 +30,11 @@ Contains methods for parsing and generating date-time strings following the
 * [com.upokecenter.mail.MediaType](com.upokecenter.mail.MediaType.md) -
 Specifies what kind of data a message body is.
 
-* [com.upokecenter.mail.MediaTypeBuilder](com.upokecenter.mail.MediaTypeBuilder.md) -
-A mutable media type object.
+* [com.upokecenter.mail.MediaType.Builder](com.upokecenter.mail.MediaType.Builder.md) -
+A mutable data type that allows a media type object to be built.
+
+* [com.upokecenter.mail.MediaTypeBuilder](com.upokecenter.mail.MediaTypeBuilder.md) - Deprecated.
+Use MediaType.Builder instead.
 
 * [com.upokecenter.mail.Message](com.upokecenter.mail.Message.md) -
 Represents an email message, and contains methods and properties for

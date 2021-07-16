@@ -8,7 +8,7 @@ A media type consists of a top-level type (the general category of the data), a 
 
 A media type is sometimes known as a "MIME type", for Multipurpose Internet Mail Extensions, the standard that introduced media types.
 
-This type is immutable, meaning its values can't be changed once it's created. To create a changeable media type object, use the MediaTypeBuilder class.
+This type is immutable, meaning its values can't be changed once it's created. To create a changeable media type object, use the MediaType.Builder class.
 
 <b>Note:</b> According to RFC 2049, unrecognized subtypes of the top-level type  `multipart`  must be treated as  `multipart/mixed`  and unrecognized media types as the media type  `application/octet-stream` .
 
