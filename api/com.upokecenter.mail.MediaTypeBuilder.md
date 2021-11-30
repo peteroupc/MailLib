@@ -1,11 +1,6 @@
 # com.upokecenter.mail.MediaTypeBuilder
 
-    @Deprecated public final class MediaTypeBuilder extends java.lang.Object
-
-Deprecated.
-Use MediaType.Builder instead.
-
-## Methods
+## Constructors
 
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
  Deprecated. Initializes a new instance of the MediaTypeBuilder class, using the type
@@ -14,8 +9,11 @@ Use MediaType.Builder instead.
  Deprecated. Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
 * `MediaTypeBuilder​(java.lang.String type,
-                java.lang.String subtype) MediaTypeBuilder`<br>
+java.lang.String subtype) MediaTypeBuilder`<br>
  Deprecated. Initializes a new instance of the MediaTypeBuilder class.
+
+## Methods
+
 * `java.lang.String getSubType()`<br>
  Deprecated. Gets this value's subtype.
 * `java.lang.String getTopLevelType()`<br>
@@ -35,7 +33,7 @@ Instead of using this property, use the TopLevelType property and compare
 * `MediaTypeBuilder RemoveParameter​(java.lang.String name)`<br>
  Deprecated. Removes a parameter from this builder object.
 * `MediaTypeBuilder SetParameter​(java.lang.String name,
-            java.lang.String value)`<br>
+java.lang.String value)`<br>
  Deprecated. Sets a parameter's name and value for this media type.
 * `void setSubType​(java.lang.String value)`<br>
  Deprecated.
@@ -51,48 +49,11 @@ Instead of using this property, use the TopLevelType property and compare
  Deprecated. Converts this object to a text string of the media type it represents, in
  the same form as MediaType.toString.
 
-## Constructors
-
-* `MediaTypeBuilder() MediaTypeBuilder`<br>
- Deprecated. Initializes a new instance of the MediaTypeBuilder class, using the type
-  "application/octet-stream" .
-* `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
- Deprecated. Initializes a new instance of the MediaTypeBuilder class using the data from
- another media type.
-* `MediaTypeBuilder​(java.lang.String type,
-                java.lang.String subtype) MediaTypeBuilder`<br>
- Deprecated. Initializes a new instance of the MediaTypeBuilder class.
-
 ## Method Details
 
-### MediaTypeBuilder
-    public MediaTypeBuilder()
-Deprecated.
-### MediaTypeBuilder
-    public MediaTypeBuilder​(MediaType mt)
-Deprecated.
+### <a id='getTopLevelType()'>getTopLevelType</a>
 
-**Parameters:**
-
-* <code>mt</code> - The parameter <code>mt</code> is a MediaType object.
-
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>mt</code> is null.
-
-### MediaTypeBuilder
-    public MediaTypeBuilder​(java.lang.String type, java.lang.String subtype)
-Deprecated.
-
-**Parameters:**
-
-* <code>type</code> - The media type's top-level type.
-
-* <code>subtype</code> - The media type's subtype.
-
-### getTopLevelType
-    public final java.lang.String getTopLevelType()
-Deprecated.
+Gets this value's top-level type.
 
 **Returns:**
 
@@ -107,12 +68,11 @@ Deprecated.
 * <code>java.lang.IllegalArgumentException</code> - The property is being set and the value is
  syntactically invalid for a top-level type.
 
-### setTopLevelType
-    public final void setTopLevelType​(java.lang.String value)
-Deprecated.
-### getSubType
-    public final java.lang.String getSubType()
-Deprecated.
+### <a id='setTopLevelType(java.lang.String)'>setTopLevelType</a>
+
+### <a id='getSubType()'>getSubType</a>
+
+Gets this value's subtype.
 
 **Returns:**
 
@@ -127,41 +87,39 @@ Deprecated.
 * <code>java.lang.IllegalArgumentException</code> - The property is being set and the value is
  syntactically invalid for a subtype.
 
-### setSubType
-    public final void setSubType​(java.lang.String value)
-Deprecated.
-### isText
-    @Deprecated public final boolean isText()
-Deprecated.
-Instead of using this property, use the TopLevelType property and compare
- the result with the exact String 'text'.
+### <a id='setSubType(java.lang.String)'>setSubType</a>
+
+### <a id='isText()'>isText</a>
+
+Gets a value indicating whether this is a text media type.
 
 **Returns:**
 
 * <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
-### isMultipart
-    @Deprecated public final boolean isMultipart()
-Deprecated.
-Instead of using this property, use the TopLevelType property and compare
- the result with the exact String 'multipart'.
+### <a id='isMultipart()'>isMultipart</a>
+
+Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
 * <code>true</code> If this is a multipart media type; otherwise, <code>
  false</code>.
 
-### ToMediaType
-    public MediaType ToMediaType()
-Deprecated.
+### <a id='ToMediaType()'>ToMediaType</a>
+
+Converts this builder to an immutable media type object.
 
 **Returns:**
 
 * A MediaType object.
 
-### SetTopLevelType
-    public MediaTypeBuilder SetTopLevelType​(java.lang.String str)
-Deprecated.
+### <a id='SetTopLevelType(java.lang.String)'>SetTopLevelType</a>
+
+Sets this media type's top-level type. This method enables the pattern of
+ method chaining (e.g., <code>new...().getSet()...().getSet()...()</code>) unlike
+ with the TopLevelType property in.NET or the setTopLevelType method
+ (with small s) in Java.
 
 **Parameters:**
 
@@ -179,9 +137,10 @@ Deprecated.
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> is syntactically invalid
  for a top-level type.
 
-### RemoveParameter
-    public MediaTypeBuilder RemoveParameter​(java.lang.String name)
-Deprecated.
+### <a id='RemoveParameter(java.lang.String)'>RemoveParameter</a>
+
+Removes a parameter from this builder object. Does nothing if the
+ parameter's name doesn't exist.
 
 **Parameters:**
 
@@ -199,9 +158,9 @@ Deprecated.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>name</code> is null.
 
-### SetParameter
-    public MediaTypeBuilder SetParameter​(java.lang.String name, java.lang.String value)
-Deprecated.
+### <a id='SetParameter(java.lang.String,java.lang.String)'>SetParameter</a>
+
+Sets a parameter's name and value for this media type.
 
 **Parameters:**
 
@@ -225,9 +184,12 @@ Deprecated.
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty or
  syntactically invalid.
 
-### SetSubType
-    public MediaTypeBuilder SetSubType​(java.lang.String str)
-Deprecated.
+### <a id='SetSubType(java.lang.String)'>SetSubType</a>
+
+Sets this media type's subtype, such as "plain" or "xml" . This method
+ enables the pattern of method chaining (e.g.,
+ <code>new...().getSet()...().getSet()...()</code>) unlike with the SubType property
+ in.NET or the setSubType method (with small s) in Java.
 
 **Parameters:**
 
@@ -244,9 +206,10 @@ Deprecated.
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>str</code> is empty or
  syntactically invalid.
 
-### toString
-    public java.lang.String toString()
-Deprecated.
+### <a id='toString()'>toString</a>
+
+Converts this object to a text string of the media type it represents, in
+ the same form as <code>MediaType.toString</code>.
 
 **Overrides:**
 

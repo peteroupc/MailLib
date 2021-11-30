@@ -1,50 +1,16 @@
 # com.upokecenter.mail.ContentDisposition
 
-    public class ContentDisposition extends java.lang.Object
-
-<p>Specifies how a message body should be displayed or handled by a mail
- user agent. This type is immutable; its contents can't be changed
- after it's created. To create a changeable disposition object, use the
-  DispositionBuilder class.</p> <p><b>About the "filename"
-  parameter</b></p> <p>The "filename" parameter of a content disposition
-  suggests a name to use when saving data to a file. For the "filename"
- parameter, the GetParameter method and Parameters property(
- <code>getParameters</code>) method in Java) do not adapt that parameter's
- value using the ContentDisposition.MakeFilename method. Thus, for
-  example, the "filename" parameter, if any, returned by this method
- could have an arbitrary length, be encoded using RFC 2047 encoded
- words (which some email and HTTP implementations still like to write
-  out in headers, even though that RFC says encoded words "MUST NOT
-  appear within a 'quoted-string'"; see
- ContentDisposition.MakeFilename), or not be usable as is as a file
- name.</p> <p><b>Example:</b> An example of RFC 2047 encoded words
- is:</p> <p><b>=?UTF-8?Q?test?=</b></p> <p>Content-Disposition header
- fields like the following have appeared in practice:</p>
- <p><b>Content-Disposition: attachment;
- filename==?UTF-8?Q?example?=</b></p> <p><b>Content-Disposition:
- attachment; filename==?UTF-8?Q?test.png?=</b></p>
- <p><b>Content-Disposition: attachment;
-  filename="=?UTF-8?Q?test.png?="</b></p> <p>In this implementation, the
- first and second of these are syntactically invalid, so they trigger
- parse errors, while the third of these is syntactically valid, but the
-  "filename" parameter is treated as "=?UTF-8?Q?test.png?=", not
-  "test.png" or something else -- RFC 2047 encoded words are not decoded
- at the moment a content disposition is parsed (using the Parse
- method).</p>
-
-## Fields
-
-* `static class  ContentDisposition.Builder`<br>
- A mutable data type that allows a content disposition to be built.
-* `static ContentDisposition Attachment`<br>
- The content disposition value "attachment" .
-* `static ContentDisposition Inline`<br>
- The content disposition value "inline" .
-
 ## Nested Classes
 
 * `static class  ContentDisposition.Builder`<br>
  A mutable data type that allows a content disposition to be built.
+
+## Fields
+
+* `static ContentDisposition Attachment`<br>
+ The content disposition value "attachment" .
+* `static ContentDisposition Inline`<br>
+ The content disposition value "inline" .
 
 ## Methods
 
@@ -86,7 +52,7 @@
  Creates a new content disposition object from the value of a
  Content-Disposition header field.
 * `static ContentDisposition Parse​(java.lang.String dispositionValue,
-     ContentDisposition defaultValue)`<br>
+ContentDisposition defaultValue)`<br>
  Parses a content disposition string and returns a content disposition
  object, or the default value if the string is invalid.
 * `java.lang.String ToSingleLineString()`<br>
@@ -98,16 +64,16 @@
 
 ## Field Details
 
-### Attachment
-    public static final ContentDisposition Attachment
+### <a id='Attachment'>Attachment</a>
+
 The content disposition value "attachment" .
-### Inline
-    public static final ContentDisposition Inline
+### <a id='Inline'>Inline</a>
+
 The content disposition value "inline" .
 ## Method Details
 
-### getDispositionType
-    public final java.lang.String getDispositionType()
+### <a id='getDispositionType()'>getDispositionType</a>
+
 Gets a string containing this object's disposition type, such as "inline" or
   "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec.
  2.8, unrecognized disposition types should be treated as
@@ -121,8 +87,8 @@ Gets a string containing this object's disposition type, such as "inline" or
 * A string containing this object's disposition type, such as "inline"
   or "attachment".
 
-### equals
-    public boolean equals​(java.lang.Object obj)
+### <a id='equals(java.lang.Object)'>equals</a>
+
 Determines whether this object and another object are equal.
 
 **Overrides:**
@@ -139,8 +105,8 @@ Determines whether this object and another object are equal.
  this method, two objects are not equal if they don't have the same
  type or if one is null and the other isn't.
 
-### hashCode
-    public int hashCode()
+### <a id='hashCode()'>hashCode</a>
+
 Calculates the hash code of this object. The exact algorithm used by this
  method may change between versions of this library, and no
  application or process IDs are used in the hash code calculation.
@@ -153,8 +119,8 @@ Calculates the hash code of this object. The exact algorithm used by this
 
 * A 32-bit hash code.
 
-### isInline
-    public final boolean isInline()
+### <a id='isInline()'>isInline</a>
+
 Gets a value indicating whether the disposition type is inline.
 
 **Returns:**
@@ -162,8 +128,8 @@ Gets a value indicating whether the disposition type is inline.
 * <code>true</code> If the disposition type is inline; otherwise, <code>
  false</code>.
 
-### isAttachment
-    public final boolean isAttachment()
+### <a id='isAttachment()'>isAttachment</a>
+
 Gets a value indicating whether the disposition type is attachment.
 
 **Returns:**
@@ -171,8 +137,8 @@ Gets a value indicating whether the disposition type is attachment.
 * <code>true</code> If the disposition type is attachment; otherwise,
  <code>false</code>.
 
-### getParameters
-    public final java.util.Map<java.lang.String,​java.lang.String> getParameters()
+### <a id='getParameters()'>getParameters</a>
+
 Gets a list of parameter names associated with this object and their values.
  Each parameter name will be in lower case; that is, with its basic
   upper-case letters ("A" to "Z") converted to basic lower-case
@@ -189,8 +155,8 @@ Gets a list of parameter names associated with this object and their values.
  guaranteed to appear in any particular order; this is at least the
  case in version 0.10.0.
 
-### toString
-    public java.lang.String toString()
+### <a id='toString()'>toString</a>
+
 Converts this content disposition to a text string form suitable for
  inserting in email headers. Notably, the string contains the value
  of a Content-Disposition header field (without the text necessarily
@@ -205,8 +171,8 @@ Converts this content disposition to a text string form suitable for
 
 * A text string form of this content disposition.
 
-### ToSingleLineString
-    public java.lang.String ToSingleLineString()
+### <a id='ToSingleLineString()'>ToSingleLineString</a>
+
 Converts this content disposition to a text string form suitable for
  inserting in HTTP headers. Notably, the string contains the value of
  a Content-Disposition header field (without the text necessarily
@@ -217,8 +183,8 @@ Converts this content disposition to a text string form suitable for
 
 * A text string form of this content disposition.
 
-### MakeFilename
-    public static java.lang.String MakeFilename​(java.lang.String str)
+### <a id='MakeFilename(java.lang.String)'>MakeFilename</a>
+
 Converts a file name from the Content-disposition header field (or another
  string representing a title and an optional file extension) to a
  suitable name for saving data to a file. This method is idempotent;
@@ -296,8 +262,8 @@ Converts a file name from the Content-disposition header field (or another
  normalization form C. Returns the empty string if <code>str</code> is
  null or empty.
 
-### GetFilename
-    public java.lang.String GetFilename()
+### <a id='GetFilename()'>GetFilename</a>
+
 Gets an adapted version of the "filename" parameter in this content
   disposition object by using the "MakeFilename" method.
 
@@ -307,8 +273,8 @@ Gets an adapted version of the "filename" parameter in this content
   string if there is no "filename" parameter or that parameter is
  empty.
 
-### GetCreationDate
-    public int[] GetCreationDate()
+### <a id='GetCreationDate()'>GetCreationDate</a>
+
 Gets the date and time extracted from this content disposition's
   "creation-date" parameter, which specifies the date of creation of a
  file (RFC 2183 sec. 2.4). The parameter is parsed as though by
@@ -323,8 +289,8 @@ Gets the date and time extracted from this content disposition's
  or is syntactically invalid, or if the parameter's year would
  overflow a 32-bit signed integer.
 
-### GetModificationDate
-    public int[] GetModificationDate()
+### <a id='GetModificationDate()'>GetModificationDate</a>
+
 Gets the date and time extracted from this content disposition's
   "modification-date" parameter, which specifies the date of last
  modification of a file (RFC 2183 sec. 2.5). The parameter is parsed
@@ -339,8 +305,8 @@ Gets the date and time extracted from this content disposition's
  string, or is syntactically invalid, or if the parameter's year
  would overflow a 32-bit signed integer.
 
-### GetReadDate
-    public int[] GetReadDate()
+### <a id='GetReadDate()'>GetReadDate</a>
+
 Gets the date and time extracted from this content disposition's "read-date"
  parameter, which specifies the date at which a file was last read
  (RFC 2183 sec. 2.6). The parameter is parsed as though by
@@ -355,8 +321,8 @@ Gets the date and time extracted from this content disposition's "read-date"
  is syntactically invalid, or if the parameter's year would overflow
  a 32-bit signed integer.
 
-### GetParameter
-    public java.lang.String GetParameter​(java.lang.String name)
+### <a id='GetParameter(java.lang.String)'>GetParameter</a>
+
 Gets a parameter from this disposition object. For the "filename" parameter,
  the value of that parameter is not adapted with the
  ContentDisposition.MakeFilename method; see the documentation for
@@ -380,8 +346,8 @@ Gets a parameter from this disposition object. For the "filename" parameter,
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty.
 
-### Parse
-    public static ContentDisposition Parse​(java.lang.String dispoValue)
+### <a id='Parse(java.lang.String)'>Parse</a>
+
 Creates a new content disposition object from the value of a
  Content-Disposition header field.
 
@@ -398,8 +364,8 @@ Creates a new content disposition object from the value of a
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>dispoValue</code> is null.
 
-### Parse
-    public static ContentDisposition Parse​(java.lang.String dispositionValue, ContentDisposition defaultValue)
+### <a id='Parse(java.lang.String,com.upokecenter.mail.ContentDisposition)'>Parse</a>
+
 Parses a content disposition string and returns a content disposition
  object, or the default value if the string is invalid. This method
  checks the syntactic validity of the string, but not whether it has

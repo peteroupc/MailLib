@@ -1,11 +1,6 @@
 # com.upokecenter.mail.DispositionBuilder
 
-    @Deprecated public class DispositionBuilder extends java.lang.Object
-
-Deprecated.
-Use ContentDisposition.Builder instead.
-
-## Methods
+## Constructors
 
 * `DispositionBuilder() DispositionBuilder`<br>
  Deprecated. Initializes a new instance of the DispositionBuilder class using the disposition
@@ -16,6 +11,9 @@ Use ContentDisposition.Builder instead.
 * `DispositionBuilder​(java.lang.String type) DispositionBuilder`<br>
  Deprecated. Initializes a new instance of the DispositionBuilder class using the given
  disposition type.
+
+## Methods
+
 * `java.lang.String getDispositionType()`<br>
  Deprecated. Gets this value's disposition type, such as "inline" or "attachment".
 * `boolean isMultipart()`<br>
@@ -33,59 +31,18 @@ Irrelevant for content dispositions; will be removed in the future.
 * `DispositionBuilder SetDispositionType​(java.lang.String str)`<br>
  Deprecated. Sets the disposition type, such as "inline".
 * `DispositionBuilder SetParameter​(java.lang.String name,
-            java.lang.String value)`<br>
+java.lang.String value)`<br>
  Deprecated. Sets a parameter of this content disposition.
 * `ContentDisposition ToDisposition()`<br>
  Deprecated. Converts this object to an immutable ContentDisposition object.
 * `java.lang.String toString()`<br>
  Deprecated. Converts this object to a text string.
 
-## Constructors
-
-* `DispositionBuilder() DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the disposition
-  type "attachment" .
-* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the data from
- the given content disposition.
-* `DispositionBuilder​(java.lang.String type) DispositionBuilder`<br>
- Deprecated. Initializes a new instance of the DispositionBuilder class using the given
- disposition type.
-
 ## Method Details
 
-### DispositionBuilder
-    public DispositionBuilder()
-Deprecated.
-### DispositionBuilder
-    public DispositionBuilder​(ContentDisposition mt)
-Deprecated.
+### <a id='getDispositionType()'>getDispositionType</a>
 
-**Parameters:**
-
-* <code>mt</code> - The parameter <code>mt</code> is a ContentDisposition object.
-
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>mt</code> is null.
-
-### DispositionBuilder
-    public DispositionBuilder​(java.lang.String type)
-Deprecated.
-
-**Parameters:**
-
-* <code>type</code> - The parameter <code>type</code> is a text string.
-
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>type</code> is null.
-
-* <code>java.lang.IllegalArgumentException</code> - Type is empty.
-
-### getDispositionType
-    public final java.lang.String getDispositionType()
-Deprecated.
+Gets this value's disposition type, such as "inline" or "attachment".
 
 **Returns:**
 
@@ -99,39 +56,39 @@ Deprecated.
 * <code>java.lang.IllegalArgumentException</code> - The property is being set and the value is an
  empty string.
 
-### setDispositionType
-    public final void setDispositionType​(java.lang.String value)
-Deprecated.
-### isText
-    @Deprecated public final boolean isText()
-Deprecated.
-Irrelevant for content dispositions; will be removed in the future.
+### <a id='setDispositionType(java.lang.String)'>setDispositionType</a>
+
+### <a id='isText()'>isText</a>
+
+Gets a value indicating whether this is a text media type.
 
 **Returns:**
 
 * <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
-### isMultipart
-    @Deprecated public final boolean isMultipart()
-Deprecated.
-Irrelevant for content dispositions; will be removed in the future.
+### <a id='isMultipart()'>isMultipart</a>
+
+Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
 * <code>true</code> If this is a multipart media type; otherwise, <code>
  false</code>.
 
-### ToDisposition
-    public ContentDisposition ToDisposition()
-Deprecated.
+### <a id='ToDisposition()'>ToDisposition</a>
+
+Converts this object to an immutable ContentDisposition object.
 
 **Returns:**
 
 * A MediaType object.
 
-### SetDispositionType
-    public DispositionBuilder SetDispositionType​(java.lang.String str)
-Deprecated.
+### <a id='SetDispositionType(java.lang.String)'>SetDispositionType</a>
+
+Sets the disposition type, such as "inline". This method enables the pattern
+ of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
+ unlike with the DispositionType property in .NET or the
+ setDispositionType method (with small s) in Java.
 
 **Parameters:**
 
@@ -147,9 +104,10 @@ Deprecated.
 
 * <code>java.lang.IllegalArgumentException</code> - Str is empty.
 
-### RemoveParameter
-    public DispositionBuilder RemoveParameter​(java.lang.String name)
-Deprecated.
+### <a id='RemoveParameter(java.lang.String)'>RemoveParameter</a>
+
+Removes a parameter from this content disposition. Does nothing if the
+ parameter's name doesn't exist.
 
 **Parameters:**
 
@@ -167,9 +125,9 @@ Deprecated.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>name</code> is null.
 
-### SetParameter
-    public DispositionBuilder SetParameter​(java.lang.String name, java.lang.String value)
-Deprecated.
+### <a id='SetParameter(java.lang.String,java.lang.String)'>SetParameter</a>
+
+Sets a parameter of this content disposition.
 
 **Parameters:**
 
@@ -193,9 +151,9 @@ Deprecated.
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it isn't a
  well-formed parameter name.
 
-### toString
-    public java.lang.String toString()
-Deprecated.
+### <a id='toString()'>toString</a>
+
+Converts this object to a text string.
 
 **Overrides:**
 

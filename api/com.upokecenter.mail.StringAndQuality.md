@@ -1,59 +1,30 @@
 # com.upokecenter.mail.StringAndQuality
 
-    public final class StringAndQuality extends java.lang.Object
+## Constructors
 
-Stores an arbitrary string and a "quality value" for that string. For
-  instance, the string can be a language tag, and the "quality value"
- can be the degree of preference for that language.
+* `StringAndQuality​(java.lang.String value,
+int quality) StringAndQuality`<br>
+ Initializes a new instance of the StringAndQuality class.
 
 ## Methods
 
-* `StringAndQuality​(java.lang.String value,
-                int quality) StringAndQuality`<br>
- Initializes a new instance of the StringAndQuality class.
 * `int getQuality()`<br>
  Gets the quality value stored by this object.
 * `java.lang.String getValue()`<br>
  Gets the arbitrary string stored by this object.
 
-## Constructors
-
-* `StringAndQuality​(java.lang.String value,
-                int quality) StringAndQuality`<br>
- Initializes a new instance of the StringAndQuality class.
-
 ## Method Details
 
-### StringAndQuality
-    public StringAndQuality​(java.lang.String value, int quality)
-Initializes a new instance of the <code>StringAndQuality</code> class.
+### <a id='getValue()'>getValue</a>
 
-**Parameters:**
-
-* <code>value</code> - An arbitrary text string.
-
-* <code>quality</code> - A 32-bit signed integer serving as the "quality" value.
-
-### StringAndQuality
-    public StringAndQuality​(java.lang.String value, int quality)
-Initializes a new instance of the <code>StringAndQuality</code> class.
-
-**Parameters:**
-
-* <code>value</code> - An arbitrary text string.
-
-* <code>quality</code> - A 32-bit signed integer serving as the "quality" value.
-
-### getValue
-    public final java.lang.String getValue()
 Gets the arbitrary string stored by this object.
 
 **Returns:**
 
 * The arbitrary string stored by this object.
 
-### getQuality
-    public final int getQuality()
+### <a id='getQuality()'>getQuality</a>
+
 Gets the quality value stored by this object.
 
 **Returns:**

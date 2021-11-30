@@ -1,24 +1,19 @@
 # com.upokecenter.mail.MailDateTime
 
-    public final class MailDateTime extends java.lang.Object
-
-Contains methods for parsing and generating date-time strings following the
- Internet Message Format (RFC 5322).
-
 ## Methods
 
 * `static java.lang.String GenerateDateString​(int[] dateTime)`<br>
  Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
 * `static java.lang.String GenerateDateString​(int[] dateTime,
-                  boolean gmt)`<br>
+boolean gmt)`<br>
  Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
 * `static int[] ParseDateString​(java.lang.String str)`<br>
  Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322).
 * `static int[] ParseDateString​(java.lang.String str,
-               boolean parseObsoleteZones)`<br>
+boolean parseObsoleteZones)`<br>
  Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322), with an option to allow obsolete
  time zone strings to appear in the date-time string.
@@ -28,8 +23,8 @@ Contains methods for parsing and generating date-time strings following the
 
 ## Method Details
 
-### GenerateDateString
-    public static java.lang.String GenerateDateString​(int[] dateTime)
+### <a id='GenerateDateString(int[])'>GenerateDateString</a>
+
 Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
 
@@ -48,8 +43,8 @@ Generates a date-time string following the Internet Message Format (RFC
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>dateTime</code> is null or invalid
  (see <code>ParseDateString(string, boolean)</code>).
 
-### GenerateDateString
-    public static java.lang.String GenerateDateString​(int[] dateTime, boolean gmt)
+### <a id='GenerateDateString(int[],boolean)'>GenerateDateString</a>
+
 Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
 
@@ -72,8 +67,8 @@ Generates a date-time string following the Internet Message Format (RFC
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>dateTime</code> is null.
 
-### ParseDateString
-    public static int[] ParseDateString​(java.lang.String str, boolean parseObsoleteZones)
+### <a id='ParseDateString(java.lang.String,boolean)'>ParseDateString</a>
+
 Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322), with an option to allow obsolete
  time zone strings to appear in the date-time string. If an array is
@@ -114,8 +109,8 @@ Gets the date and time extracted from a date-time string following the
  <code>str</code> is null, empty, or syntactically invalid, or if the
  string's year would overflow the range of a 32-bit signed integer.
 
-### ParseDateString
-    public static int[] ParseDateString​(java.lang.String str)
+### <a id='ParseDateString(java.lang.String)'>ParseDateString</a>
+
 Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322). Obsolete time zone strings are
  not allowed to appear in the date-time string. See
@@ -132,8 +127,8 @@ Gets the date and time extracted from a date-time string following the
  <code>str</code> is null, empty, or syntactically invalid, or if the
  string's year would overflow the range of a 32-bit signed integer.
 
-### ParseDateStringHttp
-    public static int[] ParseDateStringHttp​(java.lang.String v)
+### <a id='ParseDateStringHttp(java.lang.String)'>ParseDateStringHttp</a>
+
 Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC
  7231).
 

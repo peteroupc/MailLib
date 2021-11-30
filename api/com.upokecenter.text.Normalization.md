@@ -1,8 +1,6 @@
 # com.upokecenter.text.Normalization
 
-    public enum Normalization extends java.lang.Enum<Normalization>
-
-Represents a Unicode normalization form.
+## Nested Classes
 
 ## Enum Constants
 
@@ -25,33 +23,24 @@ Represents a Unicode normalization form.
  Returns an array containing the constants of this enum type, in
 the order they are declared.
 
-## Method Details
-
-### NFC
-    public static final Normalization NFC
-### NFD
-    public static final Normalization NFD
-### NFKC
-    public static final Normalization NFKC
-### NFKD
-    public static final Normalization NFKD
-### values
-    public static Normalization[] values()
-### valueOf
-    public static Normalization valueOf​(java.lang.String name)
 ## Enum Constant Details
 
-### NFC
-    public static final Normalization NFC
+### <a id='NFC'>NFC</a>
+
 Normalization form C: canonical decomposition followed by canonical
  composition.
-### NFD
-    public static final Normalization NFD
+### <a id='NFD'>NFD</a>
+
 Normalization form D: canonical decomposition.
-### NFKC
-    public static final Normalization NFKC
+### <a id='NFKC'>NFKC</a>
+
 Normalization form KC: compatibility decomposition followed by canonical
  composition.
-### NFKD
-    public static final Normalization NFKD
+### <a id='NFKD'>NFKD</a>
+
 Normalization form KD: compatibility decomposition.
+## Method Details
+
+### <a id='values()'>values</a>
+
+### <a id='valueOf(java.lang.String)'>valueOf</a>

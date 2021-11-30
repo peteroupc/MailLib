@@ -1,10 +1,5 @@
 # com.upokecenter.mail.DataUrls
 
-    @Deprecated public final class DataUrls extends java.lang.Object
-
-Deprecated.
-Renamed to DataUris.
-
 ## Methods
 
 * `static byte[] DataUrlBytes​(java.lang.String url)`<br>
@@ -16,7 +11,7 @@ Renamed to DataUriBytes.
 Renamed to DataUriMediaType.
  Renamed to DataUriMediaType.
 * `static java.lang.String MakeDataUrl​(byte[] bytes,
-           MediaType mediaType)`<br>
+MediaType mediaType)`<br>
  Deprecated.
 Renamed to MakeDataUri.
  Renamed to MakeDataUri.
@@ -27,10 +22,9 @@ Renamed to MakeDataUri.
 
 ## Method Details
 
-### DataUrlMediaType
-    @Deprecated public static MediaType DataUrlMediaType​(java.lang.String url)
-Deprecated.
-Renamed to DataUriMediaType.
+### <a id='DataUrlMediaType(java.lang.String)'>DataUrlMediaType</a>
+
+Extracts the media type from a Data URI (uniform resource identifier).
 
 **Parameters:**
 
@@ -41,10 +35,10 @@ Renamed to DataUriMediaType.
 * The media type. Returns null if <code>url</code> is null, is
  syntactically invalid, or is not a Data URI.
 
-### DataUrlBytes
-    @Deprecated public static byte[] DataUrlBytes​(java.lang.String url)
-Deprecated.
-Renamed to DataUriBytes.
+### <a id='DataUrlBytes(java.lang.String)'>DataUrlBytes</a>
+
+Extracts the data from a Data URI (uniform resource identifier) in the form
+ of a byte array.
 
 **Parameters:**
 
@@ -55,10 +49,9 @@ Renamed to DataUriBytes.
 * The data as a byte array. Returns null if <code>url</code> is null, is
  syntactically invalid, or is not a data URI.
 
-### MakeDataUrl
-    @Deprecated public static java.lang.String MakeDataUrl​(java.lang.String textString)
-Deprecated.
-Renamed to MakeDataUri.
+### <a id='MakeDataUrl(java.lang.String)'>MakeDataUrl</a>
+
+Encodes text as a Data URI (uniform resource identifier).
 
 **Parameters:**
 
@@ -72,10 +65,10 @@ Renamed to MakeDataUri.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>textString</code> is null.
 
-### MakeDataUrl
-    @Deprecated public static java.lang.String MakeDataUrl​(byte[] bytes, MediaType mediaType)
-Deprecated.
-Renamed to MakeDataUri.
+### <a id='MakeDataUrl(byte[],com.upokecenter.mail.MediaType)'>MakeDataUrl</a>
+
+Encodes data with the given media type in a Data URI (uniform resource
+ identifier).
 
 **Parameters:**
 

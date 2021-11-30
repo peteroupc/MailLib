@@ -1,36 +1,5 @@
 # com.upokecenter.text.Idna
 
-    public final class Idna extends java.lang.Object
-
-<p>Contains methods that implement Internationalized Domain Names in
- Applications (IDNA). IDNA enables using a wider range of letters,
- numbers, and certain other characters in domain names. This class
- implements the 2008 revision of IDNA, also known as IDNA2008.</p>
- <p>The following summarizes the rules for domain names in IDNA2008;
- see RFC5890 for more information and additional terminology.</p> <p>A
- domain name is divided into one or more strings separated by dots
-  ("."), called <b>labels</b>. For IDNA2008's purposes, a valid label
- can be an <b>NR-LDH label</b>, an <b>A-label</b>, or a
- <b>U-label</b>.</p> <p>An LDH label contains only basic uppercase
-  letters, basic lowercase letters, basic digits, and/or "-", and
-  neither begins nor ends with "-". For example, "exa-mple", "EXAMPLE",
-  and "1example" are LDH labels, but not "-example".</p> <p>An NR-LDH
- label is an LDH label whose third and fourth characters are not both
-  "-". For example, "ex--ample" is not an NR-LDH label.</p> <p>A U-label
- contains one or more characters outside the Basic Latin range (U+0000
- to U+007F) and meets IDNA2008 requirements for labels with such
-  characters. An example is "eá".</p> <p>An A-label is an LDH label
-  beginning with "xn--" where the letters can be any combination of
- basic upper-case and/or basic lower-case letters, and is convertible
-  to a U-label. An example is "xn--e-ufa".</p> <p>An XN-label is an LDH
-  label beginning with "xn--" where the letters can be any combination
- of basic upper-case and/or basic lower-case letters.</p> <p>NOTICE:
- While this class's source code is in the public domain, the class uses
- two internal classes, called <code>NormalizationData</code> and
- <code>IdnaData</code>, that include data derived from the Unicode Character
- Database. See the documentation for the NormalizerInput class for the
- permission notice for the Unicode Character Database.</p>
-
 ## Methods
 
 * `static java.lang.String DecodeDomainName​(java.lang.String value)`<br>
@@ -39,15 +8,15 @@
  Tries to encode each label of a domain name with code points outside the
  Basic Latin range (U+0000 to U+007F) into an XN-label.
 * `static boolean IsValidDomainName​(java.lang.String str,
-                 boolean lookupRules)`<br>
+boolean lookupRules)`<br>
  Determines whether the given string is a domain name containing only
  U-labels, A-labels, NR-LDH labels, or any combination of these,
   separated by dots (".").
 
 ## Method Details
 
-### DecodeDomainName
-    public static java.lang.String DecodeDomainName​(java.lang.String value)
+### <a id='DecodeDomainName(java.lang.String)'>DecodeDomainName</a>
+
 Tries to encode each XN-label of the given domain name into Unicode. This
  method does not check the syntactic validity of the domain name
  before proceeding.
@@ -65,8 +34,8 @@ Tries to encode each XN-label of the given domain name into Unicode. This
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>value</code> is null.
 
-### EncodeDomainName
-    public static java.lang.String EncodeDomainName​(java.lang.String value)
+### <a id='EncodeDomainName(java.lang.String)'>EncodeDomainName</a>
+
 Tries to encode each label of a domain name with code points outside the
  Basic Latin range (U+0000 to U+007F) into an XN-label. This method
  does not check the syntactic validity of the domain name before
@@ -86,8 +55,8 @@ Tries to encode each label of a domain name with code points outside the
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>value</code> is null.
 
-### IsValidDomainName
-    public static boolean IsValidDomainName​(java.lang.String str, boolean lookupRules)
+### <a id='IsValidDomainName(java.lang.String,boolean)'>IsValidDomainName</a>
+
 Determines whether the given string is a domain name containing only
  U-labels, A-labels, NR-LDH labels, or any combination of these,
   separated by dots (".").

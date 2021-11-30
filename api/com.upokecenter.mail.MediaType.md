@@ -1,28 +1,12 @@
 # com.upokecenter.mail.MediaType
 
-    public final class MediaType extends java.lang.Object
-
-<p>Specifies what kind of data a message body is.</p> <p>A media type
- consists of a top-level type (the general category of the data), a
- subtype (the specific type), and an optional list of parameters. For
- example, the media type <code>text/plain;charset = utf-8</code> is a text
-  media type ("text"), namely, a plain text type ("plain"), and the
- parameters say that the data uses UTF-8, a Unicode character encoding
-  ("charset = utf-8"). Other top-level types include "audio", "video",
-  and "application".</p> <p>A media type is sometimes known as a "MIME
-  type", for Multipurpose Internet Mail Extensions, the standard that
- introduced media types.</p> <p>This type is immutable, meaning its
- values can't be changed once it's created. To create a changeable
- media type object, use the MediaType.Builder class.</p>
- <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
- top-level type <code>multipart</code> must be treated as
- <code>multipart/mixed</code> and unrecognized media types as the media type
- <code>application/octet-stream</code>.</p>
-
-## Fields
+## Nested Classes
 
 * `static class  MediaType.Builder`<br>
  A mutable data type that allows a media type object to be built.
+
+## Fields
+
 * `static MediaType ApplicationOctetStream`<br>
  Specifies the media type "application/octet-stream", used for arbitrary
  binary data.
@@ -36,11 +20,6 @@
  Specifies the media type "text/plain" and the "charset" parameter "utf-8",
  used for plain text data that may contain characters outside the
  basic Latin range (U+0000 to U+007F).
-
-## Nested Classes
-
-* `static class  MediaType.Builder`<br>
- A mutable data type that allows a media type object to be built.
 
 ## Methods
 
@@ -75,7 +54,7 @@
 * `static MediaType Parse​(java.lang.String mediaTypeValue)`<br>
  Parses a media type string and returns a media type object.
 * `static MediaType Parse​(java.lang.String str,
-     MediaType defaultValue)`<br>
+MediaType defaultValue)`<br>
  Parses a media type string and returns a media type object, or the default
  value if the string is invalid.
 * `java.lang.String ToSingleLineString()`<br>
@@ -89,27 +68,27 @@
 
 ## Field Details
 
-### TextPlainAscii
-    public static final MediaType TextPlainAscii
+### <a id='TextPlainAscii'>TextPlainAscii</a>
+
 Specifies the media type "text/plain" and the "charset" parameter
   "US-ASCII", used for plain text data that contains only characters
  within the basic Latin range (U+0000 to U+007F).
-### TextPlainUtf8
-    public static final MediaType TextPlainUtf8
+### <a id='TextPlainUtf8'>TextPlainUtf8</a>
+
 Specifies the media type "text/plain" and the "charset" parameter "utf-8",
  used for plain text data that may contain characters outside the
  basic Latin range (U+0000 to U+007F).
-### MessageRfc822
-    public static final MediaType MessageRfc822
+### <a id='MessageRfc822'>MessageRfc822</a>
+
 Specifies the media type "message/rfc822", used for Internet mail messages.
-### ApplicationOctetStream
-    public static final MediaType ApplicationOctetStream
+### <a id='ApplicationOctetStream'>ApplicationOctetStream</a>
+
 Specifies the media type "application/octet-stream", used for arbitrary
  binary data.
 ## Method Details
 
-### getTopLevelType
-    public final java.lang.String getTopLevelType()
+### <a id='getTopLevelType()'>getTopLevelType</a>
+
 Gets the name of this media type's top-level type (such as "text" in
   "text/plain", or "audio" in "audio/basic"). The resulting string
  will be in lower case; that is, with its basic upper-case letters
@@ -120,8 +99,8 @@ Gets the name of this media type's top-level type (such as "text" in
 * The name of this media type's top-level type (such as "text" or
   "audio" .
 
-### HasStructuredSuffix
-    public boolean HasStructuredSuffix​(java.lang.String suffix)
+### <a id='HasStructuredSuffix(java.lang.String)'>HasStructuredSuffix</a>
+
 Returns whether this media type's subtype has the given structured syntax
  suffix.
 
@@ -145,8 +124,8 @@ Returns whether this media type's subtype has the given structured syntax
   "example+xml". Returns false if <code>suffix</code> is null or an empty
  string.
 
-### equals
-    public boolean equals​(java.lang.Object obj)
+### <a id='equals(java.lang.Object)'>equals</a>
+
 Determines whether this object and another object are equal.
 
 **Overrides:**
@@ -162,8 +141,8 @@ Determines whether this object and another object are equal.
 * <code>true</code> if this object and the other object are equal;
  otherwise, <code>false</code>.
 
-### hashCode
-    public int hashCode()
+### <a id='hashCode()'>hashCode</a>
+
 Calculates the hash code of this object. The exact algorithm used by this
  method may change between versions of this library, and no
  application or process IDs are used in the hash code calculation.
@@ -176,8 +155,8 @@ Calculates the hash code of this object. The exact algorithm used by this
 
 * A 32-bit signed integer.
 
-### getSubType
-    public final java.lang.String getSubType()
+### <a id='getSubType()'>getSubType</a>
+
 Gets this media type's subtype (for example, "plain" in "text/plain"). The
  resulting string will be in lower case; that is, with its basic
   upper-case letters ("A" to "Z") converted to basic lower-case
@@ -187,16 +166,16 @@ Gets this media type's subtype (for example, "plain" in "text/plain"). The
 
 * This media type's subtype.
 
-### isText
-    public final boolean isText()
+### <a id='isText()'>isText</a>
+
 Gets a value indicating whether this is a text media type ("text/*").
 
 **Returns:**
 
 * <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
-### isMultipart
-    public final boolean isMultipart()
+### <a id='isMultipart()'>isMultipart</a>
+
 Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
@@ -204,8 +183,8 @@ Gets a value indicating whether this is a multipart media type.
 * <code>true</code> If this is a multipart media type; otherwise, <code>
  false</code>.
 
-### getParameters
-    public final java.util.Map<java.lang.String,​java.lang.String> getParameters()
+### <a id='getParameters()'>getParameters</a>
+
 Gets a list of the parameter names contained in this media type object and
  their values. Each parameter name will be in lower case; that is,
   with its basic upper-case letters ("A" to "Z") converted to basic
@@ -219,8 +198,8 @@ Gets a list of the parameter names contained in this media type object and
  fact, the names will not be guaranteed to appear in any particular
  order; this is at least the case in version 0.10.0.
 
-### toString
-    public java.lang.String toString()
+### <a id='toString()'>toString</a>
+
 Converts this media type to a text string form suitable for inserting in
  email headers. Notably, the string contains the value of a
  Content-Type header field (without the text necessarily starting
@@ -235,8 +214,8 @@ Converts this media type to a text string form suitable for inserting in
 
 * A text string form of this media type.
 
-### ToSingleLineString
-    public java.lang.String ToSingleLineString()
+### <a id='ToSingleLineString()'>ToSingleLineString</a>
+
 Converts this media type to a text string form suitable for inserting in
  HTTP headers. Notably, the string contains the value of a
  Content-Type header field (without the text necessarily starting
@@ -247,8 +226,8 @@ Converts this media type to a text string form suitable for inserting in
 
 * A text string form of this media type.
 
-### ToUriSafeString
-    public java.lang.String ToUriSafeString()
+### <a id='ToUriSafeString()'>ToUriSafeString</a>
+
 Converts this media type to a text string form suitable for data URIs.
  Notably, the string contains the value of a Content-Type header
   field (without the text necessarily starting with "Content-Type"
@@ -260,8 +239,8 @@ Converts this media type to a text string form suitable for data URIs.
 
 * A text string form of this media type.
 
-### GetCharset
-    public java.lang.String GetCharset()
+### <a id='GetCharset()'>GetCharset</a>
+
 Gets this media type's "charset" parameter, naming a character encoding used
  to represent text in the data that uses this media type.
 
@@ -276,8 +255,8 @@ Gets this media type's "charset" parameter, naming a character encoding used
   parameter given the media type (e.g., "us-ascii" if the media type
   is "text/plain"; see RFC2046), or the empty string if there is none.
 
-### GetParameter
-    public java.lang.String GetParameter​(java.lang.String name)
+### <a id='GetParameter(java.lang.String)'>GetParameter</a>
+
 Gets the value of a parameter in this media type, such as "charset" or
   "format".
 
@@ -300,8 +279,8 @@ Gets the value of a parameter in this media type, such as "charset" or
 
 * <code>java.lang.IllegalArgumentException</code> - Name is empty.
 
-### getTypeAndSubType
-    public final java.lang.String getTypeAndSubType()
+### <a id='getTypeAndSubType()'>getTypeAndSubType</a>
+
 Gets the top level type and subtype of this media type, separated by a
   slash; for example, "text/plain". The resulting string will be in
  lowercase letters.
@@ -311,8 +290,8 @@ Gets the top level type and subtype of this media type, separated by a
 * The top level type and subtype of this media type, separated by a
   slash; for example, "text/plain".
 
-### Parse
-    public static MediaType Parse​(java.lang.String mediaTypeValue)
+### <a id='Parse(java.lang.String)'>Parse</a>
+
 Parses a media type string and returns a media type object. For further
  information, see the overload taking a MediaType parameter.
 
@@ -326,8 +305,8 @@ Parses a media type string and returns a media type object. For further
 * A media type object, or MediaType.TextPlainAscii if <code>
  mediaTypeValue</code> is empty or syntactically invalid.
 
-### Parse
-    public static MediaType Parse​(java.lang.String str, MediaType defaultValue)
+### <a id='Parse(java.lang.String,com.upokecenter.mail.MediaType)'>Parse</a>
+
 Parses a media type string and returns a media type object, or the default
  value if the string is invalid. This method checks the syntactic
  validity of the string, but not whether it has all parameters it's

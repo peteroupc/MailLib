@@ -309,59 +309,19 @@ namespace MailLibTest {
         }
       }
     }
-    /*
-
-    [Test]
-    public void TestNormD() {
-    var cp = new int[1];
-      int[] pairs = NormalizationData.ComposedPairs;
-      for (var i = 0; i < pairs.Length; i += 3) {
-        int p1 = pairs[i];
-        int p2 = pairs[i + 1];
-        int p3 = pairs[i + 2];
-        if (IsSpecialChar(p1) ||
-    IsSpecialChar(p2) ||
-    IsSpecialChar(p3)) {
-          Console.WriteLine("{0:X4},{1:X4},{2:X4}", p1, p2, p3);
-        }
-      }
-    for (var i = 0; i < 0x110000; ++i) {
-      if ((i & 0xf800) == 0xd800) {
-        continue;
-      }
-          cp[0] = i;
-          string codePointString = ToCodePointString(cp);
-    string nfc = NormalizerInput.Normalize(codePointString,
-            Normalization.NFD);
-    string nfd = NormalizerInput.Normalize(codePointString,
-            Normalization.NFD);
-    string nfdfs = NormalizerInput.Normalize(codePointString,
-            Normalization.NFDForFilesystems);
-    Assert.IsTrue(
-      nfdfs.Length > 0,
-      EncodingTest.EscapeString(codePointString));
-          if (!nfc.Equals(codePointString)) {
-            continue;
-          }
-          if (!nfd.Equals(nfdfs)) {
-            Console.WriteLine("---");
-            Console.WriteLine(EncodingTest.EscapeString(codePointString));
-            Console.WriteLine(EncodingTest.EscapeString(nfc));
-            Console.WriteLine(EncodingTest.EscapeString(nfd));
-            Console.WriteLine(EncodingTest.EscapeString(nfdfs));
-          }
-        }
-    }
-    */
     [Test]
     [Timeout(60000)]
     public void NormTest() {
-      var handled = new bool[0x110000];
       string[] lines = NetHelper.DownloadOrOpenAllLines(
         "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
         "NormalizationTest.txt");
+      NormTestLines(lines);
+    }
+
+    public static void NormTestLines(string[] lines) {
+      var handled = new bool[0x110000];
       if (lines == null) {
-        Assert.Fail();
+        Assert.Fail("lines is null");
       }
       Assert.IsTrue(lines.Length > 0);
       var part1 = false;
