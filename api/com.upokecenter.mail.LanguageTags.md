@@ -1,61 +1,77 @@
 # com.upokecenter.mail.LanguageTags
 
+    public final class LanguageTags extends Object
+
+Contains methods for parsing and matching language tags.
+
 ## Methods
 
-* `static java.util.List<java.lang.String> GetLanguageList​(java.lang.String str)`<br>
+* `static List<String> GetLanguageList(String str)`<br>
  Parses a language list from a Content-Language header field.
-* `static java.util.List<StringAndQuality> GetRangeListWithQuality​(java.lang.String str)`<br>
+
+* `static List<StringAndQuality> GetRangeListWithQuality(String str)`<br>
  Parses a language range list from an Accept-Language header field.
-* `static boolean IsLanguageRange​(java.lang.String str)`<br>
+
+* `static boolean IsLanguageRange(String str)`<br>
  Returns whether the given string is a basic language range under RFC 4647.
-* `static boolean IsLanguageRange​(java.lang.String str,
-boolean extended)`<br>
+
+* `static boolean IsLanguageRange(String str,
+ boolean extended)`<br>
  Returns whether the given string is a basic or extended language range under
  RFC 4647.
-* `static boolean IsPotentiallyValidLanguageTag​(java.lang.String str)`<br>
+
+* `static boolean IsPotentiallyValidLanguageTag(String str)`<br>
  Returns true if (1) the given string is a well-formed language tag under RFC
- 5646 (that is, the string follows the syntax given in section 2.1 of
- that RFC), and (2) the language tag contains at most one extended
- language subtag, no variant subtags with the same value, and no
- extension singleton subtags with the same value.
-* `static java.lang.String LanguageTagCase​(java.lang.String str)`<br>
+ 5646 (that is, the string follows the syntax given in section 2.1 of that
+ RFC), and (2) the language tag contains at most one extended language
+ subtag, no variant subtags with the same value, and no extension singleton
+ subtags with the same value.
+
+* `static String LanguageTagCase(String str)`<br>
  Sets the given language tag to the case combination recommended by RFC 5646.
-* `static java.util.List<java.lang.String> LanguageTagFilter​(java.util.List<java.lang.String> ranges,
-java.util.List<java.lang.String> languages)`<br>
+
+* `static List<String> LanguageTagFilter(List<String> ranges,
+ List<String> languages)`<br>
  Finds the language tags that match a priority list of basic language ranges.
-* `static java.util.List<java.lang.String> LanguageTagFilter​(java.util.List<java.lang.String> ranges,
-java.util.List<java.lang.String> languages,
-boolean extended,
-boolean matchStarAtEnd)`<br>
+
+* `static List<String> LanguageTagFilter(List<String> ranges,
+ List<String> languages,
+ boolean extended,
+ boolean matchStarAtEnd)`<br>
  Finds the language tags that match a priority list of language ranges.
-* `static java.lang.String LanguageTagLookup​(java.lang.String range,
-java.util.List<java.lang.String> languages,
-java.lang.String defaultValue)`<br>
+
+* `static String LanguageTagLookup(String range,
+ List<String> languages,
+ String defaultValue)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static java.lang.String LanguageTagLookup​(java.lang.String range,
-java.util.List<java.lang.String> languages,
-java.lang.String defaultValue,
-boolean extended)`<br>
+
+* `static String LanguageTagLookup(String range,
+ List<String> languages,
+ String defaultValue,
+ boolean extended)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static java.lang.String LanguageTagLookup​(java.util.List<java.lang.String> ranges,
-java.util.List<java.lang.String> languages,
-java.lang.String defaultValue)`<br>
+
+* `static String LanguageTagLookup(List<String> ranges,
+ List<String> languages,
+ String defaultValue)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static java.lang.String LanguageTagLookup​(java.util.List<java.lang.String> ranges,
-java.util.List<java.lang.String> languages,
-java.lang.String defaultValue,
-boolean extended)`<br>
+
+* `static String LanguageTagLookup(List<String> ranges,
+ List<String> languages,
+ String defaultValue,
+ boolean extended)`<br>
  Does a language tag lookup (under RFC 4647) for a matching language tag.
-* `static boolean MatchesLanguageTag​(java.lang.String range,
-java.lang.String tag)`<br>
+
+* `static boolean MatchesLanguageTag(String range,
+ String tag)`<br>
  Determines whether the given language tag matches the given language range.
 
 ## Method Details
 
-### <a id='IsLanguageRange(java.lang.String)'>IsLanguageRange</a>
-
+### IsLanguageRange
+    public static boolean IsLanguageRange(String str)
 Returns whether the given string is a basic language range under RFC 4647.
-  Examples include "*", "en-us", and "fr".
+ Examples include "*", "en-us", and "fr".
 
 **Parameters:**
 
@@ -66,31 +82,29 @@ Returns whether the given string is a basic language range under RFC 4647.
 * <code>true</code> if the given string is a basic language range;
  otherwise, <code>false</code>.
 
-### <a id='IsLanguageRange(java.lang.String,boolean)'>IsLanguageRange</a>
-
+### IsLanguageRange
+    public static boolean IsLanguageRange(String str, boolean extended)
 Returns whether the given string is a basic or extended language range under
- RFC 4647. Examples of basic (and extended) language ranges include
-  "*", "en-us", and "fr". Examples of extended language ranges include
-  "*-de" and "it-*".
+ RFC 4647. Examples of basic (and extended) language ranges include "*",
+ "en-us", and "fr". Examples of extended language ranges include "*-de" and
+ "it-*".
 
 **Parameters:**
 
 * <code>str</code> - The string to check. Can be null.
 
 * <code>extended</code> - Check whether the string is a basic language range if
-  "false", or an extended language range if "true".
+ "false", or an extended language range if "true".
 
 **Returns:**
 
 * <code>true</code> if the given string is a basic language range
- (depending on the <code>extended</code> parameter); otherwise, <code>
- false</code>.
+ (depending on the <code>extended</code> parameter); otherwise, <code>false</code>.
 
-### <a id='LanguageTagCase(java.lang.String)'>LanguageTagCase</a>
-
+### LanguageTagCase
+    public static String LanguageTagCase(String str)
 Sets the given language tag to the case combination recommended by RFC 5646.
-  For example, "en-us" becomes "en-US", and "zh-hant" becomes
-  "zh-Hant".
+ For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
 
 **Parameters:**
 
@@ -101,52 +115,50 @@ Sets the given language tag to the case combination recommended by RFC 5646.
 * A text string in the recommended case combination, or null if <code>
  str</code> is null.
 
-### <a id='GetLanguageList(java.lang.String)'>GetLanguageList</a>
-
+### GetLanguageList
+    public static List<String> GetLanguageList(String str)
 Parses a language list from a Content-Language header field.
 
 **Parameters:**
 
 * <code>str</code> - A string following the syntax of a Content-Language header field
- (see RFC 3282). This is a comma-separated list of language tags. RFC
- 5322 comments (in parentheses) can appear. This parameter can be
- null.
+ (see RFC 3282). This is a comma-separated list of language tags. RFC 5322
+ comments (in parentheses) can appear. This parameter can be null.
 
 **Returns:**
 
 * A list of language tags. Returns an empty list if <code>str</code> is
- null or the empty string, or null if <code>str</code> syntactically
- invalid.
+ null or the empty string, or null if <code>str</code> syntactically invalid.
 
-### <a id='GetRangeListWithQuality(java.lang.String)'>GetRangeListWithQuality</a>
-
+### GetRangeListWithQuality
+    public static List<StringAndQuality> GetRangeListWithQuality(String str)
 Parses a language range list from an Accept-Language header field.
 
 **Parameters:**
 
 * <code>str</code> - A string following the syntax of an Accept-Language header field
- (see RFC 3282). This is a comma-separated list of language ranges,
-  with an optional "quality" after the language tag (examples include
-  "en; q=0.5" or "de-DE"). RFC 5322 comments (in parentheses) can
- appear. This parameter can be null.
+ (see RFC 3282). This is a comma-separated list of language ranges, with an
+ optional "quality" after the language tag (examples include "en; q=0.5" or
+ "de-DE"). RFC 5322 comments (in parentheses) can appear. This parameter can
+ be null.
 
 **Returns:**
 
 * A list of language ranges with their associated qualities. The list
- will be sorted in descending order by quality; if two or more
- language ranges have the same quality, they will be sorted in the
- order in which they appeared in the given string. Returns null if
- <code>str</code> is null or syntactically invalid.
+ will be sorted in descending order by quality; if two or more language
+ ranges have the same quality, they will be sorted in the order in which they
+ appeared in the given string. Returns null if <code>str</code> is null or
+ syntactically invalid.
 
-### <a id='LanguageTagFilter(java.util.List,java.util.List,boolean,boolean)'>LanguageTagFilter</a>
-
+### LanguageTagFilter
+    public static List<String> LanguageTagFilter(List<String> ranges, List<String> languages, boolean extended, boolean matchStarAtEnd)
 Finds the language tags that match a priority list of language ranges.
 
 **Parameters:**
 
 * <code>ranges</code> - A list of language ranges (see documentation for the
-  "IsLanguageRange" method), which should be given in order of
- descending preference.
+ "IsLanguageRange" method), which should be given in order of descending
+ preference.
 
 * <code>languages</code> - A list of language tags, which should be given in order of
  descending preference.
@@ -155,8 +167,8 @@ Finds the language tags that match a priority list of language ranges.
  ranges; otherwise, they are basic language ranges.
 
 * <code>matchStarAtEnd</code> - If true, treats any range equaling "*" as appearing at
- the end of the language priority list, no matter where it appears on
- that list.
+ the end of the language priority list, no matter where it appears on that
+ list.
 
 **Returns:**
 
@@ -165,21 +177,21 @@ Finds the language tags that match a priority list of language ranges.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>languages</code> or <code>
+* <code>NullPointerException</code> - The parameter <code>languages</code> or <code>
  ranges</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
- is not a basic or extended language range, or <code>languages</code>
- contains a value that is not a potentially valid language tag.
+* <code>IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
+ is not a basic or extended language range, or <code>languages</code> contains a
+ value that is not a potentially valid language tag.
 
-### <a id='MatchesLanguageTag(java.lang.String,java.lang.String)'>MatchesLanguageTag</a>
-
+### MatchesLanguageTag
+    public static boolean MatchesLanguageTag(String range, String tag)
 Determines whether the given language tag matches the given language range.
 
 **Parameters:**
 
 * <code>range</code> - A basic language range (see the documentation for
-  "IsLanguageRange").
+ "IsLanguageRange").
 
 * <code>tag</code> - A language tag.
 
@@ -190,18 +202,17 @@ Determines whether the given language tag matches the given language range.
 
 **Throws:**
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>range</code> is not a basic
- language range, or <code>tag</code> is not a potentially valid language
- tag.
+* <code>IllegalArgumentException</code> - The parameter <code>range</code> is not a basic
+ language range, or <code>tag</code> is not a potentially valid language tag.
 
-### <a id='LanguageTagLookup(java.lang.String,java.util.List,java.lang.String)'>LanguageTagLookup</a>
-
+### LanguageTagLookup
+    public static String LanguageTagLookup(String range, List<String> languages, String defaultValue)
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
 
 * <code>range</code> - A basic language range (see the documentation for
-  "IsLanguageRange").
+ "IsLanguageRange").
 
 * <code>languages</code> - A list of language tags, which should be given in order of
  descending preference.
@@ -216,21 +227,21 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>languages</code> is null.
+* <code>NullPointerException</code> - The parameter <code>languages</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>range</code> is not a basic
+* <code>IllegalArgumentException</code> - The parameter <code>range</code> is not a basic
  language range, or <code>languages</code> contains a value that is not a
  potentially valid language tag.
 
-### <a id='LanguageTagLookup(java.util.List,java.util.List,java.lang.String)'>LanguageTagLookup</a>
-
+### LanguageTagLookup
+    public static String LanguageTagLookup(List<String> ranges, List<String> languages, String defaultValue)
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
 
 * <code>ranges</code> - A list of basic language ranges (see documentation for the
-  "IsLanguageRange" method), which should be given in order of
- descending preference.
+ "IsLanguageRange" method), which should be given in order of descending
+ preference.
 
 * <code>languages</code> - A list of language tags, which should be given in order of
  descending preference.
@@ -245,22 +256,22 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>languages</code> or <code>
+* <code>NullPointerException</code> - The parameter <code>languages</code> or <code>
  ranges</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
- is not a basic language range, or <code>languages</code> contains a value
- that is not a potentially valid language tag.
+* <code>IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
+ is not a basic language range, or <code>languages</code> contains a value that is
+ not a potentially valid language tag.
 
-### <a id='LanguageTagFilter(java.util.List,java.util.List)'>LanguageTagFilter</a>
-
+### LanguageTagFilter
+    public static List<String> LanguageTagFilter(List<String> ranges, List<String> languages)
 Finds the language tags that match a priority list of basic language ranges.
 
 **Parameters:**
 
 * <code>ranges</code> - A list of basic language ranges (see documentation for the
-  "IsLanguageRange" method), which should be given in order of
- descending preference.
+ "IsLanguageRange" method), which should be given in order of descending
+ preference.
 
 * <code>languages</code> - A list of language tags, which should be given in order of
  descending preference.
@@ -272,15 +283,15 @@ Finds the language tags that match a priority list of basic language ranges.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>languages</code> or <code>
+* <code>NullPointerException</code> - The parameter <code>languages</code> or <code>
  ranges</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
- is not a basic language range, or <code>languages</code> contains a value
- that is not a potentially valid language tag.
+* <code>IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
+ is not a basic language range, or <code>languages</code> contains a value that is
+ not a potentially valid language tag.
 
-### <a id='LanguageTagLookup(java.lang.String,java.util.List,java.lang.String,boolean)'>LanguageTagLookup</a>
-
+### LanguageTagLookup
+    public static String LanguageTagLookup(String range, List<String> languages, String defaultValue, boolean extended)
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
@@ -303,21 +314,21 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>languages</code> is null.
+* <code>NullPointerException</code> - The parameter <code>languages</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>range</code> is not a basic or
- extended language range, or <code>languages</code> contains a value that
- is not a potentially valid language tag.
+* <code>IllegalArgumentException</code> - The parameter <code>range</code> is not a basic or
+ extended language range, or <code>languages</code> contains a value that is not a
+ potentially valid language tag.
 
-### <a id='LanguageTagLookup(java.util.List,java.util.List,java.lang.String,boolean)'>LanguageTagLookup</a>
-
+### LanguageTagLookup
+    public static String LanguageTagLookup(List<String> ranges, List<String> languages, String defaultValue, boolean extended)
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
 
 * <code>ranges</code> - A list of language ranges (see documentation for the
-  "IsLanguageRange" method), which should be given in order of
- descending preference.
+ "IsLanguageRange" method), which should be given in order of descending
+ preference.
 
 * <code>languages</code> - A list of language tags, which should be given in order of
  descending preference.
@@ -335,20 +346,20 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>languages</code> or <code>
+* <code>NullPointerException</code> - The parameter <code>languages</code> or <code>
  ranges</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
- is not a basic or extended language range, or <code>languages</code>
- contains a value that is not a potentially valid language tag.
+* <code>IllegalArgumentException</code> - The parameter <code>ranges</code> contains a value that
+ is not a basic or extended language range, or <code>languages</code> contains a
+ value that is not a potentially valid language tag.
 
-### <a id='IsPotentiallyValidLanguageTag(java.lang.String)'>IsPotentiallyValidLanguageTag</a>
-
+### IsPotentiallyValidLanguageTag
+    public static boolean IsPotentiallyValidLanguageTag(String str)
 Returns true if (1) the given string is a well-formed language tag under RFC
- 5646 (that is, the string follows the syntax given in section 2.1 of
- that RFC), and (2) the language tag contains at most one extended
- language subtag, no variant subtags with the same value, and no
- extension singleton subtags with the same value.
+ 5646 (that is, the string follows the syntax given in section 2.1 of that
+ RFC), and (2) the language tag contains at most one extended language
+ subtag, no variant subtags with the same value, and no extension singleton
+ subtags with the same value.
 
 **Parameters:**
 

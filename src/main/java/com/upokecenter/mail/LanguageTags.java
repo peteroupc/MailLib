@@ -12,7 +12,7 @@ private LanguageTags() {
 }
     /**
      * Returns whether the given string is a basic language range under RFC 4647.
-     *  Examples include "*", "en-us", and "fr".
+     * Examples include "*", "en-us", and "fr".
      * @param str The string to check. Can be null.
      * @return {@code true} if the given string is a basic language range;
      * otherwise, {@code false}.
@@ -23,15 +23,14 @@ private LanguageTags() {
 
     /**
      * Returns whether the given string is a basic or extended language range under
-     * RFC 4647. Examples of basic (and extended) language ranges include
-     *  "*", "en-us", and "fr". Examples of extended language ranges include
-     *  "*-de" and "it-*".
+     * RFC 4647. Examples of basic (and extended) language ranges include "*",
+     * "en-us", and "fr". Examples of extended language ranges include "*-de" and
+     * "it-*".
      * @param str The string to check. Can be null.
      * @param extended Check whether the string is a basic language range if
-     *  "false", or an extended language range if "true".
+     * "false", or an extended language range if "true".
      * @return {@code true} if the given string is a basic language range
-     * (depending on the {@code extended} parameter); otherwise, {@code
-     * false}.
+     * (depending on the {@code extended} parameter); otherwise, {@code false}.
      */
     public static boolean IsLanguageRange(String str, boolean extended) {
       if (((str) == null || (str).length() == 0)) {
@@ -157,8 +156,7 @@ private LanguageTags() {
 
     /**
      * Sets the given language tag to the case combination recommended by RFC 5646.
-     *  For example, "en-us" becomes "en-US", and "zh-hant" becomes
-     *  "zh-Hant".
+     * For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
      * @param str A string of a language tag. Can be null.
      * @return A text string in the recommended case combination, or null if {@code
      * str} is null.
@@ -218,12 +216,10 @@ private LanguageTags() {
     /**
      * Parses a language list from a Content-Language header field.
      * @param str A string following the syntax of a Content-Language header field
-     * (see RFC 3282). This is a comma-separated list of language tags. RFC
-     * 5322 comments (in parentheses) can appear. This parameter can be
-     * null.
+     * (see RFC 3282). This is a comma-separated list of language tags. RFC 5322
+     * comments (in parentheses) can appear. This parameter can be null.
      * @return A list of language tags. Returns an empty list if {@code str} is
-     * null or the empty string, or null if {@code str} syntactically
-     * invalid.
+     * null or the empty string, or null if {@code str} syntactically invalid.
      */
     public static List<String> GetLanguageList(
       String str) {
@@ -283,15 +279,15 @@ private LanguageTags() {
     /**
      * Parses a language range list from an Accept-Language header field.
      * @param str A string following the syntax of an Accept-Language header field
-     * (see RFC 3282). This is a comma-separated list of language ranges,
-     *  with an optional "quality" after the language tag (examples include
-     *  "en; q=0.5" or "de-DE"). RFC 5322 comments (in parentheses) can
-     * appear. This parameter can be null.
+     * (see RFC 3282). This is a comma-separated list of language ranges, with an
+     * optional "quality" after the language tag (examples include "en; q=0.5" or
+     * "de-DE"). RFC 5322 comments (in parentheses) can appear. This parameter can
+     * be null.
      * @return A list of language ranges with their associated qualities. The list
-     * will be sorted in descending order by quality; if two or more
-     * language ranges have the same quality, they will be sorted in the
-     * order in which they appeared in the given string. Returns null if
-     * {@code str} is null or syntactically invalid.
+     * will be sorted in descending order by quality; if two or more language
+     * ranges have the same quality, they will be sorted in the order in which they
+     * appeared in the given string. Returns null if {@code str} is null or
+     * syntactically invalid.
      */
     public static List<StringAndQuality> GetRangeListWithQuality(
       String str) {
@@ -428,22 +424,22 @@ private LanguageTags() {
     /**
      * Finds the language tags that match a priority list of language ranges.
      * @param ranges A list of language ranges (see documentation for the
-     *  "IsLanguageRange" method), which should be given in order of
-     * descending preference.
+     * "IsLanguageRange" method), which should be given in order of descending
+     * preference.
      * @param languages A list of language tags, which should be given in order of
      * descending preference.
      * @param extended If true, the ranges in "ranges" are extended language
      * ranges; otherwise, they are basic language ranges.
      * @param matchStarAtEnd If true, treats any range equaling "*" as appearing at
-     * the end of the language priority list, no matter where it appears on
-     * that list.
+     * the end of the language priority list, no matter where it appears on that
+     * list.
      * @return A list of language tags that match the given range, in descending
      * order of preference.
      * @throws NullPointerException The parameter {@code languages} or {@code
      * ranges} is null.
      * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic or extended language range, or {@code languages}
-     * contains a value that is not a potentially valid language tag.
+     * is not a basic or extended language range, or {@code languages} contains a
+     * value that is not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
       List<String> ranges,
@@ -523,13 +519,12 @@ private LanguageTags() {
     /**
      * Determines whether the given language tag matches the given language range.
      * @param range A basic language range (see the documentation for
-     *  "IsLanguageRange").
+     * "IsLanguageRange").
      * @param tag A language tag.
      * @return {@code true} if the language tag matches the language range by the
      * filtering method under RFC 4647; otherwise, {@code false}.
      * @throws IllegalArgumentException The parameter {@code range} is not a basic
-     * language range, or {@code tag} is not a potentially valid language
-     * tag.
+     * language range, or {@code tag} is not a potentially valid language tag.
      */
     public static boolean MatchesLanguageTag(String range, String tag) {
       List<String> tags = LanguageTagFilter(
@@ -543,7 +538,7 @@ private LanguageTags() {
     /**
      * Does a language tag lookup (under RFC 4647) for a matching language tag.
      * @param range A basic language range (see the documentation for
-     *  "IsLanguageRange").
+     * "IsLanguageRange").
      * @param languages A list of language tags, which should be given in order of
      * descending preference.
      * @param defaultValue The value to return if no matching language tag was
@@ -565,8 +560,8 @@ private LanguageTags() {
     /**
      * Does a language tag lookup (under RFC 4647) for a matching language tag.
      * @param ranges A list of basic language ranges (see documentation for the
-     *  "IsLanguageRange" method), which should be given in order of
-     * descending preference.
+     * "IsLanguageRange" method), which should be given in order of descending
+     * preference.
      * @param languages A list of language tags, which should be given in order of
      * descending preference.
      * @param defaultValue The value to return if no matching language tag was
@@ -576,8 +571,8 @@ private LanguageTags() {
      * @throws NullPointerException The parameter {@code languages} or {@code
      * ranges} is null.
      * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic language range, or {@code languages} contains a value
-     * that is not a potentially valid language tag.
+     * is not a basic language range, or {@code languages} contains a value that is
+     * not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
       List<String> ranges,
@@ -589,8 +584,8 @@ private LanguageTags() {
     /**
      * Finds the language tags that match a priority list of basic language ranges.
      * @param ranges A list of basic language ranges (see documentation for the
-     *  "IsLanguageRange" method), which should be given in order of
-     * descending preference.
+     * "IsLanguageRange" method), which should be given in order of descending
+     * preference.
      * @param languages A list of language tags, which should be given in order of
      * descending preference.
      * @return A list of language tags that match the given range, in descending
@@ -598,8 +593,8 @@ private LanguageTags() {
      * @throws NullPointerException The parameter {@code languages} or {@code
      * ranges} is null.
      * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic language range, or {@code languages} contains a value
-     * that is not a potentially valid language tag.
+     * is not a basic language range, or {@code languages} contains a value that is
+     * not a potentially valid language tag.
      */
     public static List<String> LanguageTagFilter(
       List<String> ranges,
@@ -620,8 +615,8 @@ private LanguageTags() {
      * there is no matching language tag.
      * @throws NullPointerException The parameter {@code languages} is null.
      * @throws IllegalArgumentException The parameter {@code range} is not a basic or
-     * extended language range, or {@code languages} contains a value that
-     * is not a potentially valid language tag.
+     * extended language range, or {@code languages} contains a value that is not a
+     * potentially valid language tag.
      */
     public static String LanguageTagLookup(
       String range,
@@ -638,8 +633,8 @@ private LanguageTags() {
     /**
      * Does a language tag lookup (under RFC 4647) for a matching language tag.
      * @param ranges A list of language ranges (see documentation for the
-     *  "IsLanguageRange" method), which should be given in order of
-     * descending preference.
+     * "IsLanguageRange" method), which should be given in order of descending
+     * preference.
      * @param languages A list of language tags, which should be given in order of
      * descending preference.
      * @param defaultValue The value to return if no matching language tag was
@@ -651,8 +646,8 @@ private LanguageTags() {
      * @throws NullPointerException The parameter {@code languages} or {@code
      * ranges} is null.
      * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
-     * is not a basic or extended language range, or {@code languages}
-     * contains a value that is not a potentially valid language tag.
+     * is not a basic or extended language range, or {@code languages} contains a
+     * value that is not a potentially valid language tag.
      */
     public static String LanguageTagLookup(
       List<String> ranges,
@@ -703,10 +698,10 @@ private LanguageTags() {
 
     /**
      * Returns true if (1) the given string is a well-formed language tag under RFC
-     * 5646 (that is, the string follows the syntax given in section 2.1 of
-     * that RFC), and (2) the language tag contains at most one extended
-     * language subtag, no variant subtags with the same value, and no
-     * extension singleton subtags with the same value.
+     * 5646 (that is, the string follows the syntax given in section 2.1 of that
+     * RFC), and (2) the language tag contains at most one extended language
+     * subtag, no variant subtags with the same value, and no extension singleton
+     * subtags with the same value.
      * @param str The string to check.
      * @return {@code true}, if the string meets the conditions given in the
      * summary, {@code false} otherwise.

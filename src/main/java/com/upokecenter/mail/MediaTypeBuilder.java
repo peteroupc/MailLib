@@ -24,7 +24,7 @@ import com.upokecenter.util.*;
     /**
      * Gets this value's top-level type.
      * @return A text string naming this object's top-level type, such as "text" or
-     *  "audio" .
+     * "audio" .
      * @throws NullPointerException The property is being set and the value is
      * null.
      * @throws IllegalArgumentException The property is being set and the value is
@@ -40,7 +40,7 @@ public final void setTopLevelType(String value) {
     /**
      * Gets this value's subtype.
      * @return A text string naming this object's subtype, such as "plain" or
-     *  "xml".
+     * "xml".
      * @throws NullPointerException The property is being set and the value is
      * null.
      * @throws IllegalArgumentException The property is being set and the value is
@@ -56,7 +56,7 @@ public final void setSubType(String value) {
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.MediaTypeBuilder} class, using the type
-     *  "application/octet-stream" .
+     * "application/octet-stream" .
      */
     public MediaTypeBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -66,8 +66,8 @@ public final void setSubType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.MediaTypeBuilder} class using the data from
-     * another media type.
+     * com.upokecenter.mail.MediaTypeBuilder} class using the data from another
+     * media type.
      * @param mt The parameter {@code mt} is a MediaType object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
@@ -125,11 +125,11 @@ public final void setSubType(String value) {
 
     /**
      * Sets this media type's top-level type. This method enables the pattern of
-     * method chaining (e.g., <code>new...().getSet()...().getSet()...()</code>) unlike
-     * with the TopLevelType property in.NET or the setTopLevelType method
-     * (with small s) in Java.
+     * method chaining (e.g., {@code new...().getSet()...().getSet()...()}) unlike with the
+     * TopLevelType property in.NET or the setTopLevelType method (with small s) in
+     * Java.
      * @param str A text string naming a top-level type, such as "text" or "audio"
-     *.
+     * .
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code str} is syntactically invalid
@@ -156,9 +156,8 @@ str);
      * parameter's name doesn't exist.
      * @param name Name of the parameter to remove. The name is compared using a
      * basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U+0041 to U+005A) in both strings to basic
-     * lower-case letters.).
+     * comparison, if they match after converting the basic upper-case letters A to
+     * Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
      */
@@ -173,10 +172,10 @@ str);
     /**
      * Sets a parameter's name and value for this media type.
      * @param name Name of the parameter to set, such as "charset" . The name is
-     * compared using a basic case-insensitive comparison. (Two strings are
-     * equal in such a comparison, if they match after converting the basic
-     * upper-case letters A to Z (U+0041 to U+005A) in both strings to
-     * basic lower-case letters.).
+     * compared using a basic case-insensitive comparison. (Two strings are equal
+     * in such a comparison, if they match after converting the basic upper-case
+     * letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
+     * letters.).
      * @param value A text string giving the parameter's value.
      * @return This instance.
      * @throws NullPointerException The parameter {@code value} or {@code name} is
@@ -205,9 +204,9 @@ str);
 
     /**
      * Sets this media type's subtype, such as "plain" or "xml" . This method
-     * enables the pattern of method chaining (e.g.,
-     * <code>new...().getSet()...().getSet()...()</code>) unlike with the SubType property
-     * in.NET or the setSubType method (with small s) in Java.
+     * enables the pattern of method chaining (e.g., {@code
+     * new...().getSet()...().getSet()...()}) unlike with the SubType property in.NET or the
+     * setSubType method (with small s) in Java.
      * @param str A text string naming a media subtype.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -231,7 +230,7 @@ str);
 
     /**
      * Converts this object to a text string of the media type it represents, in
-     * the same form as <code>MediaType.toString</code>.
+     * the same form as {@code MediaType.toString}.
      * @return A string representation of this object.
      */
     @Override public String toString() {

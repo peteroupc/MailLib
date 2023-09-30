@@ -1,30 +1,33 @@
 # com.upokecenter.mail.StringAndQuality
 
-## Constructors
+    public final class StringAndQuality extends Object
 
-* `StringAndQuality​(java.lang.String value,
-int quality) StringAndQuality`<br>
- Initializes a new instance of the StringAndQuality class.
+Stores an arbitrary string and a "quality value" for that string. For
+ instance, the string can be a language tag, and the "quality value" can be
+ the degree of preference for that language.
+
+## Constructors
 
 ## Methods
 
-* `int getQuality()`<br>
+* `final int getQuality()`<br>
  Gets the quality value stored by this object.
-* `java.lang.String getValue()`<br>
+
+* `final String getValue()`<br>
  Gets the arbitrary string stored by this object.
 
 ## Method Details
 
-### <a id='getValue()'>getValue</a>
-
+### getValue
+    public final String getValue()
 Gets the arbitrary string stored by this object.
 
 **Returns:**
 
 * The arbitrary string stored by this object.
 
-### <a id='getQuality()'>getQuality</a>
-
+### getQuality
+    public final int getQuality()
 Gets the quality value stored by this object.
 
 **Returns:**

@@ -36,8 +36,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the disposition
-     *  type "attachment" .
+     * com.upokecenter.mail.DispositionBuilder} class using the disposition type
+     * "attachment" .
      */
     public DispositionBuilder() {
       this.builder = new ContentDisposition.Builder();
@@ -45,8 +45,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the data from
-     * the given content disposition.
+     * com.upokecenter.mail.DispositionBuilder} class using the data from the given
+     * content disposition.
      * @param mt The parameter {@code mt} is a ContentDisposition object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
@@ -56,8 +56,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the given
-     * disposition type.
+     * com.upokecenter.mail.DispositionBuilder} class using the given disposition
+     * type.
      * @param type The parameter {@code type} is a text string.
      * @throws NullPointerException The parameter {@code type} is null.
      * @throws IllegalArgumentException Type is empty.
@@ -97,9 +97,9 @@ public final void setDispositionType(String value) {
 
     /**
      * Sets the disposition type, such as "inline". This method enables the pattern
-     * of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>)
-     * unlike with the DispositionType property in .NET or the
-     * setDispositionType method (with small s) in Java.
+     * of method chaining (e.g., {@code new ...().getSet()...().getSet()...()}) unlike with
+     * the DispositionType property in .NET or the setDispositionType method (with
+     * small s) in Java.
      * @param str The parameter {@code str} is a text string.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -114,10 +114,9 @@ public final void setDispositionType(String value) {
      * Removes a parameter from this content disposition. Does nothing if the
      * parameter's name doesn't exist.
      * @param name The parameter to remove. The name is compared using a basic
-     * case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U+0041 to U+005A) in both strings to basic
-     * lower-case letters.).
+     * case-insensitive comparison. (Two strings are equal in such a comparison, if
+     * they match after converting the basic upper-case letters A to Z (U+0041 to
+     * U+005A) in both strings to basic lower-case letters.).
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
      */
@@ -130,10 +129,9 @@ public final void setDispositionType(String value) {
      * Sets a parameter of this content disposition.
      * @param name Name of the parameter to set. If this name already exists
      * (compared using a basic case-insensitive comparison), it will be
-     * overwritten. (Two strings are equal in a basic case-insensitive
-     * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U+0041 to U+005A) in both strings to basic
-     * lower-case letters.).
+     * overwritten. (Two strings are equal in a basic case-insensitive comparison,
+     * if they match after converting the basic upper-case letters A to Z (U+0041
+     * to U+005A) in both strings to basic lower-case letters.).
      * @param value Value of the parameter to set.
      * @return This instance.
      * @throws NullPointerException Either {@code value} or {@code name} is null.

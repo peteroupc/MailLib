@@ -17,7 +17,7 @@ namespace PeterO.Mail {
   /// <para>Specifies how a message body should be displayed or handled
   /// by a mail user agent. This type is immutable; its contents can't be
   /// changed after it's created. To create a changeable disposition
-  /// object, use the DispositionBuilder class.</para>
+  /// object, use the ContentDisposition.Builder class.</para>
   /// <para><b>About the "filename" parameter</b></para>
   /// <para>The "filename" parameter of a content disposition suggests a
   /// name to use when saving data to a file. For the "filename"
@@ -246,8 +246,8 @@ namespace PeterO.Mail {
     /// this method is not guaranteed to remain the same between versions
     /// of this library, with the exception that the return value will be
     /// in normalization form C, will not contain base + slash code points,
-    /// will not be null, and will be an empty string only if <paramref
-    /// name='str'/> is null or empty.</item>
+    /// will not be null, and will be an empty string only if the parameter
+    /// str is null or empty.</item>
     /// <item>
     /// <para><b>'Name' and 'Filename' Parameters.</b> Email and HTTP
     /// headers may specify suggested filenames using the
@@ -275,7 +275,7 @@ namespace PeterO.Mail {
     /// Hypertext Transfer Protocol (HTTP).</para>
     /// <para>To the extent that the "name" parameter is not allowed in
     /// message bodies other than those with the media type
-    /// "application/octet-stream" or treated as that media-type, this is a
+    /// "application/octet-stream" or treated as that media type, this is a
     /// deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which
     /// says that "[t]here are NO globally meaningful parameters that apply
     /// to all media types"). (Some email implementations may still write

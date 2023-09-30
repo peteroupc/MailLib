@@ -12,11 +12,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
    * <p>Implements the Unicode normalization algorithm and contains methods and
    * functionality to test and convert Unicode strings for Unicode
    * normalization.</p> <p>NOTICE: While this class's source code is in the
-   * public domain, the class uses an class, called
-   * NormalizationData, that includes data derived from the Unicode
-   * Character Database. See the documentation for the NormalizerInput
-   * class for the permission notice for the Unicode Character
-   * Database.</p>
+   * public domain, the class uses an class, called NormalizationData,
+   * that includes data derived from the Unicode Character Database. See the
+   * documentation for the NormalizerInput class for the permission notice for
+   * the Unicode Character Database.</p>
    * @deprecated Use NormalizerInput instead; that class is much more flexible than
  * Normalizer.
  */
@@ -50,8 +49,8 @@ https://creativecommons.org/publicdomain/zero/1.0/
      * @param str The string to check.
      * @param form The parameter {@code form} is a Normalization object.
      * @return {@code true} if this string is normalized; otherwise, {@code false}.
-     * Returns {@code false} if the string contains an unpaired surrogate
-     * code point.
+     * Returns {@code false} if the string contains an unpaired surrogate code
+     * point.
      */
     public static boolean IsNormalized(String str, Normalization form) {
       return NormalizerInput.IsNormalized(str, form);
@@ -74,8 +73,8 @@ https://creativecommons.org/publicdomain/zero/1.0/
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
      * @throws IllegalArgumentException Either {@code index} or {@code length} is less
-     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
-     * length minus {@code index} is less than {@code length}.
+     * than 0 or greater than {@code chars} 's length, or {@code chars} 's length
+     * minus {@code index} is less than {@code length}.
      * @throws NullPointerException The parameter {@code chars} is null.
      */
     public int Read(int[] chars, int index, int length) {

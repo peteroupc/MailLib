@@ -5,7 +5,7 @@ package com.upokecenter.text;
 
     /**
      * Decompresses a byte array compressed using the LZ4 format (see "LZ4 Format
-     *  Description" by Y Collet for more information).
+     * Description" by Y Collet for more information).
      * @param input Input byte array.
      * @return Decompressed output byte array.
      * @throws NullPointerException The parameter "output" is null.
@@ -14,7 +14,7 @@ package com.upokecenter.text;
     public static byte[] DecompressLz4(byte[] input) {
       int index = 0;
       byte[] copy = new byte[16];
-      byte[] output = new byte[8 + (input.length * 3 / 2)];
+      byte[] output = new byte[8 + (input.length * 3 / 2) + 1];
       int outputPos = 0;
       while (index < input.length) {
         int b = input[index];

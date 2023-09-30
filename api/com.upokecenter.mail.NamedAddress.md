@@ -1,76 +1,71 @@
 # com.upokecenter.mail.NamedAddress
 
-## Constructors
+    public class NamedAddress extends Object
 
-* `NamedAddress​(java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
-  class.
-* `NamedAddress​(java.lang.String displayName,
-Address address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class using the given display name and email address.
-* `NamedAddress​(java.lang.String displayName,
-java.lang.String address) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class using the given display name and email address.
-* `NamedAddress​(java.lang.String displayName,
-java.lang.String localPart,
-java.lang.String domain) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class using the given name and an email address made up of its local
- part and domain.
-* `NamedAddress​(java.lang.String groupName,
-java.util.List<NamedAddress> mailboxes) NamedAddress`<br>
- Initializes a new instance of the NamedAddress
- class.
+Represents an email address and a name for that address. Can represent a
+ group of email addresses instead.
+
+## Constructors
 
 ## Methods
 
-* `boolean AddressesEqual​(NamedAddress na)`<br>
+* `boolean AddressesEqual(NamedAddress na)`<br>
  Determines whether the email addresses stored this object are the same
- between this object and the given object, regardless of the display
- names they store.
-* `boolean equals​(java.lang.Object obj)`<br>
+ between this object and the given object, regardless of the display names
+ they store.
+
+* `boolean equals(Object obj)`<br>
  Determines whether this object and another object are equal.
-* `Address getAddress()`<br>
+
+* `final Address getAddress()`<br>
  Gets the email address associated with this object.
-* `java.lang.String getDisplayName()`<br>
+
+* `final String getDisplayName()`<br>
  Gets the display name for this email address.
-* `java.util.List<NamedAddress> getGroupAddresses()`<br>
+
+* `final List<NamedAddress> getGroupAddresses()`<br>
  Gets a read-only list of addresses that make up the group, if this object
  represents a group, or an empty list otherwise.
-* `java.lang.String getName()`<br>
+
+* `final String getName()`<br>
  Gets the display name for this email address, or the email address's value
  if the display name is null.
+
 * `int hashCode()`<br>
  Calculates the hash code of this object.
-* `boolean isGroup()`<br>
+
+* `final boolean isGroup()`<br>
  Gets a value indicating whether this represents a group of addresses rather
  than a single address.
-* `static java.util.List<NamedAddress> ParseAddresses​(java.lang.String addressValue)`<br>
+
+* `static List<NamedAddress> ParseAddresses(String addressValue)`<br>
  Generates a list of NamedAddress objects from a comma-separated list of
  addresses.
-* `java.lang.String ToDisplayString()`<br>
+
+* `String ToDisplayString()`<br>
  Converts this named-address object to a text string intended for display to
  end users.
-* `static java.lang.String ToDisplayString​(java.util.List<NamedAddress> addresses)`<br>
+
+* `static String ToDisplayString(List<NamedAddress> addresses)`<br>
  Generates a string containing the display names and email addresses of the
  given named-address objects, separated by commas.
-* `static java.lang.String ToDisplayStringShort​(java.util.List<NamedAddress> addresses)`<br>
+
+* `static String ToDisplayStringShort(List<NamedAddress> addresses)`<br>
  Generates a string containing the display names of the given named-address
  objects, separated by commas.
-* `java.lang.String toString()`<br>
+
+* `String toString()`<br>
  Converts this object to a text string.
 
 ## Method Details
 
-### <a id='ToDisplayStringShort(java.util.List)'>ToDisplayStringShort</a>
-
+### ToDisplayStringShort
+    public static String ToDisplayStringShort(List<NamedAddress> addresses)
 Generates a string containing the display names of the given named-address
  objects, separated by commas. The generated string is intended to be
  displayed to end users, and is not intended to be parsed by computer
- programs. If a named address has no display name, its email address
- is used as the display name.
+ programs. If a named address has no display name, its email address is used
+ as the display name.
 
 **Parameters:**
 
@@ -83,14 +78,14 @@ Generates a string containing the display names of the given named-address
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>addresses</code> is null.
+* <code>NullPointerException</code> - The parameter <code>addresses</code> is null.
 
-### <a id='ToDisplayString(java.util.List)'>ToDisplayString</a>
-
+### ToDisplayString
+    public static String ToDisplayString(List<NamedAddress> addresses)
 Generates a string containing the display names and email addresses of the
- given named-address objects, separated by commas. The generated
- string is intended to be displayed to end users, and is not intended
- to be parsed by computer programs.
+ given named-address objects, separated by commas. The generated string is
+ intended to be displayed to end users, and is not intended to be parsed by
+ computer programs.
 
 **Parameters:**
 
@@ -103,13 +98,13 @@ Generates a string containing the display names and email addresses of the
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>addresses</code> is null.
+* <code>NullPointerException</code> - The parameter <code>addresses</code> is null.
 
-### <a id='ParseAddresses(java.lang.String)'>ParseAddresses</a>
-
+### ParseAddresses
+    public static List<NamedAddress> ParseAddresses(String addressValue)
 Generates a list of NamedAddress objects from a comma-separated list of
- addresses. Each address must follow the syntax accepted by the
- one-argument constructor of NamedAddress.
+ addresses. Each address must follow the syntax accepted by the one-argument
+ constructor of NamedAddress.
 
 **Parameters:**
 
@@ -123,32 +118,31 @@ Generates a list of NamedAddress objects from a comma-separated list of
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>addressValue</code> is null.
+* <code>NullPointerException</code> - The parameter <code>addressValue</code> is null.
 
-### <a id='hashCode()'>hashCode</a>
-
+### hashCode
+    public int hashCode()
 Calculates the hash code of this object. The exact algorithm used by this
- method is not guaranteed to be the same between versions of this
- library, and no application or process IDs are used in the hash code
- calculation.
+ method is not guaranteed to be the same between versions of this library,
+ and no application or process IDs are used in the hash code calculation.
 
 **Overrides:**
 
-* <code>hashCode</code> in class <code>java.lang.Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
 * A 32-bit hash code.
 
-### <a id='equals(java.lang.Object)'>equals</a>
-
+### equals
+    public boolean equals(Object obj)
 Determines whether this object and another object are equal. For groups, the
- named addresses (display name/email address pairs) must be equal and
- in the same order in both objects.
+ named addresses (display name/email address pairs) must be equal and in the
+ same order in both objects.
 
 **Overrides:**
 
-* <code>equals</code> in class <code>java.lang.Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -159,12 +153,12 @@ Determines whether this object and another object are equal. For groups, the
 * <code>true</code> if this object and another object are equal and have
  the same type; otherwise, <code>false</code>.
 
-### <a id='AddressesEqual(com.upokecenter.mail.NamedAddress)'>AddressesEqual</a>
-
+### AddressesEqual
+    public boolean AddressesEqual(NamedAddress na)
 Determines whether the email addresses stored this object are the same
- between this object and the given object, regardless of the display
- names they store. For groups, the email addresses must be equal and
- in the same order in both objects.
+ between this object and the given object, regardless of the display names
+ they store. For groups, the email addresses must be equal and in the same
+ order in both objects.
 
 **Parameters:**
 
@@ -174,18 +168,18 @@ Determines whether the email addresses stored this object are the same
 
 * Either <code>true</code> or <code>false</code>.
 
-### <a id='getName()'>getName</a>
-
+### getName
+    public final String getName()
 Gets the display name for this email address, or the email address's value
- if the display name is null. Returns an empty string if the address
- and display name are null.
+ if the display name is null. Returns an empty string if the address and
+ display name are null.
 
 **Returns:**
 
 * The name for this email address.
 
-### <a id='getDisplayName()'>getDisplayName</a>
-
+### getDisplayName
+    public final String getDisplayName()
 Gets the display name for this email address.
 
 **Returns:**
@@ -193,8 +187,8 @@ Gets the display name for this email address.
 * The display name for this email address. Returns null if the display
  name is absent.
 
-### <a id='getAddress()'>getAddress</a>
-
+### getAddress
+    public final Address getAddress()
 Gets the email address associated with this object.
 
 **Returns:**
@@ -202,8 +196,8 @@ Gets the email address associated with this object.
 * The email address associated with this object. This value is null if
  this object represents a group of addresses instead.
 
-### <a id='isGroup()'>isGroup</a>
-
+### isGroup
+    public final boolean isGroup()
 Gets a value indicating whether this represents a group of addresses rather
  than a single address.
 
@@ -212,32 +206,32 @@ Gets a value indicating whether this represents a group of addresses rather
 * <code>true</code> If this represents a group of addresses; otherwise,
  <code>false</code>.
 
-### <a id='toString()'>toString</a>
-
+### toString
+    public String toString()
 Converts this object to a text string. This will generally be the form of
-  this NamedAddress object as it could appear in a "To" header field.
+ this NamedAddress object as it could appear in a "To" header field.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>java.lang.Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
 * A string representation of this object.
 
-### <a id='ToDisplayString()'>ToDisplayString</a>
-
+### ToDisplayString
+    public String ToDisplayString()
 Converts this named-address object to a text string intended for display to
- end users. The returned string is not intended to be parsed by
- computer programs.
+ end users. The returned string is not intended to be parsed by computer
+ programs.
 
 **Returns:**
 
 * A text string of this named-address object, intended for display to
  end-users.
 
-### <a id='getGroupAddresses()'>getGroupAddresses</a>
-
+### getGroupAddresses
+    public final List<NamedAddress> getGroupAddresses()
 Gets a read-only list of addresses that make up the group, if this object
  represents a group, or an empty list otherwise.
 

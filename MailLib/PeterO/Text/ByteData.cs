@@ -15,7 +15,7 @@ namespace PeterO.Text {
     public static byte[] DecompressLz4(byte[] input) {
       var index = 0;
       var copy = new byte[16];
-      var output = new byte[8 + (input.Length * 3 / 2)];
+      var output = new byte[8 + (input.Length * 3 / 2) + 1];
       var outputPos = 0;
       while (index < input.Length) {
         int b = input[index];

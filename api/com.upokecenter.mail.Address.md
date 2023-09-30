@@ -1,33 +1,37 @@
 # com.upokecenter.mail.Address
 
-## Constructors
+    public class Address extends Object
 
-* `Address​(java.lang.String addressValue) Address`<br>
- Initializes a new instance of the Address
- class.
+Represents an email address.
+
+## Constructors
 
 ## Methods
 
-* `boolean equals​(java.lang.Object obj)`<br>
+* `boolean equals(Object obj)`<br>
  Determines whether this object and another object are equal.
-* `java.lang.String getDomain()`<br>
+
+* `final String getDomain()`<br>
  Gets the domain of this email address (the part after the "@" sign).
-* `java.lang.String getLocalPart()`<br>
+
+* `final String getLocalPart()`<br>
  Gets the local part of this email address (the part before the "@" sign).
+
 * `int hashCode()`<br>
  Returns a hash code for this address object.
-* `java.lang.String toString()`<br>
+
+* `String toString()`<br>
  Converts this address object to a text string.
 
 ## Method Details
 
-### <a id='equals(java.lang.Object)'>equals</a>
-
+### equals
+    public boolean equals(Object obj)
 Determines whether this object and another object are equal.
 
 **Overrides:**
 
-* <code>equals</code> in class <code>java.lang.Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -38,41 +42,41 @@ Determines whether this object and another object are equal.
 * <code>true</code> if this object and another object are equal; otherwise,
  <code>false</code>.
 
-### <a id='getLocalPart()'>getLocalPart</a>
-
+### getLocalPart
+    public final String getLocalPart()
 Gets the local part of this email address (the part before the "@" sign).
 
 **Returns:**
 
 * The local part of this email address (the part before the "@" sign).
 
-### <a id='toString()'>toString</a>
-
+### toString
+    public String toString()
 Converts this address object to a text string.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>java.lang.Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
 * A string representation of this object.
 
-### <a id='hashCode()'>hashCode</a>
-
+### hashCode
+    public int hashCode()
 Returns a hash code for this address object. No application or process
  identifiers are used in the hash code calculation.
 
 **Overrides:**
 
-* <code>hashCode</code> in class <code>java.lang.Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
 * A hash code for this instance.
 
-### <a id='getDomain()'>getDomain</a>
-
+### getDomain
+    public final String getDomain()
 Gets the domain of this email address (the part after the "@" sign).
 
 **Returns:**

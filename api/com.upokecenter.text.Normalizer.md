@@ -1,31 +1,43 @@
 # com.upokecenter.text.Normalizer
 
-## Constructors
+    @Deprecated public final class Normalizer extends Object
 
-* `Normalizer​(java.lang.String str,
-Normalization form) Normalizer`<br>
- Deprecated. Initializes a new instance of the Normalizer
- class.
+<p>Implements the Unicode normalization algorithm and contains methods and
+ functionality to test and convert Unicode strings for Unicode
+ normalization.</p> <p>NOTICE: While this class's source code is in the
+ public domain, the class uses an class, called NormalizationData,
+ that includes data derived from the Unicode Character Database. See the
+ documentation for the NormalizerInput class for the permission notice for
+ the Unicode Character Database.</p>
+
+## Constructors
 
 ## Methods
 
-* `static boolean IsNormalized​(java.lang.String str,
-Normalization form)`<br>
- Deprecated. Returns whether this string is normalized.
-* `static java.lang.String Normalize​(java.lang.String str,
-Normalization form)`<br>
- Deprecated. Converts a string to the given Unicode normalization form.
-* `int Read​(int[] chars,
-int index,
-int length)`<br>
- Deprecated. Reads a sequence of Unicode code points from a data source.
+* `static boolean IsNormalized(String str,
+ Normalization form)`<br>
+ Deprecated.
+Returns whether this string is normalized.
+
+* `static String Normalize(String str,
+ Normalization form)`<br>
+ Deprecated.
+Converts a string to the given Unicode normalization form.
+
+* `int Read(int[] chars,
+ int index,
+ int length)`<br>
+ Deprecated.
+Reads a sequence of Unicode code points from a data source.
+
 * `int ReadChar()`<br>
- Deprecated. Reads a Unicode character from a data source.
+ Deprecated.
+Reads a Unicode character from a data source.
 
 ## Method Details
 
-### <a id='Normalize(java.lang.String,com.upokecenter.text.Normalization)'>Normalize</a>
-
+### Normalize
+    public static String Normalize(String str, Normalization form)
 Converts a string to the given Unicode normalization form.
 
 **Parameters:**
@@ -40,10 +52,10 @@ Converts a string to the given Unicode normalization form.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
-### <a id='IsNormalized(java.lang.String,com.upokecenter.text.Normalization)'>IsNormalized</a>
-
+### IsNormalized
+    public static boolean IsNormalized(String str, Normalization form)
 Returns whether this string is normalized.
 
 **Parameters:**
@@ -55,11 +67,11 @@ Returns whether this string is normalized.
 **Returns:**
 
 * <code>true</code> if this string is normalized; otherwise, <code>false</code>.
- Returns <code>false</code> if the string contains an unpaired surrogate
- code point.
+ Returns <code>false</code> if the string contains an unpaired surrogate code
+ point.
 
-### <a id='ReadChar()'>ReadChar</a>
-
+### ReadChar
+    public int ReadChar()
 Reads a Unicode character from a data source.
 
 **Returns:**
@@ -67,8 +79,8 @@ Reads a Unicode character from a data source.
 * Either a Unicode code point (from 0-0xd7ff or from 0xe000 to
  0x10ffff), or the value -1 indicating the end of the source.
 
-### <a id='Read(int[],int,int)'>Read</a>
-
+### Read
+    public int Read(int[] chars, int index, int length)
 Reads a sequence of Unicode code points from a data source.
 
 **Parameters:**
@@ -86,8 +98,8 @@ Reads a sequence of Unicode code points from a data source.
 
 **Throws:**
 
-* <code>java.lang.IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
- than 0 or greater than <code>chars</code> 's length, or <code>chars</code> 's
- length minus <code>index</code> is less than <code>length</code>.
+* <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
+ than 0 or greater than <code>chars</code> 's length, or <code>chars</code> 's length
+ minus <code>index</code> is less than <code>length</code>.
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
+* <code>NullPointerException</code> - The parameter <code>chars</code> is null.

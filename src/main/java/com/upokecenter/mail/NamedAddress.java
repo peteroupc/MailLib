@@ -21,8 +21,8 @@ import java.util.*;
      * Generates a string containing the display names of the given named-address
      * objects, separated by commas. The generated string is intended to be
      * displayed to end users, and is not intended to be parsed by computer
-     * programs. If a named address has no display name, its email address
-     * is used as the display name.
+     * programs. If a named address has no display name, its email address is used
+     * as the display name.
      * @param addresses A list of named address objects.
      * @return A string containing the display names of the given named-address
      * objects, separated by commas.
@@ -44,9 +44,9 @@ import java.util.*;
 
     /**
      * Generates a string containing the display names and email addresses of the
-     * given named-address objects, separated by commas. The generated
-     * string is intended to be displayed to end users, and is not intended
-     * to be parsed by computer programs.
+     * given named-address objects, separated by commas. The generated string is
+     * intended to be displayed to end users, and is not intended to be parsed by
+     * computer programs.
      * @param addresses A list of named address objects.
      * @return A string containing the display names and email addresses of the
      * given named-address objects, separated by commas.
@@ -68,8 +68,8 @@ import java.util.*;
 
     /**
      * Generates a list of NamedAddress objects from a comma-separated list of
-     * addresses. Each address must follow the syntax accepted by the
-     * one-argument constructor of NamedAddress.
+     * addresses. Each address must follow the syntax accepted by the one-argument
+     * constructor of NamedAddress.
      * @param addressValue A comma-separated list of addresses in the form of a
      * text string.
      * @return A list of addresses generated from the {@code addressValue}
@@ -105,9 +105,8 @@ import java.util.*;
 
     /**
      * Calculates the hash code of this object. The exact algorithm used by this
-     * method is not guaranteed to be the same between versions of this
-     * library, and no application or process IDs are used in the hash code
-     * calculation.
+     * method is not guaranteed to be the same between versions of this library,
+     * and no application or process IDs are used in the hash code calculation.
      * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
@@ -128,8 +127,8 @@ import java.util.*;
 
     /**
      * Determines whether this object and another object are equal. For groups, the
-     * named addresses (display name/email address pairs) must be equal and
-     * in the same order in both objects.
+     * named addresses (display name/email address pairs) must be equal and in the
+     * same order in both objects.
      * @param obj An arbitrary object to compare with this one.
      * @return {@code true} if this object and another object are equal and have
      * the same type; otherwise, {@code false}.
@@ -148,9 +147,9 @@ other.isGroup &&
 
     /**
      * Determines whether the email addresses stored this object are the same
-     * between this object and the given object, regardless of the display
-     * names they store. For groups, the email addresses must be equal and
-     * in the same order in both objects.
+     * between this object and the given object, regardless of the display names
+     * they store. For groups, the email addresses must be equal and in the same
+     * order in both objects.
      * @param na A named address object to compare with this one. Can be null.
      * @return Either {@code true} or {@code false}.
      */
@@ -178,8 +177,8 @@ other.isGroup &&
 
     /**
      * Gets the display name for this email address, or the email address's value
-     * if the display name is null. Returns an empty string if the address
-     * and display name are null.
+     * if the display name is null. Returns an empty string if the address and
+     * display name are null.
      * @return The name for this email address.
      */
     public final String getName() {
@@ -247,7 +246,7 @@ other.isGroup &&
 
     /**
      * Converts this object to a text string. This will generally be the form of
-     *  this NamedAddress object as it could appear in a "To" header field.
+     * this NamedAddress object as it could appear in a "To" header field.
      * @return A string representation of this object.
      */
     @Override public String toString() {
@@ -258,8 +257,8 @@ other.isGroup &&
 
     /**
      * Converts this named-address object to a text string intended for display to
-     * end users. The returned string is not intended to be parsed by
-     * computer programs.
+     * end users. The returned string is not intended to be parsed by computer
+     * programs.
      * @return A text string of this named-address object, intended for display to
      * end-users.
      */
@@ -288,29 +287,26 @@ other.isGroup &&
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     *  class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
-     *  Doe" &lt;john@example.com&gt;</code></li>
-     *
-  <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=&lt;john@example.com&gt;</code></li>
-     *  <li><code>John &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
-     * &lt;tom@example.com&gt;, Jane
-     * &lt;jane@example.com&gt;;</code></li></ul>
-     * @param address A text string identifying a single email address or a group
-     * of email addresses. Comments, or text within parentheses, can
-     * appear. Multiple email addresses are not allowed unless they appear
-     * in the group syntax given above. Encoded words under RFC 2047 that
-     * appear within comments or display names will be decoded. <p>An RFC
-     *  2047 encoded word consists of "=?", a character encoding name, such
-     *  as {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
-     * series of bytes in the character encoding, further encoded using B
-     *  or Q encoding, and finally "?=". B encoding uses Base64, while in Q
-     *  encoding, spaces are changed to "_", equals are changed to "=3D",
-     * and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and
-     * the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are
-     *  changed to "=" followed by their 2-digit hexadecimal form. An
-     * encoded word's maximum length is 75 characters. See the third
-     * example.</p>.
+     * <p>Initializes a new instance of the {@link
+     * com.upokecenter.mail.NamedAddress} class. Examples: </p> <ul> <li> {@code
+     * john@example.com}</li><li>{@code "John Doe"
+     * &lt;john@example.com&gt;}</li><li> {@code =?utf-8?q?John}{@code =}{@code
+     * 27s_Office?=&lt;john@example.com&gt;}</li><li> {@code John
+     * &lt;john@example.com&gt;}</li><li>{@code "Group" : Tom
+     * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;}</li></ul>
+     * @param address <p>A text string identifying a single email address or a
+     * group of email addresses. Comments, or text within parentheses, can appear.
+     * Multiple email addresses are not allowed unless they appear in the group
+     * syntax given above. Encoded words under RFC 2047 that appear within comments
+     * or display names will be decoded. </p><p>An RFC 2047 encoded word consists
+     * of "=?", a character encoding name, such as {@code utf-8}, either "?B?" or
+     * "?Q?" (in upper or lower case), a series of bytes in the character encoding,
+     * further encoded using B or Q encoding, and finally "?=". B encoding uses
+     * Base64, while in Q encoding, spaces are changed to "_", equals are changed
+     * to "=3D", and most bytes other than the basic digits 0 to 9 (0x30 to 0x39)
+     * and the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
+     * "=" followed by their 2-digit hexadecimal form. An encoded word's maximum
+     * length is 75 characters. See the third example.</p>.
      * @throws NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException Address has an invalid syntax.; Address has an
      * invalid syntax.
@@ -376,8 +372,8 @@ other.isGroup &&
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class using the given name and an email address made up of its local
-     * part and domain.
+     * class using the given name and an email address made up of its local part
+     * and domain.
      * @param displayName The display name of the email address. Can be null or
      * empty.
      * @param localPart The local part of the email address (before the "@").
@@ -400,8 +396,8 @@ other.isGroup &&
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class. Takes a group name and several named email addresses as
-     * parameters, and forms a group with them.
+     * class. Takes a group name and several named email addresses as parameters,
+     * and forms a group with them.
      * @param groupName The group's name.
      * @param mailboxes A list of named addresses that make up the group.
      * @throws NullPointerException The parameter {@code groupName} or {@code

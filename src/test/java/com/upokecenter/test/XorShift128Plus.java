@@ -1,11 +1,11 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
   /**
-   * A class that implements a statistically-random byte generator, using
+   * <p>A class that implements a statistically-random byte generator, using
    * Sebastiano Vigna's <a
-   * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
-   * RNG as the underlying implementation. By default, this class is safe
-   * for concurrent use among multiple threads.
+   * href="http://xorshift.di.unimi.it/xorshift128plus.c">xorshift128+</a> RNG as
+   * the underlying implementation. By default, this class is safe for concurrent
+   * use among multiple threads.</p>
    */
   public class XorShift128Plus implements IRandomGen {
     private final long[] s = new long[2];
@@ -70,8 +70,8 @@ package com.upokecenter.test; import com.upokecenter.util.*;
      * @return A 32-bit signed integer.
      * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
-     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
-     * length minus {@code offset} is less than {@code length}.
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's length
+     * minus {@code offset} is less than {@code length}.
      */
     public int GetBytes(byte[] bytes, int offset, int length) {
       if (bytes == null) {
