@@ -13,55 +13,55 @@ using System.Reflection;
 #if DEBUG
 namespace PeterO {
   internal static class DebugUtility {
-    private static readonly object WriterLock = new Object();
+    private static readonly object WriterLock = new object();
     private static Action<string> writer;
 
     [System.Diagnostics.Conditional("DEBUG")]
     public static void SetWriter(Action<string> wr) {
-       lock (WriterLock) {
-         writer = wr;
-       }
+      lock (WriterLock) {
+        writer = wr;
+      }
     }
 
     private static MethodInfo GetTypeMethod(
       Type t,
       string name,
       Type[] parameters) {
-      #if NET40 || NET20
+#if NET40 || NET20
         return t.GetMethod(name, parameters);
-      #else
+#else
 {
- return t?.GetRuntimeMethod(name, parameters);
-}
-      #endif
+        return t?.GetRuntimeMethod(name, parameters);
+      }
+#endif
     }
 
     public static void Log(string str) {
-      Type type = Type.GetType("System.Console");
+      var type = Type.GetType("System.Console");
       if (type == null) {
-         Action<string> wr = null;
-         lock (WriterLock) {
-           wr = writer;
-         }
-         if (wr != null) {
-          #if !NET20 && !NET40
+        Action<string> wr = null;
+        lock (WriterLock) {
+          wr = writer;
+        }
+        if (wr != null) {
+#if !NET20 && !NET40
           System.Diagnostics.Debug.WriteLine(str);
-          #endif
+#endif
           wr(str);
           return;
-         } else {
-          #if !NET20 && !NET40
+        } else {
+#if !NET20 && !NET40
           System.Diagnostics.Debug.WriteLine(str);
           return;
-          #else
+#else
 {
  throw new NotSupportedException("System.Console not found");
 }
-          #endif
-         }
+#endif
+        }
       }
-      var types = new[] { typeof(string) };
-      var typeMethod = GetTypeMethod(type, "WriteLine", types);
+      Type[] types = new[] { typeof(string) };
+      MethodInfo typeMethod = GetTypeMethod(type, "WriteLine", types);
       if (typeMethod != null) {
         typeMethod.Invoke(
           type,

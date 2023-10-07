@@ -3,7 +3,8 @@ package com.upokecenter.test; import com.upokecenter.util.*;
   /**
    * Interface for random-number generators.
    */
-  public interface IRandomGen {
+  public interface IRandomGen
+  {
     /**
      * Randomly generates a set of bytes.
      * @param bytes Byte buffer to store the random bytes.
