@@ -312,7 +312,7 @@ private FormatFlowed() {
           return null;
         }
         int urlStart = index;
-        String label = DataUtilities.ToLowerCaseAscii(
+        String label = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
             str.substring(labelStart, (labelStart)+(labelEnd - labelStart)));
         String url = str.substring(urlStart, (urlStart)+(str.length() - urlStart));
         String[] urltitle = SplitUrl(url, true);
@@ -621,7 +621,7 @@ private FormatFlowed() {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii(
+            urlText = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
                 ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
             if (links.containsKey(urlText)) {
               urlTitle = links.get(urlText);
@@ -704,7 +704,7 @@ private FormatFlowed() {
           if (urlRef) {
             urlTitle = SplitUrl(urlText, false);
           } else {
-            urlText = DataUtilities.ToLowerCaseAscii(
+            urlText = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
                 ((urlText) == null || (urlText).length() == 0) ? linkText : urlText);
             if (links.containsKey(urlText)) {
               urlTitle = links.get(urlText);

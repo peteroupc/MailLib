@@ -944,7 +944,7 @@ this.subType.length() ||
       if (!((param) == null || (param).length() == 0)) {
         // Charset parameter is present and non-empty
         param = Encodings.ResolveAliasForEmail(param);
-        return DataUtilities.ToLowerCaseAscii(param);
+        return com.upokecenter.util.DataUtilities.ToLowerCaseAscii(param);
       } else if (param != null) {
         // Charset parameter is empty
         return "";
@@ -1028,7 +1028,7 @@ this.subType.length() ||
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       return this.parameters.containsKey(name) ? this.parameters.get(name) : null;
     }
 
@@ -1300,7 +1300,7 @@ this.subType.length() ||
         if (str.charAt(index) != '=') {
           return false;
         }
-        attribute = DataUtilities.ToLowerCaseAscii(attribute);
+        attribute = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(attribute);
         if (parameters.containsKey(attribute)) {
           parameters.remove(attribute);
           duplicateAttributes.put(attribute,"");
@@ -1376,14 +1376,13 @@ this.subType.length() ||
         return null;
       }
       HashMap<String, String> parameters = new HashMap<String, String>();
-      String topLevelType =
-        DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
+      String topLevelType = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       ++i;
       int i2 = SkipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
         return null;
       }
-      String subType = DataUtilities.ToLowerCaseAscii(
+      String subType = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
         str.substring(i, (i)+(i2 - i)));
       if (i2 < endIndex) {
         // if not at end
@@ -1613,7 +1612,7 @@ public final void setSubType(String value) {
         throw new IllegalArgumentException("Not a well-formed top level type: " +
 str);
       }
-      this.type = DataUtilities.ToLowerCaseAscii(str);
+      this.type = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
       return this;
     }
 
@@ -1631,7 +1630,7 @@ str);
       if (name == null) {
         throw new NullPointerException("name");
       }
-      this.parameters.remove(DataUtilities.ToLowerCaseAscii(name));
+      this.parameters.remove(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name));
       return this;
     }
 
@@ -1664,7 +1663,7 @@ str);
         throw new IllegalArgumentException("Not a well-formed parameter name: " +
           name);
       }
-      this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
+      this.parameters.put(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name), value);
       return this;
     }
 
@@ -1690,7 +1689,7 @@ str);
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed subtype: " + str);
       }
-      this.subtype = DataUtilities.ToLowerCaseAscii(str);
+      this.subtype = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
       return this;
     }
 

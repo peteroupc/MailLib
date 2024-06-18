@@ -595,7 +595,7 @@ private HeaderFieldParsers() {
         if (si == index) {
           return false;
         }
-        String checkword = DataUtilities.ToLowerCaseAscii(sb.toString());
+        String checkword = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(sb.toString());
         if (!checkword.equals(word)) {
           return false;
         }
@@ -953,7 +953,7 @@ private HeaderFieldParsers() {
         // field values) except to add certain header fields at the top of
         // the message.
         // System.out.println("before = "+str);
-        String lcname = DataUtilities.ToLowerCaseAscii(name);
+        String lcname = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
         HeaderEncoder enc = new HeaderEncoder(
           Message.MaxRecHeaderLineLength,
           name.length() + 2);
@@ -2651,7 +2651,7 @@ private HeaderFieldParsers() {
       if (name == null) {
         throw new NullPointerException("name");
       }
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       return FieldMap.containsKey(name) ? FieldMap.get(name) : Unstructured;
     }
   }

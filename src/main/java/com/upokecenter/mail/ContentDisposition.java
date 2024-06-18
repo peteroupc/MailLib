@@ -333,7 +333,7 @@ import com.upokecenter.text.*;
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       return this.parameters.containsKey(name) ? this.parameters.get(name) :
         null;
     }
@@ -356,8 +356,7 @@ import com.upokecenter.text.*;
       if (i == index) {
         return null;
       }
-      String dispoType =
-        DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
+      String dispoType = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       if (i < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i, endIndex, null);
@@ -572,7 +571,7 @@ public final void setDispositionType(String value) {
           str.length()) {
           throw new IllegalArgumentException("Not a well-formed type: " + str);
         }
-        this.type = DataUtilities.ToLowerCaseAscii(str);
+        this.type = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
         return this;
       }
 
@@ -590,7 +589,7 @@ public final void setDispositionType(String value) {
         if (name == null) {
           throw new NullPointerException("name");
         }
-        this.parameters.remove(DataUtilities.ToLowerCaseAscii(name));
+        this.parameters.remove(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name));
         return this;
       }
 
@@ -622,7 +621,7 @@ public final void setDispositionType(String value) {
           throw new IllegalArgumentException("Not a well-formed parameter name: " +
             name);
         }
-        this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
+        this.parameters.put(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name), value);
         return this;
       }
 

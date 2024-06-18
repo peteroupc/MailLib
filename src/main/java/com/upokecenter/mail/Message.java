@@ -119,10 +119,6 @@ import com.upokecenter.text.*;
     private static final int EncodingSevenBit = 0;
     private static final int EncodingUnknown = -1;
 
-    // NOTE: System.java.util.Random is not a cryptographic RNG.
-    // If security is a concern, replace this call to System.java.util.getRandom()
-    // to the interface of a cryptographic RNG.
-    private static final java.util.Random ValueMsgidRandom = new java.util.Random();
     private static final Object ValueSequenceSync = new Object();
 
     private static final Map<String, Integer> ValueHeaderIndices =
@@ -132,7 +128,7 @@ import com.upokecenter.text.*;
 
     private final List<Message> parts;
 
-    private static int msgidSequence;
+    private static int msgidSequence = 0;
     private static boolean seqFirstTime = true;
     private byte[] body;
     private ContentDisposition contentDisposition;
@@ -152,7 +148,7 @@ import com.upokecenter.text.*;
      * benign in nature (such as the use of very long lines in the message). One
      * way an application can handle the exception is to read all the bytes from
      * the stream, to display the message, or part of it, as raw text (using {@code
-     * DataUtilities.GetUtf8String(bytes, true)}), and to optionally extract
+     * com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true)}), and to optionally extract
      * important header fields, such as From, To, Date, and Subject, from the
      * message's text using the {@code ExtractHeader} method. Even so, though, any
      * message for which this constructor throws a MessageDataException ought to be
@@ -298,7 +294,7 @@ ms = new java.io.ByteArrayOutputStream();
             index = endLine;
             ms.write(bytes, s, EndOfLine(bytes, endLine) - s);
           }
-          ret = DataUtilities.GetUtf8String(ms.toByteArray(), true);
+          ret = com.upokecenter.util.DataUtilities.GetUtf8String(ms.toByteArray(), true);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
@@ -318,7 +314,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * email malformations seen in practice are benign in nature (such as the use
      * of very long lines in the message). One way an application can handle the
      * exception is to display the message, or part of it, as raw text (using
-     * {@code DataUtilities.GetUtf8String(bytes, true)}), and to optionally
+     * {@code com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true)}), and to optionally
      * extract important header fields, such as From, To, Date, and Subject, from
      * the message's text using the {@code ExtractHeader} method. Even so, though,
      * any message for which this constructor throws a MessageDataException ought
@@ -1136,10 +1132,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       MediaType mt = mediaTypes.get(0);
       String fmt = mt.GetParameter("format");
       String dsp = mt.GetParameter("delsp");
-      boolean formatFlowed = DataUtilities.ToLowerCaseAscii(
+      boolean formatFlowed = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
           fmt == null ? "fixed" : fmt)
         .equals("flowed");
-      boolean delSp = DataUtilities.ToLowerCaseAscii(
+      boolean delSp = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
           dsp == null ? "no" : dsp).equals("yes");
       if (mt.getTypeAndSubType().equals("text/plain")) {
         if (formatFlowed) {
@@ -1260,7 +1256,7 @@ public final void setContentType(MediaType value) {
       if (headerName.length() == 0) {
         throw new IllegalArgumentException("headerName" + " is empty.");
       }
-      headerName = DataUtilities.ToLowerCaseAscii(headerName);
+      headerName = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(headerName);
       if (ValueHeaderIndices.containsKey(headerName) &&
         ValueHeaderIndices.get(headerName) <= 5) {
         return ParseAddresses(this.GetMultipleHeaders(headerName));
@@ -1397,7 +1393,7 @@ public final void setSubject(String value) {
       this.Generate(
         aw,
         0);
-      return DataUtilities.GetUtf8String(aw.ToArray(), false);
+      return com.upokecenter.util.DataUtilities.GetUtf8String(aw.ToArray(), false);
     }
 
     /**
@@ -1511,7 +1507,7 @@ public final void setSubject(String value) {
       if (name == null) {
         throw new NullPointerException("name");
       }
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
           // Get the first instance of the header field
@@ -1536,7 +1532,7 @@ public final void setSubject(String value) {
       if (name == null) {
         throw new NullPointerException("name");
       }
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       ArrayList<String> list = new ArrayList<String>();
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
@@ -1605,7 +1601,7 @@ public final void setSubject(String value) {
       if (name == null) {
         throw new NullPointerException("name");
       }
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       // Remove the header field
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
@@ -1783,7 +1779,7 @@ public final void setSubject(String value) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      this.body = DataUtilities.GetUtf8Bytes(str, true, true);
+      this.body = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, true, true);
       this.setContentType(IsShortAndAllAscii(str) ? TextHtmlAscii :
         TextHtmlUtf8);
       return this;
@@ -1882,7 +1878,7 @@ public final void setSubject(String value) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      this.body = DataUtilities.GetUtf8Bytes(str, true, true);
+      this.body = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, true, true);
       this.setContentType(IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8);
       return this;
@@ -2027,7 +2023,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     private static MediaType SuggestMediaType(String filename) {
       if (!((filename) == null || (filename).length() == 0)) {
-        String ext = DataUtilities.ToLowerCaseAscii(
+        String ext = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
             ExtensionName(filename));
         if (ext.equals(".doc") ||
           ext.equals(".dot")) {
@@ -2293,7 +2289,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       if (cttEnd != ctt.length()) {
         return "";
       }
-      return DataUtilities.ToLowerCaseAscii(
+      return com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
           ctt.substring(index, (index)+(cttEnd - index)));
     }
 
@@ -2523,7 +2519,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         part.SetHeader(
           "content-language",
           languages.get(i));
-        part.SetBody(DataUtilities.GetUtf8Bytes(msgstring, true));
+        part.SetBody(com.upokecenter.util.DataUtilities.GetUtf8Bytes(msgstring, true));
       }
       return msg;
     }
@@ -2664,8 +2660,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         }
         int headerValueStart = index;
         int headerValueEnd = index;
-        String fieldName = DataUtilities.ToLowerCaseAscii(
-            DataUtilities.GetUtf8String(
+        String fieldName = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
+            com.upokecenter.util.DataUtilities.GetUtf8String(
               bytes,
               headerNameStart,
               headerNameEnd - headerNameStart,
@@ -2749,7 +2745,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           String headerValue = null;
           int[] status = new int[1];
           try {
-            headerValue = DataUtilities.GetUtf8String(
+            headerValue = com.upokecenter.util.DataUtilities.GetUtf8String(
               bytes,
               headerValueStart,
               headerValueEnd - headerValueStart,
@@ -2775,7 +2771,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
             }
             if (status[0] == 1) {
               // Downgraded
-              byte[] newBytes = DataUtilities.GetUtf8Bytes(
+              byte[] newBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(
                 headerValue,
                 true);
               writer.write(newBytes, 0, newBytes.length);
@@ -2783,7 +2779,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
               // Encapsulated
               String field = origRecipient ? "Downgraded-Original-Recipient" :
                 "Downgraded-Final-Recipient";
-              headerValue = DataUtilities.GetUtf8String(
+              headerValue = com.upokecenter.util.DataUtilities.GetUtf8String(
                 bytes,
                 headerValueStart,
                 headerValueEnd - headerValueStart,
@@ -2791,7 +2787,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
               String newField = HeaderEncoder.EncodeFieldAsEncodedWords(
                 field,
                 headerValue);
-              byte[] newBytes = DataUtilities.GetUtf8Bytes(
+              byte[] newBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(
                 newField,
                 true);
               writer.write(newBytes, 0, newBytes.length);
@@ -2895,7 +2891,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
                 headerValue.charAt(i) != '-') {
                 builder.append(headerValue.charAt(i));
               } else {
-                int cp = DataUtilities.CodePointAt(headerValue, i);
+                int cp = com.upokecenter.util.DataUtilities.CodePointAt(headerValue, i);
                 if (cp >= 0x10000) {
                   ++i;
                 }
@@ -3056,7 +3052,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       // Parses "unstructured" in RFC 5322 without obsolete syntax
       // and with non-ASCII characters allowed
       for (int i = startIndex; i < endIndex;) {
-        int c = DataUtilities.CodePointAt(s, i, 2);
+        int c = com.upokecenter.util.DataUtilities.CodePointAt(s, i, 2);
         // NOTE: Unpaired surrogates are replaced with -1
         if (c == -1) {
           return i;
@@ -3658,7 +3654,7 @@ LiberalSevenBitTransform(stream)) :
       if (name.length() > MaxHardHeaderLineLength - 1) {
         throw new IllegalArgumentException("Header field name too long");
       }
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < name.length(); ++i) {
         if (name.charAt(i) <= 0x20 || name.charAt(i) == ':' || name.charAt(i) >= 0x7f) {
           throw new
@@ -3973,23 +3969,8 @@ TransferEncodingToUse(
       StringBuilder builder = new StringBuilder();
       int seq = 0;
       builder.append('<');
-      synchronized (ValueSequenceSync) {
-        if (seqFirstTime) {
-          msgidSequence = ValueMsgidRandom.nextInt(65536);
-          msgidSequence <<= 16;
-          msgidSequence |= ValueMsgidRandom.nextInt(65536);
-          seqFirstTime = false;
-        }
-        seq = (msgidSequence++);
-      }
       String ValueHex = "0123456789abcdef";
-      byte[] ent;
-      {
-        ent = new byte[16];
-        for (int i = 0; i < ent.length; ++i) {
-          ent[i] = ((byte)ValueMsgidRandom.nextInt(256));
-        }
-      }
+      byte[] ent = java.util.UUID.randomUUID().ToByteArray();
       long ticks = new java.util.Date().getTime();
       for (int i = 0; i < 10; ++i) {
         builder.append(ValueHex.charAt((int)(ticks & 15)));
@@ -4023,7 +4004,7 @@ TransferEncodingToUse(
 
     private String[] GetMultipleHeaders(String name) {
       ArrayList<String> headerList = new ArrayList<String>();
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
           headerList.add(this.headers.get(i + 1));
@@ -4033,7 +4014,7 @@ TransferEncodingToUse(
     }
 
     private boolean IsValidAddressingField(String name) {
-      name = DataUtilities.ToLowerCaseAscii(name);
+      name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       boolean have = false;
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
@@ -4189,7 +4170,7 @@ TransferEncodingToUse(
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
         if (mime && name.equals("content-transfer-encoding")) {
-          value = DataUtilities.ToLowerCaseAscii(transferEncodingValue);
+          value = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(transferEncodingValue);
           this.headers.set(i + 1, value);
           if (value.equals("7bit")) {
             this.transferEncoding = EncodingSevenBit;
@@ -4469,7 +4450,7 @@ TransferEncodingToUse(
       String fullField = ParserUtility.Implode(
           this.GetMultipleHeaders(name),
           "\u002c ");
-      String lcname = DataUtilities.ToLowerCaseAscii(name);
+      String lcname = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name);
       if (fullField.length() == 0) {
         encoder.AppendSymbol("me@" + name + "-address.invalid");
       } else {

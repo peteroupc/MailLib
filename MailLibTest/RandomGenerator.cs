@@ -36,9 +36,9 @@ namespace PeterO {
     /// false, and 1 means always true.</param>
     /// <returns>A Boolean object.</returns>
     public bool Bernoulli(double p) {
-      return p < 0?
-        throw new ArgumentException("p(" + p + ") is less than 0"):
-        p > 1 ? throw new ArgumentException("p(" + p + ") is more than 1"):
+      return p < 0 ?
+        throw new ArgumentException("p(" + p + ") is less than 0") :
+        p > 1 ? throw new ArgumentException("p(" + p + ") is more than 1") :
 this.Uniform() < p;
     }
 
@@ -122,8 +122,8 @@ this.Uniform() < p;
     /// chosen normally-distributed numbers).</param>
     /// <returns>A 64-bit floating-point number.</returns>
     public double ChiSquared(int df) {
-      return df <= 0 ? throw new ArgumentException("df(" + df + ") is not
-greater than 0") : this.Gamma(df * 0.5, 2);
+      return df <= 0 ? throw new ArgumentException("df(" + df + ") is not" +
+"\u0020greater than 0") : this.Gamma(df * 0.5, 2);
     }
 
     /// <summary>Not documented yet.</summary>
@@ -137,8 +137,8 @@ greater than 0") : this.Gamma(df * 0.5, 2);
     /// <param name='b'>A 64-bit floating-point number. (3).</param>
     /// <returns>A 64-bit floating-point number.</returns>
     public double Gamma(double a, double b) {
-      return b <= 0 ? throw new ArgumentException("b(" + b + ") is not
-greater than 0") : this.Gamma(a) * b;
+      return b <= 0 ? throw new ArgumentException("b(" + b + ") is not" +
+"\u0020greater than 0") : this.Gamma(a) * b;
     }
 
     /// <summary>Not documented yet.</summary>
@@ -253,7 +253,7 @@ greater than 0") : this.Gamma(a) * b;
         return 0;
       }
       if (p == 0.0) {
-        return int.MaxValue;
+        return Int32.MaxValue;
       }
       var count = 0;
       if (p == 0.5) {
@@ -363,7 +363,7 @@ greater than 0") : this.Gamma(a) * b;
     /// less than.</param>
     /// <returns>A 64-bit floating-point number.</returns>
     public double Uniform(double min, double max) {
-      return min >= max?
+      return min >= max ?
         throw new ArgumentException("min(" + min + ") is not less than " +
           max) : min + ((max - min) * this.Uniform());
     }
@@ -410,7 +410,7 @@ greater than 0") : this.Gamma(a) * b;
         return minInclusive + this.UniformInt(maxExclusive - minInclusive);
       } else {
         long diff = maxExclusive - minInclusive;
-        return diff <= int.MaxValue ? minInclusive +
+        return diff <= Int32.MaxValue ? minInclusive +
 this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       }
     }
@@ -433,9 +433,9 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       if (minInclusive >= 0) {
         return minInclusive + this.UniformLong(maxExclusive - minInclusive);
       } else {
-        if ((maxExclusive < 0 && long.MaxValue + maxExclusive <
+        if ((maxExclusive < 0 && Int64.MaxValue + maxExclusive <
             minInclusive) ||
-          (maxExclusive > 0 && long.MinValue + maxExclusive > minInclusive) ||
+          (maxExclusive > 0 && Int64.MinValue + maxExclusive > minInclusive) ||
           minInclusive - maxExclusive < 0) {
           var b = new byte[8];
           while (true) {
@@ -502,7 +502,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
                 return ib;
               }
               int maxexc;
-              maxexc = int.MaxValue / maxExclusive * maxExclusive;
+              maxexc = Int32.MaxValue / maxExclusive * maxExclusive;
               while (true) {
                 _ = this.valueIrg.GetBytes(b, 0, 4);
                 ib = b[0] & 0xff;
@@ -542,7 +542,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
         throw new ArgumentException("maxExclusive(" + maxExclusive +
           ") is less than 0");
       }
-      if (maxExclusive <= int.MaxValue) {
+      if (maxExclusive <= Int32.MaxValue) {
         return this.UniformInt((int)maxExclusive);
       }
       if (this.valueIrg is IRandomGenExtended rge) {
@@ -551,7 +551,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
 
       long maxexc;
       var b = new byte[8];
-      maxexc = long.MaxValue / maxExclusive * maxExclusive;
+      maxexc = Int64.MaxValue / maxExclusive * maxExclusive;
       while (true) {
         _ = this.valueIrg.GetBytes(b, 0, 8);
         long lb = b[0] & 0xffL;

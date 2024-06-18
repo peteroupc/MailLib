@@ -29,7 +29,7 @@ import com.upokecenter.mail.*;
       if (msg == null) {
         Assert.assertEquals(expected, Message.ExtractHeader(null, name));
       } else {
-        byte[] bytes = DataUtilities.GetUtf8Bytes(msg, true);
+        byte[] bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(msg, true);
         Assert.assertEquals(
           expected,
           Message.ExtractHeader(bytes, name));
@@ -176,7 +176,7 @@ import com.upokecenter.mail.*;
 
     static Message MessageFromString(String valueMessageString) {
       Message msgobj = new Message(
-        DataUtilities.GetUtf8Bytes(
+        com.upokecenter.util.DataUtilities.GetUtf8Bytes(
           valueMessageString,
           true));
       MessageGenerate(msgobj);
@@ -184,7 +184,7 @@ import com.upokecenter.mail.*;
     }
 
     static void MessageConstructOnly(String valueMessageString) {
-      if (new Message(DataUtilities.GetUtf8Bytes(
+      if (new Message(com.upokecenter.util.DataUtilities.GetUtf8Bytes(
         valueMessageString,
         true)) == null) {
         Assert.fail();
@@ -287,7 +287,7 @@ import com.upokecenter.mail.*;
     }
 
     private static byte[] BytesFromString(String str) {
-      return DataUtilities.GetUtf8Bytes(
+      return com.upokecenter.util.DataUtilities.GetUtf8Bytes(
         str,
         true);
     }
@@ -602,7 +602,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (String msgstr : messages) {
         try {
-          byte[] data = DataUtilities.GetUtf8Bytes(msgstr, true);
+          byte[] data = com.upokecenter.util.DataUtilities.GetUtf8Bytes(msgstr, true);
           Assert.assertEquals(
             null,
             new Message(data));
@@ -1295,7 +1295,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg2 = new Message(msg.GenerateBytes());
       {
         Object objectTemp = body;
-        Object objectTemp2 = DataUtilities.GetUtf8String(
+        Object objectTemp2 = com.upokecenter.util.DataUtilities.GetUtf8String(
           msg2.GetBody(),
           false);
         Assert.assertEquals(
@@ -1309,7 +1309,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg2 = new Message(msg.GenerateBytes());
       Assert.assertEquals(
         body,
-        DataUtilities.GetUtf8String(msg2.GetBody(), false));
+        com.upokecenter.util.DataUtilities.GetUtf8String(msg2.GetBody(), false));
       MessageGenerate(msg);
     }
 

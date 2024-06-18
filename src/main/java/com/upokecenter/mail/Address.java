@@ -74,8 +74,8 @@ import com.upokecenter.text.*;
     void AppendThisAddress(HeaderEncoder encoder) {
       String lp = LocalPartToString(this.localPart);
       String domainstr = DomainToString(this.domain, true);
-      int length = DataUtilities.CodePointLength(lp);
-      int length2 = DataUtilities.CodePointLength(domainstr);
+      int length = com.upokecenter.util.DataUtilities.CodePointLength(lp);
+      int length2 = com.upokecenter.util.DataUtilities.CodePointLength(domainstr);
       if (length2 + length + 1 <= Message.MaxRecHeaderLineLength - 1) {
         // Avoid breaking email addresses if it can comfortably
         // fit the recommended line length
@@ -105,15 +105,15 @@ import com.upokecenter.text.*;
       // Maximum OCTET length per line for an Internet message minus 1;
       // we check if the length exceeds that number (thus excluding the space
       // character of a folded line).
-      if (DataUtilities.GetUtf8Length(lp, true) >
+      if (com.upokecenter.util.DataUtilities.GetUtf8Length(lp, true) >
         Message.MaxHardHeaderLineLength - 1) {
         return true;
       }
-      if (DataUtilities.GetUtf8Length(domainstr, true) >
+      if (com.upokecenter.util.DataUtilities.GetUtf8Length(domainstr, true) >
         Message.MaxHardHeaderLineLength - 1) {
         return true;
       }
-      return (DataUtilities.GetUtf8Length(domain2, true) >
+      return (com.upokecenter.util.DataUtilities.GetUtf8Length(domain2, true) >
           Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 

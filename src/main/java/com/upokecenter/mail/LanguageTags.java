@@ -166,7 +166,7 @@ private LanguageTags() {
         return str;
       }
       if (str.indexOf('-') == -1) {
-        return DataUtilities.ToLowerCaseAscii(str);
+        return com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
       }
       int count = 0;
       int i = 0;
@@ -175,13 +175,13 @@ private LanguageTags() {
       while (i <= str.length()) {
         if (i == str.length() || str.charAt(i) == '-') {
           if (count == 4 && lastSubtagLength >= 2) {
-            sb.append(DataUtilities.ToUpperCaseAscii(str.substring(i - 4, (i - 4)+(1))));
-            sb.append(DataUtilities.ToLowerCaseAscii(str.substring(i - 3, (i - 3)+(3))));
+            sb.append(com.upokecenter.util.DataUtilities.ToUpperCaseAscii(str.substring(i - 4, (i - 4)+(1))));
+            sb.append(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str.substring(i - 3, (i - 3)+(3))));
           } else if (count == 2 && lastSubtagLength >= 2) {
-            sb.append(DataUtilities.ToUpperCaseAscii(str.substring(i - 2, (i - 2)+(2))));
+            sb.append(com.upokecenter.util.DataUtilities.ToUpperCaseAscii(str.substring(i - 2, (i - 2)+(2))));
           } else {
             sb.append(
-              DataUtilities.ToLowerCaseAscii(
+              com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
                 str.substring(
                   i - count, (
                   i - count)+(count))));
@@ -476,12 +476,12 @@ private LanguageTags() {
           hasStar = true;
           continue;
         }
-        String lcrange = DataUtilities.ToLowerCaseAscii(range);
+        String lcrange = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(range);
         for (int k = 0; k < languages.size(); ++k) {
           if (langsMatch[k]) {
             continue;
           }
-          String lclang = DataUtilities.ToLowerCaseAscii(languages.get(k));
+          String lclang = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(languages.get(k));
           if (extended) {
             if (MatchLangTagExtended(lcrange, lclang)) {
               retlist.add(languages.get(k));
@@ -680,10 +680,10 @@ private LanguageTags() {
         if (range.equals("*")) {
           continue;
         }
-        String lcrange = DataUtilities.ToLowerCaseAscii(range);
+        String lcrange = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(range);
         while (lcrange.length() > 0) {
           for (String lang : languages) {
-            String lclang = DataUtilities.ToLowerCaseAscii(lang);
+            String lclang = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(lang);
             if (extended && MatchLangTagExtended(lcrange, lclang)) {
               return lang;
             } else if (MatchLangTagBasic(lcrange, lclang)) {
@@ -726,7 +726,7 @@ private LanguageTags() {
           index += 2;
           // convert the language tag to lower case
           // to simplify handling
-          str = DataUtilities.ToLowerCaseAscii(str);
+          str = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
           c1 = str.charAt(index);
           // Straightforward cases
           if (c1 >= 'a' && c1 <= 'z') {
@@ -923,7 +923,7 @@ private LanguageTags() {
         }
         if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
           // grandfathered language tags
-          str = DataUtilities.ToLowerCaseAscii(str);
+          str = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
           return str.equals("i-ami") ||
             str.equals("i-bnn") ||
             str.equals("i-default") ||

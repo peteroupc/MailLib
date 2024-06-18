@@ -290,7 +290,7 @@ BEncodingStringTransform(data) :
           index += 2;
           inEncodedWord = false;
         } else {
-          int c = DataUtilities.CodePointAt(str, index);
+          int c = com.upokecenter.util.DataUtilities.CodePointAt(str, index);
           if (c == 0xfffd) {
             sb.append((char)0xfffd);
             ++index;
@@ -308,7 +308,7 @@ BEncodingStringTransform(data) :
     private static String SurrogateCleanup(String str) {
       int i = 0;
       while (i < str.length()) {
-        int c = DataUtilities.CodePointAt(str, i, 2);
+        int c = com.upokecenter.util.DataUtilities.CodePointAt(str, i, 2);
         // NOTE: Unpaired surrogates are replaced with -1
         if (c >= 0x10000) {
           ++i;
@@ -324,7 +324,7 @@ BEncodingStringTransform(data) :
       StringBuilder builder = new StringBuilder();
       builder.append(str.substring(0, i));
       while (i < str.length()) {
-        int c = DataUtilities.CodePointAt(str, i, 0);
+        int c = com.upokecenter.util.DataUtilities.CodePointAt(str, i, 0);
         // NOTE: Unpaired surrogates are replaced with U+FFFD
         if (c >= 0x10000) {
           builder.append(str.charAt(i));
@@ -479,7 +479,7 @@ BEncodingStringTransform(data) :
         return false;
       }
       return (sb.length() < MaxFileNameUtf8Length / 3) ||
-        DataUtilities.GetUtf8Length(sb.toString(), true) <=
+        com.upokecenter.util.DataUtilities.GetUtf8Length(sb.toString(), true) <=
         MaxFileNameUtf8Length;
     }
 
@@ -488,7 +488,7 @@ BEncodingStringTransform(data) :
         return false;
       }
       return (sb.length() < MaxFileNameUtf8Length / 3) ||
-        DataUtilities.GetUtf8Length(sb.toString(), true) <
+        com.upokecenter.util.DataUtilities.GetUtf8Length(sb.toString(), true) <
         MaxFileNameUtf8Length;
     }
 
@@ -545,7 +545,7 @@ BEncodingStringTransform(data) :
         // and are handled below.
         i = 0;
         while (i < str.length() && IsBelowMaxCodeLength(builder)) {
-          int c = DataUtilities.CodePointAt(str, i, 0);
+          int c = com.upokecenter.util.DataUtilities.CodePointAt(str, i, 0);
           // NOTE: Unpaired surrogates are replaced with U+FFFD
           if (c >= 0x10000) {
             ++i;
@@ -629,7 +629,7 @@ BEncodingStringTransform(data) :
         if (str.length() == 0) {
           return "_";
         }
-        String strLower = DataUtilities.ToLowerCaseAscii(str);
+        String strLower = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
         boolean reservedFilename = strLower.equals(

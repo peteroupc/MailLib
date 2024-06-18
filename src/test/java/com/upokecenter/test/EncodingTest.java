@@ -396,7 +396,7 @@ import com.upokecenter.text.*;
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
       AssertEqual(
-        DataUtilities.GetUtf8Bytes(expected, true),
+        com.upokecenter.util.DataUtilities.GetUtf8Bytes(expected, true),
         msg.GetBody());
     }
 
@@ -1456,8 +1456,8 @@ import com.upokecenter.text.*;
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
       Assert.assertEquals(
-        DataUtilities.GetUtf8String(expected, true),
-        DataUtilities.GetUtf8String(actual, true));
+        com.upokecenter.util.DataUtilities.GetUtf8String(expected, true),
+        com.upokecenter.util.DataUtilities.GetUtf8String(actual, true));
     }
 
     private static byte[] DowngradeDeliveryStatus(String str) {
@@ -1484,7 +1484,7 @@ import com.upokecenter.text.*;
         ("Original-Recipient: " + expected) + "\r\n" +
         ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
-      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      expectedBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(
         expectedBytes,
         bytes);
@@ -1497,7 +1497,7 @@ import com.upokecenter.text.*;
         ("Original-Recipient: " + expected) + "\r\n" +
         ("Final-Recipient: " + expected) + "\r\nX-Ignore2: Y\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
-      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      expectedBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(
         expectedBytes,
         bytes);
@@ -1515,7 +1515,7 @@ import com.upokecenter.text.*;
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = DowngradeDeliveryStatus(dsn);
-      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      expectedBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(
         expectedBytes,
         bytes);
@@ -1536,7 +1536,7 @@ import com.upokecenter.text.*;
         ("Original-Recipient: " + expected) + "\r\n" +
         ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
-      String actualString = DataUtilities.GetUtf8String(bytes, false);
+      String actualString = com.upokecenter.util.DataUtilities.GetUtf8String(bytes, false);
       if (!expectedDSN.equals(actualString)) {
         expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
           ("Downgraded-Original-Recipient: " + expected) +
@@ -1545,7 +1545,7 @@ import com.upokecenter.text.*;
           ("Original-reciPient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       }
-      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      expectedBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(
         expectedBytes,
         bytes);
@@ -1558,7 +1558,7 @@ import com.upokecenter.text.*;
       msg.SetHeader(
         "received",
         input);
-      msg = new Message(DataUtilities.GetUtf8Bytes(msg.Generate(), true));
+      msg = new Message(com.upokecenter.util.DataUtilities.GetUtf8Bytes(msg.Generate(), true));
       String output = msg.GetHeader("received");
       Assert.assertEquals(
         expected,
@@ -2810,9 +2810,9 @@ public final void setValueMessage(Message value) {
     }
 
     public static void TestEncodedBytesRoundTrip(String str) {
-      TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
+      TestEncodedBytesRoundTrip(com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, true), false);
       {
-        byte[] objectTemp = DataUtilities.GetUtf8Bytes(
+        byte[] objectTemp = com.upokecenter.util.DataUtilities.GetUtf8Bytes(
           str,
           true,
           true);

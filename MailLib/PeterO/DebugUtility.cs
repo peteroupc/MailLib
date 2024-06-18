@@ -7,6 +7,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 // Use directives rather than the Conditional attribute,
   // to avoid the chance of logging statements leaking in release builds
@@ -23,12 +24,13 @@ namespace PeterO {
       }
     }
 
+    [RequiresUnreferencedCode("Do not use in AOT or reflection-free contexts.")]
     private static MethodInfo GetTypeMethod(
       Type t,
       string name,
       Type[] parameters) {
 #if NET40 || NET20
-        return t.GetMethod(name, parameters);
+        return t.GetMethod(name, new[] { parameter });
 #else
 {
         return t?.GetRuntimeMethod(name, parameters);
@@ -36,6 +38,7 @@ namespace PeterO {
 #endif
     }
 
+    [RequiresUnreferencedCode("Do not use in AOT or reflection-free contexts.")]
     public static void Log(string str) {
       var type = Type.GetType("System.Console");
       if (type == null) {
@@ -72,6 +75,7 @@ namespace PeterO {
     }
 
     [System.Diagnostics.Conditional("DEBUG")]
+    [RequiresUnreferencedCode("Do not use in AOT or reflection-free contexts.")]
     public static void Log(string format, params object[] args) {
       Log(String.Format(
         System.Globalization.CultureInfo.CurrentCulture,

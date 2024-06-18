@@ -212,7 +212,7 @@ str.charAt(index) <= 122) ||
               int commandEnd = index;
               if (index < endIndex && (str.charAt(index) == 62)) {
                 ++index;
-                String command = DataUtilities.ToLowerCaseAscii(str.substring(
+                String command = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str.substring(
                   commandStart, (
                   commandStart)+(commandEnd - commandStart)));
                 if (command.equals("nofill")) {
@@ -411,7 +411,7 @@ str.charAt(index) <= 122) ||
               int commandEnd = index;
               if (index < endIndex && (str.charAt(index) == 62)) {
                 ++index;
-                String command = DataUtilities.ToLowerCaseAscii(str.substring(
+                String command = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str.substring(
                   commandStart, (
                   commandStart)+(commandEnd - commandStart)));
                 if (!withinParam) {
@@ -520,7 +520,7 @@ p +
                       }
                     } else if (lastCommand.equals("color")) {
                       p = ParseColor(
-                          DataUtilities.ToLowerCaseAscii(p),
+                          com.upokecenter.util.DataUtilities.ToLowerCaseAscii(p),
                           0,
                           p.length());
                       if (p != null) {
@@ -532,13 +532,13 @@ p +
                     } else if (lastCommand.equals("lang")) {
                       if (SkipLang(p, 0, p.length()) == p.length()) {
                         currentBuilder.append("<span lang=' " +
-DataUtilities.ToLowerCaseAscii(
+com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
                 p) + "'> ");
                       } else {
                         currentBuilder.append("<span>");
                       }
                     } else if (lastCommand.equals("paraindent")) {
-                      p = DataUtilities.ToLowerCaseAscii(p);
+                      p = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(p);
                       String[] valuePList = ParserUtility.SplitAt(p, ",");
                       boolean leftFlag = false;
                       boolean rightFlag = false;

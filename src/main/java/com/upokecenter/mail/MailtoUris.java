@@ -190,8 +190,7 @@ private MailtoUris() {
             }
             String name = query.substring(startName, (startName)+(endName - startName));
             String value = query.substring(startValue, (startValue)+(endValue - startValue));
-            name =
-              DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
+            name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
             value = URIUtility.PercentDecode(value);
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.

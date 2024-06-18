@@ -146,10 +146,6 @@ namespace PeterO.Mail {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
 
-    // NOTE: System.Random is not a cryptographic RNG.
-    // If security is a concern, replace this call to System.Random
-    // to the interface of a cryptographic RNG.
-    private static readonly Random ValueMsgidRandom = new Random();
     private static readonly object ValueSequenceSync = new Object();
 
     private static readonly IDictionary<string, int> ValueHeaderIndices =
@@ -159,7 +155,7 @@ namespace PeterO.Mail {
 
     private readonly IList<Message> parts;
 
-    private static int msgidSequence;
+    private static int msgidSequence = 0;
     private static bool seqFirstTime = true;
     private byte[] body;
     private ContentDisposition contentDisposition;
@@ -4145,23 +4141,8 @@ TransferEncodingToUse(
       var builder = new StringBuilder();
       var seq = 0;
       builder.Append('<');
-      lock (ValueSequenceSync) {
-        if (seqFirstTime) {
-          msgidSequence = ValueMsgidRandom.Next(65536);
-          msgidSequence <<= 16;
-          msgidSequence |= ValueMsgidRandom.Next(65536);
-          seqFirstTime = false;
-        }
-        seq = unchecked(msgidSequence++);
-      }
       const string ValueHex = "0123456789abcdef";
-      byte[] ent;
-      {
-        ent = new byte[16];
-        for (var i = 0; i < ent.Length; ++i) {
-          ent[i] = unchecked((byte)ValueMsgidRandom.Next(256));
-        }
-      }
+      byte[] ent = Guid.NewGuid().ToByteArray();
       long ticks = DateTime.UtcNow.Ticks;
       for (int i = 0; i < 10; ++i) {
         builder.Append(ValueHex[(int)(ticks & 15)]);

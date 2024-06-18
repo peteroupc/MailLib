@@ -1,7 +1,7 @@
 <Project Sdk='Microsoft.NET.Sdk'>
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>PeterO.MailLib</PackageId>
     <Title>MailLib Library</Title>
@@ -34,7 +34,7 @@ Version 0.15.0:
     <PackageVersion>0.15.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
-  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
+  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet><IsTrimmable Condition='$([MSBuild]::IsTargetFrameworkCompatible(&apos;$(TargetFramework)&apos;, &apos;net6.0&apos;))'>true</IsTrimmable><TargetFrameworks>netstandard1.0;net7.0</TargetFrameworks></PropertyGroup>
 
   <PropertyGroup Condition=' &apos;$(Configuration)&apos;==&apos;Debug&apos; '>
     <DebugType>full</DebugType>
@@ -51,7 +51,7 @@ Version 0.15.0:
     </EmbeddedResource>
   <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.2.0-beta.354'/><AdditionalFiles Include='stylecop.json'/><PackageReference Include='PeterO.DataUtilities' Version='1.1.0'/>
 <PackageReference Include='PeterO.URIUtility' Version='1.0.0'/>
-<PackageReference Include='Microsoft.CodeAnalysis.NetAnalyzers' PrivateAssets='All' Version='6.0.0'/></ItemGroup>
+<PackageReference Include='Microsoft.CodeAnalysis.NetAnalyzers' PrivateAssets='All' Version='7.0.3'/></ItemGroup>
   <ItemGroup>
     <PackageReference Include='PeterO.Encoding' Version='0.6.0'/>
   <AdditionalFiles Include='rules.ruleset'/></ItemGroup>

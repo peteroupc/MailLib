@@ -349,7 +349,7 @@ import com.upokecenter.util.*;
           i = HeaderParser.ParseFWS(symbol, i, symbol.length(), null);
           symbolBegin = i;
         } else if (symbol.charAt(i) == '\\' && i + 1 < symbol.length()) {
-          int cp = DataUtilities.CodePointAt(symbol, i + 1);
+          int cp = com.upokecenter.util.DataUtilities.CodePointAt(symbol, i + 1);
           int sym = (cp >= 0x10000) ? 3 : 2;
           i += sym;
         } else {
@@ -440,7 +440,7 @@ import com.upokecenter.util.*;
       int i = 0;
       int currentWordLength = 0;
       while (i < symbol.length()) {
-        int ch = DataUtilities.CodePointAt(symbol, i);
+        int ch = com.upokecenter.util.DataUtilities.CodePointAt(symbol, i);
         if (ch >= 0x10000) {
           ++i;
         }
@@ -553,7 +553,7 @@ import com.upokecenter.util.*;
       int currentWordLength = 0;
       int[] base64state = new int[] { 0, 0, 0 };
       while (i < symbol.length()) {
-        int ch = DataUtilities.CodePointAt(symbol, i);
+        int ch = com.upokecenter.util.DataUtilities.CodePointAt(symbol, i);
         if (ch >= 0x10000) {
           ++i;
         }
@@ -634,7 +634,7 @@ import com.upokecenter.util.*;
           symbolBegin = i + 1;
           ++i;
         } else if (symbol.charAt(i) == '\\' && i + 1 < symbol.length()) {
-          int cp = DataUtilities.CodePointAt(symbol, i + 1);
+          int cp = com.upokecenter.util.DataUtilities.CodePointAt(symbol, i + 1);
           int sym = (cp >= 0x10000) ? 3 : 2;
           i += sym;
         } else {

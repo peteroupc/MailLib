@@ -147,7 +147,7 @@ public final void setSubType(String value) {
         throw new IllegalArgumentException("Not a well-formed top level type: " +
 str);
       }
-      this.type = DataUtilities.ToLowerCaseAscii(str);
+      this.type = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
       return this;
     }
 
@@ -165,7 +165,7 @@ str);
       if (name == null) {
         throw new NullPointerException("name");
       }
-      this.parameters.remove(DataUtilities.ToLowerCaseAscii(name));
+      this.parameters.remove(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name));
       return this;
     }
 
@@ -198,7 +198,7 @@ str);
         throw new IllegalArgumentException("Not a well-formed parameter name: " +
           name);
       }
-      this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
+      this.parameters.put(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name), value);
       return this;
     }
 
@@ -224,7 +224,7 @@ str);
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed subtype: " + str);
       }
-      this.subtype = DataUtilities.ToLowerCaseAscii(str);
+      this.subtype = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
       return this;
     }
 

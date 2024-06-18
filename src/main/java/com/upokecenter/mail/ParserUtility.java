@@ -119,7 +119,7 @@ private ParserUtility() {
           index = index2 + delimLength;
         }
       }
-      return strings.toArray(new String[] { });
+      return (String[])strings.toArray(new String[] { });
     }
 
     public static String Implode(String[] strings, String delim) {

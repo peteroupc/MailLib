@@ -41,7 +41,7 @@ import com.upokecenter.text.*;
           index = index2 + delimLength;
         }
       }
-      return strings.toArray(new String[] { });
+      return (String[])strings.toArray(new String[] { });
     }
 
     public static int[] GetCodePoints(String cp) {

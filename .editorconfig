@@ -12,7 +12,7 @@ indent_style = space
 tab_width = 2
 
 # New line preferences
-end_of_line = lf
+end_of_line = crlf
 insert_final_newline = true
 
 #### .NET Coding Conventions ####
@@ -45,7 +45,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members
 dotnet_style_coalesce_expression = true
 dotnet_style_collection_initializer = true
 dotnet_style_explicit_tuple_names = true
-dotnet_style_namespace_match_folder = true
+dotnet_style_namespace_match_folder = false
 dotnet_style_null_propagation = true
 dotnet_style_object_initializer = true
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -75,10 +75,12 @@ dotnet_style_allow_statement_immediately_after_block_experimental = true
 
 #### C# Coding Conventions ####
 
+dotnet_diagnostic.SA1210.severity = none
+
 # var preferences
 csharp_style_var_elsewhere = false
 csharp_style_var_for_built_in_types = false
-csharp_style_var_when_type_is_apparent = false
+csharp_style_var_when_type_is_apparent = true
 
 # Expression-bodied members
 csharp_style_expression_bodied_accessors = true
@@ -130,9 +132,6 @@ csharp_style_unused_value_expression_statement_preference = discard_variable
 # 'using' directive preferences
 csharp_using_directive_placement = outside_namespace
 
-# Don't enforce alphabetical order of 'using' directives
-dotnet_diagnostic.SA1210.severity = none
-
 # New line preferences
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true
 csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true
@@ -141,13 +140,13 @@ csharp_style_allow_embedded_statements_on_same_line_experimental = true
 #### C# Formatting Rules ####
 
 # New line preferences
-csharp_new_line_before_catch = true
-csharp_new_line_before_else = true
-csharp_new_line_before_finally = true
+csharp_new_line_before_catch = false
+csharp_new_line_before_else = false
+csharp_new_line_before_finally = false
 csharp_new_line_before_members_in_anonymous_types = true
-csharp_new_line_before_members_in_object_initializers = true
-csharp_new_line_before_open_brace = all
-csharp_new_line_between_query_expression_clauses = true
+csharp_new_line_before_members_in_object_initializers = false
+csharp_new_line_before_open_brace = none
+csharp_new_line_between_query_expression_clauses = false
 
 # Indentation preferences
 csharp_indent_block_contents = true

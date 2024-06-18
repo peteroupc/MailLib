@@ -116,7 +116,7 @@ import com.upokecenter.text.*;
     }
 
     private static String MakeQEncoding(String str) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+      byte[] bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false);
       StringBuilder sb = new StringBuilder();
       String hex = "0123456789ABCDEF";
       sb.append("=?utf-8?q?");
@@ -138,7 +138,7 @@ import com.upokecenter.text.*;
     }
 
     private static String MakeRfc2231Encoding(String str) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+      byte[] bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false);
       StringBuilder sb = new StringBuilder();
       String hex = "0123456789ABCDEF";
       sb.append("utf-8''");
@@ -196,7 +196,7 @@ import com.upokecenter.text.*;
       if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
         FailFilename(filename, str);
       }
-      String strLower = DataUtilities.ToLowerCaseAscii(str);
+      String strLower = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
       boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
         str.charAt(1) >= '0' && str.charAt(1) <= '9';
       boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==

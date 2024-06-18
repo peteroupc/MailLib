@@ -12,7 +12,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
   public final class RandomGenerator implements IRandomGenExtended
   {
     private final IRandomGen valueIrg;
-    private final Object valueNormalLock = new();
+    private final Object valueNormalLock = new Object();
     private boolean valueHaveLastNormal;
     private double valueLastNormal;
 
@@ -40,10 +40,13 @@ package com.upokecenter.test; import com.upokecenter.util.*;
      * @return A Boolean object.
      */
     public boolean Bernoulli(double p) {
-      return p < 0?
-        throw new IllegalArgumentException("p(" + p + ") is less than 0"):
-        p > 1 ? throw new IllegalArgumentException("p(" + p + ") is more than 1"):
-this.Uniform() < p;
+      if (p < 0) {
+ throw new IllegalArgumentException("p(" + p + ") is less than 0");
+}
+ if (p > 1) {
+ throw new IllegalArgumentException("p(" + p + ") is more than 1");
+}
+ return this.Uniform() < p;
     }
 
     /**
@@ -100,7 +103,7 @@ this.Uniform() < p;
       if (p == 0.5) {
         byte[] bytes = new byte[1];
         for (int i = 0; i < trials && i >= 0;) {
-          _ = this.valueIrg.GetBytes(bytes, 0, 1);
+          this.valueIrg.GetBytes(bytes, 0, 1);
           int b = bytes[0];
           while (i < trials && i >= 0) {
             if ((b & 1) == 1) {
@@ -129,8 +132,11 @@ this.Uniform() < p;
      * @return A 64-bit floating-point number.
      */
     public double ChiSquared(int df) {
-      return df <= 0 ? throw new IllegalArgumentException("df(" + df + ") is not
-greater than 0") : this.Gamma(df * 0.5, 2);
+      if (df <= 0) {
+ throw new IllegalArgumentException("df(" + df + ") is not" +
+"\u0020greater than 0");
+}
+ return this.Gamma(df * 0.5, 2);
     }
 
     /**
@@ -148,8 +154,11 @@ greater than 0") : this.Gamma(df * 0.5, 2);
      * @return A 64-bit floating-point number.
      */
     public double Gamma(double a, double b) {
-      return b <= 0 ? throw new IllegalArgumentException("b(" + b + ") is not
-greater than 0") : this.Gamma(a) * b;
+      if (b <= 0) {
+ throw new IllegalArgumentException("b(" + b + ") is not" +
+"\u0020greater than 0");
+}
+ return this.Gamma(a) * b;
     }
 
     /**
@@ -254,8 +263,8 @@ greater than 0") : this.Gamma(a) * b;
      * @param trials The number of 1's to generate before the process stops.
      * @param p The probability for each trial to succeed, from 0 (never) to 1
      * (always).
-     * @return The number of 0's generated. Returns Integer.MAX_VALUE if {@code p} is
-     * 0.
+     * @return The number of 0's generated. Returns Integer.MAX_VALUE if {@code p}
+     * is 0.
      */
     public int NegativeBinomial(int trials, double p) {
       if (p < 0) {
@@ -272,13 +281,13 @@ greater than 0") : this.Gamma(a) * b;
         return 0;
       }
       if (p == 0.0) {
-        return int.getMaxValue();
+        return Integer.MAX_VALUE;
       }
       int count = 0;
       if (p == 0.5) {
         byte[] bytes = new byte[1];
         while (true) {
-          _ = this.valueIrg.GetBytes(bytes, 0, 1);
+          this.valueIrg.GetBytes(bytes, 0, 1);
           int b = bytes[0];
           for (int i = 0; i < 8; ++i) {
             if ((b & 1) == 1) {
@@ -387,9 +396,11 @@ greater than 0") : this.Gamma(a) * b;
      * @return A 64-bit floating-point number.
      */
     public double Uniform(double min, double max) {
-      return min >= max?
-        throw new IllegalArgumentException("min(" + min + ") is not less than " +
-          max) : min + ((max - min) * this.Uniform());
+      if (min >= max) {
+ throw new IllegalArgumentException("min(" + min + ") is not less than " +
+          max);
+}
+ return min + ((max - min) * this.Uniform());
     }
 
     /**
@@ -439,7 +450,7 @@ greater than 0") : this.Gamma(a) * b;
         return minInclusive + this.UniformInt(maxExclusive - minInclusive);
       } else {
         long diff = maxExclusive - minInclusive;
-        return diff <= int.getMaxValue() ? minInclusive +
+        return diff <= Integer.MAX_VALUE ? minInclusive +
 this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       }
     }
@@ -462,13 +473,13 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       if (minInclusive >= 0) {
         return minInclusive + this.UniformLong(maxExclusive - minInclusive);
       } else {
-        if ((maxExclusive < 0 && long.getMaxValue() + maxExclusive <
+        if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive <
             minInclusive) ||
-          (maxExclusive > 0 && long.getMinValue() + maxExclusive > minInclusive) ||
+          (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive) ||
           minInclusive - maxExclusive < 0) {
           byte[] b = new byte[8];
           while (true) {
-            _ = this.valueIrg.GetBytes(b, 0, 8);
+            this.valueIrg.GetBytes(b, 0, 8);
             // Difference is greater than MaxValue
             long lb = b[0] & 0xffL;
             lb |= (b[1] & 0xffL) << 8;
@@ -503,39 +514,39 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       if (maxExclusive <= 1) {
         return 0;
       }
-      if (this.valueIrg is IRandomGenExtended rge) {
+      IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null); if (rge != null) {
         return rge.GetInt32(maxExclusive);
       }
       byte[] b = new byte[4];
       switch (maxExclusive) {
         case 2: {
-            _ = this.valueIrg.GetBytes(b, 0, 1);
+            this.valueIrg.GetBytes(b, 0, 1);
             return b[0] & 1;
           }
         case 256: {
-            _ = this.valueIrg.GetBytes(b, 0, 1);
+            this.valueIrg.GetBytes(b, 0, 1);
             return b[0] & 1;
           }
         default: {
             while (true) {
               int ib;
               if (maxExclusive == 0x1000000) {
-                _ = this.valueIrg.GetBytes(b, 0, 3);
+                this.valueIrg.GetBytes(b, 0, 3);
                 ib = b[0] & 0xff;
                 ib |= (b[1] & 0xff) << 8;
                 ib |= (b[2] & 0xff) << 16;
                 return ib;
               }
               if (maxExclusive == 0x10000) {
-                _ = this.valueIrg.GetBytes(b, 0, 2);
+                this.valueIrg.GetBytes(b, 0, 2);
                 ib = b[0] & 0xff;
                 ib |= (b[1] & 0xff) << 8;
                 return ib;
               }
               int maxexc;
-              maxexc = int.getMaxValue() / maxExclusive * maxExclusive;
+              maxexc = Integer.MAX_VALUE / maxExclusive * maxExclusive;
               while (true) {
-                _ = this.valueIrg.GetBytes(b, 0, 4);
+                this.valueIrg.GetBytes(b, 0, 4);
                 ib = b[0] & 0xff;
                 ib |= (b[1] & 0xff) << 8;
                 ib |= (b[2] & 0xff) << 16;
@@ -575,18 +586,18 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
         throw new IllegalArgumentException("maxExclusive(" + maxExclusive +
           ") is less than 0");
       }
-      if (maxExclusive <= int.getMaxValue()) {
+      if (maxExclusive <= Integer.MAX_VALUE) {
         return this.UniformInt((int)maxExclusive);
       }
-      if (this.valueIrg is IRandomGenExtended rge) {
+      IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null); if (rge != null) {
         return rge.GetInt64(maxExclusive);
       }
 
       long maxexc;
       byte[] b = new byte[8];
-      maxexc = long.getMaxValue() / maxExclusive * maxExclusive;
+      maxexc = Long.MAX_VALUE / maxExclusive * maxExclusive;
       while (true) {
-        _ = this.valueIrg.GetBytes(b, 0, 8);
+        this.valueIrg.GetBytes(b, 0, 8);
         long lb = b[0] & 0xffL;
         lb |= (b[1] & 0xffL) << 8;
         lb |= (b[2] & 0xffL) << 16;

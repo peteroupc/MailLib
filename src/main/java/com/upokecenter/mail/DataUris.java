@@ -39,7 +39,7 @@ private DataUris() {
         String mediaType = path.substring(0, mediaTypePart);
         // Strip out ";base64" at end
         if (mediaType.length() >= 7 &&
-          DataUtilities.ToLowerCaseAscii(mediaType.substring(
+          com.upokecenter.util.DataUtilities.ToLowerCaseAscii(mediaType.substring(
   mediaType.length() - 7)).equals(";base64")) {
           mediaType = mediaType.substring(0, mediaType.length() - 7);
         }
@@ -143,7 +143,7 @@ private DataUris() {
         if (mediaTypePart == -1) {
           return null;
         }
-        boolean usesBase64 = mediaTypePart >= 7 && DataUtilities.ToLowerCaseAscii(
+        boolean usesBase64 = mediaTypePart >= 7 && com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
             path.substring(
               mediaTypePart - 7, (
               mediaTypePart - 7)+(7))).equals(";base64");
@@ -283,7 +283,7 @@ private DataUris() {
         throw new NullPointerException("textString");
       }
       return MakeDataUri(
-          DataUtilities.GetUtf8Bytes(textString, true),
+          com.upokecenter.util.DataUtilities.GetUtf8Bytes(textString, true),
           MediaType.Parse("text/plain;charset=utf-8"));
     }
 

@@ -145,7 +145,7 @@ private Rfc2047() {
             index += 3;
           } else if (str.charAt(index) == '\\' && index + 1 < endIndex) {
             // Quoted pair
-            int cp = DataUtilities.CodePointAt(str, index + 1);
+            int cp = com.upokecenter.util.DataUtilities.CodePointAt(str, index + 1);
             if (cp <= 0xffff) {
               {
                 builder.append((char)cp);
@@ -196,7 +196,7 @@ private Rfc2047() {
             index += 3;
           } else if (str.charAt(index) == '\\' && index + 1 < endIndex) {
             // Quoted pair
-            int cp = DataUtilities.CodePointAt(str, index + 1);
+            int cp = com.upokecenter.util.DataUtilities.CodePointAt(str, index + 1);
             if (cp <= 0xffff) {
               builder.append((char)cp);
             } else if (cp <= 0x10ffff) {
