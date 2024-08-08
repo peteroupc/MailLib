@@ -2,8 +2,7 @@
 Written by Peter O.
 Any copyright to this work is released to the Public Domain.
 In case this is not possible, this work is also
-licensed under Creative Commons Zero (CC0):
-https://creativecommons.org/publicdomain/zero/1.0/
+licensed under the Unlicense: https://unlicense.org/
 
  */
 using System;
@@ -11,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 // Use directives rather than the Conditional attribute,
   // to avoid the chance of logging statements leaking in release builds
-#if DEBUG
+#if DEBUGLOG
 namespace PeterO {
   internal static class DebugUtility {
     private static readonly object WriterLock = new object();
@@ -24,7 +23,8 @@ namespace PeterO {
       }
     }
 
-    [RequiresUnreferencedCode("Do not use in AOT or reflection-free contexts.")]
+    // [RequiresUnreferencedCode("Do not use in AOT or reflection-free
+    // contexts.")]
     private static MethodInfo GetTypeMethod(
       Type t,
       string name,
@@ -38,7 +38,8 @@ namespace PeterO {
 #endif
     }
 
-    [RequiresUnreferencedCode("Do not use in AOT or reflection-free contexts.")]
+    // [RequiresUnreferencedCode("Do not use in AOT or reflection-free
+    // contexts.")]
     public static void Log(string str) {
       var type = Type.GetType("System.Console");
       if (type == null) {
@@ -75,7 +76,8 @@ namespace PeterO {
     }
 
     [System.Diagnostics.Conditional("DEBUG")]
-    [RequiresUnreferencedCode("Do not use in AOT or reflection-free contexts.")]
+    // [RequiresUnreferencedCode("Do not use in AOT or reflection-free
+    // contexts.")]
     public static void Log(string format, params object[] args) {
       Log(String.Format(
         System.Globalization.CultureInfo.CurrentCulture,
