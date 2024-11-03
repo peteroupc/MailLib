@@ -34,15 +34,15 @@ Version 0.15.0:
     <PackageVersion>0.15.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
-  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet><IsTrimmable Condition='$([MSBuild]::IsTargetFrameworkCompatible(&apos;$(TargetFramework)&apos;, &apos;net6.0&apos;))'>true</IsTrimmable><TargetFrameworks>netstandard1.0;net7.0</TargetFrameworks></PropertyGroup>
+  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet><IsTrimmable Condition='$([MSBuild]::IsTargetFrameworkCompatible(&apos;$(TargetFramework)&apos;, &apos;net6.0&apos;))'>true</IsTrimmable><TargetFrameworks>netstandard2.0;net7.0</TargetFrameworks></PropertyGroup>
 
   <PropertyGroup Condition=' &apos;$(Configuration)&apos;==&apos;Debug&apos; '>
     <DebugType>full</DebugType>
-    <DocumentationFile>bin\Debug\netstandard1.0\MailLib.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\MailLib.xml</DocumentationFile>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
   <PropertyGroup Condition=' &apos;$(Configuration)&apos;==&apos;Release&apos; '>
     <DebugType/>
-    <DocumentationFile>bin\Release\netstandard1.0\MailLib.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\MailLib.xml</DocumentationFile>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
   <ItemGroup>
     <None Include='../LICENSE.md' Pack='true' PackagePath='LICENSE.md'/>
