@@ -149,8 +149,8 @@ import com.upokecenter.mail.*;
     @Test
     public void TestMarkdownAmpersand() {
       TestMarkdownOne(
-        "<p>e&mdash;</p>",
-        "e&mdash;");
+        "<p>e&#x2014;</p>",
+        "e&#x2014;");
       TestMarkdownOne(
         "<p>e&amp;</p>",
         "e&amp;");
