@@ -38,7 +38,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
-group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given above.
+group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given earlier.
 
 Source Code
 ---------

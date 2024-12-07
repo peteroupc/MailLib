@@ -3298,7 +3298,7 @@
             <param name='address'>A text string identifying a single email
             address or a group of email addresses. Comments, or text within
             parentheses, can appear. Multiple email addresses are not allowed
-            unless they appear in the group syntax given above. Encoded words
+            unless they appear in the group syntax given earlier. Encoded words
             under RFC 2047 that appear within comments or display names will be
             decoded.
             <para>An RFC 2047 encoded word consists of "=?", a character
