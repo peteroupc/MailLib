@@ -19,7 +19,7 @@ Version 0.15.0:
 - Email message Date/Time validity was restricted slightly
 - DataUtilities moved to a separate library
 - GetBodyString and GetFormattedBodyString changed behavior and functionality
-- BodyString property is deprecated
+- BodyString property is obsolete
 - GetAttachments method added to Message class
 - NamedAddress received new string preparation methods
 - Update media types

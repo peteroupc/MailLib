@@ -135,7 +135,7 @@
     </returns>
 </doc>
 <doc name="T:PeterO.Cbor.URIUtility">
-<summary>Contains utility methods for processing Uniform Resource Identifiers
+<summary>Contains auxiliary methods for processing Uniform Resource Identifiers
       (URIs) and Internationalized Resource Identifiers (IRIs) under RFC3986 and
       RFC3987, respectively. In the following documentation, URIs and IRIs
       include URI references and IRI references, for convenience.
@@ -3564,7 +3564,7 @@
 
 </doc>
 <doc name="T:PeterO.Mail.URIUtility">
-<summary>Contains utility methods for processing Uniform Resource Identifiers
+<summary>Contains auxiliary methods for processing Uniform Resource Identifiers
       (URIs) and Internationalized Resource Identifiers (IRIs) under RFC3986 and
       RFC3987, respectively. In the following documentation, URIs and IRIs
       include URI references and IRI references, for convenience.
@@ -3829,7 +3829,7 @@
     </exception>
 </doc>
 <doc name="T:PeterO.Rdf.URIUtility">
-<summary>Contains utility methods for processing Uniform Resource Identifiers
+<summary>Contains auxiliary methods for processing Uniform Resource Identifiers
       (URIs) and Internationalized Resource Identifiers (IRIs) under RFC3986 and
       RFC3987, respectively. In the following documentation, URIs and IRIs
       include URI references and IRI references, for convenience.
