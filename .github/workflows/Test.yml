@@ -21,10 +21,10 @@ jobs:
         dotnet-version: '9.0'
     - name: Test
       run: |
-        dotnet add Test package Microsoft.NET.Test.Sdk # Update is required for GitHubActionsTestLogger to print anything
-        dotnet add Test package GitHubActionsTestLogger
-        dotnet add Test package NUnit3TestAdapter
-        dotnet test Test -c Release
+        dotnet add MailLibTest package Microsoft.NET.Test.Sdk # Update is required for GitHubActionsTestLogger to print anything
+        dotnet add MailLibTest package GitHubActionsTestLogger
+        dotnet add MailLibTest package NUnit3TestAdapter
+        dotnet test MailLibTest -c Release
 
 permissions:
   contents: read
