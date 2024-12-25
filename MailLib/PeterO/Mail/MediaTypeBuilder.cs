@@ -119,7 +119,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets this media type's top-level type. This method enables
-    /// the pattern of method chaining (e.g.,
+    /// the pattern of method chaining (for example,
     /// <c>new...().Set...().Set...()</c> ) unlike with the TopLevelType
     /// property in.NET or the setTopLevelType method (with small s) in
     /// Java.</summary>
@@ -152,8 +152,8 @@ str);
     /// <param name='name'>Name of the parameter to remove. The name is
     /// compared using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U+0041 to U+005A) in both strings
-    /// to basic lower-case letters.).</param>
+    /// basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+    /// to basic lowercase letters.).</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -170,8 +170,8 @@ str);
     /// <param name='name'>Name of the parameter to set, such as "charset"
     /// . The name is compared using a basic case-insensitive comparison.
     /// (Two strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A)
-    /// in both strings to basic lower-case letters.).</param>
+    /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+    /// both strings to basic lowercase letters.).</param>
     /// <param name='value'>A text string giving the parameter's
     /// value.</param>
     /// <returns>This instance.</returns>
@@ -199,7 +199,7 @@ str);
     }
 
     /// <summary>Sets this media type's subtype, such as "plain" or "xml" .
-    /// This method enables the pattern of method chaining (e.g.,
+    /// This method enables the pattern of method chaining (for example,
     /// <c>new...().Set...().Set...()</c> ) unlike with the SubType
     /// property in.NET or the setSubType method (with small s) in
     /// Java.</summary>

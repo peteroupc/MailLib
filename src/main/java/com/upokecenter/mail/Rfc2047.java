@@ -102,7 +102,7 @@ private Rfc2047() {
               break;
             }
           }
-          // Get the next run of non-parentheses
+          // Get the next run of nonparentheses
           int parenEnd = index;
           while (index < endIndex) {
             if (str.charAt(index) == '(' || str.charAt(index) == ')') {
@@ -177,7 +177,7 @@ private Rfc2047() {
             break;
           }
         }
-        // Get the next run of non-parentheses
+        // Get the next run of nonparentheses
         int parenEnd = index;
         builder.delete(
           0, (

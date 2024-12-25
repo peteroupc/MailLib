@@ -249,7 +249,7 @@ namespace PeterO.Mail.Transforms {
           return c;
         }
         if (c == ' ' || c == '\t') {
-          // Space or tab. Since the quoted-printable spec
+          // Space or tab. Since the quoted-printable specification
           // requires decoders to delete spaces and tabs before
           // CRLF, we need to create a lookahead buffer for
           // tabs and spaces read to see if they precede CRLF.

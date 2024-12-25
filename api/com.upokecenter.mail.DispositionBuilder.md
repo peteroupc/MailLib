@@ -92,9 +92,9 @@ Converts this object to an immutable ContentDisposition object.
 ### SetDispositionType
     public DispositionBuilder SetDispositionType(String str)
 Sets the disposition type, such as "inline". This method enables the pattern
- of method chaining (e.g., <code>new ...().getSet()...().getSet()...()</code>) unlike with
- the DispositionType property in .NET or the setDispositionType method (with
- small s) in Java.
+ of method chaining (for example, <code>new ...().getSet()...().getSet()...()</code>)
+ unlike with the DispositionType property in .NET or the setDispositionType
+ method (with small s) in Java.
 
 **Parameters:**
 
@@ -119,8 +119,8 @@ Removes a parameter from this content disposition. Does nothing if the
 
 * <code>name</code> - The parameter to remove. The name is compared using a basic
  case-insensitive comparison. (Two strings are equal in such a comparison, if
- they match after converting the basic upper-case letters A to Z (U+0041 to
- U+005A) in both strings to basic lower-case letters.).
+ they match after converting the basic uppercase letters A to Z (U+0041 to
+ U+005A) in both strings to basic lowercase letters.).
 
 **Returns:**
 
@@ -139,8 +139,8 @@ Sets a parameter of this content disposition.
 * <code>name</code> - Name of the parameter to set. If this name already exists
  (compared using a basic case-insensitive comparison), it will be
  overwritten. (Two strings are equal in a basic case-insensitive comparison,
- if they match after converting the basic upper-case letters A to Z (U+0041
- to U+005A) in both strings to basic lower-case letters.).
+ if they match after converting the basic uppercase letters A to Z (U+0041 to
+ U+005A) in both strings to basic lowercase letters.).
 
 * <code>value</code> - Value of the parameter to set.
 

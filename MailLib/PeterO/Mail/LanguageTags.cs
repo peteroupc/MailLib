@@ -732,7 +732,7 @@ namespace PeterO.Mail {
             return true;
           }
           index += 2;
-          // convert the language tag to lower case
+          // convert the language tag to lowercase
           // to simplify handling
           str = DataUtilities.ToLowerCaseAscii(str);
           c1 = str[index];

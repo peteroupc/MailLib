@@ -147,7 +147,7 @@ private DataUris() {
             path.substring(
               mediaTypePart - 7, (
               mediaTypePart - 7)+(7))).equals(";base64");
-        // NOTE: Rejects base64 if non-base64 characters
+        // NOTE: Rejects base64 if nonbase64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks
         // even if longer than 76 characters,

@@ -180,8 +180,7 @@
     </summary>
 </doc>
 <doc name="M:PeterO.Cbor.URIUtility.PercentDecode(System.String)">
-<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
-      digit) in the given string. Successive percent-encoded bytes are assumed
+<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal (base-16) digit) in the given string. Successive percent-encoded bytes are assumed
       to form characters in UTF-8.
     </summary>
     <param name='str'>A string that may contain percent encoding. May be null.
@@ -662,8 +661,8 @@
             <exception cref='ArgumentNullException'>The parameter <paramref name='stream'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.DataUtilities.ToLowerCaseAscii(System.String)">
-<summary>Returns a string with the basic upper-case letters A to Z
-            (U+0041 to U+005A) converted to lower-case. Other characters remain
+<summary>Returns a string with the basic uppercase letters A to Z
+            (U+0041 to U+005A) converted to lowercase. Other characters remain
             unchanged.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
@@ -671,8 +670,8 @@
             null.</returns>
 </doc>
 <doc name="M:PeterO.DataUtilities.ToUpperCaseAscii(System.String)">
-<summary>Returns a string with the basic lower-case letters A to Z
-            (U+0061 to U+007A) converted to upper-case. Other characters remain
+<summary>Returns a string with the basic lowercase letters A to Z
+            (U+0061 to U+007A) converted to uppercase. Other characters remain
             unchanged.</summary>
             <param name='str'>The parameter <paramref name='str'/> is a text
             string.</param>
@@ -857,8 +856,8 @@
             and RFC 2183 sec. 2.8, unrecognized disposition types should be
             treated as "attachment". (There is no default content disposition
             in a message has no Content-Disposition header field.). The
-            resulting string will be in lower case; that is, with its basic
-            upper-case letters ("A" to "Z") converted to basic lower-case
+            resulting string will be in lowercase; that is, with its basic
+            uppercase letters ("A" to "Z") converted to basic lowercase
             letters ("a" to "z").</summary>
             <value>A string containing this object's disposition type, such as
             "inline" or "attachment".</value>
@@ -933,8 +932,8 @@
             <param name='name'>The name of the parameter to get. The name will
             be matched using a basic case-insensitive comparison. (Two strings
             are equal in such a comparison, if they match after converting the
-            basic upper-case letters A to Z (U+0041 to U+005A) in both strings
-            to basic lower-case letters.). Can't be null.</param>
+            basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+            to basic lowercase letters.). Can't be null.</param>
             <returns>The value of the parameter, or null if the parameter does
             not exist.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
@@ -1065,9 +1064,9 @@
 <doc name="P:PeterO.Mail.ContentDisposition.Parameters">
 
             <summary>Gets a list of parameter names associated with this object
-            and their values. Each parameter name will be in lower case; that
-            is, with its basic upper-case letters ("A" to "Z") converted to
-            basic lower-case letters ("a" to "z").
+            and their values. Each parameter name will be in lowercase; that
+            is, with its basic uppercase letters ("A" to "Z") converted to
+            basic lowercase letters ("a" to "z").
             <para>For the "filename" parameter, the value of that parameter is
             not adapted with the ContentDisposition.MakeFilename method; see
             the documentation for the ContentDisposition
@@ -1336,8 +1335,8 @@
             <param name='name'>The parameter to remove. The name is compared
             using a basic case-insensitive comparison. (Two strings are equal
             in such a comparison, if they match after converting the basic
-            upper-case letters A to Z (U+0041 to U+005A) in both strings to
-            basic lower-case letters.).</param>
+            uppercase letters A to Z (U+0041 to U+005A) in both strings to
+            basic lowercase letters.).</param>
             <returns>This instance.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
 
@@ -1345,7 +1344,7 @@
 <doc name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)">
 
             <summary>Sets the disposition type, such as "inline". This method
-            enables the pattern of method chaining (e.g., <c>new
+            enables the pattern of method chaining (for example, <c>new
             ...().Set...().Set...()</c> ) unlike with the DispositionType
             property in .NET or the setDispositionType method (with small s) in
             Java.</summary>
@@ -1363,8 +1362,8 @@
             already exists (compared using a basic case-insensitive
             comparison), it will be overwritten. (Two strings are equal in a
             basic case-insensitive comparison, if they match after converting
-            the basic upper-case letters A to Z (U+0041 to U+005A) in both
-            strings to basic lower-case letters.).</param>
+            the basic uppercase letters A to Z (U+0041 to U+005A) in both
+            strings to basic lowercase letters.).</param>
             <param name='value'>Value of the parameter to set.</param>
             <returns>This instance.</returns>
             <exception cref='ArgumentNullException'>Either <paramref name='value'/> or <paramref name='name'/> is null.</exception>
@@ -1773,13 +1772,13 @@
             <summary>Gets this media type's "charset" parameter, naming a
             character encoding used to represent text in the data that uses
             this media type.</summary>
-            <returns>If the "charset" parameter is present and non-empty,
+            <returns>If the "charset" parameter is present and nonempty,
             returns the result of the Encodings.ResolveAliasForEmail method for
-            that parameter, except that the result's basic upper-case letters A
-            to Z (U+0041 to U+005A) are converted to lower case. If the
+            that parameter, except that the result's basic uppercase letters A
+            to Z (U+0041 to U+005A) are converted to lowercase. If the
             "charset" parameter is empty, returns the empty string. If the
             "charset" parameter is absent, returns the default value, if any,
-            for that parameter given the media type (e.g., "us-ascii" if the
+            for that parameter given the media type (for example, "us-ascii" if the
             media type is "text/plain"; see RFC2046), or the empty string if
             there is none.</returns>
 
@@ -1800,8 +1799,8 @@
             <param name='name'>Name of the parameter to get. The name is
             compared using a basic case-insensitive comparison. (Two strings
             are equal in such a comparison, if they match after converting the
-            basic upper-case letters A to Z (U+0041 to U+005A) in both strings
-            to basic lower-case letters.).</param>
+            basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+            to basic lowercase letters.).</param>
             <returns>The value of the parameter as a string, or null if the
             parameter doesn't exist.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
@@ -1816,9 +1815,9 @@
             suffix without the starting "+". Examples include "xml" and "json".
             The suffix is compared to the end of the media type's subtype using
             a basic case-insensitive comparison. (Two strings are equal in such
-            a comparison, if they match after converting the basic upper-case
+            a comparison, if they match after converting the basic uppercase
             letters A to Z (U+0041 to U+005A) in both strings to basic
-            lower-case letters.).</param>
+            lowercase letters.).</param>
             <returns><c>true</c> if the media type's subtype ends with, but does not
             consist of, "+" followed by the <paramref name='suffix'/> parameter
             (using a basic case-insensitive comparison); otherwise, <c>false</c>. For example, returns false if <paramref name='suffix'/> is "xml" and the subtype is "+xml", but returns
@@ -1850,9 +1849,8 @@
 <doc name="P:PeterO.Mail.MediaType.Parameters">
 
             <summary>Gets a list of the parameter names contained in this media
-            type object and their values. Each parameter name will be in lower
-            case; that is, with its basic upper-case letters ("A" to "Z")
-            converted to basic lower-case letters ("a" to "z").</summary>
+            type object and their values. Each parameter name will be in lowercase; that is, with its basic uppercase letters ("A" to "Z")
+            converted to basic lowercase letters ("a" to "z").</summary>
             <value>A list of the parameters contained in this media type
             object; the names of each parameter appear in an undefined order.
             NOTE: Previous versions erroneously stated that the list will be
@@ -1924,9 +1922,9 @@
 <doc name="P:PeterO.Mail.MediaType.SubType">
 
             <summary>Gets this media type's subtype (for example, "plain" in
-            "text/plain"). The resulting string will be in lower case; that is,
-            with its basic upper-case letters ("A" to "Z") converted to basic
-            lower-case letters ("a" to "z").</summary>
+            "text/plain"). The resulting string will be in lowercase; that is,
+            with its basic uppercase letters ("A" to "Z") converted to basic
+            lowercase letters ("a" to "z").</summary>
             <value>This media type's subtype.</value>
 
 </doc>
@@ -1981,8 +1979,8 @@
 
             <summary>Gets the name of this media type's top-level type (such as
             "text" in "text/plain", or "audio" in "audio/basic"). The resulting
-            string will be in lower case; that is, with its basic upper-case
-            letters ("A" to "Z") converted to basic lower-case letters ("a" to
+            string will be in lowercase; that is, with its basic uppercase
+            letters ("A" to "Z") converted to basic lowercase letters ("a" to
             "z").</summary>
             <value>The name of this media type's top-level type (such as "text"
             or "audio" .</value>
@@ -2048,8 +2046,8 @@
             <param name='name'>Name of the parameter to remove. The name is
             compared using a basic case-insensitive comparison. (Two strings
             are equal in such a comparison, if they match after converting the
-            basic upper-case letters A to Z (U+0041 to U+005A) in both strings
-            to basic lower-case letters.).</param>
+            basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+            to basic lowercase letters.).</param>
             <returns>This instance.</returns>
             <exception cref='ArgumentNullException'>The parameter <paramref name='name'/> is null.</exception>
 
@@ -2061,8 +2059,8 @@
             <param name='name'>Name of the parameter to set, such as "charset"
             . The name is compared using a basic case-insensitive comparison.
             (Two strings are equal in such a comparison, if they match after
-            converting the basic upper-case letters A to Z (U+0041 to U+005A)
-            in both strings to basic lower-case letters.).</param>
+            converting the basic uppercase letters A to Z (U+0041 to U+005A)
+            in both strings to basic lowercase letters.).</param>
             <param name='value'>A text string giving the parameter's
             value.</param>
             <returns>This instance.</returns>
@@ -2073,7 +2071,7 @@
 <doc name="M:PeterO.Mail.MediaTypeBuilder.SetSubType(System.String)">
 
             <summary>Sets this media type's subtype, such as "plain" or "xml" .
-            This method enables the pattern of method chaining (e.g.,
+            This method enables the pattern of method chaining (for example,
             <c>new...().Set...().Set...()</c> ) unlike with the SubType
             property in.NET or the setSubType method (with small s) in
             Java.</summary>
@@ -2086,7 +2084,7 @@
 <doc name="M:PeterO.Mail.MediaTypeBuilder.SetTopLevelType(System.String)">
 
             <summary>Sets this media type's top-level type. This method enables
-            the pattern of method chaining (e.g.,
+            the pattern of method chaining (for example,
             <c>new...().Set...().Set...()</c> ) unlike with the TopLevelType
             property in.NET or the setTopLevelType method (with small s) in
             Java.</summary>
@@ -2613,8 +2611,8 @@
             extract. This name will be compared with the names of header fields
             in the given message using a basic case-insensitive comparison.
             (Two strings are equal in such a comparison, if they match after
-            converting the basic upper-case letters A to Z (U+0041 to U+005A)
-            in both strings to basic lower-case letters.).</param>
+            converting the basic uppercase letters A to Z (U+0041 to U+005A)
+            in both strings to basic lowercase letters.).</param>
             <returns>The value of the first instance of the header field with
             the given name. Leading space and/or tab bytes (0x20 and/or 0x09)
             and CR/LF (0x0d/0x0a) pairs will be removed from the header field
@@ -2665,8 +2663,8 @@
             message to the given text. Keys other than these eight will be
             ignored. (Keys are compared using a basic case-sensitive
             comparison, in which two strings are equal if they match after
-            converting the basic upper-case letters A to Z (U+0041 to U+005A)
-            in both strings to basic lower-case letters.) The same key (matched
+            converting the basic uppercase letters A to Z (U+0041 to U+005A)
+            in both strings to basic lowercase letters.) The same key (matched
             using a basic case-insensitive comparison) can appear more than
             once; for "subject", "cc", "bcc", and "in-reply-to", the last value
             with the given key is used; for "to", all header field values as
@@ -2801,9 +2799,9 @@
             <exception cref='NotSupportedException'>This message is a multipart
             message without a supported body part; or this message has a
             content disposition with a type other than "inline"; or this
-            message's media type is a non-multipart type and does not specify
+            message's media type is a nonmultipart type and does not specify
             the use of a "charset" parameter, has no character encoding
-            declared or assumed for it (which is usually the case for non-text
+            declared or assumed for it (which is usually the case for nontext
             messages), or has an unsupported character encoding.</exception>
 
 </doc>
@@ -2822,7 +2820,7 @@
 
             <summary><para>Gets a Hypertext Markup Language (HTML) rendering of this
             message's text body. This method currently supports any message for
-            which <c>GetBodyString()</c> outputs a text string and treats the
+            which <c>GetBodyString()</c> gives out a text string and treats the
             following media types specially: text/plain with
             <c>format=flowed</c>, text/enriched, text/markdown (original
             Markdown).</para></summary>
@@ -2861,8 +2859,8 @@
             <summary>Gets the first instance of the header field with the
             specified name, using a basic case-insensitive comparison. (Two
             strings are equal in such a comparison, if they match after
-            converting the basic upper-case letters A to Z (U+0041 to U+005A)
-            in both strings to basic lower-case letters.).</summary>
+            converting the basic uppercase letters A to Z (U+0041 to U+005A)
+            in both strings to basic lowercase letters.).</summary>
             <param name='name'>The name of a header field.</param>
             <returns>The value of the first header field with that name, or
             null if there is none.</returns>
@@ -2874,8 +2872,8 @@
             <summary>Gets an array with the values of all header fields with
             the specified name, using a basic case-insensitive comparison. (Two
             strings are equal in such a comparison, if they match after
-            converting the basic upper-case letters A to Z (U+0041 to U+005A)
-            in both strings to basic lower-case letters.).</summary>
+            converting the basic uppercase letters A to Z (U+0041 to U+005A)
+            in both strings to basic lowercase letters.).</summary>
             <param name='name'>The name of a header field.</param>
             <returns>An array containing the values of all header fields with
             the given name, in the order they appear in the message. The array
@@ -2888,8 +2886,8 @@
             <summary>Gets a snapshot of the header fields of this message, in
             the order in which they appear in the message. For each item in the
             list, the key is the header field's name (where any basic
-            upper-case letters, U+0041 to U+005A, are converted to basic
-            lower-case letters) and the value is the header field's
+            uppercase letters, U+0041 to U+005A, are converted to basic
+            lowercase letters) and the value is the header field's
             value.</summary>
             <value>A snapshot of the header fields of this message.</value>
 
@@ -2971,8 +2969,8 @@
             message. If this is a multipart message, the header field is not
             removed from its body part headers. A basic case-insensitive
             comparison is used. (Two strings are equal in such a comparison, if
-            they match after converting the basic upper-case letters A to Z
-            (U+0041 to U+005A) in both strings to basic lower-case letters.).
+            they match after converting the basic uppercase letters A to Z
+            (U+0041 to U+005A) in both strings to basic lowercase letters.).
             <para>This method updates the ContentType and ContentDisposition
             properties if those header fields have been modified by this
             method.</para></summary>
@@ -3224,7 +3222,7 @@
             corresponding to this message. The following header fields, and
             only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
             Subject, Keywords, Comments. The message body is included in the
-            URI only if <c>GetBodyString()</c> would return a non-empty
+            URI only if <c>GetBodyString()</c> would return a nonempty
             string.. The To header field is included in the URI only if it has
             display names or group syntax.</summary>
             <returns>A MailTo URI corresponding to this message.</returns>
@@ -3236,7 +3234,7 @@
             corresponding to this message. The following header fields, and
             only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
             Subject, Keywords, Comments. The message body is included in the
-            URI only if <c>GetBodyString()</c> would return a non-empty string.
+            URI only if <c>GetBodyString()</c> would return a nonempty string.
             The To header field is included in the URI only if it has display
             names or group syntax.</summary>
             <returns>A MailTo URI corresponding to this message.</returns>
@@ -3303,7 +3301,7 @@
             decoded.
             <para>An RFC 2047 encoded word consists of "=?", a character
             encoding name, such as <c>utf-8</c>, either "?B?" or "?Q?" (in
-            upper or lower case), a series of bytes in the character encoding,
+            uppercase or lowercase), a series of bytes in the character encoding,
             further encoded using B or Q encoding, and finally "?=". B encoding
             uses Base64, while in Q encoding, spaces are changed to "_", equals
             are changed to "=3D", and most bytes other than the basic digits 0
@@ -3458,7 +3456,7 @@
 <doc name="M:PeterO.Mail.NamedAddress.ToDisplayString">
 
             <summary>Converts this named-address object to a text string
-            intended for display to end users. The returned string is not
+            intended to be displayed for others to see. The returned string is not
             intended to be parsed by computer programs.</summary>
             <returns>A text string of this named-address object, intended for
             display to end-users.</returns>
@@ -3468,7 +3466,7 @@
 
             <summary>Generates a string containing the display names and email
             addresses of the given named-address objects, separated by commas.
-            The generated string is intended to be displayed to end users, and
+            The generated string is intended to be displayed for others to see, and
             is not intended to be parsed by computer programs.</summary>
             <param name='addresses'>A list of named address objects.</param>
             <returns>A string containing the display names and email addresses
@@ -3480,7 +3478,7 @@
 
             <summary>Generates a string containing the display names of the
             given named-address objects, separated by commas. The generated
-            string is intended to be displayed to end users, and is not
+            string is intended to be displayed for others to see, and is not
             intended to be parsed by computer programs. If a named address has
             no display name, its email address is used as the display
             name.</summary>
@@ -3609,8 +3607,7 @@
     </summary>
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.PercentDecode(System.String)">
-<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
-      digit) in the given string. Successive percent-encoded bytes are assumed
+<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal (base-16) digit) in the given string. Successive percent-encoded bytes are assumed
       to form characters in UTF-8.
     </summary>
     <param name='str'>A string that may contain percent encoding. May be null.
@@ -3619,8 +3616,7 @@
     </returns>
 </doc>
 <doc name="M:PeterO.Mail.URIUtility.PercentDecode(System.String,System.Int32,System.Int32)">
-<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal
-      digit) in the given portion of a string. Successive percent-encoded bytes
+<summary>Decodes percent-encoding (of the form "%XX" where X is a hexadecimal (base-16) digit) in the given portion of a string. Successive percent-encoded bytes
       are assumed to form characters in UTF-8.
     </summary>
     <param name='str'>A string a portion of which may contain percent encoding. May be null.
@@ -4129,12 +4125,10 @@
             Latin range (U+0000 to U+007F) and meets IDNA2008 requirements for
             labels with such characters. An example is "eá".</para>
             <para>An A-label is an LDH label beginning with "xn--" where the
-            letters can be any combination of basic upper-case and/or basic
-            lower-case letters, and is convertible to a U-label. An example is
+            letters can be any combination of basic uppercase and basic lowercase letters, and is convertible to a U-label. An example is
             "xn--e-ufa".</para>
             <para>An XN-label is an LDH label beginning with "xn--" where the
-            letters can be any combination of basic upper-case and/or basic
-            lower-case letters.</para>
+            letters can be any combination of basic uppercase and basic lowercase letters.</para>
             <para>NOTICE: While this class's source code is in the public
             domain, the class uses two internal classes, called
             <c>NormalizationData</c> and <c>IdnaData</c>, that include data
@@ -4779,7 +4773,7 @@
             in Unicode Technical Standard 10 (UTS 10), "Unicode Collation
             Algorithm".</item>
             <item>As explained in UTS 10 sec. 1.6, collation serves the
-            purposes of searching and selection (e.g., searches by name or by
+            purposes of searching and selection (for example, searches by name or by
             title). However, this class is directed more to equality
             comparisons for authentication or authorization purposes, or to
             avoid creating multiple items that use the same string, rather
@@ -4794,7 +4788,7 @@
             guaranteed to be cleared in a timely fashion due to garbage
             collection.</para>
             <para>The methods in this class are not guaranteed to be
-            "constant-time" (non-data-dependent) for all relevant inputs.
+            "constant-time" (nondata-dependent) for all relevant inputs.
             Neither are string comparison methods (such as String.Equals)
             necessarily guaranteed to be "constant-time". Certain attacks that
             involve encrypted communications have exploited the timing and

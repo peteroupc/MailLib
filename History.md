@@ -14,7 +14,7 @@ Version 0.10.0:
 - Fixed several bugs and addressed corner cases in message generation, such as Quoted-Printable encoding
 - In the .NET version of the source code, documentation is moved out of the source code and placed into a consolidated XML file
 - SetBody method of Message class now returns the Message object that was edited
-- Other bug fixes
+- Other issue fixes
 
 Version 0.9.2:
 
@@ -28,12 +28,12 @@ Version 0.9:
 
 - The C# version of the library now also targets "dotnet", which should make it compatible with platform .NET runtime
 environments such as the upcoming cross-platform "coreclr" runtime.
-- Bug fixes to ensure number-format independence in some cases
+- Issue fixes to ensure number-format independence in some cases
 - ContentDisposition.MakeFilename implementation was improved
 - Another overload for GetEncoding was added
 - Additional fixes in character encodings
 - Known issue: The library implements character encodings based on the Encoding Standard
-candidate recommendation.  But several issues have emerged with that spec in the meantime.
+candidate recommendation.  But several issues have emerged with that specification in the meantime.
 For example, GB18030 currently uses a problematic range table, so that for certain code points designed
 for that table, round-tripping is not possible.  As a result, tests on GB18030 are disabled
 for now.

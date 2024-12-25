@@ -124,9 +124,9 @@ public final void setSubType(String value) {
 
     /**
      * Sets this media type's top-level type. This method enables the pattern of
-     * method chaining (e.g., {@code new...().getSet()...().getSet()...()}) unlike with the
-     * TopLevelType property in.NET or the setTopLevelType method (with small s) in
-     * Java.
+     * method chaining (for example, {@code new...().getSet()...().getSet()...()}) unlike
+     * with the TopLevelType property in.NET or the setTopLevelType method (with
+     * small s) in Java.
      * @param str A text string naming a top-level type, such as "text" or "audio"
      * .
      * @return This instance.
@@ -155,8 +155,8 @@ str);
      * parameter's name doesn't exist.
      * @param name Name of the parameter to remove. The name is compared using a
      * basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case letters A to
-     * Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+     * comparison, if they match after converting the basic uppercase letters A to
+     * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
      */
@@ -172,8 +172,8 @@ str);
      * Sets a parameter's name and value for this media type.
      * @param name Name of the parameter to set, such as "charset" . The name is
      * compared using a basic case-insensitive comparison. (Two strings are equal
-     * in such a comparison, if they match after converting the basic upper-case
-     * letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
+     * in such a comparison, if they match after converting the basic uppercase
+     * letters A to Z (U+0041 to U+005A) in both strings to basic lowercase
      * letters.).
      * @param value A text string giving the parameter's value.
      * @return This instance.
@@ -203,7 +203,7 @@ str);
 
     /**
      * Sets this media type's subtype, such as "plain" or "xml" . This method
-     * enables the pattern of method chaining (e.g., {@code
+     * enables the pattern of method chaining (for example, {@code
      * new...().getSet()...().getSet()...()}) unlike with the SubType property in.NET or the
      * setSubType method (with small s) in Java.
      * @param str A text string naming a media subtype.

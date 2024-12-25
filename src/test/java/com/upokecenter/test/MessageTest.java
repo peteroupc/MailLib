@@ -463,7 +463,7 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
             Assert.assertEquals(
               phase < 6 ? "attachment" : "inline",
               msg.getParts().get(1).getContentDisposition().getDispositionType());
-            // Change to inline because non-inline dispositions
+            // Change to inline because noninline dispositions
             // don't support GetBodyString
             msg.getParts().get(1).setContentDisposition(ContentDisposition.Inline);
             String bodyString = null;

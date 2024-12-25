@@ -47,9 +47,9 @@ import com.upokecenter.text.*;
      * "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec. 2.8,
      * unrecognized disposition types should be treated as "attachment". (There is
      * no default content disposition in a message has no Content-Disposition
-     * header field.). The resulting string will be in lower case; that is, with
-     * its basic upper-case letters ("A" to "Z") converted to basic lower-case
-     * letters ("a" to "z").
+     * header field.). The resulting string will be in lowercase; that is, with its
+     * basic uppercase letters ("A" to "Z") converted to basic lowercase letters
+     * ("a" to "z").
      * @return A string containing this object's disposition type, such as "inline"
      * or "attachment".
      */
@@ -131,10 +131,10 @@ import com.upokecenter.text.*;
 
     /**
      * <p>Gets a list of parameter names associated with this object and their
-     * values. Each parameter name will be in lower case; that is, with its basic
-     * upper-case letters ("A" to "Z") converted to basic lower-case letters ("a"
-     * to "z"). </p> <p>For the "filename" parameter, the value of that parameter
-     * is not adapted with the ContentDisposition.MakeFilename method; see the
+     * values. Each parameter name will be in lowercase; that is, with its basic
+     * uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to
+     * "z"). </p> <p>For the "filename" parameter, the value of that parameter is
+     * not adapted with the ContentDisposition.MakeFilename method; see the
      * documentation for the ContentDisposition class.</p>
      * @return A read-only list of parameter names associated with this object and
      * their values. NOTE: Previous versions erroneously stated that the list will
@@ -318,8 +318,8 @@ import com.upokecenter.text.*;
      * ContentDisposition class.
      * @param name The name of the parameter to get. The name will be matched using
      * a basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case letters A to
-     * Z (U+0041 to U+005A) in both strings to basic lower-case letters.). Can't be
+     * comparison, if they match after converting the basic uppercase letters A to
+     * Z (U+0041 to U+005A) in both strings to basic lowercase letters.). Can't be
      * null.
      * @return The value of the parameter, or null if the parameter does not exist.
      * @throws NullPointerException The parameter {@code name} is null.
@@ -551,9 +551,9 @@ public final void setDispositionType(String value) {
 
       /**
        * Sets the disposition type, such as "inline". This method enables the pattern
-       * of method chaining (e.g., {@code new ...().getSet()...().getSet()...()}) unlike with
-       * the DispositionType property in .NET or the setDispositionType method (with
-       * small s) in Java.
+       * of method chaining (for example, {@code new ...().getSet()...().getSet()...()})
+       * unlike with the DispositionType property in .NET or the setDispositionType
+       * method (with small s) in Java.
        * @param str The parameter {@code str} is a text string.
        * @return This instance.
        * @throws NullPointerException The parameter {@code str} is null.
@@ -579,8 +579,8 @@ public final void setDispositionType(String value) {
        * parameter's name doesn't exist.
        * @param name The parameter to remove. The name is compared using a basic
        * case-insensitive comparison. (Two strings are equal in such a comparison, if
-       * they match after converting the basic upper-case letters A to Z (U+0041 to
-       * U+005A) in both strings to basic lower-case letters.).
+       * they match after converting the basic uppercase letters A to Z (U+0041 to
+       * U+005A) in both strings to basic lowercase letters.).
        * @return This instance.
        * @throws NullPointerException The parameter {@code name} is null.
        */
@@ -597,8 +597,8 @@ public final void setDispositionType(String value) {
        * @param name Name of the parameter to set. If this name already exists
        * (compared using a basic case-insensitive comparison), it will be
        * overwritten. (Two strings are equal in a basic case-insensitive comparison,
-       * if they match after converting the basic upper-case letters A to Z (U+0041
-       * to U+005A) in both strings to basic lower-case letters.).
+       * if they match after converting the basic uppercase letters A to Z (U+0041 to
+       * U+005A) in both strings to basic lowercase letters.).
        * @param value Value of the parameter to set.
        * @return This instance.
        * @throws NullPointerException Either {@code value} or {@code name} is null.

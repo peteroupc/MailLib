@@ -89,7 +89,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
     public System.Collections.Generic.IDictionary Parameters { get; }
 
-Gets a list of the parameter names contained in this media type object and their values. Each parameter name will be in lower case; that is, with its basic upper-case letters ("A" to "Z") converted to basic lower-case letters ("a" to "z").
+Gets a list of the parameter names contained in this media type object and their values. Each parameter name will be in lowercase; that is, with its basic uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
 
 <b>Returns:</b>
 
@@ -100,7 +100,7 @@ A list of the parameters contained in this media type object; the names of each 
 
     public string SubType { get; }
 
-Gets this media type's subtype (for example, "plain" in "text/plain"). The resulting string will be in lower case; that is, with its basic upper-case letters ("A" to "Z") converted to basic lower-case letters ("a" to "z").
+Gets this media type's subtype (for example, "plain" in "text/plain"). The resulting string will be in lowercase; that is, with its basic uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
 
 <b>Returns:</b>
 
@@ -111,7 +111,7 @@ This media type's subtype.
 
     public string TopLevelType { get; }
 
-Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic"). The resulting string will be in lower case; that is, with its basic upper-case letters ("A" to "Z") converted to basic lower-case letters ("a" to "z").
+Gets the name of this media type's top-level type (such as "text" in "text/plain", or "audio" in "audio/basic"). The resulting string will be in lowercase; that is, with its basic uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
 
 <b>Returns:</b>
 
@@ -154,7 +154,7 @@ Gets this media type's "charset" parameter, naming a character encoding used to 
 
 <b>Return Value:</b>
 
-If the "charset" parameter is present and non-empty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that the result's basic upper-case letters A to Z (U+0041 to U+005A) are converted to lower case. If the "charset" parameter is empty, returns the empty string. If the "charset" parameter is absent, returns the default value, if any, for that parameter given the media type (e.g., "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
+If the "charset" parameter is present and nonempty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that the result's basic uppercase letters A to Z (U+0041 to U+005A) are converted to lowercase. If the "charset" parameter is empty, returns the empty string. If the "charset" parameter is absent, returns the default value, if any, for that parameter given the media type (for example, "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
 
 <a id="GetHashCode"></a>
 ### GetHashCode
@@ -177,7 +177,7 @@ Gets the value of a parameter in this media type, such as "charset" or "format".
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 <b>Return Value:</b>
 
@@ -202,7 +202,7 @@ Returns whether this media type's subtype has the given structured syntax suffix
 
 <b>Parameters:</b>
 
- * <i>suffix</i>: A text string identifying a structured syntax suffix without the starting "+". Examples include "xml" and "json". The suffix is compared to the end of the media type's subtype using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ * <i>suffix</i>: A text string identifying a structured syntax suffix without the starting "+". Examples include "xml" and "json". The suffix is compared to the end of the media type's subtype using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 <b>Return Value:</b>
 

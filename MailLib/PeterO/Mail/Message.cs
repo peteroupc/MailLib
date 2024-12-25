@@ -96,9 +96,8 @@ namespace PeterO.Mail {
   /// specifications.</para>
   /// <para>If a MIME message or body part has an unrecognized transfer
   /// encoding, its content type is treated as "application/octet-stream"
-  /// rather than the declared content type (in accordance with MIME) and
-  /// its transfer encoding is treated as 7bit (a clarification to
-  /// MIME).</para>
+  /// rather than the declared content type (per MIME) and its transfer
+  /// encoding is treated as 7bit (a clarification to MIME).</para>
   /// <para>This class currently doesn't support the "padding" parameter
   /// for message bodies with the media type "application/octet-stream"
   /// or treated as that media type (see RFC 2046 sec. 4.5.1).</para>
@@ -255,8 +254,8 @@ namespace PeterO.Mail {
     /// extract. This name will be compared with the names of header fields
     /// in the given message using a basic case-insensitive comparison.
     /// (Two strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A)
-    /// in both strings to basic lower-case letters.).</param>
+    /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+    /// both strings to basic lowercase letters.).</param>
     /// <returns>The value of the first instance of the header field with
     /// the given name. Leading space and/or tab bytes (0x20 and/or 0x09)
     /// and CR/LF (0x0d/0x0a) pairs will be removed from the header field
@@ -661,9 +660,9 @@ namespace PeterO.Mail {
     /// <exception cref='NotSupportedException'>This message is a multipart
     /// message without a supported body part; or this message has a
     /// content disposition with a type other than "inline"; or this
-    /// message's media type is a non-multipart type and does not specify
+    /// message's media type is a nonmultipart type and does not specify
     /// the use of a "charset" parameter, has no character encoding
-    /// declared or assumed for it (which is usually the case for non-text
+    /// declared or assumed for it (which is usually the case for nontext
     /// messages), or has an unsupported character encoding.</exception>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -696,7 +695,7 @@ namespace PeterO.Mail {
       if (value == null) {
         return value;
       }
-      // We assume value is lower-case here
+      // We assume value is lowercase here
       var index = 0;
       int length = value.Length;
       var c = (char)0;
@@ -927,7 +926,7 @@ namespace PeterO.Mail {
       }
     }
     // NOTE: To be used when the encoding is not otherwise provided
-    // by the transport layer (e.g., Content-Type) and the transport
+    // by the transport layer (for example, Content-Type) and the transport
     // layer's encoding is not overridden by the end user
     private static string GuessHtmlEncoding(byte[] data) {
       var b = 0;
@@ -1146,7 +1145,7 @@ namespace PeterO.Mail {
     /// <summary>
     /// <para>Gets a Hypertext Markup Language (HTML) rendering of this
     /// message's text body. This method currently supports any message for
-    /// which <c>GetBodyString()</c> outputs a text string and treats the
+    /// which <c>GetBodyString()</c> gives out a text string and treats the
     /// following media types specially: text/plain with
     /// <c>format=flowed</c>, text/enriched, text/markdown (original
     /// Markdown).</para></summary>
@@ -1349,10 +1348,9 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a snapshot of the header fields of this message, in
     /// the order in which they appear in the message. For each item in the
-    /// list, the key is the header field's name (where any basic
-    /// upper-case letters, U+0041 to U+005A, are converted to basic
-    /// lower-case letters) and the value is the header field's
-    /// value.</summary>
+    /// list, the key is the header field's name (where any basic uppercase
+    /// letters, U+0041 to U+005A, are converted to basic lowercase
+    /// letters) and the value is the header field's value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
@@ -1588,8 +1586,8 @@ namespace PeterO.Mail {
     /// <summary>Gets the first instance of the header field with the
     /// specified name, using a basic case-insensitive comparison. (Two
     /// strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A)
-    /// in both strings to basic lower-case letters.).</summary>
+    /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+    /// both strings to basic lowercase letters.).</summary>
     /// <param name='name'>The name of a header field.</param>
     /// <returns>The value of the first header field with that name, or
     /// null if there is none.</returns>
@@ -1611,8 +1609,8 @@ namespace PeterO.Mail {
     /// <summary>Gets an array with the values of all header fields with
     /// the specified name, using a basic case-insensitive comparison. (Two
     /// strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A)
-    /// in both strings to basic lower-case letters.).</summary>
+    /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+    /// both strings to basic lowercase letters.).</summary>
     /// <param name='name'>The name of a header field.</param>
     /// <returns>An array containing the values of all header fields with
     /// the given name, in the order they appear in the message. The array
@@ -1679,8 +1677,8 @@ namespace PeterO.Mail {
     /// message. If this is a multipart message, the header field is not
     /// removed from its body part headers. A basic case-insensitive
     /// comparison is used. (Two strings are equal in such a comparison, if
-    /// they match after converting the basic upper-case letters A to Z
-    /// (U+0041 to U+005A) in both strings to basic lower-case letters.).
+    /// they match after converting the basic uppercase letters A to Z
+    /// (U+0041 to U+005A) in both strings to basic lowercase letters.).
     /// <para>This method updates the ContentType and ContentDisposition
     /// properties if those header fields have been modified by this
     /// method.</para></summary>
@@ -1908,7 +1906,7 @@ namespace PeterO.Mail {
       if (html == null) {
         throw new ArgumentNullException(nameof(html));
       }
-      // The spec for multipart/alternative (RFC 2046) says that
+      // The specification for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
       // this case, the HTML version)
       Message textMessage = NewBodyPart().SetTextBody(text);
@@ -2975,7 +2973,7 @@ namespace PeterO.Mail {
           atomText,
           headerValue.Length,
           null);
-        // NOTE: Commented out for now (see below)
+        // NOTE: Commented out for now (see later)
         // if (atomText != typeEnd) {
         // isUtf8 = false;
         // }
@@ -4232,7 +4230,7 @@ TransferEncodingToUse(
     /// corresponding to this message. The following header fields, and
     /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
     /// Subject, Keywords, Comments. The message body is included in the
-    /// URI only if <c>GetBodyString()</c> would return a non-empty string.
+    /// URI only if <c>GetBodyString()</c> would return a nonempty string.
     /// The To header field is included in the URI only if it has display
     /// names or group syntax.</summary>
     /// <returns>A MailTo URI corresponding to this message.</returns>
@@ -4257,8 +4255,8 @@ TransferEncodingToUse(
     /// message to the given text. Keys other than these eight will be
     /// ignored. (Keys are compared using a basic case-sensitive
     /// comparison, in which two strings are equal if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A)
-    /// in both strings to basic lower-case letters.) The same key (matched
+    /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+    /// both strings to basic lowercase letters.) The same key (matched
     /// using a basic case-insensitive comparison) can appear more than
     /// once; for "subject", "cc", "bcc", and "in-reply-to", the last value
     /// with the given key is used; for "to", all header field values as
@@ -4296,9 +4294,9 @@ TransferEncodingToUse(
     /// corresponding to this message. The following header fields, and
     /// only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To,
     /// Subject, Keywords, Comments. The message body is included in the
-    /// URI only if <c>GetBodyString()</c> would return a non-empty
-    /// string.. The To header field is included in the URI only if it has
-    /// display names or group syntax.</summary>
+    /// URI only if <c>GetBodyString()</c> would return a nonempty string..
+    /// The To header field is included in the URI only if it has display
+    /// names or group syntax.</summary>
     /// <returns>A MailTo URI corresponding to this message.</returns>
     public string ToMailtoUri() {
       return MailtoUris.MessageToMailtoUri(this);

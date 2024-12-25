@@ -20,10 +20,10 @@
  language-dependent and goes beyond equality comparison. Further discussion
  on collation can be found in Unicode Technical Standard 10 (UTS 10),
  "Unicode Collation Algorithm".</li><li>As explained in UTS 10 sec. 1.6,
- collation serves the purposes of searching and selection (e.g., searches by
- name or by title). However, this class is directed more to equality
- comparisons for authentication or authorization purposes, or to avoid
- creating multiple items that use the same string, rather than, say, to
+ collation serves the purposes of searching and selection (for example,
+ searching by name or by title). However, this class is directed more to
+ equality comparisons for authentication or authorization purposes, or to
+ avoid creating multiple items that use the same string, rather than, say, to
  comparisons of names or parts of names for the purpose of showing matching
  records.</li></ul> <p><b>Security Considerations</b></p> <p>Many of the
  methods in this class take text strings and output text strings. However,
@@ -32,7 +32,7 @@
  in.NET and Java, so that they can't be modified, and the memory they occupy
  is not guaranteed to be cleared in a timely fashion due to garbage
  collection.</p> <p>The methods in this class are not guaranteed to be
- "constant-time" (non-data-dependent) for all relevant inputs. Neither are
+ "constant-time" (nondata-dependent) for all relevant inputs. Neither are
  string comparison methods (such as string.equals) necessarily guaranteed to
  be "constant-time". Certain attacks that involve encrypted communications
  have exploited the timing and other aspects of such communications to derive

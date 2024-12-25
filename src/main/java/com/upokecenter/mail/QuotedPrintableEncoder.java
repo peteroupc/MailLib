@@ -171,7 +171,7 @@ import com.upokecenter.text.*;
                 "()'+-.,/?:".indexOf((char)c) >= 0)) {
               return count + this.IncrementAndAppendChar(output, (char)c);
             } else {
-              // NOTE: Cannot be encoded using lower-case hexadecimal
+              // NOTE: Cannot be encoded using lowercase hexadecimal
               // characters
               count += this.IncrementAndAppendChars(
                   output,

@@ -442,7 +442,7 @@ private MailDateTime() {
         // System.out.println("zone " + (str.substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         day = 0;
-        // NOTE: Day can have a leading zero (e.g., 05).
+        // NOTE: Day can have a leading zero (for example, 05).
         for (i = 0; i < 2; ++i) {
           if (index < endIndex && (str.charAt(index) >= 48 && str.charAt(index) <= 57)) {
             day *= 10;

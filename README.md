@@ -88,7 +88,7 @@ Version 0.14.0:
 - Add Message.ExtractHeaderField method
 - Deprecated IsText and IsMultipart in MediaTypeBuilder
 - Changed ParseDateString and GenerateDateString to allow only years 1900 or greater and to fix bugs.
-- Bug fixes
+- Issue fixes
 
 Version 0.13.1:
 
@@ -112,7 +112,7 @@ Content-Type header value is still available.)
 - Added convenience methods in Message class for creating attachments and inline body parts.
 - Updated Encoding library reference to 0.5.0.
 - Add several methods to DataUtilities class
-- Bug fixes
+- Issue fixes
 
 Version 0.12.0:
 
@@ -135,7 +135,7 @@ Version 0.11.0:
 - Converted to .NET Standard
 - Updated Encoding library used
 - Supported parsing several new header fields
-- Bug fixes
+- Issue fixes
 
 See [History.md](https://github.com/peteroupc/MailLib/tree/master/History.md)
 for release notes for older versions.

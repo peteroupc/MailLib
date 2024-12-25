@@ -56,9 +56,9 @@ namespace PeterO.Mail {
     /// and RFC 2183 sec. 2.8, unrecognized disposition types should be
     /// treated as "attachment". (There is no default content disposition
     /// in a message has no Content-Disposition header field.). The
-    /// resulting string will be in lower case; that is, with its basic
-    /// upper-case letters ("A" to "Z") converted to basic lower-case
-    /// letters ("a" to "z").</summary>
+    /// resulting string will be in lowercase; that is, with its basic
+    /// uppercase letters ("A" to "Z") converted to basic lowercase letters
+    /// ("a" to "z").</summary>
     /// <value>A string containing this object's disposition type, such as
     /// "inline" or "attachment".</value>
     public string DispositionType {
@@ -147,9 +147,9 @@ namespace PeterO.Mail {
     private readonly IDictionary<string, string> parameters;
 
     /// <summary>Gets a list of parameter names associated with this object
-    /// and their values. Each parameter name will be in lower case; that
-    /// is, with its basic upper-case letters ("A" to "Z") converted to
-    /// basic lower-case letters ("a" to "z").
+    /// and their values. Each parameter name will be in lowercase; that
+    /// is, with its basic uppercase letters ("A" to "Z") converted to
+    /// basic lowercase letters ("a" to "z").
     /// <para>For the "filename" parameter, the value of that parameter is
     /// not adapted with the ContentDisposition.MakeFilename method; see
     /// the documentation for the ContentDisposition
@@ -353,8 +353,8 @@ namespace PeterO.Mail {
     /// <param name='name'>The name of the parameter to get. The name will
     /// be matched using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U+0041 to U+005A) in both strings
-    /// to basic lower-case letters.). Can't be null.</param>
+    /// basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+    /// to basic lowercase letters.). Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -605,7 +605,7 @@ namespace PeterO.Mail {
       }
 
       /// <summary>Sets the disposition type, such as "inline". This method
-      /// enables the pattern of method chaining (e.g., <c>new
+      /// enables the pattern of method chaining (for example, <c>new
       /// ...().Set...().Set...()</c> ) unlike with the DispositionType
       /// property in .NET or the setDispositionType method (with small s) in
       /// Java.</summary>
@@ -635,8 +635,8 @@ namespace PeterO.Mail {
       /// <param name='name'>The parameter to remove. The name is compared
       /// using a basic case-insensitive comparison. (Two strings are equal
       /// in such a comparison, if they match after converting the basic
-      /// upper-case letters A to Z (U+0041 to U+005A) in both strings to
-      /// basic lower-case letters.).</param>
+      /// uppercase letters A to Z (U+0041 to U+005A) in both strings to
+      /// basic lowercase letters.).</param>
       /// <returns>This instance.</returns>
       /// <exception cref='ArgumentNullException'>The parameter <paramref
       /// name='name'/> is null.</exception>
@@ -653,8 +653,8 @@ namespace PeterO.Mail {
       /// already exists (compared using a basic case-insensitive
       /// comparison), it will be overwritten. (Two strings are equal in a
       /// basic case-insensitive comparison, if they match after converting
-      /// the basic upper-case letters A to Z (U+0041 to U+005A) in both
-      /// strings to basic lower-case letters.).</param>
+      /// the basic uppercase letters A to Z (U+0041 to U+005A) in both
+      /// strings to basic lowercase letters.).</param>
       /// <param name='value'>Value of the parameter to set.</param>
       /// <returns>This instance.</returns>
       /// <exception cref='ArgumentNullException'>Either <paramref

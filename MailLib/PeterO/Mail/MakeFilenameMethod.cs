@@ -538,7 +538,7 @@ BEncodingStringTransform(data) :
         // may be added later on.)
         // NOTE: Even if there are directory separators (backslash
         // and forward slash), the filename is not treated as a
-        // file system path (in accordance with sec. 2.3 of RFC
+        // file system path (per sec. 2.3 of RFC
         // 2183); as a result, the directory separators
         // will be treated as unsuitable characters for filenames
         // and are handled below.

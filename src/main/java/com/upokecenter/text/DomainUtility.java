@@ -90,7 +90,7 @@ private DomainUtility() {
       if (firstIndex >= 0) {
         basicsBeforeFirstNonbasic = firstIndex - index;
       } else {
-        // No non-basic code points
+        // No nonbasic code points
         return endIndex - index;
       }
       while (v4 < codePointLength) {
@@ -228,7 +228,7 @@ private DomainUtility() {
       if (lastHyphen >= index) {
         for (i = index; i < lastHyphen; ++i) {
           if (str.charAt(i) >= 0x80) {
-            return null; // Non-basic character found
+            return null; // Nonbasic character found
           }
         }
       }
@@ -373,7 +373,7 @@ private DomainUtility() {
         ++tmpIndex;
       }
       if (allBasics) {
-        // NOTE: Upper-case labels not converted to lower-case here
+        // NOTE: Uppercase labels not converted to lowercase here
         return str.substring(index, (index)+(endIndex - index));
       }
       StringBuilder builder = new StringBuilder();
@@ -411,7 +411,7 @@ private DomainUtility() {
       if (firstIndex >= 0) {
         basicsBeforeFirstNonbasic = firstIndex - index;
       } else {
-        // No non-basic code points
+        // No nonbasic code points
         // (NOTE: Not encoded with "-" at end)
         return builder.toString();
       }

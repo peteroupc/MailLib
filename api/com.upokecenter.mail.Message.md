@@ -62,9 +62,9 @@
  from the mail specifications or other applicable specifications.</p> <p>If a
  MIME message or body part has an unrecognized transfer encoding, its content
  type is treated as "application/octet-stream" rather than the declared
- content type (in accordance with MIME) and its transfer encoding is treated
- as 7bit (a clarification to MIME).</p> <p>This class currently doesn't
- support the "padding" parameter for message bodies with the media type
+ content type (per MIME) and its transfer encoding is treated as 7bit (a
+ clarification to MIME).</p> <p>This class currently doesn't support the
+ "padding" parameter for message bodies with the media type
  "application/octet-stream" or treated as that media type (see RFC 2046 sec.
  4.5.1).</p> <p>In this implementation, if the content-transfer-encoding
  "quoted-printable" or "base64" occurs in a message or body part with content
@@ -347,8 +347,8 @@ Extracts the value of a header field from a byte array representing an email
 * <code>headerFieldName</code> - The name of the header field to extract. This name
  will be compared with the names of header fields in the given message using
  a basic case-insensitive comparison. (Two strings are equal in such a
- comparison, if they match after converting the basic upper-case letters A to
- Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ comparison, if they match after converting the basic uppercase letters A to
+ Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 **Returns:**
 
@@ -432,10 +432,10 @@ Gets the body of this message as a text string. If this message's media type
 
 * <code>UnsupportedOperationException</code> - This message is a multipart message without a
  supported body part; or this message has a content disposition with a type
- other than "inline"; or this message's media type is a non-multipart type
- and does not specify the use of a "charset" parameter, has no character
- encoding declared or assumed for it (which is usually the case for non-text
- messages), or has an unsupported character encoding.
+ other than "inline"; or this message's media type is a nonmultipart type and
+ does not specify the use of a "charset" parameter, has no character encoding
+ declared or assumed for it (which is usually the case for nontext messages),
+ or has an unsupported character encoding.
 
 ### getCCAddresses
     @Deprecated public final List<NamedAddress> getCCAddresses()
@@ -449,8 +449,8 @@ Gets a list of addresses found in the CC header field or fields.
     public String GetFormattedBodyString()
 <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
  body. This method currently supports any message for which <code>
- GetBodyString()</code> outputs a text string and treats the following media types
- specially: text/plain with <code>format = flowed</code>, text/enriched,
+ GetBodyString()</code> gives out a text string and treats the following media
+ types specially: text/plain with <code>format = flowed</code>, text/enriched,
  text/markdown (original Markdown).</p><p>REMARK: The Markdown implementation
  currently supports all features of original Markdown, except that the
  implementation:</p> <ul> <li>does not strictly check the placement of
@@ -552,8 +552,8 @@ Gets a list of addresses found in the From header field or fields.
     public final List<Map.Entry<String,String>> getHeaderFields()
 Gets a snapshot of the header fields of this message, in the order in which
  they appear in the message. For each item in the list, the key is the header
- field's name (where any basic upper-case letters, U+0041 to U+005A, are
- converted to basic lower-case letters) and the value is the header field's
+ field's name (where any basic uppercase letters, U+0041 to U+005A, are
+ converted to basic lowercase letters) and the value is the header field's
  value.
 
 **Returns:**
@@ -751,8 +751,8 @@ Gets the name and value of a header field by index.
     public String GetHeader(String name)
 Gets the first instance of the header field with the specified name, using a
  basic case-insensitive comparison. (Two strings are equal in such a
- comparison, if they match after converting the basic upper-case letters A to
- Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ comparison, if they match after converting the basic uppercase letters A to
+ Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 **Parameters:**
 
@@ -771,8 +771,8 @@ Gets the first instance of the header field with the specified name, using a
     public String[] GetHeaderArray(String name)
 Gets an array with the values of all header fields with the specified name,
  using a basic case-insensitive comparison. (Two strings are equal in such a
- comparison, if they match after converting the basic upper-case letters A to
- Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ comparison, if they match after converting the basic uppercase letters A to
+ Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 **Parameters:**
 
@@ -822,8 +822,8 @@ Deletes all header fields in this message. Also clears this message's
  this is a multipart message, the header field is not removed from its body
  part headers. A basic case-insensitive comparison is used. (Two strings are
  equal in such a comparison, if they match after converting the basic
- upper-case letters A to Z (U+0041 to U+005A) in both strings to basic
- lower-case letters.). </p> <p>This method updates the ContentType and
+ uppercase letters A to Z (U+0041 to U+005A) in both strings to basic
+ lowercase letters.). </p> <p>This method updates the ContentType and
  ContentDisposition properties if those header fields have been modified by
  this method.</p>
 
@@ -1420,7 +1420,7 @@ Generates a MailTo URI (uniform resource identifier) corresponding to this
  message. The following header fields, and only these, are used to generate
  the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message
  body is included in the URI only if <code>GetBodyString()</code> would return a
- non-empty string. The To header field is included in the URI only if it has
+ nonempty string. The To header field is included in the URI only if it has
  display names or group syntax.
 
 **Returns:**
@@ -1439,8 +1439,8 @@ Creates a message object from a MailTo URI (uniform resource identifier).
  The last, "body", sets the body of the message to the given text. Keys other
  than these eight will be ignored. (Keys are compared using a basic
  case-sensitive comparison, in which two strings are equal if they match
- after converting the basic upper-case letters A to Z (U+0041 to U+005A) in
- both strings to basic lower-case letters.) The same key (matched using a
+ after converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+ both strings to basic lowercase letters.) The same key (matched using a
  basic case-insensitive comparison) can appear more than once; for "subject",
  "cc", "bcc", and "in-reply-to", the last value with the given key is used;
  for "to", all header field values as well as the path are combined to a
@@ -1482,7 +1482,7 @@ Generates a MailTo URI (uniform resource identifier) corresponding to this
  message. The following header fields, and only these, are used to generate
  the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message
  body is included in the URI only if <code>GetBodyString()</code> would return a
- non-empty string.. The To header field is included in the URI only if it has
+ nonempty string.. The To header field is included in the URI only if it has
  display names or group syntax.
 
 **Returns:**

@@ -117,7 +117,7 @@ Removes a parameter from this content disposition. Does nothing if the parameter
 
 <b>Parameters:</b>
 
- * <i>name</i>: The parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ * <i>name</i>: The parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 <b>Return Value:</b>
 
@@ -135,7 +135,7 @@ The parameter  <i>name</i>
     public PeterO.Mail.ContentDisposition.Builder SetDispositionType(
         string str);
 
-Sets the disposition type, such as "inline". This method enables the pattern of method chaining (e.g.,  `new
+Sets the disposition type, such as "inline". This method enables the pattern of method chaining (for example,  `new
             ...().Set...().Set...()`  ) unlike with the DispositionType property in .NET or the setDispositionType method (with small s) in Java.
 
 <b>Parameters:</b>
@@ -167,7 +167,7 @@ Sets a parameter of this content disposition.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
  * <i>value</i>: Value of the parameter to set.
 

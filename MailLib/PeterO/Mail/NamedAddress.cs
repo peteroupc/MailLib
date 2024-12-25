@@ -17,7 +17,7 @@ namespace PeterO.Mail {
 
     /// <summary>Generates a string containing the display names of the
     /// given named-address objects, separated by commas. The generated
-    /// string is intended to be displayed to end users, and is not
+    /// string is intended to be displayed for others to see, and is not
     /// intended to be parsed by computer programs. If a named address has
     /// no display name, its email address is used as the display
     /// name.</summary>
@@ -42,8 +42,8 @@ namespace PeterO.Mail {
 
     /// <summary>Generates a string containing the display names and email
     /// addresses of the given named-address objects, separated by commas.
-    /// The generated string is intended to be displayed to end users, and
-    /// is not intended to be parsed by computer programs.</summary>
+    /// The generated string is intended to be displayed for others to see,
+    /// and is not intended to be parsed by computer programs.</summary>
     /// <param name='addresses'>A list of named address objects.</param>
     /// <returns>A string containing the display names and email addresses
     /// of the given named-address objects, separated by commas.</returns>
@@ -253,8 +253,8 @@ other.isGroup &&
     }
 
     /// <summary>Converts this named-address object to a text string
-    /// intended for display to end users. The returned string is not
-    /// intended to be parsed by computer programs.</summary>
+    /// intended to be displayed for others to see. The returned string is
+    /// not intended to be parsed by computer programs.</summary>
     /// <returns>A text string of this named-address object, intended for
     /// display to end-users.</returns>
     public string ToDisplayString() {
@@ -299,13 +299,13 @@ other.isGroup &&
     /// decoded.
     /// <para>An RFC 2047 encoded word consists of "=?", a character
     /// encoding name, such as <c>utf-8</c>, either "?B?" or "?Q?" (in
-    /// upper or lower case), a series of bytes in the character encoding,
-    /// further encoded using B or Q encoding, and finally "?=". B encoding
-    /// uses Base64, while in Q encoding, spaces are changed to "_", equals
-    /// are changed to "=3D", and most bytes other than the basic digits 0
-    /// to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a,
-    /// 0x61 to 0x7a) are changed to "=" followed by their 2-digit
-    /// hexadecimal form. An encoded word's maximum length is 75
+    /// uppercase or lowercase), a series of bytes in the character
+    /// encoding, further encoded using B or Q encoding, and finally "?=".
+    /// B encoding uses Base64, while in Q encoding, spaces are changed to
+    /// "_", equals are changed to "=3D", and most bytes other than the
+    /// basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z
+    /// (0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their
+    /// 2-digit hexadecimal form. An encoded word's maximum length is 75
     /// characters. See the third example.</para>.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='address'/> is null.</exception>

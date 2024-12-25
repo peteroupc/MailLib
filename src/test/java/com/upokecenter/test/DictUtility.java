@@ -360,7 +360,7 @@ private DictUtility() {
                   }
                 }
                 if ((c & 0xf800) != 0xd800) {
-                  // Non-surrogate
+                  // Nonsurrogate
                   sb.append((char)c);
                 } else if ((c & 0xfc00) == 0xd800) {
                   int ch = index >= str.length() ? -1 : str.charAt(index++);

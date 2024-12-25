@@ -75,9 +75,9 @@ import com.upokecenter.text.*;
    * from the mail specifications or other applicable specifications.</p> <p>If a
    * MIME message or body part has an unrecognized transfer encoding, its content
    * type is treated as "application/octet-stream" rather than the declared
-   * content type (in accordance with MIME) and its transfer encoding is treated
-   * as 7bit (a clarification to MIME).</p> <p>This class currently doesn't
-   * support the "padding" parameter for message bodies with the media type
+   * content type (per MIME) and its transfer encoding is treated as 7bit (a
+   * clarification to MIME).</p> <p>This class currently doesn't support the
+   * "padding" parameter for message bodies with the media type
    * "application/octet-stream" or treated as that media type (see RFC 2046 sec.
    * 4.5.1).</p> <p>In this implementation, if the content-transfer-encoding
    * "quoted-printable" or "base64" occurs in a message or body part with content
@@ -224,8 +224,8 @@ import com.upokecenter.text.*;
      * @param headerFieldName The name of the header field to extract. This name
      * will be compared with the names of header fields in the given message using
      * a basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case letters A to
-     * Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+     * comparison, if they match after converting the basic uppercase letters A to
+     * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
      * @return The value of the first instance of the header field with the given
      * name. Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF
      * (0x0d/0x0a) pairs will be removed from the header field value, and the value
@@ -619,10 +619,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * @return The body of this message as a text string.
      * @throws UnsupportedOperationException This message is a multipart message without a
      * supported body part; or this message has a content disposition with a type
-     * other than "inline"; or this message's media type is a non-multipart type
-     * and does not specify the use of a "charset" parameter, has no character
-     * encoding declared or assumed for it (which is usually the case for non-text
-     * messages), or has an unsupported character encoding.
+     * other than "inline"; or this message's media type is a nonmultipart type and
+     * does not specify the use of a "charset" parameter, has no character encoding
+     * declared or assumed for it (which is usually the case for nontext messages),
+     * or has an unsupported character encoding.
      */
 
     public String GetBodyString() {
@@ -649,7 +649,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (value == null) {
         return value;
       }
-      // We assume value is lower-case here
+      // We assume value is lowercase here
       int index = 0;
       int length = value.length();
       char c = (char)0;
@@ -880,7 +880,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
     // NOTE: To be used when the encoding is not otherwise provided
-    // by the transport layer (e.g., Content-Type) and the transport
+    // by the transport layer (for example, Content-Type) and the transport
     // layer's encoding is not overridden by the end user
     private static String GuessHtmlEncoding(byte[] data) {
       int b = 0;
@@ -1095,8 +1095,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     /**
      * <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
      * body. This method currently supports any message for which {@code
-     * GetBodyString()} outputs a text string and treats the following media types
-     * specially: text/plain with {@code format = flowed}, text/enriched,
+     * GetBodyString()} gives out a text string and treats the following media
+     * types specially: text/plain with {@code format = flowed}, text/enriched,
      * text/markdown (original Markdown).</p><p>REMARK: The Markdown implementation
      * currently supports all features of original Markdown, except that the
      * implementation:</p> <ul> <li>does not strictly check the placement of
@@ -1277,8 +1277,8 @@ public final void setContentType(MediaType value) {
     /**
      * Gets a snapshot of the header fields of this message, in the order in which
      * they appear in the message. For each item in the list, the key is the header
-     * field's name (where any basic upper-case letters, U+0041 to U+005A, are
-     * converted to basic lower-case letters) and the value is the header field's
+     * field's name (where any basic uppercase letters, U+0041 to U+005A, are
+     * converted to basic lowercase letters) and the value is the header field's
      * value.
      * @return A snapshot of the header fields of this message.
      */
@@ -1495,8 +1495,8 @@ public final void setSubject(String value) {
     /**
      * Gets the first instance of the header field with the specified name, using a
      * basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case letters A to
-     * Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+     * comparison, if they match after converting the basic uppercase letters A to
+     * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
      * @param name The name of a header field.
      * @return The value of the first header field with that name, or null if there
      * is none.
@@ -1519,8 +1519,8 @@ public final void setSubject(String value) {
     /**
      * Gets an array with the values of all header fields with the specified name,
      * using a basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic upper-case letters A to
-     * Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+     * comparison, if they match after converting the basic uppercase letters A to
+     * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
      * @param name The name of a header field.
      * @return An array containing the values of all header fields with the given
      * name, in the order they appear in the message. The array will be empty if no
@@ -1588,8 +1588,8 @@ public final void setSubject(String value) {
      * this is a multipart message, the header field is not removed from its body
      * part headers. A basic case-insensitive comparison is used. (Two strings are
      * equal in such a comparison, if they match after converting the basic
-     * upper-case letters A to Z (U+0041 to U+005A) in both strings to basic
-     * lower-case letters.). </p> <p>This method updates the ContentType and
+     * uppercase letters A to Z (U+0041 to U+005A) in both strings to basic
+     * lowercase letters.). </p> <p>This method updates the ContentType and
      * ContentDisposition properties if those header fields have been modified by
      * this method.</p>
      * @param name The name of the header field to remove.
@@ -1803,7 +1803,7 @@ public final void setSubject(String value) {
       if (html == null) {
         throw new NullPointerException("html");
       }
-      // The spec for multipart/alternative (RFC 2046) says that
+      // The specification for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
       // this case, the HTML version)
       Message textMessage = NewBodyPart().SetTextBody(text);
@@ -2862,7 +2862,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           atomText,
           headerValue.length(),
           null);
-        // NOTE: Commented out for now (see below)
+        // NOTE: Commented out for now (see later)
         // if (atomText != typeEnd) {
         // isUtf8 = false;
         // }
@@ -4055,7 +4055,7 @@ TransferEncodingToUse(
      * message. The following header fields, and only these, are used to generate
      * the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message
      * body is included in the URI only if {@code GetBodyString()} would return a
-     * non-empty string. The To header field is included in the URI only if it has
+     * nonempty string. The To header field is included in the URI only if it has
      * display names or group syntax.
      * @return A MailTo URI corresponding to this message.
      * @deprecated Renamed to ToMailtoUri.
@@ -4077,8 +4077,8 @@ TransferEncodingToUse(
      * The last, "body", sets the body of the message to the given text. Keys other
      * than these eight will be ignored. (Keys are compared using a basic
      * case-sensitive comparison, in which two strings are equal if they match
-     * after converting the basic upper-case letters A to Z (U+0041 to U+005A) in
-     * both strings to basic lower-case letters.) The same key (matched using a
+     * after converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+     * both strings to basic lowercase letters.) The same key (matched using a
      * basic case-insensitive comparison) can appear more than once; for "subject",
      * "cc", "bcc", and "in-reply-to", the last value with the given key is used;
      * for "to", all header field values as well as the path are combined to a
@@ -4114,7 +4114,7 @@ TransferEncodingToUse(
      * message. The following header fields, and only these, are used to generate
      * the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message
      * body is included in the URI only if {@code GetBodyString()} would return a
-     * non-empty string.. The To header field is included in the URI only if it has
+     * nonempty string.. The To header field is included in the URI only if it has
      * display names or group syntax.
      * @return A MailTo URI corresponding to this message.
      */

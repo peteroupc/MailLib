@@ -88,7 +88,7 @@ namespace PeterO.Text {
       if (firstIndex >= 0) {
         basicsBeforeFirstNonbasic = firstIndex - index;
       } else {
-        // No non-basic code points
+        // No nonbasic code points
         return endIndex - index;
       }
       while (v4 < codePointLength) {
@@ -226,7 +226,7 @@ namespace PeterO.Text {
       if (lastHyphen >= index) {
         for (i = index; i < lastHyphen; ++i) {
           if (str[i] >= 0x80) {
-            return null; // Non-basic character found
+            return null; // Nonbasic character found
           }
         }
       }
@@ -371,7 +371,7 @@ namespace PeterO.Text {
         ++tmpIndex;
       }
       if (allBasics) {
-        // NOTE: Upper-case labels not converted to lower-case here
+        // NOTE: Uppercase labels not converted to lowercase here
         return str.Substring(index, endIndex - index);
       }
       var builder = new StringBuilder();
@@ -409,7 +409,7 @@ namespace PeterO.Text {
       if (firstIndex >= 0) {
         basicsBeforeFirstNonbasic = firstIndex - index;
       } else {
-        // No non-basic code points
+        // No nonbasic code points
         // (NOTE: Not encoded with "-" at end)
         return builder.ToString();
       }

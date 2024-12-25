@@ -96,7 +96,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets the disposition type, such as "inline". This method
-    /// enables the pattern of method chaining (e.g., <c>new
+    /// enables the pattern of method chaining (for example, <c>new
     /// ...().Set...().Set...()</c> ) unlike with the DispositionType
     /// property in .NET or the setDispositionType method (with small s) in
     /// Java.</summary>
@@ -116,8 +116,8 @@ namespace PeterO.Mail {
     /// <param name='name'>The parameter to remove. The name is compared
     /// using a basic case-insensitive comparison. (Two strings are equal
     /// in such a comparison, if they match after converting the basic
-    /// upper-case letters A to Z (U+0041 to U+005A) in both strings to
-    /// basic lower-case letters.).</param>
+    /// uppercase letters A to Z (U+0041 to U+005A) in both strings to
+    /// basic lowercase letters.).</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -131,8 +131,8 @@ namespace PeterO.Mail {
     /// already exists (compared using a basic case-insensitive
     /// comparison), it will be overwritten. (Two strings are equal in a
     /// basic case-insensitive comparison, if they match after converting
-    /// the basic upper-case letters A to Z (U+0041 to U+005A) in both
-    /// strings to basic lower-case letters.).</param>
+    /// the basic uppercase letters A to Z (U+0041 to U+005A) in both
+    /// strings to basic lowercase letters.).</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>Either <paramref
