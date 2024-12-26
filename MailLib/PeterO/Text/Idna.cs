@@ -33,12 +33,12 @@ namespace PeterO.Text {
   /// Latin range (U+0000 to U+007F) and meets IDNA2008 requirements for
   /// labels with such characters. An example is "eá".</para>
   /// <para>An A-label is an LDH label beginning with "xn--" where the
-  /// letters can be any combination of basic upper-case and/or basic
-  /// lower-case letters, and is convertible to a U-label. An example is
+  /// letters can be any combination of basic uppercase and/or basic
+  /// lowercase letters, and is convertible to a U-label. An example is
   /// "xn--e-ufa".</para>
   /// <para>An XN-label is an LDH label beginning with "xn--" where the
-  /// letters can be any combination of basic upper-case and/or basic
-  /// lower-case letters.</para>
+  /// letters can be any combination of basic uppercase and/or basic
+  /// lowercase letters.</para>
   /// <para>NOTICE: While this class's source code is in the public
   /// domain, the class uses two internal classes, called
   /// <c>NormalizationData</c> and <c>IdnaData</c>, that include data
@@ -581,7 +581,7 @@ namespace PeterO.Text {
             return false;
           }
         } else if (thisChar == 0x200c) {
-          // Zero-width non-joiner
+          // Zero-width nonjoiner
           if (UnicodeDatabase.GetCombiningClass(lastChar) != 9 &&
             !IsValidConjunct(str, i)) {
             return false;
@@ -1105,7 +1105,7 @@ namespace PeterO.Text {
         return false; // Overflow error
       }
       if (!lookupRules) {
-        // Additional rules for non-lookup validation
+        // Additional rules for nonlookup validation
         if (aceLength > 63) {
           return false;
         }

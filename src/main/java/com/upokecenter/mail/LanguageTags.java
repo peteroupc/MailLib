@@ -724,7 +724,7 @@ private LanguageTags() {
             return true;
           }
           index += 2;
-          // convert the language tag to lower case
+          // convert the language tag to lowercase
           // to simplify handling
           str = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
           c1 = str.charAt(index);

@@ -47,8 +47,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the name of this media type's top-level type (such as
     /// "text" in "text/plain", or "audio" in "audio/basic"). The resulting
-    /// string will be in lower case; that is, with its basic upper-case
-    /// letters ("A" to "Z") converted to basic lower-case letters ("a" to
+    /// string will be in lowercase; that is, with its basic uppercase
+    /// letters ("A" to "Z") converted to basic lowercase letters ("a" to
     /// "z").</summary>
     /// <value>The name of this media type's top-level type (such as "text"
     /// or "audio" .</value>
@@ -64,9 +64,9 @@ namespace PeterO.Mail {
     /// suffix without the starting "+". Examples include "xml" and "json".
     /// The suffix is compared to the end of the media type's subtype using
     /// a basic case-insensitive comparison. (Two strings are equal in such
-    /// a comparison, if they match after converting the basic upper-case
+    /// a comparison, if they match after converting the basic uppercase
     /// letters A to Z (U+0041 to U+005A) in both strings to basic
-    /// lower-case letters.).</param>
+    /// lowercase letters.).</param>
     /// <returns>True if the media type's subtype ends with, but does not
     /// consist of, "+" followed by the <paramref name='suffix'/> parameter
     /// (using a basic case-insensitive comparison); otherwise,
@@ -150,9 +150,9 @@ this.subType.Length ||
     private readonly string subType;
 
     /// <summary>Gets this media type's subtype (for example, "plain" in
-    /// "text/plain"). The resulting string will be in lower case; that is,
-    /// with its basic upper-case letters ("A" to "Z") converted to basic
-    /// lower-case letters ("a" to "z").</summary>
+    /// "text/plain"). The resulting string will be in lowercase; that is,
+    /// with its basic uppercase letters ("A" to "Z") converted to basic
+    /// lowercase letters ("a" to "z").</summary>
     /// <value>This media type's subtype.</value>
     public string SubType {
       get {
@@ -193,8 +193,8 @@ this.subType.Length ||
 
     /// <summary>Gets a list of the parameter names contained in this media
     /// type object and their values. Each parameter name will be in lower
-    /// case; that is, with its basic upper-case letters ("A" to "Z")
-    /// converted to basic lower-case letters ("a" to "z").</summary>
+    /// case; that is, with its basic uppercase letters ("A" to "Z")
+    /// converted to basic lowercase letters ("a" to "z").</summary>
     /// <value>A list of the parameters contained in this media type
     /// object; the names of each parameter appear in an undefined order.
     /// NOTE: Previous versions erroneously stated that the list will be
@@ -407,8 +407,8 @@ this.subType.Length ||
     private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
       // to encode according to RFC 2231, but the augmented
-      // BNF for ext-octet in that RFC allows both upper-case
-      // and lower-case, even though only upper-case
+      // BNF for ext-octet in that RFC allows both uppercase
+      // and lowercase, even though only uppercase
       // appears in that production. This
       // is due to the nature of augmented BNF (see RFC
       // 5234 sec 2.3).
@@ -860,15 +860,15 @@ this.subType.Length ||
     /// <summary>Gets this media type's "charset" parameter, naming a
     /// character encoding used to represent text in the data that uses
     /// this media type.</summary>
-    /// <returns>If the "charset" parameter is present and non-empty,
+    /// <returns>If the "charset" parameter is present and nonempty,
     /// returns the result of the Encodings.ResolveAliasForEmail method for
-    /// that parameter, except that the result's basic upper-case letters A
-    /// to Z (U+0041 to U+005A) are converted to lower case. If the
+    /// that parameter, except that the result's basic uppercase letters A
+    /// to Z (U+0041 to U+005A) are converted to lowercase. If the
     /// "charset" parameter is empty, returns the empty string. If the
     /// "charset" parameter is absent, returns the default value, if any,
-    /// for that parameter given the media type (e.g., "us-ascii" if the
-    /// media type is "text/plain"; see RFC2046), or the empty string if
-    /// there is none.</returns>
+    /// for that parameter given the media type (for example, "us-ascii" if
+    /// the media type is "text/plain"; see RFC2046), or the empty string
+    /// if there is none.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Microsoft.Design", "CA1024",
@@ -974,7 +974,7 @@ this.subType.Length ||
       // **** Content containing non-ASCII bytes "should be rejected".
       string param = this.GetParameter("charset");
       if (!String.IsNullOrEmpty(param)) {
-        // Charset parameter is present and non-empty
+        // Charset parameter is present and nonempty
         param = Encodings.ResolveAliasForEmail(param);
         return DataUtilities.ToLowerCaseAscii(param);
       } else if (param != null) {
@@ -1056,8 +1056,8 @@ this.subType.Length ||
     /// <param name='name'>Name of the parameter to get. The name is
     /// compared using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U+0041 to U+005A) in both strings
-    /// to basic lower-case letters.).</param>
+    /// basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+    /// to basic lowercase letters.).</param>
     /// <returns>The value of the parameter as a string, or null if the
     /// parameter doesn't exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -1115,7 +1115,7 @@ this.subType.Length ||
     }
 
     private static ICharacterEncoding GetRfc2231Charset(string value) {
-      // NOTE: Currently only used outside of httpRules
+      // NOTE: Currently only used outside httpRules
       if (value == null) {
         return USAsciiEncoding;
       }
@@ -1648,7 +1648,7 @@ null;
     }
 
     /// <summary>Sets this media type's top-level type. This method enables
-    /// the pattern of method chaining (e.g.,
+    /// the pattern of method chaining (for example,
     /// <c>new...().Set...().Set...()</c> ) unlike with the TopLevelType
     /// property in.NET or the setTopLevelType method (with small s) in
     /// Java.</summary>
@@ -1681,8 +1681,8 @@ str);
     /// <param name='name'>Name of the parameter to remove. The name is
     /// compared using a basic case-insensitive comparison. (Two strings
     /// are equal in such a comparison, if they match after converting the
-    /// basic upper-case letters A to Z (U+0041 to U+005A) in both strings
-    /// to basic lower-case letters.).</param>
+    /// basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+    /// to basic lowercase letters.).</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -1699,8 +1699,8 @@ str);
     /// <param name='name'>Name of the parameter to set, such as "charset"
     /// . The name is compared using a basic case-insensitive comparison.
     /// (Two strings are equal in such a comparison, if they match after
-    /// converting the basic upper-case letters A to Z (U+0041 to U+005A)
-    /// in both strings to basic lower-case letters.).</param>
+    /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+    /// both strings to basic lowercase letters.).</param>
     /// <param name='value'>A text string giving the parameter's
     /// value.</param>
     /// <returns>This instance.</returns>
@@ -1728,7 +1728,7 @@ str);
     }
 
     /// <summary>Sets this media type's subtype, such as "plain" or "xml" .
-    /// This method enables the pattern of method chaining (e.g.,
+    /// This method enables the pattern of method chaining (for example,
     /// <c>new...().Set...().Set...()</c> ) unlike with the SubType
     /// property in.NET or the setSubType method (with small s) in
     /// Java.</summary>

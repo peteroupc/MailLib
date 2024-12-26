@@ -16,7 +16,7 @@ licensed under the Unlicense: https://unlicense.org/
    * combined with other characters to make new characters. For example, the
    * letter E combines with an acute accent to make E-acute (É). In some cases,
    * the combined form (E-acute) should be treated as equivalent to the
-   * uncombined form (E plus acute). For this reason, the standard defines four
+   * uncombined form (E plus acute). Therefore, the standard defines four
    * <i>normalization forms</i> that convert strings to a single equivalent
    * form:</p> <ul> <li><b>NFD</b> (Normalization Form D) decomposes combined
    * forms to their constituent characters (E plus acute, for example), then
@@ -148,7 +148,7 @@ licensed under the Unlicense: https://unlicense.org/
       }
       int endPos = 0 + length;
       boolean composed = false;
-      for (int decompPos = 0; decompPos < endPos; ++decompPos) {
+      for (int decompPos = 1; decompPos < endPos; ++decompPos) {
         int ch = array[decompPos];
         int valuecc = UnicodeDatabase.GetCombiningClass(ch);
         if (decompPos > 0) {
@@ -181,10 +181,15 @@ licensed under the Unlicense: https://unlicense.org/
         }
         int composite = UnicodeDatabase.GetComposedPair(starter, ch);
         boolean diffClass = last < valuecc;
+        // System.out.println(
+        // "starter={0:X4} ch={1:X4} composite={2:X4} diffClass={3} last={4}",
+        // starter, ch, composite, diffClass, last);
         if (composite >= 0 && (diffClass || last == 0)) {
           array[starterPos] = composite;
           starter = composite;
           array[decompPos] = 0x110000;
+          // System.out.println("starterPos=" + starterPos + " decompPos=" +
+          // (decompPos));
           composed = true;
           --retval;
           continue;
@@ -564,7 +569,7 @@ licensed under the Unlicense: https://unlicense.org/
       return ch;
     }
 
-    /* private static String EC(int c) {
+    /*private static String EC(int c) {
               if (c < 0) {
                   return "<" + c + ">";
               }
@@ -582,9 +587,7 @@ licensed under the Unlicense: https://unlicense.org/
           sb.append (EC (b [i + o]));
         }
         return sb.toString();
-      }
-
-    */
+      }*/
 
     /**
      * Reads a sequence of Unicode code points from a data source.
@@ -835,13 +838,13 @@ licensed under the Unlicense: https://unlicense.org/
         return false;
       }
       this.flushIndex = 0;
-      // System.out.println ("reordering " + // (EC (buffer, 0, lastQcsIndex)) +
+      // System.out.println("reordering " + (EC (buffer, 0, lastQcsIndex)) +
       // " [" + this.form + "]");
       // Canonical reordering
       ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
       if (!IsDecompositionForm(this.form)) {
         // Composition
-        // System.out.println ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
+        // System.out.println("composing " + (EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");
         this.processedIndex = ComposeBuffer(
           this.buffer,

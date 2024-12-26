@@ -446,7 +446,7 @@ namespace MailLibTest {
             Assert.AreEqual(
               phase < 6 ? "attachment" : "inline",
               msg.Parts[1].ContentDisposition.DispositionType);
-            // Change to inline because non-inline dispositions
+            // Change to inline because noninline dispositions
             // don't support GetBodyString
             msg.Parts[1].ContentDisposition = ContentDisposition.Inline;
             string bodyString = null;

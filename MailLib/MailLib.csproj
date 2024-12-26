@@ -8,7 +8,6 @@
     <Owners>Peter Occil</Owners>
     <SignAssembly>True</SignAssembly>
     <Copyright>Written by Peter O.  See https://github.com/peteroupc/MailLib/blob/master/LICENSE.md</Copyright>
-    <AssemblyOriginatorKeyFile>PeterO.snk</AssemblyOriginatorKeyFile>
     <Authors>Peter Occil</Authors>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
@@ -20,7 +19,7 @@ Version 0.15.0:
 - Email message Date/Time validity was restricted slightly
 - DataUtilities moved to a separate library
 - GetBodyString and GetFormattedBodyString changed behavior and functionality
-- BodyString property is deprecated
+- BodyString property is obsolete
 - GetAttachments method added to Message class
 - NamedAddress received new string preparation methods
 - Update media types
@@ -34,16 +33,22 @@ Version 0.15.0:
     <PackageVersion>0.15.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
-  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet><IsTrimmable Condition='$([MSBuild]::IsTargetFrameworkCompatible(&apos;$(TargetFramework)&apos;, &apos;net6.0&apos;))'>true</IsTrimmable><TargetFrameworks>netstandard1.0;net7.0</TargetFrameworks></PropertyGroup>
+  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet><IsTrimmable Condition='$([MSBuild]::IsTargetFrameworkCompatible(&apos;$(TargetFramework)&apos;, &apos;net6.0&apos;))'>true</IsTrimmable><TargetFrameworks>netstandard2.0;net9.0</TargetFrameworks></PropertyGroup>
 
   <PropertyGroup Condition=' &apos;$(Configuration)&apos;==&apos;Debug&apos; '>
     <DebugType>full</DebugType>
-    <DocumentationFile>bin\Debug\netstandard1.0\MailLib.xml</DocumentationFile>
-  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
+    <DocumentationFile>bin\Debug\netstandard2.0\MailLib.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <PropertyGroup Condition=' &apos;$(Configuration)&apos;==&apos;Release&apos; '>
-    <DebugType/>
-    <DocumentationFile>bin\Release\netstandard1.0\MailLib.xml</DocumentationFile>
-  <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet></PropertyGroup>
+    <DebugType>none</DebugType>
+    <AssemblyOriginatorKeyFile>PeterO.snk</AssemblyOriginatorKeyFile>
+    <DocumentationFile>bin\Release\netstandard2.0\MailLib.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup Condition=' &apos;$(Configuration)&apos;==&apos;Debug&apos; '>
+    <!-- PackageReference Include='Microsoft.CodeAnalysis.NetAnalyzers' PrivateAssets='All' Version='9.0.0-preview.24454.1' -->
+  </ItemGroup>
   <ItemGroup>
     <None Include='../LICENSE.md' Pack='true' PackagePath='LICENSE.md'/>
     <EmbeddedResource Condition=' &apos;$(EnableDefaultEmbeddedResourceItems)&apos; == &apos;true&apos; ' Update='PeterO.Text.Encoders.AppResources.resx'>
@@ -51,7 +56,7 @@ Version 0.15.0:
     </EmbeddedResource>
   <PackageReference Include='StyleCop.Analyzers' PrivateAssets='All' Version='1.2.0-beta.354'/><AdditionalFiles Include='stylecop.json'/><PackageReference Include='PeterO.DataUtilities' Version='1.1.0'/>
 <PackageReference Include='PeterO.URIUtility' Version='1.0.0'/>
-<PackageReference Include='Microsoft.CodeAnalysis.NetAnalyzers' PrivateAssets='All' Version='7.0.3'/></ItemGroup>
+</ItemGroup>
   <ItemGroup>
     <PackageReference Include='PeterO.Encoding' Version='0.6.0'/>
   <AdditionalFiles Include='rules.ruleset'/></ItemGroup>

@@ -132,6 +132,29 @@ namespace MailLibTest {
       return builder.ToString();
     }
 
+    public static string StringToCodePoints(string str) {
+if (String.IsNullOrEmpty(str)) {
+  return String.Empty;
+}
+     var i = 0;
+     var builder = new StringBuilder();
+     while (i < str.Length) {
+       int cp = DataUtilities.CodePointAt(str, i);
+       if (cp < 0) {
+         throw new ArgumentException(nameof(str));
+       }
+       if (i > 0) {
+          builder.Append("-");
+       }
+       if (cp >= 0x10000) {
+         ++i;
+       }
+       builder.Append(String.Empty + cp);
+       ++i;
+     }
+     return builder.ToString();
+    }
+
     public static void AssertEqual(
       string expectedStr,
       string actualStr,
@@ -233,51 +256,51 @@ namespace MailLibTest {
     private sealed class NormResult {
       private readonly int[] orig;
       private readonly string origstr;
-      private readonly string nfc;
-      private readonly string nfd;
-      private readonly string nfkc;
-      private readonly string nfkd;
       private readonly string line;
+      public string Nfc { get; private set; }
+      public string Nfd { get; private set; }
+      public string Nfkc { get; private set; }
+      public string Nfkd { get; private set; }
 
       public NormResult(string column, string line) {
         this.line = line;
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
-        this.nfc = NormalizerInput.Normalize(
+        this.Nfc = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFC);
-        this.nfd = NormalizerInput.Normalize(
+        this.Nfd = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFD);
-        this.nfkc = NormalizerInput.Normalize(
+        this.Nfkc = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFKC);
-        this.nfkd = NormalizerInput.Normalize(
+        this.Nfkd = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFKD);
         if (!NormalizerInput.IsNormalized(
-          this.nfc,
+          this.Nfc,
           Normalization.NFC)) {
           {
             Assert.Fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-          this.nfd,
+          this.Nfd,
           Normalization.NFD)) {
           {
             Assert.Fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-          this.nfkc,
+          this.Nfkc,
           Normalization.NFKC)) {
           {
             Assert.Fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-          this.nfkd,
+          this.Nfkd,
           Normalization.NFKD)) {
           {
             Assert.Fail(line);
@@ -287,25 +310,25 @@ namespace MailLibTest {
 
       public void AssertNFC(params NormResult[] other) {
         foreach (NormResult o in other) {
-          AssertEqual(this.origstr, o.nfc, this.line);
+          AssertEqual(this.origstr, o.Nfc, this.line);
         }
       }
 
       public void AssertNFD(params NormResult[] other) {
         foreach (NormResult o in other) {
-          AssertEqual(this.origstr, o.nfd, this.line);
+          AssertEqual(this.origstr, o.Nfd, this.line);
         }
       }
 
       public void AssertNFKC(params NormResult[] other) {
         foreach (NormResult o in other) {
-          AssertEqual(this.origstr, o.nfkc, this.line);
+          AssertEqual(this.origstr, o.Nfkc, this.line);
         }
       }
 
       public void AssertNFKD(params NormResult[] other) {
         foreach (NormResult o in other) {
-          AssertEqual(this.origstr, o.nfkd, this.line);
+          AssertEqual(this.origstr, o.Nfkd, this.line);
         }
       }
     }
@@ -316,6 +339,22 @@ namespace MailLibTest {
         "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
         "NormalizationTest.txt");
       NormTestLines(lines);
+    }
+
+    private static void NormTestLine(string line) {
+        string[] columns = SplitAt(line, ";");
+        int[] cps = GetCodePoints(columns[0]);
+        var nr = new NormResult[5];
+        for (var i = 0; i < 5; ++i) {
+          nr[i] = new NormResult(columns[i], line);
+        }
+        nr[3].AssertNFC(nr[3], nr[4]);
+        nr[2].AssertNFD(nr[0], nr[1], nr[2]);
+        nr[4].AssertNFD(nr[3], nr[4]);
+        nr[4].AssertNFKD(nr[0], nr[1], nr[2]);
+        nr[4].AssertNFKD(nr[3], nr[4]);
+        nr[3].AssertNFKC(nr[0], nr[1], nr[2]);
+        nr[3].AssertNFKC(nr[3], nr[4]);
     }
 
     public static void NormTestLines(string[] lines) {

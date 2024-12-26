@@ -96,9 +96,9 @@ public final void setDispositionType(String value) {
 
     /**
      * Sets the disposition type, such as "inline". This method enables the pattern
-     * of method chaining (e.g., {@code new ...().getSet()...().getSet()...()}) unlike with
-     * the DispositionType property in .NET or the setDispositionType method (with
-     * small s) in Java.
+     * of method chaining (for example, {@code new ...().getSet()...().getSet()...()})
+     * unlike with the DispositionType property in .NET or the setDispositionType
+     * method (with small s) in Java.
      * @param str The parameter {@code str} is a text string.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -114,8 +114,8 @@ public final void setDispositionType(String value) {
      * parameter's name doesn't exist.
      * @param name The parameter to remove. The name is compared using a basic
      * case-insensitive comparison. (Two strings are equal in such a comparison, if
-     * they match after converting the basic upper-case letters A to Z (U+0041 to
-     * U+005A) in both strings to basic lower-case letters.).
+     * they match after converting the basic uppercase letters A to Z (U+0041 to
+     * U+005A) in both strings to basic lowercase letters.).
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
      */
@@ -129,8 +129,8 @@ public final void setDispositionType(String value) {
      * @param name Name of the parameter to set. If this name already exists
      * (compared using a basic case-insensitive comparison), it will be
      * overwritten. (Two strings are equal in a basic case-insensitive comparison,
-     * if they match after converting the basic upper-case letters A to Z (U+0041
-     * to U+005A) in both strings to basic lower-case letters.).
+     * if they match after converting the basic uppercase letters A to Z (U+0041 to
+     * U+005A) in both strings to basic lowercase letters.).
      * @param value Value of the parameter to set.
      * @return This instance.
      * @throws NullPointerException Either {@code value} or {@code name} is null.

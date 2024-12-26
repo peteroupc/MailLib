@@ -120,7 +120,7 @@ namespace PeterO.Mail {
               break;
             }
           }
-          // Get the next run of non-parentheses
+          // Get the next run of nonparentheses
           int parenEnd = index;
           while (index < endIndex) {
             if (str[index] == '(' || str[index] == ')') {
@@ -195,7 +195,7 @@ namespace PeterO.Mail {
             break;
           }
         }
-        // Get the next run of non-parentheses
+        // Get the next run of nonparentheses
         int parenEnd = index;
         builder.Remove(
           0,

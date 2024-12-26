@@ -43,8 +43,8 @@ Represents an email address and a name for that address. Can represent a
  addresses.
 
 * `String ToDisplayString()`<br>
- Converts this named-address object to a text string intended for display to
- end users.
+ Converts this named-address object to a text string intended to be displayed
+ for others to see.
 
 * `static String ToDisplayString(List<NamedAddress> addresses)`<br>
  Generates a string containing the display names and email addresses of the
@@ -63,7 +63,7 @@ Represents an email address and a name for that address. Can represent a
     public static String ToDisplayStringShort(List<NamedAddress> addresses)
 Generates a string containing the display names of the given named-address
  objects, separated by commas. The generated string is intended to be
- displayed to end users, and is not intended to be parsed by computer
+ displayed for others to see, and is not intended to be parsed by computer
  programs. If a named address has no display name, its email address is used
  as the display name.
 
@@ -84,8 +84,8 @@ Generates a string containing the display names of the given named-address
     public static String ToDisplayString(List<NamedAddress> addresses)
 Generates a string containing the display names and email addresses of the
  given named-address objects, separated by commas. The generated string is
- intended to be displayed to end users, and is not intended to be parsed by
- computer programs.
+ intended to be displayed for others to see, and is not intended to be parsed
+ by computer programs.
 
 **Parameters:**
 
@@ -221,9 +221,9 @@ Converts this object to a text string. This will generally be the form of
 
 ### ToDisplayString
     public String ToDisplayString()
-Converts this named-address object to a text string intended for display to
- end users. The returned string is not intended to be parsed by computer
- programs.
+Converts this named-address object to a text string intended to be displayed
+ for others to see. The returned string is not intended to be parsed by
+ computer programs.
 
 **Returns:**
 

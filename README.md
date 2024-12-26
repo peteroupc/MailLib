@@ -38,7 +38,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
-group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given above.
+group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given earlier.
 
 Source Code
 ---------
@@ -73,7 +73,7 @@ Version 0.15.0:
 - Email message Date/Time validity was restricted slightly
 - DataUtilities moved to a separate library
 - GetBodyString and GetFormattedBodyString changed behavior and functionality
-- BodyString property is deprecated
+- BodyString property is obsolete
 - GetAttachments method added to Message class
 - NamedAddress received new string preparation methods
 - Update media types
@@ -88,7 +88,7 @@ Version 0.14.0:
 - Add Message.ExtractHeaderField method
 - Deprecated IsText and IsMultipart in MediaTypeBuilder
 - Changed ParseDateString and GenerateDateString to allow only years 1900 or greater and to fix bugs.
-- Bug fixes
+- Issue fixes
 
 Version 0.13.1:
 
@@ -112,7 +112,7 @@ Content-Type header value is still available.)
 - Added convenience methods in Message class for creating attachments and inline body parts.
 - Updated Encoding library reference to 0.5.0.
 - Add several methods to DataUtilities class
-- Bug fixes
+- Issue fixes
 
 Version 0.12.0:
 
@@ -135,7 +135,7 @@ Version 0.11.0:
 - Converted to .NET Standard
 - Updated Encoding library used
 - Supported parsing several new header fields
-- Bug fixes
+- Issue fixes
 
 See [History.md](https://github.com/peteroupc/MailLib/tree/master/History.md)
 for release notes for older versions.

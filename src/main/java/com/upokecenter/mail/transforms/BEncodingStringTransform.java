@@ -85,7 +85,7 @@ import com.upokecenter.mail.*;
           // ignore this character
         } else {
           c = Alphabet[c];
-          // non-base64 characters are ignored
+          // nonbase64 characters are ignored
           if (c >= 0) {
             value <<= 6;
             value |= c;

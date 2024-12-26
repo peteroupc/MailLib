@@ -269,7 +269,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters, U+0041 to U+005A, are converted to basic lower-case letters) and the value is the header field's value.
+Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic uppercase letters, U+0041 to U+005A, are converted to basic lowercase letters) and the value is the header field's value.
 
 <b>Returns:</b>
 
@@ -640,7 +640,7 @@ Extracts the value of a header field from a byte array representing an email mes
 
  * <i>bytes</i>: A byte array representing an email message.
 
- * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 <b>Return Value:</b>
 
@@ -654,7 +654,7 @@ The value of the first instance of the header field with the given name. Leading
     public static PeterO.Mail.Message FromMailtoUri(
         string uri);
 
-Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored. (Keys are compared using a basic case-sensitive comparison, in which two strings are equal if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.) The same key (matched using a basic case-insensitive comparison) can appear more than once; for "subject", "cc", "bcc", and "in-reply-to", the last value with the given key is used; for "to", all header field values as well as the path are combined to a single To header field; for "keywords" and "comments", each value adds another header field of the given key; and for "body", the last value with that key is used as the body.
+Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored. (Keys are compared using a basic case-sensitive comparison, in which two strings are equal if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.) The same key (matched using a basic case-insensitive comparison) can appear more than once; for "subject", "cc", "bcc", and "in-reply-to", the last value with the given key is used; for "to", all header field values as well as the path are combined to a single To header field; for "keywords" and "comments", each value adds another header field of the given key; and for "body", the last value with that key is used as the body.
 
 <b>Parameters:</b>
 
@@ -818,7 +818,7 @@ The body of this message as a text string.
 <b>Exceptions:</b>
 
  * System.NotSupportedException:
-This message is a multipart message without a supported body part; or this message has a content disposition with a type other than "inline"; or this message's media type is a non-multipart type and does not specify the use of a "charset" parameter, has no character encoding declared or assumed for it (which is usually the case for non-text messages), or has an unsupported character encoding.
+This message is a multipart message without a supported body part; or this message has a content disposition with a type other than "inline"; or this message's media type is a nonmultipart type and does not specify the use of a "charset" parameter, has no character encoding declared or assumed for it (which is usually the case for nontext messages), or has an unsupported character encoding.
 
 <a id="GetDate"></a>
 ### GetDate
@@ -836,7 +836,7 @@ An array of 32-bit unsigned integers.
 
     public string GetFormattedBodyString();
 
-Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports any message for which  `GetBodyString()`  outputs a text string and treats the following media types specially: text/plain with  `format=flowed` , text/enriched, text/markdown (original Markdown).
+Gets a Hypertext Markup Language (HTML) rendering of this message's text body. This method currently supports any message for which  `GetBodyString()`  gives out a text string and treats the following media types specially: text/plain with  `format=flowed` , text/enriched, text/markdown (original Markdown).
 
 REMARK: The Markdown implementation currently supports all features of original Markdown, except that the implementation:
 
@@ -861,7 +861,7 @@ No supported body part was found; see  `GetBodyString()`  for more information.
     public string GetHeader(
         string name);
 
-Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 <b>Parameters:</b>
 
@@ -904,7 +904,7 @@ The parameter  <i>index</i>
     public string[] GetHeaderArray(
         string name);
 
-Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 <b>Parameters:</b>
 
@@ -992,7 +992,7 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
-Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to basic lower-case letters.). This method updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.). This method updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -1342,7 +1342,7 @@ The parameter  <i>str</i>
 
     public string ToMailtoUri();
 
-Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if  `GetBodyString()`  would return a non-empty string.. The To header field is included in the URI only if it has display names or group syntax.
+Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if  `GetBodyString()`  would return a nonempty string.. The To header field is included in the URI only if it has display names or group syntax.
 
 <b>Return Value:</b>
 
@@ -1355,7 +1355,7 @@ A MailTo URI corresponding to this message.
 
 <b>Deprecated.</b> Renamed to ToMailtoUri.
 
-Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if  `GetBodyString()`  would return a non-empty string. The To header field is included in the URI only if it has display names or group syntax.
+Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if  `GetBodyString()`  would return a nonempty string. The To header field is included in the URI only if it has display names or group syntax.
 
 <b>Return Value:</b>
 

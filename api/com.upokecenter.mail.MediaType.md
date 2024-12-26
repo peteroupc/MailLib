@@ -127,8 +127,8 @@ Specifies the media type "application/octet-stream", used for arbitrary
     public final String getTopLevelType()
 Gets the name of this media type's top-level type (such as "text" in
  "text/plain", or "audio" in "audio/basic"). The resulting string will be in
- lower case; that is, with its basic upper-case letters ("A" to "Z")
- converted to basic lower-case letters ("a" to "z").
+ lowercase; that is, with its basic uppercase letters ("A" to "Z") converted
+ to basic lowercase letters ("a" to "z").
 
 **Returns:**
 
@@ -146,8 +146,8 @@ Returns whether this media type's subtype has the given structured syntax
  the starting "+". Examples include "xml" and "json". The suffix is compared
  to the end of the media type's subtype using a basic case-insensitive
  comparison. (Two strings are equal in such a comparison, if they match after
- converting the basic upper-case letters A to Z (U+0041 to U+005A) in both
- strings to basic lower-case letters.).
+ converting the basic uppercase letters A to Z (U+0041 to U+005A) in both
+ strings to basic lowercase letters.).
 
 **Returns:**
 
@@ -192,8 +192,8 @@ Calculates the hash code of this object. The exact algorithm used by this
 ### getSubType
     public final String getSubType()
 Gets this media type's subtype (for example, "plain" in "text/plain"). The
- resulting string will be in lower case; that is, with its basic upper-case
- letters ("A" to "Z") converted to basic lower-case letters ("a" to "z").
+ resulting string will be in lowercase; that is, with its basic uppercase
+ letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
 
 **Returns:**
 
@@ -220,7 +220,7 @@ Gets a value indicating whether this is a multipart media type.
     public final Map<String,String> getParameters()
 Gets a list of the parameter names contained in this media type object and
  their values. Each parameter name will be in lower case; that is, with its
- basic upper-case letters ("A" to "Z") converted to basic lower-case letters
+ basic uppercase letters ("A" to "Z") converted to basic lowercase letters
  ("a" to "z").
 
 **Returns:**
@@ -276,14 +276,14 @@ Gets this media type's "charset" parameter, naming a character encoding used
 
 **Returns:**
 
-* If the "charset" parameter is present and non-empty, returns the
+* If the "charset" parameter is present and nonempty, returns the
  result of the Encodings.ResolveAliasForEmail method for that parameter,
- except that the result's basic upper-case letters A to Z (U+0041 to U+005A)
- are converted to lower case. If the "charset" parameter is empty, returns
- the empty string. If the "charset" parameter is absent, returns the default
- value, if any, for that parameter given the media type (e.g., "us-ascii" if
- the media type is "text/plain"; see RFC2046), or the empty string if there
- is none.
+ except that the result's basic uppercase letters A to Z (U+0041 to U+005A)
+ are converted to lowercase. If the "charset" parameter is empty, returns the
+ empty string. If the "charset" parameter is absent, returns the default
+ value, if any, for that parameter given the media type (for example,
+ "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty
+ string if there is none.
 
 ### GetParameter
     public String GetParameter(String name)
@@ -294,8 +294,8 @@ Gets the value of a parameter in this media type, such as "charset" or
 
 * <code>name</code> - Name of the parameter to get. The name is compared using a basic
  case-insensitive comparison. (Two strings are equal in such a comparison, if
- they match after converting the basic upper-case letters A to Z (U+0041 to
- U+005A) in both strings to basic lower-case letters.).
+ they match after converting the basic uppercase letters A to Z (U+0041 to
+ U+005A) in both strings to basic lowercase letters.).
 
 **Returns:**
 

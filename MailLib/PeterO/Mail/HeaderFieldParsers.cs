@@ -419,7 +419,7 @@ namespace PeterO.Mail {
                 enc.AppendSpace();
                 enc.AppendSymbol(":;");
               } else {
-                // Has a phrase, extract the addr-spec and convert
+                // Has a phrase, extract the addr-specification and convert
                 // the mailbox to a group
                 int angleAddrStart = HeaderParser.ParsePhrase(
                   str,

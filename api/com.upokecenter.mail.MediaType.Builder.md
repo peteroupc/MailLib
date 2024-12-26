@@ -89,9 +89,9 @@ Converts this builder to an immutable media type object.
 ### SetTopLevelType
     public MediaType.Builder SetTopLevelType(String str)
 Sets this media type's top-level type. This method enables the pattern of
- method chaining (e.g., <code>new...().getSet()...().getSet()...()</code>) unlike with the
- TopLevelType property in.NET or the setTopLevelType method (with small s) in
- Java.
+ method chaining (for example, <code>new...().getSet()...().getSet()...()</code>) unlike
+ with the TopLevelType property in.NET or the setTopLevelType method (with
+ small s) in Java.
 
 **Parameters:**
 
@@ -118,8 +118,8 @@ Removes a parameter from this builder object. Does nothing if the
 
 * <code>name</code> - Name of the parameter to remove. The name is compared using a
  basic case-insensitive comparison. (Two strings are equal in such a
- comparison, if they match after converting the basic upper-case letters A to
- Z (U+0041 to U+005A) in both strings to basic lower-case letters.).
+ comparison, if they match after converting the basic uppercase letters A to
+ Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 **Returns:**
 
@@ -137,8 +137,8 @@ Sets a parameter's name and value for this media type.
 
 * <code>name</code> - Name of the parameter to set, such as "charset" . The name is
  compared using a basic case-insensitive comparison. (Two strings are equal
- in such a comparison, if they match after converting the basic upper-case
- letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
+ in such a comparison, if they match after converting the basic uppercase
+ letters A to Z (U+0041 to U+005A) in both strings to basic lowercase
  letters.).
 
 * <code>value</code> - A text string giving the parameter's value.
@@ -158,7 +158,7 @@ Sets a parameter's name and value for this media type.
 ### SetSubType
     public MediaType.Builder SetSubType(String str)
 Sets this media type's subtype, such as "plain" or "xml" . This method
- enables the pattern of method chaining (e.g., <code>
+ enables the pattern of method chaining (for example, <code>
  new...().getSet()...().getSet()...()</code>) unlike with the SubType property in.NET or the
  setSubType method (with small s) in Java.
 

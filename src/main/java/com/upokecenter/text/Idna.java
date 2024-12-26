@@ -25,15 +25,15 @@ licensed under the Unlicense: https://unlicense.org/
    * outside the Basic Latin range (U+0000 to U+007F) and meets IDNA2008
    * requirements for labels with such characters. An example is "eá".</p> <p>An
    * A-label is an LDH label beginning with "xn--" where the letters can be any
-   * combination of basic upper-case and/or basic lower-case letters, and is
+   * combination of basic uppercase and/or basic lowercase letters, and is
    * convertible to a U-label. An example is "xn--e-ufa".</p> <p>An XN-label is
    * an LDH label beginning with "xn--" where the letters can be any combination
-   * of basic upper-case and/or basic lower-case letters.</p> <p>NOTICE: While
-   * this class's source code is in the public domain, the class uses two
-   * internal classes, called {@code NormalizationData} and {@code IdnaData},
-   * that include data derived from the Unicode Character Database. See the
-   * documentation for the NormalizerInput class for the permission notice for
-   * the Unicode Character Database.</p>
+   * of basic uppercase and/or basic lowercase letters.</p> <p>NOTICE: While this
+   * class's source code is in the public domain, the class uses two internal
+   * classes, called {@code NormalizationData} and {@code IdnaData}, that include
+   * data derived from the Unicode Character Database. See the documentation for
+   * the NormalizerInput class for the permission notice for the Unicode
+   * Character Database.</p>
    */
   public final class Idna {
 private Idna() {
@@ -571,7 +571,7 @@ private Idna() {
             return false;
           }
         } else if (thisChar == 0x200c) {
-          // Zero-width non-joiner
+          // Zero-width nonjoiner
           if (UnicodeDatabase.GetCombiningClass(lastChar) != 9 &&
             !IsValidConjunct(str, i)) {
             return false;
@@ -1095,7 +1095,7 @@ private Idna() {
         return false; // Overflow error
       }
       if (!lookupRules) {
-        // Additional rules for non-lookup validation
+        // Additional rules for nonlookup validation
         if (aceLength > 63) {
           return false;
         }

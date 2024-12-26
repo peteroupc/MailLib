@@ -123,9 +123,9 @@ Gets a string containing this object's disposition type, such as "inline" or
  "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec. 2.8,
  unrecognized disposition types should be treated as "attachment". (There is
  no default content disposition in a message has no Content-Disposition
- header field.). The resulting string will be in lower case; that is, with
- its basic upper-case letters ("A" to "Z") converted to basic lower-case
- letters ("a" to "z").
+ header field.). The resulting string will be in lowercase; that is, with its
+ basic uppercase letters ("A" to "Z") converted to basic lowercase letters
+ ("a" to "z").
 
 **Returns:**
 
@@ -185,10 +185,10 @@ Gets a value indicating whether the disposition type is attachment.
 ### getParameters
     public final Map<String,String> getParameters()
 <p>Gets a list of parameter names associated with this object and their
- values. Each parameter name will be in lower case; that is, with its basic
- upper-case letters ("A" to "Z") converted to basic lower-case letters ("a"
- to "z"). </p> <p>For the "filename" parameter, the value of that parameter
- is not adapted with the ContentDisposition.MakeFilename method; see the
+ values. Each parameter name will be in lowercase; that is, with its basic
+ uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to
+ "z"). </p> <p>For the "filename" parameter, the value of that parameter is
+ not adapted with the ContentDisposition.MakeFilename method; see the
  documentation for the ContentDisposition class.</p>
 
 **Returns:**
@@ -365,8 +365,8 @@ Gets a parameter from this disposition object. For the "filename" parameter,
 
 * <code>name</code> - The name of the parameter to get. The name will be matched using
  a basic case-insensitive comparison. (Two strings are equal in such a
- comparison, if they match after converting the basic upper-case letters A to
- Z (U+0041 to U+005A) in both strings to basic lower-case letters.). Can't be
+ comparison, if they match after converting the basic uppercase letters A to
+ Z (U+0041 to U+005A) in both strings to basic lowercase letters.). Can't be
  null.
 
 **Returns:**

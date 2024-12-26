@@ -1981,7 +1981,7 @@ import com.upokecenter.text.*;
         "te\u0020\tst");
       // See points 5 and 2 of second numbered list;
       // this implementation follows a mix of these
-      // suggestions by outputting "=" when "=\r" not
+      // suggestions by giving out "=" when "=\r" not
       // followed by "\n" appears, and when "=\n" appears
       TestDecodeQuotedPrintable("te=\rst", "te=st");
       TestDecodeQuotedPrintable(
@@ -2545,7 +2545,7 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsPhrase(
         "me \"x:y\"",
         "=?utf-8?q?me?= \"x:y\"");
-      // Non-special (dollar sign) not allowed in
+      // Nonspecial (dollar sign) not allowed in
       // Q-encoded encoded
       // words within a phrase
       TestEncodedWordsPhrase(

@@ -138,7 +138,7 @@ def getUnicodeData(file)
     lnccc=ln[3].to_i(10)
     type=""
     mapping=nil
-    # Get the lower case mapping
+    # Get the lowercase mapping
     lcmap=(!ln[13] || ln[13].length==0) ? nil : [ln[13].to_i(16)]
     # Get the decomposition mapping and type
     if ln[5][/^(<[^>]+>\s*)?(.+)/]
