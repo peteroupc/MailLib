@@ -131,6 +131,29 @@ import com.upokecenter.text.*;
       return builder.toString();
     }
 
+    public static String StringToCodePoints(String str) {
+if (((str) == null || (str).length() == 0)) {
+  return "";
+}
+     int i = 0;
+     StringBuilder builder = new StringBuilder();
+     while (i < str.length()) {
+       int cp = com.upokecenter.util.DataUtilities.CodePointAt(str, i);
+       if (cp < 0) {
+         throw new IllegalArgumentException("str");
+       }
+       if (i > 0) {
+          builder.append("-");
+       }
+       if (cp >= 0x10000) {
+         ++i;
+       }
+       builder.append("" + (cp));
+       ++i;
+     }
+     return builder.toString();
+    }
+
     public static void AssertEqual(
       String expectedStr,
       String actualStr,
@@ -235,51 +258,55 @@ import com.upokecenter.text.*;
     private static final class NormResult {
       private final int[] orig;
       private final String origstr;
-      private final String nfc;
-      private final String nfd;
-      private final String nfkc;
-      private final String nfkd;
       private final String line;
+      public final String getNfc() { return propVarnfc; }
+private final String propVarnfc;
+      public final String getNfd() { return propVarnfd; }
+private final String propVarnfd;
+      public final String getNfkc() { return propVarnfkc; }
+private final String propVarnfkc;
+      public final String getNfkd() { return propVarnfkd; }
+private final String propVarnfkd;
 
       public NormResult(String column, String line) {
         this.line = line;
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
-        this.nfc = NormalizerInput.Normalize(
+        this.propVarnfc = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFC);
-        this.nfd = NormalizerInput.Normalize(
+        this.propVarnfd = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFD);
-        this.nfkc = NormalizerInput.Normalize(
+        this.propVarnfkc = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFKC);
-        this.nfkd = NormalizerInput.Normalize(
+        this.propVarnfkd = NormalizerInput.Normalize(
           this.origstr,
           Normalization.NFKD);
         if (!NormalizerInput.IsNormalized(
-          this.nfc,
+          this.getNfc(),
           Normalization.NFC)) {
           {
             Assert.fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-          this.nfd,
+          this.getNfd(),
           Normalization.NFD)) {
           {
             Assert.fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-          this.nfkc,
+          this.getNfkc(),
           Normalization.NFKC)) {
           {
             Assert.fail(line);
           }
         }
         if (!NormalizerInput.IsNormalized(
-          this.nfkd,
+          this.getNfkd(),
           Normalization.NFKD)) {
           {
             Assert.fail(line);
@@ -289,25 +316,25 @@ import com.upokecenter.text.*;
 
       public void AssertNFC(NormResult... other) {
         for (NormResult o : other) {
-          AssertEqual(this.origstr, o.nfc, this.line);
+          AssertEqual(this.origstr, o.getNfc(), this.line);
         }
       }
 
       public void AssertNFD(NormResult... other) {
         for (NormResult o : other) {
-          AssertEqual(this.origstr, o.nfd, this.line);
+          AssertEqual(this.origstr, o.getNfd(), this.line);
         }
       }
 
       public void AssertNFKC(NormResult... other) {
         for (NormResult o : other) {
-          AssertEqual(this.origstr, o.nfkc, this.line);
+          AssertEqual(this.origstr, o.getNfkc(), this.line);
         }
       }
 
       public void AssertNFKD(NormResult... other) {
         for (NormResult o : other) {
-          AssertEqual(this.origstr, o.nfkd, this.line);
+          AssertEqual(this.origstr, o.getNfkd(), this.line);
         }
       }
     }
@@ -317,6 +344,44 @@ import com.upokecenter.text.*;
         "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
         "NormalizationTest.txt");
       NormTestLines(lines);
+    }
+
+    private static void NormTestLine(String line) {
+        String[] columns = SplitAt(line, ";");
+        int[] cps = GetCodePoints(columns[0]);
+        NormResult[] nr = new NormResult[5];
+        for (int i = 0; i < 5; ++i) {
+          nr[i] = new NormResult(columns[i], line);
+        }
+        System.out.println(
+          "nfc {0} {1} {2} {3}" +
+  "\u0020 {4}",StringToCodePoints(nr[0].Nfc),StringToCodePoints(nr[1].Nfc),
+  StringToCodePoints(
+  nr[2].Nfc), StringToCodePoints(nr[3].Nfc), StringToCodePoints(nr[4].Nfc));
+        System.out.println(
+          "nfd {0} {1} {2} {3}" +
+          "\u0020
+  {4}",StringToCodePoints(nr[0].Nfd),StringToCodePoints(nr[1].Nfd),StringToCodePoints(nr[2].Nfd),
+  StringToCodePoints(nr[3].Nfd), StringToCodePoints(nr[4].Nfd));
+        System.out.println(
+          "nfkc {0} {1} {2} {3}" +
+  "\u0020 {4}",StringToCodePoints(nr[0].Nfkc),StringToCodePoints(nr[1].Nfkc),
+  StringToCodePoints(nr[2].Nfkc), StringToCodePoints(nr[3].Nfkc),
+  StringToCodePoints(nr[4].Nfkc));
+        System.out.println(
+          "nfkd {0} {1} {2} {3}" +
+  "\u0020 {4}",StringToCodePoints(nr[0].Nfkd),StringToCodePoints(nr[1].Nfkd),
+  StringToCodePoints(
+  nr[2].Nfkd), StringToCodePoints(
+  nr[3].Nfkd), StringToCodePoints(nr[4].Nfkd));
+        nr[1].AssertNFC(nr[0], nr[1], nr[2]);
+        nr[3].AssertNFC(nr[3], nr[4]);
+        nr[2].AssertNFD(nr[0], nr[1], nr[2]);
+        nr[4].AssertNFD(nr[3], nr[4]);
+        nr[4].AssertNFKD(nr[0], nr[1], nr[2]);
+        nr[4].AssertNFKD(nr[3], nr[4]);
+        nr[3].AssertNFKC(nr[0], nr[1], nr[2]);
+        nr[3].AssertNFKC(nr[3], nr[4]);
     }
 
     public static void NormTestLines(String[] lines) {

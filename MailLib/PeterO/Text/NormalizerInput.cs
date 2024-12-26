@@ -19,7 +19,7 @@ namespace PeterO.Text {
   /// characters. For example, the letter E combines with an acute accent
   /// to make E-acute (É). In some cases, the combined form (E-acute)
   /// should be treated as equivalent to the uncombined form (E plus
-  /// acute). For this reason, the standard defines four
+  /// acute). Therefore, the standard defines four
   /// <i>normalization forms</i> that convert strings to a single
   /// equivalent form:</para>
   /// <list>
@@ -190,7 +190,7 @@ namespace PeterO.Text {
       }
       int endPos = 0 + length;
       var composed = false;
-      for (int decompPos = 0; decompPos < endPos; ++decompPos) {
+      for (int decompPos = 1; decompPos < endPos; ++decompPos) {
         int ch = array[decompPos];
         int valuecc = UnicodeDatabase.GetCombiningClass(ch);
         if (decompPos > 0) {
@@ -223,10 +223,15 @@ namespace PeterO.Text {
         }
         int composite = UnicodeDatabase.GetComposedPair(starter, ch);
         bool diffClass = last < valuecc;
+        // Console.WriteLine(
+        // "starter={0:X4} ch={1:X4} composite={2:X4} diffClass={3} last={4}",
+        // starter, ch, composite, diffClass, last);
         if (composite >= 0 && (diffClass || last == 0)) {
           array[starterPos] = composite;
           starter = composite;
           array[decompPos] = 0x110000;
+          // Console.WriteLine("starterPos=" + starterPos + " decompPos=" +
+          // (decompPos));
           composed = true;
           --retval;
           continue;
@@ -608,7 +613,7 @@ namespace PeterO.Text {
       return ch;
     }
 
-    /* private static string EC (int c) {
+    /*private static string EC (int c) {
               if (c < 0) {
                   return "<" + c + ">";
               }
@@ -626,9 +631,7 @@ namespace PeterO.Text {
           sb.Append (EC (b [i + o]));
         }
         return sb.ToString();
-      }
-
-    */
+      }*/
 
     /// <summary>Reads a sequence of Unicode code points from a data
     /// source.</summary>
@@ -886,13 +889,13 @@ namespace PeterO.Text {
         return false;
       }
       this.flushIndex = 0;
-      // DebugUtility.Log ("reordering " + // (EC (buffer, 0, lastQcsIndex)) +
+      // Console.WriteLine("reordering " + (EC (buffer, 0, lastQcsIndex)) +
       // " [" + this.form + "]");
       // Canonical reordering
       ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
       if (!IsDecompositionForm(this.form)) {
         // Composition
-        // DebugUtility.Log ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
+        // Console.WriteLine("composing " + (EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");
         this.processedIndex = ComposeBuffer(
           this.buffer,
