@@ -25,7 +25,7 @@ licensed under the Unlicense: https://unlicense.org/
    * outside the Basic Latin range (U+0000 to U+007F) and meets IDNA2008
    * requirements for labels with such characters. An example is "eá".</p> <p>An
    * A-label is an LDH label beginning with "xn--" where the letters can be any
-   * combination of basic uppercase and basic lowercase letters, and is
+   * combination of basic uppercase and/or basic lowercase letters, and is
    * convertible to a U-label. An example is "xn--e-ufa".</p> <p>An XN-label is
    * an LDH label beginning with "xn--" where the letters can be any combination
    * of basic uppercase and/or basic lowercase letters.</p> <p>NOTICE: While this

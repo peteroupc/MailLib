@@ -12,8 +12,6 @@ using PeterO.Mail;
 namespace MailLibTest {
   internal class Program {
     public static void Main() {
-      new UnitTest1().TestMessageCoaHtml();
-      new UnitTest1().TestMessageCore();
     }
   }
 }
