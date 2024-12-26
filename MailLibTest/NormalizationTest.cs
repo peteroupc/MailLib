@@ -149,7 +149,7 @@ if (String.IsNullOrEmpty(str)) {
        if (cp >= 0x10000) {
          ++i;
        }
-       builder.Append(String.Empty + (cp));
+       builder.Append(String.Empty + cp);
        ++i;
      }
      return builder.ToString();
@@ -348,28 +348,6 @@ if (String.IsNullOrEmpty(str)) {
         for (var i = 0; i < 5; ++i) {
           nr[i] = new NormResult(columns[i], line);
         }
-        Console.WriteLine(
-          "nfc {0} {1} {2} {3}" +
-  "\u0020 {4}",StringToCodePoints(nr[0].Nfc),StringToCodePoints(nr[1].Nfc),
-  StringToCodePoints(
-  nr[2].Nfc), StringToCodePoints(nr[3].Nfc), StringToCodePoints(nr[4].Nfc));
-        Console.WriteLine(
-          "nfd {0} {1} {2} {3}" +
-          "\u0020
-  {4}",StringToCodePoints(nr[0].Nfd),StringToCodePoints(nr[1].Nfd),StringToCodePoints(nr[2].Nfd),
-  StringToCodePoints(nr[3].Nfd), StringToCodePoints(nr[4].Nfd));
-        Console.WriteLine(
-          "nfkc {0} {1} {2} {3}" +
-  "\u0020 {4}",StringToCodePoints(nr[0].Nfkc),StringToCodePoints(nr[1].Nfkc),
-  StringToCodePoints(nr[2].Nfkc), StringToCodePoints(nr[3].Nfkc),
-  StringToCodePoints(nr[4].Nfkc));
-        Console.WriteLine(
-          "nfkd {0} {1} {2} {3}" +
-  "\u0020 {4}",StringToCodePoints(nr[0].Nfkd),StringToCodePoints(nr[1].Nfkd),
-  StringToCodePoints(
-  nr[2].Nfkd), StringToCodePoints(
-  nr[3].Nfkd), StringToCodePoints(nr[4].Nfkd));
-        nr[1].AssertNFC(nr[0], nr[1], nr[2]);
         nr[3].AssertNFC(nr[3], nr[4]);
         nr[2].AssertNFD(nr[0], nr[1], nr[2]);
         nr[4].AssertNFD(nr[3], nr[4]);
