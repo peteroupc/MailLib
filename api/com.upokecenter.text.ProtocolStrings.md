@@ -91,7 +91,9 @@
 ## Method Details
 
 ### IsInIdentifierClass
+
     public static boolean IsInIdentifierClass(String str)
+
 Determines whether the given string belongs in RFC 8264's IdentifierClass.
  In general, the IdentifierClass contains all code points in the
  FreeformClass, except certain uncommon letters and digits, spaces, as well
@@ -108,7 +110,9 @@ Determines whether the given string belongs in RFC 8264's IdentifierClass.
  otherwise, <code>false</code>. Returns <code>false</code> if <code>str</code> is null.
 
 ### IsInFreeformClass
+
     public static boolean IsInFreeformClass(String str)
+
 Determines whether the given string belongs in RFC 8264's FreeformClass. In
  general, the FreeformClass contains most letters, digits, spaces,
  punctuation, and symbols in the Unicode standard, as well as all basic
@@ -127,7 +131,9 @@ Determines whether the given string belongs in RFC 8264's FreeformClass. In
  otherwise, <code>false</code>. Returns <code>false</code> if <code>str</code> is null.
 
 ### UserpartEnforce
+
     public static String UserpartEnforce(String str)
+
 Checks the validity of a string without spaces that can serve to identify a
  user or account (a "userpart"), where the case of letters in the string is
  mapped to lowercase. This checking is done using the UsernameCaseMapped
@@ -146,7 +152,9 @@ Checks the validity of a string without spaces that can serve to identify a
  should be compared code point by code point (see RFC 8265, sec. 3.3.4).
 
 ### UsernameEnforce
+
     public static String UsernameEnforce(String str)
+
 Checks the validity of a string that can serve to identify a user or account
  (a "username"), where the string is made of one or more parts called
  "userparts" separated by spaces (U+0020) and where the case of letters in
@@ -172,7 +180,9 @@ Checks the validity of a string that can serve to identify a user or account
  point (see RFC 8265, sec. 3.3.4).
 
 ### UserpartEnforce
+
     public static String UserpartEnforce(String str, boolean preserveCase)
+
 Checks the validity of a string without spaces that can serve to identify a
  user or account (a "userpart"), where the case of letters in the string is
  either mapped to lowercase or preserved. This checking is done using the
@@ -195,7 +205,9 @@ Checks the validity of a string without spaces that can serve to identify a
  8265, secs. 3.3.4 and 3.4.4).
 
 ### UsernameEnforce
+
     public static String UsernameEnforce(String str, boolean preserveCase)
+
 Checks the validity of a string that can serve to identify a user or account
  (a "username"), where the string is made of one or more parts called
  "userparts" separated by spaces (U+0020) and where the case of letters in
@@ -225,7 +237,9 @@ Checks the validity of a string that can serve to identify a user or account
  point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
 
 ### OpaqueStringEnforce
+
     public static String OpaqueStringEnforce(String str)
+
 Checks the validity of a string serving as an arbitrary single-line sequence
  of characters, such as a passphrase. This checking is done using the
  OpaqueString profile in RFC 8265.
@@ -244,7 +258,9 @@ Checks the validity of a string serving as an arbitrary single-line sequence
  4.2.3).
 
 ### NicknameEnforce
+
     public static String NicknameEnforce(String str)
+
 Checks the validity of a string serving as a "memorable, human-friendly
  name" for something (see RFC 8266), as opposed to that thing's identity for
  authentication or authorization purposes (see sec. 6.1 of that RFC). This
@@ -264,7 +280,9 @@ Checks the validity of a string serving as a "memorable, human-friendly
  such purposes, use the NicknameForComparison method instead.
 
 ### NicknameForComparison
+
     public static String NicknameForComparison(String str)
+
 Prepares for comparison a string serving as a "memorable, human-friendly
  name" for something (see RFC 8266), as opposed to that thing's identity for
  authentication or authorization purposes (see sec. 6.1 of that RFC). This

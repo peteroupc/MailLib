@@ -105,26 +105,40 @@
 ## Field Details
 
 ### TextPlainAscii
+
     public static final MediaType TextPlainAscii
+
 Specifies the media type "text/plain" and the "charset" parameter
  "US-ASCII", used for plain text data that contains only characters within
  the basic Latin range (U+0000 to U+007F).
+
 ### TextPlainUtf8
+
     public static final MediaType TextPlainUtf8
+
 Specifies the media type "text/plain" and the "charset" parameter "utf-8",
  used for plain text data that may contain characters outside the basic Latin
  range (U+0000 to U+007F).
+
 ### MessageRfc822
+
     public static final MediaType MessageRfc822
+
 Specifies the media type "message/rfc822", used for Internet mail messages.
+
 ### ApplicationOctetStream
+
     public static final MediaType ApplicationOctetStream
+
 Specifies the media type "application/octet-stream", used for arbitrary
  binary data.
+
 ## Method Details
 
 ### getTopLevelType
+
     public final String getTopLevelType()
+
 Gets the name of this media type's top-level type (such as "text" in
  "text/plain", or "audio" in "audio/basic"). The resulting string will be in
  lowercase; that is, with its basic uppercase letters ("A" to "Z") converted
@@ -136,7 +150,9 @@ Gets the name of this media type's top-level type (such as "text" in
  "audio" .
 
 ### HasStructuredSuffix
+
     public boolean HasStructuredSuffix(String suffix)
+
 Returns whether this media type's subtype has the given structured syntax
  suffix.
 
@@ -159,7 +175,9 @@ Returns whether this media type's subtype has the given structured syntax
  suffix</code> is null or an empty string.
 
 ### equals
+
     public boolean equals(Object obj)
+
 Determines whether this object and another object are equal.
 
 **Overrides:**
@@ -176,7 +194,9 @@ Determines whether this object and another object are equal.
  otherwise, <code>false</code>.
 
 ### hashCode
+
     public int hashCode()
+
 Calculates the hash code of this object. The exact algorithm used by this
  method may change between versions of this library, and no application or
  process IDs are used in the hash code calculation.
@@ -190,7 +210,9 @@ Calculates the hash code of this object. The exact algorithm used by this
 * A 32-bit signed integer.
 
 ### getSubType
+
     public final String getSubType()
+
 Gets this media type's subtype (for example, "plain" in "text/plain"). The
  resulting string will be in lowercase; that is, with its basic uppercase
  letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
@@ -200,7 +222,9 @@ Gets this media type's subtype (for example, "plain" in "text/plain"). The
 * This media type's subtype.
 
 ### isText
+
     public final boolean isText()
+
 Gets a value indicating whether this is a text media type ("text/*").
 
 **Returns:**
@@ -208,7 +232,9 @@ Gets a value indicating whether this is a text media type ("text/*").
 * <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
+
     public final boolean isMultipart()
+
 Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
@@ -217,7 +243,9 @@ Gets a value indicating whether this is a multipart media type.
  false</code>.
 
 ### getParameters
+
     public final Map<String,String> getParameters()
+
 Gets a list of the names and values of parameters contained in this media
  type object. Each parameter name will be in lowercase; that is, with its
  basic uppercase letters ("A" to "Z") converted to basic lowercase letters
@@ -232,7 +260,9 @@ Gets a list of the names and values of parameters contained in this media
  at least the case in version 0.10.0.
 
 ### toString
+
     public String toString()
+
 Converts this media type to a text string form suitable for inserting in
  email headers. Notably, the string contains the value of a Content-Type
  header field (without the text necessarily starting with "Content-Type"
@@ -247,7 +277,9 @@ Converts this media type to a text string form suitable for inserting in
 * A text string form of this media type.
 
 ### ToSingleLineString
+
     public String ToSingleLineString()
+
 Converts this media type to a text string form suitable for inserting in
  HTTP headers. Notably, the string contains the value of a Content-Type
  header field (without the text necessarily starting with "Content-Type"
@@ -258,7 +290,9 @@ Converts this media type to a text string form suitable for inserting in
 * A text string form of this media type.
 
 ### ToUriSafeString
+
     public String ToUriSafeString()
+
 Converts this media type to a text string form suitable for data URIs.
  Notably, the string contains the value of a Content-Type header field
  (without the text necessarily starting with "Content-Type" followed by a
@@ -270,7 +304,9 @@ Converts this media type to a text string form suitable for data URIs.
 * A text string form of this media type.
 
 ### GetCharset
+
     public String GetCharset()
+
 Gets this media type's "charset" parameter, naming a character encoding used
  to represent text in the data that uses this media type.
 
@@ -286,7 +322,9 @@ Gets this media type's "charset" parameter, naming a character encoding used
  string if there is none.
 
 ### GetParameter
+
     public String GetParameter(String name)
+
 Gets the value of a parameter in this media type, such as "charset" or
  "format".
 
@@ -309,7 +347,9 @@ Gets the value of a parameter in this media type, such as "charset" or
 * <code>IllegalArgumentException</code> - Name is empty.
 
 ### getTypeAndSubType
+
     public final String getTypeAndSubType()
+
 Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain". The resulting string will be in lowercase
  letters.
@@ -320,7 +360,9 @@ Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain".
 
 ### Parse
+
     public static MediaType Parse(String mediaTypeValue)
+
 Parses a media type string and returns a media type object. For further
  information, see the overload taking a MediaType parameter.
 
@@ -335,7 +377,9 @@ Parses a media type string and returns a media type object. For further
  mediaTypeValue</code> is empty or syntactically invalid.
 
 ### Parse
+
     public static MediaType Parse(String str, MediaType defaultValue)
+
 <p>Parses a media type string and returns a media type object, or the
  default value if the string is invalid. This method checks the syntactic
  validity of the string, but not whether it has all parameters it's required

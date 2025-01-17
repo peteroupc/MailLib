@@ -33,7 +33,9 @@ Contains methods for parsing and generating date-time strings following the
 ## Method Details
 
 ### GenerateDateString
+
     public static String GenerateDateString(int[] dateTime)
+
 Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
 
@@ -53,7 +55,9 @@ Generates a date-time string following the Internet Message Format (RFC
  (see <code>ParseDateString(string, boolean)</code>).
 
 ### GenerateDateString
+
     public static String GenerateDateString(int[] dateTime, boolean gmt)
+
 Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
 
@@ -77,7 +81,9 @@ Generates a date-time string following the Internet Message Format (RFC
 * <code>NullPointerException</code> - The parameter <code>dateTime</code> is null.
 
 ### ParseDateString
+
     public static int[] ParseDateString(String str, boolean parseObsoleteZones)
+
 <p>Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322), with an option to allow obsolete time
  zone strings to appear in the date-time string. If an array is returned, the
@@ -115,7 +121,9 @@ Generates a date-time string following the Internet Message Format (RFC
  year would overflow the range of a 32-bit signed integer.
 
 ### ParseDateString
+
     public static int[] ParseDateString(String str)
+
 Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322). Obsolete time zone strings are not
  allowed to appear in the date-time string. See <code>
@@ -133,7 +141,9 @@ Gets the date and time extracted from a date-time string following the
  year would overflow the range of a 32-bit signed integer.
 
 ### ParseDateStringHttp
+
     public static int[] ParseDateStringHttp(String v)
+
 Parses a date string in one of the three formats allowed by HTTP/1.1 (RFC
  7231).
 

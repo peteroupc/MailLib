@@ -34,6 +34,9 @@ the order they are declared.
 ## Method Details
 
 ### values
+
     public static Normalization[] values()
+
 ### valueOf
+
     public static Normalization valueOf(String name)

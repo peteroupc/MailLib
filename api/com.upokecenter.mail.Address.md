@@ -26,7 +26,9 @@ Represents an email address.
 ## Method Details
 
 ### equals
+
     public boolean equals(Object obj)
+
 Determines whether this object and another object are equal.
 
 **Overrides:**
@@ -43,7 +45,9 @@ Determines whether this object and another object are equal.
  <code>false</code>.
 
 ### getLocalPart
+
     public final String getLocalPart()
+
 Gets the local part of this email address (the part before the "@" sign).
 
 **Returns:**
@@ -51,7 +55,9 @@ Gets the local part of this email address (the part before the "@" sign).
 * The local part of this email address (the part before the "@" sign).
 
 ### toString
+
     public String toString()
+
 Converts this address object to a text string.
 
 **Overrides:**
@@ -63,7 +69,9 @@ Converts this address object to a text string.
 * A string representation of this object.
 
 ### hashCode
+
     public int hashCode()
+
 Returns a hash code for this address object. No application or process
  identifiers are used in the hash code calculation.
 
@@ -76,7 +84,9 @@ Returns a hash code for this address object. No application or process
 * A hash code for this instance.
 
 ### getDomain
+
     public final String getDomain()
+
 Gets the domain of this email address (the part after the "@" sign).
 
 **Returns:**

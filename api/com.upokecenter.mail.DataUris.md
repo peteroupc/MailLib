@@ -37,7 +37,9 @@
 ## Method Details
 
 ### DataUriMediaType
+
     public static MediaType DataUriMediaType(String uri)
+
 Extracts the media type from a Data URI (uniform resource identifier) in the
  form of a text string.
 
@@ -55,7 +57,9 @@ Extracts the media type from a Data URI (uniform resource identifier) in the
 * <code>NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### DataUriMediaType
+
     public static MediaType DataUriMediaType(URI uri)
+
 Extracts the media type from a Data URI (uniform resource identifier) in the
  form of a URI object.
 
@@ -73,7 +77,9 @@ Extracts the media type from a Data URI (uniform resource identifier) in the
 * <code>NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### DataUriBytes
+
     public static byte[] DataUriBytes(URI uri)
+
 Extracts the data from a Data URI (uniform resource identifier) in the form
  of a byte array, where the Data URI is given as a URI object.
 
@@ -91,7 +97,9 @@ Extracts the data from a Data URI (uniform resource identifier) in the form
 * <code>NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### DataUriBytes
+
     public static byte[] DataUriBytes(String uri)
+
 Extracts the data from a Data URI (uniform resource identifier) in the form
  of a byte array.
 
@@ -109,7 +117,9 @@ Extracts the data from a Data URI (uniform resource identifier) in the form
 * <code>NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### MakeDataUri
+
     public static String MakeDataUri(String textString)
+
 Encodes text as a Data URI (uniform resource identifier).
 
 **Parameters:**
@@ -125,7 +135,9 @@ Encodes text as a Data URI (uniform resource identifier).
 * <code>NullPointerException</code> - The parameter <code>textString</code> is null.
 
 ### MakeDataUri
+
     public static String MakeDataUri(byte[] bytes, MediaType mediaType)
+
 Encodes data with the given media type in a Data URI (uniform resource
  identifier).
 

@@ -22,7 +22,7 @@ This type is immutable, meaning its values can't be changed once it's created. T
 * <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
 * <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type ("text/*").
 * <code>[public static readonly PeterO.Mail.MediaType MessageRfc822;](#MessageRfc822)</code> - Specifies the media type "message/rfc822", used for Internet mail messages.
-* <code>[Parameters](#Parameters)</code> - Gets a list of the parameter names contained in this media type object and their values.
+* <code>[Parameters](#Parameters)</code> - Gets a list of the names and values of parameters contained in this media type object.
 * <code>[Parse(string)](#Parse_string)</code> - Parses a media type string and returns a media type object.
 * <code>[Parse(string, PeterO.Mail.MediaType)](#Parse_string_PeterO_Mail_MediaType)</code> - Parses a media type string and returns a media type object, or the default value if the string is invalid.
 * <code>[SubType](#SubType)</code> - Gets this media type's subtype (for example, "plain" in "text/plain").
@@ -89,7 +89,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
     public System.Collections.Generic.IDictionary Parameters { get; }
 
-Gets a list of the parameter names contained in this media type object and their values. Each parameter name will be in lowercase; that is, with its basic uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
+Gets a list of the names and values of parameters contained in this media type object. Each parameter name will be in lowercase; that is, with its basic uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
 
 <b>Returns:</b>
 

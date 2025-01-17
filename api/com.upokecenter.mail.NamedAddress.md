@@ -60,7 +60,9 @@ Represents an email address and a name for that address. Can represent a
 ## Method Details
 
 ### ToDisplayStringShort
+
     public static String ToDisplayStringShort(List<NamedAddress> addresses)
+
 Generates a string containing the display names of the given named-address
  objects, separated by commas. The generated string is intended to be
  displayed for others to see, and is not intended to be parsed by computer
@@ -81,7 +83,9 @@ Generates a string containing the display names of the given named-address
 * <code>NullPointerException</code> - The parameter <code>addresses</code> is null.
 
 ### ToDisplayString
+
     public static String ToDisplayString(List<NamedAddress> addresses)
+
 Generates a string containing the display names and email addresses of the
  given named-address objects, separated by commas. The generated string is
  intended to be displayed for others to see, and is not intended to be parsed
@@ -101,7 +105,9 @@ Generates a string containing the display names and email addresses of the
 * <code>NullPointerException</code> - The parameter <code>addresses</code> is null.
 
 ### ParseAddresses
+
     public static List<NamedAddress> ParseAddresses(String addressValue)
+
 Generates a list of NamedAddress objects from a comma-separated list of
  addresses. Each address must follow the syntax accepted by the one-argument
  constructor of NamedAddress.
@@ -121,7 +127,9 @@ Generates a list of NamedAddress objects from a comma-separated list of
 * <code>NullPointerException</code> - The parameter <code>addressValue</code> is null.
 
 ### hashCode
+
     public int hashCode()
+
 Calculates the hash code of this object. The exact algorithm used by this
  method is not guaranteed to be the same between versions of this library,
  and no application or process IDs are used in the hash code calculation.
@@ -135,7 +143,9 @@ Calculates the hash code of this object. The exact algorithm used by this
 * A 32-bit hash code.
 
 ### equals
+
     public boolean equals(Object obj)
+
 Determines whether this object and another object are equal. For groups, the
  named addresses (display name/email address pairs) must be equal and in the
  same order in both objects.
@@ -154,7 +164,9 @@ Determines whether this object and another object are equal. For groups, the
  the same type; otherwise, <code>false</code>.
 
 ### AddressesEqual
+
     public boolean AddressesEqual(NamedAddress na)
+
 Determines whether the email addresses stored this object are the same
  between this object and the given object, regardless of the display names
  they store. For groups, the email addresses must be equal and in the same
@@ -169,7 +181,9 @@ Determines whether the email addresses stored this object are the same
 * Either <code>true</code> or <code>false</code>.
 
 ### getName
+
     public final String getName()
+
 Gets the display name for this email address, or the email address's value
  if the display name is null. Returns an empty string if the address and
  display name are null.
@@ -179,7 +193,9 @@ Gets the display name for this email address, or the email address's value
 * The name for this email address.
 
 ### getDisplayName
+
     public final String getDisplayName()
+
 Gets the display name for this email address.
 
 **Returns:**
@@ -188,7 +204,9 @@ Gets the display name for this email address.
  name is absent.
 
 ### getAddress
+
     public final Address getAddress()
+
 Gets the email address associated with this object.
 
 **Returns:**
@@ -197,7 +215,9 @@ Gets the email address associated with this object.
  this object represents a group of addresses instead.
 
 ### isGroup
+
     public final boolean isGroup()
+
 Gets a value indicating whether this represents a group of addresses rather
  than a single address.
 
@@ -207,7 +227,9 @@ Gets a value indicating whether this represents a group of addresses rather
  <code>false</code>.
 
 ### toString
+
     public String toString()
+
 Converts this object to a text string. This will generally be the form of
  this NamedAddress object as it could appear in a "To" header field.
 
@@ -220,7 +242,9 @@ Converts this object to a text string. This will generally be the form of
 * A string representation of this object.
 
 ### ToDisplayString
+
     public String ToDisplayString()
+
 Converts this named-address object to a text string intended to be displayed
  for others to see. The returned string is not intended to be parsed by
  computer programs.
@@ -231,7 +255,9 @@ Converts this named-address object to a text string intended to be displayed
  end-users.
 
 ### getGroupAddresses
+
     public final List<NamedAddress> getGroupAddresses()
+
 Gets a read-only list of addresses that make up the group, if this object
  represents a group, or an empty list otherwise.
 

@@ -30,7 +30,9 @@ Renamed to MakeDataUri.
 ## Method Details
 
 ### DataUrlMediaType
+
     @Deprecated public static MediaType DataUrlMediaType(String url)
+
 Extracts the media type from a Data URI (uniform resource identifier).
 
 **Parameters:**
@@ -43,7 +45,9 @@ Extracts the media type from a Data URI (uniform resource identifier).
  syntactically invalid, or is not a Data URI.
 
 ### DataUrlBytes
+
     @Deprecated public static byte[] DataUrlBytes(String url)
+
 Extracts the data from a Data URI (uniform resource identifier) in the form
  of a byte array.
 
@@ -57,7 +61,9 @@ Extracts the data from a Data URI (uniform resource identifier) in the form
  syntactically invalid, or is not a data URI.
 
 ### MakeDataUrl
+
     @Deprecated public static String MakeDataUrl(String textString)
+
 Encodes text as a Data URI (uniform resource identifier).
 
 **Parameters:**
@@ -73,7 +79,9 @@ Encodes text as a Data URI (uniform resource identifier).
 * <code>NullPointerException</code> - The parameter <code>textString</code> is null.
 
 ### MakeDataUrl
+
     @Deprecated public static String MakeDataUrl(byte[] bytes, MediaType mediaType)
+
 Encodes data with the given media type in a Data URI (uniform resource
  identifier).
 

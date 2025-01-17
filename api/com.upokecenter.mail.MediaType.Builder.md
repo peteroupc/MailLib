@@ -41,7 +41,9 @@ A mutable data type that allows a media type object to be built.
 ## Method Details
 
 ### getTopLevelType
+
     public final String getTopLevelType()
+
 Gets this value's top-level type.
 
 **Returns:**
@@ -58,9 +60,13 @@ Gets this value's top-level type.
  syntactically invalid for a top-level type.
 
 ### setTopLevelType
+
     public final void setTopLevelType(String value)
+
 ### getSubType
+
     public final String getSubType()
+
 Gets this value's subtype.
 
 **Returns:**
@@ -77,9 +83,13 @@ Gets this value's subtype.
  syntactically invalid for a subtype.
 
 ### setSubType
+
     public final void setSubType(String value)
+
 ### ToMediaType
+
     public MediaType ToMediaType()
+
 Converts this builder to an immutable media type object.
 
 **Returns:**
@@ -87,7 +97,9 @@ Converts this builder to an immutable media type object.
 * A MediaType object.
 
 ### SetTopLevelType
+
     public MediaType.Builder SetTopLevelType(String str)
+
 Sets this media type's top-level type. This method enables the pattern of
  method chaining (for example, <code>new...().getSet()...().getSet()...()</code>) unlike
  with the TopLevelType property in.NET or the setTopLevelType method (with
@@ -110,7 +122,9 @@ Sets this media type's top-level type. This method enables the pattern of
  for a top-level type.
 
 ### RemoveParameter
+
     public MediaType.Builder RemoveParameter(String name)
+
 Removes a parameter from this builder object. Does nothing if the
  parameter's name doesn't exist.
 
@@ -130,7 +144,9 @@ Removes a parameter from this builder object. Does nothing if the
 * <code>NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetParameter
+
     public MediaType.Builder SetParameter(String name, String value)
+
 Sets a parameter's name and value for this media type.
 
 **Parameters:**
@@ -156,7 +172,9 @@ Sets a parameter's name and value for this media type.
  syntactically invalid.
 
 ### SetSubType
+
     public MediaType.Builder SetSubType(String str)
+
 Sets this media type's subtype, such as "plain" or "xml" . This method
  enables the pattern of method chaining (for example, <code>
  new...().getSet()...().getSet()...()</code>) unlike with the SubType property in.NET or the
@@ -178,7 +196,9 @@ Sets this media type's subtype, such as "plain" or "xml" . This method
  syntactically invalid.
 
 ### toString
+
     public String toString()
+
 Converts this object to a text string of the media type it represents, in
  the same form as <code>MediaType.toString</code>.
 

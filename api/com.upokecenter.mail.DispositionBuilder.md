@@ -47,7 +47,9 @@ Converts this object to a text string.
 ## Method Details
 
 ### getDispositionType
+
     public final String getDispositionType()
+
 Gets this value's disposition type, such as "inline" or "attachment".
 
 **Returns:**
@@ -63,9 +65,13 @@ Gets this value's disposition type, such as "inline" or "attachment".
  empty string.
 
 ### setDispositionType
+
     public final void setDispositionType(String value)
+
 ### isText
+
     @Deprecated public final boolean isText()
+
 Gets a value indicating whether this is a text media type.
 
 **Returns:**
@@ -73,7 +79,9 @@ Gets a value indicating whether this is a text media type.
 * <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
+
     @Deprecated public final boolean isMultipart()
+
 Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
@@ -82,7 +90,9 @@ Gets a value indicating whether this is a multipart media type.
  false</code>.
 
 ### ToDisposition
+
     public ContentDisposition ToDisposition()
+
 Converts this object to an immutable ContentDisposition object.
 
 **Returns:**
@@ -90,7 +100,9 @@ Converts this object to an immutable ContentDisposition object.
 * A MediaType object.
 
 ### SetDispositionType
+
     public DispositionBuilder SetDispositionType(String str)
+
 Sets the disposition type, such as "inline". This method enables the pattern
  of method chaining (for example, <code>new ...().getSet()...().getSet()...()</code>)
  unlike with the DispositionType property in .NET or the setDispositionType
@@ -111,7 +123,9 @@ Sets the disposition type, such as "inline". This method enables the pattern
 * <code>IllegalArgumentException</code> - Str is empty.
 
 ### RemoveParameter
+
     public DispositionBuilder RemoveParameter(String name)
+
 Removes a parameter from this content disposition. Does nothing if the
  parameter's name doesn't exist.
 
@@ -131,7 +145,9 @@ Removes a parameter from this content disposition. Does nothing if the
 * <code>NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetParameter
+
     public DispositionBuilder SetParameter(String name, String value)
+
 Sets a parameter of this content disposition.
 
 **Parameters:**
@@ -156,7 +172,9 @@ Sets a parameter of this content disposition.
  well-formed parameter name.
 
 ### toString
+
     public String toString()
+
 Converts this object to a text string.
 
 **Overrides:**

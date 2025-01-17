@@ -110,15 +110,23 @@
 ## Field Details
 
 ### Attachment
+
     public static final ContentDisposition Attachment
+
 The content disposition value "attachment" .
+
 ### Inline
+
     public static final ContentDisposition Inline
+
 The content disposition value "inline" .
+
 ## Method Details
 
 ### getDispositionType
+
     public final String getDispositionType()
+
 Gets a string containing this object's disposition type, such as "inline" or
  "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec. 2.8,
  unrecognized disposition types should be treated as "attachment". (There is
@@ -133,7 +141,9 @@ Gets a string containing this object's disposition type, such as "inline" or
  or "attachment".
 
 ### equals
+
     public boolean equals(Object obj)
+
 Determines whether this object and another object are equal.
 
 **Overrides:**
@@ -151,7 +161,9 @@ Determines whether this object and another object are equal.
  if one is null and the other isn't.
 
 ### hashCode
+
     public int hashCode()
+
 Calculates the hash code of this object. The exact algorithm used by this
  method may change between versions of this library, and no application or
  process IDs are used in the hash code calculation.
@@ -165,7 +177,9 @@ Calculates the hash code of this object. The exact algorithm used by this
 * A 32-bit hash code.
 
 ### isInline
+
     public final boolean isInline()
+
 Gets a value indicating whether the disposition type is inline.
 
 **Returns:**
@@ -174,7 +188,9 @@ Gets a value indicating whether the disposition type is inline.
  false</code>.
 
 ### isAttachment
+
     public final boolean isAttachment()
+
 Gets a value indicating whether the disposition type is attachment.
 
 **Returns:**
@@ -183,7 +199,9 @@ Gets a value indicating whether the disposition type is attachment.
  <code>false</code>.
 
 ### getParameters
+
     public final Map<String,String> getParameters()
+
 <p>Gets a list of parameter names associated with this object and their
  values. Each parameter name will be in lowercase; that is, with its basic
  uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to
@@ -199,7 +217,9 @@ Gets a value indicating whether the disposition type is attachment.
  any particular order; this is at least the case in version 0.10.0.
 
 ### toString
+
     public String toString()
+
 Converts this content disposition to a text string form suitable for
  inserting in email headers. Notably, the string contains the value of a
  Content-Disposition header field (without the text necessarily starting with
@@ -215,7 +235,9 @@ Converts this content disposition to a text string form suitable for
 * A text string form of this content disposition.
 
 ### ToSingleLineString
+
     public String ToSingleLineString()
+
 Converts this content disposition to a text string form suitable for
  inserting in HTTP headers. Notably, the string contains the value of a
  Content-Disposition header field (without the text necessarily starting with
@@ -226,7 +248,9 @@ Converts this content disposition to a text string form suitable for
 * A text string form of this content disposition.
 
 ### MakeFilename
+
     public static String MakeFilename(String str)
+
 <p>Converts a file name from the Content-disposition header field (or
  another string representing a title and an optional file extension) to a
  suitable name for saving data to a file. This method is idempotent; that is,
@@ -297,7 +321,9 @@ Converts this content disposition to a text string form suitable for
  form C. Returns the empty string if <code>str</code> is null or empty.
 
 ### GetFilename
+
     public String GetFilename()
+
 Gets an adapted version of the "filename" parameter in this content
  disposition object by using the "MakeFilename" method.
 
@@ -307,7 +333,9 @@ Gets an adapted version of the "filename" parameter in this content
  string if there is no "filename" parameter or that parameter is empty.
 
 ### GetCreationDate
+
     public int[] GetCreationDate()
+
 Gets the date and time extracted from this content disposition's
  "creation-date" parameter, which specifies the date of creation of a file
  (RFC 2183 sec. 2.4). The parameter is parsed as though by <code>
@@ -323,7 +351,9 @@ Gets the date and time extracted from this content disposition's
  signed integer.
 
 ### GetModificationDate
+
     public int[] GetModificationDate()
+
 Gets the date and time extracted from this content disposition's
  "modification-date" parameter, which specifies the date of last modification
  of a file (RFC 2183 sec. 2.5). The parameter is parsed as though by <code>
@@ -339,7 +369,9 @@ Gets the date and time extracted from this content disposition's
  signed integer.
 
 ### GetReadDate
+
     public int[] GetReadDate()
+
 Gets the date and time extracted from this content disposition's "read-date"
  parameter, which specifies the date at which a file was last read (RFC 2183
  sec. 2.6). The parameter is parsed as though by <code>
@@ -355,7 +387,9 @@ Gets the date and time extracted from this content disposition's "read-date"
  signed integer.
 
 ### GetParameter
+
     public String GetParameter(String name)
+
 Gets a parameter from this disposition object. For the "filename" parameter,
  the value of that parameter is not adapted with the
  ContentDisposition.MakeFilename method; see the documentation for the
@@ -380,7 +414,9 @@ Gets a parameter from this disposition object. For the "filename" parameter,
 * <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty.
 
 ### Parse
+
     public static ContentDisposition Parse(String dispoValue)
+
 Creates a new content disposition object from the value of a
  Content-Disposition header field.
 
@@ -398,7 +434,9 @@ Creates a new content disposition object from the value of a
 * <code>NullPointerException</code> - The parameter <code>dispoValue</code> is null.
 
 ### Parse
+
     public static ContentDisposition Parse(String dispositionValue, ContentDisposition defaultValue)
+
 <p>Parses a content disposition string and returns a content disposition
  object, or the default value if the string is invalid. This method checks
  the syntactic validity of the string, but not whether it has all parameters

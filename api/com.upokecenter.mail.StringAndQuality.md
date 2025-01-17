@@ -19,7 +19,9 @@ Stores an arbitrary string and a "quality value" for that string. For
 ## Method Details
 
 ### getValue
+
     public final String getValue()
+
 Gets the arbitrary string stored by this object.
 
 **Returns:**
@@ -27,7 +29,9 @@ Gets the arbitrary string stored by this object.
 * The arbitrary string stored by this object.
 
 ### getQuality
+
     public final int getQuality()
+
 Gets the quality value stored by this object.
 
 **Returns:**

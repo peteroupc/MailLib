@@ -332,7 +332,9 @@ Renamed to ToMailtoUri.
 ## Method Details
 
 ### ExtractHeader
+
     public static String ExtractHeader(byte[] bytes, String headerFieldName)
+
 Extracts the value of a header field from a byte array representing an email
  message. The return value is intended for display purposes, not for further
  processing, and this method is intended to be used as an error handling tool
@@ -364,7 +366,9 @@ Extracts the value of a header field from a byte array representing an email
  one) does not follow the header fields.
 
 ### NewBodyPart
+
     public static Message NewBodyPart()
+
 Creates a message object with no header fields.
 
 **Returns:**
@@ -372,7 +376,9 @@ Creates a message object with no header fields.
 * A message object with no header fields.
 
 ### SetCurrentDate
+
     public Message SetCurrentDate()
+
 <p>Sets this message's Date header field to the current time as its value,
  with an unspecified time zone offset. </p> <p>This method can be used when
  the message is considered complete and ready to be generated, for example,
@@ -383,7 +389,9 @@ Creates a message object with no header fields.
 * This object.
 
 ### getBccAddresses
+
     @Deprecated public final List<NamedAddress> getBccAddresses()
+
 Gets a list of addresses found in the BCC header field or fields.
 
 **Returns:**
@@ -391,7 +399,9 @@ Gets a list of addresses found in the BCC header field or fields.
 * A list of addresses found in the BCC header field or fields.
 
 ### getBodyString
+
     @Deprecated public final String getBodyString()
+
 Gets the body of this message as a text string. See the <code>
  GetBodyString()</code> method.
 
@@ -404,7 +414,9 @@ Gets the body of this message as a text string. See the <code>
 * <code>UnsupportedOperationException</code> - See the <code>GetBodyString()</code> method.
 
 ### GetAttachments
+
     public List<Message> GetAttachments()
+
 <p>Gets a list of descendant body parts of this message that are considered
  attachments. An <i>attachment</i> is a body part or descendant body part
  that has a content disposition with a type other than inline. This message
@@ -417,7 +429,9 @@ Gets the body of this message as a text string. See the <code>
  attachments.
 
 ### GetBodyString
+
     public String GetBodyString()
+
 Gets the body of this message as a text string. If this message's media type
  is "multipart/alternative", returns the result of this method for the last
  supported body part. For any other "multipart" media type, returns the
@@ -438,7 +452,9 @@ Gets the body of this message as a text string. If this message's media type
  or has an unsupported character encoding.
 
 ### getCCAddresses
+
     @Deprecated public final List<NamedAddress> getCCAddresses()
+
 Gets a list of addresses found in the CC header field or fields.
 
 **Returns:**
@@ -446,7 +462,9 @@ Gets a list of addresses found in the CC header field or fields.
 * A list of addresses found in the CC header field or fields.
 
 ### GetFormattedBodyString
+
     public String GetFormattedBodyString()
+
 <p>Gets a Hypertext Markup Language (HTML) rendering of this message's text
  body. This method currently supports any message for which <code>
  GetBodyString()</code> gives out a text string and treats the following media
@@ -469,7 +487,9 @@ Gets a list of addresses found in the CC header field or fields.
  GetBodyString()</code> for more information.
 
 ### getContentDisposition
+
     public final ContentDisposition getContentDisposition()
+
 Gets this message's content disposition. The content disposition specifies
  how a user agent should display or otherwise handle this message. Can be set
  to null. If set to a disposition or to null, updates the Content-Disposition
@@ -482,9 +502,13 @@ Gets this message's content disposition. The content disposition specifies
 * This message's content disposition, or null if none is specified.
 
 ### setContentDisposition
+
     public final void setContentDisposition(ContentDisposition value)
+
 ### getContentType
+
     public final MediaType getContentType()
+
 Gets this message's media type. When getting, the media type may differ in
  certain cases from the value of the Content-Type header field, if any, and
  may have a value even if the Content-Type header field is absent from this
@@ -500,9 +524,13 @@ Gets this message's media type. When getting, the media type may differ in
 * <code>NullPointerException</code> - This value is being set and "value" is null.
 
 ### setContentType
+
     public final void setContentType(MediaType value)
+
 ### getFileName
+
     public final String getFileName()
+
 <p>Gets a file name suggested by this message for saving the message's body
  to a file. For more information on the algorithm, see
  ContentDisposition.MakeFilename.</p> <p>This method generates a file name
@@ -517,7 +545,9 @@ Gets this message's media type. When getting, the media type may differ in
  filename is an empty string.
 
 ### GetAddresses
+
     public List<NamedAddress> GetAddresses(String headerName)
+
 Gets a list of addresses contained in the header fields with the given name
  in this message.
 
@@ -541,7 +571,9 @@ Gets a list of addresses contained in the header fields with the given name
 * <code>IllegalArgumentException</code> - The parameter <code>headerName</code> is empty.
 
 ### getFromAddresses
+
     @Deprecated public final List<NamedAddress> getFromAddresses()
+
 Gets a list of addresses found in the From header field or fields.
 
 **Returns:**
@@ -549,7 +581,9 @@ Gets a list of addresses found in the From header field or fields.
 * A list of addresses found in the From header field or fields.
 
 ### getHeaderFields
+
     public final List<Map.Entry<String,String>> getHeaderFields()
+
 Gets a snapshot of the header fields of this message, in the order in which
  they appear in the message. For each item in the list, the key is the header
  field's name (where any basic uppercase letters, U+0041 to U+005A, are
@@ -561,7 +595,9 @@ Gets a snapshot of the header fields of this message, in the order in which
 * A snapshot of the header fields of this message.
 
 ### getParts
+
     public final List<Message> getParts()
+
 Gets a list of all the parts of this message. This list is editable. This
  will only be used if the message is a multipart message.
 
@@ -571,7 +607,9 @@ Gets a list of all the parts of this message. This list is editable. This
  will only be used if the message is a multipart message.
 
 ### getSubject
+
     public final String getSubject()
+
 Gets this message's subject. The subject's value is found as though
  GetHeader("subject") were called.
 
@@ -580,9 +618,13 @@ Gets this message's subject. The subject's value is found as though
 * This message's subject, or null if there is none.
 
 ### setSubject
+
     public final void setSubject(String value)
+
 ### getToAddresses
+
     @Deprecated public final List<NamedAddress> getToAddresses()
+
 Gets a list of addresses found in the To header field or fields.
 
 **Returns:**
@@ -590,7 +632,9 @@ Gets a list of addresses found in the To header field or fields.
 * A list of addresses found in the To header field or fields.
 
 ### AddHeader
+
     public Message AddHeader(Map.Entry<String,String> header)
+
 <p>Adds a header field to the end of the message's header. </p> <p>This
  method updates the ContentType and ContentDisposition properties if those
  header fields have been modified by this method.</p>
@@ -612,7 +656,9 @@ Gets a list of addresses found in the To header field or fields.
  invalid character, or the header field's value is syntactically invalid.
 
 ### AddHeader
+
     public Message AddHeader(String name, String value)
+
 <p>Adds a header field to the end of the message's header. </p> <p>This
  method updates the ContentType and ContentDisposition properties if those
  header fields have been modified by this method.</p>
@@ -636,7 +682,9 @@ Gets a list of addresses found in the To header field or fields.
  invalid character, or the header field's value is syntactically invalid.
 
 ### Generate
+
     public String Generate()
+
 <p>Generates this message's data in text form. </p><p>The generated message
  will have only Basic Latin code points (U+0000 to U+007F), and the transfer
  encoding will always be 7bit, quoted-printable, or base64 (the declared
@@ -670,7 +718,9 @@ Gets a list of addresses found in the To header field or fields.
  generated.
 
 ### GenerateBytes
+
     public byte[] GenerateBytes()
+
 Generates this message's data as a byte array, using the same algorithm as
  the Generate method.
 
@@ -679,7 +729,9 @@ Generates this message's data as a byte array, using the same algorithm as
 * The generated message as a byte array.
 
 ### GetBody
+
     public byte[] GetBody()
+
 Gets the byte array for this message's body. This method doesn' t make a
  copy of that byte array.
 
@@ -688,7 +740,9 @@ Gets the byte array for this message's body. This method doesn' t make a
 * A byte array.
 
 ### GetDate
+
     public int[] GetDate()
+
 <p>Gets the date and time extracted from this message's Date header field
  (the value of which is found as though GetHeader("date") were called). See
  <b>MailDateTime.ParseDateString(string, boolean)</b> for more information on
@@ -699,7 +753,9 @@ Gets the byte array for this message's body. This method doesn' t make a
 * An array of 32-bit unsigned integers.
 
 ### SetDate
+
     public Message SetDate(int[] dateTime)
+
 Sets this message's Date header field to the given date and time.
 
 **Parameters:**
@@ -721,7 +777,9 @@ Sets this message's Date header field to the given date and time.
 * <code>NullPointerException</code> - The parameter <code>dateTime</code> is null.
 
 ### GetBodyMessage
+
     public Message GetBodyMessage()
+
 Returns the mail message contained in this message's body.
 
 **Returns:**
@@ -730,7 +788,9 @@ Returns the mail message contained in this message's body.
  "message/news", or "message/global", or null otherwise.
 
 ### GetHeader
+
     public Map.Entry<String,String> GetHeader(int index)
+
 Gets the name and value of a header field by index.
 
 **Parameters:**
@@ -748,7 +808,9 @@ Gets the name and value of a header field by index.
  high as the number of header fields.
 
 ### GetHeader
+
     public String GetHeader(String name)
+
 Gets the first instance of the header field with the specified name, using a
  basic case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic uppercase letters A to
@@ -768,7 +830,9 @@ Gets the first instance of the header field with the specified name, using a
 * <code>NullPointerException</code> - Name is null.
 
 ### GetHeaderArray
+
     public String[] GetHeaderArray(String name)
+
 Gets an array with the values of all header fields with the specified name,
  using a basic case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic uppercase letters A to
@@ -789,7 +853,9 @@ Gets an array with the values of all header fields with the specified name,
 * <code>NullPointerException</code> - Name is null.
 
 ### ClearHeaders
+
     public Message ClearHeaders()
+
 Deletes all header fields in this message. Also clears this message's
  content disposition and resets its content type to MediaType.TextPlainAscii.
 
@@ -798,7 +864,9 @@ Deletes all header fields in this message. Also clears this message's
 * This object.
 
 ### RemoveHeader
+
     public Message RemoveHeader(int index)
+
 <p>Removes a header field by index. </p> <p>This method updates the
  ContentType and ContentDisposition properties if those header fields have
  been modified by this method.</p>
@@ -817,7 +885,9 @@ Deletes all header fields in this message. Also clears this message's
  high as the number of header fields.
 
 ### RemoveHeader
+
     public Message RemoveHeader(String name)
+
 <p>Removes all instances of the given header field from this message. If
  this is a multipart message, the header field is not removed from its body
  part headers. A basic case-insensitive comparison is used. (Two strings are
@@ -840,7 +910,9 @@ Deletes all header fields in this message. Also clears this message's
 * <code>NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetBody
+
     public Message SetBody(byte[] bytes)
+
 Sets the body of this message to the given byte array. This method doesn't
  make a copy of that byte array.
 
@@ -857,7 +929,9 @@ Sets the body of this message to the given byte array. This method doesn't
 * <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
 
 ### SetHeader
+
     public Message SetHeader(int index, Map.Entry<String,String> header)
+
 <p>Sets the name and value of a header field by index. </p> <p>This method
  updates the ContentType and ContentDisposition properties if those header
  fields have been modified by this method.</p>
@@ -883,7 +957,9 @@ Sets the body of this message to the given byte array. This method doesn't
 * <code>NullPointerException</code> - The key or value of <code>header</code> is null.
 
 ### SetHeader
+
     public Message SetHeader(int index, String name, String value)
+
 <p>Sets the name and value of a header field by index. </p> <p>This method
  updates the ContentType and ContentDisposition properties if those header
  fields have been modified by this method.</p>
@@ -911,7 +987,9 @@ Sets the body of this message to the given byte array. This method doesn't
  null.
 
 ### SetHeader
+
     public Message SetHeader(int index, String value)
+
 <p>Sets the value of a header field by index without changing its name. </p>
  <p>This method updates the ContentType and ContentDisposition properties if
  those header fields have been modified by this method.</p>
@@ -936,7 +1014,9 @@ Sets the body of this message to the given byte array. This method doesn't
 * <code>NullPointerException</code> - The parameter <code>value</code> is null.
 
 ### DecodeHeaderValue
+
     public static String DecodeHeaderValue(String name, String value)
+
 Decodes RFC 2047 encoded words from the given header field value and returns
  a string with those words decoded. For an example of encoded words, see the
  constructor for PeterO.Mail.NamedAddress.
@@ -960,7 +1040,9 @@ Decodes RFC 2047 encoded words from the given header field value and returns
 * <code>NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetHeader
+
     public Message SetHeader(String name, String value)
+
 <p>Sets the value of this message's header field. If a header field with the
  same name exists, its value is replaced. If the header field's name occurs
  more than once, only the first instance of the header field is replaced.
@@ -986,7 +1068,9 @@ Decodes RFC 2047 encoded words from the given header field value and returns
  null.
 
 ### SetHtmlBody
+
     public Message SetHtmlBody(String str)
+
 Sets the body of this message to the specified string in Hypertext Markup
  Language (HTML) format. The character sequences CR (carriage return, "\r",
  U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF
@@ -1006,7 +1090,9 @@ Sets the body of this message to the specified string in Hypertext Markup
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### SetTextAndHtml
+
     public Message SetTextAndHtml(String text, String html)
+
 Sets the body of this message to a multipart body with plain text and
  Hypertext Markup Language (HTML) versions of the same message. The character
  sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A),
@@ -1029,7 +1115,9 @@ Sets the body of this message to a multipart body with plain text and
  null.
 
 ### SetTextAndMarkdown
+
     public Message SetTextAndMarkdown(String text, String markdown)
+
 <p>Sets the body of this message to a multipart body with plain text,
  Markdown, and Hypertext Markup Language (HTML) versions of the same message.
  The character sequences CR (carriage return, "\r", U+000D), LF (line feed,
@@ -1062,7 +1150,9 @@ Sets the body of this message to a multipart body with plain text and
 * <code>NullPointerException</code> - The parameter <code>markdown</code> is null.
 
 ### SetTextBody
+
     public Message SetTextBody(String str)
+
 Sets the body of this message to the specified plain text string. The
  character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n",
  U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired
@@ -1082,7 +1172,9 @@ Sets the body of this message to the specified plain text string. The
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### AddInline
+
     public Message AddInline(MediaType mediaType)
+
 Adds an inline body part with an empty body and with the given media type to
  this message. Before the new body part is added, if this message isn't
  already a multipart message, it becomes a "multipart/mixed" message with the
@@ -1097,7 +1189,9 @@ Adds an inline body part with an empty body and with the given media type to
 * A Message object for the generated body part.
 
 ### AddAttachment
+
     public Message AddAttachment(MediaType mediaType)
+
 Adds an attachment with an empty body and with the given media type to this
  message. Before the new attachment is added, if this message isn't already a
  multipart message, it becomes a "multipart/mixed" message with the current
@@ -1112,7 +1206,9 @@ Adds an attachment with an empty body and with the given media type to this
 * A Message object for the generated attachment.
 
 ### AddAttachment
+
     public Message AddAttachment(InputStream inputStream, MediaType mediaType)
+
 <p>Adds an attachment to this message in the form of data from the given
  readable stream, and with the given media type. Before the new attachment is
  added, if this message isn't already a multipart message, it becomes a
@@ -1150,7 +1246,9 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 * <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddAttachment
+
     public Message AddAttachment(InputStream inputStream, String filename)
+
 Adds an attachment to this message in the form of data from the given
  readable stream, and with the given file name. Before the new attachment is
  added, if this message isn't already a multipart message, it becomes a
@@ -1182,7 +1280,9 @@ Adds an attachment to this message in the form of data from the given
 * <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddAttachment
+
     public Message AddAttachment(InputStream inputStream, MediaType mediaType, String filename)
+
 Adds an attachment to this message in the form of data from the given
  readable stream, and with the given media type and file name. Before the new
  attachment is added, if this message isn't already a multipart message, it
@@ -1213,7 +1313,9 @@ Adds an attachment to this message in the form of data from the given
 * <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
+
     public Message AddInline(InputStream inputStream, MediaType mediaType)
+
 <p>Adds an inline body part to this message in the form of data from the
  given readable stream, and with the given media type. Before the new body
  part is added, if this message isn't already a multipart message, it becomes
@@ -1251,7 +1353,9 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 * <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
+
     public Message AddInline(InputStream inputStream, String filename)
+
 Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given file name. Before the new body part is
  added, if this message isn't already a multipart message, it becomes a
@@ -1284,7 +1388,9 @@ Adds an inline body part to this message in the form of data from the given
 * <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
+
     public Message AddInline(InputStream inputStream, MediaType mediaType, String filename)
+
 Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given media type and file name. Before the new
  body part is added, if this message isn't already a multipart message, it
@@ -1311,7 +1417,9 @@ Adds an inline body part to this message in the form of data from the given
 * <code>MessageDataException</code> - An I/O error occurred.
 
 ### SelectLanguageMessage
+
     public Message SelectLanguageMessage(List<String> languages)
+
 Selects a body part for a multiple-language message(<code>
  multipart/multilingual</code>) according to the given language priority list.
 
@@ -1334,7 +1442,9 @@ Selects a body part for a multiple-language message(<code>
 * <code>NullPointerException</code> - The parameter <code>languages</code> is null.
 
 ### SelectLanguageMessage
+
     public Message SelectLanguageMessage(List<String> languages, boolean preferOriginals)
+
 Selects a body part for a multiple-language message(<code>
  multipart/multilingual</code>) according to the given language priority list and
  original-language preference.
@@ -1363,7 +1473,9 @@ Selects a body part for a multiple-language message(<code>
 * <code>NullPointerException</code> - The parameter <code>languages</code> is null.
 
 ### MakeMultilingualMessage
+
     public static Message MakeMultilingualMessage(List<Message> messages, List<String> languages)
+
 Generates a multilingual message (see RFC 8255) from a list of messages and
  a list of language strings.
 
@@ -1401,7 +1513,9 @@ Generates a multilingual message (see RFC 8255) from a list of messages and
  no From header field.
 
 ### FromMailtoUrl
+
     @Deprecated public static Message FromMailtoUrl(String url)
+
 <p>Creates a message object from a MailTo URI (uniform resource identifier).
  For more information, see <b>FromMailtoUri(string)</b>.</p>
 
@@ -1415,7 +1529,9 @@ Generates a multilingual message (see RFC 8255) from a list of messages and
  <code>url</code> is null, is syntactically invalid, or is not a MailTo URI.
 
 ### ToMailtoUrl
+
     @Deprecated public String ToMailtoUrl()
+
 Generates a MailTo URI (uniform resource identifier) corresponding to this
  message. The following header fields, and only these, are used to generate
  the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message
@@ -1428,7 +1544,9 @@ Generates a MailTo URI (uniform resource identifier) corresponding to this
 * A MailTo URI corresponding to this message.
 
 ### FromMailtoUri
+
     public static Message FromMailtoUri(String uri)
+
 Creates a message object from a MailTo URI (uniform resource identifier).
  The MailTo URI can contain key-value pairs that follow a question-mark, as
  in the following example: "mailto:me@example.com?subject=A%20Subject". In
@@ -1458,7 +1576,9 @@ Creates a message object from a MailTo URI (uniform resource identifier).
  <code>uri</code> is null, is syntactically invalid, or is not a MailTo URI.
 
 ### FromMailtoUri
+
     public static Message FromMailtoUri(URI uri)
+
 <p>Creates a message object from a MailTo URI (uniform resource identifier)
  in the form of a URI object. For more information, see
  <b>FromMailtoUri(string)</b>.</p>
@@ -1477,7 +1597,9 @@ Creates a message object from a MailTo URI (uniform resource identifier).
 * <code>NullPointerException</code> - The parameter <code>uri</code> is null.
 
 ### ToMailtoUri
+
     public String ToMailtoUri()
+
 Generates a MailTo URI (uniform resource identifier) corresponding to this
  message. The following header fields, and only these, are used to generate
  the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message

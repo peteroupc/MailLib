@@ -69,7 +69,9 @@ Contains methods for parsing and matching language tags.
 ## Method Details
 
 ### IsLanguageRange
+
     public static boolean IsLanguageRange(String str)
+
 Returns whether the given string is a basic language range under RFC 4647.
  Examples include "*", "en-us", and "fr".
 
@@ -83,7 +85,9 @@ Returns whether the given string is a basic language range under RFC 4647.
  otherwise, <code>false</code>.
 
 ### IsLanguageRange
+
     public static boolean IsLanguageRange(String str, boolean extended)
+
 Returns whether the given string is a basic or extended language range under
  RFC 4647. Examples of basic (and extended) language ranges include "*",
  "en-us", and "fr". Examples of extended language ranges include "*-de" and
@@ -102,7 +106,9 @@ Returns whether the given string is a basic or extended language range under
  (depending on the <code>extended</code> parameter); otherwise, <code>false</code>.
 
 ### LanguageTagCase
+
     public static String LanguageTagCase(String str)
+
 Sets the given language tag to the case combination recommended by RFC 5646.
  For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
 
@@ -116,7 +122,9 @@ Sets the given language tag to the case combination recommended by RFC 5646.
  str</code> is null.
 
 ### GetLanguageList
+
     public static List<String> GetLanguageList(String str)
+
 Parses a language list from a Content-Language header field.
 
 **Parameters:**
@@ -131,7 +139,9 @@ Parses a language list from a Content-Language header field.
  null or the empty string, or null if <code>str</code> syntactically invalid.
 
 ### GetRangeListWithQuality
+
     public static List<StringAndQuality> GetRangeListWithQuality(String str)
+
 Parses a language range list from an Accept-Language header field.
 
 **Parameters:**
@@ -151,7 +161,9 @@ Parses a language range list from an Accept-Language header field.
  syntactically invalid.
 
 ### LanguageTagFilter
+
     public static List<String> LanguageTagFilter(List<String> ranges, List<String> languages, boolean extended, boolean matchStarAtEnd)
+
 Finds the language tags that match a priority list of language ranges.
 
 **Parameters:**
@@ -185,7 +197,9 @@ Finds the language tags that match a priority list of language ranges.
  value that is not a potentially valid language tag.
 
 ### MatchesLanguageTag
+
     public static boolean MatchesLanguageTag(String range, String tag)
+
 Determines whether the given language tag matches the given language range.
 
 **Parameters:**
@@ -206,7 +220,9 @@ Determines whether the given language tag matches the given language range.
  language range, or <code>tag</code> is not a potentially valid language tag.
 
 ### LanguageTagLookup
+
     public static String LanguageTagLookup(String range, List<String> languages, String defaultValue)
+
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
@@ -234,7 +250,9 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
  potentially valid language tag.
 
 ### LanguageTagLookup
+
     public static String LanguageTagLookup(List<String> ranges, List<String> languages, String defaultValue)
+
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
@@ -264,7 +282,9 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
  not a potentially valid language tag.
 
 ### LanguageTagFilter
+
     public static List<String> LanguageTagFilter(List<String> ranges, List<String> languages)
+
 Finds the language tags that match a priority list of basic language ranges.
 
 **Parameters:**
@@ -291,7 +311,9 @@ Finds the language tags that match a priority list of basic language ranges.
  not a potentially valid language tag.
 
 ### LanguageTagLookup
+
     public static String LanguageTagLookup(String range, List<String> languages, String defaultValue, boolean extended)
+
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
@@ -321,7 +343,9 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
  potentially valid language tag.
 
 ### LanguageTagLookup
+
     public static String LanguageTagLookup(List<String> ranges, List<String> languages, String defaultValue, boolean extended)
+
 Does a language tag lookup (under RFC 4647) for a matching language tag.
 
 **Parameters:**
@@ -354,7 +378,9 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
  value that is not a potentially valid language tag.
 
 ### IsPotentiallyValidLanguageTag
+
     public static boolean IsPotentiallyValidLanguageTag(String str)
+
 Returns true if (1) the given string is a well-formed language tag under RFC
  5646 (that is, the string follows the syntax given in section 2.1 of that
  RFC), and (2) the language tag contains at most one extended language

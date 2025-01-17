@@ -37,7 +37,9 @@ Reads a Unicode character from a data source.
 ## Method Details
 
 ### Normalize
+
     public static String Normalize(String str, Normalization form)
+
 Converts a string to the given Unicode normalization form.
 
 **Parameters:**
@@ -55,7 +57,9 @@ Converts a string to the given Unicode normalization form.
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
+
     public static boolean IsNormalized(String str, Normalization form)
+
 Returns whether this string is normalized.
 
 **Parameters:**
@@ -71,7 +75,9 @@ Returns whether this string is normalized.
  point.
 
 ### ReadChar
+
     public int ReadChar()
+
 Reads a Unicode character from a data source.
 
 **Returns:**
@@ -80,7 +86,9 @@ Reads a Unicode character from a data source.
  0x10ffff), or the value -1 indicating the end of the source.
 
 ### Read
+
     public int Read(int[] chars, int index, int length)
+
 Reads a sequence of Unicode code points from a data source.
 
 **Parameters:**

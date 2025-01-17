@@ -110,7 +110,9 @@ Reads a Unicode character from a data source.
 ## Method Details
 
 ### IsNormalized
+
     public static boolean IsNormalized(com.upokecenter.text.ICharacterInput chars, Normalization form)
+
 Determines whether the text provided by a character input is normalized.
 
 **Parameters:**
@@ -128,7 +130,9 @@ Determines whether the text provided by a character input is normalized.
 * <code>NullPointerException</code> - The parameter <code>chars</code> is null.
 
 ### Normalize
+
     public static String Normalize(String str, Normalization form)
+
 Converts a string to the given Unicode normalization form.
 
 **Parameters:**
@@ -149,7 +153,9 @@ Converts a string to the given Unicode normalization form.
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
+
     public static boolean IsNormalized(String str, Normalization form)
+
 Determines whether the given string is in the given Unicode normalization
  form.
 
@@ -171,7 +177,9 @@ Determines whether the given string is in the given Unicode normalization
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetChars
+
     @Deprecated public static List<Integer> GetChars(String str, Normalization form)
+
 Gets a list of normalized code points after reading from a string.
 
 **Parameters:**
@@ -190,7 +198,9 @@ Gets a list of normalized code points after reading from a string.
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetChars
+
     @Deprecated public static List<Integer> GetChars(com.upokecenter.text.ICharacterInput chars, Normalization form)
+
 Gets a list of normalized code points after reading from a character stream.
 
 **Parameters:**
@@ -209,7 +219,9 @@ Gets a list of normalized code points after reading from a character stream.
 * <code>NullPointerException</code> - The parameter <code>chars</code> is null.
 
 ### IsNormalized
+
     @Deprecated public static boolean IsNormalized(int[] charArray, Normalization form)
+
 Determines whether the given array of characters is in the given Unicode
  normalization form.
 
@@ -230,7 +242,9 @@ Determines whether the given array of characters is in the given Unicode
 * <code>NullPointerException</code> - The parameter "charList" is null.
 
 ### IsNormalized
+
     @Deprecated public static boolean IsNormalized(List<Integer> charList, Normalization form)
+
 Determines whether the given list of characters is in the given Unicode
  normalization form.
 
@@ -251,7 +265,9 @@ Determines whether the given list of characters is in the given Unicode
 * <code>NullPointerException</code> - The parameter <code>charList</code> is null.
 
 ### ReadChar
+
     public int ReadChar()
+
 Reads a Unicode character from a data source.
 
 **Specified by:**
@@ -264,7 +280,9 @@ Reads a Unicode character from a data source.
  0x10ffff), or the value -1 indicating the end of the source.
 
 ### Read
+
     public int Read(int[] chars, int index, int length)
+
 Reads a sequence of Unicode code points from a data source.
 
 **Specified by:**
