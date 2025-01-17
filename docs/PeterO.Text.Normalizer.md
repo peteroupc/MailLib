@@ -2,7 +2,7 @@
 
     public sealed class Normalizer
 
-<b>Deprecated.</b> Use NormalizerInput instead; that class is much more flexible than Normalizer.
+<b>Obsolete.</b> Use NormalizerInput instead; that class is much more flexible than Normalizer.
 
 Implements the Unicode normalization algorithm and contains methods and functionality to test and convert Unicode strings for Unicode normalization.
 

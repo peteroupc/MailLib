@@ -2,7 +2,7 @@
 
     public class ContentDisposition
 
-Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the DispositionBuilder class.
+Specifies how a message body should be displayed or handled by a mail user agent. This type is immutable; its contents can't be changed after it's created. To create a changeable disposition object, use the ContentDisposition.Builder class.
 
 <b>About the "filename" parameter</b>
 
@@ -222,8 +222,7 @@ Converts a file name from the Content-disposition header field (or another strin
 
  * <b>File Name Support.</b> For recommendations on file name support, see " <a href="https://peteroupc.github.io/filenames.html">File Name Support in Applications</a> ".
 
- * <b>Guarantees.</b> The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if  <i>str</i>
- is null or empty.
+ * <b>Guarantees.</b> The exact file name conversion used by this method is not guaranteed to remain the same between versions of this library, with the exception that the return value will be in normalization form C, will not contain base + slash code points, will not be null, and will be an empty string only if the parameter str is null or empty.
 
  * <b>'Name' and 'Filename' Parameters.</b> Email and HTTP headers may specify suggested filenames using the Content-Disposition header field's  `filename`  parameter or, in practice, the Content-Type header field's  `name`  parameter.
 
@@ -231,7 +230,7 @@ Although RFC 2047 encoded words appearing in both parameters are written out by 
 
 RFC 2046 sec. 4.5.1 (  `application/octet-stream`  subtype in Content-Type header field) cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave a <i>suggested</i> file name to be used if the data were written to a file". Also, RFC 2183 sec. 2.3 (  `filename`  parameter in Content-Disposition) confirms that the " <i>suggested</i> filename" in the  `filename`  parameter "should be <i>used as a basis</i> for the actual filename, where possible", and that that file name should "not [be] blindly use[d]". See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext Transfer Protocol (HTTP).
 
-To the extent that the "name" parameter is not allowed in message bodies other than those with the media type "application/octet-stream" or treated as that media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types"). (Some email implementations may still write out the "name" parameter, even for media types other than  `application/octet-stream`  and even though RFC 2046 has deprecated that parameter.)
+To the extent that the "name" parameter is not allowed in message bodies other than those with the media type "application/octet-stream" or treated as that media type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types"). (Some email implementations may still write out the "name" parameter, even for media types other than  `application/octet-stream`  and even though RFC 2046 has deprecated that parameter.)
 
 .
 

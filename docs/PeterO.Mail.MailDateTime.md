@@ -11,28 +11,6 @@ Contains methods for parsing and generating date-time strings following the Inte
 * <code>[ParseDateString(string, bool)](#ParseDateString_string_bool)</code> - Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322), with an option to allow obsolete time zone strings to appear in the date-time string.
 * <code>[ParseDateStringHttp(string)](#ParseDateStringHttp_string)</code> - Parses a date string in one of the three formats allowed by HTTP/1.
 
-<a id="GenerateDateString_int"></a>
-### GenerateDateString
-
-    public static string GenerateDateString(
-        int[] dateTime);
-
-Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
-
-<b>Parameters:</b>
-
- * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(string, bool)`  for information on the format of this parameter.
-
-<b>Return Value:</b>
-
-A date-time string.
-
-<b>Exceptions:</b>
-
- * System.ArgumentException:
-The parameter  <i>dateTime</i>
- is null or invalid (see  `ParseDateString(string, bool)`  ).
-
 <a id="GenerateDateString_int_bool"></a>
 ### GenerateDateString
 
@@ -62,22 +40,27 @@ The parameter  <i>dateTime</i>
 The parameter  <i>dateTime</i>
  is null.
 
-<a id="ParseDateString_string"></a>
-### ParseDateString
+<a id="GenerateDateString_int"></a>
+### GenerateDateString
 
-    public static int[] ParseDateString(
-        string str);
+    public static string GenerateDateString(
+        int[] dateTime);
 
-Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(string, bool)`  for information on this method's return value.
+Generates a date-time string following the Internet Message Format (RFC 5322) from an 8-element array.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A date-time string.
+ * <i>dateTime</i>: The date and time in the form of an 8-element array. See  `ParseDateString(string, bool)`  for information on the format of this parameter.
 
 <b>Return Value:</b>
 
-An 8-element array containing the date and time, or  `null`  if  <i>str</i>
- is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
+A date-time string.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter  <i>dateTime</i>
+ is null or invalid (see  `ParseDateString(string, bool)`  ).
 
 <a id="ParseDateString_string_bool"></a>
 ### ParseDateString
@@ -111,6 +94,23 @@ If a method or property uses an array of this format and refers to this method's
  * <i>str</i>: A date-time string.
 
  * <i>parseObsoleteZones</i>: If set to  `true` , this method allows obsolete time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations) to appear in the date-time string.
+
+<b>Return Value:</b>
+
+An 8-element array containing the date and time, or  `null`  if  <i>str</i>
+ is null, empty, or syntactically invalid, or if the string's year would overflow the range of a 32-bit signed integer.
+
+<a id="ParseDateString_string"></a>
+### ParseDateString
+
+    public static int[] ParseDateString(
+        string str);
+
+Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). Obsolete time zone strings are not allowed to appear in the date-time string. See  `ParseDateString(string, bool)`  for information on this method's return value.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: A date-time string.
 
 <b>Return Value:</b>
 

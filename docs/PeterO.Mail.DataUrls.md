@@ -2,7 +2,7 @@
 
     public static class DataUrls
 
-<b>Deprecated.</b> Renamed to DataUris.
+<b>Obsolete.</b> Renamed to DataUris.
 
  Contains methods for parsing and generating Data URIs (uniform resource identifiers). Data URIs are described in RFC 2397. Examples for Data URIs follow.
 
@@ -15,10 +15,10 @@
  .
 
 ### Member Summary
-* <code>[DataUrlBytes(string)](#DataUrlBytes_string)</code> - <b>Deprecated:</b> Renamed to DataUriBytes.
-* <code>[DataUrlMediaType(string)](#DataUrlMediaType_string)</code> - <b>Deprecated:</b> Renamed to DataUriMediaType.
-* <code>[MakeDataUrl(byte[], PeterO.Mail.MediaType)](#MakeDataUrl_byte_PeterO_Mail_MediaType)</code> - <b>Deprecated:</b> Renamed to MakeDataUri.
-* <code>[MakeDataUrl(string)](#MakeDataUrl_string)</code> - <b>Deprecated:</b> Renamed to MakeDataUri.
+* <code>[DataUrlBytes(string)](#DataUrlBytes_string)</code> - <b>Obsolete:</b> Renamed to DataUriBytes.
+* <code>[DataUrlMediaType(string)](#DataUrlMediaType_string)</code> - <b>Obsolete:</b> Renamed to DataUriMediaType.
+* <code>[MakeDataUrl(byte[], PeterO.Mail.MediaType)](#MakeDataUrl_byte_PeterO_Mail_MediaType)</code> - <b>Obsolete:</b> Renamed to MakeDataUri.
+* <code>[MakeDataUrl(string)](#MakeDataUrl_string)</code> - <b>Obsolete:</b> Renamed to MakeDataUri.
 
 <a id="DataUrlBytes_string"></a>
 ### DataUrlBytes
@@ -26,7 +26,7 @@
     public static byte[] DataUrlBytes(
         string url);
 
-<b>Deprecated.</b> Renamed to DataUriBytes.
+<b>Obsolete.</b> Renamed to DataUriBytes.
 
 Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array.
 
@@ -45,7 +45,7 @@ The data as a byte array. Returns null if  <i>url</i>
     public static PeterO.Mail.MediaType DataUrlMediaType(
         string url);
 
-<b>Deprecated.</b> Renamed to DataUriMediaType.
+<b>Obsolete.</b> Renamed to DataUriMediaType.
 
 Extracts the media type from a Data URI (uniform resource identifier).
 
@@ -65,7 +65,7 @@ The media type. Returns null if  <i>url</i>
         byte[] bytes,
         PeterO.Mail.MediaType mediaType);
 
-<b>Deprecated.</b> Renamed to MakeDataUri.
+<b>Obsolete.</b> Renamed to MakeDataUri.
 
 Encodes data with the given media type in a Data URI (uniform resource identifier).
 
@@ -92,7 +92,7 @@ The parameter  <i>bytes</i>
     public static string MakeDataUrl(
         string textString);
 
-<b>Deprecated.</b> Renamed to MakeDataUri.
+<b>Obsolete.</b> Renamed to MakeDataUri.
 
 Encodes text as a Data URI (uniform resource identifier).
 

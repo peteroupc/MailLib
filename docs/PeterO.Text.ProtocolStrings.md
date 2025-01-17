@@ -8,7 +8,7 @@ Contains methods for preparing user-facing protocol strings (such as user identi
 
  * The methods in this class are not well suited for <i>collation</i>, or lexicographic ordering, which is a comparison of text strings that is usually language-dependent and goes beyond equality comparison. Further discussion on collation can be found in Unicode Technical Standard 10 (UTS 10), "Unicode Collation Algorithm".
 
- * As explained in UTS 10 sec. 1.6, collation serves the purposes of searching and selection (for example, searches by name or by title). However, this class is directed more to equality comparisons for authentication or authorization purposes, or to avoid creating multiple items that use the same string, rather than, say, to comparisons of names or parts of names for the purpose of showing matching records.
+ * As explained in UTS 10 sec. 1.6, collation serves the purposes of searching and selection (for example, searching by name or by title). However, this class is directed more to equality comparisons for authentication or authorization purposes, or to avoid creating multiple items that use the same string, rather than, say, to comparisons of names or parts of names for the purpose of showing matching records.
 
 <b>Security Considerations</b>
 
@@ -112,23 +112,6 @@ Checks the validity of a string serving as an arbitrary single-line sequence of 
 A string prepared under the OpaqueString profile in RFC 8265. Returns null if that string is invalid under that profile (including if  <i>str</i>
  is null or empty). For comparison purposes, return values of this method should be compared code point by code point (see RFC 8265, sec. 4.2.3).
 
-<a id="UsernameEnforce_string"></a>
-### UsernameEnforce
-
-    public static string UsernameEnforce(
-        string str);
-
-Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
-
-<b>Parameters:</b>
-
- * <i>str</i>: A string to prepare that represents a user or account identifier.
-
-<b>Return Value:</b>
-
-A username where each of its parts is prepared under the UsernameCaseMapped profile in RFC 8265 (among other things, the string will be converted to lowercase). Returns null if any of those parts is invalid under that profile (including if  <i>str</i>
- is null or empty). Note that there will be as many spaces of separation between parts of the return value as between parts of the input; this method will not collapse multiple spaces (U+0020) into a single space. If such space collapsing on a string (or rejection of strings with multiple consecutive spaces) is desired, it should be done before that string is passed to this method. For comparison purposes, return values of this method should be compared code point by code point (see RFC 8265, sec. 3.3.4).
-
 <a id="UsernameEnforce_string_bool"></a>
 ### UsernameEnforce
 
@@ -150,13 +133,13 @@ A username where each of its parts is prepared under the UsernameCaseMapped or U
  is null or empty). Note that there will be as many spaces of separation between parts of the return value as between parts of the input; this method will not collapse multiple spaces (U+0020) into a single space. If such space collapsing on a string (or rejection of strings with multiple consecutive spaces) is desired, it should be done before that string is passed to this method. For comparison purposes, return values of this method (with the same value for  <i>preserveCase</i>
  ) should be compared code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
 
-<a id="UserpartEnforce_string"></a>
-### UserpartEnforce
+<a id="UsernameEnforce_string"></a>
+### UsernameEnforce
 
-    public static string UserpartEnforce(
+    public static string UsernameEnforce(
         string str);
 
-Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
+Checks the validity of a string that can serve to identify a user or account (a "username"), where the string is made of one or more parts called "userparts" separated by spaces (U+0020) and where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
 
 <b>Parameters:</b>
 
@@ -164,9 +147,8 @@ Checks the validity of a string without spaces that can serve to identify a user
 
 <b>Return Value:</b>
 
-A userpart prepared under the UsernameCaseMapped profile in RFC 8265 (among other things, the string will be converted to lowercase). Returns null if  <i>str</i>
- is invalid under that profile (including if  <i>str</i>
- is null or empty). For comparison purposes, return values of this method should be compared code point by code point (see RFC 8265, sec. 3.3.4).
+A username where each of its parts is prepared under the UsernameCaseMapped profile in RFC 8265 (among other things, the string will be converted to lowercase). Returns null if any of those parts is invalid under that profile (including if  <i>str</i>
+ is null or empty). Note that there will be as many spaces of separation between parts of the return value as between parts of the input; this method will not collapse multiple spaces (U+0020) into a single space. If such space collapsing on a string (or rejection of strings with multiple consecutive spaces) is desired, it should be done before that string is passed to this method. For comparison purposes, return values of this method should be compared code point by code point (see RFC 8265, sec. 3.3.4).
 
 <a id="UserpartEnforce_string_bool"></a>
 ### UserpartEnforce
@@ -189,3 +171,21 @@ A userpart prepared under the UsernameCaseMapped or UsernameCasePreserved profil
  is invalid under that profile (including if  <i>str</i>
  is null or empty). For comparison purposes, return values of this method (with the same value for  <i>preserveCase</i>
  ) should be compared code point by code point (see RFC 8265, secs. 3.3.4 and 3.4.4).
+
+<a id="UserpartEnforce_string"></a>
+### UserpartEnforce
+
+    public static string UserpartEnforce(
+        string str);
+
+Checks the validity of a string without spaces that can serve to identify a user or account (a "userpart"), where the case of letters in the string is mapped to lowercase. This checking is done using the UsernameCaseMapped profile in RFC 8265.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: A string to prepare that represents a user or account identifier.
+
+<b>Return Value:</b>
+
+A userpart prepared under the UsernameCaseMapped profile in RFC 8265 (among other things, the string will be converted to lowercase). Returns null if  <i>str</i>
+ is invalid under that profile (including if  <i>str</i>
+ is null or empty). For comparison purposes, return values of this method should be compared code point by code point (see RFC 8265, sec. 3.3.4).

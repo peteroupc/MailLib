@@ -2,14 +2,14 @@
 
     public class DispositionBuilder
 
-<b>Deprecated.</b> Use ContentDisposition.Builder instead.
+<b>Obsolete.</b> Use ContentDisposition.Builder instead.
 
 A mutable data type that allows a content disposition to be built.
 
 ### Member Summary
 * <code>[DispositionType](#DispositionType)</code> - Gets or sets this value's disposition type, such as "inline" or "attachment".
-* <code>[IsMultipart](#IsMultipart)</code> - <b>Deprecated:</b> Irrelevant for content dispositions; will be removed in the future.
-* <code>[IsText](#IsText)</code> - <b>Deprecated:</b> Irrelevant for content dispositions; will be removed in the future.
+* <code>[IsMultipart](#IsMultipart)</code> - <b>Obsolete:</b> Irrelevant for content dispositions; will be removed in the future.
+* <code>[IsText](#IsText)</code> - <b>Obsolete:</b> Irrelevant for content dispositions; will be removed in the future.
 * <code>[RemoveParameter(string)](#RemoveParameter_string)</code> - Removes a parameter from this content disposition.
 * <code>[SetDispositionType(string)](#SetDispositionType_string)</code> - Sets the disposition type, such as "inline".
 * <code>[SetParameter(string, string)](#SetParameter_string_string)</code> - Sets a parameter of this content disposition.
@@ -88,7 +88,7 @@ The property is being set and the value is an empty string.
 
     public bool IsMultipart { get; }
 
-<b>Deprecated.</b> Irrelevant for content dispositions; will be removed in the future.
+<b>Obsolete.</b> Irrelevant for content dispositions; will be removed in the future.
 
 Gets a value indicating whether this is a multipart media type.
 
@@ -101,7 +101,7 @@ Gets a value indicating whether this is a multipart media type.
 
     public bool IsText { get; }
 
-<b>Deprecated.</b> Irrelevant for content dispositions; will be removed in the future.
+<b>Obsolete.</b> Irrelevant for content dispositions; will be removed in the future.
 
 Gets a value indicating whether this is a text media type.
 

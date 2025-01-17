@@ -46,6 +46,8 @@ The following lists known deviations from the mail specifications (Internet Mess
 
 It would be appreciated if users of this library contact the author if they find other ways in which this implementation deviates from the mail specifications or other applicable specifications.
 
+If a MIME message or body part has an unrecognized transfer encoding, its content type is treated as "application/octet-stream" rather than the declared content type (per MIME) and its transfer encoding is treated as 7bit (a clarification to MIME).
+
 This class currently doesn't support the "padding" parameter for message bodies with the media type "application/octet-stream" or treated as that media type (see RFC 2046 sec. 4.5.1).
 
 In this implementation, if the content-transfer-encoding "quoted-printable" or "base64" occurs in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status"), that encoding is treated as unrecognized for the purpose of treating that message or body part as having a content type of "application/octet-stream" rather than the declared content type. This is a clarification to RFCs 2045 and 2049. (This may result in "misdecoded" messages because in practice, most if not all messages of this kind don't use quoted-printable or base64 encodings for the whole body, but may do so in the body parts they contain.)
@@ -65,19 +67,19 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type.
 * <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name.
 * <code>[AddInline(System.IO.Stream, string)](#AddInline_System_IO_Stream_string)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given file name.
-* <code>[BccAddresses](#BccAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;Bcc&#x22;) instead.
-* <code>[BodyString](#BodyString)</code> - <b>Deprecated:</b> Use GetBodyString() instead.
-* <code>[CCAddresses](#CCAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;Cc&#x22;) instead.
+* <code>[BccAddresses](#BccAddresses)</code> - <b>Obsolete:</b> Use GetAddresses(&#x22;Bcc&#x22;) instead.
+* <code>[BodyString](#BodyString)</code> - <b>Obsolete:</b> Use GetBodyString() instead.
+* <code>[CCAddresses](#CCAddresses)</code> - <b>Obsolete:</b> Use GetAddresses(&#x22;Cc&#x22;) instead.
 * <code>[ClearHeaders()](#ClearHeaders)</code> - Deletes all header fields in this message.
 * <code>[ContentDisposition](#ContentDisposition)</code> - Gets or sets this message's content disposition.
 * <code>[ContentType](#ContentType)</code> - Gets or sets this message's media type.
 * <code>[DecodeHeaderValue(string, string)](#DecodeHeaderValue_string_string)</code> - Decodes RFC 2047 encoded words from the given header field value and returns a string with those words decoded.
 * <code>[ExtractHeader(byte[], string)](#ExtractHeader_byte_string)</code> - Extracts the value of a header field from a byte array representing an email message.
 * <code>[FileName](#FileName)</code> - Gets a file name suggested by this message for saving the message's body to a file.
-* <code>[FromAddresses](#FromAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;From&#x22;) instead.
+* <code>[FromAddresses](#FromAddresses)</code> - <b>Obsolete:</b> Use GetAddresses(&#x22;From&#x22;) instead.
 * <code>[FromMailtoUri(string)](#FromMailtoUri_string)</code> - Creates a message object from a MailTo URI (uniform resource identifier).
 * <code>[FromMailtoUri(System.Uri)](#FromMailtoUri_System_Uri)</code> - Creates a message object from a MailTo URI (uniform resource identifier) in the form of a URI object.
-* <code>[FromMailtoUrl(string)](#FromMailtoUrl_string)</code> - <b>Deprecated:</b> Renamed to FromMailtoUri.
+* <code>[FromMailtoUrl(string)](#FromMailtoUrl_string)</code> - <b>Obsolete:</b> Renamed to FromMailtoUri.
 * <code>[Generate()](#Generate)</code> - Generates this message's data in text form.
 * <code>[GenerateBytes()](#GenerateBytes)</code> - Generates this message's data as a byte array, using the same algorithm as the Generate method.
 * <code>[GetAddresses(string)](#GetAddresses_string)</code> - Gets a list of addresses contained in the header fields with the given name in this message.
@@ -110,9 +112,9 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[SetTextAndMarkdown(string, string)](#SetTextAndMarkdown_string_string)</code> - Sets the body of this message to a multipart body with plain text, Markdown, and Hypertext Markup Language (HTML) versions of the same message.
 * <code>[SetTextBody(string)](#SetTextBody_string)</code> - Sets the body of this message to the specified plain text string.
 * <code>[Subject](#Subject)</code> - Gets or sets this message's subject.
-* <code>[ToAddresses](#ToAddresses)</code> - <b>Deprecated:</b> Use GetAddresses(&#x22;To&#x22;) instead.
+* <code>[ToAddresses](#ToAddresses)</code> - <b>Obsolete:</b> Use GetAddresses(&#x22;To&#x22;) instead.
 * <code>[ToMailtoUri()](#ToMailtoUri)</code> - Generates a MailTo URI (uniform resource identifier) corresponding to this message.
-* <code>[ToMailtoUrl()](#ToMailtoUrl)</code> - <b>Deprecated:</b> Renamed to ToMailtoUri.
+* <code>[ToMailtoUrl()](#ToMailtoUrl)</code> - <b>Obsolete:</b> Renamed to ToMailtoUri.
 
 <a id="Void_ctor_Byte"></a>
 ### Message Constructor
@@ -172,7 +174,7 @@ Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) 
 
     public System.Collections.Generic.IList BccAddresses { get; }
 
-<b>Deprecated.</b> Use GetAddresses("Bcc") instead.
+<b>Obsolete.</b> Use GetAddresses("Bcc") instead.
 
 Gets a list of addresses found in the BCC header field or fields.
 
@@ -185,7 +187,7 @@ A list of addresses found in the BCC header field or fields.
 
     public string BodyString { get; }
 
-<b>Deprecated.</b> Use GetBodyString() instead.
+<b>Obsolete.</b> Use GetBodyString() instead.
 
 Gets the body of this message as a text string. See the  `GetBodyString()`  method.
 
@@ -203,7 +205,7 @@ See the  `GetBodyString()`  method.
 
     public System.Collections.Generic.IList CCAddresses { get; }
 
-<b>Deprecated.</b> Use GetAddresses("Cc") instead.
+<b>Obsolete.</b> Use GetAddresses("Cc") instead.
 
 Gets a list of addresses found in the CC header field or fields.
 
@@ -256,7 +258,7 @@ A suggested name for the file. Returns the empty string if there is no filename 
 
     public System.Collections.Generic.IList FromAddresses { get; }
 
-<b>Deprecated.</b> Use GetAddresses("From") instead.
+<b>Obsolete.</b> Use GetAddresses("From") instead.
 
 Gets a list of addresses found in the From header field or fields.
 
@@ -302,7 +304,7 @@ This message's subject, or null if there is none.
 
     public System.Collections.Generic.IList ToAddresses { get; }
 
-<b>Deprecated.</b> Use GetAddresses("To") instead.
+<b>Obsolete.</b> Use GetAddresses("To") instead.
 
 Gets a list of addresses found in the To header field or fields.
 
@@ -326,6 +328,38 @@ Adds an attachment with an empty body and with the given media type to this mess
 
 A Message object for the generated attachment.
 
+<a id="AddAttachment_System_IO_Stream_PeterO_Mail_MediaType_string"></a>
+### AddAttachment
+
+    public PeterO.Mail.Message AddAttachment(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType,
+        string filename);
+
+Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: A readable data stream.
+
+ * <i>mediaType</i>: A media type to assign to the attachment.
+
+ * <i>filename</i>: A file name to assign to the attachment. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.
+
+<b>Return Value:</b>
+
+A Message object for the generated attachment.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>inputStream</i>
+ or  <i>mediaType</i>
+ is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
+
 <a id="AddAttachment_System_IO_Stream_PeterO_Mail_MediaType"></a>
 ### AddAttachment
 
@@ -348,38 +382,6 @@ Adds an attachment to this message in the form of data from the given readable s
  * <i>inputStream</i>: A readable data stream.
 
  * <i>mediaType</i>: A media type to assign to the attachment.
-
-<b>Return Value:</b>
-
-A Message object for the generated attachment.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
-
- * PeterO.Mail.MessageDataException:
-An I/O error occurred.
-
-<a id="AddAttachment_System_IO_Stream_PeterO_Mail_MediaType_string"></a>
-### AddAttachment
-
-    public PeterO.Mail.Message AddAttachment(
-        System.IO.Stream inputStream,
-        PeterO.Mail.MediaType mediaType,
-        string filename);
-
-Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
-
-<b>Parameters:</b>
-
- * <i>inputStream</i>: A readable data stream.
-
- * <i>mediaType</i>: A media type to assign to the attachment.
-
- * <i>filename</i>: A file name to assign to the attachment. Can be null or empty, in which case no file name is assigned. Only the file name portion of this parameter is used, which in this case means the portion of the string after the last "/" or "\", if either character exists, or the entire string otherwise.
 
 <b>Return Value:</b>
 
@@ -493,6 +495,38 @@ Adds an inline body part with an empty body and with the given media type to thi
 
 A Message object for the generated body part.
 
+<a id="AddInline_System_IO_Stream_PeterO_Mail_MediaType_string"></a>
+### AddInline
+
+    public PeterO.Mail.Message AddInline(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType,
+        string filename);
+
+Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: A readable data stream.
+
+ * <i>mediaType</i>: A media type to assign to the body part.
+
+ * <i>filename</i>: A file name to assign to the body part.
+
+<b>Return Value:</b>
+
+A Message object for the generated body part.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>inputStream</i>
+ or  <i>mediaType</i>
+ is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
+
 <a id="AddInline_System_IO_Stream_PeterO_Mail_MediaType"></a>
 ### AddInline
 
@@ -516,38 +550,6 @@ Adds an inline body part to this message in the form of data from the given read
  * <i>inputStream</i>: A readable data stream.
 
  * <i>mediaType</i>: A media type to assign to the body part.
-
-<b>Return Value:</b>
-
-A Message object for the generated body part.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>inputStream</i>
- or  <i>mediaType</i>
- is null.
-
- * PeterO.Mail.MessageDataException:
-An I/O error occurred.
-
-<a id="AddInline_System_IO_Stream_PeterO_Mail_MediaType_string"></a>
-### AddInline
-
-    public PeterO.Mail.Message AddInline(
-        System.IO.Stream inputStream,
-        PeterO.Mail.MediaType mediaType,
-        string filename);
-
-Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
-
-<b>Parameters:</b>
-
- * <i>inputStream</i>: A readable data stream.
-
- * <i>mediaType</i>: A media type to assign to the body part.
-
- * <i>filename</i>: A file name to assign to the body part.
 
 <b>Return Value:</b>
 
@@ -695,7 +697,7 @@ The parameter  <i>uri</i>
     public static PeterO.Mail.Message FromMailtoUrl(
         string url);
 
-<b>Deprecated.</b> Renamed to FromMailtoUri.
+<b>Obsolete.</b> Renamed to FromMailtoUri.
 
 Creates a message object from a MailTo URI (uniform resource identifier). For more information, see <b>FromMailtoUri(string)</b>.
 
@@ -1008,28 +1010,6 @@ This instance.
 The parameter  <i>name</i>
  is null.
 
-<a id="SelectLanguageMessage_System_Collections_Generic_IList"></a>
-### SelectLanguageMessage
-
-    public PeterO.Mail.Message SelectLanguageMessage(
-        System.Collections.Generic.IList languages);
-
-Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the given language priority list.
-
-<b>Parameters:</b>
-
- * <i>languages</i>: A list of basic language ranges, sorted in descending order of priority (see the LanguageTags.LanguageTagFilter method).
-
-<b>Return Value:</b>
-
-The best matching body part for the given languages. If the body part has no subject, then the top-level subject is used. If this message is not a multipart/multilingual message or has fewer than two body parts, returns this object. If no body part matches the given languages, returns the last body part if its language is "zxx", or the second body part otherwise.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>languages</i>
- is null.
-
 <a id="SelectLanguageMessage_System_Collections_Generic_IList_bool"></a>
 ### SelectLanguageMessage
 
@@ -1044,6 +1024,28 @@ Selects a body part for a multiple-language message(  `multipart/multilingual`  
  * <i>languages</i>: A list of basic language ranges, sorted in descending order of priority (see the LanguageTags.LanguageTagFilter method).
 
  * <i>preferOriginals</i>: If true, a body part marked as the original language version is chosen if it matches one of the given language ranges, even if the original language has a lower priority than another language with a matching body part.
+
+<b>Return Value:</b>
+
+The best matching body part for the given languages. If the body part has no subject, then the top-level subject is used. If this message is not a multipart/multilingual message or has fewer than two body parts, returns this object. If no body part matches the given languages, returns the last body part if its language is "zxx", or the second body part otherwise.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>languages</i>
+ is null.
+
+<a id="SelectLanguageMessage_System_Collections_Generic_IList"></a>
+### SelectLanguageMessage
+
+    public PeterO.Mail.Message SelectLanguageMessage(
+        System.Collections.Generic.IList languages);
+
+Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the given language priority list.
+
+<b>Parameters:</b>
+
+ * <i>languages</i>: A list of basic language ranges, sorted in descending order of priority (see the LanguageTags.LanguageTagFilter method).
 
 <b>Return Value:</b>
 
@@ -1353,7 +1355,7 @@ A MailTo URI corresponding to this message.
 
     public string ToMailtoUrl();
 
-<b>Deprecated.</b> Renamed to ToMailtoUri.
+<b>Obsolete.</b> Renamed to ToMailtoUri.
 
 Generates a MailTo URI (uniform resource identifier) corresponding to this message. The following header fields, and only these, are used to generate the URI: To, Cc, Bcc, In-Reply-To, Subject, Keywords, Comments. The message body is included in the URI only if  `GetBodyString()`  would return a nonempty string. The To header field is included in the URI only if it has display names or group syntax.
 

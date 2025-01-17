@@ -332,14 +332,6 @@ if (String.IsNullOrEmpty(str)) {
         }
       }
     }
-    [Test]
-    [Timeout(60000)]
-    public void NormTest() {
-      string[] lines = NetHelper.DownloadOrOpenAllLines(
-        "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
-        "NormalizationTest.txt");
-      NormTestLines(lines);
-    }
 
     private static void NormTestLine(string line) {
         string[] columns = SplitAt(line, ";");

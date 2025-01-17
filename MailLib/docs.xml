@@ -4060,7 +4060,7 @@
 
 </doc>
 <doc name="T:PeterO.Text.DomainUtility">
-<summary>Utility methods for domain names.
+<summary>An auxiliary method for domain names.
     </summary>
 </doc>
 <doc name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)">
@@ -4301,7 +4301,7 @@
             characters. For example, the letter E combines with an acute accent
             to make E-acute (É). In some cases, the combined form (E-acute)
             should be treated as equivalent to the uncombined form (E plus
-            acute). For this reason, the standard defines four
+            acute). Therefore, the standard defines four
             <i>normalization forms</i> that convert strings to a single
             equivalent form:</para>
             <list>

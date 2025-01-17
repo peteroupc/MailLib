@@ -68,9 +68,9 @@ private MailtoUris() {
             sb.append(',');
           }
           Address address = addr.getAddress();
-          sb.append(URIUtility.EncodeStringForURI(address.getLocalPart()));
+          sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(address.getLocalPart()));
           sb.append('@');
-          sb.append(URIUtility.EncodeStringForURI(address.getDomain()));
+          sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(address.getDomain()));
         }
       } else {
         field = CombineAddresses(msg, "to");
@@ -79,38 +79,38 @@ private MailtoUris() {
       if (!((field) == null || (field).length() == 0)) {
         sb.append(firstField ? "?to=" : "&to=");
         firstField = false;
-        sb.append(URIUtility.EncodeStringForURI(field));
+        sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
       }
       field = Implode(msg.GetHeaderArray("subject"), "\n ");
       if (!((field) == null || (field).length() == 0)) {
         sb.append(firstField ? "?subject=" : "&subject=");
         firstField = false;
-        sb.append(URIUtility.EncodeStringForURI(field));
+        sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
       }
       field = Implode(msg.GetHeaderArray("in-reply-to"), "\n ");
       if (!((field) == null || (field).length() == 0)) {
         sb.append(firstField ? "?in-reply-to=" : "&in-reply-to=");
         firstField = false;
-        sb.append(URIUtility.EncodeStringForURI(field));
+        sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
       }
       field = CombineAddresses(msg, "cc");
       if (!((field) == null || (field).length() == 0)) {
         sb.append(firstField ? "?cc=" : "&cc=");
         firstField = false;
-        sb.append(URIUtility.EncodeStringForURI(field));
+        sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
       }
       field = CombineAddresses(msg, "bcc");
       if (!((field) == null || (field).length() == 0)) {
         sb.append(firstField ? "?bcc=" : "&bcc=");
         firstField = false;
-        sb.append(URIUtility.EncodeStringForURI(field));
+        sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
       }
       String[] fields = msg.GetHeaderArray("keywords");
       for (String field2 : fields) {
         if (!((field) == null || (field).length() == 0)) {
           sb.append(firstField ? "?keywords=" : "&keywords=");
           firstField = false;
-          sb.append(URIUtility.EncodeStringForURI(field));
+          sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
         }
       }
       fields = msg.GetHeaderArray("comments");
@@ -118,7 +118,7 @@ private MailtoUris() {
         if (!((field) == null || (field).length() == 0)) {
           sb.append(firstField ? "?comments=" : "&comments=");
           firstField = false;
-          sb.append(URIUtility.EncodeStringForURI(field));
+          sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
         }
       }
       try {
@@ -129,13 +129,13 @@ private MailtoUris() {
       if (!((field) == null || (field).length() == 0)) {
         sb.append(firstField ? "?body=" : "&body=");
         firstField = false;
-        sb.append(URIUtility.EncodeStringForURI(field));
+        sb.append(com.upokecenter.util.URIUtility.EncodeStringForURI(field));
       }
       return sb.toString();
     }
 
     public static Message MailtoUriMessage(String uri) {
-      String[] parts = URIUtility.SplitIRIToStrings(
+      String[] parts = com.upokecenter.util.URIUtility.SplitIRIToStrings(
           uri);
       if (parts == null || parts[0] == null) {
         return null;
@@ -146,7 +146,7 @@ private MailtoUris() {
         String emails = "";
         if (!((parts[2]) == null || (parts[2]).length() == 0)) {
           // Extract the email address
-          emails = URIUtility.PercentDecode(parts[2]);
+          emails = com.upokecenter.util.URIUtility.PercentDecode(parts[2]);
           if (HeaderParser2.ParseHeaderEmail(emails, 0, emails.length()) !=
             emails.length()) {
             return null;
@@ -190,8 +190,8 @@ private MailtoUris() {
             }
             String name = query.substring(startName, (startName)+(endName - startName));
             String value = query.substring(startValue, (startValue)+(endValue - startValue));
-            name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(URIUtility.PercentDecode(name));
-            value = URIUtility.PercentDecode(value);
+            name = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(com.upokecenter.util.URIUtility.PercentDecode(name));
+            value = com.upokecenter.util.URIUtility.PercentDecode(value);
             // Support only To, Cc, Bcc, Subject, In-Reply-To,
             // Keywords, Comments, and Body.
             // Of these, the first five can appear only once in a message

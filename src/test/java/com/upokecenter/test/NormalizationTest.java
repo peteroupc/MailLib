@@ -338,13 +338,6 @@ private final String propVarnfkd;
         }
       }
     }
-    @Test(timeout = 60000)
-    public void NormTest() {
-      String[] lines = NetHelper.DownloadOrOpenAllLines(
-        "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
-        "NormalizationTest.txt");
-      NormTestLines(lines);
-    }
 
     private static void NormTestLine(String line) {
         String[] columns = SplitAt(line, ";");

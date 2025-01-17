@@ -25,7 +25,7 @@ private DataUris() {
         throw new NullPointerException("uri");
       }
       String url = uri;
-      String[] parts = URIUtility.SplitIRIToStrings(
+      String[] parts = com.upokecenter.util.URIUtility.SplitIRIToStrings(
           url);
       if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
@@ -132,7 +132,7 @@ private DataUris() {
         throw new NullPointerException("uri");
       }
       String url = uri;
-      String[] parts = URIUtility.SplitIRIToStrings(
+      String[] parts = com.upokecenter.util.URIUtility.SplitIRIToStrings(
           url);
       if (parts == null || parts[0] == null || parts[2] == null) {
         return null;
@@ -167,7 +167,7 @@ private DataUris() {
             }
           }
           if (hasPercent) {
-            payload = URIUtility.PercentDecode(
+            payload = com.upokecenter.util.URIUtility.PercentDecode(
                 path.substring(
                   mediaTypePart + 1, (
                   mediaTypePart + 1)+(path.length() - (mediaTypePart + 1))));
