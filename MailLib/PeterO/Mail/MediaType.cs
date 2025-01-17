@@ -191,8 +191,8 @@ this.subType.Length ||
 
     private readonly Dictionary<string, string> parameters;
 
-    /// <summary>Gets a list of the parameter names contained in this media
-    /// type object and their values. Each parameter name will be in
+    /// <summary>Gets a list of the names and values of parameters
+    /// contained in this media type object. Each parameter name will be in
     /// lowercase; that is, with its basic uppercase letters ("A" to "Z")
     /// converted to basic lowercase letters ("a" to "z").</summary>
     /// <value>A list of the parameters contained in this media type

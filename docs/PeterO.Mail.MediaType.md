@@ -89,7 +89,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
     public System.Collections.Generic.IDictionary Parameters { get; }
 
-Gets a list of the parameter names contained in this media type object and their values. Each parameter name will be in lower case; that is, with its basic uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
+Gets a list of the parameter names contained in this media type object and their values. Each parameter name will be in lowercase; that is, with its basic uppercase letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
 
 <b>Returns:</b>
 

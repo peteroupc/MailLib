@@ -56,8 +56,8 @@
  "format".
 
 * `final Map<String,String> getParameters()`<br>
- Gets a list of the parameter names contained in this media type object and
- their values.
+ Gets a list of the names and values of parameters contained in this media
+ type object.
 
 * `final String getSubType()`<br>
  Gets this media type's subtype (for example, "plain" in "text/plain").
@@ -218,8 +218,8 @@ Gets a value indicating whether this is a multipart media type.
 
 ### getParameters
     public final Map<String,String> getParameters()
-Gets a list of the parameter names contained in this media type object and
- their values. Each parameter name will be in lowercase; that is, with its
+Gets a list of the names and values of parameters contained in this media
+ type object. Each parameter name will be in lowercase; that is, with its
  basic uppercase letters ("A" to "Z") converted to basic lowercase letters
  ("a" to "z").
 

@@ -14,9 +14,9 @@ An NR-LDH label is an LDH label whose third and fourth characters are not both "
 
 A U-label contains one or more characters outside the Basic Latin range (U+0000 to U+007F) and meets IDNA2008 requirements for labels with such characters. An example is "eá".
 
-An A-label is an LDH label beginning with "xn--" where the letters can be any combination of basic uppercase and/or basic lowercase letters, and is convertible to a U-label. An example is "xn--e-ufa".
+An A-label is an LDH label beginning with "xn--" where the letters can be any combination of basic uppercase and basic lowercase letters, and is convertible to a U-label. An example is "xn--e-ufa".
 
-An XN-label is an LDH label beginning with "xn--" where the letters can be any combination of basic uppercase and/or basic lowercase letters.
+An XN-label is an LDH label beginning with "xn--" where the letters can be any combination of basic uppercase and basic lowercase letters.
 
 NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called  `NormalizationData`  and  `IdnaData` , that include data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 
