@@ -4139,7 +4139,8 @@ TransferEncodingToUse(
       var seq = 0;
       builder.Append('<');
       const string ValueHex = "0123456789abcdef";
-      byte[] ent = Guid.NewGuid().ToByteArray();
+      UUID uuid = Guid.NewGuid();
+      byte[] ent = uuid.ToByteArray();
       long ticks = DateTime.UtcNow.Ticks;
       for (int i = 0; i < 10; ++i) {
         builder.Append(ValueHex[(int)(ticks & 15)]);

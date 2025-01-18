@@ -3969,7 +3969,25 @@ TransferEncodingToUse(
       int seq = 0;
       builder.append('<');
       String ValueHex = "0123456789abcdef";
-      byte[] ent = java.util.UUID.randomUUID().ToByteArray();
+      UUID uuid = java.util.UUID.randomUUID();
+      byte[] ent = new byte[] {
+(byte)((uuid.getMostSignificantBits() >> 56) & 0xffL),
+(byte)((uuid.getMostSignificantBits() >> 48) & 0xffL),
+(byte)((uuid.getMostSignificantBits() >> 40) & 0xffL),
+(byte)((uuid.getMostSignificantBits() >> 32) & 0xffL),
+(byte)((uuid.getMostSignificantBits() >> 24) & 0xffL),
+(byte)((uuid.getMostSignificantBits() >> 16) & 0xffL),
+(byte)((uuid.getMostSignificantBits() >> 8) & 0xffL),
+(byte)((uuid.getMostSignificantBits() >> 0) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 56) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 48) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 40) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 32) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 24) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 16) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 8) & 0xffL),
+(byte)((uuid.getLeastSignificantBits() >> 0) & 0xffL)
+};
       long ticks = new java.util.Date().getTime();
       for (int i = 0; i < 10; ++i) {
         builder.append(ValueHex.charAt((int)(ticks & 15)));
