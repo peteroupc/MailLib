@@ -3969,7 +3969,7 @@ TransferEncodingToUse(
       int seq = 0;
       builder.append('<');
       String ValueHex = "0123456789abcdef";
-      UUID uuid = java.util.UUID.randomUUID();
+      java.util.UUID uuid = java.util.UUID.randomUUID();
       byte[] ent = new byte[] {
 (byte)((uuid.getMostSignificantBits() >> 56) & 0xffL),
 (byte)((uuid.getMostSignificantBits() >> 48) & 0xffL),
