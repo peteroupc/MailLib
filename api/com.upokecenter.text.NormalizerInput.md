@@ -69,12 +69,12 @@
 
 * `static boolean IsNormalized(String str,
  Normalization form)`<br>
- Determines whether the given string is in the given Unicode normalization
- form.
+ Determines whether the specified string is in the specified Unicode
+ normalization form.
 
 * `static String Normalize(String str,
  Normalization form)`<br>
- Converts a string to the given Unicode normalization form.
+ Converts a string to the specified Unicode normalization form.
 
 * `int Read(int[] chars,
  int index,
@@ -110,7 +110,7 @@ Determines whether the text provided by a character input is normalized.
 
     public static String Normalize(String str, Normalization form)
 
-Converts a string to the given Unicode normalization form.
+Converts a string to the specified Unicode normalization form.
 
 **Parameters:**
 
@@ -120,7 +120,8 @@ Converts a string to the given Unicode normalization form.
 
 **Returns:**
 
-* The parameter <code>str</code> converted to the given normalization form.
+* The parameter <code>str</code> converted to the specified normalization
+ form.
 
 **Throws:**
 
@@ -133,8 +134,8 @@ Converts a string to the given Unicode normalization form.
 
     public static boolean IsNormalized(String str, Normalization form)
 
-Determines whether the given string is in the given Unicode normalization
- form.
+Determines whether the specified string is in the specified Unicode
+ normalization form.
 
 **Parameters:**
 
@@ -145,7 +146,7 @@ Determines whether the given string is in the given Unicode normalization
 
 **Returns:**
 
-* <code>true</code> if the given string is in the given Unicode
+* <code>true</code> if the specified string is in the specified Unicode
  normalization form; otherwise, <code>false</code>. Returns <code>false</code> if the
  string contains an unpaired surrogate code point.
 

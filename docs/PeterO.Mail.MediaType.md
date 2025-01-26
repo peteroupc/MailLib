@@ -18,7 +18,7 @@ This type is immutable, meaning its values can't be changed once it's created. T
 * <code>[GetCharset()](#GetCharset)</code> - Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
 * <code>[GetHashCode()](#GetHashCode)</code> - Calculates the hash code of this object.
 * <code>[GetParameter(string)](#GetParameter_string)</code> - Gets the value of a parameter in this media type, such as "charset" or "format".
-* <code>[HasStructuredSuffix(string)](#HasStructuredSuffix_string)</code> - Returns whether this media type's subtype has the given structured syntax suffix.
+* <code>[HasStructuredSuffix(string)](#HasStructuredSuffix_string)</code> - Returns whether this media type's subtype has the specified structured syntax suffix.
 * <code>[IsMultipart](#IsMultipart)</code> - Gets a value indicating whether this is a multipart media type.
 * <code>[IsText](#IsText)</code> - Gets a value indicating whether this is a text media type ("text/*").
 * <code>[public static readonly PeterO.Mail.MediaType MessageRfc822;](#MessageRfc822)</code> - Specifies the media type "message/rfc822", used for Internet mail messages.
@@ -198,7 +198,7 @@ Name is empty.
     public bool HasStructuredSuffix(
         string suffix);
 
-Returns whether this media type's subtype has the given structured syntax suffix.
+Returns whether this media type's subtype has the specified structured syntax suffix.
 
 <b>Parameters:</b>
 
@@ -236,9 +236,9 @@ A media type object, or MediaType.TextPlainAscii if  <i>mediaTypeValue</i>
         string str,
         PeterO.Mail.MediaType defaultValue);
 
-Parses a media type string and returns a media type object, or the default value if the string is invalid. This method checks the syntactic validity of the string, but not whether it has all parameters it's required to have or whether the parameters themselves are set to valid values for the parameter. This method assumes the given media type string was directly extracted from the Content-Type header field (as defined for email messages) and follows the syntax given in RFC 2045. Accordingly, among other things, the media type string can contain comments (delimited by parentheses).
+Parses a media type string and returns a media type object, or the default value if the string is invalid. This method checks the syntactic validity of the string, but not whether it has all parameters it's required to have or whether the parameters themselves are set to valid values for the parameter. This method assumes the specified media type string was directly extracted from the Content-Type header field (as defined for email messages) and follows the syntax given in RFC 2045. Accordingly, among other things, the media type string can contain comments (delimited by parentheses).
 
-RFC 2231 extensions allow each media type parameter to be associated with a character encoding and/or language, and support parameter values that span two or more key-value pairs. Parameters making use of RFC 2231 extensions have names with an asterisk ("*"). Such a parameter will be ignored if it is ill-formed because of RFC 2231's rules (except for illegal percent-decoding or undecodable sequences for the given character encoding). Examples of RFC 2231 extensions follow (both examples encode the same "filename" parameter):
+RFC 2231 extensions allow each media type parameter to be associated with a character encoding and/or language, and support parameter values that span two or more key-value pairs. Parameters making use of RFC 2231 extensions have names with an asterisk ("*"). Such a parameter will be ignored if it is ill-formed because of RFC 2231's rules (except for illegal percent-decoding or undecodable sequences for the specified character encoding). Examples of RFC 2231 extensions follow (both examples encode the same "filename" parameter):
 
 <b>text/example; filename*=utf-8'en'filename.txt</b>
 

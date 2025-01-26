@@ -44,8 +44,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the data from the given
-     * content disposition.
+     * com.upokecenter.mail.DispositionBuilder} class using the data from the
+     * specified content disposition.
      * @param mt The parameter {@code mt} is a ContentDisposition object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
@@ -55,8 +55,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class using the given disposition
-     * type.
+     * com.upokecenter.mail.DispositionBuilder} class using the specified
+     * disposition type.
      * @param type The parameter {@code type} is a text string.
      * @throws NullPointerException The parameter {@code type} is null.
      * @throws IllegalArgumentException Type is empty.

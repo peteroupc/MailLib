@@ -17,13 +17,13 @@ import java.util.*;
     private final String displayName;
 
     /**
-     * Generates a string containing the display names of the given named-address
-     * objects, separated by commas. The generated string is intended to be
-     * displayed for others to see, and is not intended to be parsed by computer
-     * programs. If a named address has no display name, its email address is used
-     * as the display name.
+     * Generates a string containing the display names of the specified
+     * named-address objects, separated by commas. The generated string is intended
+     * to be displayed for others to see, and is not intended to be parsed by
+     * computer programs. If a named address has no display name, its email address
+     * is used as the display name.
      * @param addresses A list of named address objects.
-     * @return A string containing the display names of the given named-address
+     * @return A string containing the display names of the specified named-address
      * objects, separated by commas.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */
@@ -43,12 +43,12 @@ import java.util.*;
 
     /**
      * Generates a string containing the display names and email addresses of the
-     * given named-address objects, separated by commas. The generated string is
-     * intended to be displayed for others to see, and is not intended to be parsed
-     * by computer programs.
+     * specified named-address objects, separated by commas. The generated string
+     * is intended to be displayed for others to see, and is not intended to be
+     * parsed by computer programs.
      * @param addresses A list of named address objects.
      * @return A string containing the display names and email addresses of the
-     * given named-address objects, separated by commas.
+     * specified named-address objects, separated by commas.
      * @throws NullPointerException The parameter {@code addresses} is null.
      */
     public static String ToDisplayString(List<NamedAddress> addresses) {
@@ -146,9 +146,9 @@ other.isGroup &&
 
     /**
      * Determines whether the email addresses stored this object are the same
-     * between this object and the given object, regardless of the display names
-     * they store. For groups, the email addresses must be equal and in the same
-     * order in both objects.
+     * between this object and the specified object, regardless of the display
+     * names they store. For groups, the email addresses must be equal and in the
+     * same order in both objects.
      * @param na A named address object to compare with this one. Can be null.
      * @return Either {@code true} or {@code false}.
      */
@@ -335,7 +335,7 @@ other.isGroup &&
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class using the given display name and email address.
+     * class using the specified display name and email address.
      * @param displayName The display name of the email address. Can be null or
      * empty. Encoded words under RFC 2047 will not be decoded.
      * @param address An email address.
@@ -353,7 +353,7 @@ other.isGroup &&
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class using the given display name and email address.
+     * class using the specified display name and email address.
      * @param displayName The display name of the email address. Can be null or
      * empty. Encoded words under RFC 2047 will not be decoded.
      * @param address An email address.
@@ -371,8 +371,8 @@ other.isGroup &&
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class using the given name and an email address made up of its local part
-     * and domain.
+     * class using the specified name and an email address made up of its local
+     * part and domain.
      * @param displayName The display name of the email address. Can be null or
      * empty.
      * @param localPart The local part of the email address (before the "@").

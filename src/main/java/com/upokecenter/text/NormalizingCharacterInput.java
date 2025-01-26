@@ -173,10 +173,11 @@ import java.util.*;
     }
 
     /**
-     * Converts a string to the given Unicode normalization form.
+     * Converts a string to the specified Unicode normalization form.
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
-     * @return The parameter {@code str} converted to the given normalization form.
+     * @return The parameter {@code str} converted to the specified normalization
+     * form.
      * @throws IllegalArgumentException The parameter {@code str} contains an unpaired
      * surrogate code point.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -186,12 +187,12 @@ import java.util.*;
     }
 
     /**
-     * Determines whether the given string is in the given Unicode normalization
-     * form.
+     * Determines whether the specified string is in the specified Unicode
+     * normalization form.
      * @param str An arbitrary string.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
-     * @return {@code true} if the given string is in the given Unicode
+     * @return {@code true} if the specified string is in the specified Unicode
      * normalization form; otherwise, {@code false}. Returns {@code false} if the
      * string contains an unpaired surrogate code point.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -251,13 +252,13 @@ import java.util.*;
     }
 
     /**
-     * Determines whether the given array of characters is in the given Unicode
-     * normalization form.
+     * Determines whether the specified array of characters is in the specified
+     * Unicode normalization form.
      * @param charArray An array of Unicode code points.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
-     * @return {@code true} if the given list of characters is in the given Unicode
-     * normalization form; otherwise, {@code false}.
+     * @return {@code true} if the specified list of characters is in the specified
+     * Unicode normalization form; otherwise, {@code false}.
      * @throws NullPointerException The parameter "charList" is null.
      * @deprecated Either convert the array to a String or wrap it in an ICharacterInput and
  * call the corresponding overload instead.
@@ -271,13 +272,13 @@ import java.util.*;
     }
 
     /**
-     * Determines whether the given list of characters is in the given Unicode
-     * normalization form.
+     * Determines whether the specified list of characters is in the specified
+     * Unicode normalization form.
      * @param charList A list of Unicode code points.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
-     * @return {@code true} if the given list of characters is in the given Unicode
-     * normalization form; otherwise, {@code false}.
+     * @return {@code true} if the specified list of characters is in the specified
+     * Unicode normalization form; otherwise, {@code false}.
      * @throws NullPointerException The parameter {@code charList} is null.
      * @deprecated Either convert the list to a String or wrap it in an ICharacterInput and
  * call the corresponding overload instead.

@@ -20,7 +20,7 @@ A mutable data type that allows a content disposition to be built.
     public Builder(
         PeterO.Mail.ContentDisposition mt);
 
-Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the data from the given content disposition.
+Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) class using the data from the specified content disposition.
 
 <b>Parameters:</b>
 
@@ -39,7 +39,7 @@ The parameter  <i>mt</i>
     public Builder(
         string type);
 
-Initializes a new instance of the [PeterO.Mail.ContentDisposition.Builder](PeterO.Mail.ContentDisposition.Builder.md) class using the given disposition type.
+Initializes a new instance of the [PeterO.Mail.ContentDisposition.Builder](PeterO.Mail.ContentDisposition.Builder.md) class using the specified disposition type.
 
 <b>Parameters:</b>
 

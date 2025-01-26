@@ -182,7 +182,7 @@ private Idna() {
     }
 
     private static boolean IsFinalSigmaContext(String str, int index) {
-      // Assumes that the character at the given index
+      // Assumes that the character at the specified index
       // is Capital Sigma
       // Check the left
       boolean found = false;
@@ -215,7 +215,7 @@ private Idna() {
     }
 
     private static boolean IsValidConjunct(String str, int index) {
-      // Assumes that the character at the given index
+      // Assumes that the character at the specified index
       // is Zero-Width Non-Joiner
       // Check the left
       boolean found = false;
@@ -304,8 +304,8 @@ private Idna() {
     }
 
     /**
-     * Tries to encode each XN-label of the given domain name into Unicode. This
-     * method does not check the syntactic validity of the domain name before
+     * Tries to encode each XN-label of the specified domain name into Unicode.
+     * This method does not check the syntactic validity of the domain name before
      * proceeding.
      * @param value A domain name.
      * @return The domain name where each XN-label is encoded into Unicode. Labels
@@ -399,14 +399,14 @@ private Idna() {
     }
 
     /**
-     * Determines whether the given string is a domain name containing only
+     * Determines whether the specified string is a domain name containing only
      * U-labels, A-labels, NR-LDH labels, or any combination of these, separated by
      * dots (".").
      * @param str The parameter {@code str} is a text string.
      * @param lookupRules If true, uses rules to apply when looking up the string
      * as a domain name. If false, uses rules to apply when registering the string
      * as a domain name.
-     * @return {@code true} if the given string is a syntactically valid domain
+     * @return {@code true} if the specified string is a syntactically valid domain
      * name; otherwise; false.
      * @throws NullPointerException The parameter {@code str} is null.
      */

@@ -138,7 +138,7 @@ import com.upokecenter.text.*;
 
     /**
      * <p>Initializes a new instance of the {@link com.upokecenter.mail.Message}
-     * class. Reads from the given InputStream object to initialize the email
+     * class. Reads from the specified InputStream object to initialize the email
      * message.</p> <p><b>Remarks:</b> </p> <p>This constructor parses an email
      * message, and extracts its header fields and body, and throws a
      * MessageDataException if the message is malformed. However, even if a
@@ -222,12 +222,12 @@ import com.upokecenter.text.*;
      * messages.).
      * @param bytes A byte array representing an email message.
      * @param headerFieldName The name of the header field to extract. This name
-     * will be compared with the names of header fields in the given message using
-     * a basic case-insensitive comparison. (Two strings are equal in such a
+     * will be compared with the names of header fields in the specified message
+     * using a basic case-insensitive comparison. (Two strings are equal in such a
      * comparison, if they match after converting the basic uppercase letters A to
      * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
-     * @return The value of the first instance of the header field with the given
-     * name. Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF
+     * @return The value of the first instance of the header field with the
+     * specified name. Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF
      * (0x0d/0x0a) pairs will be removed from the header field value, and the value
      * is treated as encoded in UTF-8 (an 8-bit encoding form of the Unicode
      * Standard) where illegally encoded UTF-8 is replaced as appropriate with
@@ -305,19 +305,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     /**
      * <p>Initializes a new instance of the {@link com.upokecenter.mail.Message}
-     * class. Reads from the given byte array to initialize the email message.</p>
-     * <p><b>Remarks:</b> </p> <p>This constructor parses an email message, and
-     * extracts its header fields and body, and throws a MessageDataException if
-     * the message is malformed. However, even if a MessageDataException is thrown,
-     * it can still be possible to display the message, especially because most
-     * email malformations seen in practice are benign in nature (such as the use
-     * of very long lines in the message). One way an application can handle the
-     * exception is to display the message, or part of it, as raw text (using
-     * {@code com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true)}), and to optionally
-     * extract important header fields, such as From, To, Date, and Subject, from
-     * the message's text using the {@code ExtractHeader} method. Even so, though,
-     * any message for which this constructor throws a MessageDataException ought
-     * to be treated with suspicion.</p>
+     * class. Reads from the specified byte array to initialize the email
+     * message.</p> <p><b>Remarks:</b> </p> <p>This constructor parses an email
+     * message, and extracts its header fields and body, and throws a
+     * MessageDataException if the message is malformed. However, even if a
+     * MessageDataException is thrown, it can still be possible to display the
+     * message, especially because most email malformations seen in practice are
+     * benign in nature (such as the use of very long lines in the message). One
+     * way an application can handle the exception is to display the message, or
+     * part of it, as raw text (using {@code com.upokecenter.util.DataUtilities.GetUtf8String(bytes,
+     * true)}), and to optionally extract important header fields, such as From,
+     * To, Date, and Subject, from the message's text using the {@code
+     * ExtractHeader} method. Even so, though, any message for which this
+     * constructor throws a MessageDataException ought to be treated with
+     * suspicion.</p>
      * @param bytes A readable data stream.
      * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws com.upokecenter.mail.MessageDataException The message is malformed.
@@ -1237,11 +1238,11 @@ public final void setContentType(MediaType value) {
       }
 
     /**
-     * Gets a list of addresses contained in the header fields with the given name
-     * in this message.
+     * Gets a list of addresses contained in the header fields with the specified
+     * name in this message.
      * @param headerName The name of the header fields to retrieve.
      * @return A list of addresses, in the order in which they appear in this
-     * message's header fields of the given name.
+     * message's header fields of the specified name.
      * @throws UnsupportedOperationException The parameter {@code headerName} is not
      * supported for this method. Currently, the only header fields supported are
      * To, Cc, Bcc, Reply-To, Sender, and From.
@@ -1431,7 +1432,7 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets this message's Date header field to the given date and time.
+     * Sets this message's Date header field to the specified date and time.
      * @param dateTime <p>An array containing at least eight elements expressing a
      * date and time. See <b>MailDateTime.ParseDateString(string, boolean)</b> for
      * more information on this parameter.</p>
@@ -1522,9 +1523,9 @@ public final void setSubject(String value) {
      * comparison, if they match after converting the basic uppercase letters A to
      * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
      * @param name The name of a header field.
-     * @return An array containing the values of all header fields with the given
-     * name, in the order they appear in the message. The array will be empty if no
-     * header field has that name.
+     * @return An array containing the values of all header fields with the
+     * specified name, in the order they appear in the message. The array will be
+     * empty if no header field has that name.
      * @throws NullPointerException Name is null.
      */
     public String[] GetHeaderArray(String name) {
@@ -1584,7 +1585,7 @@ public final void setSubject(String value) {
     }
 
     /**
-     * <p>Removes all instances of the given header field from this message. If
+     * <p>Removes all instances of the specified header field from this message. If
      * this is a multipart message, the header field is not removed from its body
      * part headers. A basic case-insensitive comparison is used. (Two strings are
      * equal in such a comparison, if they match after converting the basic
@@ -1618,8 +1619,8 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets the body of this message to the given byte array. This method doesn't
-     * make a copy of that byte array.
+     * Sets the body of this message to the specified byte array. This method
+     * doesn't make a copy of that byte array.
      * @param bytes A byte array.
      * @return This object.
      * @throws NullPointerException The parameter {@code bytes} is null.
@@ -1713,9 +1714,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Decodes RFC 2047 encoded words from the given header field value and returns
-     * a string with those words decoded. For an example of encoded words, see the
-     * constructor for PeterO.Mail.NamedAddress.
+     * Decodes RFC 2047 encoded words from the specified header field value and
+     * returns a string with those words decoded. For an example of encoded words,
+     * see the constructor for PeterO.Mail.NamedAddress.
      * @param name Name of the header field. This determines the syntax of the
      * "value" parameter and is necessary to help this method interpret encoded
      * words properly.
@@ -1897,10 +1898,10 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Adds an inline body part with an empty body and with the given media type to
-     * this message. Before the new body part is added, if this message isn't
-     * already a multipart message, it becomes a "multipart/mixed" message with the
-     * current body converted to an inline body part.
+     * Adds an inline body part with an empty body and with the specified media
+     * type to this message. Before the new body part is added, if this message
+     * isn't already a multipart message, it becomes a "multipart/mixed" message
+     * with the current body converted to an inline body part.
      * @param mediaType A media type to assign to the body part.
      * @return A Message object for the generated body part.
      */
@@ -1909,10 +1910,10 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Adds an attachment with an empty body and with the given media type to this
-     * message. Before the new attachment is added, if this message isn't already a
-     * multipart message, it becomes a "multipart/mixed" message with the current
-     * body converted to an inline body part.
+     * Adds an attachment with an empty body and with the specified media type to
+     * this message. Before the new attachment is added, if this message isn't
+     * already a multipart message, it becomes a "multipart/mixed" message with the
+     * current body converted to an inline body part.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
      */
@@ -2100,24 +2101,23 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
-     * <p>Adds an attachment to this message in the form of data from the given
-     * readable stream, and with the given media type. Before the new attachment is
-     * added, if this message isn't already a multipart message, it becomes a
-     * "multipart/mixed" message with the current body converted to an inline body
-     * part.</p><p> The following example (written in C# for the.NET version) is an
-     * extension method that adds an attachment from a byte array to a message.
-     * </p><pre>public static Message AddAttachmentFromBytes(Message msg,
-     * byte[] bytes, MediaType mediaType) { {
+     * <p>Adds an attachment to this message in the form of data from the specified
+     * readable stream, and with the specified media type. Before the new
+     * attachment is added, if this message isn't already a multipart message, it
+     * becomes a "multipart/mixed" message with the current body converted to an
+     * inline body part.</p><p> The following example (written in C# for the.NET
+     * version) is an extension method that adds an attachment from a byte array to
+     * a message. </p><pre>public static Message AddAttachmentFromBytes(* Message msg, byte[] bytes, MediaType mediaType) { {
 MemoryStream fs = null;
 try {
-fs = new
-     * MemoryStream(bytes);
+fs = * new java.io.ByteArrayInputStream(bytes);
  return msg.AddAttachment(fs, mediaType);
 }
 finally {
 try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 }
-} }</pre> .
+}
+     * }</pre> .
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
      * @return A Message object for the generated attachment.
@@ -2130,9 +2130,9 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Adds an attachment to this message in the form of data from the given
-     * readable stream, and with the given file name. Before the new attachment is
-     * added, if this message isn't already a multipart message, it becomes a
+     * Adds an attachment to this message in the form of data from the specified
+     * readable stream, and with the specified file name. Before the new attachment
+     * is added, if this message isn't already a multipart message, it becomes a
      * "multipart/mixed" message with the current body converted to an inline body
      * part.
      * @param inputStream A readable data stream.
@@ -2158,10 +2158,10 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Adds an attachment to this message in the form of data from the given
-     * readable stream, and with the given media type and file name. Before the new
-     * attachment is added, if this message isn't already a multipart message, it
-     * becomes a "multipart/mixed" message with the current body converted to an
+     * Adds an attachment to this message in the form of data from the specified
+     * readable stream, and with the specified media type and file name. Before the
+     * new attachment is added, if this message isn't already a multipart message,
+     * it becomes a "multipart/mixed" message with the current body converted to an
      * inline body part.
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the attachment.
@@ -2188,17 +2188,15 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 
     /**
      * <p>Adds an inline body part to this message in the form of data from the
-     * given readable stream, and with the given media type. Before the new body
-     * part is added, if this message isn't already a multipart message, it becomes
-     * a "multipart/mixed" message with the current body converted to an inline
-     * body part.</p><p> The following example (written in C# for the.NET version)
-     * is an extension method that adds an inline body part from a byte array to a
-     * message. </p><pre>public static Message AddInlineFromBytes(Message msg,
-     * byte[] bytes, MediaType mediaType) { {
+     * specified readable stream, and with the specified media type. Before the new
+     * body part is added, if this message isn't already a multipart message, it
+     * becomes a "multipart/mixed" message with the current body converted to an
+     * inline body part.</p><p> The following example (written in C# for the.NET
+     * version) is an extension method that adds an inline body part from a byte
+     * array to a message. </p><pre>public static Message AddInlineFromBytes(* Message msg, byte[] bytes, MediaType mediaType) { {
 MemoryStream fs = null;
 try {
-fs = new
-     * MemoryStream(bytes);
+fs = * new java.io.ByteArrayInputStream(bytes);
  return msg.AddInline(fs, mediaType);
 }
 finally {
@@ -2217,11 +2215,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Adds an inline body part to this message in the form of data from the given
-     * readable stream, and with the given file name. Before the new body part is
-     * added, if this message isn't already a multipart message, it becomes a
-     * "multipart/mixed" message with the current body converted to an inline body
-     * part.
+     * Adds an inline body part to this message in the form of data from the
+     * specified readable stream, and with the specified file name. Before the new
+     * body part is added, if this message isn't already a multipart message, it
+     * becomes a "multipart/mixed" message with the current body converted to an
+     * inline body part.
      * @param inputStream A readable data stream.
      * @param filename A file name to assign to the inline body part. Can be null
      * or empty, in which case no file name is assigned. Only the file name portion
@@ -2246,11 +2244,11 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Adds an inline body part to this message in the form of data from the given
-     * readable stream, and with the given media type and file name. Before the new
-     * body part is added, if this message isn't already a multipart message, it
-     * becomes a "multipart/mixed" message with the current body converted to an
-     * inline body part.
+     * Adds an inline body part to this message in the form of data from the
+     * specified readable stream, and with the specified media type and file name.
+     * Before the new body part is added, if this message isn't already a multipart
+     * message, it becomes a "multipart/mixed" message with the current body
+     * converted to an inline body part.
      * @param inputStream A readable data stream.
      * @param mediaType A media type to assign to the body part.
      * @param filename A file name to assign to the body part.
@@ -2294,14 +2292,14 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 
     /**
      * Selects a body part for a multiple-language message({@code
-     * multipart/multilingual}) according to the given language priority list.
+     * multipart/multilingual}) according to the specified language priority list.
      * @param languages A list of basic language ranges, sorted in descending order
      * of priority (see the LanguageTags.LanguageTagFilter method).
-     * @return The best matching body part for the given languages. If the body
+     * @return The best matching body part for the specified languages. If the body
      * part has no subject, then the top-level subject is used. If this message is
      * not a multipart/multilingual message or has fewer than two body parts,
-     * returns this object. If no body part matches the given languages, returns
-     * the last body part if its language is "zxx", or the second body part
+     * returns this object. If no body part matches the specified languages,
+     * returns the last body part if its language is "zxx", or the second body part
      * otherwise.
      * @throws NullPointerException The parameter {@code languages} is null.
      */
@@ -2312,19 +2310,19 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
 
     /**
      * Selects a body part for a multiple-language message({@code
-     * multipart/multilingual}) according to the given language priority list and
-     * original-language preference.
+     * multipart/multilingual}) according to the specified language priority list
+     * and original-language preference.
      * @param languages A list of basic language ranges, sorted in descending order
      * of priority (see the LanguageTags.LanguageTagFilter method).
      * @param preferOriginals If true, a body part marked as the original language
-     * version is chosen if it matches one of the given language ranges, even if
-     * the original language has a lower priority than another language with a
+     * version is chosen if it matches one of the specified language ranges, even
+     * if the original language has a lower priority than another language with a
      * matching body part.
-     * @return The best matching body part for the given languages. If the body
+     * @return The best matching body part for the specified languages. If the body
      * part has no subject, then the top-level subject is used. If this message is
      * not a multipart/multilingual message or has fewer than two body parts,
-     * returns this object. If no body part matches the given languages, returns
-     * the last body part if its language is "zxx", or the second body part
+     * returns this object. If no body part matches the specified languages,
+     * returns the last body part if its language is "zxx", or the second body part
      * otherwise.
      * @throws NullPointerException The parameter {@code languages} is null.
      */
@@ -4058,8 +4056,8 @@ TransferEncodingToUse(
      * <p>Creates a message object from a MailTo URI (uniform resource identifier).
      * For more information, see <b>FromMailtoUri(string)</b>.</p>
      * @param url A MailTo URI.
-     * @return A Message object created from the given MailTo URI. Returs null if
-     * {@code url} is null, is syntactically invalid, or is not a MailTo URI.
+     * @return A Message object created from the specified MailTo URI. Returs null
+     * if {@code url} is null, is syntactically invalid, or is not a MailTo URI.
      * @deprecated Renamed to FromMailtoUri.
  */
 @Deprecated
@@ -4092,20 +4090,20 @@ TransferEncodingToUse(
      * keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to",
      * "comments", "keywords", and "body". The first seven are header field names
      * that will be used to set the returned message's corresponding header fields.
-     * The last, "body", sets the body of the message to the given text. Keys other
-     * than these eight will be ignored. (Keys are compared using a basic
+     * The last, "body", sets the body of the message to the specified text. Keys
+     * other than these eight will be ignored. (Keys are compared using a basic
      * case-sensitive comparison, in which two strings are equal if they match
      * after converting the basic uppercase letters A to Z (U+0041 to U+005A) in
      * both strings to basic lowercase letters.) The same key (matched using a
      * basic case-insensitive comparison) can appear more than once; for "subject",
-     * "cc", "bcc", and "in-reply-to", the last value with the given key is used;
-     * for "to", all header field values as well as the path are combined to a
-     * single To header field; for "keywords" and "comments", each value adds
-     * another header field of the given key; and for "body", the last value with
-     * that key is used as the body.
+     * "cc", "bcc", and "in-reply-to", the last value with the specified key is
+     * used; for "to", all header field values as well as the path are combined to
+     * a single To header field; for "keywords" and "comments", each value adds
+     * another header field of the specified key; and for "body", the last value
+     * with that key is used as the body.
      * @param uri The parameter {@code uri} is a text string.
-     * @return A Message object created from the given MailTo URI. Returs null if
-     * {@code uri} is null, is syntactically invalid, or is not a MailTo URI.
+     * @return A Message object created from the specified MailTo URI. Returs null
+     * if {@code uri} is null, is syntactically invalid, or is not a MailTo URI.
      */
     public static Message FromMailtoUri(String uri) {
       return MailtoUris.MailtoUriMessage(uri);
@@ -4116,8 +4114,8 @@ TransferEncodingToUse(
      * in the form of a URI object. For more information, see
      * <b>FromMailtoUri(string)</b>.</p>
      * @param uri The MailTo URI in the form of a URI object.
-     * @return A Message object created from the given MailTo URI. Returs null if
-     * {@code uri} is null, is syntactically invalid, or is not a MailTo URI.
+     * @return A Message object created from the specified MailTo URI. Returs null
+     * if {@code uri} is null, is syntactically invalid, or is not a MailTo URI.
      * @throws NullPointerException The parameter {@code uri} is null.
      */
     public static Message FromMailtoUri(java.net.URI uri) {

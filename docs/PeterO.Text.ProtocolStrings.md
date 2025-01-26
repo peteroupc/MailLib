@@ -17,8 +17,8 @@ Many of the methods in this class take text strings and output text strings. How
 The methods in this class are not guaranteed to be "constant-time" (nondata-dependent) for all relevant inputs. Neither are string comparison methods (such as String.Equals) necessarily guaranteed to be "constant-time". Certain attacks that involve encrypted communications have exploited the timing and other aspects of such communications to derive keying material or cleartext indirectly, or for example, to leak information about whether a user name and password were accepted by the server, or whether a user name or display name was already taken. This is an important consideration especially for strings representing account identifiers or passwords, even when comparing two such strings of the same length.
 
 ### Member Summary
-* <code>[IsInFreeformClass(string)](#IsInFreeformClass_string)</code> - Determines whether the given string belongs in RFC 8264's FreeformClass.
-* <code>[IsInIdentifierClass(string)](#IsInIdentifierClass_string)</code> - Determines whether the given string belongs in RFC 8264's IdentifierClass.
+* <code>[IsInFreeformClass(string)](#IsInFreeformClass_string)</code> - Determines whether the specified string belongs in RFC 8264's FreeformClass.
+* <code>[IsInIdentifierClass(string)](#IsInIdentifierClass_string)</code> - Determines whether the specified string belongs in RFC 8264's IdentifierClass.
 * <code>[NicknameEnforce(string)](#NicknameEnforce_string)</code> - Checks the validity of a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec.
 * <code>[NicknameForComparison(string)](#NicknameForComparison_string)</code> - Prepares for comparison a string serving as a "memorable, human-friendly name" for something (see RFC 8266), as opposed to that thing's identity for authentication or authorization purposes (see sec.
 * <code>[OpaqueStringEnforce(string)](#OpaqueStringEnforce_string)</code> - Checks the validity of a string serving as an arbitrary single-line sequence of characters, such as a passphrase.
@@ -33,7 +33,7 @@ The methods in this class are not guaranteed to be "constant-time" (nondata-depe
     public static bool IsInFreeformClass(
         string str);
 
-Determines whether the given string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U+0021 to U+007E), but excludes control characters and separators. Horizontal tab, U+0009, and other code points in the range U+0000 to U+001F, are among the excluded characters.
+Determines whether the specified string belongs in RFC 8264's FreeformClass. In general, the FreeformClass contains most letters, digits, spaces, punctuation, and symbols in the Unicode standard, as well as all basic printable characters (U+0021 to U+007E), but excludes control characters and separators. Horizontal tab, U+0009, and other code points in the range U+0000 to U+001F, are among the excluded characters.
 
 <b>Parameters:</b>
 
@@ -41,7 +41,7 @@ Determines whether the given string belongs in RFC 8264's FreeformClass. In gene
 
 <b>Return Value:</b>
 
- `true`  if the given string is empty or contains only characters allowed in RFC 8264's FreeformClass (in the contexts required); otherwise,  `false` . Returns  `false`  if  <i>str</i>
+ `true`  if the specified string is empty or contains only characters allowed in RFC 8264's FreeformClass (in the contexts required); otherwise,  `false` . Returns  `false`  if  <i>str</i>
  is null.
 
 <a id="IsInIdentifierClass_string"></a>
@@ -50,7 +50,7 @@ Determines whether the given string belongs in RFC 8264's FreeformClass. In gene
     public static bool IsInIdentifierClass(
         string str);
 
-Determines whether the given string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
+Determines whether the specified string belongs in RFC 8264's IdentifierClass. In general, the IdentifierClass contains all code points in the FreeformClass, except certain uncommon letters and digits, spaces, as well as punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
 
 <b>Parameters:</b>
 
@@ -58,7 +58,7 @@ Determines whether the given string belongs in RFC 8264's IdentifierClass. In ge
 
 <b>Return Value:</b>
 
- `true`  if the given string is empty or contains only characters allowed in RFC 8264's IdentifierClass (in the contexts required); otherwise,  `false` . Returns  `false`  if  <i>str</i>
+ `true`  if the specified string is empty or contains only characters allowed in RFC 8264's IdentifierClass (in the contexts required); otherwise,  `false` . Returns  `false`  if  <i>str</i>
  is null.
 
 <a id="NicknameEnforce_string"></a>

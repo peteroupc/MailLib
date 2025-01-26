@@ -419,7 +419,7 @@ import com.upokecenter.text.*;
      * object, or the default value if the string is invalid. This method checks
      * the syntactic validity of the string, but not whether it has all parameters
      * it's required to have or whether the parameters themselves are set to valid
-     * values for the parameter. </p><p>This method assumes the given content
+     * values for the parameter. </p><p>This method assumes the specified content
      * disposition string was directly extracted from the Content-Disposition
      * header field (as defined for email messages) and follows the syntax given in
      * RFC 2183. Accordingly, among other things, the content disposition string
@@ -429,7 +429,7 @@ import com.upokecenter.text.*;
      * key-value pairs. Parameters making use of RFC 2231 extensions have names
      * with an asterisk ("*"). Such a parameter will be ignored if it is ill-formed
      * because of RFC 2231's rules (except for illegal percent-decoding or
-     * undecodable sequences for the given character encoding). Examples of RFC
+     * undecodable sequences for the specified character encoding). Examples of RFC
      * 2231 extensions follow (both examples encode the same "filename"
      * parameter):</p> <p><b>inline; filename*=utf-8'en'filename.txt</b></p>
      * <p><b>inline; filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p>
@@ -489,8 +489,8 @@ public final void setDispositionType(String value) {
 
       /**
        * Initializes a new instance of the {@link
-       * com.upokecenter.mail.DispositionBuilder} class using the data from the given
-       * content disposition.
+       * com.upokecenter.mail.DispositionBuilder} class using the data from the
+       * specified content disposition.
        * @param mt The parameter {@code mt} is a ContentDisposition object.
        * @throws NullPointerException The parameter {@code mt} is null.
        */
@@ -504,7 +504,7 @@ public final void setDispositionType(String value) {
 
       /**
        * Initializes a new instance of the {@link
-       * com.upokecenter.mail.ContentDisposition.Builder} class using the given
+       * com.upokecenter.mail.ContentDisposition.Builder} class using the specified
        * disposition type.
        * @param type The parameter {@code type} is a text string.
        * @throws NullPointerException The parameter {@code type} is null.

@@ -7,24 +7,25 @@ namespace PeterO.Mail {
   /// <summary>Contains methods for parsing and matching language
   /// tags.</summary>
   public static class LanguageTags {
-    /// <summary>Returns whether the given string is a basic language range
-    /// under RFC 4647. Examples include "*", "en-us", and "fr".</summary>
+    /// <summary>Returns whether the specified string is a basic language
+    /// range under RFC 4647. Examples include "*", "en-us", and
+    /// "fr".</summary>
     /// <param name='str'>The string to check. Can be null.</param>
-    /// <returns><c>true</c> if the given string is a basic language range;
-    /// otherwise, <c>false</c>.</returns>
+    /// <returns><c>true</c> if the specified string is a basic language
+    /// range; otherwise, <c>false</c>.</returns>
     public static bool IsLanguageRange(string str) {
       return IsLanguageRange(str, false);
     }
 
-    /// <summary>Returns whether the given string is a basic or extended
-    /// language range under RFC 4647. Examples of basic (and extended)
-    /// language ranges include "*", "en-us", and "fr". Examples of
-    /// extended language ranges include "*-de" and "it-*".</summary>
+    /// <summary>Returns whether the specified string is a basic or
+    /// extended language range under RFC 4647. Examples of basic (and
+    /// extended) language ranges include "*", "en-us", and "fr". Examples
+    /// of extended language ranges include "*-de" and "it-*".</summary>
     /// <param name='str'>The string to check. Can be null.</param>
     /// <param name='extended'>Check whether the string is a basic language
     /// range if "false", or an extended language range if "true".</param>
-    /// <returns><c>true</c> if the given string is a basic language range
-    /// (depending on the <paramref name='extended'/> parameter);
+    /// <returns><c>true</c> if the specified string is a basic language
+    /// range (depending on the <paramref name='extended'/> parameter);
     /// otherwise, <c>false</c>.</returns>
     public static bool IsLanguageRange(string str, bool extended) {
       if (String.IsNullOrEmpty(str)) {
@@ -148,7 +149,7 @@ namespace PeterO.Mail {
       return indexStart;
     }
 
-    /// <summary>Sets the given language tag to the case combination
+    /// <summary>Sets the specified language tag to the case combination
     /// recommended by RFC 5646. For example, "en-us" becomes "en-US", and
     /// "zh-hant" becomes "zh-Hant".</summary>
     /// <param name='str'>A string of a language tag. Can be null.</param>
@@ -284,8 +285,8 @@ namespace PeterO.Mail {
     /// <returns>A list of language ranges with their associated qualities.
     /// The list will be sorted in descending order by quality; if two or
     /// more language ranges have the same quality, they will be sorted in
-    /// the order in which they appeared in the given string. Returns null
-    /// if <paramref name='str'/> is null or syntactically
+    /// the order in which they appeared in the specified string. Returns
+    /// null if <paramref name='str'/> is null or syntactically
     /// invalid.</returns>
     public static IList<StringAndQuality> GetRangeListWithQuality(
       string str) {
@@ -431,7 +432,7 @@ namespace PeterO.Mail {
     /// <param name='matchStarAtEnd'>If true, treats any range equaling "*"
     /// as appearing at the end of the language priority list, no matter
     /// where it appears on that list.</param>
-    /// <returns>A list of language tags that match the given range, in
+    /// <returns>A list of language tags that match the specified range, in
     /// descending order of preference.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='languages'/> or <paramref name='ranges'/> is
@@ -515,8 +516,8 @@ namespace PeterO.Mail {
       return String.Empty;
     }
 
-    /// <summary>Determines whether the given language tag matches the
-    /// given language range.</summary>
+    /// <summary>Determines whether the specified language tag matches the
+    /// specified language range.</summary>
     /// <param name='range'>A basic language range (see the documentation
     /// for "IsLanguageRange").</param>
     /// <param name='tag'>A language tag.</param>
@@ -591,7 +592,7 @@ namespace PeterO.Mail {
     /// given in order of descending preference.</param>
     /// <param name='languages'>A list of language tags, which should be
     /// given in order of descending preference.</param>
-    /// <returns>A list of language tags that match the given range, in
+    /// <returns>A list of language tags that match the specified range, in
     /// descending order of preference.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='languages'/> or <paramref name='ranges'/> is
@@ -705,7 +706,7 @@ namespace PeterO.Mail {
       return defaultValue;
     }
 
-    /// <summary>Returns true if (1) the given string is a well-formed
+    /// <summary>Returns true if (1) the specified string is a well-formed
     /// language tag under RFC 5646 (that is, the string follows the syntax
     /// given in section 2.1 of that RFC), and (2) the language tag
     /// contains at most one extended language subtag, no variant subtags

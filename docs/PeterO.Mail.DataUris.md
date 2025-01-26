@@ -17,7 +17,7 @@
 * <code>[DataUriBytes(System.Uri)](#DataUriBytes_System_Uri)</code> - Extracts the data from a Data URI (uniform resource identifier) in the form of a byte array, where the Data URI is given as a URI object.
 * <code>[DataUriMediaType(string)](#DataUriMediaType_string)</code> - Extracts the media type from a Data URI (uniform resource identifier) in the form of a text string.
 * <code>[DataUriMediaType(System.Uri)](#DataUriMediaType_System_Uri)</code> - Extracts the media type from a Data URI (uniform resource identifier) in the form of a URI object.
-* <code>[MakeDataUri(byte[], PeterO.Mail.MediaType)](#MakeDataUri_byte_PeterO_Mail_MediaType)</code> - Encodes data with the given media type in a Data URI (uniform resource identifier).
+* <code>[MakeDataUri(byte[], PeterO.Mail.MediaType)](#MakeDataUri_byte_PeterO_Mail_MediaType)</code> - Encodes data with the specified media type in a Data URI (uniform resource identifier).
 * <code>[MakeDataUri(string)](#MakeDataUri_string)</code> - Encodes text as a Data URI (uniform resource identifier).
 
 <a id="DataUriBytes_string"></a>
@@ -120,7 +120,7 @@ The parameter  <i>uri</i>
         byte[] bytes,
         PeterO.Mail.MediaType mediaType);
 
-Encodes data with the given media type in a Data URI (uniform resource identifier).
+Encodes data with the specified media type in a Data URI (uniform resource identifier).
 
 <b>Parameters:</b>
 
@@ -130,7 +130,7 @@ Encodes data with the given media type in a Data URI (uniform resource identifie
 
 <b>Return Value:</b>
 
-A Data URI that encodes the given data and media type.
+A Data URI that encodes the specified data and media type.
 
 <b>Exceptions:</b>
 
@@ -153,7 +153,7 @@ Encodes text as a Data URI (uniform resource identifier).
 
 <b>Return Value:</b>
 
-A Data URI that encodes the given text.
+A Data URI that encodes the specified text.
 
 <b>Exceptions:</b>
 

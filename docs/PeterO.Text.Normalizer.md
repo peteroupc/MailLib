@@ -10,7 +10,7 @@ NOTICE: While this class's source code is in the public domain, the class uses a
 
 ### Member Summary
 * <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Returns whether this string is normalized.
-* <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
+* <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the specified Unicode normalization form.
 * <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
 * <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
 
@@ -58,7 +58,7 @@ Returns whether this string is normalized.
         string str,
         PeterO.Text.Normalization form);
 
-Converts a string to the given Unicode normalization form.
+Converts a string to the specified Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -69,7 +69,7 @@ Converts a string to the given Unicode normalization form.
 <b>Return Value:</b>
 
 The parameter  <i>str</i>
- converted to the given normalization form.
+ converted to the specified normalization form.
 
 <b>Exceptions:</b>
 

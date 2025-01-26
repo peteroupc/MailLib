@@ -163,7 +163,7 @@ namespace PeterO.Mail {
     private int transferEncoding;
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.Message'/> class. Reads from the given
+    /// <see cref='PeterO.Mail.Message'/> class. Reads from the specified
     /// Stream object to initialize the email message.</summary>
     /// <param name='stream'>A readable data stream.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -252,14 +252,14 @@ namespace PeterO.Mail {
     /// message.</param>
     /// <param name='headerFieldName'>The name of the header field to
     /// extract. This name will be compared with the names of header fields
-    /// in the given message using a basic case-insensitive comparison.
+    /// in the specified message using a basic case-insensitive comparison.
     /// (Two strings are equal in such a comparison, if they match after
     /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
     /// both strings to basic lowercase letters.).</param>
     /// <returns>The value of the first instance of the header field with
-    /// the given name. Leading space and/or tab bytes (0x20 and/or 0x09)
-    /// and CR/LF (0x0d/0x0a) pairs will be removed from the header field
-    /// value, and the value is treated as encoded in UTF-8 (an 8-bit
+    /// the specified name. Leading space and/or tab bytes (0x20 and/or
+    /// 0x09) and CR/LF (0x0d/0x0a) pairs will be removed from the header
+    /// field value, and the value is treated as encoded in UTF-8 (an 8-bit
     /// encoding form of the Unicode Standard) where illegally encoded
     /// UTF-8 is replaced as appropriate with replacement characters
     /// (U+FFFD). Returns null if <paramref name='bytes'/> is null, if
@@ -327,8 +327,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.Message'/> class. Reads from the given byte
-    /// array to initialize the email message.</summary>
+    /// <see cref='PeterO.Mail.Message'/> class. Reads from the specified
+    /// byte array to initialize the email message.</summary>
     /// <param name='bytes'>A readable data stream.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
@@ -1306,11 +1306,11 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets a list of addresses contained in the header fields
-    /// with the given name in this message.</summary>
+    /// with the specified name in this message.</summary>
     /// <param name='headerName'>The name of the header fields to
     /// retrieve.</param>
     /// <returns>A list of addresses, in the order in which they appear in
-    /// this message's header fields of the given name.</returns>
+    /// this message's header fields of the specified name.</returns>
     /// <exception cref='NotSupportedException'>The parameter <paramref
     /// name='headerName'/> is not supported for this method. Currently,
     /// the only header fields supported are To, Cc, Bcc, Reply-To, Sender,
@@ -1508,8 +1508,8 @@ namespace PeterO.Mail {
   true);
     }
 
-    /// <summary>Sets this message's Date header field to the given date
-    /// and time.</summary>
+    /// <summary>Sets this message's Date header field to the specified
+    /// date and time.</summary>
     /// <param name='dateTime'>An array containing at least eight elements
     /// expressing a date and time. See
     /// <b>MailDateTime.ParseDateString(string, bool)</b> for more
@@ -1613,8 +1613,8 @@ namespace PeterO.Mail {
     /// both strings to basic lowercase letters.).</summary>
     /// <param name='name'>The name of a header field.</param>
     /// <returns>An array containing the values of all header fields with
-    /// the given name, in the order they appear in the message. The array
-    /// will be empty if no header field has that name.</returns>
+    /// the specified name, in the order they appear in the message. The
+    /// array will be empty if no header field has that name.</returns>
     /// <exception cref='ArgumentNullException'>Name is null.</exception>
     public string[] GetHeaderArray(string name) {
       if (name == null) {
@@ -1673,9 +1673,9 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Removes all instances of the given header field from this
-    /// message. If this is a multipart message, the header field is not
-    /// removed from its body part headers. A basic case-insensitive
+    /// <summary>Removes all instances of the specified header field from
+    /// this message. If this is a multipart message, the header field is
+    /// not removed from its body part headers. A basic case-insensitive
     /// comparison is used. (Two strings are equal in such a comparison, if
     /// they match after converting the basic uppercase letters A to Z
     /// (U+0041 to U+005A) in both strings to basic lowercase letters.).
@@ -1708,7 +1708,7 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Sets the body of this message to the given byte array.
+    /// <summary>Sets the body of this message to the specified byte array.
     /// This method doesn't make a copy of that byte array.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <returns>This object.</returns>
@@ -1811,9 +1811,9 @@ namespace PeterO.Mail {
       return this.SetHeader(index, this.headers[index * 2], value);
     }
 
-    /// <summary>Decodes RFC 2047 encoded words from the given header field
-    /// value and returns a string with those words decoded. For an example
-    /// of encoded words, see the constructor for
+    /// <summary>Decodes RFC 2047 encoded words from the specified header
+    /// field value and returns a string with those words decoded. For an
+    /// example of encoded words, see the constructor for
     /// PeterO.Mail.NamedAddress.</summary>
     /// <param name='name'>Name of the header field. This determines the
     /// syntax of the "value" parameter and is necessary to help this
@@ -2007,7 +2007,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Adds an inline body part with an empty body and with the
-    /// given media type to this message. Before the new body part is
+    /// specified media type to this message. Before the new body part is
     /// added, if this message isn't already a multipart message, it
     /// becomes a "multipart/mixed" message with the current body converted
     /// to an inline body part.</summary>
@@ -2018,11 +2018,11 @@ namespace PeterO.Mail {
       return this.AddBodyPart(null, mediaType, null, "inline", true);
     }
 
-    /// <summary>Adds an attachment with an empty body and with the given
-    /// media type to this message. Before the new attachment is added, if
-    /// this message isn't already a multipart message, it becomes a
-    /// "multipart/mixed" message with the current body converted to an
-    /// inline body part.</summary>
+    /// <summary>Adds an attachment with an empty body and with the
+    /// specified media type to this message. Before the new attachment is
+    /// added, if this message isn't already a multipart message, it
+    /// becomes a "multipart/mixed" message with the current body converted
+    /// to an inline body part.</summary>
     /// <param name='mediaType'>A media type to assign to the
     /// attachment.</param>
     /// <returns>A Message object for the generated attachment.</returns>
@@ -2202,10 +2202,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Adds an attachment to this message in the form of data
-    /// from the given readable stream, and with the given media type.
-    /// Before the new attachment is added, if this message isn't already a
-    /// multipart message, it becomes a "multipart/mixed" message with the
-    /// current body converted to an inline body part.</summary>
+    /// from the specified readable stream, and with the specified media
+    /// type. Before the new attachment is added, if this message isn't
+    /// already a multipart message, it becomes a "multipart/mixed" message
+    /// with the current body converted to an inline body part.</summary>
     /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='mediaType'>A media type to assign to the
     /// attachment.</param>
@@ -2229,10 +2229,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Adds an attachment to this message in the form of data
-    /// from the given readable stream, and with the given file name.
-    /// Before the new attachment is added, if this message isn't already a
-    /// multipart message, it becomes a "multipart/mixed" message with the
-    /// current body converted to an inline body part.</summary>
+    /// from the specified readable stream, and with the specified file
+    /// name. Before the new attachment is added, if this message isn't
+    /// already a multipart message, it becomes a "multipart/mixed" message
+    /// with the current body converted to an inline body part.</summary>
     /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='filename'>A file name to assign to the attachment. Can
     /// be null or empty, in which case no file name is assigned. Only the
@@ -2258,11 +2258,11 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Adds an attachment to this message in the form of data
-    /// from the given readable stream, and with the given media type and
-    /// file name. Before the new attachment is added, if this message
-    /// isn't already a multipart message, it becomes a "multipart/mixed"
-    /// message with the current body converted to an inline body
-    /// part.</summary>
+    /// from the specified readable stream, and with the specified media
+    /// type and file name. Before the new attachment is added, if this
+    /// message isn't already a multipart message, it becomes a
+    /// "multipart/mixed" message with the current body converted to an
+    /// inline body part.</summary>
     /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='mediaType'>A media type to assign to the
     /// attachment.</param>
@@ -2289,10 +2289,11 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Adds an inline body part to this message in the form of
-    /// data from the given readable stream, and with the given media type.
-    /// Before the new body part is added, if this message isn't already a
-    /// multipart message, it becomes a "multipart/mixed" message with the
-    /// current body converted to an inline body part.</summary>
+    /// data from the specified readable stream, and with the specified
+    /// media type. Before the new body part is added, if this message
+    /// isn't already a multipart message, it becomes a "multipart/mixed"
+    /// message with the current body converted to an inline body
+    /// part.</summary>
     /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='mediaType'>A media type to assign to the body
     /// part.</param>
@@ -2317,10 +2318,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Adds an inline body part to this message in the form of
-    /// data from the given readable stream, and with the given file name.
-    /// Before the new body part is added, if this message isn't already a
-    /// multipart message, it becomes a "multipart/mixed" message with the
-    /// current body converted to an inline body part.</summary>
+    /// data from the specified readable stream, and with the specified
+    /// file name. Before the new body part is added, if this message isn't
+    /// already a multipart message, it becomes a "multipart/mixed" message
+    /// with the current body converted to an inline body part.</summary>
     /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='filename'>A file name to assign to the inline body
     /// part. Can be null or empty, in which case no file name is assigned.
@@ -2346,11 +2347,11 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Adds an inline body part to this message in the form of
-    /// data from the given readable stream, and with the given media type
-    /// and file name. Before the new body part is added, if this message
-    /// isn't already a multipart message, it becomes a "multipart/mixed"
-    /// message with the current body converted to an inline body
-    /// part.</summary>
+    /// data from the specified readable stream, and with the specified
+    /// media type and file name. Before the new body part is added, if
+    /// this message isn't already a multipart message, it becomes a
+    /// "multipart/mixed" message with the current body converted to an
+    /// inline body part.</summary>
     /// <param name='inputStream'>A readable data stream.</param>
     /// <param name='mediaType'>A media type to assign to the body
     /// part.</param>
@@ -2396,16 +2397,16 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Selects a body part for a multiple-language message(
-    /// <c>multipart/multilingual</c> ) according to the given language
+    /// <c>multipart/multilingual</c> ) according to the specified language
     /// priority list.</summary>
     /// <param name='languages'>A list of basic language ranges, sorted in
     /// descending order of priority (see the
     /// LanguageTags.LanguageTagFilter method).</param>
-    /// <returns>The best matching body part for the given languages. If
-    /// the body part has no subject, then the top-level subject is used.
-    /// If this message is not a multipart/multilingual message or has
-    /// fewer than two body parts, returns this object. If no body part
-    /// matches the given languages, returns the last body part if its
+    /// <returns>The best matching body part for the specified languages.
+    /// If the body part has no subject, then the top-level subject is
+    /// used. If this message is not a multipart/multilingual message or
+    /// has fewer than two body parts, returns this object. If no body part
+    /// matches the specified languages, returns the last body part if its
     /// language is "zxx", or the second body part otherwise.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='languages'/> is null.</exception>
@@ -2415,20 +2416,21 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Selects a body part for a multiple-language message(
-    /// <c>multipart/multilingual</c> ) according to the given language
+    /// <c>multipart/multilingual</c> ) according to the specified language
     /// priority list and original-language preference.</summary>
     /// <param name='languages'>A list of basic language ranges, sorted in
     /// descending order of priority (see the
     /// LanguageTags.LanguageTagFilter method).</param>
     /// <param name='preferOriginals'>If true, a body part marked as the
-    /// original language version is chosen if it matches one of the given
-    /// language ranges, even if the original language has a lower priority
-    /// than another language with a matching body part.</param>
-    /// <returns>The best matching body part for the given languages. If
-    /// the body part has no subject, then the top-level subject is used.
-    /// If this message is not a multipart/multilingual message or has
-    /// fewer than two body parts, returns this object. If no body part
-    /// matches the given languages, returns the last body part if its
+    /// original language version is chosen if it matches one of the
+    /// specified language ranges, even if the original language has a
+    /// lower priority than another language with a matching body
+    /// part.</param>
+    /// <returns>The best matching body part for the specified languages.
+    /// If the body part has no subject, then the top-level subject is
+    /// used. If this message is not a multipart/multilingual message or
+    /// has fewer than two body parts, returns this object. If no body part
+    /// matches the specified languages, returns the last body part if its
     /// language is "zxx", or the second body part otherwise.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='languages'/> is null.</exception>
@@ -4211,9 +4213,9 @@ TransferEncodingToUse(
     /// resource identifier). For more information, see
     /// <b>FromMailtoUri(string)</b>.</summary>
     /// <param name='url'>A MailTo URI.</param>
-    /// <returns>A Message object created from the given MailTo URI. Returs
-    /// null if <paramref name='url'/> is null, is syntactically invalid,
-    /// or is not a MailTo URI.</returns>
+    /// <returns>A Message object created from the specified MailTo URI.
+    /// Returs null if <paramref name='url'/> is null, is syntactically
+    /// invalid, or is not a MailTo URI.</returns>
     [Obsolete("Renamed to FromMailtoUri.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
@@ -4253,23 +4255,23 @@ TransferEncodingToUse(
     /// "comments", "keywords", and "body". The first seven are header
     /// field names that will be used to set the returned message's
     /// corresponding header fields. The last, "body", sets the body of the
-    /// message to the given text. Keys other than these eight will be
+    /// message to the specified text. Keys other than these eight will be
     /// ignored. (Keys are compared using a basic case-sensitive
     /// comparison, in which two strings are equal if they match after
     /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
     /// both strings to basic lowercase letters.) The same key (matched
     /// using a basic case-insensitive comparison) can appear more than
     /// once; for "subject", "cc", "bcc", and "in-reply-to", the last value
-    /// with the given key is used; for "to", all header field values as
-    /// well as the path are combined to a single To header field; for
+    /// with the specified key is used; for "to", all header field values
+    /// as well as the path are combined to a single To header field; for
     /// "keywords" and "comments", each value adds another header field of
-    /// the given key; and for "body", the last value with that key is used
-    /// as the body.</summary>
+    /// the specified key; and for "body", the last value with that key is
+    /// used as the body.</summary>
     /// <param name='uri'>The parameter <paramref name='uri'/> is a text
     /// string.</param>
-    /// <returns>A Message object created from the given MailTo URI. Returs
-    /// null if <paramref name='uri'/> is null, is syntactically invalid,
-    /// or is not a MailTo URI.</returns>
+    /// <returns>A Message object created from the specified MailTo URI.
+    /// Returs null if <paramref name='uri'/> is null, is syntactically
+    /// invalid, or is not a MailTo URI.</returns>
     public static Message FromMailtoUri(string uri) {
       return MailtoUris.MailtoUriMessage(uri);
     }
@@ -4279,9 +4281,9 @@ TransferEncodingToUse(
     /// information, see <b>FromMailtoUri(string)</b>.</summary>
     /// <param name='uri'>The MailTo URI in the form of a URI
     /// object.</param>
-    /// <returns>A Message object created from the given MailTo URI. Returs
-    /// null if <paramref name='uri'/> is null, is syntactically invalid,
-    /// or is not a MailTo URI.</returns>
+    /// <returns>A Message object created from the specified MailTo URI.
+    /// Returs null if <paramref name='uri'/> is null, is syntactically
+    /// invalid, or is not a MailTo URI.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='uri'/> is null.</exception>
     public static Message FromMailtoUri(Uri uri) {

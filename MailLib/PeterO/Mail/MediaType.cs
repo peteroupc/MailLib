@@ -58,8 +58,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Returns whether this media type's subtype has the given
-    /// structured syntax suffix.</summary>
+    /// <summary>Returns whether this media type's subtype has the
+    /// specified structured syntax suffix.</summary>
     /// <param name='suffix'>A text string identifying a structured syntax
     /// suffix without the starting "+". Examples include "xml" and "json".
     /// The suffix is compared to the end of the media type's subtype using
@@ -1526,20 +1526,20 @@ null;
     /// checks the syntactic validity of the string, but not whether it has
     /// all parameters it's required to have or whether the parameters
     /// themselves are set to valid values for the parameter.
-    /// <para>This method assumes the given media type string was directly
-    /// extracted from the Content-Type header field (as defined for email
-    /// messages) and follows the syntax given in RFC 2045. Accordingly,
-    /// among other things, the media type string can contain comments
-    /// (delimited by parentheses).</para>
+    /// <para>This method assumes the specified media type string was
+    /// directly extracted from the Content-Type header field (as defined
+    /// for email messages) and follows the syntax given in RFC 2045.
+    /// Accordingly, among other things, the media type string can contain
+    /// comments (delimited by parentheses).</para>
     /// <para>RFC 2231 extensions allow each media type parameter to be
     /// associated with a character encoding and/or language, and support
     /// parameter values that span two or more key-value pairs. Parameters
     /// making use of RFC 2231 extensions have names with an asterisk
     /// ("*"). Such a parameter will be ignored if it is ill-formed because
     /// of RFC 2231's rules (except for illegal percent-decoding or
-    /// undecodable sequences for the given character encoding). Examples
-    /// of RFC 2231 extensions follow (both examples encode the same
-    /// "filename" parameter):</para>
+    /// undecodable sequences for the specified character encoding).
+    /// Examples of RFC 2231 extensions follow (both examples encode the
+    /// same "filename" parameter):</para>
     /// <para><b>text/example; filename*=utf-8'en'filename.txt</b></para>
     /// <para><b>text/example; filename*0*=utf-8'en'file;
     /// filename*1*=name%2Etxt</b></para>

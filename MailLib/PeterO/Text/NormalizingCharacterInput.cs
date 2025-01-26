@@ -193,13 +193,13 @@ namespace PeterO.Text {
       return NormalizerInput.IsNormalized(chars, form);
     }
 
-    /// <summary>Converts a string to the given Unicode normalization
+    /// <summary>Converts a string to the specified Unicode normalization
     /// form.</summary>
     /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>The Unicode normalization form to convert
     /// to.</param>
     /// <returns>The parameter <paramref name='str'/> converted to the
-    /// given normalization form.</returns>
+    /// specified normalization form.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='str'/> contains an unpaired surrogate code point.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -208,14 +208,15 @@ namespace PeterO.Text {
       return NormalizerInput.Normalize(str, form);
     }
 
-    /// <summary>Determines whether the given string is in the given
-    /// Unicode normalization form.</summary>
+    /// <summary>Determines whether the specified string is in the
+    /// specified Unicode normalization form.</summary>
     /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>Specifies the normalization form to use when
     /// normalizing the text.</param>
-    /// <returns><c>true</c> if the given string is in the given Unicode
-    /// normalization form; otherwise, <c>false</c>. Returns <c>false</c>
-    /// if the string contains an unpaired surrogate code point.</returns>
+    /// <returns><c>true</c> if the specified string is in the specified
+    /// Unicode normalization form; otherwise, <c>false</c>. Returns
+    /// <c>false</c> if the string contains an unpaired surrogate code
+    /// point.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static bool IsNormalized(string str, Normalization form) {
@@ -273,13 +274,13 @@ namespace PeterO.Text {
       return ret;
     }
 
-    /// <summary>Determines whether the given array of characters is in the
-    /// given Unicode normalization form.</summary>
+    /// <summary>Determines whether the specified array of characters is in
+    /// the specified Unicode normalization form.</summary>
     /// <param name='charArray'>An array of Unicode code points.</param>
     /// <param name='form'>Specifies the normalization form to use when
     /// normalizing the text.</param>
-    /// <returns><c>true</c> if the given list of characters is in the
-    /// given Unicode normalization form; otherwise, <c>false</c>.</returns>
+    /// <returns><c>true</c> if the specified list of characters is in the
+    /// specified Unicode normalization form; otherwise, <c>false</c>.</returns>
     /// <exception cref='ArgumentNullException'>The parameter "charList" is
     /// null.</exception>
     [Obsolete("Either convert the array to a string or wrap it in " +
@@ -291,13 +292,13 @@ namespace PeterO.Text {
       return IsNormalized(new PartialArrayCharacterInput(charArray), form);
     }
 
-    /// <summary>Determines whether the given list of characters is in the
-    /// given Unicode normalization form.</summary>
+    /// <summary>Determines whether the specified list of characters is in
+    /// the specified Unicode normalization form.</summary>
     /// <param name='charList'>A list of Unicode code points.</param>
     /// <param name='form'>Specifies the normalization form to use when
     /// normalizing the text.</param>
-    /// <returns><c>true</c> if the given list of characters is in the
-    /// given Unicode normalization form; otherwise, <c>false</c>.</returns>
+    /// <returns><c>true</c> if the specified list of characters is in the
+    /// specified Unicode normalization form; otherwise, <c>false</c>.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='charList'/> is null.</exception>
     [Obsolete("Either convert the list to a string or wrap it in " +

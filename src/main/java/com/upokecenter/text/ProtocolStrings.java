@@ -45,12 +45,13 @@ package com.upokecenter.text;
 private ProtocolStrings() {
 }
     /**
-     * Determines whether the given string belongs in RFC 8264's IdentifierClass.
-     * In general, the IdentifierClass contains all code points in the
-     * FreeformClass, except certain uncommon letters and digits, spaces, as well
-     * as punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
+     * Determines whether the specified string belongs in RFC 8264's
+     * IdentifierClass. In general, the IdentifierClass contains all code points in
+     * the FreeformClass, except certain uncommon letters and digits, spaces, as
+     * well as punctuation and symbols outside the Basic Latin range (U+0000 to
+     * U+007F).
      * @param str A string to check.
-     * @return {@code true} if the given string is empty or contains only
+     * @return {@code true} if the specified string is empty or contains only
      * characters allowed in RFC 8264's IdentifierClass (in the contexts required);
      * otherwise, {@code false}. Returns {@code false} if {@code str} is null.
      */
@@ -59,14 +60,14 @@ private ProtocolStrings() {
     }
 
     /**
-     * Determines whether the given string belongs in RFC 8264's FreeformClass. In
-     * general, the FreeformClass contains most letters, digits, spaces,
+     * Determines whether the specified string belongs in RFC 8264's FreeformClass.
+     * In general, the FreeformClass contains most letters, digits, spaces,
      * punctuation, and symbols in the Unicode standard, as well as all basic
      * printable characters (U+0021 to U+007E), but excludes control characters and
      * separators. Horizontal tab, U+0009, and other code points in the range
      * U+0000 to U+001F, are among the excluded characters.
      * @param str A string to check.
-     * @return {@code true} if the given string is empty or contains only
+     * @return {@code true} if the specified string is empty or contains only
      * characters allowed in RFC 8264's FreeformClass (in the contexts required);
      * otherwise, {@code false}. Returns {@code false} if {@code str} is null.
      */

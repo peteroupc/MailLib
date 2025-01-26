@@ -45,7 +45,7 @@ private DataUrls() {
     /**
      * Encodes text as a Data URI (uniform resource identifier).
      * @param textString A text string to encode as a data URI.
-     * @return A Data URI that encodes the given text.
+     * @return A Data URI that encodes the specified text.
      * @throws NullPointerException The parameter {@code textString} is null.
      * @deprecated Renamed to MakeDataUri.
  */
@@ -56,11 +56,11 @@ private DataUrls() {
     }
 
     /**
-     * Encodes data with the given media type in a Data URI (uniform resource
+     * Encodes data with the specified media type in a Data URI (uniform resource
      * identifier).
      * @param bytes A byte array containing the data to encode in a Data URI.
      * @param mediaType A media type to assign to the data.
-     * @return A Data URI that encodes the given data and media type.
+     * @return A Data URI that encodes the specified data and media type.
      * @throws NullPointerException The parameter {@code bytes} or {@code
      * mediaType} is null.
      * @deprecated Renamed to MakeDataUri.

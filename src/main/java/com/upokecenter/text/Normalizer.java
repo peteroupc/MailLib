@@ -21,10 +21,11 @@ licensed under the Unlicense: https://unlicense.org/
 @Deprecated
   public final class Normalizer {
     /**
-     * Converts a string to the given Unicode normalization form.
+     * Converts a string to the specified Unicode normalization form.
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
-     * @return The parameter {@code str} converted to the given normalization form.
+     * @return The parameter {@code str} converted to the specified normalization
+     * form.
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String Normalize(String str, Normalization form) {

@@ -57,23 +57,23 @@ This implementation can decode an RFC 2047 encoded word that uses ISO-2022-JP or
 Note that this library (the MailLib library) has no facilities for sending and receiving email messages, since that's outside this library's scope.
 
 ### Member Summary
-* <code>[AddAttachment(PeterO.Mail.MediaType)](#AddAttachment_PeterO_Mail_MediaType)</code> - Adds an attachment with an empty body and with the given media type to this message.
-* <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given media type.
-* <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name.
-* <code>[AddAttachment(System.IO.Stream, string)](#AddAttachment_System_IO_Stream_string)</code> - Adds an attachment to this message in the form of data from the given readable stream, and with the given file name.
+* <code>[AddAttachment(PeterO.Mail.MediaType)](#AddAttachment_PeterO_Mail_MediaType)</code> - Adds an attachment with an empty body and with the specified media type to this message.
+* <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an attachment to this message in the form of data from the specified readable stream, and with the specified media type.
+* <code>[AddAttachment(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddAttachment_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an attachment to this message in the form of data from the specified readable stream, and with the specified media type and file name.
+* <code>[AddAttachment(System.IO.Stream, string)](#AddAttachment_System_IO_Stream_string)</code> - Adds an attachment to this message in the form of data from the specified readable stream, and with the specified file name.
 * <code>[AddHeader(string, string)](#AddHeader_string_string)</code> - Adds a header field to the end of the message's header.
 * <code>[AddHeader(System.Collections.Generic.KeyValuePair)](#AddHeader_System_Collections_Generic_KeyValuePair)</code> - Adds a header field to the end of the message's header.
-* <code>[AddInline(PeterO.Mail.MediaType)](#AddInline_PeterO_Mail_MediaType)</code> - Adds an inline body part with an empty body and with the given media type to this message.
-* <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type.
-* <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name.
-* <code>[AddInline(System.IO.Stream, string)](#AddInline_System_IO_Stream_string)</code> - Adds an inline body part to this message in the form of data from the given readable stream, and with the given file name.
+* <code>[AddInline(PeterO.Mail.MediaType)](#AddInline_PeterO_Mail_MediaType)</code> - Adds an inline body part with an empty body and with the specified media type to this message.
+* <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType)</code> - Adds an inline body part to this message in the form of data from the specified readable stream, and with the specified media type.
+* <code>[AddInline(System.IO.Stream, PeterO.Mail.MediaType, string)](#AddInline_System_IO_Stream_PeterO_Mail_MediaType_string)</code> - Adds an inline body part to this message in the form of data from the specified readable stream, and with the specified media type and file name.
+* <code>[AddInline(System.IO.Stream, string)](#AddInline_System_IO_Stream_string)</code> - Adds an inline body part to this message in the form of data from the specified readable stream, and with the specified file name.
 * <code>[BccAddresses](#BccAddresses)</code> - <b>Obsolete:</b> Use GetAddresses(&#x22;Bcc&#x22;) instead.
 * <code>[BodyString](#BodyString)</code> - <b>Obsolete:</b> Use GetBodyString() instead.
 * <code>[CCAddresses](#CCAddresses)</code> - <b>Obsolete:</b> Use GetAddresses(&#x22;Cc&#x22;) instead.
 * <code>[ClearHeaders()](#ClearHeaders)</code> - Deletes all header fields in this message.
 * <code>[ContentDisposition](#ContentDisposition)</code> - Gets or sets this message's content disposition.
 * <code>[ContentType](#ContentType)</code> - Gets or sets this message's media type.
-* <code>[DecodeHeaderValue(string, string)](#DecodeHeaderValue_string_string)</code> - Decodes RFC 2047 encoded words from the given header field value and returns a string with those words decoded.
+* <code>[DecodeHeaderValue(string, string)](#DecodeHeaderValue_string_string)</code> - Decodes RFC 2047 encoded words from the specified header field value and returns a string with those words decoded.
 * <code>[ExtractHeader(byte[], string)](#ExtractHeader_byte_string)</code> - Extracts the value of a header field from a byte array representing an email message.
 * <code>[FileName](#FileName)</code> - Gets a file name suggested by this message for saving the message's body to a file.
 * <code>[FromAddresses](#FromAddresses)</code> - <b>Obsolete:</b> Use GetAddresses(&#x22;From&#x22;) instead.
@@ -82,7 +82,7 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[FromMailtoUrl(string)](#FromMailtoUrl_string)</code> - <b>Obsolete:</b> Renamed to FromMailtoUri.
 * <code>[Generate()](#Generate)</code> - Generates this message's data in text form.
 * <code>[GenerateBytes()](#GenerateBytes)</code> - Generates this message's data as a byte array, using the same algorithm as the Generate method.
-* <code>[GetAddresses(string)](#GetAddresses_string)</code> - Gets a list of addresses contained in the header fields with the given name in this message.
+* <code>[GetAddresses(string)](#GetAddresses_string)</code> - Gets a list of addresses contained in the header fields with the specified name in this message.
 * <code>[GetAttachments()](#GetAttachments)</code> - Gets a list of descendant body parts of this message that are considered attachments.
 * <code>[GetBody()](#GetBody)</code> - Gets the byte array for this message's body.
 * <code>[GetBodyMessage()](#GetBodyMessage)</code> - Returns the mail message contained in this message's body.
@@ -97,12 +97,12 @@ Note that this library (the MailLib library) has no facilities for sending and r
 * <code>[NewBodyPart()](#NewBodyPart)</code> - Creates a message object with no header fields.
 * <code>[Parts](#Parts)</code> - Gets a list of all the parts of this message.
 * <code>[RemoveHeader(int)](#RemoveHeader_int)</code> - Removes a header field by index.
-* <code>[RemoveHeader(string)](#RemoveHeader_string)</code> - Removes all instances of the given header field from this message.
-* <code>[SelectLanguageMessage(System.Collections.Generic.IList)](#SelectLanguageMessage_System_Collections_Generic_IList)</code> - Selects a body part for a multiple-language message( multipart/multilingual ) according to the given language priority list.
-* <code>[SelectLanguageMessage(System.Collections.Generic.IList, bool)](#SelectLanguageMessage_System_Collections_Generic_IList_bool)</code> - Selects a body part for a multiple-language message( multipart/multilingual ) according to the given language priority list and original-language preference.
-* <code>[SetBody(byte[])](#SetBody_byte)</code> - Sets the body of this message to the given byte array.
+* <code>[RemoveHeader(string)](#RemoveHeader_string)</code> - Removes all instances of the specified header field from this message.
+* <code>[SelectLanguageMessage(System.Collections.Generic.IList)](#SelectLanguageMessage_System_Collections_Generic_IList)</code> - Selects a body part for a multiple-language message( multipart/multilingual ) according to the specified language priority list.
+* <code>[SelectLanguageMessage(System.Collections.Generic.IList, bool)](#SelectLanguageMessage_System_Collections_Generic_IList_bool)</code> - Selects a body part for a multiple-language message( multipart/multilingual ) according to the specified language priority list and original-language preference.
+* <code>[SetBody(byte[])](#SetBody_byte)</code> - Sets the body of this message to the specified byte array.
 * <code>[SetCurrentDate()](#SetCurrentDate)</code> - Sets this message's Date header field to the current time as its value, with an unspecified time zone offset.
-* <code>[SetDate(int[])](#SetDate_int)</code> - Sets this message's Date header field to the given date and time.
+* <code>[SetDate(int[])](#SetDate_int)</code> - Sets this message's Date header field to the specified date and time.
 * <code>[SetHeader(int, string)](#SetHeader_int_string)</code> - Sets the value of a header field by index without changing its name.
 * <code>[SetHeader(int, string, string)](#SetHeader_int_string_string)</code> - Sets the name and value of a header field by index.
 * <code>[SetHeader(int, System.Collections.Generic.KeyValuePair)](#SetHeader_int_System_Collections_Generic_KeyValuePair)</code> - Sets the name and value of a header field by index.
@@ -122,7 +122,7 @@ Note that this library (the MailLib library) has no facilities for sending and r
     public Message(
         byte[] bytes);
 
-Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given byte array to initialize the email message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the specified byte array to initialize the email message.
 
 <b>Remarks:</b>This constructor parses an email message, and extracts its header fields and body, and throws a MessageDataException if the message is malformed. However, even if a MessageDataException is thrown, it can still be possible to display the message, especially because most email malformations seen in practice are benign in nature (such as the use of very long lines in the message). One way an application can handle the exception is to display the message, or part of it, as raw text (using  `DataUtilities.GetUtf8String(bytes, true)`  ), and to optionally extract important header fields, such as From, To, Date, and Subject, from the message's text using the  `ExtractHeader`  method. Even so, though, any message for which this constructor throws a MessageDataException ought to be treated with suspicion.
 
@@ -145,7 +145,7 @@ The message is malformed. See the remarks.
     public Message(
         System.IO.Stream stream);
 
-Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given Stream object to initialize the email message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the specified Stream object to initialize the email message.
 
 <b>Remarks:</b>This constructor parses an email message, and extracts its header fields and body, and throws a MessageDataException if the message is malformed. However, even if a MessageDataException is thrown, it can still be possible to display the message, especially because most email malformations seen in practice are benign in nature (such as the use of very long lines in the message). One way an application can handle the exception is to read all the bytes from the stream, to display the message, or part of it, as raw text (using  `DataUtilities.GetUtf8String(bytes, true)`  ), and to optionally extract important header fields, such as From, To, Date, and Subject, from the message's text using the  `ExtractHeader`  method. Even so, though, any message for which this constructor throws a MessageDataException ought to be treated with suspicion.
 
@@ -318,7 +318,7 @@ A list of addresses found in the To header field or fields.
     public PeterO.Mail.Message AddAttachment(
         PeterO.Mail.MediaType mediaType);
 
-Adds an attachment with an empty body and with the given media type to this message. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an attachment with an empty body and with the specified media type to this message. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
@@ -336,7 +336,7 @@ A Message object for the generated attachment.
         PeterO.Mail.MediaType mediaType,
         string filename);
 
-Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an attachment to this message in the form of data from the specified readable stream, and with the specified media type and file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
@@ -367,7 +367,7 @@ An I/O error occurred.
         System.IO.Stream inputStream,
         PeterO.Mail.MediaType mediaType);
 
-Adds an attachment to this message in the form of data from the given readable stream, and with the given media type. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an attachment to this message in the form of data from the specified readable stream, and with the specified media type. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
  The following example (written in C# for the.NET version) is an extension method that adds an attachment from a byte array to a message.
 
@@ -404,7 +404,7 @@ An I/O error occurred.
         System.IO.Stream inputStream,
         string filename);
 
-Adds an attachment to this message in the form of data from the given readable stream, and with the given file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an attachment to this message in the form of data from the specified readable stream, and with the specified file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
@@ -485,7 +485,7 @@ The header field name is too long or contains an invalid character, or the heade
     public PeterO.Mail.Message AddInline(
         PeterO.Mail.MediaType mediaType);
 
-Adds an inline body part with an empty body and with the given media type to this message. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an inline body part with an empty body and with the specified media type to this message. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
@@ -503,7 +503,7 @@ A Message object for the generated body part.
         PeterO.Mail.MediaType mediaType,
         string filename);
 
-Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an inline body part to this message in the form of data from the specified readable stream, and with the specified media type and file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
@@ -534,7 +534,7 @@ An I/O error occurred.
         System.IO.Stream inputStream,
         PeterO.Mail.MediaType mediaType);
 
-Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an inline body part to this message in the form of data from the specified readable stream, and with the specified media type. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
  The following example (written in C# for the.NET version) is an extension method that adds an inline body part from a byte array to a message.
 
@@ -572,7 +572,7 @@ An I/O error occurred.
         System.IO.Stream inputStream,
         string filename);
 
-Adds an inline body part to this message in the form of data from the given readable stream, and with the given file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+Adds an inline body part to this message in the form of data from the specified readable stream, and with the specified file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
@@ -611,7 +611,7 @@ This object.
         string name,
         string value);
 
-Decodes RFC 2047 encoded words from the given header field value and returns a string with those words decoded. For an example of encoded words, see the constructor for PeterO.Mail.NamedAddress.
+Decodes RFC 2047 encoded words from the specified header field value and returns a string with those words decoded. For an example of encoded words, see the constructor for PeterO.Mail.NamedAddress.
 
 <b>Parameters:</b>
 
@@ -642,11 +642,11 @@ Extracts the value of a header field from a byte array representing an email mes
 
  * <i>bytes</i>: A byte array representing an email message.
 
- * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the given message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
+ * <i>headerFieldName</i>: The name of the header field to extract. This name will be compared with the names of header fields in the specified message using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
 
 <b>Return Value:</b>
 
-The value of the first instance of the header field with the given name. Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF (0x0d/0x0a) pairs will be removed from the header field value, and the value is treated as encoded in UTF-8 (an 8-bit encoding form of the Unicode Standard) where illegally encoded UTF-8 is replaced as appropriate with replacement characters (U+FFFD). Returns null if  <i>bytes</i>
+The value of the first instance of the header field with the specified name. Leading space and/or tab bytes (0x20 and/or 0x09) and CR/LF (0x0d/0x0a) pairs will be removed from the header field value, and the value is treated as encoded in UTF-8 (an 8-bit encoding form of the Unicode Standard) where illegally encoded UTF-8 is replaced as appropriate with replacement characters (U+FFFD). Returns null if  <i>bytes</i>
  is null, if  <i>headerFieldName</i>
  is null, is more than 997 characters long, or has a character less than U+0021 or greater than U+007E in the Unicode Standard, if a header field with that name does not exist, or if a body (even an empty one) does not follow the header fields.
 
@@ -656,7 +656,7 @@ The value of the first instance of the header field with the given name. Leading
     public static PeterO.Mail.Message FromMailtoUri(
         string uri);
 
-Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the given text. Keys other than these eight will be ignored. (Keys are compared using a basic case-sensitive comparison, in which two strings are equal if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.) The same key (matched using a basic case-insensitive comparison) can appear more than once; for "subject", "cc", "bcc", and "in-reply-to", the last value with the given key is used; for "to", all header field values as well as the path are combined to a single To header field; for "keywords" and "comments", each value adds another header field of the given key; and for "body", the last value with that key is used as the body.
+Creates a message object from a MailTo URI (uniform resource identifier). The MailTo URI can contain key-value pairs that follow a question-mark, as in the following example: "mailto:me@example.com?subject=A%20Subject". In this example, "subject" is the subject of the email address. Only certain keys are supported, namely, "to", "cc", "bcc", "subject", "in-reply-to", "comments", "keywords", and "body". The first seven are header field names that will be used to set the returned message's corresponding header fields. The last, "body", sets the body of the message to the specified text. Keys other than these eight will be ignored. (Keys are compared using a basic case-sensitive comparison, in which two strings are equal if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.) The same key (matched using a basic case-insensitive comparison) can appear more than once; for "subject", "cc", "bcc", and "in-reply-to", the last value with the specified key is used; for "to", all header field values as well as the path are combined to a single To header field; for "keywords" and "comments", each value adds another header field of the specified key; and for "body", the last value with that key is used as the body.
 
 <b>Parameters:</b>
 
@@ -665,7 +665,7 @@ Creates a message object from a MailTo URI (uniform resource identifier). The Ma
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
+A Message object created from the specified MailTo URI. Returs null if  <i>uri</i>
  is null, is syntactically invalid, or is not a MailTo URI.
 
 <a id="FromMailtoUri_System_Uri"></a>
@@ -682,7 +682,7 @@ Creates a message object from a MailTo URI (uniform resource identifier) in the 
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>uri</i>
+A Message object created from the specified MailTo URI. Returs null if  <i>uri</i>
  is null, is syntactically invalid, or is not a MailTo URI.
 
 <b>Exceptions:</b>
@@ -707,7 +707,7 @@ Creates a message object from a MailTo URI (uniform resource identifier). For mo
 
 <b>Return Value:</b>
 
-A Message object created from the given MailTo URI. Returs null if  <i>url</i>
+A Message object created from the specified MailTo URI. Returs null if  <i>url</i>
  is null, is syntactically invalid, or is not a MailTo URI.
 
 <a id="Generate"></a>
@@ -749,7 +749,7 @@ The generated message as a byte array.
     public System.Collections.Generic.IList GetAddresses(
         string headerName);
 
-Gets a list of addresses contained in the header fields with the given name in this message.
+Gets a list of addresses contained in the header fields with the specified name in this message.
 
 <b>Parameters:</b>
 
@@ -757,7 +757,7 @@ Gets a list of addresses contained in the header fields with the given name in t
 
 <b>Return Value:</b>
 
-A list of addresses, in the order in which they appear in this message's header fields of the given name.
+A list of addresses, in the order in which they appear in this message's header fields of the specified name.
 
 <b>Exceptions:</b>
 
@@ -914,7 +914,7 @@ Gets an array with the values of all header fields with the specified name, usin
 
 <b>Return Value:</b>
 
-An array containing the values of all header fields with the given name, in the order they appear in the message. The array will be empty if no header field has that name.
+An array containing the values of all header fields with the specified name, in the order they appear in the message. The array will be empty if no header field has that name.
 
 <b>Exceptions:</b>
 
@@ -994,7 +994,7 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
-Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.). This method updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+Removes all instances of the specified header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic uppercase letters A to Z (U+0041 to U+005A) in both strings to basic lowercase letters.). This method updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -1017,17 +1017,17 @@ The parameter  <i>name</i>
         System.Collections.Generic.IList languages,
         bool preferOriginals);
 
-Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the given language priority list and original-language preference.
+Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the specified language priority list and original-language preference.
 
 <b>Parameters:</b>
 
  * <i>languages</i>: A list of basic language ranges, sorted in descending order of priority (see the LanguageTags.LanguageTagFilter method).
 
- * <i>preferOriginals</i>: If true, a body part marked as the original language version is chosen if it matches one of the given language ranges, even if the original language has a lower priority than another language with a matching body part.
+ * <i>preferOriginals</i>: If true, a body part marked as the original language version is chosen if it matches one of the specified language ranges, even if the original language has a lower priority than another language with a matching body part.
 
 <b>Return Value:</b>
 
-The best matching body part for the given languages. If the body part has no subject, then the top-level subject is used. If this message is not a multipart/multilingual message or has fewer than two body parts, returns this object. If no body part matches the given languages, returns the last body part if its language is "zxx", or the second body part otherwise.
+The best matching body part for the specified languages. If the body part has no subject, then the top-level subject is used. If this message is not a multipart/multilingual message or has fewer than two body parts, returns this object. If no body part matches the specified languages, returns the last body part if its language is "zxx", or the second body part otherwise.
 
 <b>Exceptions:</b>
 
@@ -1041,7 +1041,7 @@ The parameter  <i>languages</i>
     public PeterO.Mail.Message SelectLanguageMessage(
         System.Collections.Generic.IList languages);
 
-Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the given language priority list.
+Selects a body part for a multiple-language message(  `multipart/multilingual`  ) according to the specified language priority list.
 
 <b>Parameters:</b>
 
@@ -1049,7 +1049,7 @@ Selects a body part for a multiple-language message(  `multipart/multilingual`  
 
 <b>Return Value:</b>
 
-The best matching body part for the given languages. If the body part has no subject, then the top-level subject is used. If this message is not a multipart/multilingual message or has fewer than two body parts, returns this object. If no body part matches the given languages, returns the last body part if its language is "zxx", or the second body part otherwise.
+The best matching body part for the specified languages. If the body part has no subject, then the top-level subject is used. If this message is not a multipart/multilingual message or has fewer than two body parts, returns this object. If no body part matches the specified languages, returns the last body part if its language is "zxx", or the second body part otherwise.
 
 <b>Exceptions:</b>
 
@@ -1063,7 +1063,7 @@ The parameter  <i>languages</i>
     public PeterO.Mail.Message SetBody(
         byte[] bytes);
 
-Sets the body of this message to the given byte array. This method doesn't make a copy of that byte array.
+Sets the body of this message to the specified byte array. This method doesn't make a copy of that byte array.
 
 <b>Parameters:</b>
 
@@ -1096,7 +1096,7 @@ This object.
     public PeterO.Mail.Message SetDate(
         int[] dateTime);
 
-Sets this message's Date header field to the given date and time.
+Sets this message's Date header field to the specified date and time.
 
 <b>Parameters:</b>
 

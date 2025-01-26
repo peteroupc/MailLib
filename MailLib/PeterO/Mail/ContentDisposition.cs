@@ -467,9 +467,9 @@ namespace PeterO.Mail {
     /// This method checks the syntactic validity of the string, but not
     /// whether it has all parameters it's required to have or whether the
     /// parameters themselves are set to valid values for the parameter.
-    /// <para>This method assumes the given content disposition string was
-    /// directly extracted from the Content-Disposition header field (as
-    /// defined for email messages) and follows the syntax given in RFC
+    /// <para>This method assumes the specified content disposition string
+    /// was directly extracted from the Content-Disposition header field
+    /// (as defined for email messages) and follows the syntax given in RFC
     /// 2183. Accordingly, among other things, the content disposition
     /// string can contain comments (delimited by parentheses).</para>
     /// <para>RFC 2231 extensions allow each content disposition parameter
@@ -478,9 +478,9 @@ namespace PeterO.Mail {
     /// Parameters making use of RFC 2231 extensions have names with an
     /// asterisk ("*"). Such a parameter will be ignored if it is
     /// ill-formed because of RFC 2231's rules (except for illegal
-    /// percent-decoding or undecodable sequences for the given character
-    /// encoding). Examples of RFC 2231 extensions follow (both examples
-    /// encode the same "filename" parameter):</para>
+    /// percent-decoding or undecodable sequences for the specified
+    /// character encoding). Examples of RFC 2231 extensions follow (both
+    /// examples encode the same "filename" parameter):</para>
     /// <para><b>inline; filename*=utf-8'en'filename.txt</b></para>
     /// <para><b>inline; filename*0*=utf-8'en'file;
     /// filename*1*=name%2Etxt</b></para>
@@ -540,7 +540,7 @@ namespace PeterO.Mail {
 
       /// <summary>Initializes a new instance of the
       /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the data
-      /// from the given content disposition.</summary>
+      /// from the specified content disposition.</summary>
       /// <param name='mt'>The parameter <paramref name='mt'/> is a
       /// ContentDisposition object.</param>
       /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -555,7 +555,7 @@ namespace PeterO.Mail {
 
       /// <summary>Initializes a new instance of the
       /// <see cref='PeterO.Mail.ContentDisposition.Builder'/> class using
-      /// the given disposition type.</summary>
+      /// the specified disposition type.</summary>
       /// <param name='type'>The parameter <paramref name='type'/> is a text
       /// string.</param>
       /// <exception cref='ArgumentNullException'>The parameter <paramref

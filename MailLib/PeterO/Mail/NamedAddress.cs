@@ -16,13 +16,13 @@ namespace PeterO.Mail {
     private readonly string displayName;
 
     /// <summary>Generates a string containing the display names of the
-    /// given named-address objects, separated by commas. The generated
+    /// specified named-address objects, separated by commas. The generated
     /// string is intended to be displayed for others to see, and is not
     /// intended to be parsed by computer programs. If a named address has
     /// no display name, its email address is used as the display
     /// name.</summary>
     /// <param name='addresses'>A list of named address objects.</param>
-    /// <returns>A string containing the display names of the given
+    /// <returns>A string containing the display names of the specified
     /// named-address objects, separated by commas.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>
@@ -41,12 +41,14 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Generates a string containing the display names and email
-    /// addresses of the given named-address objects, separated by commas.
-    /// The generated string is intended to be displayed for others to see,
-    /// and is not intended to be parsed by computer programs.</summary>
+    /// addresses of the specified named-address objects, separated by
+    /// commas. The generated string is intended to be displayed for others
+    /// to see, and is not intended to be parsed by computer
+    /// programs.</summary>
     /// <param name='addresses'>A list of named address objects.</param>
     /// <returns>A string containing the display names and email addresses
-    /// of the given named-address objects, separated by commas.</returns>
+    /// of the specified named-address objects, separated by
+    /// commas.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addresses'/> is null.</exception>
     public static string ToDisplayString(IList<NamedAddress> addresses) {
@@ -143,9 +145,10 @@ other.isGroup &&
     }
 
     /// <summary>Determines whether the email addresses stored this object
-    /// are the same between this object and the given object, regardless
-    /// of the display names they store. For groups, the email addresses
-    /// must be equal and in the same order in both objects.</summary>
+    /// are the same between this object and the specified object,
+    /// regardless of the display names they store. For groups, the email
+    /// addresses must be equal and in the same order in both
+    /// objects.</summary>
     /// <param name='na'>A named address object to compare with this one.
     /// Can be null.</param>
     /// <returns>Either <c>true</c> or <c>false</c>.</returns>
@@ -335,7 +338,7 @@ other.isGroup &&
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class using the given
+    /// <see cref='PeterO.Mail.NamedAddress'/> class using the specified
     /// display name and email address.</summary>
     /// <param name='displayName'>The display name of the email address.
     /// Can be null or empty. Encoded words under RFC 2047 will not be
@@ -354,7 +357,7 @@ other.isGroup &&
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class using the given
+    /// <see cref='PeterO.Mail.NamedAddress'/> class using the specified
     /// display name and email address.</summary>
     /// <param name='displayName'>The display name of the email address.
     /// Can be null or empty. Encoded words under RFC 2047 will not be
@@ -373,8 +376,8 @@ other.isGroup &&
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.NamedAddress'/> class using the given name
-    /// and an email address made up of its local part and
+    /// <see cref='PeterO.Mail.NamedAddress'/> class using the specified
+    /// name and an email address made up of its local part and
     /// domain.</summary>
     /// <param name='displayName'>The display name of the email address.
     /// Can be null or empty.</param>

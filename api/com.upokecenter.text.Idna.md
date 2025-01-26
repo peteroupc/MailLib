@@ -32,7 +32,7 @@
 ## Methods
 
 * `static String DecodeDomainName(String value)`<br>
- Tries to encode each XN-label of the given domain name into Unicode.
+ Tries to encode each XN-label of the specified domain name into Unicode.
 
 * `static String EncodeDomainName(String value)`<br>
  Tries to encode each label of a domain name with code points outside the
@@ -40,7 +40,7 @@
 
 * `static boolean IsValidDomainName(String str,
  boolean lookupRules)`<br>
- Determines whether the given string is a domain name containing only
+ Determines whether the specified string is a domain name containing only
  U-labels, A-labels, NR-LDH labels, or any combination of these, separated by
  dots (".").
 
@@ -50,8 +50,8 @@
 
     public static String DecodeDomainName(String value)
 
-Tries to encode each XN-label of the given domain name into Unicode. This
- method does not check the syntactic validity of the domain name before
+Tries to encode each XN-label of the specified domain name into Unicode.
+ This method does not check the syntactic validity of the domain name before
  proceeding.
 
 **Parameters:**
@@ -93,7 +93,7 @@ Tries to encode each label of a domain name with code points outside the
 
     public static boolean IsValidDomainName(String str, boolean lookupRules)
 
-Determines whether the given string is a domain name containing only
+Determines whether the specified string is a domain name containing only
  U-labels, A-labels, NR-LDH labels, or any combination of these, separated by
  dots (".").
 
@@ -107,7 +107,7 @@ Determines whether the given string is a domain name containing only
 
 **Returns:**
 
-* <code>true</code> if the given string is a syntactically valid domain
+* <code>true</code> if the specified string is a syntactically valid domain
  name; otherwise; false.
 
 **Throws:**

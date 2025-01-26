@@ -67,7 +67,7 @@ The media type. Returns null if  <i>url</i>
 
 <b>Obsolete.</b> Renamed to MakeDataUri.
 
-Encodes data with the given media type in a Data URI (uniform resource identifier).
+Encodes data with the specified media type in a Data URI (uniform resource identifier).
 
 <b>Parameters:</b>
 
@@ -77,7 +77,7 @@ Encodes data with the given media type in a Data URI (uniform resource identifie
 
 <b>Return Value:</b>
 
-A Data URI that encodes the given data and media type.
+A Data URI that encodes the specified data and media type.
 
 <b>Exceptions:</b>
 
@@ -102,7 +102,7 @@ Encodes text as a Data URI (uniform resource identifier).
 
 <b>Return Value:</b>
 
-A Data URI that encodes the given text.
+A Data URI that encodes the specified text.
 
 <b>Exceptions:</b>
 

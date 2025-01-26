@@ -13,22 +13,24 @@ Contains methods for parsing and matching language tags.
  Parses a language range list from an Accept-Language header field.
 
 * `static boolean IsLanguageRange(String str)`<br>
- Returns whether the given string is a basic language range under RFC 4647.
+ Returns whether the specified string is a basic language range under RFC
+ 4647.
 
 * `static boolean IsLanguageRange(String str,
  boolean extended)`<br>
- Returns whether the given string is a basic or extended language range under
- RFC 4647.
+ Returns whether the specified string is a basic or extended language range
+ under RFC 4647.
 
 * `static boolean IsPotentiallyValidLanguageTag(String str)`<br>
- Returns true if (1) the given string is a well-formed language tag under RFC
- 5646 (that is, the string follows the syntax given in section 2.1 of that
- RFC), and (2) the language tag contains at most one extended language
+ Returns true if (1) the specified string is a well-formed language tag under
+ RFC 5646 (that is, the string follows the syntax given in section 2.1 of
+ that RFC), and (2) the language tag contains at most one extended language
  subtag, no variant subtags with the same value, and no extension singleton
  subtags with the same value.
 
 * `static String LanguageTagCase(String str)`<br>
- Sets the given language tag to the case combination recommended by RFC 5646.
+ Sets the specified language tag to the case combination recommended by RFC
+ 5646.
 
 * `static List<String> LanguageTagFilter(List<String> ranges,
  List<String> languages)`<br>
@@ -64,7 +66,8 @@ Contains methods for parsing and matching language tags.
 
 * `static boolean MatchesLanguageTag(String range,
  String tag)`<br>
- Determines whether the given language tag matches the given language range.
+ Determines whether the specified language tag matches the specified language
+ range.
 
 ## Method Details
 
@@ -72,8 +75,8 @@ Contains methods for parsing and matching language tags.
 
     public static boolean IsLanguageRange(String str)
 
-Returns whether the given string is a basic language range under RFC 4647.
- Examples include "*", "en-us", and "fr".
+Returns whether the specified string is a basic language range under RFC
+ 4647. Examples include "*", "en-us", and "fr".
 
 **Parameters:**
 
@@ -81,17 +84,17 @@ Returns whether the given string is a basic language range under RFC 4647.
 
 **Returns:**
 
-* <code>true</code> if the given string is a basic language range;
+* <code>true</code> if the specified string is a basic language range;
  otherwise, <code>false</code>.
 
 ### IsLanguageRange
 
     public static boolean IsLanguageRange(String str, boolean extended)
 
-Returns whether the given string is a basic or extended language range under
- RFC 4647. Examples of basic (and extended) language ranges include "*",
- "en-us", and "fr". Examples of extended language ranges include "*-de" and
- "it-*".
+Returns whether the specified string is a basic or extended language range
+ under RFC 4647. Examples of basic (and extended) language ranges include
+ "*", "en-us", and "fr". Examples of extended language ranges include "*-de"
+ and "it-*".
 
 **Parameters:**
 
@@ -102,15 +105,15 @@ Returns whether the given string is a basic or extended language range under
 
 **Returns:**
 
-* <code>true</code> if the given string is a basic language range
+* <code>true</code> if the specified string is a basic language range
  (depending on the <code>extended</code> parameter); otherwise, <code>false</code>.
 
 ### LanguageTagCase
 
     public static String LanguageTagCase(String str)
 
-Sets the given language tag to the case combination recommended by RFC 5646.
- For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
+Sets the specified language tag to the case combination recommended by RFC
+ 5646. For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
 
 **Parameters:**
 
@@ -157,7 +160,7 @@ Parses a language range list from an Accept-Language header field.
 * A list of language ranges with their associated qualities. The list
  will be sorted in descending order by quality; if two or more language
  ranges have the same quality, they will be sorted in the order in which they
- appeared in the given string. Returns null if <code>str</code> is null or
+ appeared in the specified string. Returns null if <code>str</code> is null or
  syntactically invalid.
 
 ### LanguageTagFilter
@@ -184,8 +187,8 @@ Finds the language tags that match a priority list of language ranges.
 
 **Returns:**
 
-* A list of language tags that match the given range, in descending
- order of preference.
+* A list of language tags that match the specified range, in
+ descending order of preference.
 
 **Throws:**
 
@@ -200,7 +203,8 @@ Finds the language tags that match a priority list of language ranges.
 
     public static boolean MatchesLanguageTag(String range, String tag)
 
-Determines whether the given language tag matches the given language range.
+Determines whether the specified language tag matches the specified language
+ range.
 
 **Parameters:**
 
@@ -298,8 +302,8 @@ Finds the language tags that match a priority list of basic language ranges.
 
 **Returns:**
 
-* A list of language tags that match the given range, in descending
- order of preference.
+* A list of language tags that match the specified range, in
+ descending order of preference.
 
 **Throws:**
 
@@ -381,9 +385,9 @@ Does a language tag lookup (under RFC 4647) for a matching language tag.
 
     public static boolean IsPotentiallyValidLanguageTag(String str)
 
-Returns true if (1) the given string is a well-formed language tag under RFC
- 5646 (that is, the string follows the syntax given in section 2.1 of that
- RFC), and (2) the language tag contains at most one extended language
+Returns true if (1) the specified string is a well-formed language tag under
+ RFC 5646 (that is, the string follows the syntax given in section 2.1 of
+ that RFC), and (2) the language tag contains at most one extended language
  subtag, no variant subtags with the same value, and no extension singleton
  subtags with the same value.
 

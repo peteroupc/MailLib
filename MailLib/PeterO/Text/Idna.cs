@@ -191,7 +191,7 @@ namespace PeterO.Text {
     }
 
     private static bool IsFinalSigmaContext(string str, int index) {
-      // Assumes that the character at the given index
+      // Assumes that the character at the specified index
       // is Capital Sigma
       // Check the left
       var found = false;
@@ -224,7 +224,7 @@ namespace PeterO.Text {
     }
 
     private static bool IsValidConjunct(string str, int index) {
-      // Assumes that the character at the given index
+      // Assumes that the character at the specified index
       // is Zero-Width Non-Joiner
       // Check the left
       var found = false;
@@ -312,7 +312,7 @@ namespace PeterO.Text {
       }
     }
 
-    /// <summary>Tries to encode each XN-label of the given domain name
+    /// <summary>Tries to encode each XN-label of the specified domain name
     /// into Unicode. This method does not check the syntactic validity of
     /// the domain name before proceeding.</summary>
     /// <param name='value'>A domain name.</param>
@@ -408,7 +408,7 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    /// <summary>Determines whether the given string is a domain name
+    /// <summary>Determines whether the specified string is a domain name
     /// containing only U-labels, A-labels, NR-LDH labels, or any
     /// combination of these, separated by dots (".").</summary>
     /// <param name='str'>The parameter <paramref name='str'/> is a text
@@ -416,8 +416,8 @@ namespace PeterO.Text {
     /// <param name='lookupRules'>If true, uses rules to apply when looking
     /// up the string as a domain name. If false, uses rules to apply when
     /// registering the string as a domain name.</param>
-    /// <returns><c>true</c> if the given string is a syntactically valid
-    /// domain name; otherwise; false.</returns>
+    /// <returns><c>true</c> if the specified string is a syntactically
+    /// valid domain name; otherwise; false.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static bool IsValidDomainName(string str, bool lookupRules) {

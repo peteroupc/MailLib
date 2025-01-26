@@ -45,10 +45,11 @@
 ## Methods
 
 * `static boolean IsInFreeformClass(String str)`<br>
- Determines whether the given string belongs in RFC 8264's FreeformClass.
+ Determines whether the specified string belongs in RFC 8264's FreeformClass.
 
 * `static boolean IsInIdentifierClass(String str)`<br>
- Determines whether the given string belongs in RFC 8264's IdentifierClass.
+ Determines whether the specified string belongs in RFC 8264's
+ IdentifierClass.
 
 * `static String NicknameEnforce(String str)`<br>
  Checks the validity of a string serving as a "memorable, human-friendly
@@ -94,10 +95,11 @@
 
     public static boolean IsInIdentifierClass(String str)
 
-Determines whether the given string belongs in RFC 8264's IdentifierClass.
- In general, the IdentifierClass contains all code points in the
- FreeformClass, except certain uncommon letters and digits, spaces, as well
- as punctuation and symbols outside the Basic Latin range (U+0000 to U+007F).
+Determines whether the specified string belongs in RFC 8264's
+ IdentifierClass. In general, the IdentifierClass contains all code points in
+ the FreeformClass, except certain uncommon letters and digits, spaces, as
+ well as punctuation and symbols outside the Basic Latin range (U+0000 to
+ U+007F).
 
 **Parameters:**
 
@@ -105,7 +107,7 @@ Determines whether the given string belongs in RFC 8264's IdentifierClass.
 
 **Returns:**
 
-* <code>true</code> if the given string is empty or contains only
+* <code>true</code> if the specified string is empty or contains only
  characters allowed in RFC 8264's IdentifierClass (in the contexts required);
  otherwise, <code>false</code>. Returns <code>false</code> if <code>str</code> is null.
 
@@ -113,8 +115,8 @@ Determines whether the given string belongs in RFC 8264's IdentifierClass.
 
     public static boolean IsInFreeformClass(String str)
 
-Determines whether the given string belongs in RFC 8264's FreeformClass. In
- general, the FreeformClass contains most letters, digits, spaces,
+Determines whether the specified string belongs in RFC 8264's FreeformClass.
+ In general, the FreeformClass contains most letters, digits, spaces,
  punctuation, and symbols in the Unicode standard, as well as all basic
  printable characters (U+0021 to U+007E), but excludes control characters and
  separators. Horizontal tab, U+0009, and other code points in the range
@@ -126,7 +128,7 @@ Determines whether the given string belongs in RFC 8264's FreeformClass. In
 
 **Returns:**
 
-* <code>true</code> if the given string is empty or contains only
+* <code>true</code> if the specified string is empty or contains only
  characters allowed in RFC 8264's FreeformClass (in the contexts required);
  otherwise, <code>false</code>. Returns <code>false</code> if <code>str</code> is null.
 

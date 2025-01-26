@@ -11,10 +11,10 @@ import com.upokecenter.util.*;
 private LanguageTags() {
 }
     /**
-     * Returns whether the given string is a basic language range under RFC 4647.
-     * Examples include "*", "en-us", and "fr".
+     * Returns whether the specified string is a basic language range under RFC
+     * 4647. Examples include "*", "en-us", and "fr".
      * @param str The string to check. Can be null.
-     * @return {@code true} if the given string is a basic language range;
+     * @return {@code true} if the specified string is a basic language range;
      * otherwise, {@code false}.
      */
     public static boolean IsLanguageRange(String str) {
@@ -22,14 +22,14 @@ private LanguageTags() {
     }
 
     /**
-     * Returns whether the given string is a basic or extended language range under
-     * RFC 4647. Examples of basic (and extended) language ranges include "*",
-     * "en-us", and "fr". Examples of extended language ranges include "*-de" and
-     * "it-*".
+     * Returns whether the specified string is a basic or extended language range
+     * under RFC 4647. Examples of basic (and extended) language ranges include
+     * "*", "en-us", and "fr". Examples of extended language ranges include "*-de"
+     * and "it-*".
      * @param str The string to check. Can be null.
      * @param extended Check whether the string is a basic language range if
      * "false", or an extended language range if "true".
-     * @return {@code true} if the given string is a basic language range
+     * @return {@code true} if the specified string is a basic language range
      * (depending on the {@code extended} parameter); otherwise, {@code false}.
      */
     public static boolean IsLanguageRange(String str, boolean extended) {
@@ -155,8 +155,8 @@ private LanguageTags() {
     }
 
     /**
-     * Sets the given language tag to the case combination recommended by RFC 5646.
-     * For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
+     * Sets the specified language tag to the case combination recommended by RFC
+     * 5646. For example, "en-us" becomes "en-US", and "zh-hant" becomes "zh-Hant".
      * @param str A string of a language tag. Can be null.
      * @return A text string in the recommended case combination, or null if {@code
      * str} is null.
@@ -286,7 +286,7 @@ private LanguageTags() {
      * @return A list of language ranges with their associated qualities. The list
      * will be sorted in descending order by quality; if two or more language
      * ranges have the same quality, they will be sorted in the order in which they
-     * appeared in the given string. Returns null if {@code str} is null or
+     * appeared in the specified string. Returns null if {@code str} is null or
      * syntactically invalid.
      */
     public static List<StringAndQuality> GetRangeListWithQuality(
@@ -433,8 +433,8 @@ private LanguageTags() {
      * @param matchStarAtEnd If true, treats any range equaling "*" as appearing at
      * the end of the language priority list, no matter where it appears on that
      * list.
-     * @return A list of language tags that match the given range, in descending
-     * order of preference.
+     * @return A list of language tags that match the specified range, in
+     * descending order of preference.
      * @throws NullPointerException The parameter {@code languages} or {@code
      * ranges} is null.
      * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
@@ -517,7 +517,8 @@ private LanguageTags() {
     }
 
     /**
-     * Determines whether the given language tag matches the given language range.
+     * Determines whether the specified language tag matches the specified language
+     * range.
      * @param range A basic language range (see the documentation for
      * "IsLanguageRange").
      * @param tag A language tag.
@@ -588,8 +589,8 @@ private LanguageTags() {
      * preference.
      * @param languages A list of language tags, which should be given in order of
      * descending preference.
-     * @return A list of language tags that match the given range, in descending
-     * order of preference.
+     * @return A list of language tags that match the specified range, in
+     * descending order of preference.
      * @throws NullPointerException The parameter {@code languages} or {@code
      * ranges} is null.
      * @throws IllegalArgumentException The parameter {@code ranges} contains a value that
@@ -697,9 +698,9 @@ private LanguageTags() {
     }
 
     /**
-     * Returns true if (1) the given string is a well-formed language tag under RFC
-     * 5646 (that is, the string follows the syntax given in section 2.1 of that
-     * RFC), and (2) the language tag contains at most one extended language
+     * Returns true if (1) the specified string is a well-formed language tag under
+     * RFC 5646 (that is, the string follows the syntax given in section 2.1 of
+     * that RFC), and (2) the language tag contains at most one extended language
      * subtag, no variant subtags with the same value, and no extension singleton
      * subtags with the same value.
      * @param str The string to check.

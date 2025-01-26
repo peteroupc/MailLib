@@ -34,9 +34,9 @@ Except as contained in this notice, the name of a copyright holder shall not be 
 * <code>[GetChars(string, PeterO.Text.Normalization)](#GetChars_string_PeterO_Text_Normalization)</code> - <b>Obsolete:</b> Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.
 * <code>[IsNormalized(int[], PeterO.Text.Normalization)](#IsNormalized_int_PeterO_Text_Normalization)</code> - <b>Obsolete:</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 * <code>[IsNormalized(PeterO.Text.ICharacterInput, PeterO.Text.Normalization)](#IsNormalized_PeterO_Text_ICharacterInput_PeterO_Text_Normalization)</code> - Determines whether the text provided by a character input is normalized.
-* <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Determines whether the given string is in the given Unicode normalization form.
+* <code>[IsNormalized(string, PeterO.Text.Normalization)](#IsNormalized_string_PeterO_Text_Normalization)</code> - Determines whether the specified string is in the specified Unicode normalization form.
 * <code>[IsNormalized(System.Collections.Generic.IList, PeterO.Text.Normalization)](#IsNormalized_System_Collections_Generic_IList_PeterO_Text_Normalization)</code> - <b>Obsolete:</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
-* <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the given Unicode normalization form.
+* <code>[Normalize(string, PeterO.Text.Normalization)](#Normalize_string_PeterO_Text_Normalization)</code> - Converts a string to the specified Unicode normalization form.
 * <code>[Read(int[], int, int)](#Read_int_int_int)</code> - Reads a sequence of Unicode code points from a data source.
 * <code>[ReadChar()](#ReadChar)</code> - Reads a Unicode character from a data source.
 
@@ -241,7 +241,7 @@ The parameter  <i>str</i>
 
 <b>Obsolete.</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
-Determines whether the given array of characters is in the given Unicode normalization form.
+Determines whether the specified array of characters is in the specified Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -251,7 +251,7 @@ Determines whether the given array of characters is in the given Unicode normali
 
 <b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
+ `true`  if the specified list of characters is in the specified Unicode normalization form; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -290,7 +290,7 @@ The parameter  <i>chars</i>
         string str,
         PeterO.Text.Normalization form);
 
-Determines whether the given string is in the given Unicode normalization form.
+Determines whether the specified string is in the specified Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -300,7 +300,7 @@ Determines whether the given string is in the given Unicode normalization form.
 
 <b>Return Value:</b>
 
- `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
+ `true`  if the specified string is in the specified Unicode normalization form; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
@@ -317,7 +317,7 @@ The parameter  <i>str</i>
 
 <b>Obsolete.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
-Determines whether the given list of characters is in the given Unicode normalization form.
+Determines whether the specified list of characters is in the specified Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -327,7 +327,7 @@ Determines whether the given list of characters is in the given Unicode normaliz
 
 <b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
+ `true`  if the specified list of characters is in the specified Unicode normalization form; otherwise,  `false` .
 
 <b>Exceptions:</b>
 
@@ -342,7 +342,7 @@ The parameter  <i>charList</i>
         string str,
         PeterO.Text.Normalization form);
 
-Converts a string to the given Unicode normalization form.
+Converts a string to the specified Unicode normalization form.
 
 <b>Parameters:</b>
 
@@ -353,7 +353,7 @@ Converts a string to the given Unicode normalization form.
 <b>Return Value:</b>
 
 The parameter  <i>str</i>
- converted to the given normalization form.
+ converted to the specified normalization form.
 
 <b>Exceptions:</b>
 

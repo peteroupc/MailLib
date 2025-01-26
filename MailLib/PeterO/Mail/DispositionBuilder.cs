@@ -43,7 +43,7 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the data
-    /// from the given content disposition.</summary>
+    /// from the specified content disposition.</summary>
     /// <param name='mt'>The parameter <paramref name='mt'/> is a
     /// ContentDisposition object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -53,8 +53,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the given
-    /// disposition type.</summary>
+    /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the
+    /// specified disposition type.</summary>
     /// <param name='type'>The parameter <paramref name='type'/> is a text
     /// string.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

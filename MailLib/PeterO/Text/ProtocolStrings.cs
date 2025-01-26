@@ -56,32 +56,32 @@ namespace PeterO.Text {
   /// identifiers or passwords, even when comparing two such strings of
   /// the same length.</para></remarks>
   public static class ProtocolStrings {
-    /// <summary>Determines whether the given string belongs in RFC 8264's
-    /// IdentifierClass. In general, the IdentifierClass contains all code
-    /// points in the FreeformClass, except certain uncommon letters and
-    /// digits, spaces, as well as punctuation and symbols outside the
-    /// Basic Latin range (U+0000 to U+007F).</summary>
+    /// <summary>Determines whether the specified string belongs in RFC
+    /// 8264's IdentifierClass. In general, the IdentifierClass contains
+    /// all code points in the FreeformClass, except certain uncommon
+    /// letters and digits, spaces, as well as punctuation and symbols
+    /// outside the Basic Latin range (U+0000 to U+007F).</summary>
     /// <param name='str'>A string to check.</param>
-    /// <returns><c>true</c> if the given string is empty or contains only
-    /// characters allowed in RFC 8264's IdentifierClass (in the contexts
-    /// required); otherwise, <c>false</c>. Returns <c>false</c> if
-    /// <paramref name='str'/> is null.</returns>
+    /// <returns><c>true</c> if the specified string is empty or contains
+    /// only characters allowed in RFC 8264's IdentifierClass (in the
+    /// contexts required); otherwise, <c>false</c>. Returns <c>false</c>
+    /// if <paramref name='str'/> is null.</returns>
     public static bool IsInIdentifierClass(string str) {
       return Idna.IsInIdentifierClass(str);
     }
 
-    /// <summary>Determines whether the given string belongs in RFC 8264's
-    /// FreeformClass. In general, the FreeformClass contains most letters,
-    /// digits, spaces, punctuation, and symbols in the Unicode standard,
-    /// as well as all basic printable characters (U+0021 to U+007E), but
-    /// excludes control characters and separators. Horizontal tab, U+0009,
-    /// and other code points in the range U+0000 to U+001F, are among the
-    /// excluded characters.</summary>
+    /// <summary>Determines whether the specified string belongs in RFC
+    /// 8264's FreeformClass. In general, the FreeformClass contains most
+    /// letters, digits, spaces, punctuation, and symbols in the Unicode
+    /// standard, as well as all basic printable characters (U+0021 to
+    /// U+007E), but excludes control characters and separators. Horizontal
+    /// tab, U+0009, and other code points in the range U+0000 to U+001F,
+    /// are among the excluded characters.</summary>
     /// <param name='str'>A string to check.</param>
-    /// <returns><c>true</c> if the given string is empty or contains only
-    /// characters allowed in RFC 8264's FreeformClass (in the contexts
-    /// required); otherwise, <c>false</c>. Returns <c>false</c> if
-    /// <paramref name='str'/> is null.</returns>
+    /// <returns><c>true</c> if the specified string is empty or contains
+    /// only characters allowed in RFC 8264's FreeformClass (in the
+    /// contexts required); otherwise, <c>false</c>. Returns <c>false</c>
+    /// if <paramref name='str'/> is null.</returns>
     public static bool IsInFreeformClass(string str) {
       return Idna.IsInFreeformClass(str);
     }

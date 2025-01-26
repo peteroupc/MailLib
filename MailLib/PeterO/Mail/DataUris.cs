@@ -277,7 +277,7 @@ namespace PeterO.Mail {
     /// identifier).</summary>
     /// <param name='textString'>A text string to encode as a data
     /// URI.</param>
-    /// <returns>A Data URI that encodes the given text.</returns>
+    /// <returns>A Data URI that encodes the specified text.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='textString'/> is null.</exception>
     public static string MakeDataUri(string textString) {
@@ -289,12 +289,12 @@ namespace PeterO.Mail {
           MediaType.Parse("text/plain;charset=utf-8"));
     }
 
-    /// <summary>Encodes data with the given media type in a Data URI
+    /// <summary>Encodes data with the specified media type in a Data URI
     /// (uniform resource identifier).</summary>
     /// <param name='bytes'>A byte array containing the data to encode in a
     /// Data URI.</param>
     /// <param name='mediaType'>A media type to assign to the data.</param>
-    /// <returns>A Data URI that encodes the given data and media
+    /// <returns>A Data URI that encodes the specified data and media
     /// type.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> or <paramref name='mediaType'/> is null.</exception>

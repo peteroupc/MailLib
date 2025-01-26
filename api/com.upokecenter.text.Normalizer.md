@@ -22,7 +22,7 @@ Returns whether this string is normalized.
 * `static String Normalize(String str,
  Normalization form)`<br>
  Deprecated.
-Converts a string to the given Unicode normalization form.
+Converts a string to the specified Unicode normalization form.
 
 * `int Read(int[] chars,
  int index,
@@ -40,7 +40,7 @@ Reads a Unicode character from a data source.
 
     public static String Normalize(String str, Normalization form)
 
-Converts a string to the given Unicode normalization form.
+Converts a string to the specified Unicode normalization form.
 
 **Parameters:**
 
@@ -50,7 +50,8 @@ Converts a string to the given Unicode normalization form.
 
 **Returns:**
 
-* The parameter <code>str</code> converted to the given normalization form.
+* The parameter <code>str</code> converted to the specified normalization
+ form.
 
 **Throws:**
 

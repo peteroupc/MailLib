@@ -11,8 +11,8 @@ Represents an email address and a name for that address. Can represent a
 
 * `boolean AddressesEqual(NamedAddress na)`<br>
  Determines whether the email addresses stored this object are the same
- between this object and the given object, regardless of the display names
- they store.
+ between this object and the specified object, regardless of the display
+ names they store.
 
 * `boolean equals(Object obj)`<br>
  Determines whether this object and another object are equal.
@@ -48,11 +48,11 @@ Represents an email address and a name for that address. Can represent a
 
 * `static String ToDisplayString(List<NamedAddress> addresses)`<br>
  Generates a string containing the display names and email addresses of the
- given named-address objects, separated by commas.
+ specified named-address objects, separated by commas.
 
 * `static String ToDisplayStringShort(List<NamedAddress> addresses)`<br>
- Generates a string containing the display names of the given named-address
- objects, separated by commas.
+ Generates a string containing the display names of the specified
+ named-address objects, separated by commas.
 
 * `String toString()`<br>
  Converts this object to a text string.
@@ -63,11 +63,11 @@ Represents an email address and a name for that address. Can represent a
 
     public static String ToDisplayStringShort(List<NamedAddress> addresses)
 
-Generates a string containing the display names of the given named-address
- objects, separated by commas. The generated string is intended to be
- displayed for others to see, and is not intended to be parsed by computer
- programs. If a named address has no display name, its email address is used
- as the display name.
+Generates a string containing the display names of the specified
+ named-address objects, separated by commas. The generated string is intended
+ to be displayed for others to see, and is not intended to be parsed by
+ computer programs. If a named address has no display name, its email address
+ is used as the display name.
 
 **Parameters:**
 
@@ -75,7 +75,7 @@ Generates a string containing the display names of the given named-address
 
 **Returns:**
 
-* A string containing the display names of the given named-address
+* A string containing the display names of the specified named-address
  objects, separated by commas.
 
 **Throws:**
@@ -87,9 +87,9 @@ Generates a string containing the display names of the given named-address
     public static String ToDisplayString(List<NamedAddress> addresses)
 
 Generates a string containing the display names and email addresses of the
- given named-address objects, separated by commas. The generated string is
- intended to be displayed for others to see, and is not intended to be parsed
- by computer programs.
+ specified named-address objects, separated by commas. The generated string
+ is intended to be displayed for others to see, and is not intended to be
+ parsed by computer programs.
 
 **Parameters:**
 
@@ -98,7 +98,7 @@ Generates a string containing the display names and email addresses of the
 **Returns:**
 
 * A string containing the display names and email addresses of the
- given named-address objects, separated by commas.
+ specified named-address objects, separated by commas.
 
 **Throws:**
 
@@ -168,9 +168,9 @@ Determines whether this object and another object are equal. For groups, the
     public boolean AddressesEqual(NamedAddress na)
 
 Determines whether the email addresses stored this object are the same
- between this object and the given object, regardless of the display names
- they store. For groups, the email addresses must be equal and in the same
- order in both objects.
+ between this object and the specified object, regardless of the display
+ names they store. For groups, the email addresses must be equal and in the
+ same order in both objects.
 
 **Parameters:**
 

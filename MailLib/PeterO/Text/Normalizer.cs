@@ -21,13 +21,13 @@ namespace PeterO.Text {
       "Use NormalizerInput instead; that class is much more flexible than " +
       "Normalizer.")]
   public sealed class Normalizer {
-    /// <summary>Converts a string to the given Unicode normalization
+    /// <summary>Converts a string to the specified Unicode normalization
     /// form.</summary>
     /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>The Unicode normalization form to convert
     /// to.</param>
     /// <returns>The parameter <paramref name='str'/> converted to the
-    /// given normalization form.</returns>
+    /// specified normalization form.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static string Normalize(string str, Normalization form) {

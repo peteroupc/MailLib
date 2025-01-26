@@ -72,7 +72,7 @@ Encodes text as a Data URI (uniform resource identifier).
 
 **Returns:**
 
-* A Data URI that encodes the given text.
+* A Data URI that encodes the specified text.
 
 **Throws:**
 
@@ -82,7 +82,7 @@ Encodes text as a Data URI (uniform resource identifier).
 
     @Deprecated public static String MakeDataUrl(byte[] bytes, MediaType mediaType)
 
-Encodes data with the given media type in a Data URI (uniform resource
+Encodes data with the specified media type in a Data URI (uniform resource
  identifier).
 
 **Parameters:**
@@ -93,7 +93,7 @@ Encodes data with the given media type in a Data URI (uniform resource
 
 **Returns:**
 
-* A Data URI that encodes the given data and media type.
+* A Data URI that encodes the specified data and media type.
 
 **Throws:**
 
