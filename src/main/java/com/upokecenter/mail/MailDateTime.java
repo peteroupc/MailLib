@@ -224,7 +224,7 @@ private MailDateTime() {
       }
       if (gmt && dateTime[7] != 0) {
         // Use time offset to convert local time to UTC/GMT
-        int[] newDateTime = new int[8];
+        int newDateTime = new int[8];
         System.arraycopy(dateTime, 0, newDateTime, 0, 7);
         AddMinutes(newDateTime, -dateTime[7]);
         dateTime = newDateTime;
@@ -313,7 +313,7 @@ private MailDateTime() {
       if (((str) == null || (str).length() == 0)) {
         return null;
       }
-      int[] ret = new int[8];
+      int ret = new int[8];
       if (ParseHeaderExpandedDate(
         str,
         0,

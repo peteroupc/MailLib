@@ -685,7 +685,7 @@ private NormalizationData() {
       };
     }
     private static int[] GetComposedPairs() {
-      int[] ret = new int[2883];
+      int ret = new int[2883];
       System.arraycopy(GetComposedPairs0(), 0, ret, 0, 2883);
       return ret;
     }
@@ -2347,7 +2347,7 @@ private NormalizationData() {
       };
     }
     private static int[] GetDecompMappings() {
-      int[] ret = new int[11826];
+      int ret = new int[11826];
       System.arraycopy(GetDecompMappings0(), 0, ret, 0, 4000);
       System.arraycopy(GetDecompMappings1(), 0, ret, 4000, 4000);
       System.arraycopy(GetDecompMappings2(), 0, ret, 8000, 3826);
@@ -2777,7 +2777,7 @@ GetComplexDecompMappings();
       };
     }
     private static int[] GetLowerCaseMappings() {
-      int[] ret = new int[1177];
+      int ret = new int[1177];
       System.arraycopy(GetLowerCaseMappings0(), 0, ret, 0, 1177);
       return ret;
     }
@@ -2852,7 +2852,7 @@ GetComplexDecompMappings();
       };
     }
     private static int[] GetLowerCaseMappings32() {
-      int[] ret = new int[564];
+      int ret = new int[564];
       System.arraycopy(GetLowerCaseMappings320(), 0, ret, 0, 564);
       return ret;
     }

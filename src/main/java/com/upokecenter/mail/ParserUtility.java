@@ -24,7 +24,7 @@ private ParserUtility() {
         return "0";
       }
       boolean neg = value < 0;
-      char[] chars = new char[12];
+      char chars = new char[12];
       int count = 11;
       if (neg) {
         value = -value;
@@ -32,20 +32,20 @@ private ParserUtility() {
       while (value > 43698) {
         int intdivvalue = value / 10;
         char digit = valueDigits.charAt((int)(value - (intdivvalue * 10)));
-        chars[count--] = digit;
+        chars.set(count--, digit);
         value = intdivvalue;
       }
       while (value > 9) {
         int intdivvalue = (value * 26215) >> 18;
         char digit = valueDigits.charAt((int)(value - (intdivvalue * 10)));
-        chars[count--] = digit;
+        chars.set(count--, digit);
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = valueDigits.charAt((int)value);
+        chars.set(count--, valueDigits.charAt((int)value));
       }
       if (neg) {
-        chars[count] = '-';
+        chars.set(count,'-');
       } else {
         ++count;
       }
@@ -103,8 +103,8 @@ private ParserUtility() {
         int index2 = str.indexOf(delimiter, index);
         if (index2 < 0) {
           if (first) {
-            String[] strret = new String[1];
-            strret[0] = str;
+            String strret = new String[1];
+            strret.charAt(0) = str;
             return strret;
           }
           strings = (strings == null) ? (new ArrayList<String>()) : strings;

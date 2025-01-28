@@ -3144,7 +3144,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      String[] headerNames = new String[] {
+      String headerNames = new String[] {
         "from", "to", "cc",
         "bcc", "reply-to",
       };

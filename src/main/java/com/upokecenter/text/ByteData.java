@@ -13,8 +13,8 @@ package com.upokecenter.text;
      */
     public static byte[] DecompressLz4(byte[] input) {
       int index = 0;
-      byte[] copy = new byte[16];
-      byte[] output = new byte[8 + (input.length * 3 / 2) + 1];
+      byte copy = new byte[16];
+      byte output = new byte[8 + (input.length * 3 / 2) + 1];
       int outputPos = 0;
       while (index < input.length) {
         int b = input[index];
@@ -41,7 +41,7 @@ package com.upokecenter.text;
         if (literalLength > 0) {
           if (output.length - outputPos < literalLength) {
             int newSize = (outputPos + literalLength + 1000);
-            byte[] newoutput = new byte[newSize];
+            byte newoutput = new byte[newSize];
             System.arraycopy(output, 0, newoutput, 0, outputPos);
             output = newoutput;
           }
@@ -105,14 +105,14 @@ package com.upokecenter.text;
         System.arraycopy(output, pos, copy, 0, matchLength);
         if (output.length - outputPos < matchLength) {
           int newSize = (outputPos + matchLength + 1000);
-          byte[] newoutput = new byte[newSize];
+          byte newoutput = new byte[newSize];
           System.arraycopy(output, 0, newoutput, 0, outputPos);
           output = newoutput;
         }
         System.arraycopy(copy, 0, output, outputPos, matchLength);
         outputPos += matchLength;
       }
-      byte[] ret = new byte[outputPos];
+      byte ret = new byte[outputPos];
       System.arraycopy(output, 0, ret, 0, outputPos);
       return ret;
     }

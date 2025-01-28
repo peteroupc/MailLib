@@ -248,7 +248,7 @@ private Idna() {
     }
 
     private static String ToLowerCase(String str) {
-      int[] buffer = new int[2];
+      int buffer = new int[2];
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {
         int ch = CodePointAt(str, i);
@@ -260,7 +260,7 @@ private Idna() {
         } else {
           int size = UnicodeDatabase.GetLowerCaseMapping(ch, buffer, 0);
           for (int j = 0; j < size; ++j) {
-            int c2 = buffer[j];
+            int c2 = buffer.get(j);
             if (c2 <= 0xffff) {
               sb.append((char)c2);
             } else if (ch <= 0x10ffff) {

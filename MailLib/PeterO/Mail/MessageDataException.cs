@@ -47,7 +47,7 @@ public sealed class MessageDataException : Exception {
     #if NET20 || NET40
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.MessageDataException'/> class. Uses the
-    /// given serialization and streaming contexts.</summary>
+    /// specified serialization and streaming contexts.</summary>
     /// <param name='info'>A System.Runtime.Serialization.SerializationInfo
     /// object.</param>
     /// <param name='context'>A

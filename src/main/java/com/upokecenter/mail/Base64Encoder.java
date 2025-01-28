@@ -95,7 +95,7 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("alphabet String length(" +
           alphabetString.length() + ") is not equal to 64");
       }
-      byte[] alphabet = new byte[64];
+      byte alphabet = new byte[64];
       for (int i = 0; i < alphabetString.length(); ++i) {
         if (alphabetString.charAt(i) >= 0x100) {
           throw new
@@ -196,12 +196,12 @@ import com.upokecenter.text.*;
       byte c3,
       byte c4) {
       int charCount = 0;
-      byte[] bytes = new byte[6];
+      byte bytes = new byte[6];
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= MaxLineLength) {
           // Output CRLF
-          bytes[charCount++] = (byte)0x0d;
-          bytes[charCount++] = (byte)0x0a;
+          bytes.set(charCount++, (byte)0x0d);
+          bytes.set(charCount++, (byte)0x0a);
           this.lineCount = 0;
         } else if (this.lineCount + 3 >= MaxLineLength) {
           charCount += this.LineAwareAppend(output, c1);
@@ -212,10 +212,10 @@ import com.upokecenter.text.*;
         }
         this.lineCount += 4;
       }
-      bytes[charCount++] = (byte)c1;
-      bytes[charCount++] = (byte)c2;
-      bytes[charCount++] = (byte)c3;
-      bytes[charCount++] = (byte)c4;
+      bytes.set(charCount++, (byte)c1);
+      bytes.set(charCount++, (byte)c2);
+      bytes.set(charCount++, (byte)c3);
+      bytes.set(charCount++, (byte)c4);
       output.write(bytes, 0, charCount);
       return charCount;
     }

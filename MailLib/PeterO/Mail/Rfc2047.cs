@@ -656,7 +656,7 @@ EncodedWordContext.Comment &&
       if (withComments) {
         int io = str.IndexOf("=?", index, StringComparison.Ordinal);
         if (io < 0 || io >= endIndex) {
-          // No encoded words found in the given area
+          // No encoded words found in the specified area
           return str.Substring(index, endIndex - index);
         }
       }

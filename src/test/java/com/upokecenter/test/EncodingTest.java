@@ -2823,9 +2823,9 @@ public final void setValueMessage(Message value) {
 
     private static byte[] RandomBytes(RandomGenerator rnd) {
       int count = 10 + rnd.UniformInt(350);
-      byte[] arr = new byte[count];
+      byte arr = new byte[count];
       for (int i = 0; i < count; ++i) {
-        arr[i] = (byte)rnd.UniformInt(0x100);
+        arr.set(i, (byte)rnd.UniformInt(0x100));
       }
       return arr;
     }

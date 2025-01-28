@@ -77,11 +77,11 @@ licensed under the Unlicense: https://unlicense.org/
         buffer,
         index);
       if (buffer[index] != ch) {
-        int[] copy = new int[offset - index];
+        int copy = new int[offset - index];
         System.arraycopy(buffer, index, copy, 0, copy.length);
         offset = index;
         for (int i = 0; i < copy.length; ++i) {
-          offset = DecompToBufferInternal(copy[i], compat, buffer, offset);
+          offset = DecompToBufferInternal(copy.get(i), compat, buffer, offset);
         }
       }
       return offset;
@@ -319,7 +319,7 @@ licensed under the Unlicense: https://unlicense.org/
         throw new NullPointerException("chars");
       }
       int listIndex = 0;
-      int[] array = new int[16];
+      int array = new int[16];
       boolean haveNonQcs = false;
       while (true) {
         int c = chars.ReadChar();
@@ -350,7 +350,7 @@ licensed under the Unlicense: https://unlicense.org/
           haveNonQcs = true;
         }
         if (listIndex >= array.length) {
-          int[] newArray = new int[array.length * 2];
+          int newArray = new int[array.length * 2];
           System.arraycopy(array, 0, newArray, 0, listIndex);
           array = newArray;
         }
@@ -537,7 +537,7 @@ licensed under the Unlicense: https://unlicense.org/
 
     private void PrependOne(int c) {
       if (this.lastCharPos + 1 > this.lastCharBuffer.length) {
-        int[] newbuffer = new int[this.lastCharPos + 8];
+        int newbuffer = new int[this.lastCharPos + 8];
         System.arraycopy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
         this.lastCharBuffer = newbuffer;
       }
@@ -546,7 +546,7 @@ licensed under the Unlicense: https://unlicense.org/
 
     private void PrependTwo(int c1, int c2) {
       if (this.lastCharPos + 2 > this.lastCharBuffer.length) {
-        int[] newbuffer = new int[this.lastCharPos + 8];
+        int newbuffer = new int[this.lastCharPos + 8];
         System.arraycopy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
         this.lastCharBuffer = newbuffer;
       }
@@ -822,7 +822,7 @@ licensed under the Unlicense: https://unlicense.org/
             // No quick-check starter was found (or last quick-check
             // starter is at beginning of buffer), increase
             // the buffer size
-            int[] newBuffer = new int[(this.buffer.length + 4) * 2];
+            int newBuffer = new int[(this.buffer.length + 4) * 2];
             System.arraycopy(this.buffer, 0, newBuffer, 0, this.buffer.length);
             this.buffer = newBuffer;
             continue;

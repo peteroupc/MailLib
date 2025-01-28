@@ -46,11 +46,11 @@ private DictUtility() {
           sb.append(',');
         }
         Map<String, String> dict = dictlist.get(i);
-        String[] larray = new String[dict.size() * 2];
+        String larray = new String[dict.size() * 2];
         int k = 0;
         for (String key : dict.keySet()) {
-          larray[k] = key;
-          larray[k + 1] = dict.get(key);
+          larray.charAt(k) = key;
+          larray.charAt(k + 1) = dict.get(key);
           k += 2;
         }
         sb.append(ToJSON(larray));
@@ -158,7 +158,7 @@ private DictUtility() {
         throw new IllegalStateException("invalid start of list");
       }
       ++i;
-      int[] endPos = new int[] { 0 };
+      int endPos = new int[] { 0 };
       boolean endValue = false;
       String[] stringArray = null;
       while (true) {
@@ -205,7 +205,7 @@ private DictUtility() {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      int[] endPos = new int[] { 0 };
+      int endPos = new int[] { 0 };
       String[] ret = ParseJSONStringArray(str, endPos);
       if (endPos[0] != str.length()) {
         throw new IllegalStateException("Invalid JSON");

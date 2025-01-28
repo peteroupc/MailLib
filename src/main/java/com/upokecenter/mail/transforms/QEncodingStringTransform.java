@@ -24,7 +24,7 @@ import com.upokecenter.mail.*;
     private void ResizeBuffer(int size) {
       this.buffer = (this.buffer == null) ? ((new byte[size + 10])) : this.buffer;
       if (size > this.buffer.length) {
-        byte[] newbuffer = new byte[size + 10];
+        byte newbuffer = new byte[size + 10];
         System.arraycopy(this.buffer, 0, newbuffer, 0, this.buffer.length);
         this.buffer = newbuffer;
       }

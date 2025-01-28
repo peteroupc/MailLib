@@ -34,7 +34,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     /**
-     * Returns either true or false, depending on the given probability.
+     * Returns either true or false, depending on the specified probability.
      * @param p A probability from 0 through 1. 0 means always false, and 1 means
      * always true.
      * @return A Boolean object.
@@ -58,7 +58,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     /**
-     * Conceptually, generates either 1 or 0 the given number of times, where
+     * Conceptually, generates either 1 or 0 the specified number of times, where
      * either number is equally likely, and counts the number of 1's generated.
      * @param trials The number of times to generate a random number, conceptually.
      * @return A 32-bit signed integer.
@@ -77,8 +77,8 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     /**
-     * Conceptually, generates either 1 or 0 the given number of times, where a 1
-     * is generated at the given probability, and counts the number of 1's
+     * Conceptually, generates either 1 or 0 the specified number of times, where a
+     * 1 is generated at the specified probability, and counts the number of 1's
      * generated.
      * @param trials The number of times to generate a random number, conceptually.
      * @param p The probability for each trial to succeed, from 0 (never) to 1
@@ -101,7 +101,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
       }
       int count = 0;
       if (p == 0.5) {
-        byte[] bytes = new byte[1];
+        byte bytes = new byte[1];
         for (int i = 0; i < trials && i >= 0;) {
           this.valueIrg.GetBytes(bytes, 0, 1);
           int b = bytes[0];
@@ -197,7 +197,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
 
     /**
      * Conceptually, generates either 1 or 0 until a 1 is generated, and counts the
-     * number of 0's generated. A 1 is generated at the given probability.
+     * number of 0's generated. A 1 is generated at the specified probability.
      * @param p A 64-bit floating-point number.
      * @return The number of failures until a success happens.
      */
@@ -246,8 +246,8 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     /**
-     * Generates a logarithmic normally-distributed number with the given mean and
-     * standard deviation.
+     * Generates a logarithmic normally-distributed number with the specified mean
+     * and standard deviation.
      * @param mean The desired mean.
      * @param sd Standard deviation.
      * @return A 64-bit floating-point number.
@@ -257,9 +257,9 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     /**
-     * Conceptually, generates either 1 or 0 until the given number of 1's are
+     * Conceptually, generates either 1 or 0 until the specified number of 1's are
      * generated, and counts the number of 0's generated. A 1 is generated at the
-     * given probability.
+     * specified probability.
      * @param trials The number of 1's to generate before the process stops.
      * @param p The probability for each trial to succeed, from 0 (never) to 1
      * (always).
@@ -285,7 +285,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
       }
       int count = 0;
       if (p == 0.5) {
-        byte[] bytes = new byte[1];
+        byte bytes = new byte[1];
         while (true) {
           this.valueIrg.GetBytes(bytes, 0, 1);
           int b = bytes[0];
@@ -317,9 +317,9 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     /**
-     * Conceptually, generates either 1 or 0 the given number of times until the
-     * given number of 1's are generated, and counts the number of 0's generated.
-     * Either number has an equal probability of being generated.
+     * Conceptually, generates either 1 or 0 the specified number of times until
+     * the specified number of 1's are generated, and counts the number of 0's
+     * generated. Either number has an equal probability of being generated.
      * @param trials The number of 1's to generate before the process stops.
      * @return The number of 0's generated. Returns Integer.MAX_VALUE if "p" is 0.
      */
@@ -355,7 +355,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     /**
-     * Generates a normally-distributed number with the given mean and standard
+     * Generates a normally-distributed number with the specified mean and standard
      * deviation.
      * @param mean The desired mean.
      * @param sd Standard deviation.
@@ -367,8 +367,8 @@ package com.upokecenter.test; import com.upokecenter.util.*;
 
     /**
      * Generates a random integer such that the average of random numbers
-     * approaches the given mean number when this method is called repeatedly with
-     * the same mean.
+     * approaches the specified mean number when this method is called repeatedly
+     * with the same mean.
      * @param mean The expected mean of the random numbers.
      * @return A 32-bit signed integer.
      */
@@ -405,7 +405,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
 
     /**
      * Returns a uniformly-distributed 64-bit floating-point number from 0 and up,
-     * but less than the given number.
+     * but less than the specified number.
      * @param max Number that the randomly-generated number will be less than.
      * @return A 64-bit floating-point number.
      */
@@ -477,18 +477,18 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
             minInclusive) ||
           (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive) ||
           minInclusive - maxExclusive < 0) {
-          byte[] b = new byte[8];
+          byte b = new byte[8];
           while (true) {
             this.valueIrg.GetBytes(b, 0, 8);
             // Difference is greater than MaxValue
-            long lb = b[0] & 0xffL;
-            lb |= (b[1] & 0xffL) << 8;
-            lb |= (b[2] & 0xffL) << 16;
-            lb |= (b[3] & 0xffL) << 24;
-            lb |= (b[4] & 0xffL) << 32;
-            lb |= (b[5] & 0xffL) << 40;
-            lb |= (b[6] & 0xffL) << 48;
-            lb |= (b[7] & 0x7fL) << 56;
+            long lb = b.get(0) & 0xffL;
+            lb |= (b.get(1) & 0xffL) << 8;
+            lb |= (b.get(2) & 0xffL) << 16;
+            lb |= (b.get(3) & 0xffL) << 24;
+            lb |= (b.get(4) & 0xffL) << 32;
+            lb |= (b.get(5) & 0xffL) << 40;
+            lb |= (b.get(6) & 0xffL) << 48;
+            lb |= (b.get(7) & 0x7fL) << 56;
             if (lb >= minInclusive && lb < maxExclusive) {
               return lb;
             }
@@ -501,7 +501,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
 
     /**
      * Generates a random 32-bit signed integer 0 or greater and less than the
-     * given number.
+     * specified number.
      * @param maxExclusive One plus the largest possible value of the random
      * number.
      * @return A 32-bit signed integer.
@@ -517,40 +517,40 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null); if (rge != null) {
         return rge.GetInt32(maxExclusive);
       }
-      byte[] b = new byte[4];
+      byte b = new byte[4];
       switch (maxExclusive) {
         case 2: {
             this.valueIrg.GetBytes(b, 0, 1);
-            return b[0] & 1;
+            return b.get(0) & 1;
           }
         case 256: {
             this.valueIrg.GetBytes(b, 0, 1);
-            return b[0] & 1;
+            return b.get(0) & 1;
           }
         default: {
             while (true) {
               int ib;
               if (maxExclusive == 0x1000000) {
                 this.valueIrg.GetBytes(b, 0, 3);
-                ib = b[0] & 0xff;
-                ib |= (b[1] & 0xff) << 8;
-                ib |= (b[2] & 0xff) << 16;
+                ib = b.get(0) & 0xff;
+                ib |= (b.get(1) & 0xff) << 8;
+                ib |= (b.get(2) & 0xff) << 16;
                 return ib;
               }
               if (maxExclusive == 0x10000) {
                 this.valueIrg.GetBytes(b, 0, 2);
-                ib = b[0] & 0xff;
-                ib |= (b[1] & 0xff) << 8;
+                ib = b.get(0) & 0xff;
+                ib |= (b.get(1) & 0xff) << 8;
                 return ib;
               }
               int maxexc;
               maxexc = Integer.MAX_VALUE / maxExclusive * maxExclusive;
               while (true) {
                 this.valueIrg.GetBytes(b, 0, 4);
-                ib = b[0] & 0xff;
-                ib |= (b[1] & 0xff) << 8;
-                ib |= (b[2] & 0xff) << 16;
-                ib |= (b[3] & 0x7f) << 24;
+                ib = b.get(0) & 0xff;
+                ib |= (b.get(1) & 0xff) << 8;
+                ib |= (b.get(2) & 0xff) << 16;
+                ib |= (b.get(3) & 0x7f) << 24;
                 if (ib < maxexc) {
                   return ib % maxExclusive;
                 }
@@ -576,7 +576,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
 
     /**
      * Generates a random 32-bit signed integer 0 or greater and less than the
-     * given number.
+     * specified number.
      * @param maxExclusive One plus the largest possible value of the random
      * number.
      * @return A 64-bit signed integer.
@@ -594,18 +594,18 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       }
 
       long maxexc;
-      byte[] b = new byte[8];
+      byte b = new byte[8];
       maxexc = Long.MAX_VALUE / maxExclusive * maxExclusive;
       while (true) {
         this.valueIrg.GetBytes(b, 0, 8);
-        long lb = b[0] & 0xffL;
-        lb |= (b[1] & 0xffL) << 8;
-        lb |= (b[2] & 0xffL) << 16;
-        lb |= (b[3] & 0xffL) << 24;
-        lb |= (b[4] & 0xffL) << 32;
-        lb |= (b[5] & 0xffL) << 40;
-        lb |= (b[6] & 0xffL) << 48;
-        lb |= (b[7] & 0x7fL) << 56;
+        long lb = b.get(0) & 0xffL;
+        lb |= (b.get(1) & 0xffL) << 8;
+        lb |= (b.get(2) & 0xffL) << 16;
+        lb |= (b.get(3) & 0xffL) << 24;
+        lb |= (b.get(4) & 0xffL) << 32;
+        lb |= (b.get(5) & 0xffL) << 40;
+        lb |= (b.get(6) & 0xffL) << 48;
+        lb |= (b.get(7) & 0x7fL) << 56;
         if (lb < maxexc) {
           return lb % maxExclusive;
         }

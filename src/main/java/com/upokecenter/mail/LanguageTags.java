@@ -460,7 +460,7 @@ private LanguageTags() {
         return retlist;
       }
       boolean hasStar = false;
-      boolean[] langsMatch = new boolean[languages.size()];
+      boolean langsMatch = new boolean.get(languages.size());
       for (String range : ranges) {
         if (!IsLanguageRange(range, extended)) {
           throw new IllegalArgumentException("ranges is not a language range.");
@@ -478,26 +478,26 @@ private LanguageTags() {
         }
         String lcrange = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(range);
         for (int k = 0; k < languages.size(); ++k) {
-          if (langsMatch[k]) {
+          if (langsMatch.get(k)) {
             continue;
           }
           String lclang = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(languages.get(k));
           if (extended) {
             if (MatchLangTagExtended(lcrange, lclang)) {
               retlist.add(languages.get(k));
-              langsMatch[k] = true;
+              langsMatch.set(k, true);
             }
           } else {
             if (MatchLangTagBasic(lcrange, lclang)) {
               retlist.add(languages.get(k));
-              langsMatch[k] = true;
+              langsMatch.set(k, true);
             }
           }
         }
       }
       if (matchStarAtEnd && hasStar) {
         for (int k = 0; k < languages.size(); ++k) {
-          if (!langsMatch[k]) {
+          if (!langsMatch.get(k)) {
             retlist.add(languages.get(k));
           }
         }

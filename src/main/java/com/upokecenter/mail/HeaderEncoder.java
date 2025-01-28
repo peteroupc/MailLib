@@ -550,7 +550,7 @@ import com.upokecenter.util.*;
     public HeaderEncoder AppendAsEncodedWordsB(String symbol) {
       int i = 0;
       int currentWordLength = 0;
-      int[] base64state = new int[] { 0, 0, 0 };
+      int base64state = new int[] { 0, 0, 0 };
       while (i < symbol.length()) {
         int ch = com.upokecenter.util.DataUtilities.CodePointAt(symbol, i);
         if (ch >= 0x10000) {
@@ -558,7 +558,7 @@ import com.upokecenter.util.*;
         }
         int unitLength = (ch <= 0x7f) ? 1 : ((ch <= 0x7ff) ? 2 : ((ch <=
                 0xffff) ? 3 : 4));
-        int bytesNeeded = 4 + (base64state[2] +
+        int bytesNeeded = 4 + (base64state.get(2) +
             unitLength > 3 ? 4 : 0);
         if (!this.CanCharUnitFit(
           currentWordLength,

@@ -1955,7 +1955,7 @@ ms = new java.io.ByteArrayOutputStream();
                 throw new MessageDataException(ex.getMessage(), ex);
               }
             } else {
-              byte[] buffer = new byte[4096];
+              byte buffer = new byte[4096];
               while (true) {
                 int cp = inputStream.read(buffer, 0, buffer.length);
                 if (cp <= 0) {
@@ -2740,7 +2740,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         }
         if (origRecipient || finalRecipient) {
           String headerValue = null;
-          int[] status = new int[1];
+          int status = new int[1];
           try {
             headerValue = com.upokecenter.util.DataUtilities.GetUtf8String(
               bytes,
@@ -3216,7 +3216,7 @@ LiberalSevenBitTransform(stream)) :
       private void Grow() {
         int newlen = (this.buffer.length >= (Integer.MAX_VALUE >> 1)) ?
           Integer.MAX_VALUE : this.buffer.length * 2;
-        char[] newbuffer = new char[newlen];
+        char newbuffer = new char[newlen];
         System.arraycopy(this.buffer, 0, newbuffer, 0, this.buffer.length);
         this.buffer = newbuffer;
       }
@@ -3236,7 +3236,7 @@ LiberalSevenBitTransform(stream)) :
       boolean start) {
       // Line length in OCTETS, not characters
       int lineCount = 0;
-      int[] bytesRead = new int[1];
+      int bytesRead = new int[1];
       StringBuilderKeepBuffer sb = new StringBuilderKeepBuffer();
       int ss = 0;
       boolean ungetLast = false;
@@ -3681,7 +3681,7 @@ LiberalSevenBitTransform(stream)) :
       boolean haveMsgId = false;
       boolean haveFrom = false;
       boolean haveDate = false;
-      boolean[] haveHeaders = new boolean[11];
+      boolean haveHeaders = new boolean.get(11);
       byte[] bodyToWrite = this.body;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.getContentType());
       String contentDisp = (this.getContentDisposition() == null) ? null :
@@ -3808,12 +3808,12 @@ TransferEncodingToUse(
             }
             int headerIndex = ValueHeaderIndices.get(name);
             if (headerIndex <= 5) {
-              if (haveHeaders[headerIndex]) {
+              if (haveHeaders.get(headerIndex)) {
                 // Already outputted, continue
                 continue;
               }
               boolean isValidAddressing = this.IsValidAddressingField(name);
-              haveHeaders[headerIndex] = true;
+              haveHeaders.set(headerIndex, true);
               /*
 
               */ if (!isValidAddressing) {
@@ -4341,7 +4341,7 @@ TransferEncodingToUse(
         baseTransferEncoding,
         true);
       Message leaf = null;
-      byte[] buffer = new byte[8192];
+      byte buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.length;
       this.body = new byte[0];
@@ -4430,7 +4430,7 @@ TransferEncodingToUse(
         stream,
         this.transferEncoding,
         isTextPlain);
-      byte[] buffer = new byte[8192];
+      byte buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.length;
       ArrayWriter aw = new ArrayWriter();

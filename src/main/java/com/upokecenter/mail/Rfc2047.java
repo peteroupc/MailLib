@@ -636,7 +636,7 @@ EncodedWordContext.Comment &&
       if (withComments) {
         int io = str.indexOf("=?",index);
         if (io < 0 || io >= endIndex) {
-          // No encoded words found in the given area
+          // No encoded words found in the specified area
           return str.substring(index, (index)+(endIndex - index));
         }
       }
