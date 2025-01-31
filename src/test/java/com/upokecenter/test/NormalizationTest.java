@@ -26,8 +26,8 @@ import com.upokecenter.text.*;
         int index2 = str.indexOf(delimiter, index);
         if (index2 < 0) {
           if (first) {
-            String strret = new String[1];
-            strret.charAt(0) = str;
+            String[] strret = new String[1];
+            strret[0] = str;
             return strret;
           }
           strings = (strings == null) ? (new ArrayList<String>()) : strings;
@@ -51,7 +51,7 @@ import com.upokecenter.text.*;
       if (cp == null) {
         throw new NullPointerException("cp");
       }
-      int retArray = new int[cp.length()];
+      int[] retArray = new int[cp.length()];
       int count = 0;
       while (index <= cp.length()) {
         int c = (index >= cp.length()) ? -1 : (int)cp.charAt(index);
@@ -81,18 +81,18 @@ import com.upokecenter.text.*;
               codePoint |= c - 0x30;
             } else {
               if (count == retArray.length) {
-                int newArray = new int[retArray.length * 2];
+                int[] newArray = new int[retArray.length * 2];
                 System.arraycopy(retArray, 0, newArray, 0, count);
                 retArray = newArray;
               }
-              retArray.set(count++, codePoint);
+              retArray[count++] = codePoint;
               state = 0;
               codePoint = 0;
             }
             break;
         }
       }
-      int newArray2 = new int[count];
+      int[] newArray2 = new int[count];
       System.arraycopy(retArray, 0, newArray2, 0, count);
       return newArray2;
     }
@@ -132,26 +132,26 @@ import com.upokecenter.text.*;
     }
 
     public static String StringToCodePoints(String str) {
-if (((str) == null || (str).length() == 0)) {
-  return "";
-}
-     int i = 0;
-     StringBuilder builder = new StringBuilder();
-     while (i < str.length()) {
-       int cp = com.upokecenter.util.DataUtilities.CodePointAt(str, i);
-       if (cp < 0) {
-         throw new IllegalArgumentException("str");
-       }
-       if (i > 0) {
+      if (((str) == null || (str).length() == 0)) {
+        return "";
+      }
+      int i = 0;
+      StringBuilder builder = new StringBuilder();
+      while (i < str.length()) {
+        int cp = com.upokecenter.util.DataUtilities.CodePointAt(str, i);
+        if (cp < 0) {
+          throw new IllegalArgumentException("str");
+        }
+        if (i > 0) {
           builder.append("-");
-       }
-       if (cp >= 0x10000) {
-         ++i;
-       }
-       builder.append("" + cp);
-       ++i;
-     }
-     return builder.toString();
+        }
+        if (cp >= 0x10000) {
+          ++i;
+        }
+        builder.append("" + cp);
+        ++i;
+      }
+      return builder.toString();
     }
 
     public static void AssertEqual(
@@ -236,8 +236,8 @@ if (((str) == null || (str).length() == 0)) {
       String str = "_\ufac7\uc972+67 Tqd R_.";
       {
         String stringTemp = NormalizerInput.Normalize(
-          str,
-          Normalization.NFC);
+            str,
+            Normalization.NFC);
         Assert.assertEquals(
           "_\u96e3\uc972+67 Tqd R_.",
           stringTemp);
@@ -273,17 +273,17 @@ private final String propVarnfkd;
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
         this.propVarnfc = NormalizerInput.Normalize(
-          this.origstr,
-          Normalization.NFC);
+            this.origstr,
+            Normalization.NFC);
         this.propVarnfd = NormalizerInput.Normalize(
-          this.origstr,
-          Normalization.NFD);
+            this.origstr,
+            Normalization.NFD);
         this.propVarnfkc = NormalizerInput.Normalize(
-          this.origstr,
-          Normalization.NFKC);
+            this.origstr,
+            Normalization.NFKC);
         this.propVarnfkd = NormalizerInput.Normalize(
-          this.origstr,
-          Normalization.NFKD);
+            this.origstr,
+            Normalization.NFKD);
         if (!NormalizerInput.IsNormalized(
           this.getNfc(),
           Normalization.NFC)) {
@@ -340,23 +340,23 @@ private final String propVarnfkd;
     }
 
     private static void NormTestLine(String line) {
-        String[] columns = SplitAt(line, ";");
-        int[] cps = GetCodePoints(columns[0]);
-        NormResult nr = new NormResult[5];
-        for (int i = 0; i < 5; ++i) {
-          nr.set(i, new NormResult(columns[i], line));
-        }
-        nr.get(3).AssertNFC(nr.get(3), nr.get(4));
-        nr.get(2).AssertNFD(nr.get(0), nr.get(1), nr.get(2));
-        nr.get(4).AssertNFD(nr.get(3), nr.get(4));
-        nr.get(4).AssertNFKD(nr.get(0), nr.get(1), nr.get(2));
-        nr.get(4).AssertNFKD(nr.get(3), nr.get(4));
-        nr.get(3).AssertNFKC(nr.get(0), nr.get(1), nr.get(2));
-        nr.get(3).AssertNFKC(nr.get(3), nr.get(4));
+      String[] columns = SplitAt(line, ";");
+      int[] cps = GetCodePoints(columns[0]);
+      NormResult[] nr = new NormResult[5];
+      for (int i = 0; i < 5; ++i) {
+        nr[i] = new NormResult(columns[i], line);
+      }
+      nr[3].AssertNFC(nr[3], nr[4]);
+      nr[2].AssertNFD(nr[0], nr[1], nr[2]);
+      nr[4].AssertNFD(nr[3], nr[4]);
+      nr[4].AssertNFKD(nr[0], nr[1], nr[2]);
+      nr[4].AssertNFKD(nr[3], nr[4]);
+      nr[3].AssertNFKC(nr[0], nr[1], nr[2]);
+      nr[3].AssertNFKC(nr[3], nr[4]);
     }
 
     public static void NormTestLines(String[] lines) {
-      boolean handled = new boolean.get(0x110000);
+      boolean[] handled = new boolean[0x110000];
       if (lines == null) {
         Assert.fail("lines is null");
       }
@@ -380,22 +380,22 @@ private final String propVarnfkd;
         String[] columns = SplitAt(line, ";");
         int[] cps = GetCodePoints(columns[0]);
         if (part1) {
-          handled.set(cps[0], true);
+          handled[cps[0]] = true;
         }
-        NormResult nr = new NormResult[5];
+        NormResult[] nr = new NormResult[5];
         for (int i = 0; i < 5; ++i) {
-          nr.set(i, new NormResult(columns[i], line));
+          nr[i] = new NormResult(columns[i], line);
         }
-        nr.get(1).AssertNFC(nr.get(0), nr.get(1), nr.get(2));
-        nr.get(3).AssertNFC(nr.get(3), nr.get(4));
-        nr.get(2).AssertNFD(nr.get(0), nr.get(1), nr.get(2));
-        nr.get(4).AssertNFD(nr.get(3), nr.get(4));
-        nr.get(4).AssertNFKD(nr.get(0), nr.get(1), nr.get(2));
-        nr.get(4).AssertNFKD(nr.get(3), nr.get(4));
-        nr.get(3).AssertNFKC(nr.get(0), nr.get(1), nr.get(2));
-        nr.get(3).AssertNFKC(nr.get(3), nr.get(4));
+        nr[1].AssertNFC(nr[0], nr[1], nr[2]);
+        nr[3].AssertNFC(nr[3], nr[4]);
+        nr[2].AssertNFD(nr[0], nr[1], nr[2]);
+        nr[4].AssertNFD(nr[3], nr[4]);
+        nr[4].AssertNFKD(nr[0], nr[1], nr[2]);
+        nr[4].AssertNFKD(nr[3], nr[4]);
+        nr[3].AssertNFKC(nr[0], nr[1], nr[2]);
+        nr[3].AssertNFKC(nr[3], nr[4]);
       }
-      char cptemp = new char[2];
+      char[] cptemp = new char[2];
       // Individual code points that don't appear in Part 1 of the
       // test will normalize to themselves in all four normalization forms
       for (int i = 0; i < handled.length; ++i) {
@@ -403,12 +403,12 @@ private final String propVarnfkd;
           // skip surrogate code points
           continue;
         }
-        if (!handled.get(i)) {
+        if (!handled[i]) {
           if (i >= 0x10000) {
-            cptemp.set(0, (char)((((i - 0x10000) >> 10) & 0x3ff) | 0xd800));
-            cptemp.set(1, (char)(((i - 0x10000) & 0x3ff) | 0xdc00));
+            cptemp[0] = (char)((((i - 0x10000) >> 10) & 0x3ff) | 0xd800);
+            cptemp[1] = (char)(((i - 0x10000) & 0x3ff) | 0xdc00);
           } else {
-            cptemp.set(0, (char)i);
+            cptemp[0] = (char)i;
           }
           String cpstr = new String(cptemp, 0, i >= 0x10000 ? 2 : 1);
           if (!NormalizerInput.IsNormalized(

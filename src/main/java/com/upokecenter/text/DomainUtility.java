@@ -250,7 +250,7 @@ private DomainUtility() {
       int vnum = 128;
       int bias = 72;
       int stringLength = builder.length();
-      char chararr = new char[2];
+      char[] chararr = new char[2];
       while (index < endIndex) {
         int old = index;
         int w = 1;
@@ -309,11 +309,11 @@ private DomainUtility() {
         vnum += idiv;
         i %= futureLength;
         if (vnum <= 0xffff) {
-          chararr.set(0, (char)vnum);
+          chararr[0] = (char)vnum;
           builder.insert(i, chararr, 0, 1);
         } else if (vnum <= 0x10ffff) {
-          chararr.set(0, (char)((((vnum - 0x10000) >> 10) & 0x3ff) | 0xd800));
-          chararr.set(1, (char)(((vnum - 0x10000) & 0x3ff) | 0xdc00));
+          chararr[0] = (char)((((vnum - 0x10000) >> 10) & 0x3ff) | 0xd800);
+          chararr[1] = (char)(((vnum - 0x10000) & 0x3ff) | 0xdc00);
           builder.insert(i, chararr, 0, 2);
         } else {
           return null;

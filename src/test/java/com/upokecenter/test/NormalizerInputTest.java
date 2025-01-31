@@ -69,20 +69,20 @@ import com.upokecenter.text.*;
  }
         // ASCII strings normalize to themselves
         String str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFC);
+            str,
+            Normalization.NFC);
         Assert.assertEquals(str, str2);
         str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFD);
+            str,
+            Normalization.NFD);
         Assert.assertEquals(str, str2);
         str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFKC);
+            str,
+            Normalization.NFKC);
         Assert.assertEquals(str, str2);
         str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFKD);
+            str,
+            Normalization.NFKD);
         Assert.assertEquals(str, str2);
       }
     }
@@ -100,8 +100,8 @@ import com.upokecenter.text.*;
  }
         // Latin-1 strings normalize to themselves in NFC
         String str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFC);
+            str,
+            Normalization.NFC);
         Assert.assertEquals(str, str2);
       }
     }

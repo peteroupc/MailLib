@@ -87,7 +87,7 @@ namespace PeterO {
       throw new NotSupportedException();
     }
 
-    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+    public IEnumerator<KeyValuePair<TKey, TValue >> GetEnumerator() {
       return this.wrapped.GetEnumerator();
     }
     System.Collections.IEnumerator

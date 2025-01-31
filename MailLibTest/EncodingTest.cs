@@ -234,7 +234,7 @@ namespace MailLibTest {
           ++wordLength;
           hasNonWhiteSpace = true;
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength &&
-              wordLength > 78);
+            wordLength > 78);
         }
         var maxLineLength = 998;
         if (!headers && (!hasLongWord && !hasMessageType)) {
@@ -1509,7 +1509,7 @@ namespace MailLibTest {
           ("Downgraded-Original-Recipient: " + expected) +
           "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-        } else {
+      } else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
@@ -1901,7 +1901,7 @@ namespace MailLibTest {
       TestDecodeQuotedPrintable(
         "te\r\nst",
         "te\r\nst");
-      TestDecodeQuotedPrintable("te=\r\nst", "test");
+      TestDecodeQuotedPrintable("te =\r\nst", "te st");
       TestDecodeQuotedPrintable(
         "te=xy",
         "te=xy");
@@ -1951,7 +1951,7 @@ namespace MailLibTest {
       // See point 4 in the second numbered
       // list of section 6.7 of RFC 2045, which suggests excluding
       // bare CR and bare LF from the decoded data.
-      TestDecodeQuotedPrintable("te\rst", "test");
+      TestDecodeQuotedPrintable("te \rst", "te st");
       TestDecodeQuotedPrintable(
         "te\nst",
         "test");
@@ -1959,7 +1959,7 @@ namespace MailLibTest {
       // case, the space/tab is kept, but not the CR or LF.
       // See point 4 of second numbered list and point
       // 3 of first numbered list.
-      TestDecodeQuotedPrintable("te \t\nst", "te \tst");
+      TestDecodeQuotedPrintable("te\t \nst", "te\t st");
       TestDecodeQuotedPrintable(
         "te \t\rst",
         "te \tst");
@@ -1998,8 +1998,8 @@ namespace MailLibTest {
     }
     [Test]
     public void TestNonLenientQuotedPrintable() {
-      TestFailQuotedPrintableNonLenient("te\rst");
-      TestFailQuotedPrintableNonLenient("te\nst");
+      TestFailQuotedPrintableNonLenient("te \rst");
+      TestFailQuotedPrintableNonLenient("te \nst");
       TestFailQuotedPrintableNonLenient("te=\rst");
       TestFailQuotedPrintableNonLenient("te=\nst");
       TestFailQuotedPrintableNonLenient("te=\r");
@@ -2071,11 +2071,11 @@ namespace MailLibTest {
         " (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "=?bad?= " + expected +
-")comment) en",
+        ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
         ValuePar + "comment " + ValuePar + String.Empty + expected +
-")comment) en",
+        ")comment) en",
         " (comment (" + input + ")comment) en");
       TestDecodeStructured(
         "(" + expected + "()) en",
@@ -2105,8 +2105,8 @@ namespace MailLibTest {
           "\"X\" <y@example.com>";
         string strparam = "x <x@example.com>, \"X\" <y@example.com>";
         object objectTemp2 = DowngradeHeaderField(
-          "to",
-          strparam);
+            "to",
+            strparam);
         Assert.AreEqual(
           objectTemp,
           objectTemp2);
@@ -2116,8 +2116,8 @@ namespace MailLibTest {
           "=?utf-8?Q?=C2=BE?= <y@example.com>";
         string strparam = "x <x@example.com>, \u00be <y@example.com>";
         object objectTemp2 = DowngradeHeaderField(
-          "to",
-          strparam);
+            "to",
+            strparam);
         Assert.AreEqual(
           objectTemp,
           objectTemp2);
@@ -2138,16 +2138,16 @@ namespace MailLibTest {
         string hdrvalue = "x <x@example.com>" + ValueSep +
           "x\u00e1 x x\u00e1 <y@example.com>";
         object objectTemp2 = DowngradeHeaderField(
-          "to",
-          hdrvalue);
+            "to",
+            hdrvalue);
         Assert.AreEqual(
           objectTemp,
           objectTemp2);
       }
       {
         string stringTemp = DowngradeHeaderField(
-          "to",
-          "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
+            "to",
+            "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
         {
           object objectTemp =
             "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
@@ -2160,8 +2160,8 @@ namespace MailLibTest {
       }
       {
         string stringTemp = DowngradeHeaderField(
-          "to",
-          "g: x@example.com" + ValueSep + "x@\u0300.example;");
+            "to",
+            "g: x@example.com" + ValueSep + "x@\u0300.example;");
         {
           object objectTemp =
             "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
@@ -2176,8 +2176,8 @@ namespace MailLibTest {
         string objectTemp = "g: x@example.com" + ValueSep +
           "x@xn--e-ufa.example;";
         object objectTemp2 = DowngradeHeaderField(
-          "to",
-          "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
+            "to",
+            "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
         Assert.AreEqual(
           objectTemp,
           objectTemp2);
@@ -2282,7 +2282,7 @@ namespace MailLibTest {
       Console.WriteLine(headerValue);
       Console.WriteLine(hinfo.ValueHeader);
       var address = new NamedAddress(hinfo.ValueMessage.GetHeader(
-  headerName));
+        headerName));
       Assert.AreEqual(
         displayName,
         address.DisplayName);
@@ -2624,10 +2624,10 @@ namespace MailLibTest {
         "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       TestEncodedWordsPhrase(
         "x\u0020(sss)\u0020y",
-        "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "x\u0020(z)\u0020y",
-        "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
@@ -2644,7 +2644,7 @@ namespace MailLibTest {
       TestEncodedWordsOne(
         "abcde",
         "abcde");
-      TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
+      TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
       TestEncodedWordsOne(
         "=?utf-8?Q?abcde?=extra",
         "=?utf-8?Q?abcde?=extra");
@@ -2826,9 +2826,9 @@ namespace MailLibTest {
       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
       {
         byte[] objectTemp = DataUtilities.GetUtf8Bytes(
-          str,
-          true,
-          true);
+            str,
+            true,
+            true);
         TestEncodedBytesRoundTrip(
           objectTemp,
           true);
@@ -2861,14 +2861,14 @@ namespace MailLibTest {
     public void TestEncodedBytesSpecific() {
       TestEncodedBytesRoundTrip("T \r");
       TestEncodedBytesRoundTrip("T \rA");
-      TestEncodedBytesRoundTrip("T \r\rA");
+      TestEncodedBytesRoundTrip("T \r\r A");
       TestEncodedBytesRoundTrip("T \r\r A");
       TestEncodedBytesRoundTrip("T \r\r\nA");
       TestEncodedBytesRoundTrip("T \r");
       TestEncodedBytesRoundTrip("T \r\r");
       TestEncodedBytesRoundTrip("The Best\r\nFrom Me");
       TestEncodedBytesRoundTrip("The Best\r\nGood ");
-      TestEncodedBytesRoundTrip("The Best\r\nFrom ");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom");
       TestEncodedBytesRoundTrip("The Best\r\nFrom");
       TestEncodedBytesRoundTrip("The Best\r\nFro");
       TestEncodedBytesRoundTrip("The Best\r\nFr");
@@ -2877,9 +2877,9 @@ namespace MailLibTest {
       TestEncodedBytesRoundTrip("The Best\r\n-?");
       TestEncodedBytesRoundTrip("The Best\r\n--");
       TestEncodedBytesRoundTrip("The Best\r\n-");
-      TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFromMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nGood ");
-      TestEncodedBytesRoundTrip("T\u000best\r\nFrom ");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrom");
       TestEncodedBytesRoundTrip("T\u000best\r\nFro");
       TestEncodedBytesRoundTrip("T\u000best\r\nFr");

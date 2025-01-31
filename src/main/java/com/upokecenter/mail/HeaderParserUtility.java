@@ -80,9 +80,9 @@ private HeaderParserUtility() {
         } else if (c == 0x22) {
           // quoted String found, skip it
           int si = HeaderParserUtility.ParseQuotedStringCore(
-            str,
-            index,
-            endIndex);
+              str,
+              index,
+              endIndex);
           if (si == index) {
             throw new IllegalStateException("Internal error: " + str);
           }
@@ -118,10 +118,10 @@ private HeaderParserUtility() {
               // Note that quoted-String starts with optional CFWS
               tokener.RestoreState(state);
               si = HeaderParser.ParseQuotedString(
-                str,
-                index,
-                endIndex,
-                tokener);
+                  str,
+                  index,
+                  endIndex,
+                  tokener);
               if (si == index) {
                 throw new IllegalStateException("Internal error: " + str);
               }
@@ -345,11 +345,11 @@ private HeaderParserUtility() {
           if (tokenKind == TokenPhrase && !haveDisplayName) {
             // Phrase
             displayName = Rfc2047.DecodePhraseText(
-              str,
-              tokenIndex,
-              tokenEnd,
-              tokens,
-              false);
+                str,
+                tokenIndex,
+                tokenEnd,
+                tokens,
+                false);
             // Set haveDisplayName, which needs to be done because
             // the mailboxes that follow may themselves have display names
             haveDisplayName = true;
@@ -378,11 +378,11 @@ private HeaderParserUtility() {
             case TokenPhrase:
               // Phrase
               displayName = Rfc2047.DecodePhraseText(
-                str,
-                tokenIndex,
-                tokenEnd,
-                tokens,
-                false);
+                  str,
+                  tokenIndex,
+                  tokenEnd,
+                  tokens,
+                  false);
               break;
             case TokenLocalPart:
               localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
@@ -420,21 +420,20 @@ private HeaderParserUtility() {
           ++index;
         }
         if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
-              56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+          56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 &&
-              str.charAt(index)
-              <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index)
->= 14 &&
-              str.charAt(index) <= 31) || (str.charAt(index) >= 33 && str.charAt(index) <= 39) ||
-            (str.charAt(index)
-              >= 42 && str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index)
-<= 55295) ||
-            (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+          str.charAt(index)
+          <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index)
+            >= 14 &&
+            str.charAt(index) <= 31) || (str.charAt(index) >= 33 && str.charAt(index) <= 39) ||
+          (str.charAt(index)
+            >= 42 && str.charAt(index) <= 91) || (str.charAt(index) >= 93 && str.charAt(index)
+            <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 &&
-              str.charAt(index)
-              <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+          str.charAt(index)
+          <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -493,7 +492,7 @@ private HeaderParserUtility() {
                   do {
                     int indexStart4 = index;
                     while (index < endIndex && ((str.charAt(index) == 32) ||
-                        (str.charAt(index) == 9))) {
+                      (str.charAt(index) == 9))) {
                       ++index;
                     }
                     if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index +
@@ -513,10 +512,10 @@ private HeaderParserUtility() {
                   }
                 } while (false);
                 if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                      9))) {
+                  9))) {
                   ++index;
                   while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index)
-                        == 9))) {
+                    == 9))) {
                     ++index;
                   }
                 } else {
@@ -536,13 +535,13 @@ private HeaderParserUtility() {
               int indexTemp3 = index;
               do {
                 if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <=
-                      55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+                  55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
                   ++indexTemp3;
                   break;
                 }
                 if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-                      str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
-                      str.charAt(index + 1) <= 57343))) {
+                  str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                    str.charAt(index + 1) <= 57343))) {
                   indexTemp3 += 2;
                   break;
                 }
@@ -560,20 +559,20 @@ private HeaderParserUtility() {
                     indexTemp5 = index;
                     do {
                       if (index < endIndex && ((str.charAt(index) == 32) ||
-                          (str.charAt(index) == 9) || (str.charAt(index) >= 128 &&
-                            str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
-                            str.charAt(index) <= 65535))) {
+                        (str.charAt(index) == 9) || (str.charAt(index) >= 128 &&
+                        str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
+                          str.charAt(index) <= 65535))) {
                         ++indexTemp5;
                         break;
                       }
                       if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-                            str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
-                            str.charAt(index + 1) <= 57343))) {
+                        str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                          str.charAt(index + 1) <= 57343))) {
                         indexTemp5 += 2;
                         break;
                       }
                       if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <=
-                          126)) {
+                        126)) {
                         ++indexTemp5;
                         break;
                       }
@@ -596,8 +595,8 @@ private HeaderParserUtility() {
                   break;
                 }
                 if (index < endIndex && ((str.charAt(index) >= 93 && str.charAt(index) <=
-                      126) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
-                    (str.charAt(index) >= 33 && str.charAt(index) <= 39))) {
+                  126) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
+                  (str.charAt(index) >= 33 && str.charAt(index) <= 39))) {
                   ++indexTemp3;
                   break;
                 }
@@ -630,7 +629,7 @@ private HeaderParserUtility() {
               do {
                 int indexStart3 = index;
                 while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                      9))) {
+                  9))) {
                   ++index;
                 }
                 if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
@@ -652,7 +651,7 @@ private HeaderParserUtility() {
             if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
               ++index;
               while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                    9))) {
+                9))) {
                 ++index;
               }
             } else {

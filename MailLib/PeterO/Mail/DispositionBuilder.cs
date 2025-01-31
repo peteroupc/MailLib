@@ -92,7 +92,7 @@ namespace PeterO.Mail {
     /// object.</summary>
     /// <returns>A MediaType object.</returns>
     public ContentDisposition ToDisposition() {
-        return this.builder.ToDisposition();
+      return this.builder.ToDisposition();
     }
 
     /// <summary>Sets the disposition type, such as "inline". This method
@@ -107,8 +107,8 @@ namespace PeterO.Mail {
     /// name='str'/> is null.</exception>
     /// <exception cref='ArgumentException'>Str is empty.</exception>
     public DispositionBuilder SetDispositionType(string str) {
-        this.builder.SetDispositionType(str);
-        return this;
+      this.builder.SetDispositionType(str);
+      return this;
     }
 
     /// <summary>Removes a parameter from this content disposition. Does
@@ -122,8 +122,8 @@ namespace PeterO.Mail {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
     public DispositionBuilder RemoveParameter(string name) {
-        this.builder.RemoveParameter(name);
-        return this;
+      this.builder.RemoveParameter(name);
+      return this;
     }
 
     /// <summary>Sets a parameter of this content disposition.</summary>
@@ -141,8 +141,8 @@ namespace PeterO.Mail {
     /// name='name'/> is empty, or it isn't a well-formed parameter
     /// name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {
-        this.builder.SetParameter(name, value);
-        return this;
+      this.builder.SetParameter(name, value);
+      return this;
     }
 
     /// <summary>Converts this object to a text string.</summary>

@@ -84,12 +84,12 @@ import com.upokecenter.text.*;
       if (this.dispositionType != null) {
         for (int i = 0; i < this.dispositionType.length(); ++i) {
           valueHashCode = (valueHashCode + (632580503 *
-                this.dispositionType.charAt(i)));
+            this.dispositionType.charAt(i)));
         }
       }
       if (this.parameters != null) {
         valueHashCode = (valueHashCode + (632580587 *
-              this.parameters.size()));
+          this.parameters.size()));
       }
       return valueHashCode;
     }
@@ -526,8 +526,7 @@ public final void setDispositionType(String value) {
        * @return {@code true} If this is a text media type; otherwise, {@code false}.
        * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
  */
-@Deprecated
-      public final boolean isText() {
+@Deprecated public final boolean isText() {
           return this.getDispositionType().equals("text");
         }
 

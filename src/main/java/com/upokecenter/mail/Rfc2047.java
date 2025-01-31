@@ -137,8 +137,7 @@ private Rfc2047() {
           }
           if (str.charAt(index) == '\r' && index + 2 < endIndex &&
             str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index +
-2) ==
-              0x09)) {
+                2) == 0x09)) {
             // Folding whitespace
             builder.append(str.charAt(index + 2));
             index += 3;
@@ -151,7 +150,7 @@ private Rfc2047() {
               }
             } else if (cp <= 0x10ffff) {
               builder.append((char)((((cp - 0x10000) >> 10) & 0x3ff) |
-0xd800));
+                0xd800));
               builder.append((char)(((cp - 0x10000) & 0x3ff) | 0xdc00));
             }
             index += 1 + (cp >= 0x10000 ? 2 : 1);
@@ -188,8 +187,7 @@ private Rfc2047() {
           }
           if (str.charAt(index) == '\r' && index + 2 < endIndex &&
             str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index +
-2) ==
-              0x09)) {
+                2) == 0x09)) {
             // Folding whitespace
             builder.append(str.charAt(index + 2));
             index += 3;
@@ -200,7 +198,7 @@ private Rfc2047() {
               builder.append((char)cp);
             } else if (cp <= 0x10ffff) {
               builder.append((char)((((cp - 0x10000) >> 10) & 0x3ff) |
-0xd800));
+                0xd800));
               builder.append((char)(((cp - 0x10000) & 0x3ff) | 0xdc00));
             }
             index += 1 + (cp >= 0x10000 ? 2 : 1);
@@ -233,7 +231,7 @@ private Rfc2047() {
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-            ValueSpecials.indexOf(c) >= 0)) {
+          ValueSpecials.indexOf(c) >= 0)) {
           break;
         }
         ++i;
@@ -348,8 +346,8 @@ private Rfc2047() {
             // with length up to 75 (also exclude '(' , '\', and ')' if the
             // context is a comment)
             if (c >= 0x21 && c < 0x7e && (context !=
-                EncodedWordContext.Comment || (c != '(' && c != ')' &&
-                  c != '\\'))) {
+              EncodedWordContext.Comment || (c != '(' && c != ')' &&
+              c != '\\'))) {
               ++charCount;
               if (charCount > 75) {
                 maybeWord = false;
@@ -384,18 +382,18 @@ private Rfc2047() {
                 // check for supported encoding (B or Q)
                 char encodingChar = str.charAt(index);
                 if (i2 - index == 1 && (encodingChar == 'b' ||
-                    encodingChar == 'B' ||
-                    encodingChar == 'q' || encodingChar == 'Q')) {
+                  encodingChar == 'B' ||
+                  encodingChar == 'q' || encodingChar == 'Q')) {
                   // Parse encoded text
                   base64 = encodingChar == 'b' || encodingChar == 'B';
                   index = i2 + 1;
                   encodedTextStart = index;
                   i2 = SkipEncodedText(
-                    str,
-                    index,
-                    afterLast,
-                    context,
-                    encodingChar);
+                      str,
+                      index,
+                      afterLast,
+                      context,
+                      encodingChar);
                   if (i2 != index && i2 + 1 < endIndex &&
                     str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
                     i2 + 2 == afterLast) {
@@ -407,8 +405,8 @@ private Rfc2047() {
             }
             if (acceptedEncodedWord) {
               String charset = str.substring(
-                startIndex, (
-                startIndex)+(charsetEnd - startIndex));
+                  startIndex, (
+                  startIndex)+(charsetEnd - startIndex));
               String encodedText = str.substring(
                   encodedTextStart, (
                   encodedTextStart)+((afterLast - 2) - encodedTextStart));
@@ -421,24 +419,24 @@ private Rfc2047() {
                 charset = charset.substring(0, asterisk);
                 acceptedEncodedWord &=
                   LanguageTags.IsPotentiallyValidLanguageTag(language);
-                } else {
+              } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {
                 IByteReader transform = base64 ? (IByteReader)new
-BEncodingStringTransform(encodedText) :
+                  BEncodingStringTransform(encodedText) :
                   (IByteReader)new QEncodingStringTransform(encodedText);
 
                 ICharacterEncoding encoding = Encodings.GetEncoding(
-                  charset,
-                  true);
+                    charset,
+                    true);
                 // HACK
                 if (encoding == null && (
-                    charset.equals("gb2312") ||
-                    charset.equals("GB2312"))) {
+                  charset.equals("gb2312") ||
+                  charset.equals("GB2312"))) {
                   encoding = Encodings.GetEncoding(
-                    charset,
-                    false);
+                      charset,
+                      false);
                 }
                 if (encoding == null) {
                   // System.out.println("Unknown charset " + charset);
@@ -465,8 +463,7 @@ BEncodingStringTransform(encodedText) :
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                    hasSuspiciousText |= context ==
-EncodedWordContext.Comment &&
+                    hasSuspiciousText |= context == EncodedWordContext.Comment &&
                       HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
@@ -530,8 +527,8 @@ EncodedWordContext.Comment &&
             builder.append(str.substring(oldIndex, (oldIndex)+(index - oldIndex)));
           } else {
             String appendstr = str.substring(
-              oldIndex, (
-              oldIndex)+(whitespaceStart - oldIndex));
+                oldIndex, (
+                oldIndex)+(whitespaceStart - oldIndex));
             builder.append(appendstr);
           }
         }
@@ -597,7 +594,7 @@ EncodedWordContext.Comment &&
       String str,
       int index) {
       return (index == 0) || (index - 1 >= 0 && (str.charAt(index - 1) == 0x09 ||
-            str.charAt(index - 1) == 0x20));
+        str.charAt(index - 1) == 0x20));
     }
 
     private static int IndexOfNextPossibleEncodedWord(
@@ -655,14 +652,14 @@ EncodedWordContext.Comment &&
           // This is a comment token
           int startIndex = token[1];
           String appendstr = str.substring(
-            lastIndex, (
-            lastIndex)+(startIndex + 1 - lastIndex));
+              lastIndex, (
+              lastIndex)+(startIndex + 1 - lastIndex));
           builder.append(appendstr);
           String newComment = Rfc2047.DecodeEncodedWords(
-            str,
-            startIndex + 1,
-            token[2] - 1,
-            EncodedWordContext.Comment);
+              str,
+              startIndex + 1,
+              token[2] - 1,
+              EncodedWordContext.Comment);
           builder.append(newComment);
           lastIndex = token[2] - 1;
         } else if (token[0] == HeaderParserUtility.TokenPhraseAtom) {
@@ -683,10 +680,10 @@ EncodedWordContext.Comment &&
               }
               // Find the end of the atom
               wordEnd = HeaderParser.ParsePhraseAtom(
-                str,
-                wordEnd,
-                endIndex,
-                null);
+                  str,
+                  wordEnd,
+                  endIndex,
+                  null);
               if (!FollowedByEndOrLinearWhitespace(str, wordEnd, endIndex)) {
                 // The encoded word is not followed by whitespace, so it's
                 // not valid
@@ -694,9 +691,9 @@ EncodedWordContext.Comment &&
                 break;
               }
               int nextWord = IndexOfNextPossibleEncodedWord(
-                str,
-                wordEnd,
-                endIndex);
+                  str,
+                  wordEnd,
+                  endIndex);
               if (nextWord < 0) {
                 // The next word isn't an encoded word
                 break;
@@ -718,10 +715,10 @@ EncodedWordContext.Comment &&
             builder.append(str.substring(wordStart, (wordStart)+(wordEnd - wordStart)));
           } else {
             String replacement = Rfc2047.DecodeEncodedWords(
-              str,
-              wordStart,
-              wordEnd,
-              EncodedWordContext.Phrase);
+                str,
+                wordStart,
+                wordEnd,
+                EncodedWordContext.Phrase);
             builder.append(replacement);
           }
           hasCFWS = HeaderParser.ParseCFWS(str, wordEnd, endIndex, null) !=
@@ -734,10 +731,10 @@ EncodedWordContext.Comment &&
             appendSpace = false;
           }
           int tokenIndex = MediaType.SkipQuotedString(
-            str,
-            token[1],
-            token[2],
-            builder);
+              str,
+              token[1],
+              token[2],
+              builder);
           // tokenIndex is now just after the end quote
           hasCFWS = HeaderParser.ParseCFWS(str, tokenIndex, endIndex, null) !=
             tokenIndex;
@@ -779,10 +776,10 @@ EncodedWordContext.Comment &&
         if (str.charAt(index) == '"') {
           // Quoted String
           index = MediaType.SkipQuotedString(
-            str,
-            index,
-            endIndex,
-            builderPhrase);
+              str,
+              index,
+              endIndex,
+              builderPhrase);
         } else if (str.charAt(index) == '.') {
           // Dot
           builderPhrase.append('.');
@@ -790,10 +787,10 @@ EncodedWordContext.Comment &&
         } else {
           // Atom
           index2 = HeaderParser.ParsePhraseAtom(
-            str,
-            index,
-            endIndex,
-            null);
+              str,
+              index,
+              endIndex,
+              null);
           builderPhrase.append(str.substring(index, (index)+(index2 - index)));
           index = index2;
         }

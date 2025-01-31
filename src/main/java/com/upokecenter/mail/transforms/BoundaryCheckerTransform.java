@@ -76,7 +76,7 @@ import com.upokecenter.mail.*;
         this.innerBufferIndex >= this.innerBuffer.length) {
         this.innerBuffer = (this.innerBuffer == null) ? ((new byte[32])) : this.innerBuffer;
         if (this.innerBufferIndex >= this.innerBuffer.length) {
-          byte newbuffer = new byte[this.innerBuffer.length + 32];
+          byte[] newbuffer = new byte[this.innerBuffer.length + 32];
           System.arraycopy(this.innerBuffer, 0, newbuffer, 0, this.innerBuffer.length);
           this.innerBuffer = newbuffer;
         }
@@ -146,7 +146,7 @@ import com.upokecenter.mail.*;
       // boundary delimiter is read. We need to
       // check boundaries here in order to find out
       // whether to emit the CRLF before the "--".
-      byte boundaryBuffer = new byte[75];
+      byte[] boundaryBuffer = new byte[75];
       // Check up to 72 bytes (the maximum size
       // of a boundary plus 2 bytes for the closing
       // hyphens)
@@ -161,7 +161,7 @@ import com.upokecenter.mail.*;
           lastC = c;
           break;
         }
-        boundaryBuffer.set(bytesRead++, (byte)c);
+        boundaryBuffer[bytesRead++] = (byte)c;
       }
       // System.out.println("::" + bytesRead);
       // NOTE: All boundary strings are assumed to
@@ -173,8 +173,8 @@ import com.upokecenter.mail.*;
         if (!((boundary) == null || (boundary).length() == 0) && boundary.length() <= bytesRead) {
           boolean match = true;
           for (int j = 0; j < boundary.length(); ++j) {
-            match &= (boundary.charAt(j) & 0xff) == (int)(boundaryBuffer.get(j) &
-                0xff);
+            match &= (boundary.charAt(j) & 0xff) == (int)(boundaryBuffer[j] &
+              0xff);
           }
           if (match) {
             matchingBoundary = boundary;
@@ -197,8 +197,8 @@ import com.upokecenter.mail.*;
       // Boundary line found
       if (matchingBoundary.length() + 1 < bytesRead) {
         closingDelim |= (state == PartBody || state == PartEpilogue) &&
-          boundaryBuffer.get(matchingBoundary.length()) == '-' &&
-          boundaryBuffer.get(matchingBoundary.length() + 1) == '-';
+          boundaryBuffer[matchingBoundary.length()] == '-' &&
+          boundaryBuffer[matchingBoundary.length() + 1] == '-';
       }
       this.ClearInnerBuffer();
       if (closingDelim) {

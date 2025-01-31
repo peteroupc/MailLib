@@ -141,7 +141,7 @@ namespace PeterO.Mail {
       if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
         str.Length) {
         throw new ArgumentException("Not a well-formed top level type: " +
-str);
+          str);
       }
       this.type = DataUtilities.ToLowerCaseAscii(str);
       return this;

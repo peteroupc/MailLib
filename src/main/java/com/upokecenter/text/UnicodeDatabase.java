@@ -289,7 +289,7 @@ private UnicodeDatabase() {
         if (qcsnfkc == null) {
           synchronized (ValueSyncRoot) {
             qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(
-  NormalizationData.QCSNFKC)) : qcsnfkc;
+                NormalizationData.QCSNFKC)) : qcsnfkc;
           }
         }
         bd = qcsnfkc;
@@ -298,7 +298,7 @@ private UnicodeDatabase() {
         if (qcsnfkd == null) {
           synchronized (ValueSyncRoot) {
             qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(
-  NormalizationData.QCSNFKD)) : qcsnfkd;
+                NormalizationData.QCSNFKD)) : qcsnfkd;
           }
         }
         bd = qcsnfkd;

@@ -72,16 +72,16 @@ licensed under the Unlicense: https://unlicense.org/
       int[] buffer,
       int index) {
       int offset = UnicodeDatabase.GetDecomposition(
-        ch,
-        compat,
-        buffer,
-        index);
+          ch,
+          compat,
+          buffer,
+          index);
       if (buffer[index] != ch) {
-        int copy = new int[offset - index];
+        int[] copy = new int[offset - index];
         System.arraycopy(buffer, index, copy, 0, copy.length);
         offset = index;
         for (int i = 0; i < copy.length; ++i) {
-          offset = DecompToBufferInternal(copy.get(i), compat, buffer, offset);
+          offset = DecompToBufferInternal(copy[i], compat, buffer, offset);
         }
       }
       return offset;
@@ -319,7 +319,7 @@ licensed under the Unlicense: https://unlicense.org/
         throw new NullPointerException("chars");
       }
       int listIndex = 0;
-      int array = new int[16];
+      int[] array = new int[16];
       boolean haveNonQcs = false;
       while (true) {
         int c = chars.ReadChar();
@@ -350,7 +350,7 @@ licensed under the Unlicense: https://unlicense.org/
           haveNonQcs = true;
         }
         if (listIndex >= array.length) {
-          int newArray = new int[array.length * 2];
+          int[] newArray = new int[array.length * 2];
           System.arraycopy(array, 0, newArray, 0, listIndex);
           array = newArray;
         }
@@ -442,7 +442,7 @@ licensed under the Unlicense: https://unlicense.org/
         }
         boolean isQcs = false;
         if ((c & mask) == c && (i + 1 == str.length() || (str.charAt(i + 1) & mask)
-            == str.charAt(i + 1))) {
+          == str.charAt(i + 1))) {
           // Quick check for an ASCII character (or Latin-1 in NFC) followed
           // by another
           // ASCII character (or Latin-1 in NFC) or the end of String.
@@ -537,7 +537,7 @@ licensed under the Unlicense: https://unlicense.org/
 
     private void PrependOne(int c) {
       if (this.lastCharPos + 1 > this.lastCharBuffer.length) {
-        int newbuffer = new int[this.lastCharPos + 8];
+        int[] newbuffer = new int[this.lastCharPos + 8];
         System.arraycopy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
         this.lastCharBuffer = newbuffer;
       }
@@ -546,7 +546,7 @@ licensed under the Unlicense: https://unlicense.org/
 
     private void PrependTwo(int c1, int c2) {
       if (this.lastCharPos + 2 > this.lastCharBuffer.length) {
-        int newbuffer = new int[this.lastCharPos + 8];
+        int[] newbuffer = new int[this.lastCharPos + 8];
         System.arraycopy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
         this.lastCharBuffer = newbuffer;
       }
@@ -674,8 +674,8 @@ licensed under the Unlicense: https://unlicense.org/
       }
       do {
         count = Math.min(
-          this.processedIndex - this.flushIndex,
-          length - total);
+            this.processedIndex - this.flushIndex,
+            length - total);
         if (count < 0) {
           count = 0;
         }
@@ -779,10 +779,10 @@ licensed under the Unlicense: https://unlicense.org/
           }
 
           this.endIndex = DecompToBuffer(
-            c,
-            this.compatMode,
-            this.buffer,
-            this.endIndex);
+              c,
+              this.compatMode,
+              this.buffer,
+              this.endIndex);
         }
         // Check for the last quick-check starter if the
         // end of the String is not reached yet
@@ -802,9 +802,9 @@ licensed under the Unlicense: https://unlicense.org/
                 haveNewQcs = true;
                 break;
               } else if (i + 1 < this.endIndex && (nextIsQCS ||
-                  UnicodeDatabase.IsQuickCheckStarter(
-                    this.buffer[i + 1],
-                    this.form))) {
+                UnicodeDatabase.IsQuickCheckStarter(
+                  this.buffer[i + 1],
+                  this.form))) {
                 // System.out.println ("" + (EC (buffer [i +
                 // 1])) + " (next) is qcs");
                 this.lastQcsIndex = i;
@@ -822,7 +822,7 @@ licensed under the Unlicense: https://unlicense.org/
             // No quick-check starter was found (or last quick-check
             // starter is at beginning of buffer), increase
             // the buffer size
-            int newBuffer = new int[(this.buffer.length + 4) * 2];
+            int[] newBuffer = new int[(this.buffer.length + 4) * 2];
             System.arraycopy(this.buffer, 0, newBuffer, 0, this.buffer.length);
             this.buffer = newBuffer;
             continue;
@@ -848,8 +848,8 @@ licensed under the Unlicense: https://unlicense.org/
         // System.out.println("composing " + (EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");
         this.processedIndex = ComposeBuffer(
-          this.buffer,
-          this.lastQcsIndex);
+            this.buffer,
+            this.lastQcsIndex);
       } else {
         this.processedIndex = this.lastQcsIndex;
       }
@@ -940,7 +940,7 @@ licensed under the Unlicense: https://unlicense.org/
           0xdfff) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c & 0x3ff) << 10) + (this.str.charAt(this.index + 1) &
-              0x3ff);
+            0x3ff);
           ++this.index;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate, return

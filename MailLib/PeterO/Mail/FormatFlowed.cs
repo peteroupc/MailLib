@@ -41,7 +41,8 @@ namespace PeterO.Mail {
             lastI = i + 1;
             sb.Append("&gt;");
             break;
-          default: break;
+          default:
+            break;
         }
       }
       if (lastI < str.Length) {
@@ -69,7 +70,7 @@ namespace PeterO.Mail {
       var haveParagraph = false;
       while (i <= str.Length) {
         if (i == str.Length || (str[i] == 0x0d && i + 1 < str.Length &&
-            str[i + 1] == 0x0a)) {
+          str[i + 1] == 0x0a)) {
           bool lastLine = i == str.Length;
           int lineEnd = i;
           int index = lineStart;
@@ -245,7 +246,7 @@ namespace PeterO.Mail {
       }
       var index = 0;
       while (index < str.Length && (str[index] == ' ' ||
-          str[index] == '\t')) {
+        str[index] == '\t')) {
         ++index;
       }
       if (index == 0 || index == str.Length) {
@@ -270,7 +271,7 @@ namespace PeterO.Mail {
         int titleEnd = index;
         ++index;
         while (index < str.Length && (str[index] == ' ' ||
-            str[index] == '\t')) {
+          str[index] == '\t')) {
           ++index;
         }
         return (
@@ -303,7 +304,7 @@ namespace PeterO.Mail {
         ++index;
         int tmp = index;
         while (index < str.Length && (str[index] == ' ' ||
-            str[index] == '\t')) {
+          str[index] == '\t')) {
           ++index;
         }
         if (tmp == index) {
@@ -525,7 +526,7 @@ namespace PeterO.Mail {
             }
           }
           if (qi < urlText.Length && (urlText[qi] == '"' ||
-              (extended && (urlText[qi] == '\'' || urlText[qi] == '\u0028')))) {
+            (extended && (urlText[qi] == '\'' || urlText[qi] == '\u0028')))) {
             char startDelim = urlText[qi];
             ++qi;
             int possibleTitleStart = qi;
@@ -787,10 +788,10 @@ namespace PeterO.Mail {
           int qi = i + 1;
           var plausibleTag = false;
           if (qi < str.Length && (
-              (str[qi] >= '0' && str[qi] <= '9') ||
-              (str[qi] >= 'A' && str[qi] <= 'Z') ||
-              (str[qi] >= 'a' && str[qi] <= 'z') ||
-              (str[qi] == '_') || (str[qi] == '/'))) {
+            (str[qi] >= '0' && str[qi] <= '9') ||
+            (str[qi] >= 'A' && str[qi] <= 'Z') ||
+            (str[qi] >= 'a' && str[qi] <= 'z') ||
+            (str[qi] == '_') || (str[qi] == '/'))) {
             {
               plausibleTag = true;
             }
@@ -883,10 +884,10 @@ namespace PeterO.Mail {
           int linkEnd = linkStart;
           var plausibleTag = false;
           if (qi < str.Length && (
-              (str[qi] >= '0' && str[qi] <= '9') ||
-              (str[qi] >= 'A' && str[qi] <= 'Z') ||
-              (str[qi] >= 'a' && str[qi] <= 'z') ||
-              (str[qi] == '_') || (str[qi] == '/'))) {
+            (str[qi] >= '0' && str[qi] <= '9') ||
+            (str[qi] >= 'A' && str[qi] <= 'Z') ||
+            (str[qi] >= 'a' && str[qi] <= 'z') ||
+            (str[qi] == '_') || (str[qi] == '/'))) {
             {
               plausibleTag = true;
             }
@@ -1193,12 +1194,12 @@ namespace PeterO.Mail {
           var seenBlankishLine = false;
           var wrapLinesInParas = false;
 
-          // DebugUtility.Log("newlist");
+          // Console.WriteLine("newlist");
           while (qi < lines.Count) {
             line = lines[qi];
             if (IsListLine(line, ordered)) {
               wrapLinesInParas |= seenBlankishLine;
-              // DebugUtility.Log("para=" + qs.ToString());
+              // Console.WriteLine("para=" + qs.ToString());
               string qss2;
               if (depth >= 100) {
                 formatted.Append("<pre><code>");
@@ -1220,8 +1221,8 @@ namespace PeterO.Mail {
               ++itemLineCount;
               seenBlankishLine = false;
             } else {
-              // DebugUtility.Log("[" + line + "]");
-              // DebugUtility.Log("blankish=" + IsBlankishLine(line));
+              // Console.WriteLine("[" + line + "]");
+              // Console.WriteLine("blankish=" + IsBlankishLine(line));
               if (IsBlankishLine(line)) {
                 seenBlankishLine = true;
                 ++qi;
@@ -1231,7 +1232,7 @@ namespace PeterO.Mail {
                 }
                 seenBlankishLine = false;
                 qs.Append("\r\n").Append(StripItemStart(line, ordered));
-                // DebugUtility.Log("qs=" + qs);
+                // Console.WriteLine("qs=" + qs);
                 ++qi;
                 ++itemLineCount;
               } else if (seenBlankishLine) {
@@ -1242,20 +1243,20 @@ namespace PeterO.Mail {
                 }
                 seenBlankishLine = false;
                 qs.Append("\r\n").Append(StripItemStart(line, ordered));
-                // DebugUtility.Log("qs=" + qs);
+                // Console.WriteLine("qs=" + qs);
                 ++qi;
                 ++itemLineCount;
               }
             }
           }
           i = qi - 1;
-          // DebugUtility.Log("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
+          // Console.WriteLine("listitem = "+qs+", wrapinparas="+wrapLinesInParas);
           string qss = MarkdownText(
               qs.ToString(),
               depth + 1,
               wrapLinesInParas,
               links);
-          // DebugUtility.Log("formatted_listitem = "+qss);
+          // Console.WriteLine("formatted_listitem = "+qss);
           formatted.Append(qss);
           formatted.Append("</li>");
           formatted.Append(ordered ? "</ol>" : "</ul>");
@@ -1293,7 +1294,7 @@ namespace PeterO.Mail {
             }
           }
           i = qi - 1;
-          // DebugUtility.Log("qs=" + (qs.ToString()));
+          // Console.WriteLine("qs=" + (qs.ToString()));
           formatted.Append("<pre><code>");
           AppendHtmlEscape(formatted, qs.ToString());
           // DebugUtility.Log("qs2=" + (formatted.ToString()));

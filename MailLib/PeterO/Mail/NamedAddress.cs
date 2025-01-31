@@ -136,12 +136,12 @@ namespace PeterO.Mail {
       return other != null &&
         (this.displayName == null ? other.displayName == null :
           this.displayName.Equals(other.displayName,
-  StringComparison.Ordinal)) && (this.address == null ? other.address == null :
+            StringComparison.Ordinal)) && (this.address == null ?
+          other.address == null :
           this.address.Equals(other.address)) && this.isGroup ==
-other.isGroup &&
-        (!this.isGroup || CollectionUtilities.ListEquals(
-          this.groupAddresses,
-          other.groupAddresses));
+        other.isGroup && (!this.isGroup || CollectionUtilities.ListEquals(
+        this.groupAddresses,
+        other.groupAddresses));
     }
 
     /// <summary>Determines whether the email addresses stored this object
@@ -181,7 +181,7 @@ other.isGroup &&
     public string Name {
       get {
         return (this.displayName == null) ? ((this.address == null) ?
-            String.Empty : this.address.ToString()) : this.displayName;
+          String.Empty : this.address.ToString()) : this.displayName;
       }
     }
 

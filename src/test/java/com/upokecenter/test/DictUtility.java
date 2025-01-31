@@ -46,11 +46,11 @@ private DictUtility() {
           sb.append(',');
         }
         Map<String, String> dict = dictlist.get(i);
-        String larray = new String[dict.size() * 2];
+        String[] larray = new String[dict.size() * 2];
         int k = 0;
         for (String key : dict.keySet()) {
-          larray.charAt(k) = key;
-          larray.charAt(k + 1) = dict.get(key);
+          larray[k] = key;
+          larray[k + 1] = dict.get(key);
           k += 2;
         }
         sb.append(ToJSON(larray));
@@ -62,7 +62,7 @@ private DictUtility() {
       for (int j = 0; j < str.length(); ++j) {
         if ((str.charAt(j) & 0xfc00) == 0xdc00 ||
           ((str.charAt(j) & 0xfc00) == 0xd800 && (j == str.length() - 1 ||
-              (str.charAt(j + 1) & 0xfc00) != 0xdc00))) {
+          (str.charAt(j + 1) & 0xfc00) != 0xdc00))) {
           throw new IllegalArgumentException("arr is invalid");
         }
         if (str.charAt(j) == '\"') {
@@ -150,33 +150,33 @@ private DictUtility() {
       int i = 0;
       ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
       while (i < str.length() && (
-          str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-          str.charAt(i) == 0x09)) {
+        str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+        str.charAt(i) == 0x09)) {
         ++i;
       }
       if (i >= str.length() || str.charAt(i) != '[') {
         throw new IllegalStateException("invalid start of list");
       }
       ++i;
-      int endPos = new int[] { 0 };
+      int[] endPos = new int[] { 0 };
       boolean endValue = false;
       String[] stringArray = null;
       while (true) {
         while (i < str.length() && (
-            str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-            str.charAt(i) == 0x09)) {
+          str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+          str.charAt(i) == 0x09)) {
           ++i;
         }
         if (i >= str.length() || (
-            str.charAt(i) != ']' && str.charAt(i) != '[' && str.charAt(i) != 0x2c)) {
+          str.charAt(i) != ']' && str.charAt(i) != '[' && str.charAt(i) != 0x2c)) {
           throw new IllegalStateException("Invalid JSON");
         }
         switch (str.charAt(i)) {
           case ']':
             ++i;
             while (i < str.length() && (
-                str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
-                == 0x09)) {
+              str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
+              == 0x09)) {
               ++i;
             }
             return i == str.length() ? list : null;
@@ -205,7 +205,7 @@ private DictUtility() {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      int endPos = new int[] { 0 };
+      int[] endPos = new int[] { 0 };
       String[] ret = ParseJSONStringArray(str, endPos);
       if (endPos[0] != str.length()) {
         throw new IllegalStateException("Invalid JSON");
@@ -224,24 +224,24 @@ private DictUtility() {
       ArrayList<String> list = new ArrayList<String>();
       StringBuilder sb = new StringBuilder();
       while (i < str.length() && (
-          str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-          str.charAt(i) == 0x09)) {
+        str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+        str.charAt(i) == 0x09)) {
         ++i;
       }
       if (i >= str.length() || str.charAt(i) != '[') {
-        throw new IllegalStateException("Invalid JSON: " +
+        throw new IllegalStateException("Invalid JSON:" +
           str.substring(i));
       }
       ++i;
       boolean endValue = false;
       while (true) {
         while (i < str.length() && (
-            str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
-            str.charAt(i) == 0x09)) {
+          str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a ||
+          str.charAt(i) == 0x09)) {
           ++i;
         }
         if (i >= str.length() || (
-            str.charAt(i) != ']' && str.charAt(i) != '"' && str.charAt(i) != 0x2c)) {
+          str.charAt(i) != ']' && str.charAt(i) != '"' && str.charAt(i) != 0x2c)) {
           throw new IllegalStateException("Invalid JSON:" +
             "\u0020" + str.substring(i));
         }
@@ -251,8 +251,8 @@ private DictUtility() {
             // right square bracket
             ++i;
             while (i < str.length() && (
-                str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
-                == 0x09)) {
+              str.charAt(i) == 0x20 || str.charAt(i) == 0x0d || str.charAt(i) == 0x0a || str.charAt(i)
+              == 0x09)) {
               ++i;
             }
             endPos[0] = i;

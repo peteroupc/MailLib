@@ -117,7 +117,8 @@ namespace MailLibTest {
         "* A\r\n\r\n\u0020 \u0020 B\r\nC\r\n* B");
       {
         string objectTemp =
-  "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>";
+
+          "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>";
         string objectTemp2 = "* A\r\n\r\n\t> C\r\n\t> D\r\n* B";
         TestMarkdownOne(
           objectTemp,
@@ -134,7 +135,7 @@ namespace MailLibTest {
         "A\r\n\r\n\tC\r\n\t\tD");
       {
         string objectTemp = "<p><a" +
-"\u0020href=\"http://www.example.com/\">http://www.example.com/</a></p>";
+          "\u0020href=\"http://www.example.com/\">http://www.example.com/</a></p>";
         string objectTemp2 = "<http://www.example.com/>";
         TestMarkdownOne(
           objectTemp,
@@ -183,7 +184,7 @@ namespace MailLibTest {
         "test\r\n\r\n\u005btest]: http://www.example.com 'Title'");
       TestMarkdownOne(
         "<p>test</p>",
-        "test\r\n\r\n\u005btest]: http://www.example.com (Title)");
+        "test\r\n\r\n \u005btest]: http://www.example.com (Title)");
       TestMarkdownOne(
         "<p>test</p>",
         "test\r\n\r\n \u005btest]: http://www.example.com (Title)");
@@ -246,72 +247,73 @@ namespace MailLibTest {
         "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com>\u0020\"Title\"");
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com 'Title'";
+          "\u0020http://www.example.com 'Title'";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n \u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u0020 \u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a" +
-"\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a title)</p>";
+          "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
+          "\u0020 title) < / p > ";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n(Not a title)";
+          "\u0020http://www.example.com\r\n(Not a title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n (Title)";
+          "\u0020http://www.example.com\r\n (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n \"Title\"";
+          "\u0020http://www.example.com\r\n \"Title\"";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n 'Title'";
+          "\u0020http://www.example.com\r\n 'Title'";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
@@ -324,9 +326,9 @@ namespace MailLibTest {
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com");
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
-"\u0020http://www.example.com \"Title\"";
+          "\u0020http://www.example.com \"Title\"";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
@@ -336,36 +338,36 @@ namespace MailLibTest {
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
-"\u0020<http://www.example.com> \"Title\"";
+          "\u0020<http://www.example.com> \"Title\"";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com 'Title'";
+          "\u0020http://www.example.com 'Title'";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><a href=\"http://www.example.com\"" +
-"\u0020title=\"Title\">Linktext</a></p>";
+          "\u0020title=\"Title\">Linktext</a></p>";
         string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n \u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
@@ -383,7 +385,7 @@ namespace MailLibTest {
       {
         string objectTemp = "<p><a" +
           "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
-"\u0020title)</p>";
+          "\u0020title)</p>";
         string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
           "\u0020http://www.example.com\r\n(No" +
           "t a title)";
@@ -441,7 +443,7 @@ namespace MailLibTest {
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com 'Title'");
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
-        "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com (Title)");
+        "[tEsT][]\r\n\r\n \u005btest]: http://www.example.com (Title)");
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n \u005btest]: http://www.example.com (Title)");
@@ -477,72 +479,72 @@ namespace MailLibTest {
         "![tEsT][]\r\n\u005btest]:\u0020<http://www.example.com> \"Title\"");
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com 'Title'";
+          "\u0020http://www.example.com 'Title'";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n \u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n\u0020 \u005btest]:" +
-"\u0020http://www.example.com (Title)";
+          "\u0020http://www.example.com (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" /></p><p>(Not a title)</p>";
+          "\u0020alt=\"tEsT\" /></p><p>(Not a title)</p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n(Not a title)";
+          "\u0020http://www.example.com\r\n(Not a title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n (Title)";
+          "\u0020http://www.example.com\r\n (Title)";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n \"Title\"";
+          "\u0020http://www.example.com\r\n \"Title\"";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
       }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
-"\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
         string objectTemp2 = "![tEsT][]\r\n\r\n\u005btest]:" +
-"\u0020http://www.example.com\r\n 'Title'";
+          "\u0020http://www.example.com\r\n 'Title'";
         TestMarkdownOne(
           objectTemp,
           objectTemp2);
@@ -551,11 +553,11 @@ namespace MailLibTest {
     [Test]
     public void TestMarkdown3() {
       TestMarkdownOne(
-  "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
-  "> A\r\n> > B\r\n> \r\n> C");
+        "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
+        "> A\r\n> > B\r\n> \r\n> C");
       {
         string objectTemp =
-"<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>";
+          "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>";
         string objectTemp2 = "> A\r\n> > B\r\n> C";
         TestMarkdownOne(
           objectTemp,

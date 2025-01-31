@@ -277,7 +277,7 @@ import com.upokecenter.text.*;
         }
       }
       if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4)
-            == '.' || strLower.charAt(4) == ' '))) {
+        == '.' || strLower.charAt(4) == ' '))) {
         if (strLower.indexOf(
           "lpt") == 0 && strLower.charAt(3) >= '0' &&
           strLower.charAt(3) <= '9') {
@@ -310,8 +310,7 @@ import com.upokecenter.text.*;
           c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
           c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
           (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
-0xfeff ||
-          (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+          0xfeff || (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
           FailFilename(
             filename,
             str,
@@ -347,8 +346,8 @@ import com.upokecenter.text.*;
         }
       }
       boolean finalRet = NormalizerInput.IsNormalized(
-        str,
-        Normalization.NFC);
+          str,
+          Normalization.NFC);
       if (!finalRet) {
         FailFilename(filename, str);
       }
@@ -465,25 +464,25 @@ import com.upokecenter.text.*;
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+          "inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+          "inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+          "inline;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+          "inline;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
@@ -539,25 +538,25 @@ import com.upokecenter.text.*;
       mt =
 
         ParseAndTestAspects(
-  "inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+          "inline;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+          "inline;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+          "inline;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+          "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       for (String str : NoParams) {
@@ -630,16 +629,16 @@ import com.upokecenter.text.*;
       if (ParseAndTestAspects(";inline", null) != null) {
         Assert.fail();
       }
-      if (ParseAndTestAspects(";x=y", null) != null) {
+      if (ParseAndTestAspects(" ;x=y", null) != null) {
         Assert.fail();
       }
-      if (ParseAndTestAspects(";x=y;z=w", null) != null) {
+      if (ParseAndTestAspects(" ;x=y;z=w", null) != null) {
         Assert.fail();
       }
-      if (ParseAndTestAspects(" ; x=y", null) != null) {
+      if (ParseAndTestAspects(" ;x=y", null) != null) {
         Assert.fail();
       }
-      if (ParseAndTestAspects(" ; x=y;z=w", null) != null) {
+      if (ParseAndTestAspects(" ;x=y;z=w", null) != null) {
         Assert.fail();
       }
       if (ParseAndTestAspects(" ;x=y", null) != null) {

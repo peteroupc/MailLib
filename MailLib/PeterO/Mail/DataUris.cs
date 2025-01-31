@@ -40,7 +40,7 @@ namespace PeterO.Mail {
         // Strip out ";base64" at end
         if (mediaType.Length >= 7 &&
           DataUtilities.ToLowerCaseAscii(mediaType.Substring(
-  mediaType.Length - 7)).Equals(";base64", StringComparison.Ordinal)) {
+          mediaType.Length - 7)).Equals(";base64", StringComparison.Ordinal)) {
           mediaType = mediaType.Substring(0, mediaType.Length - 7);
         }
         if (mediaType.Length == 0 || mediaType[0] == ';') {
@@ -183,16 +183,16 @@ namespace PeterO.Mail {
             int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
             b1 = (payload[i] > 0x7f) ? -1 : Alphabet[(int)payload[i]];
             b2 = (payload[i + 1] > 0x7f) ? -1 : Alphabet[(int)payload[i +
-1]];
+                  1]];
             if (lastBlock && payload[i + 2] == '=' && payload[i + 3] == '=') {
             } else if (lastBlock && path[i + 3] == '=') {
               b3 = (payload[i + 2] > 0x7f) ? -1 : Alphabet[(int)payload[i +
-2]];
+                    2]];
             } else {
               b3 = (payload[i + 2] > 0x7f) ? -1 : Alphabet[(int)payload[i +
-2]];
+                    2]];
               b4 = (payload[i + 3] > 0x7f) ? -1 : Alphabet[(int)payload[i +
-3]];
+                    3]];
             }
             if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0) {
               return null;
@@ -212,7 +212,7 @@ namespace PeterO.Mail {
               // NOTE: No further character checking done here
               // because splitURI already did all needed pct-encoding checking
               aw.WriteByte((byte)((ToHex(path[i + 1]) << 4) + ToHex(path[i +
-                      2])));
+                2])));
               i += 3;
             } else if (path[i] >= 0x80) {
               // RFC 2397 allows only "safe" ASCII here
@@ -240,12 +240,10 @@ namespace PeterO.Mail {
         switch (quantumCount) {
           case 2:
             builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
-            builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4)
-&
-                  15)]);
-            builder.Append((char)Base64Classic[((b2 & 15) << 2) + ((value
->>
-                    6) & 3)]);
+            builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
+              15)]);
+            builder.Append((char)Base64Classic[((b2 & 15) << 2) + ((value >>
+              6) & 3)]);
             builder.Append((char)Base64Classic[value & 63]);
             quantumCount = 0;
             break;
@@ -262,13 +260,13 @@ namespace PeterO.Mail {
       if (quantumCount == 2) {
         builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
         builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
-              15)]);
+          15)]);
         builder.Append((char)Base64Classic[(b2 & 15) << 2]);
         builder.Append('=');
       } else if (quantumCount == 1) {
         builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
         builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
-              15)]);
+          15)]);
         builder.Append("==");
       }
     }
@@ -309,9 +307,9 @@ namespace PeterO.Mail {
       builder.Append("data:");
       string mediaTypeString = mediaType.ToUriSafeString();
       if (mediaType.TypeAndSubType.Equals("text/plain",
-          StringComparison.Ordinal)) {
+        StringComparison.Ordinal)) {
         if (mediaTypeString.Substring(0, 10).Equals("text/plain",
-            StringComparison.Ordinal)) {
+          StringComparison.Ordinal)) {
           // Strip 'text/plain' from the media type string,
           // since that's the default for data URIs
           mediaTypeString = mediaTypeString.Substring(10);

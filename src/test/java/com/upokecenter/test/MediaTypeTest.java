@@ -343,7 +343,7 @@ import com.upokecenter.mail.*;
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt = ParseAndTestAspects(
-  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
+          "text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt = ParseAndTestAspects("text/example;param1*=iso-8859-1''valu%e72");
@@ -375,21 +375,21 @@ import com.upokecenter.mail.*;
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+          "text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+          "text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt = ParseAndTestAspects(
-  "text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
+          "text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
       mt = ParseAndTestAspects(
-  "text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
+          "text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
     }
@@ -403,25 +403,25 @@ import com.upokecenter.mail.*;
       mt =
 
         ParseAndTestAspects(
-  "text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
+          "text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
+          "text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
+          "text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+          "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       for (String str : ContentDispositionTest.NoParams) {
@@ -516,13 +516,13 @@ import com.upokecenter.mail.*;
 
     private static void AssertHasSuffixTrue(MediaType mt, String s) {
       if (mt == null || !mt.HasStructuredSuffix(s)) {
-         Assert.fail("mt=" + mt + ", s=" + s);
+        Assert.fail("mt=" + mt + ", s=" + s);
       }
     }
 
     private static void AssertHasSuffixFalse(MediaType mt, String s) {
       if (mt != null && mt.HasStructuredSuffix(s)) {
-         Assert.fail("mt=" + mt + ", s=" + s);
+        Assert.fail("mt=" + mt + ", s=" + s);
       }
     }
 

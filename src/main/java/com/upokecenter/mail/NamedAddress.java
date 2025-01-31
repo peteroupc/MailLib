@@ -136,12 +136,12 @@ import java.util.*;
       NamedAddress other = ((obj instanceof NamedAddress) ? (NamedAddress)obj : null);
       return other != null &&
         (this.displayName == null ? other.displayName == null :
-          this.displayName.equals(other.displayName)) && (this.address == null ? other.address == null :
+          this.displayName.equals(other.displayName)) && (this.address == null ?
+          other.address == null :
           this.address.equals(other.address)) && this.isGroup ==
-other.isGroup &&
-        (!this.isGroup || CollectionUtilities.ListEquals(
-          this.groupAddresses,
-          other.groupAddresses));
+        other.isGroup && (!this.isGroup || CollectionUtilities.ListEquals(
+        this.groupAddresses,
+        other.groupAddresses));
     }
 
     /**
@@ -182,7 +182,7 @@ other.isGroup &&
      */
     public final String getName() {
         return (this.displayName == null) ? ((this.address == null) ?
-            "" : this.address.toString()) : this.displayName;
+          "" : this.address.toString()) : this.displayName;
       }
 
     /**

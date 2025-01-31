@@ -167,8 +167,8 @@ import com.upokecenter.text.*;
               this.machineState = 7;
               return count;
             } else if (c < 0x80 && ((c >= 'A' && c <= 'Z') ||
-                (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') ||
-                "()'+-.,/?:".indexOf((char)c) >= 0)) {
+              (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') ||
+              "()'+-.,/?:".indexOf((char)c) >= 0)) {
               return count + this.IncrementAndAppendChar(output, (char)c);
             } else {
               // NOTE: Cannot be encoded using lowercase hexadecimal

@@ -85,12 +85,12 @@ import com.upokecenter.mail.*;
           if (count == 1) {
             // Not supposed to happen
             throw new MessageDataException("Invalid number of base64" +
-"\u0020characters");
+              "\u0020characters");
           }
           if (count == 2) {
             if (this.checkStrictEncoding && this.paddingCount != 2) {
               throw new MessageDataException("Invalid amount of base64" +
-"\u0020padding");
+                "\u0020padding");
             }
             if (this.checkStrictEncoding && (value & 0x0f) != 0) {
               throw new MessageDataException("Invalid base64 padding");
@@ -101,7 +101,7 @@ import com.upokecenter.mail.*;
           if (count == 3) {
             if (this.checkStrictEncoding && this.paddingCount != 1) {
               throw new MessageDataException("Invalid amount of base64" +
-"\u0020padding");
+                "\u0020padding");
             }
             if (this.checkStrictEncoding && (value & 0x03) != 0) {
               throw new MessageDataException("Invalid base64 padding");

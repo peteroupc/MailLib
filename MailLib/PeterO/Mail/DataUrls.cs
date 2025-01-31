@@ -17,9 +17,9 @@ namespace PeterO.Mail {
   /// </summary>
   [Obsolete("Renamed to DataUris.")]
   [System.Diagnostics.CodeAnalysis.SuppressMessage(
-    "Microsoft.Design",
-    "CA1054",
-    Justification = "This API is obsolete.")]
+      "Microsoft.Design",
+      "CA1054",
+      Justification = "This API is obsolete.")]
   public static class DataUrls {
     /// <summary>Extracts the media type from a Data URI (uniform resource
     /// identifier).</summary>
@@ -28,9 +28,9 @@ namespace PeterO.Mail {
     /// null, is syntactically invalid, or is not a Data URI.</returns>
     [Obsolete("Renamed to DataUriMediaType.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA1054",
-      Justification = "This API is obsolete.")]
+        "Microsoft.Design",
+        "CA1054",
+        Justification = "This API is obsolete.")]
     public static MediaType DataUrlMediaType(string url) {
       return DataUris.DataUriMediaType(url);
     }
@@ -43,13 +43,13 @@ namespace PeterO.Mail {
     /// URI.</returns>
     [Obsolete("Renamed to DataUriBytes.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA1054",
-      Justification = "This API is obsolete.")]
+        "Microsoft.Design",
+        "CA1054",
+        Justification = "This API is obsolete.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA2234",
-      Justification = "This API is obsolete.")]
+        "Microsoft.Design",
+        "CA2234",
+        Justification = "This API is obsolete.")]
     public static byte[] DataUrlBytes(string url) {
       return DataUris.DataUriBytes(url);
     }
@@ -63,13 +63,13 @@ namespace PeterO.Mail {
     /// name='textString'/> is null.</exception>
     [Obsolete("Renamed to MakeDataUri.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA1054",
-      Justification = "This API is obsolete.")]
+        "Microsoft.Design",
+        "CA1054",
+        Justification = "This API is obsolete.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA1055",
-      Justification = "This API is obsolete.")]
+        "Microsoft.Design",
+        "CA1055",
+        Justification = "This API is obsolete.")]
 
     public static string MakeDataUrl(string textString) {
       return DataUris.MakeDataUri(textString);
@@ -86,9 +86,9 @@ namespace PeterO.Mail {
     /// name='bytes'/> or <paramref name='mediaType'/> is null.</exception>
     [Obsolete("Renamed to MakeDataUri.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA1054",
-      Justification = "This API is obsolete.")]
+        "Microsoft.Design",
+        "CA1054",
+        Justification = "This API is obsolete.")]
     public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
       return DataUris.MakeDataUri(bytes, mediaType);
     }

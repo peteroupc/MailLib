@@ -272,7 +272,7 @@ namespace MailLibTest {
         }
       }
       if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4]
-            == '.' || strLower[4] == ' '))) {
+        == '.' || strLower[4] == ' '))) {
         if (strLower.IndexOf(
           "lpt",
           StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
@@ -307,8 +307,7 @@ namespace MailLibTest {
           c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
           c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
           (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
-0xfeff ||
-          (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+          0xfeff || (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
           FailFilename(
             filename,
             str,
@@ -344,8 +343,8 @@ namespace MailLibTest {
         }
       }
       bool finalRet = NormalizerInput.IsNormalized(
-        str,
-        Normalization.NFC);
+          str,
+          Normalization.NFC);
       if (!finalRet) {
         FailFilename(filename, str);
       }
@@ -462,25 +461,25 @@ namespace MailLibTest {
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+          "inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+          "inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+          "inline;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+          "inline;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
@@ -536,25 +535,25 @@ namespace MailLibTest {
       mt =
 
         ParseAndTestAspects(
-  "inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+          "inline;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+          "inline;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+          "inline;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+          "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       foreach (var str in NoParams) {
@@ -625,16 +624,16 @@ namespace MailLibTest {
       if (ParseAndTestAspects(";inline", null) != null) {
         Assert.Fail();
       }
-      if (ParseAndTestAspects(";x=y", null) != null) {
+      if (ParseAndTestAspects(" ;x=y", null) != null) {
         Assert.Fail();
       }
-      if (ParseAndTestAspects(";x=y;z=w", null) != null) {
+      if (ParseAndTestAspects(" ;x=y;z=w", null) != null) {
         Assert.Fail();
       }
-      if (ParseAndTestAspects(" ; x=y", null) != null) {
+      if (ParseAndTestAspects(" ;x=y", null) != null) {
         Assert.Fail();
       }
-      if (ParseAndTestAspects(" ; x=y;z=w", null) != null) {
+      if (ParseAndTestAspects(" ;x=y;z=w", null) != null) {
         Assert.Fail();
       }
       if (ParseAndTestAspects(" ;x=y", null) != null) {

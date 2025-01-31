@@ -289,7 +289,7 @@ namespace PeterO.Text {
         if (qcsnfkc == null) {
           lock (ValueSyncRoot) {
             qcsnfkc = qcsnfkc ?? ByteData.Decompress(
-  NormalizationData.QCSNFKC);
+                NormalizationData.QCSNFKC);
           }
         }
         bd = qcsnfkc;
@@ -298,7 +298,7 @@ namespace PeterO.Text {
         if (qcsnfkd == null) {
           lock (ValueSyncRoot) {
             qcsnfkd = qcsnfkd ?? ByteData.Decompress(
-  NormalizationData.QCSNFKD);
+                NormalizationData.QCSNFKD);
           }
         }
         bd = qcsnfkd;

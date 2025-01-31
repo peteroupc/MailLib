@@ -77,26 +77,25 @@ namespace PeterO.Mail {
           int indexTemp2 = index;
           do {
             if (index < endIndex && ((str[index] >= 48 && str[index] <=
-                  57) ||
-                (str[index] >= 44 && str[index] <= 45) || (str[index] == 32) ||
-                (str[index] >= 12 && str[index] <= 13) || (str[index]
-                >= 9 && str[index] <= 10) || (str[index] >= 97 && str[index] <=
-122) ||
-                (str[index] >= 65 && str[index] <= 90))) {
+              57) ||
+              (str[index] >= 44 && str[index] <= 45) || (str[index] == 32) ||
+              (str[index] >= 12 && str[index] <= 13) || (str[index]
+              >= 9 && str[index] <= 10) || (str[index] >= 97 && str[index] <=
+                122) || (str[index] >= 65 && str[index] <= 90))) {
               ++indexTemp2;
               break;
             }
             int indexTemp3 = index;
             do {
               if (index < endIndex && ((str[index] >= 128 && str[index]
-                    <= 55295) || (str[index] >= 57344 && str[index] <=
-                    65535))) {
+                <= 55295) || (str[index] >= 57344 && str[index] <=
+                  65535))) {
                 ++indexTemp3;
                 break;
               }
               if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                    str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                    str[index + 1] <= 57343))) {
+                str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                  str[index + 1] <= 57343))) {
                 indexTemp3 += 2;
                 break;
               }
@@ -118,8 +117,8 @@ namespace PeterO.Mail {
     }
     private static int SkipLang(string str, int index, int endIndex) {
       while (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-          (str[index] == 45) || (str[index] >= 97 && str[index] <= 122) ||
-          (str[index] >= 65 && str[index] <= 90))) {
+        (str[index] == 45) || (str[index] >= 97 && str[index] <= 122) ||
+        (str[index] >= 65 && str[index] <= 90))) {
         ++index;
       }
       return index;
@@ -189,11 +188,10 @@ namespace PeterO.Mail {
               int commandStart = index;
               for (int i3 = 0; i3 < 60; ++i3) {
                 if (index < endIndex && ((str[index] >= 48 && str[index]
-                      <= 57) || (str[index] == 45) || (str[index] >= 97 &&
-str[index] <= 122) ||
-                    (str[index] >= 65 && str[index] <=
+                  <= 57) || (str[index] == 45) || (str[index] >= 97 &&
+                    str[index] <= 122) || (str[index] >= 65 && str[index] <=
 
-                      90))) {
+                    90))) {
                   ++index;
                 } else if (i3 < 1) {
                   index = indexStart3;
@@ -251,7 +249,7 @@ str[index] <= 122) ||
                   break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]
-                      == 10))) {
+                  == 10))) {
                   ++indexTemp3;
                   break;
                 }
@@ -294,9 +292,8 @@ str[index] <= 122) ||
               break;
             }
             if (index < endIndex && ((str[index] >= 0 && str[index] <=
-                  9) || (str[index] >= 11 && str[index] <= 12) ||
-(str[index] >= 14 &&
-                  str[index] <= 127))) {
+              9) || (str[index] >= 11 && str[index] <= 12) ||
+              (str[index] >= 14 && str[index] <= 127))) {
               // Ordinary character
               if (str[index] == 0) {
                 // Null
@@ -310,16 +307,16 @@ str[index] <= 122) ||
             indexTemp3 = index;
             do {
               if (index < endIndex && ((str[index] >= 128 && str[index]
-                    <= 55295) || (str[index] >= 57344 && str[index] <=
-                    65535))) {
+                <= 55295) || (str[index] >= 57344 && str[index] <=
+                  65535))) {
                 // BMP character
                 currentBuilder.Append(str[index]);
                 ++indexTemp3;
                 break;
               }
               if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                    str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                    str[index + 1] <= 57343))) {
+                str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                  str[index + 1] <= 57343))) {
                 // Supplementary character
                 currentBuilder.Append(str[index]);
                 currentBuilder.Append(str[index + 1]);
@@ -332,7 +329,7 @@ str[index] <= 122) ||
               break;
             }
             if (index < endIndex && (str[index] >= 55296 && str[index]
-                <= 57343)) {
+              <= 57343)) {
               // Unpaired surrogate
               currentBuilder.Append((char)0xfffd);
               ++indexTemp2;
@@ -388,11 +385,10 @@ str[index] <= 122) ||
               int commandStart = index;
               for (int i3 = 0; i3 < 60; ++i3) {
                 if (index < endIndex && ((str[index] >= 48 && str[index]
-                      <= 57) || (str[index] == 45) || (str[index] >= 97 &&
-str[index] <= 122) ||
-                    (str[index] >= 65 && str[index] <=
+                  <= 57) || (str[index] == 45) || (str[index] >= 97 &&
+                    str[index] <= 122) || (str[index] >= 65 && str[index] <=
 
-                      90))) {
+                    90))) {
                   ++index;
                 } else if (i3 < 1) {
                   index = indexStart3;
@@ -418,14 +414,14 @@ str[index] <= 122) ||
                     }
                     currentBuilder.Append("b>");
                   } else if (command.Equals("italic",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     currentBuilder.Append('<');
                     if (isEndTag) {
                       currentBuilder.Append('/');
                     }
                     currentBuilder.Append("i>");
                   } else if (command.Equals("fixed",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     } else {
@@ -433,77 +429,77 @@ str[index] <= 122) ||
                       currentBuilder.Append("monospaced'>");
                     }
                   } else if (command.Equals("center",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div style='text-align:center'>");
                     }
                   } else if (command.Equals("flushleft",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div style='text-align:left'>");
                     }
                   } else if (command.Equals("flushright",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div style='text-align:right'>");
                     }
                   } else if (command.Equals("flushboth",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     } else {
                       currentBuilder.Append("<div" +
-"\u0020style='text-align:justify'>");
+                        "\u0020style='text-align:justify'>");
                     }
                   } else if (command.Equals("fontfamily",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     }
                   } else if (command.Equals("color",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     }
                   } else if (command.Equals("paraindent",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</div>");
                     }
                   } else if (command.Equals("smaller",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     } else {
                       currentBuilder.Append("<span style='font-size:85%'>");
                     }
                   } else if (command.Equals("nofill",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag && nofillDepth > 0) {
                       --nofillDepth;
                     } else if (!isEndTag) {
                       ++nofillDepth;
                     }
                   } else if (command.Equals("bigger",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     } else {
                       currentBuilder.Append("<span style='font-size:110%'>");
                     }
                   } else if (command.Equals("lang",
-  StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</span>");
                     }
                   } else if (command.Equals("excerpt",
-                      StringComparison.Ordinal)) {
+                    StringComparison.Ordinal)) {
                     if (isEndTag) {
                       currentBuilder.Append("</blockquote>");
                     } else {
@@ -521,16 +517,15 @@ str[index] <= 122) ||
                     currentBuilder = originalBuilder;
                     string p = TrimSpaces(paramBuilder.ToString());
                     if (lastCommand.Equals("fontfamily",
-                        StringComparison.Ordinal)) {
+                      StringComparison.Ordinal)) {
                       if (SkipFont(p, 0, p.Length) == p.Length) {
                         currentBuilder.Append("<span style='font-family: " +
-p +
-                          "'> ");
+                          p + "'> ");
                       } else {
                         currentBuilder.Append("<span>");
                       }
                     } else if (lastCommand.Equals("color",
-                        StringComparison.Ordinal)) {
+                      StringComparison.Ordinal)) {
                       p = ParseColor(
                           DataUtilities.ToLowerCaseAscii(p),
                           0,
@@ -542,16 +537,16 @@ p +
                         currentBuilder.Append("<span>");
                       }
                     } else if (lastCommand.Equals("lang",
-                        StringComparison.Ordinal)) {
+                      StringComparison.Ordinal)) {
                       if (SkipLang(p, 0, p.Length) == p.Length) {
                         currentBuilder.Append("<span lang=' " +
-DataUtilities.ToLowerCaseAscii(
-                p) + "'> ");
+                          DataUtilities.ToLowerCaseAscii(
+                            p) + "'> ");
                       } else {
                         currentBuilder.Append("<span>");
                       }
                     } else if (lastCommand.Equals("paraindent",
-                        StringComparison.Ordinal)) {
+                      StringComparison.Ordinal)) {
                       p = DataUtilities.ToLowerCaseAscii(p);
                       string[] valuePList = ParserUtility.SplitAt(p, ",");
                       var leftFlag = false;
@@ -562,16 +557,16 @@ DataUtilities.ToLowerCaseAscii(
                       foreach (string valuePItem in valuePList) {
                         string valuePItem2 = TrimSpaces(valuePItem);
                         if (!leftFlag && valuePItem2.Equals("left",
-                            StringComparison.Ordinal)) {
+                          StringComparison.Ordinal)) {
                           styleBuilder.Append("padding-left: 2em;");
                         } else if (!rightFlag && valuePItem2.Equals("right",
-                            StringComparison.Ordinal)) {
+                          StringComparison.Ordinal)) {
                           styleBuilder.Append("padding-right: 2em;");
                         } else if (!inFlag && valuePItem2.Equals("in",
-                            StringComparison.Ordinal)) {
+                          StringComparison.Ordinal)) {
                           styleBuilder.Append("text-indent: 2em;");
                         } else if (!outFlag && valuePItem2.Equals("out",
-                            StringComparison.Ordinal)) {
+                          StringComparison.Ordinal)) {
                           styleBuilder.Append("text-indent: -2em;");
                           styleBuilder.Append("margin-left: 2em;");
                         }
@@ -620,7 +615,7 @@ DataUtilities.ToLowerCaseAscii(
                   break;
                 }
                 if (index < endIndex && ((str[index] == 13) || (str[index]
-                      == 10))) {
+                  == 10))) {
                   ++indexTemp3;
                   break;
                 }
@@ -664,9 +659,8 @@ DataUtilities.ToLowerCaseAscii(
               break;
             }
             if (index < endIndex && ((str[index] >= 0 && str[index] <=
-                  9) || (str[index] >= 11 && str[index] <= 12) ||
-(str[index] >= 14 &&
-                  str[index] <= 127))) {
+              9) || (str[index] >= 11 && str[index] <= 12) ||
+              (str[index] >= 14 && str[index] <= 127))) {
               // Ordinary character
               if (str[index] == 0) {
                 // Null
@@ -682,16 +676,16 @@ DataUtilities.ToLowerCaseAscii(
             indexTemp3 = index;
             do {
               if (index < endIndex && ((str[index] >= 128 && str[index]
-                    <= 55295) || (str[index] >= 57344 && str[index] <=
-                    65535))) {
+                <= 55295) || (str[index] >= 57344 && str[index] <=
+                  65535))) {
                 // BMP character
                 currentBuilder.Append(str[index]);
                 ++indexTemp3;
                 break;
               }
               if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                    str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                    str[index + 1] <= 57343))) {
+                str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                  str[index + 1] <= 57343))) {
                 // Supplementary character
                 currentBuilder.Append(str[index]);
                 currentBuilder.Append(str[index + 1]);
@@ -704,7 +698,7 @@ DataUtilities.ToLowerCaseAscii(
               break;
             }
             if (index < endIndex && (str[index] >= 55296 && str[index]
-                <= 57343)) {
+              <= 57343)) {
               // Unpaired surrogate
               currentBuilder.Append((char)0xfffd);
               ++indexTemp2;

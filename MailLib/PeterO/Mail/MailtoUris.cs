@@ -214,8 +214,8 @@ namespace PeterO.Mail {
                 emails += "," + decoded;
               }
             } else {
-              // DebugUtility.Log(name);
-              // DebugUtility.Log(value);
+              // Console.WriteLine(name);
+              // Console.WriteLine(value);
             }
           }
         }

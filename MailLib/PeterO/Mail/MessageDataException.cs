@@ -18,10 +18,10 @@ namespace PeterO.Mail {
   /// be parsed by computer programs, and the exact text of the messages
   /// may change at any time between versions of this
   /// library.</para></summary>
-#if NET20 || NET40
-[Serializable]
-#endif
-public sealed class MessageDataException : Exception {
+  #if NET20 || NET40
+  [Serializable]
+  #endif
+  public sealed class MessageDataException : Exception {
     /// <summary>Initializes a new instance of the
     /// <see cref='PeterO.Mail.MessageDataException'/> class.</summary>
     public MessageDataException() {

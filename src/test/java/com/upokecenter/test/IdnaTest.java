@@ -73,11 +73,11 @@ import com.upokecenter.text.*;
       System.out.println(ProtocolStrings.IsInFreeformClass(" "));
       System.out.println(ProtocolStrings.IsInFreeformClass("x"));
       if (!(
-        ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"))) {
+        ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&"))) {
  Assert.fail();
  }
       if (!(
-        ProtocolStrings.IsInFreeformClass("test\u007b}[]?^&"))) {
+        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"))) {
  Assert.fail();
  }
       if (
@@ -187,14 +187,14 @@ import com.upokecenter.text.*;
       }
       {
         String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc" +
-"\u0020test ");
+            "\u0020test ");
         Assert.assertEquals(
           "a b ccccc test",
           stringTemp);
       }
       {
         String stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc" +
-"\u0020test ");
+            "\u0020test ");
         Assert.assertEquals(
           "a b ccccc test",
           stringTemp);
@@ -413,7 +413,7 @@ import com.upokecenter.text.*;
  }
       // Consecutive ZWNJs
       if (Idna.IsValidDomainName("\ua840\u200c\u200c\ua840",
-  false)) {
+        false)) {
  Assert.fail();
  }
 
@@ -448,7 +448,7 @@ import com.upokecenter.text.*;
  } // Hebrew
       // Arabic-indic digits and extended Arabic-indic digits
       if (Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627",
-  false)) {
+        false)) {
  Assert.fail();
  }
       // Right-joining character (U+062F; since the only right-joining

@@ -91,7 +91,7 @@ public final void setDispositionType(String value) {
      * @return A MediaType object.
      */
     public ContentDisposition ToDisposition() {
-        return this.builder.ToDisposition();
+      return this.builder.ToDisposition();
     }
 
     /**
@@ -105,8 +105,8 @@ public final void setDispositionType(String value) {
      * @throws IllegalArgumentException Str is empty.
      */
     public DispositionBuilder SetDispositionType(String str) {
-        this.builder.SetDispositionType(str);
-        return this;
+      this.builder.SetDispositionType(str);
+      return this;
     }
 
     /**
@@ -120,8 +120,8 @@ public final void setDispositionType(String value) {
      * @throws NullPointerException The parameter {@code name} is null.
      */
     public DispositionBuilder RemoveParameter(String name) {
-        this.builder.RemoveParameter(name);
-        return this;
+      this.builder.RemoveParameter(name);
+      return this;
     }
 
     /**
@@ -138,8 +138,8 @@ public final void setDispositionType(String value) {
      * well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
-        this.builder.SetParameter(name, value);
-        return this;
+      this.builder.SetParameter(name, value);
+      return this;
     }
 
     /**

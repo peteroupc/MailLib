@@ -108,7 +108,7 @@ namespace PeterO.Mail {
       int ib = b & 0xff;
       if (this.quantumCount == 2) {
         byte al = this.alphabet[((this.byte1 & 3) << 4) +
-          ((this.byte2 >> 4) & 15)];
+            ((this.byte2 >> 4) & 15)];
         int ret = this.LineAwareAppendFour(
             output,
             this.alphabet[(this.byte1 >> 2) & 63],
@@ -135,9 +135,8 @@ namespace PeterO.Mail {
       var count = 0;
       if (this.quantumCount == 2) {
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
-        byte c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4)
-&
-              15)];
+        byte c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
+          15)];
         byte c3 = this.alphabet[(this.byte2 & 15) << 2];
         if (this.padding) {
           count += this.LineAwareAppendFour(output, c1, c2, c3, (byte)'=');

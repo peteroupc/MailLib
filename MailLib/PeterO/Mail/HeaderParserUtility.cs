@@ -79,9 +79,9 @@ namespace PeterO.Mail {
         } else if (c == 0x22) {
           // quoted string found, skip it
           int si = HeaderParserUtility.ParseQuotedStringCore(
-            str,
-            index,
-            endIndex);
+              str,
+              index,
+              endIndex);
           if (si == index) {
             throw new InvalidOperationException("Internal error: " + str);
           }
@@ -117,10 +117,10 @@ namespace PeterO.Mail {
               // Note that quoted-string starts with optional CFWS
               tokener.RestoreState(state);
               si = HeaderParser.ParseQuotedString(
-                str,
-                index,
-                endIndex,
-                tokener);
+                  str,
+                  index,
+                  endIndex,
+                  tokener);
               if (si == index) {
                 throw new InvalidOperationException("Internal error: " + str);
               }
@@ -344,11 +344,11 @@ namespace PeterO.Mail {
           if (tokenKind == TokenPhrase && !haveDisplayName) {
             // Phrase
             displayName = Rfc2047.DecodePhraseText(
-              str,
-              tokenIndex,
-              tokenEnd,
-              tokens,
-              false);
+                str,
+                tokenIndex,
+                tokenEnd,
+                tokens,
+                false);
             // Set haveDisplayName, which needs to be done because
             // the mailboxes that follow may themselves have display names
             haveDisplayName = true;
@@ -377,11 +377,11 @@ namespace PeterO.Mail {
             case TokenPhrase:
               // Phrase
               displayName = Rfc2047.DecodePhraseText(
-                str,
-                tokenIndex,
-                tokenEnd,
-                tokens,
-                false);
+                  str,
+                  tokenIndex,
+                  tokenEnd,
+                  tokens,
+                  false);
               break;
             case TokenLocalPart:
               localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
@@ -427,21 +427,20 @@ namespace PeterO.Mail {
           ++index;
         }
         if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-              56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str[index] >= 1 &&
-              str[index]
-              <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index]
->= 14 &&
-              str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) ||
-            (str[index]
-              >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index]
-<= 55295) ||
-            (str[index] >= 57344 && str[index] <= 65535))) {
+          str[index]
+          <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index]
+            >= 14 &&
+            str[index] <= 31) || (str[index] >= 33 && str[index] <= 39) ||
+          (str[index]
+            >= 42 && str[index] <= 91) || (str[index] >= 93 && str[index]
+            <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str[index] >= 0 &&
-              str[index]
-              <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+          str[index]
+          <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -500,7 +499,7 @@ namespace PeterO.Mail {
                   do {
                     int indexStart4 = index;
                     while (index < endIndex && ((str[index] == 32) ||
-                        (str[index] == 9))) {
+                      (str[index] == 9))) {
                       ++index;
                     }
                     if (index + 1 < endIndex && str[index] == 13 && str[index +
@@ -520,10 +519,10 @@ namespace PeterO.Mail {
                   }
                 } while (false);
                 if (index < endIndex && ((str[index] == 32) || (str[index] ==
-                      9))) {
+                  9))) {
                   ++index;
                   while (index < endIndex && ((str[index] == 32) || (str[index]
-                        == 9))) {
+                    == 9))) {
                     ++index;
                   }
                 } else {
@@ -543,13 +542,13 @@ namespace PeterO.Mail {
               int indexTemp3 = index;
               do {
                 if (index < endIndex && ((str[index] >= 128 && str[index] <=
-                      55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                  55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3;
                   break;
                 }
                 if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                      str[index + 1] <= 57343))) {
+                  str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                    str[index + 1] <= 57343))) {
                   indexTemp3 += 2;
                   break;
                 }
@@ -567,20 +566,20 @@ namespace PeterO.Mail {
                     indexTemp5 = index;
                     do {
                       if (index < endIndex && ((str[index] == 32) ||
-                          (str[index] == 9) || (str[index] >= 128 &&
-                            str[index] <= 55295) || (str[index] >= 57344 &&
-                            str[index] <= 65535))) {
+                        (str[index] == 9) || (str[index] >= 128 &&
+                        str[index] <= 55295) || (str[index] >= 57344 &&
+                          str[index] <= 65535))) {
                         ++indexTemp5;
                         break;
                       }
                       if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                            str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                            str[index + 1] <= 57343))) {
+                        str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                          str[index + 1] <= 57343))) {
                         indexTemp5 += 2;
                         break;
                       }
                       if (index < endIndex && (str[index] >= 33 && str[index] <=
-                          126)) {
+                        126)) {
                         ++indexTemp5;
                         break;
                       }
@@ -603,8 +602,8 @@ namespace PeterO.Mail {
                   break;
                 }
                 if (index < endIndex && ((str[index] >= 93 && str[index] <=
-                      126) || (str[index] >= 42 && str[index] <= 91) ||
-                    (str[index] >= 33 && str[index] <= 39))) {
+                  126) || (str[index] >= 42 && str[index] <= 91) ||
+                  (str[index] >= 33 && str[index] <= 39))) {
                   ++indexTemp3;
                   break;
                 }
@@ -637,7 +636,7 @@ namespace PeterO.Mail {
               do {
                 int indexStart3 = index;
                 while (index < endIndex && ((str[index] == 32) || (str[index] ==
-                      9))) {
+                  9))) {
                   ++index;
                 }
                 if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
@@ -659,7 +658,7 @@ namespace PeterO.Mail {
             if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
               ++index;
               while (index < endIndex && ((str[index] == 32) || (str[index] ==
-                    9))) {
+                9))) {
                 ++index;
               }
             } else {

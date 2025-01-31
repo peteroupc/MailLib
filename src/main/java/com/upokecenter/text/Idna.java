@@ -116,7 +116,7 @@ private Idna() {
       if (joiningTypes == null) {
         synchronized (syncRoot) {
           joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(
-  IdnaData.JoiningTypes)) : joiningTypes;
+              IdnaData.JoiningTypes)) : joiningTypes;
         }
       }
       table = joiningTypes;
@@ -128,7 +128,7 @@ private Idna() {
       if (valueZsChars == null) {
         synchronized (syncRoot) {
           valueZsChars = (valueZsChars == null) ? (ByteData.Decompress(
-  IdnaData.ZsCharacters)) : valueZsChars;
+              IdnaData.ZsCharacters)) : valueZsChars;
         }
       }
       table = valueZsChars;
@@ -140,7 +140,7 @@ private Idna() {
       if (scripts == null) {
         synchronized (syncRoot) {
           scripts = (scripts == null) ? (ByteData.Decompress(
-  IdnaData.IdnaRelevantScripts)) : scripts;
+              IdnaData.IdnaRelevantScripts)) : scripts;
         }
       }
       table = scripts;
@@ -248,7 +248,7 @@ private Idna() {
     }
 
     private static String ToLowerCase(String str) {
-      int buffer = new int[2];
+      int[] buffer = new int[2];
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {
         int ch = CodePointAt(str, i);
@@ -260,7 +260,7 @@ private Idna() {
         } else {
           int size = UnicodeDatabase.GetLowerCaseMapping(ch, buffer, 0);
           for (int j = 0; j < size; ++j) {
-            int c2 = buffer.get(j);
+            int c2 = buffer[j];
             if (c2 <= 0xffff) {
               sb.append((char)c2);
             } else if (ch <= 0x10ffff) {
@@ -339,9 +339,9 @@ private Idna() {
         }
       }
       retval = DecodeLabel(
-        value,
-        lastIndex,
-        value.length());
+          value,
+          lastIndex,
+          value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -387,9 +387,9 @@ private Idna() {
         }
       }
       retval = DomainUtility.ALabelEncodePortion(
-        value,
-        lastIndex,
-        value.length());
+          value,
+          lastIndex,
+          value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -427,18 +427,18 @@ private Idna() {
             return false;
           }
           if (!IsValidLabel(
-              str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
-              lookupRules,
-              bidiRule)) {
+            str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
+            lookupRules,
+            bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
       return (str.length() != lastIndex) && IsValidLabel(
-          str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
-          lookupRules,
-          bidiRule);
+        str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
+        lookupRules,
+        bidiRule);
     }
 
     private static String ToLowerCaseAscii(String str) {
@@ -561,7 +561,7 @@ private Idna() {
           // even though it's a CONTEXTO character (performing
           // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (!(i - 1 >= 0 && i + 1 < str.length() &&
-              lastChar == 0x6c && str.charAt(i + 1) == 0x6c)) {
+            lastChar == 0x6c && str.charAt(i + 1) == 0x6c)) {
             // Dot must come between two l's
             return false;
           }
@@ -813,7 +813,7 @@ private Idna() {
         }
         bidiClass = GetBidiClass(c);
         if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
+          bidiClass == BidiClassAN)) {
           found = true;
           break;
         }
@@ -841,7 +841,7 @@ private Idna() {
         }
         bidiClass = GetBidiClass(c);
         if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
+          bidiClass == BidiClassAN)) {
           if (bidiClass == BidiClassAN) {
             if (haveEN) {
               return false;
@@ -914,8 +914,8 @@ private Idna() {
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           String chs = str.substring(istart, (istart)+((i - istart) + 1));
           String nfkd = NormalizerInput.Normalize(
-            chs,
-            Normalization.NFKD);
+              chs,
+              Normalization.NFKD);
           sb.append(nfkd);
         } else {
           if (ch <= 0xffff) {

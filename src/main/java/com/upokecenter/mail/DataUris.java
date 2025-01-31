@@ -40,7 +40,7 @@ private DataUris() {
         // Strip out ";base64" at end
         if (mediaType.length() >= 7 &&
           com.upokecenter.util.DataUtilities.ToLowerCaseAscii(mediaType.substring(
-  mediaType.length() - 7)).equals(";base64")) {
+          mediaType.length() - 7)).equals(";base64")) {
           mediaType = mediaType.substring(0, mediaType.length() - 7);
         }
         if (mediaType.length() == 0 || mediaType.charAt(0) == ';') {
@@ -182,16 +182,16 @@ private DataUris() {
             int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
             b1 = (payload.charAt(i) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i)];
             b2 = (payload.charAt(i + 1) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
-1)];
+                  1)];
             if (lastBlock && payload.charAt(i + 2) == '=' && payload.charAt(i + 3) == '=') {
             } else if (lastBlock && path.charAt(i + 3) == '=') {
               b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
-2)];
+                    2)];
             } else {
               b3 = (payload.charAt(i + 2) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
-2)];
+                    2)];
               b4 = (payload.charAt(i + 3) > 0x7f) ? -1 : Alphabet[(int)payload.charAt(i +
-3)];
+                    3)];
             }
             if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0) {
               return null;
@@ -211,7 +211,7 @@ private DataUris() {
               // NOTE: No further character checking done here
               // because splitURI already did all needed pct-encoding checking
               aw.write((byte)((ToHex(path.charAt(i + 1)) << 4) + ToHex(path.charAt(i +
-                      2))));
+                2))));
               i += 3;
             } else if (path.charAt(i) >= 0x80) {
               // RFC 2397 allows only "safe" ASCII here
@@ -239,12 +239,10 @@ private DataUris() {
         switch (quantumCount) {
           case 2:
             builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
-            builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4)
-&
-                  15)));
-            builder.append((char)Base64Classic.charAt(((b2 & 15) << 2) + ((value
->>
-                    6) & 3)));
+            builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
+              15)));
+            builder.append((char)Base64Classic.charAt(((b2 & 15) << 2) + ((value >>
+              6) & 3)));
             builder.append((char)Base64Classic.charAt(value & 63));
             quantumCount = 0;
             break;
@@ -261,13 +259,13 @@ private DataUris() {
       if (quantumCount == 2) {
         builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
         builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-              15)));
+          15)));
         builder.append((char)Base64Classic.charAt((b2 & 15) << 2));
         builder.append('=');
       } else if (quantumCount == 1) {
         builder.append((char)Base64Classic.charAt((b1 >> 2) & 63));
         builder.append((char)Base64Classic.charAt(((b1 & 3) << 4) + ((b2 >> 4) &
-              15)));
+          15)));
         builder.append("==");
       }
     }

@@ -125,7 +125,7 @@ namespace PeterO.Text {
       if (joiningTypes == null) {
         lock (syncRoot) {
           joiningTypes = joiningTypes ?? ByteData.Decompress(
-  IdnaData.JoiningTypes);
+              IdnaData.JoiningTypes);
         }
       }
       table = joiningTypes;
@@ -137,7 +137,7 @@ namespace PeterO.Text {
       if (valueZsChars == null) {
         lock (syncRoot) {
           valueZsChars = valueZsChars ?? ByteData.Decompress(
-  IdnaData.ZsCharacters);
+              IdnaData.ZsCharacters);
         }
       }
       table = valueZsChars;
@@ -149,7 +149,7 @@ namespace PeterO.Text {
       if (scripts == null) {
         lock (syncRoot) {
           scripts = scripts ?? ByteData.Decompress(
-  IdnaData.IdnaRelevantScripts);
+              IdnaData.IdnaRelevantScripts);
         }
       }
       table = scripts;
@@ -348,9 +348,9 @@ namespace PeterO.Text {
         }
       }
       retval = DecodeLabel(
-        value,
-        lastIndex,
-        value.Length);
+          value,
+          lastIndex,
+          value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -397,9 +397,9 @@ namespace PeterO.Text {
         }
       }
       retval = DomainUtility.ALabelEncodePortion(
-        value,
-        lastIndex,
-        value.Length);
+          value,
+          lastIndex,
+          value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -437,18 +437,18 @@ namespace PeterO.Text {
             return false;
           }
           if (!IsValidLabel(
-              str.Substring(lastIndex, i - lastIndex),
-              lookupRules,
-              bidiRule)) {
+            str.Substring(lastIndex, i - lastIndex),
+            lookupRules,
+            bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
       return (str.Length != lastIndex) && IsValidLabel(
-          str.Substring(lastIndex, str.Length - lastIndex),
-          lookupRules,
-          bidiRule);
+        str.Substring(lastIndex, str.Length - lastIndex),
+        lookupRules,
+        bidiRule);
     }
 
     private static string ToLowerCaseAscii(string str) {
@@ -571,7 +571,7 @@ namespace PeterO.Text {
           // even though it's a CONTEXTO character (performing
           // CONTEXTO checks is optional in lookup under RFC 5891, sec. 5.4).
           if (!(i - 1 >= 0 && i + 1 < str.Length &&
-              lastChar == 0x6c && str[i + 1] == 0x6c)) {
+            lastChar == 0x6c && str[i + 1] == 0x6c)) {
             // Dot must come between two l's
             return false;
           }
@@ -823,7 +823,7 @@ namespace PeterO.Text {
         }
         bidiClass = GetBidiClass(c);
         if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
+          bidiClass == BidiClassAN)) {
           found = true;
           break;
         }
@@ -851,7 +851,7 @@ namespace PeterO.Text {
         }
         bidiClass = GetBidiClass(c);
         if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
-            bidiClass == BidiClassAN)) {
+          bidiClass == BidiClassAN)) {
           if (bidiClass == BidiClassAN) {
             if (haveEN) {
               return false;
@@ -924,8 +924,8 @@ namespace PeterO.Text {
         if (UnicodeDatabase.IsFullOrHalfWidth(ch)) {
           string chs = str.Substring(istart, (i - istart) + 1);
           string nfkd = NormalizerInput.Normalize(
-            chs,
-            Normalization.NFKD);
+              chs,
+              Normalization.NFKD);
           sb.Append(nfkd);
         } else {
           if (ch <= 0xffff) {

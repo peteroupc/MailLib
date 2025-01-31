@@ -112,7 +112,7 @@ namespace PeterO.Mail {
         return true;
       }
       return (DataUtilities.GetUtf8Length(domain2, true) >
-          Message.MaxHardHeaderLineLength - 1) ? true : false;
+        Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 
     /// <summary>Returns a hash code for this address object. No
@@ -168,10 +168,10 @@ namespace PeterO.Mail {
         throw new ArgumentException("Address doesn't contain a '@'sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
-        addressValue,
-        0,
-        addressValue.Length,
-        null);
+          addressValue,
+          0,
+          addressValue.Length,
+          null);
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
@@ -183,21 +183,21 @@ namespace PeterO.Mail {
         throw new ArgumentException("Expected domain after '@'");
       }
       int domainEnd = HeaderParser.ParseDomainNoCfws(
-        addressValue,
-        localPartEnd + 1,
-        addressValue.Length,
-        null);
+          addressValue,
+          localPartEnd + 1,
+          addressValue.Length,
+          null);
       if (domainEnd != addressValue.Length) {
         throw new ArgumentException("Invalid domain");
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(
-        addressValue,
-        0,
-        localPartEnd);
+          addressValue,
+          0,
+          localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(
-        addressValue,
-        localPartEnd + 1,
-        addressValue.Length);
+          addressValue,
+          localPartEnd + 1,
+          addressValue.Length);
       // Check length restrictions.
       if (this.IsTooLong()) {
         throw new ArgumentException("Address too long");

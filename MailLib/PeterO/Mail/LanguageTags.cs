@@ -46,7 +46,7 @@ namespace PeterO.Mail {
           continue;
         }
         if (extended && c == '*' && count == 0 && (i + 1 == str.Length ||
-            str[i + 1] == '-')) {
+          str[i + 1] == '-')) {
           ++count;
           ++i;
           continue;
@@ -55,7 +55,7 @@ namespace PeterO.Mail {
           return false;
         }
         if (!first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-            (c >= '0' && c <= '9'))) {
+          (c >= '0' && c <= '9'))) {
           return false;
         }
         if (count >= 8) {
@@ -116,18 +116,18 @@ namespace PeterO.Mail {
           ++index;
         }
         if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-              56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str[index] >= 1 &&
-              str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) ||
-            (str[index] >= 14 && str[index] <= 31) || (str[index] >= 33 &&
-              str[index] <= 39) || (str[index] >= 42 && str[index] <= 91) ||
-            (str[index] >= 93 && str[index] <= 55295) || (str[index] >= 57344 &&
-              str[index] <= 65535))) {
+          str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) ||
+          (str[index] >= 14 && str[index] <= 31) || (str[index] >= 33 &&
+          str[index] <= 39) || (str[index] >= 42 && str[index] <= 91) ||
+          (str[index] >= 93 && str[index] <= 55295) || (str[index] >= 57344 &&
+          str[index] <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str[index] >= 0 &&
-              str[index] <= 55295) || (str[index] >= 57344 && str[index] <=
-              65535))) {
+          str[index] <= 55295) || (str[index] >= 57344 && str[index] <=
+            65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -170,12 +170,12 @@ namespace PeterO.Mail {
         if (i == str.Length || str[i] == '-') {
           if (count == 4 && lastSubtagLength >= 2) {
             sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 4,
-  1)));
+              1)));
             sb.Append(DataUtilities.ToLowerCaseAscii(str.Substring(i - 3,
-  3)));
+              3)));
           } else if (count == 2 && lastSubtagLength >= 2) {
             sb.Append(DataUtilities.ToUpperCaseAscii(str.Substring(i - 2,
-  2)));
+              2)));
           } else {
             sb.Append(
               DataUtilities.ToLowerCaseAscii(
@@ -200,7 +200,7 @@ namespace PeterO.Mail {
     private static int SkipLDHSequence(string str, int index, int endIndex) {
       while (index < endIndex) {
         if ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 &&
-            str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) ||
+          str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) ||
           (str[index] == 45)) {
           ++index;
         } else {
@@ -726,7 +726,7 @@ namespace PeterO.Mail {
         char c1 = str[index];
         char c2 = str[index + 1];
         if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2
-              >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
+          >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
             // case AA: a 2-letter language
@@ -881,7 +881,7 @@ namespace PeterO.Mail {
           if (splitIndex < splitLength) {
             int curIndex = splitIndex;
             if (splitString[splitIndex].Equals("x",
-  StringComparison.Ordinal)) {
+              StringComparison.Ordinal)) {
               ++splitIndex;
               var havetoken = false;
               while (splitIndex < splitLength) {
@@ -969,7 +969,7 @@ namespace PeterO.Mail {
       for (int i = 0; i < len; ++i) {
         char c1 = str[i];
         if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1
-              >= '0' && c1 <= '9'))) {
+          >= '0' && c1 <= '9'))) {
           return 0;
         }
       }

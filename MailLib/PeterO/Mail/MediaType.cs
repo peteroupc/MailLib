@@ -77,8 +77,7 @@ namespace PeterO.Mail {
     /// or an empty string.</returns>
     public bool HasStructuredSuffix(string suffix) {
       if (String.IsNullOrEmpty(suffix) || suffix.Length >=
-this.subType.Length ||
-        suffix.Length + 1 >= this.subType.Length) {
+        this.subType.Length || suffix.Length + 1 >= this.subType.Length) {
         return false;
       }
       int j = this.subType.Length - 1 - suffix.Length;
@@ -131,13 +130,13 @@ this.subType.Length ||
       if (this.topLevelType != null) {
         for (var i = 0; i < this.topLevelType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-                this.topLevelType[i]));
+            this.topLevelType[i]));
         }
       }
       if (this.subType != null) {
         for (var i = 0; i < this.subType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-                this.subType[i]));
+            this.subType[i]));
         }
       }
       if (this.parameters != null) {
@@ -243,7 +242,7 @@ this.subType.Length ||
           // Non-ASCII (allowed in internationalized email headers under
           // RFC6532)
           if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && (s[i2 + 1] &
-              0xfc00) == 0xdc00) {
+            0xfc00) == 0xdc00) {
             i2 += 2;
           } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
@@ -275,7 +274,7 @@ this.subType.Length ||
         char c = s[index + 1];
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
         if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && (s[index + 2] &
-            0xfc00) == 0xdc00) {
+          0xfc00) == 0xdc00) {
           return index + 3;
         }
         if ((c & 0xf800) == 0xd800) {
@@ -302,11 +301,11 @@ this.subType.Length ||
       int endIndex,
       StringBuilder builder) {
       return SkipQuotedString(
-        s,
-        index,
-        endIndex,
-        builder,
-        QuotedStringRule.Rfc5322);
+          s,
+          index,
+          endIndex,
+          builder,
+          QuotedStringRule.Rfc5322);
     }
 
     private static int ParseFWSLax(
@@ -400,8 +399,8 @@ this.subType.Length ||
     // in such values)
     private static bool IsIsecnOfUrlPathAndAttrValueChar(int c) {
       return c >= 33 && c <= 126 && ((c >= 'A' && c <= 'Z') ||
-          (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
-          "!$&*+-._~".IndexOf((char)c) >= 0);
+        (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+        "!$&*+-._~".IndexOf((char)c) >= 0);
     }
 
     private static void PctAppend(StringBuilder sb, int w) {
@@ -427,7 +426,7 @@ this.subType.Length ||
       int index = startPos;
       var sb = new StringBuilder();
       while (index < str.Length && (maxLineLength < 0 || column <=
-          maxLineLength)) {
+        maxLineLength)) {
         int c = str[index];
         bool first = index == 0;
         int contin = (index == 0) ? 7 : 0;
@@ -530,8 +529,7 @@ this.subType.Length ||
             sa.AppendSymbol(";");
           }
           sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) +
-"*")
-          .AppendSymbol("=");
+            "*").AppendSymbol("=");
           index = EncodeContinuation(str, index, sa, uriSafe);
           ++contin;
         }
@@ -561,7 +559,7 @@ this.subType.Length ||
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
-(!IsAttributeChar(c))) {
+          (!IsAttributeChar(c))) {
           simple = false;
         }
       }
@@ -659,9 +657,9 @@ this.subType.Length ||
     /// the resulting string can validly appear in a URI path.</summary>
     /// <returns>A text string form of this media type.</returns>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA1055",
-      Justification = "Return value is not a URI.")]
+        "Microsoft.Design",
+        "CA1055",
+        Justification = "Return value is not a URI.")]
     public string ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
@@ -681,7 +679,7 @@ this.subType.Length ||
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
-            ValueSpecials.IndexOf(c) >= 0)) {
+          ValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {
@@ -708,7 +706,7 @@ this.subType.Length ||
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-            AttrValueSpecials.IndexOf(c) >= 0)) {
+          AttrValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -773,14 +771,14 @@ this.subType.Length ||
         char c = str[i];
         // See RFC6838
         if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
-            c <= '9')) {
+          c <= '9')) {
           if (builder != null) {
             builder.Append(c);
           }
           ++i;
           ++count;
         } else if (count > 0 && (c == (c & 0x7f) && specials.IndexOf(c) >=
-            0)) {
+          0)) {
           if (builder != null) {
             builder.Append(c);
           }
@@ -821,7 +819,7 @@ this.subType.Length ||
           return true;
         }
         if (sub.Equals("xml-external-parsed-entity",
-            StringComparison.Ordinal)) {
+          StringComparison.Ordinal)) {
           return true;
         }
         if (sub.Equals("vnd.in3d.3dml", StringComparison.Ordinal)) {
@@ -837,11 +835,11 @@ this.subType.Length ||
           return true;
         }
         if (sub.Equals("vnd.net2phone.commcenter.command",
-            StringComparison.Ordinal)) {
+          StringComparison.Ordinal)) {
           return true;
         }
         if (sub.Equals("vnd.radisys.msml-basic-layout",
-            StringComparison.Ordinal)) {
+          StringComparison.Ordinal)) {
           return true;
         }
         if (sub.Equals("vnd.wap.si", StringComparison.Ordinal)) {
@@ -986,64 +984,64 @@ this.subType.Length ||
           string sub = this.SubType;
           // Media types that assume a default of US-ASCII
           if (sub.Equals("plain", StringComparison.Ordinal) ||
-                     sub.Equals("sgml", StringComparison.Ordinal) ||
-                     sub.Equals("troff", StringComparison.Ordinal) ||
-                     sub.Equals("example", StringComparison.Ordinal) ||
-                     sub.Equals("dns", StringComparison.Ordinal) ||
-                     sub.Equals("mizar", StringComparison.Ordinal) ||
-                     sub.Equals("prs.prop.logic", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.ascii-art", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.dmclientscript",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("prs.lines.tag", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.latex-z", StringComparison.Ordinal) ||
-                     sub.Equals("rfc822-headers", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.dvb.subtitle", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.fly", StringComparison.Ordinal) ||
-                     sub.Equals("directory", StringComparison.Ordinal) ||
-                     sub.Equals("css", StringComparison.Ordinal) ||
-                     sub.Equals("richtext", StringComparison.Ordinal) ||
-                     sub.Equals("enriched", StringComparison.Ordinal) ||
-                     sub.Equals("tab-separated-values",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("vnd.in3d.spot", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.abc", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.wap.wmlscript",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("vnd.curl", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.fmi.flexstor", StringComparison.Ordinal) ||
-                     sub.Equals("uri-list", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.si.uricatalogue",
-                     StringComparison.Ordinal)) {
+            sub.Equals("sgml", StringComparison.Ordinal) ||
+            sub.Equals("troff", StringComparison.Ordinal) ||
+            sub.Equals("example", StringComparison.Ordinal) ||
+            sub.Equals("dns", StringComparison.Ordinal) ||
+            sub.Equals("mizar", StringComparison.Ordinal) ||
+            sub.Equals("prs.prop.logic", StringComparison.Ordinal) ||
+            sub.Equals("vnd.ascii-art", StringComparison.Ordinal) ||
+            sub.Equals("vnd.dmclientscript",
+              StringComparison.Ordinal) ||
+            sub.Equals("prs.lines.tag", StringComparison.Ordinal) ||
+            sub.Equals("vnd.latex-z", StringComparison.Ordinal) ||
+            sub.Equals("rfc822-headers", StringComparison.Ordinal) ||
+            sub.Equals("vnd.dvb.subtitle", StringComparison.Ordinal) ||
+            sub.Equals("vnd.fly", StringComparison.Ordinal) ||
+            sub.Equals("directory", StringComparison.Ordinal) ||
+            sub.Equals("css", StringComparison.Ordinal) ||
+            sub.Equals("richtext", StringComparison.Ordinal) ||
+            sub.Equals("enriched", StringComparison.Ordinal) ||
+            sub.Equals("tab-separated-values",
+              StringComparison.Ordinal) ||
+            sub.Equals("vnd.in3d.spot", StringComparison.Ordinal) ||
+            sub.Equals("vnd.abc", StringComparison.Ordinal) ||
+            sub.Equals("vnd.wap.wmlscript",
+              StringComparison.Ordinal) ||
+            sub.Equals("vnd.curl", StringComparison.Ordinal) ||
+            sub.Equals("vnd.fmi.flexstor", StringComparison.Ordinal) ||
+            sub.Equals("uri-list", StringComparison.Ordinal) ||
+            sub.Equals("vnd.si.uricatalogue",
+              StringComparison.Ordinal)) {
             return "us-ascii";
           }
           // Media types that assume a default of UTF-8
           if (sub.Equals("vcard", StringComparison.Ordinal) ||
-                     sub.Equals("jcr-cnd", StringComparison.Ordinal) ||
-                     sub.Equals("n3", StringComparison.Ordinal) ||
-                     sub.Equals("turtle", StringComparison.Ordinal) ||
-                     sub.Equals("strings", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.debian.copyright",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("provenance-notation",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("vtt", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.ficlab.flt", StringComparison.Ordinal) ||
-                     sub.Equals("csv", StringComparison.Ordinal) ||
-                     sub.Equals("calendar", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.a", StringComparison.Ordinal) ||
-                     sub.Equals("parameters", StringComparison.Ordinal) ||
-                     sub.Equals("prs.fallenstein.rst",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("vnd.esmertec.theme.descriptor",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("vnd.trolltech.linguist",
-                     StringComparison.Ordinal) ||
-                     sub.Equals("csv-schema", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.graphviz", StringComparison.Ordinal) ||
-                     sub.Equals("cache-manifest", StringComparison.Ordinal) ||
-                     sub.Equals("vnd.sun.j2me.app-descriptor",
-                     StringComparison.Ordinal)) {
+            sub.Equals("jcr-cnd", StringComparison.Ordinal) ||
+            sub.Equals("n3", StringComparison.Ordinal) ||
+            sub.Equals("turtle", StringComparison.Ordinal) ||
+            sub.Equals("strings", StringComparison.Ordinal) ||
+            sub.Equals("vnd.debian.copyright",
+              StringComparison.Ordinal) ||
+            sub.Equals("provenance-notation",
+              StringComparison.Ordinal) ||
+            sub.Equals("vtt", StringComparison.Ordinal) ||
+            sub.Equals("vnd.ficlab.flt", StringComparison.Ordinal) ||
+            sub.Equals("csv", StringComparison.Ordinal) ||
+            sub.Equals("calendar", StringComparison.Ordinal) ||
+            sub.Equals("vnd.a", StringComparison.Ordinal) ||
+            sub.Equals("parameters", StringComparison.Ordinal) ||
+            sub.Equals("prs.fallenstein.rst",
+              StringComparison.Ordinal) ||
+            sub.Equals("vnd.esmertec.theme.descriptor",
+              StringComparison.Ordinal) ||
+            sub.Equals("vnd.trolltech.linguist",
+              StringComparison.Ordinal) ||
+            sub.Equals("csv-schema", StringComparison.Ordinal) ||
+            sub.Equals("vnd.graphviz", StringComparison.Ordinal) ||
+            sub.Equals("cache-manifest", StringComparison.Ordinal) ||
+            sub.Equals("vnd.sun.j2me.app-descriptor",
+              StringComparison.Ordinal)) {
             return "utf-8";
           }
         }
@@ -1107,7 +1105,7 @@ this.subType.Length ||
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       // HACK
       if (cs == null && (charset.Equals("GB2312", StringComparison.Ordinal) ||
-          charset.Equals("gb2312", StringComparison.Ordinal))) {
+        charset.Equals("gb2312", StringComparison.Ordinal))) {
         cs = Encodings.GetEncoding(charset, false);
       }
       cs = cs ?? USAsciiEncoding;
@@ -1141,7 +1139,7 @@ this.subType.Length ||
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       // HACK
       if (cs == null && (charset.Equals("GB2312", StringComparison.Ordinal) ||
-          charset.Equals("gb2312", StringComparison.Ordinal))) {
+        charset.Equals("gb2312", StringComparison.Ordinal))) {
         cs = Encodings.GetEncoding(charset, false);
       }
       cs = cs ?? USAsciiEncoding;
@@ -1155,8 +1153,8 @@ this.subType.Length ||
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
       return (quote >= 0) ? null : Encodings.DecodeToString(
-          charset,
-          new PercentEncodingStringTransform(value));
+        charset,
+        new PercentEncodingStringTransform(value));
     }
 
     private static bool ExpandRfc2231Extensions(
@@ -1196,8 +1194,8 @@ this.subType.Length ||
         }
         // name*0 or name*0*
         if (!httpRules && asterisk > 0 && ((asterisk == name.Length - 2 &&
-              name[asterisk + 1] == '0') || (asterisk == name.Length - 3 &&
-              name[asterisk + 1] == '0' && name[asterisk + 2] == '*'))) {
+          name[asterisk + 1] == '0') || (asterisk == name.Length - 3 &&
+            name[asterisk + 1] == '0' && name[asterisk + 2] == '*'))) {
           string realName = name.Substring(0, asterisk);
           // NOTE: 'httpRules' for DecodeRfc2231Extension is false
           string realValue = (asterisk == name.Length - 3) ?
@@ -1217,8 +1215,8 @@ this.subType.Length ||
             if (parameters.ContainsKey(continEncoded)) {
               // Encoded continuation (checked first)
               string newEnc = DecodeRfc2231Encoding(
-                parameters[continEncoded],
-                charsetUsed);
+                  parameters[continEncoded],
+                  charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 break;
@@ -1319,11 +1317,11 @@ this.subType.Length ||
         // an asterisk will be deleted and replaced with other parameters.
         // See also RFC 8187, sec. 3.2.1.
         int afteratt = SkipMimeToken(
-          str,
-          index,
-          endIndex,
-          builder,
-          httpRules);
+            str,
+            index,
+            endIndex,
+            builder,
+            httpRules);
         if (afteratt == index) { // ill-formed attribute
           return false;
         }
@@ -1352,10 +1350,10 @@ this.subType.Length ||
         if (!httpRules) {
           // See note above on whitespace around the equal sign
           index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
-            null);
+              str,
+              index,
+              endIndex,
+              null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -1367,11 +1365,11 @@ this.subType.Length ||
         int qs;
         // try getting the value quoted
         qs = SkipQuotedString(
-          str,
-          index,
-          endIndex,
-          builder,
-          httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
+            str,
+            index,
+            endIndex,
+            builder,
+            httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
         if (!httpRules && qs != index) {
           qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
         }
@@ -1380,7 +1378,7 @@ this.subType.Length ||
           // string because of RFC2231; if this happens, ignore the attribute
           if (attribute[attribute.Length - 1] != '*' &&
             (!hasDuplicateAttributes || !duplicateAttributes.ContainsKey(
-  attribute))) {
+            attribute))) {
             parameters[attribute] = builder.ToString();
           }
           index = qs;
@@ -1426,7 +1424,7 @@ this.subType.Length ||
         return null;
       }
       string subType = DataUtilities.ToLowerCaseAscii(
-        str.Substring(i, i2 - i));
+          str.Substring(i, i2 - i));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
@@ -1441,12 +1439,12 @@ this.subType.Length ||
       }
       index = i2;
       return ParseParameters(
-        str,
-        index,
-        endIndex,
-        HttpRules,
-        parameters) ? new MediaType(topLevelType, subType, parameters) :
-null;
+          str,
+          index,
+          endIndex,
+          HttpRules,
+          parameters) ? new MediaType(topLevelType, subType, parameters) :
+        null;
     }
 
     /// <summary>Specifies the media type "text/plain" and the "charset"
@@ -1454,21 +1452,21 @@ null;
     /// characters within the basic Latin range (U+0000 to
     /// U+007F).</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Security",
-      "CA2104",
-      Justification = "This instance is immutable")]
+        "Microsoft.Security",
+        "CA2104",
+        Justification = "This instance is immutable")]
     public static readonly MediaType TextPlainAscii =
       new MediaType.Builder(
-        "text",
-        "plain").SetParameter(
+      "text",
+      "plain").SetParameter(
       "charset",
       "us-ascii").ToMediaType();
 
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Security",
-      "CA2104",
-      Justification = "This instance is immutable")]
+        "Microsoft.Security",
+        "CA2104",
+        Justification = "This instance is immutable")]
     #endif
 
     /// <summary>Specifies the media type "text/plain" and the "charset"
@@ -1477,25 +1475,25 @@ null;
     /// U+007F).</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaType.Builder(
-        "text",
-        "plain").SetParameter(
+      "text",
+      "plain").SetParameter(
       "charset",
       "utf-8").ToMediaType();
 
     /// <summary>Specifies the media type "message/rfc822", used for
     /// Internet mail messages.</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Security",
-      "CA2104",
-      Justification = "This instance is immutable")]
+        "Microsoft.Security",
+        "CA2104",
+        Justification = "This instance is immutable")]
     public static readonly MediaType MessageRfc822 =
       new MediaType.Builder("message", "rfc822").ToMediaType();
 
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Security",
-      "CA2104",
-      Justification = "This instance is immutable")]
+        "Microsoft.Security",
+        "CA2104",
+        Justification = "This instance is immutable")]
     #endif
 
     /// <summary>Specifies the media type "application/octet-stream", used
@@ -1563,202 +1561,202 @@ null;
       return mt ?? defaultValue;
     }
 
-     /// <summary>A mutable data type that allows a media type object to be
-     /// built.</summary>
-     public sealed class Builder {
-    private readonly IDictionary<string, string> parameters;
-    private string type;
-    private string subtype;
+    /// <summary>A mutable data type that allows a media type object to be
+    /// built.</summary>
+    public sealed class Builder {
+      private readonly IDictionary<string, string> parameters;
+      private string type;
+      private string subtype;
 
-    /// <summary>Gets or sets this value's top-level type.</summary>
-    /// <value>A text string naming this object's top-level type, such as
-    /// "text" or "audio" .</value>
-    /// <exception cref='ArgumentNullException'>The property is being set
-    /// and the value is null.</exception>
-    /// <exception cref='ArgumentException'>The property is being set and
-    /// the value is syntactically invalid for a top-level
-    /// type.</exception>
-    public string TopLevelType {
-      get {
-        return this.type;
+      /// <summary>Gets or sets this value's top-level type.</summary>
+      /// <value>A text string naming this object's top-level type, such as
+      /// "text" or "audio" .</value>
+      /// <exception cref='ArgumentNullException'>The property is being set
+      /// and the value is null.</exception>
+      /// <exception cref='ArgumentException'>The property is being set and
+      /// the value is syntactically invalid for a top-level
+      /// type.</exception>
+      public string TopLevelType {
+        get {
+          return this.type;
+        }
+
+        set {
+          this.SetTopLevelType(value);
+        }
       }
 
-      set {
-        this.SetTopLevelType(value);
+      /// <summary>Gets or sets this value's subtype.</summary>
+      /// <value>A text string naming this object's subtype, such as "plain"
+      /// or "xml".</value>
+      /// <exception cref='ArgumentNullException'>The property is being set
+      /// and the value is null.</exception>
+      /// <exception cref='ArgumentException'>The property is being set and
+      /// the value is syntactically invalid for a subtype.</exception>
+      public string SubType {
+        get {
+          return this.subtype;
+        }
+
+        set {
+          this.SetSubType(value);
+        }
+      }
+
+      /// <summary>Initializes a new instance of the
+      /// <see cref='PeterO.Mail.MediaType.Builder'/> class, using the type
+      /// "application/octet-stream" .</summary>
+      public Builder() {
+        this.parameters = new Dictionary<string, string>();
+        this.type = "application";
+        this.subtype = "octet-stream";
+      }
+
+      /// <summary>Initializes a new instance of the
+      /// <see cref='PeterO.Mail.MediaType.Builder'/> class using the data
+      /// from another media type.</summary>
+      /// <param name='mt'>The parameter <paramref name='mt'/> is a MediaType
+      /// object.</param>
+      /// <exception cref='ArgumentNullException'>The parameter <paramref
+      /// name='mt'/> is null.</exception>
+      public Builder(MediaType mt) {
+        if (mt == null) {
+          throw new ArgumentNullException(nameof(mt));
+        }
+        this.parameters = new Dictionary<string, string>(mt.Parameters);
+        this.type = mt.TopLevelType;
+        this.subtype = mt.SubType;
+      }
+
+      /// <summary>Initializes a new instance of the
+      /// <see cref='PeterO.Mail.MediaType.Builder'/> class.</summary>
+      /// <param name='type'>The media type's top-level type.</param>
+      /// <param name='subtype'>The media type's subtype.</param>
+      public Builder(string type, string subtype) {
+        this.parameters = new Dictionary<string, string>();
+        this.SetTopLevelType(type);
+        this.SetSubType(subtype);
+      }
+
+      /// <summary>Converts this builder to an immutable media type
+      /// object.</summary>
+      /// <returns>A MediaType object.</returns>
+      public MediaType ToMediaType() {
+        return new MediaType(this.type, this.subtype, this.parameters);
+      }
+
+      /// <summary>Sets this media type's top-level type. This method enables
+      /// the pattern of method chaining (for example,
+      /// <c>new...().Set...().Set...()</c> ) unlike with the TopLevelType
+      /// property in.NET or the setTopLevelType method (with small s) in
+      /// Java.</summary>
+      /// <param name='str'>A text string naming a top-level type, such as
+      /// "text" or "audio" .</param>
+      /// <returns>This instance.</returns>
+      /// <exception cref='ArgumentNullException'>The parameter <paramref
+      /// name='str'/> is null.</exception>
+      /// <exception cref='ArgumentException'>The parameter <paramref
+      /// name='str'/> is syntactically invalid for a top-level
+      /// type.</exception>
+      public MediaType.Builder SetTopLevelType(string str) {
+        if (str == null) {
+          throw new ArgumentNullException(nameof(str));
+        }
+        if (str.Length == 0) {
+          throw new ArgumentException("str is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
+          str.Length) {
+          throw new ArgumentException("Not a well-formed top level type: " +
+            str);
+        }
+        this.type = DataUtilities.ToLowerCaseAscii(str);
+        return this;
+      }
+
+      /// <summary>Removes a parameter from this builder object. Does nothing
+      /// if the parameter's name doesn't exist.</summary>
+      /// <param name='name'>Name of the parameter to remove. The name is
+      /// compared using a basic case-insensitive comparison. (Two strings
+      /// are equal in such a comparison, if they match after converting the
+      /// basic uppercase letters A to Z (U+0041 to U+005A) in both strings
+      /// to basic lowercase letters.).</param>
+      /// <returns>This instance.</returns>
+      /// <exception cref='ArgumentNullException'>The parameter <paramref
+      /// name='name'/> is null.</exception>
+      public MediaType.Builder RemoveParameter(string name) {
+        if (name == null) {
+          throw new ArgumentNullException(nameof(name));
+        }
+        this.parameters.Remove(DataUtilities.ToLowerCaseAscii(name));
+        return this;
+      }
+
+      /// <summary>Sets a parameter's name and value for this media
+      /// type.</summary>
+      /// <param name='name'>Name of the parameter to set, such as "charset"
+      /// . The name is compared using a basic case-insensitive comparison.
+      /// (Two strings are equal in such a comparison, if they match after
+      /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+      /// both strings to basic lowercase letters.).</param>
+      /// <param name='value'>A text string giving the parameter's
+      /// value.</param>
+      /// <returns>This instance.</returns>
+      /// <exception cref='ArgumentNullException'>The parameter <paramref
+      /// name='value'/> or <paramref name='name'/> is null.</exception>
+      /// <exception cref='ArgumentException'>The parameter <paramref
+      /// name='name'/> is empty or syntactically invalid.</exception>
+      public MediaType.Builder SetParameter(string name, string value) {
+        if (value == null) {
+          throw new ArgumentNullException(nameof(value));
+        }
+        if (name == null) {
+          throw new ArgumentNullException(nameof(name));
+        }
+        if (name.Length == 0) {
+          throw new ArgumentException("name is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
+          name.Length) {
+          throw new ArgumentException("Not a well-formed parameter name: " +
+            name);
+        }
+        this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;
+        return this;
+      }
+
+      /// <summary>Sets this media type's subtype, such as "plain" or "xml" .
+      /// This method enables the pattern of method chaining (for example,
+      /// <c>new...().Set...().Set...()</c> ) unlike with the SubType
+      /// property in.NET or the setSubType method (with small s) in
+      /// Java.</summary>
+      /// <param name='str'>A text string naming a media subtype.</param>
+      /// <returns>This instance.</returns>
+      /// <exception cref='ArgumentNullException'>The parameter <paramref
+      /// name='str'/> is null.</exception>
+      /// <exception cref='ArgumentException'>The parameter <paramref
+      /// name='str'/> is empty or syntactically invalid.</exception>
+      public MediaType.Builder SetSubType(string str) {
+        if (str == null) {
+          throw new ArgumentNullException(nameof(str));
+        }
+        if (str.Length == 0) {
+          throw new ArgumentException("str is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
+          str.Length) {
+          throw new ArgumentException("Not a well-formed subtype: " + str);
+        }
+        this.subtype = DataUtilities.ToLowerCaseAscii(str);
+        return this;
+      }
+
+      /// <summary>Converts this object to a text string of the media type it
+      /// represents, in the same form as <c>MediaType.ToString</c>.</summary>
+      /// <returns>A string representation of this object.</returns>
+      public override string ToString() {
+        return this.ToMediaType().ToString();
       }
     }
-
-    /// <summary>Gets or sets this value's subtype.</summary>
-    /// <value>A text string naming this object's subtype, such as "plain"
-    /// or "xml".</value>
-    /// <exception cref='ArgumentNullException'>The property is being set
-    /// and the value is null.</exception>
-    /// <exception cref='ArgumentException'>The property is being set and
-    /// the value is syntactically invalid for a subtype.</exception>
-    public string SubType {
-      get {
-        return this.subtype;
-      }
-
-      set {
-        this.SetSubType(value);
-      }
-    }
-
-    /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.MediaType.Builder'/> class, using the type
-    /// "application/octet-stream" .</summary>
-    public Builder() {
-      this.parameters = new Dictionary<string, string>();
-      this.type = "application";
-      this.subtype = "octet-stream";
-    }
-
-    /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.MediaType.Builder'/> class using the data
-    /// from another media type.</summary>
-    /// <param name='mt'>The parameter <paramref name='mt'/> is a MediaType
-    /// object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='mt'/> is null.</exception>
-    public Builder(MediaType mt) {
-      if (mt == null) {
-        throw new ArgumentNullException(nameof(mt));
-      }
-      this.parameters = new Dictionary<string, string>(mt.Parameters);
-      this.type = mt.TopLevelType;
-      this.subtype = mt.SubType;
-    }
-
-    /// <summary>Initializes a new instance of the
-    /// <see cref='PeterO.Mail.MediaType.Builder'/> class.</summary>
-    /// <param name='type'>The media type's top-level type.</param>
-    /// <param name='subtype'>The media type's subtype.</param>
-    public Builder(string type, string subtype) {
-      this.parameters = new Dictionary<string, string>();
-      this.SetTopLevelType(type);
-      this.SetSubType(subtype);
-    }
-
-    /// <summary>Converts this builder to an immutable media type
-    /// object.</summary>
-    /// <returns>A MediaType object.</returns>
-    public MediaType ToMediaType() {
-      return new MediaType(this.type, this.subtype, this.parameters);
-    }
-
-    /// <summary>Sets this media type's top-level type. This method enables
-    /// the pattern of method chaining (for example,
-    /// <c>new...().Set...().Set...()</c> ) unlike with the TopLevelType
-    /// property in.NET or the setTopLevelType method (with small s) in
-    /// Java.</summary>
-    /// <param name='str'>A text string naming a top-level type, such as
-    /// "text" or "audio" .</param>
-    /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='str'/> is syntactically invalid for a top-level
-    /// type.</exception>
-    public MediaType.Builder SetTopLevelType(string str) {
-      if (str == null) {
-        throw new ArgumentNullException(nameof(str));
-      }
-      if (str.Length == 0) {
-        throw new ArgumentException("str is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
-        str.Length) {
-        throw new ArgumentException("Not a well-formed top level type: " +
-str);
-      }
-      this.type = DataUtilities.ToLowerCaseAscii(str);
-      return this;
-    }
-
-    /// <summary>Removes a parameter from this builder object. Does nothing
-    /// if the parameter's name doesn't exist.</summary>
-    /// <param name='name'>Name of the parameter to remove. The name is
-    /// compared using a basic case-insensitive comparison. (Two strings
-    /// are equal in such a comparison, if they match after converting the
-    /// basic uppercase letters A to Z (U+0041 to U+005A) in both strings
-    /// to basic lowercase letters.).</param>
-    /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='name'/> is null.</exception>
-    public MediaType.Builder RemoveParameter(string name) {
-      if (name == null) {
-        throw new ArgumentNullException(nameof(name));
-      }
-      this.parameters.Remove(DataUtilities.ToLowerCaseAscii(name));
-      return this;
-    }
-
-    /// <summary>Sets a parameter's name and value for this media
-    /// type.</summary>
-    /// <param name='name'>Name of the parameter to set, such as "charset"
-    /// . The name is compared using a basic case-insensitive comparison.
-    /// (Two strings are equal in such a comparison, if they match after
-    /// converting the basic uppercase letters A to Z (U+0041 to U+005A) in
-    /// both strings to basic lowercase letters.).</param>
-    /// <param name='value'>A text string giving the parameter's
-    /// value.</param>
-    /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='value'/> or <paramref name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='name'/> is empty or syntactically invalid.</exception>
-    public MediaType.Builder SetParameter(string name, string value) {
-      if (value == null) {
-        throw new ArgumentNullException(nameof(value));
-      }
-      if (name == null) {
-        throw new ArgumentNullException(nameof(name));
-      }
-      if (name.Length == 0) {
-        throw new ArgumentException("name is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
-        name.Length) {
-        throw new ArgumentException("Not a well-formed parameter name: " +
-          name);
-      }
-      this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;
-      return this;
-    }
-
-    /// <summary>Sets this media type's subtype, such as "plain" or "xml" .
-    /// This method enables the pattern of method chaining (for example,
-    /// <c>new...().Set...().Set...()</c> ) unlike with the SubType
-    /// property in.NET or the setSubType method (with small s) in
-    /// Java.</summary>
-    /// <param name='str'>A text string naming a media subtype.</param>
-    /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='str'/> is empty or syntactically invalid.</exception>
-    public MediaType.Builder SetSubType(string str) {
-      if (str == null) {
-        throw new ArgumentNullException(nameof(str));
-      }
-      if (str.Length == 0) {
-        throw new ArgumentException("str is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
-        str.Length) {
-        throw new ArgumentException("Not a well-formed subtype: " + str);
-      }
-      this.subtype = DataUtilities.ToLowerCaseAscii(str);
-      return this;
-    }
-
-    /// <summary>Converts this object to a text string of the media type it
-    /// represents, in the same form as <c>MediaType.ToString</c>.</summary>
-    /// <returns>A string representation of this object.</returns>
-    public override string ToString() {
-      return this.ToMediaType().ToString();
-    }
-  }
   }
 }

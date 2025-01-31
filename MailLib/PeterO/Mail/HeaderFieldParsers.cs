@@ -21,10 +21,10 @@ namespace PeterO.Mail {
       public string DecodeEncodedWords(string str) {
         // For unstructured header fields.
         return Rfc2047.DecodeEncodedWords(
-          str,
-          0,
-          str.Length,
-          EncodedWordContext.Unstructured);
+            str,
+            0,
+            str.Length,
+            EncodedWordContext.Unstructured);
       }
 
       public bool IsStructured() {
@@ -55,9 +55,9 @@ namespace PeterO.Mail {
             int startIndex = token[1];
             endIndex = token[2];
             string groupList = HeaderParserUtility.ParseGroupList(
-              str,
-              startIndex,
-              endIndex);
+                str,
+                startIndex,
+                endIndex);
             groupList = ParserUtility.TrimSpaceAndTab(groupList);
             groups.Add(groupList);
           }
@@ -162,17 +162,17 @@ namespace PeterO.Mail {
         int startIndex,
         int endIndex) {
         string domain = HeaderParserUtility.ParseDomain(
-          str,
-          startIndex,
-          endIndex);
+            str,
+            startIndex,
+            endIndex);
         // NOTE: "domain" can include domain literals, enclosed
         // in brackets; they are invalid under
         // "IsValidDomainName" .
         domain = (Message.HasTextToEscape(domain) &&
-            Idna.IsValidDomainName(domain, false)) ?
+          Idna.IsValidDomainName(domain, false)) ?
           Idna.EncodeDomainName(domain) : str.Substring(
-            startIndex,
-            endIndex - startIndex);
+          startIndex,
+          endIndex - startIndex);
         return Message.HasTextToEscape(domain) ? null : domain;
       }
 
@@ -269,9 +269,9 @@ namespace PeterO.Mail {
               // At least some of the domains could not
               // be converted to ASCII
               originalGroups = originalGroups ?? shf.ParseGroupLists(
-                originalString,
-                0,
-                originalString.Length);
+                  originalString,
+                  0,
+                  originalString.Length);
               enc.AppendString(str, lastIndex, displayNameEnd);
               enc.AppendSpace();
               enc.AppendAsEncodedWords(originalGroups[groupIndex]);
@@ -411,8 +411,8 @@ namespace PeterO.Mail {
             if (nonasciiLocalPart) {
               if (!hasPhrase) {
                 string addrSpec = str.Substring(
-                  token[1],
-                  token[2] - token[1]);
+                    token[1],
+                    token[2] - token[1]);
                 enc.AppendString(str, lastIndex, startIndex);
                 enc.AppendSpace();
                 enc.AppendAsEncodedWords(addrSpec);
@@ -422,34 +422,34 @@ namespace PeterO.Mail {
                 // Has a phrase, extract the addr-specification and convert
                 // the mailbox to a group
                 int angleAddrStart = HeaderParser.ParsePhrase(
-                  str,
-                  token[1],
-                  token[2],
-                  null);
+                    str,
+                    token[1],
+                    token[2],
+                    null);
                 // append the rest of the string so far up to and
                 // including the phrase
                 enc.AppendString(str, lastIndex, angleAddrStart);
                 int addrSpecStart = HeaderParser.ParseCFWS(
-                  str,
-                  angleAddrStart,
-                  token[2],
-                  null);
+                    str,
+                    angleAddrStart,
+                    token[2],
+                    null);
                 if (addrSpecStart < token[2] && str[addrSpecStart] == '<') {
                   ++addrSpecStart;
                 }
                 addrSpecStart = HeaderParser.ParseObsRoute(
-                  str,
-                  addrSpecStart,
-                  token[2],
-                  null);
+                    str,
+                    addrSpecStart,
+                    token[2],
+                    null);
                 int addrSpecEnd = HeaderParser.ParseAddrSpec(
-                  str,
-                  addrSpecStart,
-                  token[2],
-                  null);
+                    str,
+                    addrSpecStart,
+                    token[2],
+                    null);
                 string addrSpec = str.Substring(
-                  addrSpecStart,
-                  addrSpecEnd - addrSpecStart);
+                    addrSpecStart,
+                    addrSpecEnd - addrSpecStart);
                 enc.AppendSpaceIfNeeded();
                 enc.AppendAsEncodedWords(addrSpec);
                 enc.AppendSpace();
@@ -504,7 +504,7 @@ namespace PeterO.Mail {
         if (endIndex != str.Length) {
           // The header field is syntactically invalid,
           // so don't decode any encoded words
-          // DebugUtility.Log("Invalid syntax: " + this.GetType().Name +
+          // Console.WriteLine("Invalid syntax: " + this.GetType().Name +
           // ", " + str);
           return str;
         }
@@ -512,7 +512,7 @@ namespace PeterO.Mail {
         // Get each relevant token sorted by starting index
         IList<int[]> tokens = tokener.GetTokens();
         foreach (int[] token in tokens) {
-          // DebugUtility.Log("" + token[0] + " [" +
+          // Console.WriteLine("" + token[0] + " [" +
           // (str.Substring(token[1],token[2]-token[1])) + "]");
           if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
             lastIndex) {
@@ -520,10 +520,10 @@ namespace PeterO.Mail {
             int startIndex = token[1];
             endIndex = token[2];
             string newComment = Rfc2047.DecodeEncodedWords(
-              str,
-              startIndex + 1,
-              endIndex - 1,
-              EncodedWordContext.Comment);
+                str,
+                startIndex + 1,
+                endIndex - 1,
+                EncodedWordContext.Comment);
             sb.Append(str.Substring(lastIndex, startIndex + 1 - lastIndex));
             sb.Append(newComment);
             lastIndex = endIndex - 1;
@@ -532,11 +532,11 @@ namespace PeterO.Mail {
             int startIndex = token[1];
             endIndex = token[2];
             string newComment = Rfc2047.DecodePhraseText(
-              str,
-              startIndex,
-              endIndex,
-              tokens,
-              true);
+                str,
+                startIndex,
+                endIndex,
+                tokens,
+                true);
             sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
             sb.Append(newComment);
             lastIndex = endIndex;
@@ -603,10 +603,10 @@ namespace PeterO.Mail {
           return false;
         }
         index = HeaderParser.ParseCFWS(
-          str,
-          si,
-          endIndex,
-          null);
+            str,
+            si,
+            endIndex,
+            null);
         return index == endIndex;
       }
 
@@ -617,9 +617,9 @@ namespace PeterO.Mail {
           name.Length + 2);
         str = HeaderEncoder.TrimLeadingFWS(str);
         str = StructuredHeaderField.DowngradeHeaderFieldValue(
-          enc,
-          this,
-          str);
+            enc,
+            this,
+            str);
         if (this.Parse(str, 0, str.Length, null) != str.Length) {
           // The header field is syntactically invalid,
           // so downgrading is not possible
@@ -632,26 +632,26 @@ namespace PeterO.Mail {
         int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.Length, null);
         while (index < header.Length) {
           int newindex = HeaderParser.ParseReceivedToken(
-            header,
-            index,
-            header.Length,
-            null);
-          if (newindex == index) {
-            tokenEnd = HeaderParser.ParseCFWS(
               header,
               index,
               header.Length,
               null);
+          if (newindex == index) {
+            tokenEnd = HeaderParser.ParseCFWS(
+                header,
+                index,
+                header.Length,
+                null);
             sb.Append(header.Substring(index, tokenEnd - index));
             break;
           }
           if (IsCFWSWordCFWS(header, index, newindex, "for")) {
             var tokener = new Tokener();
             int clauseEnd = HeaderParser.ParseReceivedToken(
-              header,
-              newindex,
-              header.Length,
-              tokener);
+                header,
+                newindex,
+                header.Length,
+                tokener);
             IList<int[]> tokens = tokener.GetTokens();
             var notGoodLocalPart = false;
             foreach (int[] token in tokens) {
@@ -670,10 +670,10 @@ namespace PeterO.Mail {
             index = clauseEnd;
           } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
             int clauseEnd = HeaderParser.ParseReceivedToken(
-              header,
-              newindex,
-              header.Length,
-              null);
+                header,
+                newindex,
+                header.Length,
+                null);
             if (Message.HasTextToEscape(header, index, clauseEnd)) {
               changed = true;
             } else {
@@ -691,7 +691,7 @@ namespace PeterO.Mail {
           receivedPart = TrimFWSFromRight(receivedPart);
           return new HeaderEncoder().AppendFieldName(name)
             .AppendString(receivedPart + datePart).ToString();
-          } else {
+        } else {
           return new HeaderEncoder().AppendFieldName(name).ToString() +
             str;
         }
@@ -770,7 +770,7 @@ namespace PeterO.Mail {
           index = HeaderParser.ParseFWS(str, index, str.Length, null);
           int c = str[index];
           if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length && (c &
-              0xfc00) == 0xdc00) {
+            0xfc00) == 0xdc00) {
             sstr = str.Substring(index, 2);
             enc.AppendSymbol(sstr);
             index += 2;
@@ -955,7 +955,7 @@ namespace PeterO.Mail {
         // they send (especially to add or remove whitespace in header
         // field values) except to add certain header fields at the top of
         // the message.
-        // DebugUtility.Log("before = "+str);
+        // Console.WriteLine("before = "+str);
         string lcname = DataUtilities.ToLowerCaseAscii(name);
         var enc = new HeaderEncoder(
           Message.MaxRecHeaderLineLength,
@@ -967,7 +967,7 @@ namespace PeterO.Mail {
         } else {
           str = HeaderFieldParsers.DowngradeListHeader(enc, str);
         }
-        // DebugUtility.Log("after = "+str);
+        // Console.WriteLine("after = "+str);
         return new HeaderEncoder().AppendFieldName(name) + str;
       }
 
@@ -1034,11 +1034,11 @@ namespace PeterO.Mail {
         si = HeaderParser.ParseFWS(str, si, endIndex, tokener);
         var parameters = new Dictionary<string, string>();
         int ret = MediaType.ParseParameters(
-          str,
-          si,
-          endIndex,
-          false,
-          parameters) ? endIndex : index;
+            str,
+            si,
+            endIndex,
+            false,
+            parameters) ? endIndex : index;
         if (ret != endIndex) {
           return index;
         }
@@ -1071,8 +1071,8 @@ namespace PeterO.Mail {
           return index;
         }
         int ret = (cd.DispositionType.Equals("no", StringComparison.Ordinal) ||
-            cd.DispositionType.Equals("yes",
-              StringComparison.Ordinal)) ? endIndex : index;
+          cd.DispositionType.Equals("yes",
+            StringComparison.Ordinal)) ? endIndex : index;
         if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
             str,
@@ -1112,11 +1112,11 @@ namespace PeterO.Mail {
             ++index;
             var parameters = new Dictionary<string, string>();
             index = MediaType.ParseParameters(
-              str,
-              index,
-              endIndex,
-              false,
-              parameters) ? endIndex : indexStart;
+                str,
+                index,
+                endIndex,
+                false,
+                parameters) ? endIndex : indexStart;
             if (index == endIndex) {
               HeaderParserUtility.TraverseCFWSAndQuotedStrings(
                 str,
@@ -1141,10 +1141,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentReturn(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1155,10 +1155,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDeliveryDate(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1179,10 +1179,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderImportance(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1193,10 +1193,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderSensitivity(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1207,10 +1207,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentIdentifier(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1221,10 +1221,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400Received(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1235,10 +1235,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400MtsIdentifier(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1249,10 +1249,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderTlsRequired(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1263,10 +1263,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400Originator(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1277,10 +1277,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400Recipients(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1291,10 +1291,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderConversion(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1305,10 +1305,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderConversionWithLoss(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1319,10 +1319,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderSupersedes(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1333,10 +1333,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAutoforwarded(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1347,10 +1347,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentTranslationType(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1361,10 +1361,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderGenerateDeliveryReport(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1375,10 +1375,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderIncompleteCopy(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1390,10 +1390,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1404,10 +1404,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAlternateRecipient(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1418,10 +1418,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDiscloseRecipients(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1432,10 +1432,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderExpandedDate(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1446,10 +1446,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderNewsgroups(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1480,10 +1480,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDistribution(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1494,10 +1494,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderFollowupTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1508,10 +1508,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderInjectionDate(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1522,10 +1522,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderUserAgent(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1546,10 +1546,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderNntpPostingHost(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1560,10 +1560,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAcceptLanguage(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1574,10 +1574,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderArchivedAt(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1589,10 +1589,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderArcAuthenticationResults(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1603,10 +1603,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAuthenticationResults(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1627,10 +1627,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderCancelLock(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1641,10 +1641,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderCancelKey(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1655,10 +1655,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderTlsReportDomain(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1669,10 +1669,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderTlsReportSubmitter(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1703,10 +1703,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentBase(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1717,10 +1717,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentDuration(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1731,10 +1731,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentId(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1745,10 +1745,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentLanguage(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1759,10 +1759,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentLocation(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1773,10 +1773,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentMd5(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1787,10 +1787,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentTransferEncoding(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1811,10 +1811,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDeferredDelivery(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1826,10 +1826,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationOptions(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1841,10 +1841,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1855,10 +1855,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsAuthorizingUsers(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1869,10 +1869,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDkimSignature(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1883,10 +1883,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderArcMessageSignature(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1907,10 +1907,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderEdiintFeatures(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1921,10 +1921,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderEesstVersion(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1945,10 +1945,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderEncrypted(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1969,10 +1969,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderInReplyTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2013,10 +2013,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderLatestDeliveryTime(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2037,10 +2037,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderListUnsubscribePost(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2051,10 +2051,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMessageContext(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2065,10 +2065,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMessageId(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2079,10 +2079,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMimeVersion(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2094,10 +2094,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsAcp127MessageIdentifier(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2109,10 +2109,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCodressMessageIndicator(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2123,10 +2123,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCopyPrecedence(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2137,10 +2137,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExemptedAddress(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2152,10 +2152,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExtendedAuthorisationInfo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2167,10 +2167,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsHandlingInstructions(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2181,10 +2181,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageInstructions(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2195,10 +2195,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageType(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2209,10 +2209,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorPlad(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2223,10 +2223,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorReference(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2238,10 +2238,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorCc(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2253,10 +2253,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2267,10 +2267,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsPrimaryPrecedence(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2282,10 +2282,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsSubjectIndicatorCodes(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2296,10 +2296,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMtPriority(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2310,10 +2310,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderObsoletes(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2324,10 +2324,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderOriginalRecipient(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2338,10 +2338,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderReceivedSpf(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2353,10 +2353,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderRequireRecipientValidSince(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2377,10 +2377,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderReturnPath(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2401,10 +2401,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderSolicitation(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2435,10 +2435,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXArchivedAt(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2449,10 +2449,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXRicevuta(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2463,10 +2463,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXTiporicevuta(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2477,10 +2477,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXTrasporto(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2491,10 +2491,10 @@ namespace PeterO.Mail {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXVerificasicurezza(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 

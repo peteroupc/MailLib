@@ -133,7 +133,7 @@ private ProtocolStrings() {
       if (preserveCase) {
         return (str == null) ? null :
           Idna.UsernameCasePreservedEnforce(str);
-        } else {
+      } else {
         return (str == null) ? null : Idna.UsernameCaseMappedEnforce(str);
       }
     }

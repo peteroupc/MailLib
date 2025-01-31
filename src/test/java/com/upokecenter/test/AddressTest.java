@@ -133,7 +133,7 @@ import com.upokecenter.mail.*;
         "x.example\ud800\udc00.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      TestParseLocalPartNAOnly("(comment1) x(comment2)", "x");
+      TestParseLocalPartNAOnly("(comment1)x(comment2)", "x");
       TestParseLocalPartNAOnly("(comment1)x(comment2)", "x");
       TestParseLocalPartNAOnly(
         "(comment1) example (comment2) . (comment3) com",

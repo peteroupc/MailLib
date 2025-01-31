@@ -113,7 +113,7 @@ import com.upokecenter.text.*;
         return true;
       }
       return (com.upokecenter.util.DataUtilities.GetUtf8Length(domain2, true) >
-          Message.MaxHardHeaderLineLength - 1) ? true : false;
+        Message.MaxHardHeaderLineLength - 1) ? true : false;
     }
 
     /**
@@ -168,10 +168,10 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("Address doesn't contain a '@'sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
-        addressValue,
-        0,
-        addressValue.length(),
-        null);
+          addressValue,
+          0,
+          addressValue.length(),
+          null);
       if (localPartEnd == 0) {
         throw new IllegalArgumentException("Invalid local part");
       }
@@ -183,21 +183,21 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("Expected domain after '@'");
       }
       int domainEnd = HeaderParser.ParseDomainNoCfws(
-        addressValue,
-        localPartEnd + 1,
-        addressValue.length(),
-        null);
+          addressValue,
+          localPartEnd + 1,
+          addressValue.length(),
+          null);
       if (domainEnd != addressValue.length()) {
         throw new IllegalArgumentException("Invalid domain");
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(
-        addressValue,
-        0,
-        localPartEnd);
+          addressValue,
+          0,
+          localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(
-        addressValue,
-        localPartEnd + 1,
-        addressValue.length());
+          addressValue,
+          localPartEnd + 1,
+          addressValue.length());
       // Check length restrictions.
       if (this.IsTooLong()) {
         throw new IllegalArgumentException("Address too long");

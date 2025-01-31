@@ -63,20 +63,20 @@ namespace MailLibTest {
           Normalization.NFKD));
         // ASCII strings normalize to themselves
         string str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFC);
+            str,
+            Normalization.NFC);
         Assert.AreEqual(str, str2);
         str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFD);
+            str,
+            Normalization.NFD);
         Assert.AreEqual(str, str2);
         str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFKC);
+            str,
+            Normalization.NFKC);
         Assert.AreEqual(str, str2);
         str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFKD);
+            str,
+            Normalization.NFKD);
         Assert.AreEqual(str, str2);
       }
     }
@@ -92,8 +92,8 @@ namespace MailLibTest {
           Normalization.NFC));
         // Latin-1 strings normalize to themselves in NFC
         string str2 = NormalizerInput.Normalize(
-          str,
-          Normalization.NFC);
+            str,
+            Normalization.NFC);
         Assert.AreEqual(str, str2);
       }
     }

@@ -43,7 +43,8 @@ private FormatFlowed() {
             lastI = i + 1;
             sb.append("&gt;");
             break;
-          default: break;
+          default:
+            break;
         }
       }
       if (lastI < str.length()) {
@@ -71,7 +72,7 @@ private FormatFlowed() {
       boolean haveParagraph = false;
       while (i <= str.length()) {
         if (i == str.length() || (str.charAt(i) == 0x0d && i + 1 < str.length() &&
-            str.charAt(i + 1) == 0x0a)) {
+          str.charAt(i + 1) == 0x0a)) {
           boolean lastLine = i == str.length();
           int lineEnd = i;
           int index = lineStart;
@@ -247,7 +248,7 @@ private FormatFlowed() {
       }
       int index = 0;
       while (index < str.length() && (str.charAt(index) == ' ' ||
-          str.charAt(index) == '\t')) {
+        str.charAt(index) == '\t')) {
         ++index;
       }
       if (index == 0 || index == str.length()) {
@@ -272,7 +273,7 @@ private FormatFlowed() {
         int titleEnd = index;
         ++index;
         while (index < str.length() && (str.charAt(index) == ' ' ||
-            str.charAt(index) == '\t')) {
+          str.charAt(index) == '\t')) {
           ++index;
         }
         return (
@@ -305,7 +306,7 @@ private FormatFlowed() {
         ++index;
         int tmp = index;
         while (index < str.length() && (str.charAt(index) == ' ' ||
-            str.charAt(index) == '\t')) {
+          str.charAt(index) == '\t')) {
           ++index;
         }
         if (tmp == index) {
@@ -527,7 +528,7 @@ private FormatFlowed() {
             }
           }
           if (qi < urlText.length() && (urlText.charAt(qi) == '"' ||
-              (extended && (urlText.charAt(qi) == '\'' || urlText.charAt(qi) == '\u0028')))) {
+            (extended && (urlText.charAt(qi) == '\'' || urlText.charAt(qi) == '\u0028')))) {
             char startDelim = urlText.charAt(qi);
             ++qi;
             int possibleTitleStart = qi;
@@ -789,10 +790,10 @@ private FormatFlowed() {
           int qi = i + 1;
           boolean plausibleTag = false;
           if (qi < str.length() && (
-              (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
-              (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
-              (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
-              (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
+            (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
+            (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
+            (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
+            (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
             {
               plausibleTag = true;
             }
@@ -885,10 +886,10 @@ private FormatFlowed() {
           int linkEnd = linkStart;
           boolean plausibleTag = false;
           if (qi < str.length() && (
-              (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
-              (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
-              (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
-              (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
+            (str.charAt(qi) >= '0' && str.charAt(qi) <= '9') ||
+            (str.charAt(qi) >= 'A' && str.charAt(qi) <= 'Z') ||
+            (str.charAt(qi) >= 'a' && str.charAt(qi) <= 'z') ||
+            (str.charAt(qi) == '_') || (str.charAt(qi) == '/'))) {
             {
               plausibleTag = true;
             }

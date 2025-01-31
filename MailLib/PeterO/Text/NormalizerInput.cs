@@ -100,10 +100,10 @@ namespace PeterO.Text {
       }
       #endif
       int offset = UnicodeDatabase.GetDecomposition(
-        ch,
-        compat,
-        buffer,
-        index);
+          ch,
+          compat,
+          buffer,
+          index);
       if (buffer[index] != ch) {
         var copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
@@ -182,7 +182,7 @@ namespace PeterO.Text {
       }
       var starterPos = 0;
       int retval = length;
-      // DebugUtility.Log ("buf=" + (EC(array,0,length)));
+      // Console.WriteLine ("buf=" + (EC(array,0,length)));
       int starter = array[0];
       int last = UnicodeDatabase.GetCombiningClass(starter);
       if (last != 0) {
@@ -242,7 +242,7 @@ namespace PeterO.Text {
         }
         last = valuecc;
       }
-      // DebugUtility.Log ("bufend=" + (EC (array, 0, length)));
+      // Console.WriteLine ("bufend=" + (EC (array, 0, length)));
       if (composed) {
         var j = 0;
         for (int i = 0; i < endPos; ++i) {
@@ -471,7 +471,7 @@ namespace PeterO.Text {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
-      // DebugUtility.Log (str);
+      // Console.WriteLine (str);
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       var lastQcsIndex = 0;
       var haveNonQcs = false;
@@ -487,7 +487,7 @@ namespace PeterO.Text {
         }
         var isQcs = false;
         if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask)
-            == str[i + 1])) {
+          == str[i + 1])) {
           // Quick check for an ASCII character (or Latin-1 in NFC) followed
           // by another
           // ASCII character (or Latin-1 in NFC) or the end of string.
@@ -514,7 +514,7 @@ namespace PeterO.Text {
         } else {
           haveNonQcs = true;
         }
-        // DebugUtility.Log ("ch=" + (// EC (c)) + " qcs=" + isQcs + " lastqcs="
+        // Console.WriteLine ("ch=" + (// EC (c)) + " qcs=" + isQcs + " lastqcs="
         // + lastQcs + " nqs=" + nonQcsStart);
         if (c >= 0x10000) {
           ++i;
@@ -683,7 +683,7 @@ namespace PeterO.Text {
       if (this.processedIndex == this.flushIndex && this.flushIndex == 0) {
         while (total < length) {
           int c = this.GetNextChar();
-          // DebugUtility.Log ("read: " + (EC(c)));
+          // Console.WriteLine ("read: " + (EC(c)));
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
@@ -695,14 +695,14 @@ namespace PeterO.Text {
             } else {
               while (total < length) {
                 int c2 = this.GetNextChar();
-                // DebugUtility.Log ("read in qcs: " + (EC (c)));
+                // Console.WriteLine ("read in qcs: " + (EC (c)));
                 if (c2 < 0) {
                   chars[index] = c;
                   ++total;
                   return total;
                 } else {
                   this.PrependTwo(c, c2);
-                  // DebugUtility.Log ("prepending: " + (EC (c)) + ", " + (EC
+                  // Console.WriteLine ("prepending: " + (EC (c)) + ", " + (EC
                   // (c2)));
                   break;
                 }
@@ -711,7 +711,7 @@ namespace PeterO.Text {
             }
           } else {
             this.PrependOne(c);
-            // DebugUtility.Log ("prepending: " + (EC (c)));
+            // Console.WriteLine ("prepending: " + (EC (c)));
             break;
           }
         }
@@ -721,12 +721,12 @@ namespace PeterO.Text {
       }
       do {
         count = Math.Min(
-          this.processedIndex - this.flushIndex,
-          length - total);
+            this.processedIndex - this.flushIndex,
+            length - total);
         if (count < 0) {
           count = 0;
         }
-        // DebugUtility.Log ("B count=" + count);
+        // Console.WriteLine ("B count=" + count);
         if (count != 0) {
           // Fill buffer with processed code points
           Array.Copy(this.buffer, this.flushIndex, chars, index, count);
@@ -744,7 +744,7 @@ namespace PeterO.Text {
         // buffer have been fully processed
         while (total < length && this.processedIndex == this.endIndex) {
           int c = this.GetNextChar();
-          // DebugUtility.Log ("B read: " + (EC(c)));
+          // Console.WriteLine ("B read: " + (EC(c)));
           if (c < 0) {
             this.endOfString = true;
             break;
@@ -757,14 +757,14 @@ namespace PeterO.Text {
             } else {
               while (total < length) {
                 int c2 = this.GetNextChar();
-                // DebugUtility.Log ("B read in qcs: " + (EC(c)));
+                // Console.WriteLine ("B read in qcs: " + (EC(c)));
                 if (c2 < 0) {
                   chars[index] = c;
                   ++total;
                   return total;
                 } else {
                   this.PrependTwo(c, c2);
-                  // DebugUtility.Log ("B prepending: " + (EC(c)) + ", " +
+                  // Console.WriteLine ("B prepending: " + (EC(c)) + ", " +
                   // (// EC(c2)));
                   break;
                 }
@@ -773,7 +773,7 @@ namespace PeterO.Text {
             }
           } else {
             this.PrependOne(c);
-            // DebugUtility.Log ("B prepending: " + (EC(c)));
+            // Console.WriteLine ("B prepending: " + (EC(c)));
             break;
           }
         }
@@ -823,17 +823,17 @@ namespace PeterO.Text {
         // or the end of the string is reached.
         while (this.endIndex + 18 <= this.buffer.Length) {
           int c = this.GetNextChar();
-          // DebugUtility.Log ("C read: " + (EC(c)));
+          // Console.WriteLine ("C read: " + (EC(c)));
           if (c < 0) {
             this.endOfString = true;
             break;
           }
 
           this.endIndex = DecompToBuffer(
-            c,
-            this.compatMode,
-            this.buffer,
-            this.endIndex);
+              c,
+              this.compatMode,
+              this.buffer,
+              this.endIndex);
         }
         // Check for the last quick-check starter if the
         // end of the string is not reached yet
@@ -847,16 +847,16 @@ namespace PeterO.Text {
               UnicodeDatabase.IsQuickCheckStarter(
                 this.buffer[i],
                 this.form)) {
-              // DebugUtility.Log ("" + (EC (buffer [i])) + " is qcs");
+              // Console.WriteLine ("" + (EC (buffer [i])) + " is qcs");
               if (decompForm) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
                 break;
               } else if (i + 1 < this.endIndex && (nextIsQCS ||
-                  UnicodeDatabase.IsQuickCheckStarter(
-                    this.buffer[i + 1],
-                    this.form))) {
-                // DebugUtility.Log ("" + (EC (buffer [i +
+                UnicodeDatabase.IsQuickCheckStarter(
+                  this.buffer[i + 1],
+                  this.form))) {
+                // Console.WriteLine ("" + (EC (buffer [i +
                 // 1])) + " (next) is qcs");
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
@@ -865,7 +865,7 @@ namespace PeterO.Text {
                 nextIsQCS = true;
               }
             } else {
-              // DebugUtility.Log ("" + (EC (buffer [i])) + " is not qcs");
+              // Console.WriteLine ("" + (EC (buffer [i])) + " is not qcs");
               nextIsQCS = false;
             }
           }
@@ -886,7 +886,7 @@ namespace PeterO.Text {
       }
       // No data in buffer
       if (this.endIndex == 0) {
-        // DebugUtility.Log ("no data");
+        // Console.WriteLine ("no data");
         return false;
       }
       this.flushIndex = 0;
@@ -899,8 +899,8 @@ namespace PeterO.Text {
         // Console.WriteLine("composing " + (EC (buffer, 0, lastQcsIndex)) +
         // " [" + this.form + "]");
         this.processedIndex = ComposeBuffer(
-          this.buffer,
-          this.lastQcsIndex);
+            this.buffer,
+            this.lastQcsIndex);
       } else {
         this.processedIndex = this.lastQcsIndex;
       }
@@ -991,7 +991,7 @@ namespace PeterO.Text {
           0xdfff) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c & 0x3ff) << 10) + (this.str[this.index + 1] &
-              0x3ff);
+            0x3ff);
           ++this.index;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate, return

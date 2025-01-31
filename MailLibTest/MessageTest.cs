@@ -114,7 +114,7 @@ namespace MailLibTest {
 
     [Test]
     public void TestMediaTypeEncodingSingle() {
-      SingleTestMediaTypeEncoding("xyz");
+      SingleTestMediaTypeEncoding("xy z");
       SingleTestMediaTypeEncoding("xy z");
       SingleTestMediaTypeEncoding("xy\u00a0z");
       SingleTestMediaTypeEncoding("xy\ufffdz");
@@ -136,9 +136,9 @@ namespace MailLibTest {
         Assert.Fail();
       }
       int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
-        ret,
-        false,
-        String.Empty);
+          ret,
+          false,
+          String.Empty);
       if (fmtresult == 1) {
         Console.WriteLine("fmtresult=1 for " +
           ret.Substring(0, Math.Min(ret.Length, 260)));
@@ -198,12 +198,12 @@ namespace MailLibTest {
         "y").SetParameter(
         "z",
         valueMessageString).ToString();
-      Assert.IsFalse(mtstring.Contains("\r\n\r\n", StringComparison.Ordinal));
+      Assert.IsFalse(mtstring.Contains("\r\n \r\n", StringComparison.Ordinal));
       Assert.IsFalse(mtstring.Contains("\r\n \r\n", StringComparison.Ordinal));
       {
         object objectTemp = valueMessageString;
         object objectTemp2 = MediaType.Parse(mtstring).GetParameter(
-            "z");
+          "z");
         Assert.AreEqual(objectTemp, objectTemp2, mtstring);
       }
       string msgstring = "MIME-Version: 1.0\r\nContent-Type: " +
@@ -211,9 +211,9 @@ namespace MailLibTest {
       Message mtmessage = MessageFromString(msgstring);
       {
         bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
-          msgstring,
-          false,
-          "TestGenerate") == 2;
+            msgstring,
+            false,
+            "TestGenerate") == 2;
         Assert.IsTrue(
           boolTemp,
           msgstring);
@@ -231,7 +231,7 @@ namespace MailLibTest {
         string msgtext = MessageGenerate(new Message().SetHeader(
           "from",
           "me@example.com")
-            .SetTextBody("Hello world."));
+          .SetTextBody("Hello world."));
         if (EncodingTest.IsGoodAsciiMessageFormat(
           msgtext,
           false,
@@ -283,8 +283,8 @@ namespace MailLibTest {
 
     private static byte[] BytesFromString(string str) {
       return DataUtilities.GetUtf8Bytes(
-        str,
-        true);
+          str,
+          true);
     }
 
     [Test]
@@ -451,15 +451,15 @@ namespace MailLibTest {
             msg.Parts[1].ContentDisposition = ContentDisposition.Inline;
             string bodyString = null;
             try {
-               bodyString = msg.Parts[1].GetBodyString();
+              bodyString = msg.Parts[1].GetBodyString();
             } catch (NotSupportedException nsex) {
-               Console.WriteLine("phase=" + phase + "\n" +
+              Console.WriteLine("phase=" + phase + "\n" +
                 stringPart + "\n" + msg.Parts[1].Generate());
-               throw new InvalidOperationException(String.Empty, nsex);
+              throw new InvalidOperationException(String.Empty, nsex);
             }
             if (!stringPart.Equals(bodyString, StringComparison.Ordinal)) {
               Assert.Fail("phase=" + phase + "\n" +
-                  stringPart + "\n" + bodyString);
+                stringPart + "\n" + bodyString);
             }
           }
         }
@@ -494,7 +494,7 @@ namespace MailLibTest {
       msg = ValueStartCTD +
 
         "Content-Type: text/plain;charset=utf-8\r\nContent-Type:" +
-"\u0020image/jpeg\r\n\r\n";
+        "\u0020image/jpeg\r\n\r\n";
 
       Assert.AreEqual(
         MediaType.ApplicationOctetStream,
@@ -510,7 +510,7 @@ namespace MailLibTest {
       // First header field is syntactically invalid
       msg = ValueStartCTD +
         "Content-Type: /plain;charset=utf-8\r\nContent-Type:" +
-"\u0020image/jpeg\r\n\r\n";
+        "\u0020image/jpeg\r\n\r\n";
       Assert.AreEqual(
         MediaType.TextPlainAscii,
         MessageFromString(msg).ContentType);
@@ -891,7 +891,7 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment",
-  "comment").GetHeader("x-comment");
+            "comment").GetHeader("x-comment");
         Assert.AreEqual(
           "comment",
           stringTemp);
@@ -908,8 +908,8 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "you@example.com").GetHeader(0).Key;
+            0,
+            "you@example.com").GetHeader(0).Key;
         Assert.AreEqual(
           "from",
           stringTemp);
@@ -917,8 +917,8 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "you@example.com").GetHeader(0).Value;
+            0,
+            "you@example.com").GetHeader(0).Value;
         Assert.AreEqual(
           "you@example.com",
           stringTemp);
@@ -926,9 +926,9 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "x-comment",
-              "comment").GetHeader(0).Key;
+            0,
+            "x-comment",
+            "comment").GetHeader(0).Key;
         Assert.AreEqual(
           "x-comment",
           stringTemp);
@@ -936,9 +936,9 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "x-comment",
-              "comment").GetHeader(0).Value;
+            0,
+            "x-comment",
+            "comment").GetHeader(0).Value;
         Assert.AreEqual(
           "comment",
           stringTemp);
@@ -1078,7 +1078,7 @@ namespace MailLibTest {
       msg = ValueMultipart +
 
         "\r\n--b\r\nContent-Type:" +
-"\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
+        "\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
         "\u00207bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
@@ -1149,8 +1149,7 @@ namespace MailLibTest {
       msg = ValueMultipart +
 
         "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom:" +
-"\u0020\"\ufffd\ufffd\"" +
-        "\u0020<me@example.com>\r\n\r\nX\r\n--b--";
+        "\u0020\"\ufffd\ufffd\"" + "\u0020<me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1163,9 +1162,9 @@ namespace MailLibTest {
       msg = ValueMultipart +
 
         "\r\n--b\r\nContent-Type:" +
-"\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
+        "\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
         "\u0020base64\r\n\r\nFrom: \"Me\"" +
-"\u0020<me@example.com>\r\n\r\nXX==\r\n--b--";
+        "\u0020<me@example.com>\r\n\r\nXX==\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1277,12 +1276,12 @@ namespace MailLibTest {
       {
         object objectTemp = body;
         object objectTemp2 = DataUtilities.GetUtf8String(
-          msg2.GetBody(),
-          false);
+            msg2.GetBody(),
+            false);
         Assert.AreEqual(
           objectTemp,
           objectTemp2);
-}
+      }
       body = EncodingTest.Repeat(
           EncodingTest.Repeat("a", 76) + "\r\n",
           20) + "\u00e7\r\nthe end";
@@ -2480,31 +2479,31 @@ namespace MailLibTest {
       string msg;
       msg = "From: x1@example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-  "from");
+        "from");
       Assert.AreEqual("x1@example.com, x2@example.com", msg);
       msg = "To: x1@example.com\r\nTo: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "to");
+        "to");
       Assert.AreEqual("x1@example.com, x2@example.com", msg);
       msg = "Cc: x1@example.com\r\nCc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "cc");
+        "cc");
       Assert.AreEqual("x1@example.com, x2@example.com", msg);
       msg = "Bcc: x1@example.com\r\nBcc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "bcc");
+        "bcc");
       Assert.AreEqual("x1@example.com, x2@example.com", msg);
       msg = "Reply-To: x1@example.com\r\nReply-To: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "reply-to");
+        "reply-to");
       Assert.AreEqual("x1@example.com, x2@example.com", msg);
       msg = "Resent-To: x1@example.com\r\nResent-To: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "resent-to");
+        "resent-to");
       Assert.AreEqual("x1@example.com, x2@example.com", msg);
       msg = "Resent-Cc: x1@example.com\r\nResent-Cc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "resent-cc");
+        "resent-cc");
       Assert.AreEqual("x1@example.com, x2@example.com", msg);
       msg = "Resent-Bcc: x1@example.com\r\nResent-Bcc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate())
@@ -2513,13 +2512,13 @@ namespace MailLibTest {
       // Invalid header fields
       msg = "From: x1@example.com\r\nFrom: x2.example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-  "from");
+        "from");
       Assert.AreEqual(
         "x1@example.com",
         msg);
       msg = "From: x1.example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-  "from");
+        "from");
       Assert.AreEqual(
         "x2@example.com",
         msg);
@@ -2940,7 +2939,7 @@ namespace MailLibTest {
     [Test]
     public void TestSetHeader() {
       try {
-        new Message().SetHeader("from", "\"a\r\nb\" <x@example.com>");
+        new Message().SetHeader("from", "\"a\r\n b\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -2949,7 +2948,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new Message().SetHeader("from", "\"a\rb\" <x@example.com>");
+        new Message().SetHeader("from", "\"a\r b\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty
@@ -3238,12 +3237,12 @@ namespace MailLibTest {
     public void TestSetHeaderAcceptLanguage() {
       var msg = new Message();
       TestSetHeaderOne(msg, "accept-language", "en-us");
-      TestSetHeaderOne(msg, "accept-language", "en-us\u002c de-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
       TestSetHeaderInvalid(msg, "accept-language", "enenenene-us\u002c de-de");
       TestSetHeaderInvalid(msg, "accept-language", "en-ususususu\u002c de-de");
       TestSetHeaderInvalid(msg, "accept-language", "en-us\u002c\u002c de-de");
-      TestSetHeaderOne(msg, "accept-language", "en-us\u002cde-de");
-      TestSetHeaderOne(msg, "accept-language", "en-us \u002cde-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
       TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
     }
 
@@ -3260,7 +3259,7 @@ namespace MailLibTest {
         "to",
         "\"Example E. Example\" <example@EXAMPLE.COM>");
       string hdrvalue = "\"Example, Example\"" +
-"\u0020<example@example.com>";
+        "\u0020<example@example.com>";
       TestSetHeaderOne(msg, "to", hdrvalue);
       TestSetHeaderOne(
         msg,
@@ -3343,8 +3342,8 @@ namespace MailLibTest {
       msg.AddHeader("to", "b@example.com");
       string msggen = msg.Generate();
       int io = msggen.IndexOf(
-        "To: a@example.com\u002c b@example.com",
-        StringComparison.Ordinal);
+          "To: a@example.com\u002c b@example.com",
+          StringComparison.Ordinal);
       Assert.AreEqual(
         -1,
         io);
@@ -3425,7 +3424,7 @@ namespace MailLibTest {
         Assert.Fail();
       }
       dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45" +
-"\u00202019");
+          "\u00202019");
       Assert.AreEqual(
         2019,
         dtime[0]);
@@ -3480,7 +3479,7 @@ namespace MailLibTest {
       Console.WriteLine(na);
       na = new NamedAddress("abc \"def\" ghi<me@example.com>");
       Console.WriteLine(na);
-      na = new NamedAddress("abc \"def\" ghi<m=e@example.com>");
+      na = new NamedAddress("abc\"def\"ghi<m=e@example.com>");
       Console.WriteLine(na);
       na = new NamedAddress("abc\"def\"ghi<m=e@example.com>");
       Console.WriteLine(na);

@@ -224,7 +224,7 @@ private MailDateTime() {
       }
       if (gmt && dateTime[7] != 0) {
         // Use time offset to convert local time to UTC/GMT
-        int newDateTime = new int[8];
+        int[] newDateTime = new int[8];
         System.arraycopy(dateTime, 0, newDateTime, 0, 7);
         AddMinutes(newDateTime, -dateTime[7]);
         dateTime = newDateTime;
@@ -313,7 +313,7 @@ private MailDateTime() {
       if (((str) == null || (str).length() == 0)) {
         return null;
       }
-      int ret = new int[8];
+      int[] ret = new int[8];
       if (ParseHeaderExpandedDate(
         str,
         0,
@@ -540,7 +540,7 @@ private MailDateTime() {
         yearDigits = 0;
         year = 0;
         if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
-            (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
+          (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
           year *= 10;
           year += ((int)str.charAt(index)) - 48;
           year *= 10;
@@ -595,7 +595,7 @@ private MailDateTime() {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         hour = minute = second = 0;
         if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
-            (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
+          (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
           hour *= 10;
           hour += ((int)str.charAt(index)) - 48;
           hour *= 10;
@@ -619,7 +619,7 @@ private MailDateTime() {
         // System.out.println("zone " + (str.substring(index)));
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
-            (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
+          (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
           minute *= 10;
           minute += ((int)str.charAt(index)) - 48;
           minute *= 10;
@@ -648,7 +648,7 @@ private MailDateTime() {
             }
             index = HeaderParser.ParseCFWS(str, index, endIndex, null);
             if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <=
-                  57) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
+              57) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
               second *= 10;
               second += ((int)str.charAt(index)) - 48;
               second *= 10;
@@ -697,7 +697,7 @@ private MailDateTime() {
               }
               boolean minus = false;
               if (index < endIndex && ((str.charAt(index) == 43) || (str.charAt(index) ==
-                    45))) {
+                45))) {
                 minus = str.charAt(index) == 45;
                 ++index;
               } else {
@@ -705,9 +705,9 @@ private MailDateTime() {
                 break;
               }
               if (index + 3 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index)
-                    <= 57) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57) ||
-                  (str.charAt(index + 2) >= 48 && str.charAt(index + 2) <= 57) || (str.charAt(index +
-                      3) >= 48 && str.charAt(index + 3) <= 57))) {
+                <= 57) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57) ||
+                (str.charAt(index + 2) >= 48 && str.charAt(index + 2) <= 57) || (str.charAt(index +
+                3) >= 48 && str.charAt(index + 3) <= 57))) {
                 int offsethr = (((int)str.charAt(index) - 48) * 10) +
                   ((int)str.charAt(index + 1) - 48);
                 int offsetmin = (((int)str.charAt(index + 2) - 48) * 10) +
@@ -789,10 +789,9 @@ private MailDateTime() {
                     offset = -7 * 60;
                     indexTemp4 += 3;
                   } else if (index < endIndex && ((str.charAt(index) >= 65 &&
-                        str.charAt(index) <= 73) || (str.charAt(index) >= 75 && str.charAt(index)
-<= 90) ||
-                      (str.charAt(index) >= 97 && str.charAt(index) <= 105) || (str.charAt(index)
-                        >= 107 && str.charAt(index) <= 122))) {
+                    str.charAt(index) <= 73) || (str.charAt(index) >= 75 && str.charAt(index)
+                      <= 90) || (str.charAt(index) >= 97 && str.charAt(index) <= 105) ||
+                    (str.charAt(index) >= 107 && str.charAt(index) <= 122))) {
                     offset = 0;
                     ++indexTemp4;
                   }
@@ -864,26 +863,26 @@ private MailDateTime() {
       int index = 0;
       int endIndex = v.length();
       if (endIndex - index > 28 && ((v.charAt(index) >= 33 && v.charAt(index) <= 126) &&
-          (v.charAt(index + 1) >= 33 && v.charAt(index + 1) <= 126) && (v.charAt(index + 2) >= 33 &&
-            v.charAt(index + 2) <= 126)) && (endIndex - index > 4 && v.charAt(index + 3) ==
+        (v.charAt(index + 1) >= 33 && v.charAt(index + 1) <= 126) && (v.charAt(index + 2) >= 33 &&
+        v.charAt(index + 2) <= 126)) && (endIndex - index > 4 && v.charAt(index + 3) ==
           44 && v.charAt(index + 4) == 32) && ((v.charAt(index + 5) >= 48 && v.charAt(index + 5) <=
-            57) && (v.charAt(index + 6) >= 48 && v.charAt(index + 6) <= 57)) && (v.charAt(index + 7)
+        57) && (v.charAt(index + 6) >= 48 && v.charAt(index + 6) <= 57)) && (v.charAt(index + 7)
           == 32) && ((v.charAt(index + 8) >= 33 && v.charAt(index + 8) <= 126) && (v.charAt(index +
-              9) >= 33 && v.charAt(index + 9) <= 126) && (v.charAt(index + 10) >= 33 &&
-v.charAt(index +
-              10) <= 126)) && (v.charAt(index + 11) == 32) && ((v.charAt(index + 12) >= 48 &&
+        9) >= 33 && v.charAt(index + 9) <= 126) && (v.charAt(index + 10) >= 33 &&
+          v.charAt(index +
+            10) <= 126)) && (v.charAt(index + 11) == 32) && ((v.charAt(index + 12) >= 48 &&
             v.charAt(index + 12) <= 57) && (v.charAt(index + 13) >= 48 && v.charAt(index + 13) <=
-57) &&
+            57) &&
           (v.charAt(index + 14) >= 48 && v.charAt(index + 14) <= 57) && (v.charAt(index + 15) >=
-            48 && v.charAt(index + 15) <= 57)) && (v.charAt(index + 16) == 32) && ((v.charAt(index +
+        48 && v.charAt(index + 15) <= 57)) && (v.charAt(index + 16) == 32) && ((v.charAt(index +
               17) >= 48 && v.charAt(index + 17) <= 57) && (v.charAt(index + 18) >= 48 &&
-v.charAt(index +
+            v.charAt(index +
               18) <= 57)) && (v.charAt(index + 19) == 58) && ((v.charAt(index + 20) >= 48 &&
             v.charAt(index + 20) <= 57) && (v.charAt(index + 21) >= 48 && v.charAt(index + 21) <=
             57)) && (v.charAt(index + 22) == 58) && ((v.charAt(index + 23) >= 48 && v.charAt(index +
               23) <= 57) && (v.charAt(index + 24) >= 48 && v.charAt(index + 24) <= 57)) &&
         (v.charAt(index + 25) == 32) && (v.charAt(index + 26) == 71) && (v.charAt(index + 27) ==
-          77) && (v.charAt(index + 28) == 84)) {
+        77) && (v.charAt(index + 28) == 84)) {
         if (index + 29 != endIndex) {
           return null;
         }
@@ -904,27 +903,26 @@ v.charAt(index +
         int second = ((v.charAt(index + 23) - '0') * 10) + (v.charAt(index + 24) - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
         return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret :
-null;
+          null;
       }
       // ASCTIME
       if (endIndex - index > 23 && ((v.charAt(index) >= 33 && v.charAt(index) <= 126) &&
-          (v.charAt(index + 1) >= 33 && v.charAt(index + 1) <= 126) && (v.charAt(index + 2) >= 33 &&
-            v.charAt(index + 2) <= 126)) && (v.charAt(index + 3) == 32) && ((v.charAt(index + 4)
+        (v.charAt(index + 1) >= 33 && v.charAt(index + 1) <= 126) && (v.charAt(index + 2) >= 33 &&
+        v.charAt(index + 2) <= 126)) && (v.charAt(index + 3) == 32) && ((v.charAt(index + 4)
             >= 33 && v.charAt(index + 4) <= 126) && (v.charAt(index + 5) >= 33 && v.charAt(index + 5)
             <= 126) && (v.charAt(index + 6) >= 33 && v.charAt(index + 6) <= 126)) &&
-(v.charAt(index +
-            7) == 32) && ((v.charAt(index + 8) >= 48 && v.charAt(index + 8) <= 57) ||
-          (v.charAt(index + 8) == 32)) && (v.charAt(index + 9) >= 48 && v.charAt(index + 9) <= 57) &&
+        (v.charAt(index + 7) == 32) && ((v.charAt(index + 8) >= 48 && v.charAt(index + 8) <= 57) ||
+        (v.charAt(index + 8) == 32)) && (v.charAt(index + 9) >= 48 && v.charAt(index + 9) <= 57) &&
         (v.charAt(index + 10) == 32) && ((v.charAt(index + 11) >= 48 && v.charAt(index + 11)
-            <= 57) && (v.charAt(index + 12) >= 48 && v.charAt(index + 12) <= 57)) &&
-(v.charAt(index +
+        <= 57) && (v.charAt(index + 12) >= 48 && v.charAt(index + 12) <= 57)) &&
+        (v.charAt(index +
             13) == 58) && ((v.charAt(index + 14) >= 48 && v.charAt(index + 14) <= 57) &&
           (v.charAt(index + 15) >= 48 && v.charAt(index + 15) <= 57)) && (v.charAt(index + 16) ==
           58) && ((v.charAt(index + 17) >= 48 && v.charAt(index + 17) <= 57) && (v.charAt(index +
-              18) >= 48 && v.charAt(index + 18) <= 57)) && (v.charAt(index + 19) == 32) &&
+        18) >= 48 && v.charAt(index + 18) <= 57)) && (v.charAt(index + 19) == 32) &&
         ((v.charAt(index + 20) >= 48 && v.charAt(index + 20) <= 57) && (v.charAt(index + 21) >=
-            48 && v.charAt(index + 21) <= 57) && (v.charAt(index + 22) >= 48 && v.charAt(index + 22)
-            <= 57) && (v.charAt(index + 23) >= 48 && v.charAt(index + 23) <= 57))) {
+        48 && v.charAt(index + 21) <= 57) && (v.charAt(index + 22) >= 48 && v.charAt(index + 22)
+          <= 57) && (v.charAt(index + 23) >= 48 && v.charAt(index + 23) <= 57))) {
         if (index + 24 != endIndex) {
           return null;
         }
@@ -946,7 +944,7 @@ null;
         int second = ((v.charAt(index + 17) - '0') * 10) + (v.charAt(index + 18) - '0');
         int[] ret = { year, month, day, hour, minute, second, 0, 0 };
         return (dow == GetDayOfWeek(ret) && IsValidDateTime(ret)) ? ret :
-null;
+          null;
       }
       // RFC 850
       int dowLong = ParseDOWLong(v, index, endIndex);
@@ -956,23 +954,23 @@ null;
       String dowNameLong = dowNamesLong[dowLong];
       index += dowNameLong.length();
       if (endIndex - index > 23 && (endIndex - index > 1 && v.charAt(index) == 44 &&
-          v.charAt(index + 1) == 32) && ((v.charAt(index + 2) >= 48 && v.charAt(index + 2) <=
-            57) && (v.charAt(index + 3) >= 48 && v.charAt(index + 3) <= 57)) && (v.charAt(index + 4)
+        v.charAt(index + 1) == 32) && ((v.charAt(index + 2) >= 48 && v.charAt(index + 2) <=
+        57) && (v.charAt(index + 3) >= 48 && v.charAt(index + 3) <= 57)) && (v.charAt(index + 4)
           == 45) && ((v.charAt(index + 5) >= 33 && v.charAt(index + 5) <= 126) && (v.charAt(index +
-              6) >= 33 && v.charAt(index + 6) <= 126) && (v.charAt(index + 7) >= 33 &&
-v.charAt(index +
-              7) <= 126)) && (v.charAt(index + 8) == 45) && ((v.charAt(index + 9) >= 48 &&
+        6) >= 33 && v.charAt(index + 6) <= 126) && (v.charAt(index + 7) >= 33 &&
+          v.charAt(index +
+            7) <= 126)) && (v.charAt(index + 8) == 45) && ((v.charAt(index + 9) >= 48 &&
             v.charAt(index + 9) <= 57) && (v.charAt(index + 10) >= 48 && v.charAt(index + 10) <=
-57)) &&
+            57)) &&
         (v.charAt(index + 11) == 32) && ((v.charAt(index + 12) >= 48 && v.charAt(index + 12)
-            <= 57) && (v.charAt(index + 13) >= 48 && v.charAt(index + 13) <= 57)) &&
-(v.charAt(index +
+        <= 57) && (v.charAt(index + 13) >= 48 && v.charAt(index + 13) <= 57)) &&
+        (v.charAt(index +
             14) == 58) && ((v.charAt(index + 15) >= 48 && v.charAt(index + 15) <= 57) &&
           (v.charAt(index + 16) >= 48 && v.charAt(index + 16) <= 57)) && (v.charAt(index + 17) ==
           58) && ((v.charAt(index + 18) >= 48 && v.charAt(index + 18) <= 57) && (v.charAt(index +
-              19) >= 48 && v.charAt(index + 19) <= 57)) && (v.charAt(index + 20) == 32) &&
+        19) >= 48 && v.charAt(index + 19) <= 57)) && (v.charAt(index + 20) == 32) &&
         (v.charAt(index + 21) == 71) && (v.charAt(index + 22) == 77) && (v.charAt(index + 23) ==
-          84)) {
+        84)) {
         int idx = index + 2;
         index += 24;
         if (index != endIndex) {
@@ -998,7 +996,7 @@ v.charAt(index +
         }
         int[] ret = { convertedYear, month, day, hour, minute, second, 0, 0 };
         return (dowLong == GetDayOfWeek(ret) &&
-            IsValidDateTime(ret)) ? ret : null;
+          IsValidDateTime(ret)) ? ret : null;
       }
       return null;
     }

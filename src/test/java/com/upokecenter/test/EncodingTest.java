@@ -233,7 +233,7 @@ import com.upokecenter.text.*;
           ++wordLength;
           hasNonWhiteSpace = true;
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength &&
-              wordLength > 78);
+            wordLength > 78);
         }
         int maxLineLength = 998;
         if (!headers && (!hasLongWord && !hasMessageType)) {
@@ -1508,7 +1508,7 @@ import com.upokecenter.text.*;
           ("Downgraded-Original-Recipient: " + expected) +
           "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-        } else {
+      } else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
@@ -1898,7 +1898,7 @@ import com.upokecenter.text.*;
       TestDecodeQuotedPrintable(
         "te\r\nst",
         "te\r\nst");
-      TestDecodeQuotedPrintable("te=\r\nst", "test");
+      TestDecodeQuotedPrintable("te =\r\nst", "te st");
       TestDecodeQuotedPrintable(
         "te=xy",
         "te=xy");
@@ -1947,7 +1947,7 @@ import com.upokecenter.text.*;
       // See point 4 in the second numbered
       // list of section 6.7 of RFC 2045, which suggests excluding
       // bare CR and bare LF from the decoded data.
-      TestDecodeQuotedPrintable("te\rst", "test");
+      TestDecodeQuotedPrintable("te \rst", "te st");
       TestDecodeQuotedPrintable(
         "te\nst",
         "test");
@@ -1955,7 +1955,7 @@ import com.upokecenter.text.*;
       // case, the space/tab is kept, but not the CR or LF.
       // See point 4 of second numbered list and point
       // 3 of first numbered list.
-      TestDecodeQuotedPrintable("te \t\nst", "te \tst");
+      TestDecodeQuotedPrintable("te\t \nst", "te\t st");
       TestDecodeQuotedPrintable(
         "te \t\rst",
         "te \tst");
@@ -1994,8 +1994,8 @@ import com.upokecenter.text.*;
     }
     @Test
     public void TestNonLenientQuotedPrintable() {
-      TestFailQuotedPrintableNonLenient("te\rst");
-      TestFailQuotedPrintableNonLenient("te\nst");
+      TestFailQuotedPrintableNonLenient("te \rst");
+      TestFailQuotedPrintableNonLenient("te \nst");
       TestFailQuotedPrintableNonLenient("te=\rst");
       TestFailQuotedPrintableNonLenient("te=\nst");
       TestFailQuotedPrintableNonLenient("te=\r");
@@ -2067,11 +2067,11 @@ import com.upokecenter.text.*;
         " (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "=?bad?= " + expected +
-")comment) en",
+        ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
         ValuePar + "comment " + ValuePar + "" + expected +
-")comment) en",
+        ")comment) en",
         " (comment (" + input + ")comment) en");
       TestDecodeStructured(
         "(" + expected + "()) en",
@@ -2101,8 +2101,8 @@ import com.upokecenter.text.*;
           "\"X\" <y@example.com>";
         String strparam = "x <x@example.com>, \"X\" <y@example.com>";
         Object objectTemp2 = DowngradeHeaderField(
-          "to",
-          strparam);
+            "to",
+            strparam);
         Assert.assertEquals(
           objectTemp,
           objectTemp2);
@@ -2112,8 +2112,8 @@ import com.upokecenter.text.*;
           "=?utf-8?Q?=C2=BE?= <y@example.com>";
         String strparam = "x <x@example.com>, \u00be <y@example.com>";
         Object objectTemp2 = DowngradeHeaderField(
-          "to",
-          strparam);
+            "to",
+            strparam);
         Assert.assertEquals(
           objectTemp,
           objectTemp2);
@@ -2134,16 +2134,16 @@ import com.upokecenter.text.*;
         String hdrvalue = "x <x@example.com>" + ValueSep +
           "x\u00e1 x x\u00e1 <y@example.com>";
         Object objectTemp2 = DowngradeHeaderField(
-          "to",
-          hdrvalue);
+            "to",
+            hdrvalue);
         Assert.assertEquals(
           objectTemp,
           objectTemp2);
       }
       {
         String stringTemp = DowngradeHeaderField(
-          "to",
-          "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
+            "to",
+            "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
         {
           Object objectTemp =
             "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
@@ -2156,8 +2156,8 @@ import com.upokecenter.text.*;
       }
       {
         String stringTemp = DowngradeHeaderField(
-          "to",
-          "g: x@example.com" + ValueSep + "x@\u0300.example;");
+            "to",
+            "g: x@example.com" + ValueSep + "x@\u0300.example;");
         {
           Object objectTemp =
             "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
@@ -2172,8 +2172,8 @@ import com.upokecenter.text.*;
         String objectTemp = "g: x@example.com" + ValueSep +
           "x@xn--e-ufa.example;";
         Object objectTemp2 = DowngradeHeaderField(
-          "to",
-          "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
+            "to",
+            "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
         Assert.assertEquals(
           objectTemp,
           objectTemp2);
@@ -2272,7 +2272,7 @@ public final void setValueMessage(Message value) {
       System.out.println(headerValue);
       System.out.println(hinfo.getValueHeader());
       NamedAddress address = new NamedAddress(hinfo.getValueMessage().GetHeader(
-  headerName));
+        headerName));
       Assert.assertEquals(
         displayName,
         address.getDisplayName());
@@ -2611,10 +2611,10 @@ public final void setValueMessage(Message value) {
         "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       TestEncodedWordsPhrase(
         "x\u0020(sss)\u0020y",
-        "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "x\u0020(z)\u0020y",
-        "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
@@ -2631,7 +2631,7 @@ public final void setValueMessage(Message value) {
       TestEncodedWordsOne(
         "abcde",
         "abcde");
-      TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
+      TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
       TestEncodedWordsOne(
         "=?utf-8?Q?abcde?=extra",
         "=?utf-8?Q?abcde?=extra");
@@ -2812,9 +2812,9 @@ public final void setValueMessage(Message value) {
       TestEncodedBytesRoundTrip(com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, true), false);
       {
         byte[] objectTemp = com.upokecenter.util.DataUtilities.GetUtf8Bytes(
-          str,
-          true,
-          true);
+            str,
+            true,
+            true);
         TestEncodedBytesRoundTrip(
           objectTemp,
           true);
@@ -2823,9 +2823,9 @@ public final void setValueMessage(Message value) {
 
     private static byte[] RandomBytes(RandomGenerator rnd) {
       int count = 10 + rnd.UniformInt(350);
-      byte arr = new byte[count];
+      byte[] arr = new byte[count];
       for (int i = 0; i < count; ++i) {
-        arr.set(i, (byte)rnd.UniformInt(0x100));
+        arr[i] = (byte)rnd.UniformInt(0x100);
       }
       return arr;
     }
@@ -2846,14 +2846,14 @@ public final void setValueMessage(Message value) {
     public void TestEncodedBytesSpecific() {
       TestEncodedBytesRoundTrip("T \r");
       TestEncodedBytesRoundTrip("T \rA");
-      TestEncodedBytesRoundTrip("T \r\rA");
+      TestEncodedBytesRoundTrip("T \r\r A");
       TestEncodedBytesRoundTrip("T \r\r A");
       TestEncodedBytesRoundTrip("T \r\r\nA");
       TestEncodedBytesRoundTrip("T \r");
       TestEncodedBytesRoundTrip("T \r\r");
       TestEncodedBytesRoundTrip("The Best\r\nFrom Me");
       TestEncodedBytesRoundTrip("The Best\r\nGood ");
-      TestEncodedBytesRoundTrip("The Best\r\nFrom ");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom");
       TestEncodedBytesRoundTrip("The Best\r\nFrom");
       TestEncodedBytesRoundTrip("The Best\r\nFro");
       TestEncodedBytesRoundTrip("The Best\r\nFr");
@@ -2862,9 +2862,9 @@ public final void setValueMessage(Message value) {
       TestEncodedBytesRoundTrip("The Best\r\n-?");
       TestEncodedBytesRoundTrip("The Best\r\n--");
       TestEncodedBytesRoundTrip("The Best\r\n-");
-      TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFromMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nGood ");
-      TestEncodedBytesRoundTrip("T\u000best\r\nFrom ");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrom");
       TestEncodedBytesRoundTrip("T\u000best\r\nFro");
       TestEncodedBytesRoundTrip("T\u000best\r\nFr");

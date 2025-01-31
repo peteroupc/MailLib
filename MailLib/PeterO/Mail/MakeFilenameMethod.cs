@@ -145,8 +145,8 @@ namespace PeterO.Mail {
             if (str[index] == '?' && index + 1 < endIndex &&
               str[index + 1] == '=') {
               string charset = str.Substring(
-                charsetStart,
-                charsetEnd - charsetStart);
+                  charsetStart,
+                  charsetEnd - charsetStart);
               string data = str.Substring(dataStart, index - dataStart);
               index += 2;
               int endData = index;
@@ -163,16 +163,16 @@ namespace PeterO.Mail {
               }
               if (acceptedEncodedWord) {
                 IByteReader transform = (encoding == 1) ? (IByteReader)new
-BEncodingStringTransform(data) :
+                  BEncodingStringTransform(data) :
                   (IByteReader)new QEncodingStringTransform(data);
 
                 ICharacterEncoding charEncoding = Encodings.GetEncoding(
-                  charset,
-                  true);
+                    charset,
+                    true);
                 if (charEncoding != null) {
                   decodedWord = Encodings.DecodeToString(
-                    charEncoding,
-                    transform);
+                      charEncoding,
+                      transform);
                 }
               }
               if (decodedWord == null) {
@@ -216,7 +216,8 @@ BEncodingStringTransform(data) :
               haveSpace = false;
             }
             break;
-          default: throw new InvalidOperationException();
+          default:
+            throw new InvalidOperationException();
         }
       }
       builder.Append(str.Substring(markStart, str.Length - markStart));
@@ -247,8 +248,8 @@ BEncodingStringTransform(data) :
       cs = cs ?? Encodings.GetEncoding("us-ascii", true);
       int quote = paramValue.IndexOf('\'');
       return (quote >= 0) ? null : Encodings.DecodeToString(
-          cs,
-          new PercentEncodingStringTransform(paramValue));
+        cs,
+        new PercentEncodingStringTransform(paramValue));
     }
 
     private static string RemoveEncodedWordEnds(string str) {
@@ -510,9 +511,9 @@ BEncodingStringTransform(data) :
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
         str = MakeFilenameMethod.DecodeEncodedWordsLenient(
-          str,
-          0,
-          str.Length);
+            str,
+            0,
+            str.Length);
         if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -599,7 +600,7 @@ BEncodingStringTransform(data) :
             // line break characters (0x85 is already included above)
             builder.Append('_');
           } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
-              0xfdef)) {
+            0xfdef)) {
             // noncharacters
             builder.Append('_');
           } else if (c == '%') {
@@ -614,7 +615,7 @@ BEncodingStringTransform(data) :
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
               builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-                  0xd800));
+                0xd800));
               builder.Append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
             if (!IsAtOrBelowMaxCodeLength(builder)) {
@@ -632,37 +633,37 @@ BEncodingStringTransform(data) :
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
         bool reservedFilename = strLower.Equals(
-          "nul",
-          StringComparison.Ordinal) || strLower.Equals("clock$",
+            "nul",
+            StringComparison.Ordinal) || strLower.Equals("clock$",
             StringComparison.Ordinal) || strLower.IndexOf(
-              "nul.",
-              StringComparison.Ordinal) == 0 || strLower.Equals(
+            "nul.",
+            StringComparison.Ordinal) == 0 || strLower.Equals(
             "prn",
             StringComparison.Ordinal) || strLower.IndexOf(
-              "prn.",
-              StringComparison.Ordinal) == 0 || strLower.IndexOf(
+            "prn.",
+            StringComparison.Ordinal) == 0 || strLower.IndexOf(
             "![",
             StringComparison.Ordinal) >= 0 || strLower.Equals(
-              "aux",
-              StringComparison.Ordinal) || strLower.IndexOf(
+            "aux",
+            StringComparison.Ordinal) || strLower.IndexOf(
             "aux.",
             StringComparison.Ordinal) == 0 || strLower.Equals(
-              "con",
-              StringComparison.Ordinal) || strLower.IndexOf(
+            "con",
+            StringComparison.Ordinal) || strLower.IndexOf(
             "con.",
             StringComparison.Ordinal) == 0;
         // LPTn, COMn
         if (
           strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
-              strLower[4] == ' '))) {
+          strLower[4] == ' '))) {
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "lpt",
             StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-              strLower[3] <= '9');
+            strLower[3] <= '9');
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "com",
             StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-              strLower[3] <= '9');
+            strLower[3] <= '9');
         }
         bool bracketDigit = str[0] == '{' && str.Length > 1 &&
           str[1] >= '0' && str[1] <= '9';
@@ -690,12 +691,12 @@ BEncodingStringTransform(data) :
             bool spaceBefore = i > 0 && str[i - 1] == 0x20;
             if (spaceAfter && spaceBefore) {
               str = str.Substring(0, i - 1) + "_._" + str.Substring(i +
-                  2);
+                2);
             } else if (spaceAfter) {
               str = str.Substring(0, i) + "._" + str.Substring(i + 2);
             } else if (spaceBefore) {
               str = str.Substring(0, i - 1) + "_." + str.Substring(i +
-                  1);
+                1);
             }
             break;
           }

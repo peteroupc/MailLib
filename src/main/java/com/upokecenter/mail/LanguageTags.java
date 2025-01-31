@@ -51,7 +51,7 @@ private LanguageTags() {
           continue;
         }
         if (extended && c == '*' && count == 0 && (i + 1 == str.length() ||
-            str.charAt(i + 1) == '-')) {
+          str.charAt(i + 1) == '-')) {
           ++count;
           ++i;
           continue;
@@ -60,7 +60,7 @@ private LanguageTags() {
           return false;
         }
         if (!first && !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-            (c >= '0' && c <= '9'))) {
+          (c >= '0' && c <= '9'))) {
           return false;
         }
         if (count >= 8) {
@@ -121,18 +121,18 @@ private LanguageTags() {
           ++index;
         }
         if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
-              56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+          56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
           index += 2;
         } else if (!backslash && index < endIndex && ((str.charAt(index) >= 1 &&
-              str.charAt(index) <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) ||
-            (str.charAt(index) >= 14 && str.charAt(index) <= 31) || (str.charAt(index) >= 33 &&
-              str.charAt(index) <= 39) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
-            (str.charAt(index) >= 93 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
-              str.charAt(index) <= 65535))) {
+          str.charAt(index) <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) ||
+          (str.charAt(index) >= 14 && str.charAt(index) <= 31) || (str.charAt(index) >= 33 &&
+          str.charAt(index) <= 39) || (str.charAt(index) >= 42 && str.charAt(index) <= 91) ||
+          (str.charAt(index) >= 93 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
+          str.charAt(index) <= 65535))) {
           ++index;
         } else if (backslash && index < endIndex && ((str.charAt(index) >= 0 &&
-              str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
-              65535))) {
+          str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <=
+            65535))) {
           // NOTE: Includes parentheses, which are also handled
           // in later conditions
           ++index;
@@ -203,7 +203,7 @@ private LanguageTags() {
     private static int SkipLDHSequence(String str, int index, int endIndex) {
       while (index < endIndex) {
         if ((str.charAt(index) >= 65 && str.charAt(index) <= 90) || (str.charAt(index) >= 97 &&
-            str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
+          str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
           (str.charAt(index) == 45)) {
           ++index;
         } else {
@@ -460,7 +460,7 @@ private LanguageTags() {
         return retlist;
       }
       boolean hasStar = false;
-      boolean langsMatch = new boolean.get(languages.size());
+      boolean[] langsMatch = new boolean[languages.size()];
       for (String range : ranges) {
         if (!IsLanguageRange(range, extended)) {
           throw new IllegalArgumentException("ranges is not a language range.");
@@ -478,26 +478,26 @@ private LanguageTags() {
         }
         String lcrange = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(range);
         for (int k = 0; k < languages.size(); ++k) {
-          if (langsMatch.get(k)) {
+          if (langsMatch[k]) {
             continue;
           }
           String lclang = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(languages.get(k));
           if (extended) {
             if (MatchLangTagExtended(lcrange, lclang)) {
               retlist.add(languages.get(k));
-              langsMatch.set(k, true);
+              langsMatch[k] = true;
             }
           } else {
             if (MatchLangTagBasic(lcrange, lclang)) {
               retlist.add(languages.get(k));
-              langsMatch.set(k, true);
+              langsMatch[k] = true;
             }
           }
         }
       }
       if (matchStarAtEnd && hasStar) {
         for (int k = 0; k < languages.size(); ++k) {
-          if (!langsMatch.get(k)) {
+          if (!langsMatch[k]) {
             retlist.add(languages.get(k));
           }
         }
@@ -718,7 +718,7 @@ private LanguageTags() {
         char c1 = str.charAt(index);
         char c2 = str.charAt(index + 1);
         if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2
-              >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
+          >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
             // case AA: a 2-letter language
@@ -960,7 +960,7 @@ private LanguageTags() {
       for (int i = 0; i < len; ++i) {
         char c1 = str.charAt(i);
         if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1
-              >= '0' && c1 <= '9'))) {
+          >= '0' && c1 <= '9'))) {
           return 0;
         }
       }

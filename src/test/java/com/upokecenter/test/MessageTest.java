@@ -112,7 +112,7 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestMediaTypeEncodingSingle() {
-      SingleTestMediaTypeEncoding("xyz");
+      SingleTestMediaTypeEncoding("xy z");
       SingleTestMediaTypeEncoding("xy z");
       SingleTestMediaTypeEncoding("xy\u00a0z");
       SingleTestMediaTypeEncoding("xy\ufffdz");
@@ -134,9 +134,9 @@ import com.upokecenter.mail.*;
         Assert.fail();
       }
       int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
-        ret,
-        false,
-        "");
+          ret,
+          false,
+          "");
       if (fmtresult == 1) {
         System.out.println("fmtresult=1 for " +
           ret.substring(0, Math.min(ret.length(), 260)));
@@ -197,7 +197,7 @@ import com.upokecenter.mail.*;
         "y").SetParameter(
         "z",
         valueMessageString).toString();
-      if (mtstring.contains("\r\n\r\n")) {
+      if (mtstring.contains("\r\n \r\n")) {
  Assert.fail();
  }
       if (mtstring.contains("\r\n \r\n")) {
@@ -206,7 +206,7 @@ import com.upokecenter.mail.*;
       {
         Object objectTemp = valueMessageString;
         Object objectTemp2 = MediaType.Parse(mtstring).GetParameter(
-            "z");
+          "z");
         Assert.assertEquals(mtstring, objectTemp, objectTemp2);
       }
       String msgstring = "MIME-Version: 1.0\r\nContent-Type: " +
@@ -214,9 +214,9 @@ import com.upokecenter.mail.*;
       Message mtmessage = MessageFromString(msgstring);
       {
         boolean boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
-          msgstring,
-          false,
-          "TestGenerate") == 2;
+            msgstring,
+            false,
+            "TestGenerate") == 2;
         if (!(
           boolTemp)) {
  Assert.fail(
@@ -236,7 +236,7 @@ import com.upokecenter.mail.*;
         String msgtext = MessageGenerate(new Message().SetHeader(
           "from",
           "me@example.com")
-            .SetTextBody("Hello world."));
+          .SetTextBody("Hello world."));
         if (EncodingTest.IsGoodAsciiMessageFormat(
           msgtext,
           false,
@@ -288,8 +288,8 @@ import com.upokecenter.mail.*;
 
     private static byte[] BytesFromString(String str) {
       return com.upokecenter.util.DataUtilities.GetUtf8Bytes(
-        str,
-        true);
+          str,
+          true);
     }
 
     @Test
@@ -468,15 +468,15 @@ ms = new java.io.ByteArrayInputStream(bytesPart);
             msg.getParts().get(1).setContentDisposition(ContentDisposition.Inline);
             String bodyString = null;
             try {
-               bodyString = msg.getParts().get(1).GetBodyString();
+              bodyString = msg.getParts().get(1).GetBodyString();
             } catch (UnsupportedOperationException nsex) {
-               System.out.println("phase=" + phase + "\n" +
+              System.out.println("phase=" + phase + "\n" +
                 stringPart + "\n" + msg.getParts().get(1).Generate());
-               throw new IllegalStateException("", nsex);
+              throw new IllegalStateException("", nsex);
             }
             if (!stringPart.equals(bodyString)) {
               Assert.fail("phase=" + phase + "\n" +
-                  stringPart + "\n" + bodyString);
+                stringPart + "\n" + bodyString);
             }
 }
 finally {
@@ -515,7 +515,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg = ValueStartCTD +
 
         "Content-Type: text/plain;charset=utf-8\r\nContent-Type:" +
-"\u0020image/jpeg\r\n\r\n";
+        "\u0020image/jpeg\r\n\r\n";
 
       Assert.assertEquals(
         MediaType.ApplicationOctetStream,
@@ -531,7 +531,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       // First header field is syntactically invalid
       msg = ValueStartCTD +
         "Content-Type: /plain;charset=utf-8\r\nContent-Type:" +
-"\u0020image/jpeg\r\n\r\n";
+        "\u0020image/jpeg\r\n\r\n";
       Assert.assertEquals(
         MediaType.TextPlainAscii,
         MessageFromString(msg).getContentType());
@@ -910,7 +910,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment",
-  "comment").GetHeader("x-comment");
+            "comment").GetHeader("x-comment");
         Assert.assertEquals(
           "comment",
           stringTemp);
@@ -927,8 +927,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "you@example.com").GetHeader(0).getKey();
+            0,
+            "you@example.com").GetHeader(0).getKey();
         Assert.assertEquals(
           "from",
           stringTemp);
@@ -936,8 +936,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "you@example.com").GetHeader(0).getValue();
+            0,
+            "you@example.com").GetHeader(0).getValue();
         Assert.assertEquals(
           "you@example.com",
           stringTemp);
@@ -945,9 +945,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "x-comment",
-              "comment").GetHeader(0).getKey();
+            0,
+            "x-comment",
+            "comment").GetHeader(0).getKey();
         Assert.assertEquals(
           "x-comment",
           stringTemp);
@@ -955,9 +955,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-              0,
-              "x-comment",
-              "comment").GetHeader(0).getValue();
+            0,
+            "x-comment",
+            "comment").GetHeader(0).getValue();
         Assert.assertEquals(
           "comment",
           stringTemp);
@@ -1097,7 +1097,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg = ValueMultipart +
 
         "\r\n--b\r\nContent-Type:" +
-"\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
+        "\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
         "\u00207bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
@@ -1168,8 +1168,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg = ValueMultipart +
 
         "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom:" +
-"\u0020\"\ufffd\ufffd\"" +
-        "\u0020<me@example.com>\r\n\r\nX\r\n--b--";
+        "\u0020\"\ufffd\ufffd\"" + "\u0020<me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1182,9 +1181,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg = ValueMultipart +
 
         "\r\n--b\r\nContent-Type:" +
-"\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
+        "\u0020message/rfc822\r\nContent-Transfer-Encoding:" +
         "\u0020base64\r\n\r\nFrom: \"Me\"" +
-"\u0020<me@example.com>\r\n\r\nXX==\r\n--b--";
+        "\u0020<me@example.com>\r\n\r\nXX==\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -1296,12 +1295,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         Object objectTemp = body;
         Object objectTemp2 = com.upokecenter.util.DataUtilities.GetUtf8String(
-          msg2.GetBody(),
-          false);
+            msg2.GetBody(),
+            false);
         Assert.assertEquals(
           objectTemp,
           objectTemp2);
-}
+      }
       body = EncodingTest.Repeat(
           EncodingTest.Repeat("a", 76) + "\r\n",
           20) + "\u00e7\r\nthe end";
@@ -1613,8 +1612,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         "\t", "\u0020\u0020",
         "\t\u0020", "\u0020\t", "\t\t",
       };
-      for (Object padding1 : paddings) {
-        for (Object padding2 : paddings) {
+      for (String padding1 : paddings) {
+        for (String padding2 : paddings) {
           String message = messageStart;
           message += "--b1" + padding1 + "\r\n";
           message += "Content-Type: text/plain\r\n\r\n";
@@ -2501,31 +2500,31 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String msg;
       msg = "From: x1@example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-  "from");
+        "from");
       Assert.assertEquals(msg,"x1@example.com,x2@example.com");
       msg = "To: x1@example.com\r\nTo: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "to");
+        "to");
       Assert.assertEquals(msg,"x1@example.com,x2@example.com");
       msg = "Cc: x1@example.com\r\nCc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "cc");
+        "cc");
       Assert.assertEquals(msg,"x1@example.com,x2@example.com");
       msg = "Bcc: x1@example.com\r\nBcc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "bcc");
+        "bcc");
       Assert.assertEquals(msg,"x1@example.com,x2@example.com");
       msg = "Reply-To: x1@example.com\r\nReply-To: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "reply-to");
+        "reply-to");
       Assert.assertEquals(msg,"x1@example.com,x2@example.com");
       msg = "Resent-To: x1@example.com\r\nResent-To: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "resent-to");
+        "resent-to");
       Assert.assertEquals(msg,"x1@example.com,x2@example.com");
       msg = "Resent-Cc: x1@example.com\r\nResent-Cc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-          "resent-cc");
+        "resent-cc");
       Assert.assertEquals(msg,"x1@example.com,x2@example.com");
       msg = "Resent-Bcc: x1@example.com\r\nResent-Bcc: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate())
@@ -2534,13 +2533,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       // Invalid header fields
       msg = "From: x1@example.com\r\nFrom: x2.example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-  "from");
+        "from");
       Assert.assertEquals(
         "x1@example.com",
         msg);
       msg = "From: x1.example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader(
-  "from");
+        "from");
       Assert.assertEquals(
         "x2@example.com",
         msg);
@@ -2964,7 +2963,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestSetHeader() {
       try {
-        new Message().SetHeader("from", "\"a\r\nb\" <x@example.com>");
+        new Message().SetHeader("from", "\"a\r\n b\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -2973,7 +2972,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Message().SetHeader("from", "\"a\rb\" <x@example.com>");
+        new Message().SetHeader("from", "\"a\r b\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -3144,7 +3143,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      String headerNames = new String[] {
+      String[] headerNames = new String[] {
         "from", "to", "cc",
         "bcc", "reply-to",
       };
@@ -3262,12 +3261,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestSetHeaderAcceptLanguage() {
       Message msg = new Message();
       TestSetHeaderOne(msg, "accept-language", "en-us");
-      TestSetHeaderOne(msg, "accept-language", "en-us\u002c de-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
       TestSetHeaderInvalid(msg, "accept-language", "enenenene-us\u002c de-de");
       TestSetHeaderInvalid(msg, "accept-language", "en-ususususu\u002c de-de");
       TestSetHeaderInvalid(msg, "accept-language", "en-us\u002c\u002c de-de");
-      TestSetHeaderOne(msg, "accept-language", "en-us\u002cde-de");
-      TestSetHeaderOne(msg, "accept-language", "en-us \u002cde-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
       TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
     }
 
@@ -3284,7 +3283,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         "to",
         "\"Example E. Example\" <example@EXAMPLE.COM>");
       String hdrvalue = "\"Example, Example\"" +
-"\u0020<example@example.com>";
+        "\u0020<example@example.com>";
       TestSetHeaderOne(msg, "to", hdrvalue);
       TestSetHeaderOne(
         msg,
@@ -3367,7 +3366,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       msg.AddHeader("to", "b@example.com");
       String msggen = msg.Generate();
       int io = msggen.indexOf(
-        "To: a@example.com\u002c b@example.com");
+          "To: a@example.com\u002c b@example.com");
       Assert.assertEquals(
         -1,
         io);
@@ -3448,7 +3447,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail();
       }
       dtime = MailDateTime.ParseDateStringHttp("Mon May\u0020 6 01:23:45" +
-"\u00202019");
+          "\u00202019");
       Assert.assertEquals(
         2019,
         dtime[0]);
@@ -3503,7 +3502,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       System.out.println(na);
       na = new NamedAddress("abc \"def\" ghi<me@example.com>");
       System.out.println(na);
-      na = new NamedAddress("abc \"def\" ghi<m=e@example.com>");
+      na = new NamedAddress("abc\"def\"ghi<m=e@example.com>");
       System.out.println(na);
       na = new NamedAddress("abc\"def\"ghi<m=e@example.com>");
       System.out.println(na);

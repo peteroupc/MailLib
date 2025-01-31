@@ -23,10 +23,10 @@ private HeaderFieldParsers() {
       public String DecodeEncodedWords(String str) {
         // For unstructured header fields.
         return Rfc2047.DecodeEncodedWords(
-          str,
-          0,
-          str.length(),
-          EncodedWordContext.Unstructured);
+            str,
+            0,
+            str.length(),
+            EncodedWordContext.Unstructured);
       }
 
       public boolean IsStructured() {
@@ -57,9 +57,9 @@ private HeaderFieldParsers() {
             int startIndex = token[1];
             endIndex = token[2];
             String groupList = HeaderParserUtility.ParseGroupList(
-              str,
-              startIndex,
-              endIndex);
+                str,
+                startIndex,
+                endIndex);
             groupList = ParserUtility.TrimSpaceAndTab(groupList);
             groups.add(groupList);
           }
@@ -164,17 +164,17 @@ private HeaderFieldParsers() {
         int startIndex,
         int endIndex) {
         String domain = HeaderParserUtility.ParseDomain(
-          str,
-          startIndex,
-          endIndex);
+            str,
+            startIndex,
+            endIndex);
         // NOTE: "domain" can include domain literals, enclosed
         // in brackets; they are invalid under
         // "IsValidDomainName" .
         domain = (Message.HasTextToEscape(domain) &&
-            Idna.IsValidDomainName(domain, false)) ?
+          Idna.IsValidDomainName(domain, false)) ?
           Idna.EncodeDomainName(domain) : str.substring(
-            startIndex, (
-            startIndex)+(endIndex - startIndex));
+          startIndex, (
+          startIndex)+(endIndex - startIndex));
         return Message.HasTextToEscape(domain) ? null : domain;
       }
 
@@ -271,9 +271,9 @@ private HeaderFieldParsers() {
               // At least some of the domains could not
               // be converted to ASCII
               originalGroups = (originalGroups == null) ? (shf.ParseGroupLists(
-                originalString,
-                0,
-                originalString.length())) : originalGroups;
+                  originalString,
+                  0,
+                  originalString.length())) : originalGroups;
               enc.AppendString(str, lastIndex, displayNameEnd);
               enc.AppendSpace();
               enc.AppendAsEncodedWords(originalGroups.get(groupIndex));
@@ -413,8 +413,8 @@ private HeaderFieldParsers() {
             if (nonasciiLocalPart) {
               if (!hasPhrase) {
                 String addrSpec = str.substring(
-                  token[1], (
-                  token[1])+(token[2] - token[1]));
+                    token[1], (
+                    token[1])+(token[2] - token[1]));
                 enc.AppendString(str, lastIndex, startIndex);
                 enc.AppendSpace();
                 enc.AppendAsEncodedWords(addrSpec);
@@ -424,34 +424,34 @@ private HeaderFieldParsers() {
                 // Has a phrase, extract the addr-specification and convert
                 // the mailbox to a group
                 int angleAddrStart = HeaderParser.ParsePhrase(
-                  str,
-                  token[1],
-                  token[2],
-                  null);
+                    str,
+                    token[1],
+                    token[2],
+                    null);
                 // append the rest of the String so far up to and
                 // including the phrase
                 enc.AppendString(str, lastIndex, angleAddrStart);
                 int addrSpecStart = HeaderParser.ParseCFWS(
-                  str,
-                  angleAddrStart,
-                  token[2],
-                  null);
+                    str,
+                    angleAddrStart,
+                    token[2],
+                    null);
                 if (addrSpecStart < token[2] && str.charAt(addrSpecStart) == '<') {
                   ++addrSpecStart;
                 }
                 addrSpecStart = HeaderParser.ParseObsRoute(
-                  str,
-                  addrSpecStart,
-                  token[2],
-                  null);
+                    str,
+                    addrSpecStart,
+                    token[2],
+                    null);
                 int addrSpecEnd = HeaderParser.ParseAddrSpec(
-                  str,
-                  addrSpecStart,
-                  token[2],
-                  null);
+                    str,
+                    addrSpecStart,
+                    token[2],
+                    null);
                 String addrSpec = str.substring(
-                  addrSpecStart, (
-                  addrSpecStart)+(addrSpecEnd - addrSpecStart));
+                    addrSpecStart, (
+                    addrSpecStart)+(addrSpecEnd - addrSpecStart));
                 enc.AppendSpaceIfNeeded();
                 enc.AppendAsEncodedWords(addrSpec);
                 enc.AppendSpace();
@@ -516,10 +516,10 @@ private HeaderFieldParsers() {
             int startIndex = token[1];
             endIndex = token[2];
             String newComment = Rfc2047.DecodeEncodedWords(
-              str,
-              startIndex + 1,
-              endIndex - 1,
-              EncodedWordContext.Comment);
+                str,
+                startIndex + 1,
+                endIndex - 1,
+                EncodedWordContext.Comment);
             sb.append(str.substring(lastIndex, (lastIndex)+(startIndex + 1 - lastIndex)));
             sb.append(newComment);
             lastIndex = endIndex - 1;
@@ -528,11 +528,11 @@ private HeaderFieldParsers() {
             int startIndex = token[1];
             endIndex = token[2];
             String newComment = Rfc2047.DecodePhraseText(
-              str,
-              startIndex,
-              endIndex,
-              tokens,
-              true);
+                str,
+                startIndex,
+                endIndex,
+                tokens,
+                true);
             sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
             sb.append(newComment);
             lastIndex = endIndex;
@@ -599,10 +599,10 @@ private HeaderFieldParsers() {
           return false;
         }
         index = HeaderParser.ParseCFWS(
-          str,
-          si,
-          endIndex,
-          null);
+            str,
+            si,
+            endIndex,
+            null);
         return index == endIndex;
       }
 
@@ -613,9 +613,9 @@ private HeaderFieldParsers() {
           name.length() + 2);
         str = HeaderEncoder.TrimLeadingFWS(str);
         str = StructuredHeaderField.DowngradeHeaderFieldValue(
-          enc,
-          this,
-          str);
+            enc,
+            this,
+            str);
         if (this.Parse(str, 0, str.length(), null) != str.length()) {
           // The header field is syntactically invalid,
           // so downgrading is not possible
@@ -628,26 +628,26 @@ private HeaderFieldParsers() {
         int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.length(), null);
         while (index < header.length()) {
           int newindex = HeaderParser.ParseReceivedToken(
-            header,
-            index,
-            header.length(),
-            null);
-          if (newindex == index) {
-            tokenEnd = HeaderParser.ParseCFWS(
               header,
               index,
               header.length(),
               null);
+          if (newindex == index) {
+            tokenEnd = HeaderParser.ParseCFWS(
+                header,
+                index,
+                header.length(),
+                null);
             sb.append(header.substring(index, (index)+(tokenEnd - index)));
             break;
           }
           if (IsCFWSWordCFWS(header, index, newindex, "for")) {
             Tokener tokener = new Tokener();
             int clauseEnd = HeaderParser.ParseReceivedToken(
-              header,
-              newindex,
-              header.length(),
-              tokener);
+                header,
+                newindex,
+                header.length(),
+                tokener);
             List<int[]> tokens = tokener.GetTokens();
             boolean notGoodLocalPart = false;
             for (int[] token : tokens) {
@@ -666,10 +666,10 @@ private HeaderFieldParsers() {
             index = clauseEnd;
           } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
             int clauseEnd = HeaderParser.ParseReceivedToken(
-              header,
-              newindex,
-              header.length(),
-              null);
+                header,
+                newindex,
+                header.length(),
+                null);
             if (Message.HasTextToEscape(header, index, clauseEnd)) {
               changed = true;
             } else {
@@ -687,7 +687,7 @@ private HeaderFieldParsers() {
           receivedPart = TrimFWSFromRight(receivedPart);
           return new HeaderEncoder().AppendFieldName(name)
             .AppendString(receivedPart + datePart).toString();
-          } else {
+        } else {
           return new HeaderEncoder().AppendFieldName(name).toString() +
             str;
         }
@@ -766,7 +766,7 @@ private HeaderFieldParsers() {
           index = HeaderParser.ParseFWS(str, index, str.length(), null);
           int c = str.charAt(index);
           if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() && (c &
-              0xfc00) == 0xdc00) {
+            0xfc00) == 0xdc00) {
             sstr = str.substring(index, (index)+(2));
             enc.AppendSymbol(sstr);
             index += 2;
@@ -1030,11 +1030,11 @@ private HeaderFieldParsers() {
         si = HeaderParser.ParseFWS(str, si, endIndex, tokener);
         HashMap<String, String> parameters = new HashMap<String, String>();
         int ret = MediaType.ParseParameters(
-          str,
-          si,
-          endIndex,
-          false,
-          parameters) ? endIndex : index;
+            str,
+            si,
+            endIndex,
+            false,
+            parameters) ? endIndex : index;
         if (ret != endIndex) {
           return index;
         }
@@ -1067,7 +1067,7 @@ private HeaderFieldParsers() {
           return index;
         }
         int ret = (cd.getDispositionType().equals("no") ||
-            cd.getDispositionType().equals("yes")) ? endIndex : index;
+          cd.getDispositionType().equals("yes")) ? endIndex : index;
         if (ret == endIndex) {
           HeaderParserUtility.TraverseCFWSAndQuotedStrings(
             str,
@@ -1107,11 +1107,11 @@ private HeaderFieldParsers() {
             ++index;
             HashMap<String, String> parameters = new HashMap<String, String>();
             index = MediaType.ParseParameters(
-              str,
-              index,
-              endIndex,
-              false,
-              parameters) ? endIndex : indexStart;
+                str,
+                index,
+                endIndex,
+                false,
+                parameters) ? endIndex : indexStart;
             if (index == endIndex) {
               HeaderParserUtility.TraverseCFWSAndQuotedStrings(
                 str,
@@ -1136,10 +1136,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentReturn(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1150,10 +1150,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDeliveryDate(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1174,10 +1174,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderImportance(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1188,10 +1188,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderSensitivity(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1202,10 +1202,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentIdentifier(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1216,10 +1216,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400Received(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1230,10 +1230,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400MtsIdentifier(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1244,10 +1244,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderTlsRequired(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1258,10 +1258,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400Originator(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1272,10 +1272,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderX400Recipients(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1286,10 +1286,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderConversion(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1300,10 +1300,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderConversionWithLoss(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1314,10 +1314,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderSupersedes(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1328,10 +1328,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAutoforwarded(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1342,10 +1342,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentTranslationType(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1356,10 +1356,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderGenerateDeliveryReport(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1370,10 +1370,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderIncompleteCopy(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1384,10 +1384,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1398,10 +1398,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAlternateRecipient(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1412,10 +1412,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDiscloseRecipients(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1426,10 +1426,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderExpandedDate(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1440,10 +1440,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderNewsgroups(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1474,10 +1474,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDistribution(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1488,10 +1488,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderFollowupTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1502,10 +1502,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderInjectionDate(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1516,10 +1516,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderUserAgent(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1540,10 +1540,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderNntpPostingHost(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1554,10 +1554,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAcceptLanguage(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1568,10 +1568,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderArchivedAt(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1582,10 +1582,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderArcAuthenticationResults(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1596,10 +1596,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderAuthenticationResults(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1620,10 +1620,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderCancelLock(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1634,10 +1634,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderCancelKey(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1648,10 +1648,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderTlsReportDomain(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1662,10 +1662,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderTlsReportSubmitter(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1696,10 +1696,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentBase(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1710,10 +1710,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentDuration(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1724,10 +1724,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentId(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1738,10 +1738,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentLanguage(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1752,10 +1752,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentLocation(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1766,10 +1766,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentMd5(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1780,10 +1780,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderContentTransferEncoding(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1804,10 +1804,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDeferredDelivery(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1818,10 +1818,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationOptions(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1832,10 +1832,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1846,10 +1846,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsAuthorizingUsers(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1860,10 +1860,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderDkimSignature(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1874,10 +1874,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderArcMessageSignature(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1898,10 +1898,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderEdiintFeatures(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1912,10 +1912,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderEesstVersion(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1936,10 +1936,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderEncrypted(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -1960,10 +1960,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderInReplyTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2004,10 +2004,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderLatestDeliveryTime(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2028,10 +2028,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderListUnsubscribePost(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2042,10 +2042,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMessageContext(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2056,10 +2056,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMessageId(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2070,10 +2070,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMimeVersion(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2084,10 +2084,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsAcp127MessageIdentifier(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2098,10 +2098,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCodressMessageIndicator(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2112,10 +2112,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCopyPrecedence(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2126,10 +2126,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExemptedAddress(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2140,10 +2140,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExtendedAuthorisationInfo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2154,10 +2154,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsHandlingInstructions(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2168,10 +2168,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageInstructions(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2182,10 +2182,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageType(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2196,10 +2196,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorPlad(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2210,10 +2210,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorReference(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2224,10 +2224,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorCc(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2238,10 +2238,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorTo(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2252,10 +2252,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsPrimaryPrecedence(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2266,10 +2266,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsSubjectIndicatorCodes(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2280,10 +2280,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderMtPriority(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2294,10 +2294,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderObsoletes(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2308,10 +2308,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderOriginalRecipient(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2322,10 +2322,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderReceivedSpf(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2336,10 +2336,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderRequireRecipientValidSince(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2360,10 +2360,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderReturnPath(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2384,10 +2384,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderSolicitation(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2418,10 +2418,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXArchivedAt(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2432,10 +2432,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXRicevuta(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2446,10 +2446,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXTiporicevuta(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2460,10 +2460,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXTrasporto(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 
@@ -2474,10 +2474,10 @@ private HeaderFieldParsers() {
         int endIndex,
         ITokener tokener) {
         return HeaderParser.ParseHeaderXVerificasicurezza(
-          str,
-          index,
-          endIndex,
-          tokener);
+            str,
+            index,
+            endIndex,
+            tokener);
       }
     }
 

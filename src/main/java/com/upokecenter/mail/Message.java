@@ -412,8 +412,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     private static ICharacterEncoding GetEncoding(String charset) {
       ICharacterEncoding enc = Encodings.GetEncoding(
-        charset,
-        true);
+          charset,
+          true);
       if (enc == null) {
         if (charset.equals("gb2312")) {
           // HACK
@@ -442,12 +442,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           mt.getSubType().equals("news-groupinfo") ||
           mt.getSubType().equals("ecmascript") ||
           mt.getSubType().equals("vnd.uplanet.cacheop-wbxml") || mt.getSubType().equals(
-              "vnd.uplanet.bearer-choice") ||
+            "vnd.uplanet.bearer-choice") ||
           mt.getSubType().equals("vnd.wap.slc") ||
           mt.getSubType().equals("nss") ||
           mt.getSubType().equals("vnd.3gpp.mcdata-payload") ||
           mt.getSubType().equals("activity+json") ||
-          mt.getSubType().equals("vnd.uplanet.list-wbxml") || mt.getSubType().equals("vnd.3gpp.mcdata-signalling") ||
+          mt.getSubType().equals("vnd.uplanet.list-wbxml") ||
+          mt.getSubType().equals("vnd.3gpp.mcdata-signalling") ||
           mt.getSubType().equals("sgml-open-catalog") ||
           mt.getSubType().equals("smil") ||
           mt.getSubType().equals("vnd.uplanet.channel") ||
@@ -457,7 +458,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           mt.getSubType().equals("vnd.uplanet.alert") ||
           mt.getSubType().equals("vnd.wap.wbxml") ||
           mt.getSubType().equals("xml-external-parsed-entity") || mt.getSubType().equals(
-              "vnd.uplanet.listcmd-wbxml") ||
+            "vnd.uplanet.listcmd-wbxml") ||
           mt.getSubType().equals("vnd.uplanet.list") ||
           mt.getSubType().equals("vnd.uplanet.listcmd") ||
           mt.getSubType().equals("vnd.msign") ||
@@ -480,8 +481,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String InputToStringWithHint(
-          ICharacterInput reader,
-          int capacityHint) {
+      ICharacterInput reader,
+      int capacityHint) {
       StringBuilder builder = new StringBuilder(capacityHint);
       while (true) {
         if (reader == null) {
@@ -543,14 +544,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       if (charset != null) {
         int capacityHint = this.body.length < Integer.MAX_VALUE / 2 ?
-            Math.min(this.body.length * 2, this.body.length + 32) :
-            this.body.length;
+          Math.min(this.body.length * 2, this.body.length + 32) :
+          this.body.length;
         ICharacterInput cinput = Encodings.GetDecoderInput(
             charset,
             DataIO.ToReader(this.body));
         bodyStrings.add(InputToStringWithHint(
-            cinput,
-            capacityHint));
+          cinput,
+          capacityHint));
         mediaTypes.add(this.getContentType());
       }
     }
@@ -731,9 +732,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         attrValue.delete(0, attrValue.length());
       }
       while (position < length && (data[position] == 0x09 ||
-          data[position] == 0x0a || data[position] == 0x0c ||
-          data[position] == 0x0d || data[position] == 0x20 ||
-          data[position] == 0x2f)) {
+        data[position] == 0x0a || data[position] == 0x0c ||
+        data[position] == 0x0d || data[position] == 0x20 ||
+        data[position] == 0x2f)) {
         ++position;
       }
       if (position >= length || data[position] == 0x3f) {
@@ -908,12 +909,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
         } else if (position + 6 <= count && data[position] == 0x3c &&
           ((data[position + 1] & 0xff) == 0x4d || (data[position + 1] & 0xff) ==
-            0x6d) &&
+          0x6d) &&
           ((data[position + 2] & 0xff) == 0x45 || (data[position + 2] & 0xff) ==
-            0x65) &&
+          0x65) &&
           ((data[position + 3] & 0xff) == 0x54 || (data[position + 3] & 0xff) ==
-            0x74) && (data[position + 4] == 0x41 ||
-            data[position + 4] == 0x61) &&
+          0x74) && (data[position + 4] == 0x41 || data[position + 4] == 0x61) &&
           (data[position + 5] == 0x09 || data[position + 5] == 0x0a ||
             data[position + 5] == 0x0d ||
             data[position + 5] == 0x0c || data[position + 5] == 0x20 ||
@@ -931,11 +931,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           while (true) {
             int
             newpos = ReadAttribute(
-              data,
-              count,
-              position,
-              attrName,
-              attrValue);
+                data,
+                count,
+                position,
+                attrName,
+                attrValue);
             if (newpos == position) {
               break;
             }
@@ -973,20 +973,17 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             return charset;
           }
         } else if ((position + 3 <= count &&
-            data[position] == 0x3c && (data[position + 1] & 0xff) == 0x2f &&
-            (((data[position + 2] & 0xff) >= 0x41 && (data[position + 2] &
-0xff) <=
-                0x5a) ||
-              ((data[position + 2] & 0xff) >= 0x61 && (data[position + 2] &
-0xff) <=
-                0x7a))) ||
+          data[position] == 0x3c && (data[position + 1] & 0xff) == 0x2f &&
+          (((data[position + 2] & 0xff) >= 0x41 && (data[position + 2] &
+          0xff) <= 0x5a) ||
+          ((data[position + 2] & 0xff) >= 0x61 && (data[position + 2] &
+          0xff) <= 0x7a))) ||
           // </X
           (position + 2 <= count && data[position] == 0x3c &&
             (((data[position + 1] & 0xff) >= 0x41 && (data[position + 1] & 0xff)
-                <= 0x5a) ||
-              ((data[position + 1] & 0xff) >= 0x61 && (data[position + 1] &
-0xff)
-                <= 0x7a)))) { // <X
+          <= 0x5a) ||
+          ((data[position + 1] & 0xff) >= 0x61 && (data[position + 1] &
+          0xff) <= 0x7a)))) { // <X
           // </X
           while (position < count) {
             if (data[position] == 0x09 ||
@@ -1007,7 +1004,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ++position;
         } else if (position + 2 <= count && data[position] == 0x3c &&
           ((data[position + 1] & 0xff) == 0x21 || (data[position + 1] & 0xff) ==
-            0x3f || (data[position + 1] & 0xff) == 0x2f)) {
+          0x3f || (data[position + 1] & 0xff) == 0x2f)) {
           // <! or </ or <?
           while (position < count) {
             if (data[position] != 0x3e) {
@@ -1046,13 +1043,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
         if (position + 2 <= count && (b >= 0xc2 && b <= 0xdf) &&
           ((data[position + 1] & 0xff) >= 0x80 && (data[position + 1] & 0xff) <=
-            0xbf)) {
+          0xbf)) {
           // System.out.println("%02X %02X",data[position],data[position+1]);
           position += 2;
           maybeUtf8 = 1;
         } else if (position + 3 <= count && (b >= 0xe0 && b <= 0xef) &&
           ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
-            0xbf)) {
+          0xbf)) {
           int startbyte = (b == 0xe0) ? 0xa0 : 0x80;
           int endbyte = (b == 0xed) ? 0x9f : 0xbf;
           // System.out.println("%02X %02X %02X"
@@ -1066,9 +1063,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           maybeUtf8 = 1;
         } else if (position + 4 <= count && (b >= 0xf0 && b <= 0xf4) &&
           ((data[position + 2] & 0xff) >= 0x80 && (data[position + 2] & 0xff) <=
-            0xbf) &&
+          0xbf) &&
           ((data[position + 3] & 0xff) >= 0x80 && (data[position + 3] & 0xff) <=
-            0xbf)) {
+          0xbf)) {
           int startbyte = (b == 0xf0) ? 0x90 : 0x80;
           int endbyte = (b == 0xf4) ? 0x8f : 0xbf;
           // System.out.println("%02X %02X %02X %02X"
@@ -1150,8 +1147,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         if (this.getContentDisposition() != null) {
           String pt = this.getContentDisposition().GetParameter("preview-type");
           previewType = MediaType.Parse(
-            pt == null ? "" : pt,
-            previewType);
+              pt == null ? "" : pt,
+              previewType);
         }
         if (previewType.getTypeAndSubType().equals("text/html")) {
           return FormatFlowed.MarkdownText(text, 0);
@@ -1234,7 +1231,7 @@ public final void setContentType(MediaType value) {
         return (disp != null) ?
           ContentDisposition.MakeFilename(disp.GetParameter("filename")) :
           ContentDisposition.MakeFilename(this.contentType.GetParameter(
-              "name"));
+          "name"));
       }
 
     /**
@@ -1428,7 +1425,7 @@ public final void setSubject(String value) {
     public int[] GetDate() {
       String field = this.GetHeader("date");
       return (field == null) ? null : MailDateTime.ParseDateString(field,
-  true);
+        true);
     }
 
     /**
@@ -1466,8 +1463,8 @@ public final void setSubject(String value) {
 
     public Message GetBodyMessage() {
       return (this.getContentType().getTopLevelType().equals("message") && (this.getContentType().getSubType().equals(
-              "rfc822") ||
-            this.getContentType().getSubType().equals("news") || this.getContentType().getSubType().equals("global"))) ? new Message(this.body) : null;
+        "rfc822") ||
+        this.getContentType().getSubType().equals("news") || this.getContentType().getSubType().equals("global"))) ? new Message(this.body) : null;
     }
 
     /**
@@ -1489,8 +1486,8 @@ public final void setSubject(String value) {
             / 2));
       }
       return new AbstractMap.SimpleImmutableEntry<String, String>(
-        this.headers.get(index),
-        this.headers.get(index + 1));
+          this.headers.get(index),
+          this.headers.get(index + 1));
     }
 
     /**
@@ -1853,7 +1850,7 @@ public final void setSubject(String value) {
       // Take advantage of SetTextBody's line break conversion
       String markdownText = markdownMessage.GetBodyString();
       Message htmlMessage = NewBodyPart().SetHtmlBody(
-          FormatFlowed.MarkdownText(markdownText, 0));
+        FormatFlowed.MarkdownText(markdownText, 0));
       mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
       this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
@@ -1890,11 +1887,11 @@ public final void setSubject(String value) {
       String filename,
       String disposition) {
       return this.AddBodyPart(
-        inputStream,
-        mediaType,
-        filename,
-        disposition,
-        false);
+          inputStream,
+          mediaType,
+          filename,
+          disposition,
+          false);
     }
 
     /**
@@ -1955,7 +1952,7 @@ ms = new java.io.ByteArrayOutputStream();
                 throw new MessageDataException(ex.getMessage(), ex);
               }
             } else {
-              byte buffer = new byte[4096];
+              byte[] buffer = new byte[4096];
               while (true) {
                 int cp = inputStream.read(buffer, 0, buffer.length);
                 if (cp <= 0) {
@@ -2045,7 +2042,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           return
 
             MediaType.Parse(
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
         if (ext.equals(".zip")) {
           return MediaType.Parse("application/zip");
@@ -2077,7 +2074,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
         if (ext.equals(".rst")) {
           return MediaType.Parse(
-  "text/prs.fallenstein.rst\u003bcharset=utf-8");
+              "text/prs.fallenstein.rst\u003bcharset=utf-8");
         }
         if (ext.equals(".htm") ||
           ext.equals(".html") ||
@@ -2180,10 +2177,10 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       MediaType mediaType,
       String filename) {
       return this.AddBodyPart(
-        inputStream,
-        mediaType,
-        filename,
-        "attachment");
+          inputStream,
+          mediaType,
+          filename,
+          "attachment");
     }
 
     /**
@@ -2337,13 +2334,13 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         for (int i = 0; i < passes; ++i) {
           for (Message part : this.getParts()) {
             clang = LanguageTags.GetLanguageList(part.GetHeader(
-                  "content-language"));
+              "content-language"));
             if (clang == null) {
               continue;
             }
             if (preferOriginals && i == 0) { // Allow originals only, on first
               String ctt = GetContentTranslationType(part.GetHeader(
-  "content-translation-type"));
+                "content-translation-type"));
               if (!ctt.equals("original")) {
                 continue;
               }
@@ -2506,8 +2503,8 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         MediaType mt = MediaType.Parse("message/rfc822");
         String msgstring = messages.get(i).Generate();
         if (msgstring.indexOf("\r\n--") >= 0 || (
-            msgstring.length() >= 2 && msgstring.charAt(0) == '-' &&
-            msgstring.charAt(1) == '-')) {
+          msgstring.length() >= 2 && msgstring.charAt(0) == '-' &&
+          msgstring.charAt(1) == '-')) {
           // Message/global allows quoted-printable and
           // base64, so we can avoid raw boundary delimiters
           mt = MediaType.Parse("message/global");
@@ -2740,13 +2737,13 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         }
         if (origRecipient || finalRecipient) {
           String headerValue = null;
-          int status = new int[1];
+          int[] status = new int[1];
           try {
             headerValue = com.upokecenter.util.DataUtilities.GetUtf8String(
-              bytes,
-              headerValueStart,
-              headerValueEnd - headerValueStart,
-              false); // throws on invalid UTF-8
+                bytes,
+                headerValueStart,
+                headerValueEnd - headerValueStart,
+                false); // throws on invalid UTF-8
           } catch (IllegalArgumentException ex) {
             // Invalid UTF-8, so encapsulate
             headerValue = null;
@@ -2754,9 +2751,9 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           }
           if (headerValue != null) {
             headerValue = DowngradeRecipientHeaderValue(
-              fieldName,
-              headerValue,
-              status);
+                fieldName,
+                headerValue,
+                status);
           }
           if (status[0] == 2 || status[0] == 1) {
             // Downgraded (1) or encapsulated (2)
@@ -2769,24 +2766,24 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
             if (status[0] == 1) {
               // Downgraded
               byte[] newBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(
-                headerValue,
-                true);
+                  headerValue,
+                  true);
               writer.write(newBytes, 0, newBytes.length);
             } else {
               // Encapsulated
               String field = origRecipient ? "Downgraded-Original-Recipient" :
                 "Downgraded-Final-Recipient";
               headerValue = com.upokecenter.util.DataUtilities.GetUtf8String(
-                bytes,
-                headerValueStart,
-                headerValueEnd - headerValueStart,
-                true); // replaces invalid UTF-8
+                  bytes,
+                  headerValueStart,
+                  headerValueEnd - headerValueStart,
+                  true); // replaces invalid UTF-8
               String newField = HeaderEncoder.EncodeFieldAsEncodedWords(
-                field,
-                headerValue);
+                  field,
+                  headerValue);
               byte[] newBytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(
-                newField,
-                true);
+                  newField,
+                  true);
               writer.write(newBytes, 0, newBytes.length);
             }
           }
@@ -2812,10 +2809,10 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       while (i < str.length()) {
         if (str.charAt(i) == '(') {
           int si = HeaderParserUtility.ParseCommentLax(
-            str,
-            i,
-            str.length(),
-            null);
+              str,
+              i,
+              str.length(),
+              null);
           if (si != i) {
             enc.AppendString(str, begin, i);
             Rfc2047.EncodeComment(enc, str, i, si);
@@ -2840,36 +2837,36 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           0,
           headerValue.length())) {
         index = HeaderParser.ParseCFWS(
-          headerValue,
-          0,
-          headerValue.length(),
-          null);
+            headerValue,
+            0,
+            headerValue.length(),
+            null);
         int atomText = HeaderParser.ParsePhraseAtom(
-          headerValue,
-          index,
-          headerValue.length(),
-          null);
+            headerValue,
+            index,
+            headerValue.length(),
+            null);
         int typeEnd = atomText;
         String origValue = headerValue;
         boolean isUtf8 = typeEnd - index == 5 &&
           (headerValue.charAt(index) & ~0x20) == 'U' && (headerValue.charAt(index +
-              1) & ~0x20) == 'T' && (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
+          1) & ~0x20) == 'T' && (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
           headerValue.charAt(index + 3) == '-' && headerValue.charAt(index + 4) == '8';
         atomText = HeaderParser.ParseCFWS(
-          headerValue,
-          atomText,
-          headerValue.length(),
-          null);
+            headerValue,
+            atomText,
+            headerValue.length(),
+            null);
         // NOTE: Commented out for now (see later)
         // if (atomText != typeEnd) {
         // isUtf8 = false;
         // }
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
           int addressPart = HeaderParser.ParseCFWS(
-            headerValue,
-            atomText + 1,
-            headerValue.length(),
-            null);
+              headerValue,
+              atomText + 1,
+              headerValue.length(),
+              null);
           HeaderEncoder encoder = new HeaderEncoder().AppendFieldName(fieldName);
           if (isUtf8) {
             String typePart = headerValue.substring(0, addressPart);
@@ -3059,7 +3056,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           }
         } else if (c == 0x0d) {
           if (i + 2 >= endIndex || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 &&
-              s.charAt(i + 2) != 0x20)) {
+            s.charAt(i + 2) != 0x20)) {
             // bare CR, or CRLF not followed by SP/TAB
             return i;
           }
@@ -3135,10 +3132,9 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           return false;
         }
         if (!(
-            (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
-c <=
-              '9') || c == 0x20 || c == 0x2c || "'()-./+_:=?".indexOf(c) >=
-            0)) {
+          (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
+          c <= '9') || c == 0x20 || c == 0x2c || "'()-./+_:=?".indexOf(c) >=
+          0)) {
           return false;
         }
       }
@@ -3189,7 +3185,7 @@ c <=
           // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
           transform = useLiberalSevenBit ? ((IByteReader)new
-LiberalSevenBitTransform(stream)) :
+            LiberalSevenBitTransform(stream)) :
             ((IByteReader)new SevenBitTransform(stream));
 
           break;
@@ -3215,8 +3211,8 @@ LiberalSevenBitTransform(stream)) :
       }
       private void Grow() {
         int newlen = (this.buffer.length >= (Integer.MAX_VALUE >> 1)) ?
-          Integer.MAX_VALUE : this.buffer.length * 2;
-        char newbuffer = new char[newlen];
+        Integer.MAX_VALUE : this.buffer.length * 2;
+        char[] newbuffer = new char[newlen];
         System.arraycopy(this.buffer, 0, newbuffer, 0, this.buffer.length);
         this.buffer = newbuffer;
       }
@@ -3236,7 +3232,7 @@ LiberalSevenBitTransform(stream)) :
       boolean start) {
       // Line length in OCTETS, not characters
       int lineCount = 0;
-      int bytesRead = new int[1];
+      int[] bytesRead = new int[1];
       StringBuilderKeepBuffer sb = new StringBuilderKeepBuffer();
       int ss = 0;
       boolean ungetLast = false;
@@ -3305,7 +3301,7 @@ LiberalSevenBitTransform(stream)) :
                 if (c == -1) {
                   throw new MessageDataException(
                     "Premature end before all headers were read (Mbox" +
-"\u0020convention)");
+                    "\u0020convention)");
                 } else if (c == ':' && possibleMbox) {
                   // Full fledged From header field
                   isFromField = true;
@@ -3610,7 +3606,7 @@ LiberalSevenBitTransform(stream)) :
             // bare CR
             allTextBytes = false;
           } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] ==
-              (byte)'\t')) {
+            (byte)'\t')) {
             // Space followed immediately by CRLF
             allTextBytes = false;
           } else if (i + 2 < body.length && body[i + 1] == (byte)'\n' &&
@@ -3638,7 +3634,7 @@ LiberalSevenBitTransform(stream)) :
       }
       return allTextBytes ? EncodingSevenBit :
         ((highBytes > lengthCheck / 3) ? EncodingBase64 :
-          EncodingQuotedPrintable);
+        EncodingQuotedPrintable);
     }
 
     private static String ValidateHeaderField(String name, String value) {
@@ -3681,14 +3677,14 @@ LiberalSevenBitTransform(stream)) :
       boolean haveMsgId = false;
       boolean haveFrom = false;
       boolean haveDate = false;
-      boolean haveHeaders = new boolean.get(11);
+      boolean[] haveHeaders = new boolean[11];
       byte[] bodyToWrite = this.body;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.getContentType());
       String contentDisp = (this.getContentDisposition() == null) ? null :
         this.getContentDisposition().toString();
       int transferEnc = 0;
       boolean isMultipart = builder.getTopLevelType().equals(
-        "multipart");
+          "multipart");
       String boundary = "";
       if (isMultipart) {
         boundary = GenerateBoundary(depth);
@@ -3705,8 +3701,8 @@ LiberalSevenBitTransform(stream)) :
           }
           boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
           if ((builder.getSubType().equals("rfc822") ||
-              builder.getSubType().equals(
-                "news")) && !msgCanBeUnencoded) {
+            builder.getSubType().equals(
+              "news")) && !msgCanBeUnencoded) {
             builder.SetSubType("global");
           } else if (builder.getSubType().equals("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
@@ -3715,7 +3711,7 @@ LiberalSevenBitTransform(stream)) :
           } else if (!msgCanBeUnencoded && !builder.getSubType().equals("global") &&
             !builder.getSubType().equals("global-disposition-notification") &&
             !builder.getSubType().equals("global-delivery-status") && !builder.getSubType().equals(
-                "global-headers")) {
+              "global-headers")) {
           }
         }
       }
@@ -3724,12 +3720,12 @@ LiberalSevenBitTransform(stream)) :
       // four global message types listed below.
       transferEnc = topLevel.equals("message") ||
         topLevel.equals("multipart") ?
-(topLevel.equals("multipart") || (
-            !builder.getSubType().equals("global") &&
-            !builder.getSubType().equals("global-headers") &&
-            !builder.getSubType().equals("global-disposition-notification") &&
-            !builder.getSubType().equals("global-delivery-status"))) ? EncodingSevenBit :
-TransferEncodingToUse(
+        (topLevel.equals("multipart") || (
+        !builder.getSubType().equals("global") &&
+        !builder.getSubType().equals("global-headers") &&
+        !builder.getSubType().equals("global-disposition-notification") &&
+        !builder.getSubType().equals("global-delivery-status"))) ? EncodingSevenBit :
+        TransferEncodingToUse(
           bodyToWrite,
           depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       String encodingString = "7bit";
@@ -3808,12 +3804,12 @@ TransferEncodingToUse(
             }
             int headerIndex = ValueHeaderIndices.get(name);
             if (headerIndex <= 5) {
-              if (haveHeaders.get(headerIndex)) {
+              if (haveHeaders[headerIndex]) {
                 // Already outputted, continue
                 continue;
               }
               boolean isValidAddressing = this.IsValidAddressingField(name);
-              haveHeaders.set(headerIndex, true);
+              haveHeaders[headerIndex] = true;
               /*
 
               */ if (!isValidAddressing) {
@@ -3852,12 +3848,12 @@ TransferEncodingToUse(
               0,
               downgraded.length())) {
             if (name.equals("message-id") ||
-                         name.equals("resent-message-id") ||
-                         name.equals("in-reply-to") ||
-                         name.equals("references") ||
-                         name.equals(
-                         "original-recipient") ||
-                         name.equals("final-recipient")) {
+              name.equals("resent-message-id") ||
+              name.equals("in-reply-to") ||
+              name.equals("references") ||
+              name.equals(
+                "original-recipient") ||
+              name.equals("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
@@ -4148,18 +4144,18 @@ TransferEncodingToUse(
         String value = this.headers.get(i + 1);
         if (name.equals("content-transfer-encoding")) {
           int startIndex = HeaderParser.ParseCFWS(
-            value,
-            0,
-            value.length(),
-            null);
+              value,
+              0,
+              value.length(),
+              null);
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
           // subtypes
           int endIndex = MediaType.SkipMimeTypeSubtype(
-            value,
-            startIndex,
-            value.length(),
-            null);
+              value,
+              startIndex,
+              value.length(),
+              null);
           transferEncodingValue = (
               HeaderParser.ParseCFWS(
                 value,
@@ -4215,8 +4211,8 @@ TransferEncodingToUse(
             }
           } else {
             ctype = MediaType.Parse(
-              value,
-              null);
+                value,
+                null);
             if (ctype == null) {
               ctype = digest ? MediaType.MessageRfc822 :
                 MediaType.TextPlainAscii;
@@ -4276,9 +4272,9 @@ TransferEncodingToUse(
       if (this.transferEncoding == EncodingQuotedPrintable ||
         this.transferEncoding == EncodingBase64) {
         if (ctype.isMultipart() || (ctype.getTopLevelType().equals("message") && !ctype.getSubType().equals("global") && !ctype.getSubType().equals(
-                "global-headers") && !ctype.getSubType().equals(
-                "global-disposition-notification") &&
-            !ctype.getSubType().equals("global-delivery-status"))) {
+            "global-headers") && !ctype.getSubType().equals(
+            "global-disposition-notification") &&
+          !ctype.getSubType().equals("global-delivery-status"))) {
           // CLARIFICATION: Treat quoted-printable and base64
           // as "unrecognized" encodings in multipart and most
           // message media types, for the purpose of treating the
@@ -4300,8 +4296,8 @@ TransferEncodingToUse(
           if (charset.equals("us-ascii") ||
             charset.equals("windows-1252") ||
             charset.equals("windows-1251") ||
-(charset.length() > 9 && charset.substring(0, 9).equals(
-              "iso-8859-"))) {
+            (charset.length() > 9 && charset.substring(0, 9).equals(
+            "iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
@@ -4337,11 +4333,11 @@ TransferEncodingToUse(
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       IByteReader currentTransform = MakeTransferEncoding(
-        boundaryChecker,
-        baseTransferEncoding,
-        true);
+          boundaryChecker,
+          baseTransferEncoding,
+          true);
       Message leaf = null;
-      byte buffer = new byte[8192];
+      byte[] buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.length;
       this.body = new byte[0];
@@ -4397,11 +4393,11 @@ TransferEncodingToUse(
               leaf = ctype.isMultipart() ? null : msg;
               boundaryChecker.EndBodyPartHeaders(entry.getBoundary());
               boolean isTextPlain = ctype.getTypeAndSubType().equals(
-                "text/plain");
+                  "text/plain");
               currentTransform = MakeTransferEncoding(
-                boundaryChecker,
-                msg.transferEncoding,
-                isTextPlain);
+                  boundaryChecker,
+                  msg.transferEncoding,
+                  isTextPlain);
             } else {
               // All body parts were read
               if (leaf != null) {
@@ -4427,10 +4423,10 @@ TransferEncodingToUse(
     private void ReadSimpleBody(IByteReader stream) {
       boolean isTextPlain = this.getContentType().getTypeAndSubType().equals("text/plain");
       IByteReader transform = MakeTransferEncoding(
-        stream,
-        this.transferEncoding,
-        isTextPlain);
-      byte buffer = new byte[8192];
+          stream,
+          this.transferEncoding,
+          isTextPlain);
+      byte[] buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.length;
       ArrayWriter aw = new ArrayWriter();
@@ -4503,8 +4499,7 @@ private final String propVarboundary;
           if (!IsWellFormedBoundary(newBoundary)) {
             throw new
             MessageDataException("Multipart message has an invalid boundary" +
-"\u0020defined: " +
-              newBoundary);
+              "\u0020defined: " + newBoundary);
           }
         }
         this.propVarmessage = msg;

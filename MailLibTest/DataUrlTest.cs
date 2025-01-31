@@ -78,15 +78,15 @@ namespace MailLibTest {
         Assert.AreEqual(
           "x abcdefg-hijk",
           stringTemp);
-}
+      }
       msg = this.TestMailToOne(
-  "mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
+          "mailto:you@example.com?body=x%20abcdefg-h%0d%0aijk");
       {
         string stringTemp = msg.GetBodyString();
         Assert.AreEqual(
           "x abcdefg-h\r\nijk",
           stringTemp);
-}
+      }
       // ----
       msg = this.TestMailToOne("mailto:e%25f@m.example");
       {
@@ -141,11 +141,11 @@ namespace MailLibTest {
         Assert.AreEqual(
           "b\u00e7",
           stringTemp);
-}
+      }
       msg =
 
         this.TestMailToOne(
-  "mailto:me@example.com?subject=%3D%3futf-8%3fQ%3fb%3dC3%3dA7%3f%3d");
+          "mailto:me@example.com?subject=%3D%3futf-8%3fQ%3fb%3dC3%3dA7%3f%3d");
       Console.Write(msg.GetHeader("subject"));
     }
   }

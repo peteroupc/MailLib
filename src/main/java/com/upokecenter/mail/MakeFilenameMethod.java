@@ -146,8 +146,8 @@ private MakeFilenameMethod() {
             if (str.charAt(index) == '?' && index + 1 < endIndex &&
               str.charAt(index + 1) == '=') {
               String charset = str.substring(
-                charsetStart, (
-                charsetStart)+(charsetEnd - charsetStart));
+                  charsetStart, (
+                  charsetStart)+(charsetEnd - charsetStart));
               String data = str.substring(dataStart, (dataStart)+(index - dataStart));
               index += 2;
               int endData = index;
@@ -164,16 +164,16 @@ private MakeFilenameMethod() {
               }
               if (acceptedEncodedWord) {
                 IByteReader transform = (encoding == 1) ? (IByteReader)new
-BEncodingStringTransform(data) :
+                  BEncodingStringTransform(data) :
                   (IByteReader)new QEncodingStringTransform(data);
 
                 ICharacterEncoding charEncoding = Encodings.GetEncoding(
-                  charset,
-                  true);
+                    charset,
+                    true);
                 if (charEncoding != null) {
                   decodedWord = Encodings.DecodeToString(
-                    charEncoding,
-                    transform);
+                      charEncoding,
+                      transform);
                 }
               }
               if (decodedWord == null) {
@@ -217,7 +217,8 @@ BEncodingStringTransform(data) :
               haveSpace = false;
             }
             break;
-          default: throw new IllegalStateException();
+          default:
+            throw new IllegalStateException();
         }
       }
       builder.append(str.substring(markStart, (markStart)+(str.length() - markStart)));
@@ -248,8 +249,8 @@ BEncodingStringTransform(data) :
       cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
       int quote = paramValue.indexOf('\'');
       return (quote >= 0) ? null : Encodings.DecodeToString(
-          cs,
-          new PercentEncodingStringTransform(paramValue));
+        cs,
+        new PercentEncodingStringTransform(paramValue));
     }
 
     private static String RemoveEncodedWordEnds(String str) {
@@ -511,9 +512,9 @@ BEncodingStringTransform(data) :
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
         str = MakeFilenameMethod.DecodeEncodedWordsLenient(
-          str,
-          0,
-          str.length());
+            str,
+            0,
+            str.length());
         if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -600,7 +601,7 @@ BEncodingStringTransform(data) :
             // line break characters (0x85 is already included above)
             builder.append('_');
           } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
-              0xfdef)) {
+            0xfdef)) {
             // noncharacters
             builder.append('_');
           } else if (c == '%') {
@@ -615,7 +616,7 @@ BEncodingStringTransform(data) :
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
               builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-                  0xd800));
+                0xd800));
               builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
             if (!IsAtOrBelowMaxCodeLength(builder)) {
@@ -633,25 +634,25 @@ BEncodingStringTransform(data) :
         // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
         // well as "!["
         boolean reservedFilename = strLower.equals(
-          "nul") || strLower.equals("clock$") || strLower.indexOf(
-              "nul.") == 0 || strLower.equals(
+            "nul") || strLower.equals("clock$") || strLower.indexOf(
+            "nul.") == 0 || strLower.equals(
             "prn") || strLower.indexOf(
-              "prn.") == 0 || strLower.indexOf(
+            "prn.") == 0 || strLower.indexOf(
             "![") >= 0 || strLower.equals(
-              "aux") || strLower.indexOf(
+            "aux") || strLower.indexOf(
             "aux.") == 0 || strLower.equals(
-              "con") || strLower.indexOf(
+            "con") || strLower.indexOf(
             "con.") == 0;
         // LPTn, COMn
         if (
           strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
-              strLower.charAt(4) == ' '))) {
+          strLower.charAt(4) == ' '))) {
           reservedFilename = reservedFilename || (strLower.indexOf(
             "lpt") == 0 && strLower.charAt(3) >= '0' &&
-              strLower.charAt(3) <= '9');
+            strLower.charAt(3) <= '9');
           reservedFilename = reservedFilename || (strLower.indexOf(
             "com") == 0 && strLower.charAt(3) >= '0' &&
-              strLower.charAt(3) <= '9');
+            strLower.charAt(3) <= '9');
         }
         boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
           str.charAt(1) >= '0' && str.charAt(1) <= '9';
@@ -679,12 +680,12 @@ BEncodingStringTransform(data) :
             boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
             if (spaceAfter && spaceBefore) {
               str = str.substring(0,i - 1) + "_._" + str.substring(i +
-                  2);
+                2);
             } else if (spaceAfter) {
               str = str.substring(0,i) + "._" + str.substring(i + 2);
             } else if (spaceBefore) {
               str = str.substring(0,i - 1) + "_." + str.substring(i +
-                  1);
+                1);
             }
             break;
           }

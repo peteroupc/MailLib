@@ -342,7 +342,7 @@ namespace MailLibTest {
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt = ParseAndTestAspects(
-  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
+          "text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt = ParseAndTestAspects("text/example;param1*=iso-8859-1''valu%e72");
@@ -374,21 +374,21 @@ namespace MailLibTest {
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+          "text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+          "text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt = ParseAndTestAspects(
-  "text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
+          "text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       mt = ParseAndTestAspects(
-  "text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
+          "text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
     }
@@ -402,25 +402,25 @@ namespace MailLibTest {
       mt =
 
         ParseAndTestAspects(
-  "text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
+          "text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
+          "text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
+          "text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
         ParseAndTestAspects(
-  "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+          "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       foreach (var str in ContentDispositionTest.NoParams) {
@@ -515,13 +515,13 @@ namespace MailLibTest {
 
     private static void AssertHasSuffixTrue(MediaType mt, string s) {
       if (mt == null || !mt.HasStructuredSuffix(s)) {
-         Assert.Fail("mt=" + mt + ", s=" + s);
+        Assert.Fail("mt=" + mt + ", s=" + s);
       }
     }
 
     private static void AssertHasSuffixFalse(MediaType mt, string s) {
       if (mt != null && mt.HasStructuredSuffix(s)) {
-         Assert.Fail("mt=" + mt + ", s=" + s);
+        Assert.Fail("mt=" + mt + ", s=" + s);
       }
     }
 

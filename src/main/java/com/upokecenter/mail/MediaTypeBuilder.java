@@ -144,7 +144,7 @@ public final void setSubType(String value) {
       if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed top level type: " +
-str);
+          str);
       }
       this.type = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
       return this;

@@ -11,7 +11,7 @@ namespace MailLibTest {
       if (dicts == null) {
         throw new ArgumentNullException(nameof(dicts));
       }
-      IList<IDictionary<String, String>> list =
+      IList<IDictionary<String, String >> list =
         new List<IDictionary<String, String>>();
       foreach (IDictionary<String, String> dict in dicts) {
         list.Add(dict);
@@ -35,7 +35,7 @@ namespace MailLibTest {
     }
 
     public static string ToJSON(
-      IList<IDictionary<string, string>> dictlist) {
+      IList<IDictionary<string, string >> dictlist) {
       var sb = new StringBuilder().Append('[');
       if (dictlist == null) {
         throw new ArgumentNullException(nameof(dictlist));
@@ -61,7 +61,7 @@ namespace MailLibTest {
       for (var j = 0; j < str.Length; ++j) {
         if ((str[j] & 0xfc00) == 0xdc00 ||
           ((str[j] & 0xfc00) == 0xd800 && (j == str.Length - 1 ||
-              (str[j + 1] & 0xfc00) != 0xdc00))) {
+          (str[j + 1] & 0xfc00) != 0xdc00))) {
           throw new ArgumentException("arr is invalid");
         }
         if (str[j] == '\"') {
@@ -150,8 +150,8 @@ namespace MailLibTest {
       var i = 0;
       var list = new List<IDictionary<string, string>>();
       while (i < str.Length && (
-          str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-          str[i] == 0x09)) {
+        str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+        str[i] == 0x09)) {
         ++i;
       }
       if (i >= str.Length || str[i] != '[') {
@@ -163,20 +163,20 @@ namespace MailLibTest {
       string[] stringArray = null;
       while (true) {
         while (i < str.Length && (
-            str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-            str[i] == 0x09)) {
+          str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+          str[i] == 0x09)) {
           ++i;
         }
         if (i >= str.Length || (
-            str[i] != ']' && str[i] != '[' && str[i] != 0x2c)) {
+          str[i] != ']' && str[i] != '[' && str[i] != 0x2c)) {
           throw new InvalidOperationException("Invalid JSON");
         }
         switch (str[i]) {
           case ']':
             ++i;
             while (i < str.Length && (
-                str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
-                == 0x09)) {
+              str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
+              == 0x09)) {
               ++i;
             }
             return i == str.Length ? list : null;
@@ -224,24 +224,24 @@ namespace MailLibTest {
       var list = new List<string>();
       var sb = new StringBuilder();
       while (i < str.Length && (
-          str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-          str[i] == 0x09)) {
+        str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+        str[i] == 0x09)) {
         ++i;
       }
       if (i >= str.Length || str[i] != '[') {
-        throw new InvalidOperationException("Invalid JSON: " +
+        throw new InvalidOperationException("Invalid JSON:" +
           str.Substring(i));
       }
       ++i;
       var endValue = false;
       while (true) {
         while (i < str.Length && (
-            str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
-            str[i] == 0x09)) {
+          str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a ||
+          str[i] == 0x09)) {
           ++i;
         }
         if (i >= str.Length || (
-            str[i] != ']' && str[i] != '"' && str[i] != 0x2c)) {
+          str[i] != ']' && str[i] != '"' && str[i] != 0x2c)) {
           throw new InvalidOperationException("Invalid JSON:" +
             "\u0020" + str.Substring(i));
         }
@@ -251,8 +251,8 @@ namespace MailLibTest {
             // right square bracket
             ++i;
             while (i < str.Length && (
-                str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
-                == 0x09)) {
+              str[i] == 0x20 || str[i] == 0x0d || str[i] == 0x0a || str[i]
+              == 0x09)) {
               ++i;
             }
             endPos[0] = i;

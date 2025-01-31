@@ -97,12 +97,12 @@ namespace PeterO.Mail {
       if (this.dispositionType != null) {
         for (var i = 0; i < this.dispositionType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580503 *
-                this.dispositionType[i]));
+            this.dispositionType[i]));
         }
       }
       if (this.parameters != null) {
         hashCode = unchecked(hashCode + (632580587 *
-              this.parameters.Count));
+          this.parameters.Count));
       }
       return hashCode;
     }
@@ -578,8 +578,7 @@ namespace PeterO.Mail {
       /// <c>false</c>.</value>
       [Obsolete(
           "Irrelevant for content dispositions; will be removed in the" +
-"\u0020future.")]
-      public bool IsText {
+          "\u0020future.")] public bool IsText {
         get {
           return this.DispositionType.Equals("text", StringComparison.Ordinal);
         }

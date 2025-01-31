@@ -72,8 +72,7 @@ import com.upokecenter.text.*;
      */
     public boolean HasStructuredSuffix(String suffix) {
       if (((suffix) == null || (suffix).length() == 0) || suffix.length() >=
-this.subType.length() ||
-        suffix.length() + 1 >= this.subType.length()) {
+        this.subType.length() || suffix.length() + 1 >= this.subType.length()) {
         return false;
       }
       int j = this.subType.length() - 1 - suffix.length();
@@ -124,13 +123,13 @@ this.subType.length() ||
       if (this.topLevelType != null) {
         for (int i = 0; i < this.topLevelType.length(); ++i) {
           valueHashCode = (valueHashCode + (632580563 *
-                this.topLevelType.charAt(i)));
+            this.topLevelType.charAt(i)));
         }
       }
       if (this.subType != null) {
         for (int i = 0; i < this.subType.length(); ++i) {
           valueHashCode = (valueHashCode + (632580563 *
-                this.subType.charAt(i)));
+            this.subType.charAt(i)));
         }
       }
       if (this.parameters != null) {
@@ -233,7 +232,7 @@ this.subType.length() ||
           // Non-ASCII (allowed in internationalized email headers under
           // RFC6532)
           if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && (s.charAt(i2 + 1) &
-              0xfc00) == 0xdc00) {
+            0xfc00) == 0xdc00) {
             i2 += 2;
           } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
@@ -265,7 +264,7 @@ this.subType.length() ||
         char c = s.charAt(index + 1);
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
         if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && (s.charAt(index + 2) &
-            0xfc00) == 0xdc00) {
+          0xfc00) == 0xdc00) {
           return index + 3;
         }
         if ((c & 0xf800) == 0xd800) {
@@ -292,11 +291,11 @@ this.subType.length() ||
       int endIndex,
       StringBuilder builder) {
       return SkipQuotedString(
-        s,
-        index,
-        endIndex,
-        builder,
-        QuotedStringRule.Rfc5322);
+          s,
+          index,
+          endIndex,
+          builder,
+          QuotedStringRule.Rfc5322);
     }
 
     private static int ParseFWSLax(
@@ -390,8 +389,8 @@ this.subType.length() ||
     // in such values)
     private static boolean IsIsecnOfUrlPathAndAttrValueChar(int c) {
       return c >= 33 && c <= 126 && ((c >= 'A' && c <= 'Z') ||
-          (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
-          "!$&*+-._~".indexOf((char)c) >= 0);
+        (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+        "!$&*+-._~".indexOf((char)c) >= 0);
     }
 
     private static void PctAppend(StringBuilder sb, int w) {
@@ -417,7 +416,7 @@ this.subType.length() ||
       int index = startPos;
       StringBuilder sb = new StringBuilder();
       while (index < str.length() && (maxLineLength < 0 || column <=
-          maxLineLength)) {
+        maxLineLength)) {
         int c = str.charAt(index);
         boolean first = index == 0;
         int contin = (index == 0) ? 7 : 0;
@@ -505,8 +504,7 @@ this.subType.length() ||
             sa.AppendSymbol(";");
           }
           sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) +
-"*")
-          .AppendSymbol("=");
+            "*").AppendSymbol("=");
           index = EncodeContinuation(str, index, sa, uriSafe);
           ++contin;
         }
@@ -536,7 +534,7 @@ this.subType.length() ||
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
-(!IsAttributeChar(c))) {
+          (!IsAttributeChar(c))) {
           simple = false;
         }
       }
@@ -656,7 +654,7 @@ this.subType.length() ||
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
-            ValueSpecials.indexOf(c) >= 0)) {
+          ValueSpecials.indexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {
@@ -683,7 +681,7 @@ this.subType.length() ||
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-            AttrValueSpecials.indexOf(c) >= 0)) {
+          AttrValueSpecials.indexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -748,14 +746,14 @@ this.subType.length() ||
         char c = str.charAt(i);
         // See RFC6838
         if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
-            c <= '9')) {
+          c <= '9')) {
           if (builder != null) {
             builder.append(c);
           }
           ++i;
           ++count;
         } else if (count > 0 && (c == (c & 0x7f) && specials.indexOf(c) >=
-            0)) {
+          0)) {
           if (builder != null) {
             builder.append(c);
           }
@@ -953,54 +951,54 @@ this.subType.length() ||
           String sub = this.getSubType();
           // Media types that assume a default of US-ASCII
           if (sub.equals("plain") ||
-                     sub.equals("sgml") ||
-                     sub.equals("troff") ||
-                     sub.equals("example") ||
-                     sub.equals("dns") ||
-                     sub.equals("mizar") ||
-                     sub.equals("prs.prop.logic") ||
-                     sub.equals("vnd.ascii-art") ||
-                     sub.equals("vnd.dmclientscript") ||
-                     sub.equals("prs.lines.tag") ||
-                     sub.equals("vnd.latex-z") ||
-                     sub.equals("rfc822-headers") ||
-                     sub.equals("vnd.dvb.subtitle") ||
-                     sub.equals("vnd.fly") ||
-                     sub.equals("directory") ||
-                     sub.equals("css") ||
-                     sub.equals("richtext") ||
-                     sub.equals("enriched") ||
-                     sub.equals("tab-separated-values") ||
-                     sub.equals("vnd.in3d.spot") ||
-                     sub.equals("vnd.abc") ||
-                     sub.equals("vnd.wap.wmlscript") ||
-                     sub.equals("vnd.curl") ||
-                     sub.equals("vnd.fmi.flexstor") ||
-                     sub.equals("uri-list") ||
-                     sub.equals("vnd.si.uricatalogue")) {
+            sub.equals("sgml") ||
+            sub.equals("troff") ||
+            sub.equals("example") ||
+            sub.equals("dns") ||
+            sub.equals("mizar") ||
+            sub.equals("prs.prop.logic") ||
+            sub.equals("vnd.ascii-art") ||
+            sub.equals("vnd.dmclientscript") ||
+            sub.equals("prs.lines.tag") ||
+            sub.equals("vnd.latex-z") ||
+            sub.equals("rfc822-headers") ||
+            sub.equals("vnd.dvb.subtitle") ||
+            sub.equals("vnd.fly") ||
+            sub.equals("directory") ||
+            sub.equals("css") ||
+            sub.equals("richtext") ||
+            sub.equals("enriched") ||
+            sub.equals("tab-separated-values") ||
+            sub.equals("vnd.in3d.spot") ||
+            sub.equals("vnd.abc") ||
+            sub.equals("vnd.wap.wmlscript") ||
+            sub.equals("vnd.curl") ||
+            sub.equals("vnd.fmi.flexstor") ||
+            sub.equals("uri-list") ||
+            sub.equals("vnd.si.uricatalogue")) {
             return "us-ascii";
           }
           // Media types that assume a default of UTF-8
           if (sub.equals("vcard") ||
-                     sub.equals("jcr-cnd") ||
-                     sub.equals("n3") ||
-                     sub.equals("turtle") ||
-                     sub.equals("strings") ||
-                     sub.equals("vnd.debian.copyright") ||
-                     sub.equals("provenance-notation") ||
-                     sub.equals("vtt") ||
-                     sub.equals("vnd.ficlab.flt") ||
-                     sub.equals("csv") ||
-                     sub.equals("calendar") ||
-                     sub.equals("vnd.a") ||
-                     sub.equals("parameters") ||
-                     sub.equals("prs.fallenstein.rst") ||
-                     sub.equals("vnd.esmertec.theme.descriptor") ||
-                     sub.equals("vnd.trolltech.linguist") ||
-                     sub.equals("csv-schema") ||
-                     sub.equals("vnd.graphviz") ||
-                     sub.equals("cache-manifest") ||
-                     sub.equals("vnd.sun.j2me.app-descriptor")) {
+            sub.equals("jcr-cnd") ||
+            sub.equals("n3") ||
+            sub.equals("turtle") ||
+            sub.equals("strings") ||
+            sub.equals("vnd.debian.copyright") ||
+            sub.equals("provenance-notation") ||
+            sub.equals("vtt") ||
+            sub.equals("vnd.ficlab.flt") ||
+            sub.equals("csv") ||
+            sub.equals("calendar") ||
+            sub.equals("vnd.a") ||
+            sub.equals("parameters") ||
+            sub.equals("prs.fallenstein.rst") ||
+            sub.equals("vnd.esmertec.theme.descriptor") ||
+            sub.equals("vnd.trolltech.linguist") ||
+            sub.equals("csv-schema") ||
+            sub.equals("vnd.graphviz") ||
+            sub.equals("cache-manifest") ||
+            sub.equals("vnd.sun.j2me.app-descriptor")) {
             return "utf-8";
           }
         }
@@ -1064,7 +1062,7 @@ this.subType.length() ||
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       // HACK
       if (cs == null && (charset.equals("GB2312") ||
-          charset.equals("gb2312"))) {
+        charset.equals("gb2312"))) {
         cs = Encodings.GetEncoding(charset, false);
       }
       cs = (cs == null) ? (USAsciiEncoding) : cs;
@@ -1098,7 +1096,7 @@ this.subType.length() ||
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       // HACK
       if (cs == null && (charset.equals("GB2312") ||
-          charset.equals("gb2312"))) {
+        charset.equals("gb2312"))) {
         cs = Encodings.GetEncoding(charset, false);
       }
       cs = (cs == null) ? (USAsciiEncoding) : cs;
@@ -1112,8 +1110,8 @@ this.subType.length() ||
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
       return (quote >= 0) ? null : Encodings.DecodeToString(
-          charset,
-          new PercentEncodingStringTransform(value));
+        charset,
+        new PercentEncodingStringTransform(value));
     }
 
     private static boolean ExpandRfc2231Extensions(
@@ -1153,8 +1151,8 @@ this.subType.length() ||
         }
         // name*0 or name*0*
         if (!httpRules && asterisk > 0 && ((asterisk == name.length() - 2 &&
-              name.charAt(asterisk + 1) == '0') || (asterisk == name.length() - 3 &&
-              name.charAt(asterisk + 1) == '0' && name.charAt(asterisk + 2) == '*'))) {
+          name.charAt(asterisk + 1) == '0') || (asterisk == name.length() - 3 &&
+            name.charAt(asterisk + 1) == '0' && name.charAt(asterisk + 2) == '*'))) {
           String realName = name.substring(0, asterisk);
           // NOTE: 'httpRules' for DecodeRfc2231Extension is false
           String realValue = (asterisk == name.length() - 3) ?
@@ -1174,8 +1172,8 @@ this.subType.length() ||
             if (parameters.containsKey(continEncoded)) {
               // Encoded continuation (checked first)
               String newEnc = DecodeRfc2231Encoding(
-                parameters.get(continEncoded),
-                charsetUsed);
+                  parameters.get(continEncoded),
+                  charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 break;
@@ -1276,11 +1274,11 @@ this.subType.length() ||
         // an asterisk will be deleted and replaced with other parameters.
         // See also RFC 8187, sec. 3.2.1.
         int afteratt = SkipMimeToken(
-          str,
-          index,
-          endIndex,
-          builder,
-          httpRules);
+            str,
+            index,
+            endIndex,
+            builder,
+            httpRules);
         if (afteratt == index) { // ill-formed attribute
           return false;
         }
@@ -1309,10 +1307,10 @@ this.subType.length() ||
         if (!httpRules) {
           // See note above on whitespace around the equal sign
           index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
-            null);
+              str,
+              index,
+              endIndex,
+              null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -1324,11 +1322,11 @@ this.subType.length() ||
         int qs;
         // try getting the value quoted
         qs = SkipQuotedString(
-          str,
-          index,
-          endIndex,
-          builder,
-          httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
+            str,
+            index,
+            endIndex,
+            builder,
+            httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
         if (!httpRules && qs != index) {
           qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
         }
@@ -1337,7 +1335,7 @@ this.subType.length() ||
           // String because of RFC2231; if this happens, ignore the attribute
           if (attribute.charAt(attribute.length() - 1) != '*' &&
             (!hasDuplicateAttributes || !duplicateAttributes.containsKey(
-  attribute))) {
+            attribute))) {
             parameters.put(attribute, builder.toString());
           }
           index = qs;
@@ -1382,7 +1380,7 @@ this.subType.length() ||
         return null;
       }
       String subType = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(
-        str.substring(i, (i)+(i2 - i)));
+          str.substring(i, (i)+(i2 - i)));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
@@ -1397,12 +1395,12 @@ this.subType.length() ||
       }
       index = i2;
       return ParseParameters(
-        str,
-        index,
-        endIndex,
-        HttpRules,
-        parameters) ? new MediaType(topLevelType, subType, parameters) :
-null;
+          str,
+          index,
+          endIndex,
+          HttpRules,
+          parameters) ? new MediaType(topLevelType, subType, parameters) :
+        null;
     }
 
     /**
@@ -1413,8 +1411,8 @@ null;
 
     public static final MediaType TextPlainAscii =
       new MediaType.Builder(
-        "text",
-        "plain").SetParameter(
+      "text",
+      "plain").SetParameter(
       "charset",
       "us-ascii").ToMediaType();
 
@@ -1425,8 +1423,8 @@ null;
      */
     public static final MediaType TextPlainUtf8 =
       new MediaType.Builder(
-        "text",
-        "plain").SetParameter(
+      "text",
+      "plain").SetParameter(
       "charset",
       "utf-8").ToMediaType();
 
@@ -1500,205 +1498,205 @@ null;
       return (mt == null) ? (defaultValue) : mt;
     }
 
-     /**
-      * A mutable data type that allows a media type object to be built.
-      */
-     public static final class Builder {
-    private final Map<String, String> parameters;
-    private String type;
-    private String subtype;
-
     /**
-     * Gets this value's top-level type.
-     * @return A text string naming this object's top-level type, such as "text" or
-     * "audio" .
-     * @throws NullPointerException The property is being set and the value is
-     * null.
-     * @throws IllegalArgumentException The property is being set and the value is
-     * syntactically invalid for a top-level type.
+     * A mutable data type that allows a media type object to be built.
      */
-    public final String getTopLevelType() {
-        return this.type;
-      }
+    public static final class Builder {
+      private final Map<String, String> parameters;
+      private String type;
+      private String subtype;
+
+      /**
+       * Gets this value's top-level type.
+       * @return A text string naming this object's top-level type, such as "text" or
+       * "audio" .
+       * @throws NullPointerException The property is being set and the value is
+       * null.
+       * @throws IllegalArgumentException The property is being set and the value is
+       * syntactically invalid for a top-level type.
+       */
+      public final String getTopLevelType() {
+          return this.type;
+        }
 public final void setTopLevelType(String value) {
-        this.SetTopLevelType(value);
-      }
+          this.SetTopLevelType(value);
+        }
 
-    /**
-     * Gets this value's subtype.
-     * @return A text string naming this object's subtype, such as "plain" or
-     * "xml".
-     * @throws NullPointerException The property is being set and the value is
-     * null.
-     * @throws IllegalArgumentException The property is being set and the value is
-     * syntactically invalid for a subtype.
-     */
-    public final String getSubType() {
-        return this.subtype;
-      }
+      /**
+       * Gets this value's subtype.
+       * @return A text string naming this object's subtype, such as "plain" or
+       * "xml".
+       * @throws NullPointerException The property is being set and the value is
+       * null.
+       * @throws IllegalArgumentException The property is being set and the value is
+       * syntactically invalid for a subtype.
+       */
+      public final String getSubType() {
+          return this.subtype;
+        }
 public final void setSubType(String value) {
-        this.SetSubType(value);
+          this.SetSubType(value);
+        }
+
+      /**
+       * Initializes a new instance of the {@link
+       * com.upokecenter.mail.MediaType.Builder} class, using the type
+       * "application/octet-stream" .
+       */
+      public Builder() {
+        this.parameters = new HashMap<String, String>();
+        this.type = "application";
+        this.subtype = "octet-stream";
       }
 
-    /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.MediaType.Builder} class, using the type
-     * "application/octet-stream" .
-     */
-    public Builder() {
-      this.parameters = new HashMap<String, String>();
-      this.type = "application";
-      this.subtype = "octet-stream";
-    }
+      /**
+       * Initializes a new instance of the {@link
+       * com.upokecenter.mail.MediaType.Builder} class using the data from another
+       * media type.
+       * @param mt The parameter {@code mt} is a MediaType object.
+       * @throws NullPointerException The parameter {@code mt} is null.
+       */
+      public Builder(MediaType mt) {
+        if (mt == null) {
+          throw new NullPointerException("mt");
+        }
+        this.parameters = new HashMap<String, String>(mt.getParameters());
+        this.type = mt.getTopLevelType();
+        this.subtype = mt.getSubType();
+      }
 
-    /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.MediaType.Builder} class using the data from another
-     * media type.
-     * @param mt The parameter {@code mt} is a MediaType object.
-     * @throws NullPointerException The parameter {@code mt} is null.
-     */
-    public Builder(MediaType mt) {
-      if (mt == null) {
-        throw new NullPointerException("mt");
+      /**
+       * Initializes a new instance of the {@link
+       * com.upokecenter.mail.MediaType.Builder} class.
+       * @param type The media type's top-level type.
+       * @param subtype The media type's subtype.
+       */
+      public Builder(String type, String subtype) {
+        this.parameters = new HashMap<String, String>();
+        this.SetTopLevelType(type);
+        this.SetSubType(subtype);
       }
-      this.parameters = new HashMap<String, String>(mt.getParameters());
-      this.type = mt.getTopLevelType();
-      this.subtype = mt.getSubType();
-    }
 
-    /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.mail.MediaType.Builder} class.
-     * @param type The media type's top-level type.
-     * @param subtype The media type's subtype.
-     */
-    public Builder(String type, String subtype) {
-      this.parameters = new HashMap<String, String>();
-      this.SetTopLevelType(type);
-      this.SetSubType(subtype);
-    }
+      /**
+       * Converts this builder to an immutable media type object.
+       * @return A MediaType object.
+       */
+      public MediaType ToMediaType() {
+        return new MediaType(this.type, this.subtype, this.parameters);
+      }
 
-    /**
-     * Converts this builder to an immutable media type object.
-     * @return A MediaType object.
-     */
-    public MediaType ToMediaType() {
-      return new MediaType(this.type, this.subtype, this.parameters);
-    }
+      /**
+       * Sets this media type's top-level type. This method enables the pattern of
+       * method chaining (for example, {@code new...().getSet()...().getSet()...()}) unlike
+       * with the TopLevelType property in.NET or the setTopLevelType method (with
+       * small s) in Java.
+       * @param str A text string naming a top-level type, such as "text" or "audio"
+       * .
+       * @return This instance.
+       * @throws NullPointerException The parameter {@code str} is null.
+       * @throws IllegalArgumentException The parameter {@code str} is syntactically invalid
+       * for a top-level type.
+       */
+      public MediaType.Builder SetTopLevelType(String str) {
+        if (str == null) {
+          throw new NullPointerException("str");
+        }
+        if (str.length() == 0) {
+          throw new IllegalArgumentException("str is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
+          str.length()) {
+          throw new IllegalArgumentException("Not a well-formed top level type: " +
+            str);
+        }
+        this.type = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
+        return this;
+      }
 
-    /**
-     * Sets this media type's top-level type. This method enables the pattern of
-     * method chaining (for example, {@code new...().getSet()...().getSet()...()}) unlike
-     * with the TopLevelType property in.NET or the setTopLevelType method (with
-     * small s) in Java.
-     * @param str A text string naming a top-level type, such as "text" or "audio"
-     * .
-     * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException The parameter {@code str} is syntactically invalid
-     * for a top-level type.
-     */
-    public MediaType.Builder SetTopLevelType(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
+      /**
+       * Removes a parameter from this builder object. Does nothing if the
+       * parameter's name doesn't exist.
+       * @param name Name of the parameter to remove. The name is compared using a
+       * basic case-insensitive comparison. (Two strings are equal in such a
+       * comparison, if they match after converting the basic uppercase letters A to
+       * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
+       * @return This instance.
+       * @throws NullPointerException The parameter {@code name} is null.
+       */
+      public MediaType.Builder RemoveParameter(String name) {
+        if (name == null) {
+          throw new NullPointerException("name");
+        }
+        this.parameters.remove(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name));
+        return this;
       }
-      if (str.length() == 0) {
-        throw new IllegalArgumentException("str is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
-        str.length()) {
-        throw new IllegalArgumentException("Not a well-formed top level type: " +
-str);
-      }
-      this.type = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
-      return this;
-    }
 
-    /**
-     * Removes a parameter from this builder object. Does nothing if the
-     * parameter's name doesn't exist.
-     * @param name Name of the parameter to remove. The name is compared using a
-     * basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic uppercase letters A to
-     * Z (U+0041 to U+005A) in both strings to basic lowercase letters.).
-     * @return This instance.
-     * @throws NullPointerException The parameter {@code name} is null.
-     */
-    public MediaType.Builder RemoveParameter(String name) {
-      if (name == null) {
-        throw new NullPointerException("name");
+      /**
+       * Sets a parameter's name and value for this media type.
+       * @param name Name of the parameter to set, such as "charset" . The name is
+       * compared using a basic case-insensitive comparison. (Two strings are equal
+       * in such a comparison, if they match after converting the basic uppercase
+       * letters A to Z (U+0041 to U+005A) in both strings to basic lowercase
+       * letters.).
+       * @param value A text string giving the parameter's value.
+       * @return This instance.
+       * @throws NullPointerException The parameter {@code value} or {@code name} is
+       * null.
+       * @throws IllegalArgumentException The parameter {@code name} is empty or
+       * syntactically invalid.
+       */
+      public MediaType.Builder SetParameter(String name, String value) {
+        if (value == null) {
+          throw new NullPointerException("value");
+        }
+        if (name == null) {
+          throw new NullPointerException("name");
+        }
+        if (name.length() == 0) {
+          throw new IllegalArgumentException("name is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
+          name.length()) {
+          throw new IllegalArgumentException("Not a well-formed parameter name: " +
+            name);
+        }
+        this.parameters.put(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name), value);
+        return this;
       }
-      this.parameters.remove(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name));
-      return this;
-    }
 
-    /**
-     * Sets a parameter's name and value for this media type.
-     * @param name Name of the parameter to set, such as "charset" . The name is
-     * compared using a basic case-insensitive comparison. (Two strings are equal
-     * in such a comparison, if they match after converting the basic uppercase
-     * letters A to Z (U+0041 to U+005A) in both strings to basic lowercase
-     * letters.).
-     * @param value A text string giving the parameter's value.
-     * @return This instance.
-     * @throws NullPointerException The parameter {@code value} or {@code name} is
-     * null.
-     * @throws IllegalArgumentException The parameter {@code name} is empty or
-     * syntactically invalid.
-     */
-    public MediaType.Builder SetParameter(String name, String value) {
-      if (value == null) {
-        throw new NullPointerException("value");
+      /**
+       * Sets this media type's subtype, such as "plain" or "xml" . This method
+       * enables the pattern of method chaining (for example, {@code
+       * new...().getSet()...().getSet()...()}) unlike with the SubType property in.NET or the
+       * setSubType method (with small s) in Java.
+       * @param str A text string naming a media subtype.
+       * @return This instance.
+       * @throws NullPointerException The parameter {@code str} is null.
+       * @throws IllegalArgumentException The parameter {@code str} is empty or
+       * syntactically invalid.
+       */
+      public MediaType.Builder SetSubType(String str) {
+        if (str == null) {
+          throw new NullPointerException("str");
+        }
+        if (str.length() == 0) {
+          throw new IllegalArgumentException("str is empty.");
+        }
+        if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
+          str.length()) {
+          throw new IllegalArgumentException("Not a well-formed subtype: " + str);
+        }
+        this.subtype = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
+        return this;
       }
-      if (name == null) {
-        throw new NullPointerException("name");
-      }
-      if (name.length() == 0) {
-        throw new IllegalArgumentException("name is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
-        name.length()) {
-        throw new IllegalArgumentException("Not a well-formed parameter name: " +
-          name);
-      }
-      this.parameters.put(com.upokecenter.util.DataUtilities.ToLowerCaseAscii(name), value);
-      return this;
-    }
 
-    /**
-     * Sets this media type's subtype, such as "plain" or "xml" . This method
-     * enables the pattern of method chaining (for example, {@code
-     * new...().getSet()...().getSet()...()}) unlike with the SubType property in.NET or the
-     * setSubType method (with small s) in Java.
-     * @param str A text string naming a media subtype.
-     * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException The parameter {@code str} is empty or
-     * syntactically invalid.
-     */
-    public MediaType.Builder SetSubType(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
+      /**
+       * Converts this object to a text string of the media type it represents, in
+       * the same form as {@code MediaType.toString}.
+       * @return A string representation of this object.
+       */
+      @Override public String toString() {
+        return this.ToMediaType().toString();
       }
-      if (str.length() == 0) {
-        throw new IllegalArgumentException("str is empty.");
-      }
-      if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
-        str.length()) {
-        throw new IllegalArgumentException("Not a well-formed subtype: " + str);
-      }
-      this.subtype = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str);
-      return this;
     }
-
-    /**
-     * Converts this object to a text string of the media type it represents, in
-     * the same form as {@code MediaType.toString}.
-     * @return A string representation of this object.
-     */
-    @Override public String toString() {
-      return this.ToMediaType().toString();
-    }
-  }
   }

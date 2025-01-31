@@ -73,9 +73,9 @@ namespace MailLibTest {
       Console.WriteLine(ProtocolStrings.IsInFreeformClass(" "));
       Console.WriteLine(ProtocolStrings.IsInFreeformClass("x"));
       Assert.IsTrue(
-        ProtocolStrings.IsInIdentifierClass("test\u007b}[]?^&"));
+        ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&"));
       Assert.IsTrue(
-        ProtocolStrings.IsInFreeformClass("test\u007b}[]?^&"));
+        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"));
       Assert.IsFalse(
         ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&"));
       Assert.IsTrue(
@@ -175,14 +175,14 @@ namespace MailLibTest {
       }
       {
         string stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc" +
-"\u0020test ");
+            "\u0020test ");
         Assert.AreEqual(
           "a b ccccc test",
           stringTemp);
       }
       {
         string stringTemp = ProtocolStrings.NicknameEnforce(" a b ccccc" +
-"\u0020test ");
+            "\u0020test ");
         Assert.AreEqual(
           "a b ccccc test",
           stringTemp);
@@ -315,7 +315,7 @@ namespace MailLibTest {
           false));
       // Consecutive ZWNJs
       Assert.IsFalse(Idna.IsValidDomainName("\ua840\u200c\u200c\ua840",
-  false));
+        false));
 
       // Keraia
       Assert.IsTrue(Idna.IsValidDomainName("x\u0375\u03b1", false)); // Greek
@@ -332,7 +332,7 @@ namespace MailLibTest {
       Assert.IsFalse(Idna.IsValidDomainName("\u05d0a", false)); // Hebrew
       // Arabic-indic digits and extended Arabic-indic digits
       Assert.IsFalse(Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627",
-  false));
+        false));
       // Right-joining character (U+062F; since the only right-joining
       // characters in Unicode 6.3 have Bidi type R,
       // a different dual-joining character is used, U+062D, which also has

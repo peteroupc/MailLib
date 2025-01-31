@@ -164,13 +164,13 @@ namespace PeterO.Mail.Transforms {
               continue;
             }
             if (!this.checkStrictEncoding && (
-                this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
+              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
                   throw new
                   MessageDataException("Encoded quoted-printable line too" +
-"\u0020long");
+                    "\u0020long");
                 }
               }
               this.unget = true;
@@ -180,17 +180,16 @@ namespace PeterO.Mail.Transforms {
               this.unget = true;
               return '=';
             } else {
-              throw new
-              MessageDataException("CR not followed by LF in" +
-"\u0020quoted-printable");
+              throw new MessageDataException("CR not followed by LF in" +
+                "\u0020quoted-printable");
             }
           } else if (b1 == -1) {
             // Equals sign at end, ignore
             return -1;
           } else {
             if (!this.checkStrictEncoding && (
-                this.maxLineSize > MaxLineLength ||
-                this.maxLineSize < 0)) {
+              this.maxLineSize > MaxLineLength ||
+              this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -203,7 +202,7 @@ namespace PeterO.Mail.Transforms {
             } else {
               throw new
               MessageDataException("Invalid hex character in" +
-"\u0020quoted-printable");
+                "\u0020quoted-printable");
             }
           }
           int b2 = this.ReadInputByte();
@@ -219,7 +218,7 @@ namespace PeterO.Mail.Transforms {
             c |= b2 + 10 - 'a';
           } else {
             if (!this.checkStrictEncoding && (
-                this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
+              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -229,7 +228,7 @@ namespace PeterO.Mail.Transforms {
                 if (this.lineCharCount > this.maxLineSize) {
                   throw new
                   MessageDataException("Encoded quoted-printable line too" +
-"\u0020long");
+                    "\u0020long");
                 }
               }
               this.ResizeBuffer(1);
@@ -352,7 +351,7 @@ namespace PeterO.Mail.Transforms {
             }
           } else {
             throw new MessageDataException("Invalid character in" +
-"\u0020quoted-printable");
+              "\u0020quoted-printable");
           }
         } else {
           // Any other character

@@ -181,7 +181,7 @@ namespace PeterO.Mail.Transforms {
           var match = true;
           for (int j = 0; j < boundary.Length; ++j) {
             match &= (boundary[j] & 0xff) == (int)(boundaryBuffer[j] &
-                0xff);
+              0xff);
           }
           if (match) {
             matchingBoundary = boundary;

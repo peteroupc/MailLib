@@ -132,7 +132,7 @@ namespace PeterO.Text {
       }
       if (cp > 0x10ffff) {
         throw new ArgumentException("cp(" + cp + ") is more than " +
-0x10ffff);
+          0x10ffff);
       }
       int b = this.array[cp >> 13] & 0xff;
       switch (b) {
@@ -153,7 +153,7 @@ namespace PeterO.Text {
       }
       if (cp > 0x10ffff) {
         throw new ArgumentException("cp(" + cp + ") is more than " +
-0x10ffff);
+          0x10ffff);
       }
       int index = (cp >> 9) << 1;
       int x = this.array[index + 1];
