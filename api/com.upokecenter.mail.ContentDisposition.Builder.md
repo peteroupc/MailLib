@@ -11,14 +11,6 @@ A mutable data type that allows a content disposition to be built.
 * `final String getDispositionType()`<br>
  Gets this value's disposition type, such as "inline" or "attachment".
 
-* `final boolean isMultipart()`<br>
- Deprecated.
-Irrelevant for content dispositions; will be removed in the future.
-
-* `final boolean isText()`<br>
- Deprecated.
-Irrelevant for content dispositions; will be removed in the future.
-
 * `ContentDisposition.Builder RemoveParameter(String name)`<br>
  Removes a parameter from this content disposition.
 
@@ -60,27 +52,6 @@ Gets this value's disposition type, such as "inline" or "attachment".
 ### setDispositionType
 
     public final void setDispositionType(String value)
-
-### isText
-
-    @Deprecated public final boolean isText()
-
-Gets a value indicating whether this is a text media type.
-
-**Returns:**
-
-* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
-
-### isMultipart
-
-    @Deprecated public final boolean isMultipart()
-
-Gets a value indicating whether this is a multipart media type.
-
-**Returns:**
-
-* <code>true</code> If this is a multipart media type; otherwise, <code>
- false</code>.
 
 ### ToDisposition
 

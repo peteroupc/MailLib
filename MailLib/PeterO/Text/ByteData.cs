@@ -5,7 +5,7 @@ namespace PeterO.Text {
     private readonly byte[] array;
 
     /// <summary>Decompresses a byte array compressed using the LZ4 format
-    /// (see "LZ4 Format Description" by Y Collet for more
+    /// (see "LZ4 Format Description" by Yann Collet for more
     /// information).</summary>
     /// <param name='input'>Input byte array.</param>
     /// <returns>Decompressed output byte array.</returns>

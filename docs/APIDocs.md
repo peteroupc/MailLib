@@ -8,10 +8,6 @@
 
  * [PeterO.Mail.DataUris](PeterO.Mail.DataUris.md) - Contains methods for parsing and generating Data URIs (uniform resource identifiers).
 
- * [PeterO.Mail.DataUrls](PeterO.Mail.DataUrls.md) - <b>Obsolete:</b> Renamed to DataUris.
-
- * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - <b>Obsolete:</b> Use ContentDisposition.Builder instead.
-
  * [PeterO.Mail.LanguageTags](PeterO.Mail.LanguageTags.md) - Contains methods for parsing and matching language tags.
 
  * [PeterO.Mail.MailDateTime](PeterO.Mail.MailDateTime.md) - Contains methods for parsing and generating date-time strings following the Internet Message Format (RFC 5322).
@@ -33,8 +29,6 @@
  * [PeterO.Text.Idna](PeterO.Text.Idna.md) - Contains methods that implement Internationalized Domain Names in Applications (IDNA).
 
  * [PeterO.Text.Normalization](PeterO.Text.Normalization.md) - Represents a Unicode normalization form.
-
- * [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) - <b>Obsolete:</b> Use NormalizerInput instead; that class is much more flexible than Normalizer.
 
  * [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) - A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization.
 

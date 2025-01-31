@@ -1971,7 +1971,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           throw new MessageDataException("An I/O error occurred.", ex);
         }
       }
-      DispositionBuilder dispBuilder = new DispositionBuilder(disposition);
+      ContentDisposition.Builder dispBuilder = new ContentDisposition.Builder(disposition);
       if (!((filename) == null || (filename).length() == 0)) {
         String basename = BaseName(filename);
         if (!((basename) == null || (basename).length() == 0)) {

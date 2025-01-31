@@ -572,30 +572,6 @@ namespace PeterO.Mail {
         this.SetDispositionType(type);
       }
 
-      /// <summary>Gets a value indicating whether this is a text media
-      /// type.</summary>
-      /// <value><c>true</c> If this is a text media type; otherwise,
-      /// <c>false</c>.</value>
-      [Obsolete(
-          "Irrelevant for content dispositions; will be removed in the" +
-          "\u0020future.")] public bool IsText {
-        get {
-          return this.DispositionType.Equals("text", StringComparison.Ordinal);
-        }
-      }
-
-      /// <summary>Gets a value indicating whether this is a multipart media
-      /// type.</summary>
-      /// <value><c>true</c> If this is a multipart media type; otherwise,
-      /// <c>false</c>.</value>
-      [Obsolete("Irrelevant for content dispositions; will be removed in the" +
-          "\u0020future.")] public bool IsMultipart {
-        get {
-          return this.DispositionType.Equals("multipart",
-              StringComparison.Ordinal);
-        }
-      }
-
       /// <summary>Converts this object to an immutable ContentDisposition
       /// object.</summary>
       /// <returns>A MediaType object.</returns>

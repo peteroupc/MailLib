@@ -2074,7 +2074,7 @@ namespace PeterO.Mail {
           throw new MessageDataException("An I/O error occurred.", ex);
         }
       }
-      var dispBuilder = new DispositionBuilder(disposition);
+      var dispBuilder = new ContentDisposition.Builder(disposition);
       if (!String.IsNullOrEmpty(filename)) {
         string basename = BaseName(filename);
         if (!String.IsNullOrEmpty(basename)) {

@@ -5,7 +5,7 @@ package com.upokecenter.text;
 
     /**
      * Decompresses a byte array compressed using the LZ4 format (see "LZ4 Format
-     * Description" by Y Collet for more information).
+     * Description" by Yann Collet for more information).
      * @param input Input byte array.
      * @return Decompressed output byte array.
      * @throws NullPointerException The parameter "output" is null.

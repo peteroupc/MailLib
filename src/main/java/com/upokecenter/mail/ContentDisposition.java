@@ -522,25 +522,6 @@ public final void setDispositionType(String value) {
       }
 
       /**
-       * Gets a value indicating whether this is a text media type.
-       * @return {@code true} If this is a text media type; otherwise, {@code false}.
-       * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
- */
-@Deprecated public final boolean isText() {
-          return this.getDispositionType().equals("text");
-        }
-
-      /**
-       * Gets a value indicating whether this is a multipart media type.
-       * @return {@code true} If this is a multipart media type; otherwise, {@code
-       * false}.
-       * @deprecated Irrelevant for content dispositions; will be removed in the\u0020future.
- */
-@Deprecated public final boolean isMultipart() {
-          return this.getDispositionType().equals("multipart");
-        }
-
-      /**
        * Converts this object to an immutable ContentDisposition object.
        * @return A MediaType object.
        */
