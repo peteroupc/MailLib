@@ -80,7 +80,7 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestMultilingual() {
-      List<String> languages = Arrays.asList(new String[] { "en", "fr" });
+      List<String> languages = new ArrayList<String>(new String[] { "en", "fr" });
       ArrayList<Message> messages = new ArrayList<Message>();
       messages.add(new Message()
         .SetHeader("from", "From-Lang1 <lang@example.com>")
@@ -92,7 +92,7 @@ import com.upokecenter.mail.*;
       if (msg == null) {
         Assert.fail();
       }
-      languages = Arrays.asList(new String[] { "fr" });
+      languages = new ArrayList<String>(new String[] { "fr" });
       Message msg2 = msg.SelectLanguageMessage(languages);
       {
         String stringTemp = msg2.GetHeader("subject");
@@ -100,7 +100,7 @@ import com.upokecenter.mail.*;
           "Subject-Lang2",
           stringTemp);
       }
-      languages = Arrays.asList(new String[] { "en" });
+      languages = new ArrayList<String>(new String[] { "en" });
       msg2 = msg.SelectLanguageMessage(languages);
       {
         String stringTemp = msg2.GetHeader("subject");

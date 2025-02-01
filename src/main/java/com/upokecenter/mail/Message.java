@@ -2360,7 +2360,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         // Fall back
         Message firstmsg = this.getParts().get(1);
         Message lastPart = this.getParts().get(this.getParts().size() - 1);
-        List<String> zxx = Arrays.asList(new String[] { "zxx" });
+        List<String> zxx = new ArrayList<String>(new String[] { "zxx" });
         clang = LanguageTags.GetLanguageList(
             lastPart.GetHeader("content-language"));
         if (clang != null) {

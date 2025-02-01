@@ -529,8 +529,8 @@ private LanguageTags() {
      */
     public static boolean MatchesLanguageTag(String range, String tag) {
       List<String> tags = LanguageTagFilter(
-          Arrays.asList(new String[] { range }),
-          Arrays.asList(new String[] { tag }),
+          new ArrayList<String>(new String[] { range }),
+          new ArrayList<String>(new String[] { tag }),
           false,
           false);
       return tags.size() > 0;
@@ -625,7 +625,7 @@ private LanguageTags() {
       String defaultValue,
       boolean extended) {
       return LanguageTagLookup(
-          Arrays.asList(new String[] { range }),
+          new ArrayList<String>(new String[] { range }),
           languages,
           defaultValue,
           extended);
