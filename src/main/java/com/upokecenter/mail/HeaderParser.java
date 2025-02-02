@@ -10469,7 +10469,8 @@ private HeaderParser() {
                       90) || (str.charAt(indexTemp3)
                       >= 94 && str.charAt(indexTemp3) <= 126) || (str.charAt(indexTemp3)
                       >= 42 && str.charAt(indexTemp3) <= 43) || (str.charAt(indexTemp3) >=
-                      38 && str.charAt(indexTemp3) <= 39) || (str.charAt(indexTemp3) == 63))) {
+                      38 && str.charAt(indexTemp3) <= 39) || (str.charAt(indexTemp3) ==
+                      63))) {
                     ++indexTemp3;
                   }
                   break;

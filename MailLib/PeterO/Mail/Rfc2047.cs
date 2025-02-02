@@ -481,7 +481,8 @@ namespace PeterO.Mail {
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                    hasSuspiciousText |= context == EncodedWordContext.Comment &&
+                    hasSuspiciousText |= context ==
+                      EncodedWordContext.Comment &&
                       HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;

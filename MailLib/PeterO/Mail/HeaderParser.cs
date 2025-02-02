@@ -10593,7 +10593,8 @@ namespace PeterO.Mail {
                       90) || (str[indexTemp3]
                       >= 94 && str[indexTemp3] <= 126) || (str[indexTemp3]
                       >= 42 && str[indexTemp3] <= 43) || (str[indexTemp3] >=
-                      38 && str[indexTemp3] <= 39) || (str[indexTemp3] == 63))) {
+                      38 && str[indexTemp3] <= 39) || (str[indexTemp3] ==
+                      63))) {
                     ++indexTemp3;
                   }
                   break;
