@@ -2963,7 +2963,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestSetHeader() {
       try {
-        new Message().SetHeader("from", "\"a\r\n b\" <x@example.com>");
+        String msg = "\"a\r\n" + "b\" <x@example.com>";
+        new Message().SetHeader("from", msg);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty

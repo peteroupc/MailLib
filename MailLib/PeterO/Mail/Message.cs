@@ -153,8 +153,6 @@ namespace PeterO.Mail {
 
     private readonly IList<Message> parts;
 
-    private static int msgidSequence = 0;
-    private static bool seqFirstTime = true;
     private byte[] body;
     private ContentDisposition contentDisposition;
 
@@ -3804,7 +3802,7 @@ namespace PeterO.Mail {
       var haveDate = false;
       var haveHeaders = new bool[11];
       byte[] bodyToWrite = this.body;
-      var builder = new MediaTypeBuilder(this.ContentType);
+      var builder = new MediaType.Builder(this.ContentType);
       string contentDisp = (this.ContentDisposition == null) ? null :
         this.ContentDisposition.ToString();
       var transferEnc = 0;
@@ -4415,7 +4413,7 @@ namespace PeterO.Mail {
                   ctype = MediaType.ApplicationOctetStream;
                 }
               } else {
-                var builder = new MediaTypeBuilder(ctype)
+                var builder = new MediaType.Builder(ctype)
                 .SetParameter("charset", ctype.GetCharset());
                 ctype = builder.ToMediaType();
               }

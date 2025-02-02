@@ -40,8 +40,6 @@ namespace PeterO.Mail {
     private const string AttrValueSpecials = "()<>@,;:\\\"/[]?='%*";
     private const string ValueHex = "0123456789ABCDEF";
 
-    private readonly string topLevelType;
-
     private static readonly ICharacterEncoding USAsciiEncoding =
       Encodings.GetEncoding("us-ascii", true);
 
@@ -53,9 +51,8 @@ namespace PeterO.Mail {
     /// <value>The name of this media type's top-level type (such as "text"
     /// or "audio" .</value>
     public string TopLevelType {
-      get {
-        return this.topLevelType;
-      }
+      get;
+      private set;
     }
 
     /// <summary>Returns whether this media type's subtype has the
@@ -77,14 +74,14 @@ namespace PeterO.Mail {
     /// or an empty string.</returns>
     public bool HasStructuredSuffix(string suffix) {
       if (String.IsNullOrEmpty(suffix) || suffix.Length >=
-        this.subType.Length || suffix.Length + 1 >= this.subType.Length) {
+        this.SubType.Length || suffix.Length + 1 >= this.SubType.Length) {
         return false;
       }
-      int j = this.subType.Length - 1 - suffix.Length;
-      if (this.subType[j] == '+') {
+      int j = this.SubType.Length - 1 - suffix.Length;
+      if (this.SubType[j] == '+') {
         ++j;
         for (var i = 0; i < suffix.Length; ++i) {
-          int c = this.subType[j + i];
+          int c = this.SubType[j + i];
           int c2 = suffix[i];
           if (c >= 0x41 && c <= 0x5a) {
             c += 0x20;
@@ -101,8 +98,6 @@ namespace PeterO.Mail {
       return false;
     }
 
-    #region Equals and GetHashCode implementation
-
     /// <summary>Determines whether this object and another object are
     /// equal.</summary>
     /// <param name='obj'>The parameter <paramref name='obj'/> is an
@@ -114,9 +109,9 @@ namespace PeterO.Mail {
       if (other == null) {
         return false;
       }
-      return this.topLevelType.Equals(other.topLevelType,
+      return this.TopLevelType.Equals(other.TopLevelType,
           StringComparison.Ordinal) &&
-        this.subType.Equals(other.subType, StringComparison.Ordinal) &&
+        this.SubType.Equals(other.SubType, StringComparison.Ordinal) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -127,16 +122,16 @@ namespace PeterO.Mail {
     /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
       var hashCode = 632580499;
-      if (this.topLevelType != null) {
-        for (var i = 0; i < this.topLevelType.Length; ++i) {
+      if (this.TopLevelType != null) {
+        for (var i = 0; i < this.TopLevelType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-            this.topLevelType[i]));
+            this.TopLevelType[i]));
         }
       }
-      if (this.subType != null) {
-        for (var i = 0; i < this.subType.Length; ++i) {
+      if (this.SubType != null) {
+        for (var i = 0; i < this.SubType.Length; ++i) {
           hashCode = unchecked(hashCode + (632580563 *
-            this.subType[i]));
+            this.SubType[i]));
         }
       }
       if (this.parameters != null) {
@@ -144,9 +139,6 @@ namespace PeterO.Mail {
       }
       return hashCode;
     }
-    #endregion
-
-    private readonly string subType;
 
     /// <summary>Gets this media type's subtype (for example, "plain" in
     /// "text/plain"). The resulting string will be in lowercase; that is,
@@ -154,9 +146,8 @@ namespace PeterO.Mail {
     /// lowercase letters ("a" to "z").</summary>
     /// <value>This media type's subtype.</value>
     public string SubType {
-      get {
-        return this.subType;
-      }
+      get;
+      private set;
     }
 
     /// <summary>Gets a value indicating whether this is a text media type
@@ -183,8 +174,8 @@ namespace PeterO.Mail {
       string type,
       string subtype,
       IDictionary<string, string> parameters) {
-      this.topLevelType = type;
-      this.subType = subtype;
+      this.TopLevelType = type;
+      this.SubType = subtype;
       this.parameters = new Dictionary<string, string>(parameters);
     }
 
@@ -626,7 +617,7 @@ namespace PeterO.Mail {
       // NOTE: 14 is the length of "Content-Type: " (with trailing
       // space).
       var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 14);
-      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      sa.AppendSymbol(this.TopLevelType + "/" + this.SubType);
       AppendParameters(
         this.parameters,
         sa);
@@ -642,7 +633,7 @@ namespace PeterO.Mail {
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
-      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      sa.AppendSymbol(this.TopLevelType + "/" + this.SubType);
       AppendParameters(
         this.parameters,
         sa);
@@ -663,7 +654,7 @@ namespace PeterO.Mail {
     public string ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);
-      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      sa.AppendSymbol(this.TopLevelType + "/" + this.SubType);
       AppendParameters(this.parameters, sa, true);
       return sa.ToString();
     }
@@ -1416,7 +1407,7 @@ namespace PeterO.Mail {
         return null;
       }
       var parameters = new Dictionary<string, string>();
-      string topLevelType =
+      string topLevel =
         DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
       ++i;
       int i2 = SkipMimeTypeSubtype(str, i, endIndex, null);
@@ -1430,7 +1421,7 @@ namespace PeterO.Mail {
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
         if (i3 == endIndex) {
           // at end
-          return new MediaType(topLevelType, subType, parameters);
+          return new MediaType(topLevel, subType, parameters);
         }
         if (i3 < endIndex && str[i3] != ';') {
           // not followed by ";", so not a media type
@@ -1443,7 +1434,7 @@ namespace PeterO.Mail {
           index,
           endIndex,
           HttpRules,
-          parameters) ? new MediaType(topLevelType, subType, parameters) :
+          parameters) ? new MediaType(topLevel, subType, parameters) :
         null;
     }
 
@@ -1502,8 +1493,8 @@ namespace PeterO.Mail {
       new MediaType.Builder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
-      this.topLevelType = String.Empty;
-      this.subType = String.Empty;
+      this.TopLevelType = String.Empty;
+      this.SubType = String.Empty;
       this.parameters = new Dictionary<string, string>();
     }
 

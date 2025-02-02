@@ -73,13 +73,15 @@ namespace MailLibTest {
       Console.WriteLine(ProtocolStrings.IsInFreeformClass(" "));
       Console.WriteLine(ProtocolStrings.IsInFreeformClass("x"));
       Assert.IsTrue(
-        ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&"));
+        ProtocolStrings.IsInIdentifierClass("test\u007b\u007d[]?^&"));
       Assert.IsTrue(
-        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"));
+        ProtocolStrings.IsInFreeformClass("test\u007b\u007d[]?^&"));
       Assert.IsFalse(
-        ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&"));
+        ProtocolStrings.IsInIdentifierClass(
+          "test\u007b\u007d\u0020[]?^&"));
       Assert.IsTrue(
-        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"));
+        ProtocolStrings.IsInFreeformClass(
+          "test\u007b\u007d\u0020[]?^&"));
       {
         string stringTemp = ProtocolStrings.UsernameEnforce("Σa");
         Assert.AreEqual(
@@ -87,9 +89,9 @@ namespace MailLibTest {
           stringTemp);
       }
       Assert.IsFalse(
-        ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&"));
+        ProtocolStrings.IsInIdentifierClass("tes\nt\u007b\u007d[]?^&"));
       Assert.IsFalse(
-        ProtocolStrings.IsInFreeformClass("tes\nt\u007b} []?^&"));
+        ProtocolStrings.IsInFreeformClass("tes\nt\u007b\u007d[]?^&"));
       {
         string stringTemp = ProtocolStrings.UserpartEnforce("TeSt");
         Assert.AreEqual(

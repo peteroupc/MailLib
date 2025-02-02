@@ -18,7 +18,7 @@ A mutable data type that allows a content disposition to be built.
     public Builder(
         PeterO.Mail.ContentDisposition mt);
 
-Initializes a new instance of the  class using the data from the specified content disposition.
+Initializes a new instance of the [PeterO.Mail.ContentDisposition.Builder](PeterO.Mail.ContentDisposition.Builder.md) class using the data from the specified content disposition.
 
 <b>Parameters:</b>
 
@@ -58,7 +58,7 @@ Type is empty.
 
     public Builder();
 
-Initializes a new instance of the  class using the disposition type "attachment" .
+Initializes a new instance of the [PeterO.Mail.ContentDisposition.Builder](PeterO.Mail.ContentDisposition.Builder.md) class using the disposition type "attachment" .
 
 <a id="DispositionType"></a>
 ### DispositionType

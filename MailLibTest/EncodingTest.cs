@@ -2597,7 +2597,6 @@ namespace MailLibTest {
     [Test]
     [Timeout(5000)]
     public void TestEncodedWords() {
-      const string ValuePar = "(";
       TestEncodedWordsPhrase(
         "(sss) y",
         "(sss) =?us-ascii?q?y?=");
@@ -2624,19 +2623,24 @@ namespace MailLibTest {
         "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       TestEncodedWordsPhrase(
         "x\u0020(sss)\u0020y",
-        "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=\u0020(sss)\u0020=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "x\u0020(z)\u0020y",
-        "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=\u0020(=?utf-8?Q?z?=)\u0020=?us-ascii?q?y?=");
+    }
+    [Test]
+    [Timeout(5000)]
+    public void TestEncodedWords2() {
+      const string ValuePar = "(";
       TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
-        "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
-        "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=" + ValuePar + "=?utf-8?Q?z?=)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + ValuePar + "z) y",
-        "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=" + ValuePar + "=?utf-8?Q?z?=)\u0020=?us-ascii?q?y?=");
       TestEncodedWordsOne(
         "x y",
         "=?utf-8?Q?x_?= =?utf-8?Q?y?=");

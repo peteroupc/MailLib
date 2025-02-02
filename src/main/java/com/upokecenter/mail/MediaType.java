@@ -37,8 +37,6 @@ import com.upokecenter.text.*;
     private static final String AttrValueSpecials = "()<>@,;:\\\"/[]?='%*";
     private static final String ValueHex = "0123456789ABCDEF";
 
-    private final String topLevelType;
-
     private static final ICharacterEncoding USAsciiEncoding =
       Encodings.GetEncoding("us-ascii", true);
 
@@ -50,9 +48,8 @@ import com.upokecenter.text.*;
      * @return The name of this media type's top-level type (such as "text" or
      * "audio" .
      */
-    public final String getTopLevelType() {
-        return this.topLevelType;
-      }
+    public final String getTopLevelType() { return propVartopleveltype; }
+private final String propVartopleveltype;
 
     /**
      * Returns whether this media type's subtype has the specified structured
@@ -72,14 +69,14 @@ import com.upokecenter.text.*;
      */
     public boolean HasStructuredSuffix(String suffix) {
       if (((suffix) == null || (suffix).length() == 0) || suffix.length() >=
-        this.subType.length() || suffix.length() + 1 >= this.subType.length()) {
+        this.getSubType().length() || suffix.length() + 1 >= this.getSubType().length()) {
         return false;
       }
-      int j = this.subType.length() - 1 - suffix.length();
-      if (this.subType.charAt(j) == '+') {
+      int j = this.getSubType().length() - 1 - suffix.length();
+      if (this.getSubType().charAt(j) == '+') {
         ++j;
         for (int i = 0; i < suffix.length(); ++i) {
-          int c = this.subType.charAt(j + i);
+          int c = this.getSubType().charAt(j + i);
           int c2 = suffix.charAt(i);
           if (c >= 0x41 && c <= 0x5a) {
             c += 0x20;
@@ -107,8 +104,8 @@ import com.upokecenter.text.*;
       if (other == null) {
         return false;
       }
-      return this.topLevelType.equals(other.topLevelType) &&
-        this.subType.equals(other.subType) &&
+      return this.getTopLevelType().equals(other.getTopLevelType()) &&
+        this.getSubType().equals(other.getSubType()) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -120,16 +117,16 @@ import com.upokecenter.text.*;
      */
     @Override public int hashCode() {
       int valueHashCode = 632580499;
-      if (this.topLevelType != null) {
-        for (int i = 0; i < this.topLevelType.length(); ++i) {
+      if (this.getTopLevelType() != null) {
+        for (int i = 0; i < this.getTopLevelType().length(); ++i) {
           valueHashCode = (valueHashCode + (632580563 *
-            this.topLevelType.charAt(i)));
+            this.getTopLevelType().charAt(i)));
         }
       }
-      if (this.subType != null) {
-        for (int i = 0; i < this.subType.length(); ++i) {
+      if (this.getSubType() != null) {
+        for (int i = 0; i < this.getSubType().length(); ++i) {
           valueHashCode = (valueHashCode + (632580563 *
-            this.subType.charAt(i)));
+            this.getSubType().charAt(i)));
         }
       }
       if (this.parameters != null) {
@@ -138,17 +135,14 @@ import com.upokecenter.text.*;
       return valueHashCode;
     }
 
-    private final String subType;
-
     /**
      * Gets this media type's subtype (for example, "plain" in "text/plain"). The
      * resulting string will be in lowercase; that is, with its basic uppercase
      * letters ("A" to "Z") converted to basic lowercase letters ("a" to "z").
      * @return This media type's subtype.
      */
-    public final String getSubType() {
-        return this.subType;
-      }
+    public final String getSubType() { return propVarsubtype; }
+private final String propVarsubtype;
 
     /**
      * Gets a value indicating whether this is a text media type ("text/*").
@@ -171,8 +165,8 @@ import com.upokecenter.text.*;
       String type,
       String subtype,
       Map<String, String> parameters) {
-      this.topLevelType = type;
-      this.subType = subtype;
+      this.propVartopleveltype = type;
+      this.propVarsubtype = subtype;
       this.parameters = new HashMap<String, String>(parameters);
     }
 
@@ -602,7 +596,7 @@ import com.upokecenter.text.*;
       // NOTE: 14 is the length of "Content-Type: " (with trailing
       // space).
       HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 14);
-      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      sa.AppendSymbol(this.getTopLevelType() + "/" + this.getSubType());
       AppendParameters(
         this.parameters,
         sa);
@@ -619,7 +613,7 @@ import com.upokecenter.text.*;
     public String ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       HeaderEncoder sa = new HeaderEncoder(-1, 14);
-      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      sa.AppendSymbol(this.getTopLevelType() + "/" + this.getSubType());
       AppendParameters(
         this.parameters,
         sa);
@@ -638,7 +632,7 @@ import com.upokecenter.text.*;
     public String ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       HeaderEncoder sa = new HeaderEncoder(-1, 14);
-      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      sa.AppendSymbol(this.getTopLevelType() + "/" + this.getSubType());
       AppendParameters(this.parameters, sa, true);
       return sa.toString();
     }
@@ -1373,7 +1367,7 @@ import com.upokecenter.text.*;
         return null;
       }
       HashMap<String, String> parameters = new HashMap<String, String>();
-      String topLevelType = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
+      String topLevel = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       ++i;
       int i2 = SkipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
@@ -1386,7 +1380,7 @@ import com.upokecenter.text.*;
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
         if (i3 == endIndex) {
           // at end
-          return new MediaType(topLevelType, subType, parameters);
+          return new MediaType(topLevel, subType, parameters);
         }
         if (i3 < endIndex && str.charAt(i3) != ';') {
           // not followed by ";", so not a media type
@@ -1399,7 +1393,7 @@ import com.upokecenter.text.*;
           index,
           endIndex,
           HttpRules,
-          parameters) ? new MediaType(topLevelType, subType, parameters) :
+          parameters) ? new MediaType(topLevel, subType, parameters) :
         null;
     }
 
@@ -1443,8 +1437,8 @@ import com.upokecenter.text.*;
       new MediaType.Builder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
-      this.topLevelType = "";
-      this.subType = "";
+      this.propVartopleveltype = "";
+      this.propVarsubtype = "";
       this.parameters = new HashMap<String, String>();
     }
 

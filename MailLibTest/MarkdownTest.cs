@@ -245,184 +245,192 @@ namespace MailLibTest {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com>\u0020\"Title\"");
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com 'Title'";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com (Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n \u005btest]:" +
-          "\u0020http://www.example.com (Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u0020 \u005btest]:" +
-          "\u0020http://www.example.com (Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a" +
-          "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
-          "\u0020 title) < / p > ";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com\r\n(Not a title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com\r\n (Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com\r\n \"Title\"";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com\r\n 'Title'";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
+    }
+    [Test] public void TestMarkdown2a() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com 'Title'";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2b() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com (Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2c() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n \u005btest]:" +
+        "\u0020http://www.example.com (Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2d() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u0020 \u005btest]:" +
+        "\u0020http://www.example.com (Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2e() {
+      string objectTemp = "<p><a" +
+        "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
+        "\u0020title\u0029</p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com\r\n(Not a title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2f() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com\r\n (Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2g() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com\r\n \"Title\"";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2h() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com\r\n 'Title'";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2i() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\u005btest]: http://www.example.com");
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com");
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
-          "\u0020http://www.example.com \"Title\"";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
+    }
+    [Test] public void TestMarkdown2j() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
+        "\u0020http://www.example.com \"Title\"";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2k() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
-          "\u0020<http://www.example.com> \"Title\"";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com 'Title'";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com (Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n \u005btest]:" +
-          "\u0020http://www.example.com (Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u0020" +
-          "\u0020\u005btest]: " + "http://www.example.com (Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
+    }
+    [Test] public void TestMarkdown2l() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
+        "\u0020<http://www.example.com> \"Title\"";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
 
-      {
-        string objectTemp = "<p><a" +
-          "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
-          "\u0020title)</p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com\r\n(No" +
-          "t a title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\" " +
-          "title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: " +
-          "http://www.example.com\r\n" +
-          "\u0020(Title)";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          "\u0020title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
-          "\u0020http://www.example.com\r\n" +
-          " \"Title\"";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
-      {
-        string objectTemp = "<p><a href=\"http://www.example.com\"" +
-          " title=\"Title\">Linktext</a></p>";
-        string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
-          " http://www.example.com\r\n" +
-          " 'Title'";
-        TestMarkdownOne(
-          objectTemp,
-          objectTemp2);
-      }
+    [Test] public void TestMarkdown2m() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com 'Title'";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2n() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com (Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2o() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n \u005btest]:" +
+        "\u0020http://www.example.com (Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2p() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u0020" +
+        "\u0020\u005btest]: " + "http://www.example.com (Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+
+    [Test] public void TestMarkdown2q() {
+      string objectTemp = "<p><a" +
+        "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
+        "\u0020title)</p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com\r\n(No" +
+        "t a title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2r() {
+      string objectTemp = "<p><a href=\"http://www.example.com\" " +
+        "title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: " +
+        "http://www.example.com\r\n" +
+        "\u0020(Title)";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2s() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        "\u0020title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+        "\u0020http://www.example.com\r\n" +
+        " \"Title\"";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+    [Test] public void TestMarkdown2t() {
+      string objectTemp = "<p><a href=\"http://www.example.com\"" +
+        " title=\"Title\">Linktext</a></p>";
+      string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
+        " http://www.example.com\r\n" +
+        " 'Title'";
+      TestMarkdownOne(
+        objectTemp,
+        objectTemp2);
+    }
+
+    [Test] public void TestMarkdown2u() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">tEsT</a></p>",
         "[tEsT][]\r\n\u005btest]: http://www.example.com");
@@ -450,9 +458,18 @@ namespace MailLibTest {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
-      TestMarkdownOne(
-        "<p><a href=\"http://www.example.com\">tEsT</a></p><p>(Not a title)</p>",
-        "[tEsT][]\r\n\r\n\u005btest]:\u0020http://www.example.com\r\n(Not a title)");
+    }
+
+    [Test] public void TestMarkdown2v() {
+      string stringTemp = "<p><a" +
+        "\u0020href=\"http://www.example.com\">tEsT</a></p>" +
+        "<p>(Not a title)</p>";
+      string stringTemp2 =
+        "[tEsT][]\r\n\r\n\u005btest]:\u0020http://www.example.com\r\n(Not" +
+        "\u0020a title)";
+      TestMarkdownOne(stringTemp, stringTemp2);
+    }
+    [Test] public void TestMarkdown2w() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");
@@ -468,15 +485,23 @@ namespace MailLibTest {
       TestMarkdownOne(
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
         "![tEsT][]\r\n\r\n\u005btest]: http://www.example.com");
-      TestMarkdownOne(
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-        "![tEsT][]\r\n\u005btest]:\u0020http://www.example.com \"Title\"");
+      {
+        string stringTemp = "<p><img src=\"http://www.example.com\"" +
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        string stringTemp2 =
+          "![tEsT][]\r\n\u005btest]:\u0020http://www.example.com \"Title\"";
+        TestMarkdownOne(stringTemp, stringTemp2);
+      }
       TestMarkdownOne(
         "<p><img src=\"http://www.example.com\" alt=\"tEsT\" /></p>",
         "![tEsT][]\r\n\r\n\u005btest]: <http://www.example.com>");
-      TestMarkdownOne(
-        "<p><img src=\"http://www.example.com\" alt=\"tEsT\" title=\"Title\" /></p>",
-        "![tEsT][]\r\n\u005btest]:\u0020<http://www.example.com> \"Title\"");
+      {
+        string stringTemp = "<p><img src=\"http://www.example.com\"" +
+          "\u0020alt=\"tEsT\" title=\"Title\" /></p>";
+        string stringTemp2 =
+          "![tEsT][]\r\n\u005btest]:\u0020<http://www.example.com> \"Title\"";
+        TestMarkdownOne(stringTemp, stringTemp2);
+      }
       {
         string objectTemp = "<p><img src=\"http://www.example.com\"" +
           "\u0020alt=\"tEsT\" title=\"Title\" /></p>";

@@ -67,8 +67,6 @@ namespace PeterO.Mail {
       }
     }
 
-    #region Equals and GetHashCode implementation
-
     /// <summary>Determines whether this object and another object are
     /// equal.</summary>
     /// <param name='obj'>The parameter <paramref name='obj'/> is an
@@ -106,7 +104,6 @@ namespace PeterO.Mail {
       }
       return hashCode;
     }
-    #endregion
 
     /// <summary>Gets a value indicating whether the disposition type is
     /// inline.</summary>
@@ -531,16 +528,16 @@ namespace PeterO.Mail {
       }
 
       /// <summary>Initializes a new instance of the
-      /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the
-      /// disposition type "attachment" .</summary>
+      /// <see cref='PeterO.Mail.ContentDisposition.Builder'/> class using
+      /// the disposition type "attachment" .</summary>
       public Builder() {
         this.parameters = new Dictionary<string, string>();
         this.type = "attachment";
       }
 
       /// <summary>Initializes a new instance of the
-      /// <see cref='PeterO.Mail.DispositionBuilder'/> class using the data
-      /// from the specified content disposition.</summary>
+      /// <see cref='PeterO.Mail.ContentDisposition.Builder'/> class using
+      /// the data from the specified content disposition.</summary>
       /// <param name='mt'>The parameter <paramref name='mt'/> is a
       /// ContentDisposition object.</param>
       /// <exception cref='ArgumentNullException'>The parameter <paramref

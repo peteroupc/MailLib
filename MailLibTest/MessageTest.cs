@@ -2939,7 +2939,8 @@ namespace MailLibTest {
     [Test]
     public void TestSetHeader() {
       try {
-        new Message().SetHeader("from", "\"a\r\n b\" <x@example.com>");
+        string msg = "\"a\r\n" + "b\" <x@example.com>";
+        new Message().SetHeader("from", msg);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
         // NOTE: Intentionally empty

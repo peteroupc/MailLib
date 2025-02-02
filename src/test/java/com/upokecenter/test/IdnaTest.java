@@ -73,19 +73,21 @@ import com.upokecenter.text.*;
       System.out.println(ProtocolStrings.IsInFreeformClass(" "));
       System.out.println(ProtocolStrings.IsInFreeformClass("x"));
       if (!(
-        ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&"))) {
+        ProtocolStrings.IsInIdentifierClass("test\u007b\u007d[]?^&"))) {
  Assert.fail();
  }
       if (!(
-        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"))) {
+        ProtocolStrings.IsInFreeformClass("test\u007b\u007d[]?^&"))) {
  Assert.fail();
  }
       if (
-        ProtocolStrings.IsInIdentifierClass("test\u007b} []?^&")) {
+        ProtocolStrings.IsInIdentifierClass(
+          "test\u007b\u007d\u0020[]?^&")) {
  Assert.fail();
  }
       if (!(
-        ProtocolStrings.IsInFreeformClass("test\u007b} []?^&"))) {
+        ProtocolStrings.IsInFreeformClass(
+          "test\u007b\u007d\u0020[]?^&"))) {
  Assert.fail();
  }
       {
@@ -95,11 +97,11 @@ import com.upokecenter.text.*;
           stringTemp);
       }
       if (
-        ProtocolStrings.IsInIdentifierClass("tes\nt\u007b} []?^&")) {
+        ProtocolStrings.IsInIdentifierClass("tes\nt\u007b\u007d[]?^&")) {
  Assert.fail();
  }
       if (
-        ProtocolStrings.IsInFreeformClass("tes\nt\u007b} []?^&")) {
+        ProtocolStrings.IsInFreeformClass("tes\nt\u007b\u007d[]?^&")) {
  Assert.fail();
  }
       {

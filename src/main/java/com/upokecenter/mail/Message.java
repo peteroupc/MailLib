@@ -127,8 +127,6 @@ import com.upokecenter.text.*;
 
     private final List<Message> parts;
 
-    private static int msgidSequence = 0;
-    private static boolean seqFirstTime = true;
     private byte[] body;
     private ContentDisposition contentDisposition;
 
@@ -3679,7 +3677,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       boolean haveDate = false;
       boolean[] haveHeaders = new boolean[11];
       byte[] bodyToWrite = this.body;
-      MediaTypeBuilder builder = new MediaTypeBuilder(this.getContentType());
+      MediaType.Builder builder = new MediaType.Builder(this.getContentType());
       String contentDisp = (this.getContentDisposition() == null) ? null :
         this.getContentDisposition().toString();
       int transferEnc = 0;
@@ -4242,7 +4240,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
                   ctype = MediaType.ApplicationOctetStream;
                 }
               } else {
-                MediaTypeBuilder builder = new MediaTypeBuilder(ctype)
+                MediaType.Builder builder = new MediaType.Builder(ctype)
                 .SetParameter("charset", ctype.GetCharset());
                 ctype = builder.ToMediaType();
               }
