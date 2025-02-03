@@ -23,6 +23,8 @@ Version 0.15.0:
 - GetAttachments method added to Message class
 - NamedAddress received new string preparation methods
 - Update media types
+- DispositionBuilder becomes ContentDisposition.Builder
+- MediaTypeBuilder becomes MediaType.Builder
 
 </PackageReleaseNotes>
     <Copyright>Written by Peter O.  Any copyright to this work is released to the Public Domain.
