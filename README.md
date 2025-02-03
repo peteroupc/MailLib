@@ -2,7 +2,7 @@ MailLib
 =======
 
 [![NuGet Status](http://img.shields.io/nuget/v/PeterO.MailLib.svg?style=flat)](https://www.nuget.org/packages/PeterO.MailLib)
-[![Maven Central](https://img.shields.io/maven-central/v/com.upokecenter/maillib.svg?style=plastic)](https://search.maven.org/#search|ga|1|g%3A%22com.upokecenter%22%20AND%20a%3A%22maillib%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.peteroupc/maillib.svg?style=plastic)](https://search.maven.org/#search|ga|1|g%3A%22com.github.peteroupc%22%20AND%20a%3A%22maillib%22)
 
 **Download source code: [ZIP file](https://github.com/peteroupc/MailLib/archive/master.zip)**
 
@@ -28,17 +28,19 @@ this library as a NuGet package, enter `Install-Package PeterO.MailLib` in the
 NuGet Package Manager Console.
 
 Starting with version 0.6.1, the Java implementation is available
-as an [artifact](https://search.maven.org/#search|ga|1|g%3A%22com.upokecenter%22%20AND%20a%3A%22maillib%22) in the Central Repository. To add this library to a Maven
+as an [artifact](https://search.maven.org/#search|ga|1|g%3A%22com.github.peteroupc%22%20AND%20a%3A%22maillib%22) in the Central Repository. To add this library to a Maven
 project, add the following to the `dependencies` section in your `pom.xml` file:
 
     <dependency>
-      <groupId>com.upokecenter</groupId>
+      <groupId>com.github.peteroupc</groupId>
       <artifactId>maillib</artifactId>
       <version>0.15.0</version>
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
-group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given earlier.
+group ID (`com.github.peteroupc`), artifact ID (`maillib`), and version, as given earlier.
+
+Note that versions before 0.15.0 were released under the group ID `com.upokecenter`, which is being phased out.
 
 Source Code
 ---------
@@ -77,6 +79,8 @@ Version 0.15.0:
 - GetAttachments method added to Message class
 - NamedAddress received new string preparation methods
 - Update media types
+- DispositionBuilder becomes ContentDisposition.Builder
+- MediaTypeBuilder becomes MediaType.Builder
 
 Version 0.14.0:
 
