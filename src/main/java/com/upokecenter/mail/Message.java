@@ -440,7 +440,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           mt.getSubType().equals("news-groupinfo") ||
           mt.getSubType().equals("ecmascript") ||
           mt.getSubType().equals("vnd.uplanet.cacheop-wbxml") || mt.getSubType().equals(
-            "vnd.uplanet.bearer-choice") ||
+              "vnd.uplanet.bearer-choice") ||
           mt.getSubType().equals("vnd.wap.slc") ||
           mt.getSubType().equals("nss") ||
           mt.getSubType().equals("vnd.3gpp.mcdata-payload") ||
@@ -456,7 +456,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           mt.getSubType().equals("vnd.uplanet.alert") ||
           mt.getSubType().equals("vnd.wap.wbxml") ||
           mt.getSubType().equals("xml-external-parsed-entity") || mt.getSubType().equals(
-            "vnd.uplanet.listcmd-wbxml") ||
+              "vnd.uplanet.listcmd-wbxml") ||
           mt.getSubType().equals("vnd.uplanet.list") ||
           mt.getSubType().equals("vnd.uplanet.listcmd") ||
           mt.getSubType().equals("vnd.msign") ||
@@ -1461,7 +1461,7 @@ public final void setSubject(String value) {
 
     public Message GetBodyMessage() {
       return (this.getContentType().getTopLevelType().equals("message") && (this.getContentType().getSubType().equals(
-        "rfc822") ||
+          "rfc822") ||
         this.getContentType().getSubType().equals("news") || this.getContentType().getSubType().equals("global"))) ? new Message(this.body) : null;
     }
 
@@ -2040,7 +2040,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           return
 
             MediaType.Parse(
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
         if (ext.equals(".zip")) {
           return MediaType.Parse("application/zip");
@@ -2358,7 +2358,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
         // Fall back
         Message firstmsg = this.getParts().get(1);
         Message lastPart = this.getParts().get(this.getParts().size() - 1);
-        List<String> zxx = new ArrayList<String>(new String[] { "zxx" });
+        List<String> zxx = Arrays.asList("zxx");
         clang = LanguageTags.GetLanguageList(
             lastPart.GetHeader("content-language"));
         if (clang != null) {
@@ -3709,7 +3709,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
           } else if (!msgCanBeUnencoded && !builder.getSubType().equals("global") &&
             !builder.getSubType().equals("global-disposition-notification") &&
             !builder.getSubType().equals("global-delivery-status") && !builder.getSubType().equals(
-              "global-headers")) {
+                "global-headers")) {
           }
         }
       }
@@ -3846,12 +3846,12 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
               0,
               downgraded.length())) {
             if (name.equals("message-id") ||
-              name.equals("resent-message-id") ||
-              name.equals("in-reply-to") ||
-              name.equals("references") ||
-              name.equals(
-                "original-recipient") ||
-              name.equals("final-recipient")) {
+                         name.equals("resent-message-id") ||
+                         name.equals("in-reply-to") ||
+                         name.equals("references") ||
+                         name.equals(
+                         "original-recipient") ||
+                         name.equals("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
@@ -4270,7 +4270,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
       if (this.transferEncoding == EncodingQuotedPrintable ||
         this.transferEncoding == EncodingBase64) {
         if (ctype.isMultipart() || (ctype.getTopLevelType().equals("message") && !ctype.getSubType().equals("global") && !ctype.getSubType().equals(
-            "global-headers") && !ctype.getSubType().equals(
+              "global-headers") && !ctype.getSubType().equals(
             "global-disposition-notification") &&
           !ctype.getSubType().equals("global-delivery-status"))) {
           // CLARIFICATION: Treat quoted-printable and base64
@@ -4295,7 +4295,7 @@ try { if (fs != null) { fs.close(); } } catch (java.io.IOException ex) {}
             charset.equals("windows-1252") ||
             charset.equals("windows-1251") ||
             (charset.length() > 9 && charset.substring(0, 9).equals(
-            "iso-8859-"))) {
+              "iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;

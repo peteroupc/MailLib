@@ -469,8 +469,8 @@ namespace PeterO.Mail {
           mt.SubType.Equals("ecmascript", StringComparison.Ordinal) ||
           mt.SubType.Equals("vnd.uplanet.cacheop-wbxml",
             StringComparison.Ordinal) || mt.SubType.Equals(
-            "vnd.uplanet.bearer-choice",
-            StringComparison.Ordinal) ||
+              "vnd.uplanet.bearer-choice",
+              StringComparison.Ordinal) ||
           mt.SubType.Equals("vnd.wap.slc", StringComparison.Ordinal) ||
           mt.SubType.Equals("nss", StringComparison.Ordinal) ||
           mt.SubType.Equals("vnd.3gpp.mcdata-payload",
@@ -490,8 +490,8 @@ namespace PeterO.Mail {
           mt.SubType.Equals("vnd.wap.wbxml", StringComparison.Ordinal) ||
           mt.SubType.Equals("xml-external-parsed-entity",
             StringComparison.Ordinal) || mt.SubType.Equals(
-            "vnd.uplanet.listcmd-wbxml",
-            StringComparison.Ordinal) ||
+              "vnd.uplanet.listcmd-wbxml",
+              StringComparison.Ordinal) ||
           mt.SubType.Equals("vnd.uplanet.list", StringComparison.Ordinal) ||
           mt.SubType.Equals("vnd.uplanet.listcmd", StringComparison.Ordinal) ||
           mt.SubType.Equals("vnd.msign", StringComparison.Ordinal) ||
@@ -665,10 +665,9 @@ namespace PeterO.Mail {
     /// messages), or has an unsupported character encoding.</exception>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Design",
-        "CA1024",
-        Justification =
-          "This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
+      "Microsoft.Design",
+      "CA1024",
+      Justification = "This method may throw NotSupportedException among other things - making it too heavyweight to be a property.")]
     #endif
     public string GetBodyString() {
       // TODO: Consider returning null rather than throwing an exception
@@ -1348,7 +1347,7 @@ namespace PeterO.Mail {
     /// letters, U+0041 to U+005A, are converted to basic lowercase
     /// letters) and the value is the header field's value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
-    public IList<KeyValuePair<string, string >> HeaderFields {
+    public IList<KeyValuePair<string, string>> HeaderFields {
       get {
         var list = new List<KeyValuePair<string, string>>();
         for (int i = 0; i < this.headers.Count; i += 2) {
@@ -1540,16 +1539,15 @@ namespace PeterO.Mail {
     /// otherwise.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Design",
-        "CA1024",
-        Justification =
-          "This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
+      "Microsoft.Design",
+      "CA1024",
+      Justification = "This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
     #endif
     public Message GetBodyMessage() {
       return (this.ContentType.TopLevelType.Equals("message",
         StringComparison.Ordinal) && (this.ContentType.SubType.Equals(
-        "rfc822",
-        StringComparison.Ordinal) ||
+          "rfc822",
+          StringComparison.Ordinal) ||
         this.ContentType.SubType.Equals("news",
           StringComparison.Ordinal) || this.ContentType.SubType.Equals("global",
           StringComparison.Ordinal))) ? new Message(this.body) : null;
@@ -2143,7 +2141,7 @@ namespace PeterO.Mail {
           return
 
             MediaType.Parse(
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
         if (ext.Equals(".zip", StringComparison.Ordinal)) {
           return MediaType.Parse("application/zip");
@@ -3845,13 +3843,13 @@ namespace PeterO.Mail {
               StringComparison.Ordinal) &&
             !builder.SubType.Equals("global-delivery-status",
               StringComparison.Ordinal) && !builder.SubType.Equals(
-              "global-headers",
-              StringComparison.Ordinal)) {
+                "global-headers",
+                StringComparison.Ordinal)) {
             #if DEBUG
             throw new MessageDataException("Message body can't be encoded: " +
               builder.ToString() + ", " + this.ContentType);
             #else
-            {
+{
               throw new MessageDataException("Message body can't be encoded");
             }
             #endif
@@ -4010,15 +4008,15 @@ namespace PeterO.Mail {
               0,
               downgraded.Length)) {
             if (name.Equals("message-id", StringComparison.Ordinal) ||
-              name.Equals("resent-message-id",
-                StringComparison.Ordinal) ||
-              name.Equals("in-reply-to", StringComparison.Ordinal) ||
-              name.Equals("references", StringComparison.Ordinal) ||
-              name.Equals(
-                "original-recipient",
-                StringComparison.Ordinal) ||
-              name.Equals("final-recipient",
-                StringComparison.Ordinal)) {
+                         name.Equals("resent-message-id",
+                         StringComparison.Ordinal) ||
+                         name.Equals("in-reply-to", StringComparison.Ordinal) ||
+                         name.Equals("references", StringComparison.Ordinal) ||
+                         name.Equals(
+                         "original-recipient",
+                         StringComparison.Ordinal) ||
+                         name.Equals("final-recipient",
+                         StringComparison.Ordinal)) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
@@ -4451,8 +4449,8 @@ namespace PeterO.Mail {
         if (ctype.IsMultipart || (ctype.TopLevelType.Equals("message",
           StringComparison.Ordinal) && !ctype.SubType.Equals("global",
             StringComparison.Ordinal) && !ctype.SubType.Equals(
-            "global-headers",
-            StringComparison.Ordinal) && !ctype.SubType.Equals(
+              "global-headers",
+              StringComparison.Ordinal) && !ctype.SubType.Equals(
             "global-disposition-notification",
             StringComparison.Ordinal) &&
           !ctype.SubType.Equals("global-delivery-status",
@@ -4480,8 +4478,8 @@ namespace PeterO.Mail {
             charset.Equals("windows-1252", StringComparison.Ordinal) ||
             charset.Equals("windows-1251", StringComparison.Ordinal) ||
             (charset.Length > 9 && charset.Substring(0, 9).Equals(
-            "iso-8859-",
-            StringComparison.Ordinal))) {
+              "iso-8859-",
+              StringComparison.Ordinal))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;

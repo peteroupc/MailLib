@@ -246,7 +246,8 @@ namespace MailLibTest {
         "<p><a href=\"http://www.example.com\" title=\"Title\">Linktext</a></p>",
         "[Linktext][TeSt]\r\n\u005btest]: <http://www.example.com>\u0020\"Title\"");
     }
-    [Test] public void TestMarkdown2a() {
+    [Test]
+    public void TestMarkdown2a() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
@@ -255,7 +256,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2b() {
+    [Test]
+    public void TestMarkdown2b() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
@@ -264,7 +266,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2c() {
+    [Test]
+    public void TestMarkdown2c() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext][TeSt]\r\n\r\n \u005btest]:" +
@@ -273,7 +276,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2d() {
+    [Test]
+    public void TestMarkdown2d() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u0020 \u005btest]:" +
@@ -282,7 +286,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2e() {
+    [Test]
+    public void TestMarkdown2e() {
       string objectTemp = "<p><a" +
         "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
         "\u0020title\u0029</p>";
@@ -292,7 +297,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2f() {
+    [Test]
+    public void TestMarkdown2f() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
@@ -301,7 +307,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2g() {
+    [Test]
+    public void TestMarkdown2g() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
@@ -310,7 +317,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2h() {
+    [Test]
+    public void TestMarkdown2h() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext][TeSt]\r\n\r\n\u005btest]:" +
@@ -319,7 +327,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2i() {
+    [Test]
+    public void TestMarkdown2i() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\u005btest]: http://www.example.com");
@@ -327,7 +336,8 @@ namespace MailLibTest {
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: http://www.example.com");
     }
-    [Test] public void TestMarkdown2j() {
+    [Test]
+    public void TestMarkdown2j() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
@@ -336,12 +346,14 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2k() {
+    [Test]
+    public void TestMarkdown2k() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">Linktext</a></p>",
         "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: <http://www.example.com>");
     }
-    [Test] public void TestMarkdown2l() {
+    [Test]
+    public void TestMarkdown2l() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\u005btest]:" +
@@ -351,7 +363,8 @@ namespace MailLibTest {
         objectTemp2);
     }
 
-    [Test] public void TestMarkdown2m() {
+    [Test]
+    public void TestMarkdown2m() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
@@ -360,7 +373,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2n() {
+    [Test]
+    public void TestMarkdown2n() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
@@ -369,7 +383,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2o() {
+    [Test]
+    public void TestMarkdown2o() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n \u005btest]:" +
@@ -378,7 +393,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2p() {
+    [Test]
+    public void TestMarkdown2p() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u0020" +
@@ -388,7 +404,8 @@ namespace MailLibTest {
         objectTemp2);
     }
 
-    [Test] public void TestMarkdown2q() {
+    [Test]
+    public void TestMarkdown2q() {
       string objectTemp = "<p><a" +
         "\u0020href=\"http://www.example.com\">Linktext</a></p><p>(Not a" +
         "\u0020title)</p>";
@@ -399,7 +416,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2r() {
+    [Test]
+    public void TestMarkdown2r() {
       string objectTemp = "<p><a href=\"http://www.example.com\" " +
         "title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]: " +
@@ -409,7 +427,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2s() {
+    [Test]
+    public void TestMarkdown2s() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         "\u0020title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
@@ -419,7 +438,8 @@ namespace MailLibTest {
         objectTemp,
         objectTemp2);
     }
-    [Test] public void TestMarkdown2t() {
+    [Test]
+    public void TestMarkdown2t() {
       string objectTemp = "<p><a href=\"http://www.example.com\"" +
         " title=\"Title\">Linktext</a></p>";
       string objectTemp2 = "[Linktext] \u005bTeSt]\r\n\r\n\u005btest]:" +
@@ -430,7 +450,8 @@ namespace MailLibTest {
         objectTemp2);
     }
 
-    [Test] public void TestMarkdown2u() {
+    [Test]
+    public void TestMarkdown2u() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\">tEsT</a></p>",
         "[tEsT][]\r\n\u005btest]: http://www.example.com");
@@ -460,7 +481,8 @@ namespace MailLibTest {
         "[tEsT][]\r\n\r\n\u0020 \u005btest]: http://www.example.com (Title)");
     }
 
-    [Test] public void TestMarkdown2v() {
+    [Test]
+    public void TestMarkdown2v() {
       string stringTemp = "<p><a" +
         "\u0020href=\"http://www.example.com\">tEsT</a></p>" +
         "<p>(Not a title)</p>";
@@ -469,7 +491,8 @@ namespace MailLibTest {
         "\u0020a title)";
       TestMarkdownOne(stringTemp, stringTemp2);
     }
-    [Test] public void TestMarkdown2w() {
+    [Test]
+    public void TestMarkdown2w() {
       TestMarkdownOne(
         "<p><a href=\"http://www.example.com\" title=\"Title\">tEsT</a></p>",
         "[tEsT][]\r\n\r\n\u005btest]: http://www.example.com\r\n (Title)");

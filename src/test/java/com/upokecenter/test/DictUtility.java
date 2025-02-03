@@ -37,10 +37,10 @@ private DictUtility() {
 
     public static String ToJSON(
       List<Map<String, String>> dictlist) {
-      StringBuilder sb = new StringBuilder().append('[');
       if (dictlist == null) {
         throw new NullPointerException("dictlist");
       }
+      StringBuilder sb = new StringBuilder().append('[');
       for (int i = 0; i < dictlist.size(); ++i) {
         if (i > 0) {
           sb.append(',');

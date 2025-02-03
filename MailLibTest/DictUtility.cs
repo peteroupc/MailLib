@@ -11,7 +11,7 @@ namespace MailLibTest {
       if (dicts == null) {
         throw new ArgumentNullException(nameof(dicts));
       }
-      IList<IDictionary<String, String >> list =
+      IList<IDictionary<String, String>> list =
         new List<IDictionary<String, String>>();
       foreach (IDictionary<String, String> dict in dicts) {
         list.Add(dict);
@@ -35,11 +35,11 @@ namespace MailLibTest {
     }
 
     public static string ToJSON(
-      IList<IDictionary<string, string >> dictlist) {
-      var sb = new StringBuilder().Append('[');
+      IList<IDictionary<string, string>> dictlist) {
       if (dictlist == null) {
         throw new ArgumentNullException(nameof(dictlist));
       }
+      var sb = new StringBuilder().Append('[');
       for (var i = 0; i < dictlist.Count; ++i) {
         if (i > 0) {
           sb.Append(',');
