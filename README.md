@@ -34,7 +34,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     <dependency>
       <groupId>com.github.peteroupc</groupId>
       <artifactId>maillib</artifactId>
-      <version>0.15.0</version>
+      <version>0.16.0</version>
     </dependency>
 
 In other Java-based environments, the library can be referred to by its

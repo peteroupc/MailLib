@@ -14,7 +14,7 @@
     <Description>A .NET library for parsing and generating Internet email messages.</Description>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageReleaseNotes>
-Version 0.15.0:
+Version 0.15.0/0.16.0:
 
 - Email message Date/Time validity was restricted slightly
 - DataUtilities moved to a separate library
@@ -31,8 +31,8 @@ Version 0.15.0:
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See
        https://github.com/peteroupc/MailLib/LICENSE.md for more information.)</Copyright>
     <PackOnBuild>true</PackOnBuild>
-    <Version>0.15.0</Version>
-    <PackageVersion>0.15.0</PackageVersion>
+    <Version>0.16.0</Version>
+    <PackageVersion>0.16.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
   <CodeAnalysisRuleSet>rules.ruleset</CodeAnalysisRuleSet>

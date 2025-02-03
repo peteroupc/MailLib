@@ -4,7 +4,7 @@
   <groupId>com.github.peteroupc</groupId>
   <artifactId>maillib</artifactId>
   <packaging>jar</packaging>
-  <version>0.15.0</version>
+  <version>0.16.0</version>
   <name>MailLib Library</name>
   <description>A Java library for parsing and generating Internet email messages.</description>
   <url>https://github.com/peteroupc/MailLib</url>
@@ -103,7 +103,7 @@
       <groupId>org.sonatype.plugins</groupId>
       <artifactId>nexus-staging-maven-plugin</artifactId>
       <extensions>true</extensions>
-      <version>1.6.1</version>
+      <version>1.6.13</version>
       <configuration>
         <serverId>ossrh</serverId>
         <autoReleaseAfterClose>true</autoReleaseAfterClose>
@@ -117,6 +117,10 @@
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
+        <repository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
   </distributionManagement>
   <dependencies>
     <dependency>

@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.upokecenter</groupId>
+  <artifactId>maillib</artifactId>
+  <packaging>jar</packaging>
+  <version>0.16.0</version>
+  <name>MailLib Library</name>
+  <description>A Java library for parsing and generating Internet email messages.</description>
+  <url>https://github.com/peteroupc/MailLib</url>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <scm>
+    <connection>scm:git:https://github.com/peteroupc/MailLib</connection>
+    <developerConnection>scm:git:https://github.com/peteroupc/MailLib.git</developerConnection>
+    <url>https://github.com/peteroupc/MailLib</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>Peter Occil</name>
+      <email>poccil14@gmail.com</email>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <distribution>repo</distribution>
+      <url>https://github.com/peteroupc/MailLib/blob/master/LICENSE.md</url>
+    </license>
+  </licenses>
+  <build>
+   <plugins>
+    <plugin>
+      <groupId>org.sonatype.plugins</groupId>
+      <artifactId>nexus-staging-maven-plugin</artifactId>
+      <extensions>true</extensions>
+      <version>1.6.13</version>
+      <configuration>
+        <serverId>ossrh</serverId>
+        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+      </configuration>
+    </plugin>
+   </plugins>
+  </build>
+  <distributionManagement>
+        <relocation>
+          <groupId>com.github.peteroupc</groupId>
+        </relocation>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+        <repository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+  </distributionManagement>
+</project>
+
