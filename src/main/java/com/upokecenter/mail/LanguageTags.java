@@ -669,7 +669,7 @@ private LanguageTags() {
       }
       for (String range : ranges) {
         if (!IsLanguageRange(range, extended)) {
-          throw new IllegalArgumentException("ranges is not a lnaguage range");
+          throw new IllegalArgumentException("ranges is not a language range");
         }
       }
       for (String lang : languages) {

@@ -16,8 +16,6 @@
 
  * [PeterO.Mail.MediaType.Builder](PeterO.Mail.MediaType.Builder.md) - A mutable data type that allows a media type object to be built.
 
- * [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) - <b>Obsolete:</b> Use MediaType.Builder instead.
-
  * [PeterO.Mail.Message](PeterO.Mail.Message.md) - Represents an email message, and contains methods and properties for accessing and modifying email message data.
 
  * [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) - Exception thrown when a message has invalid syntax.

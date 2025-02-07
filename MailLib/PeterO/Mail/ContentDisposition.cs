@@ -55,7 +55,7 @@ namespace PeterO.Mail {
     /// such as "inline" or "attachment". Note that under RFC 6266 sec. 4.2
     /// and RFC 2183 sec. 2.8, unrecognized disposition types should be
     /// treated as "attachment". (There is no default content disposition
-    /// in a message has no Content-Disposition header field.). The
+    /// in a message has no Content-Disposition header field.) The
     /// resulting string will be in lowercase; that is, with its basic
     /// uppercase letters ("A" to "Z") converted to basic lowercase letters
     /// ("a" to "z").</summary>
@@ -192,7 +192,7 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <summary>Converts a file name from the Content-disposition header
+    /// <summary>Converts a file name from the Content-Disposition header
     /// field (or another string representing a title and an optional file
     /// extension) to a suitable name for saving data to a file. This
     /// method is idempotent; that is, calling the method again on the

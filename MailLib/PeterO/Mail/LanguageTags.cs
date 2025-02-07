@@ -678,7 +678,7 @@ namespace PeterO.Mail {
       }
       foreach (string range in ranges) {
         if (!IsLanguageRange(range, extended)) {
-          throw new ArgumentException("ranges is not a lnaguage range");
+          throw new ArgumentException("ranges is not a language range");
         }
       }
       foreach (string lang in languages) {
