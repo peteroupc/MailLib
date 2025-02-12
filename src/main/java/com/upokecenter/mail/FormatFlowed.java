@@ -43,8 +43,7 @@ private FormatFlowed() {
             lastI = i + 1;
             sb.append("&gt;");
             break;
-          default:
-            break;
+          default: break;
         }
       }
       if (lastI < str.length()) {

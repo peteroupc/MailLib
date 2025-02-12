@@ -1008,31 +1008,31 @@ namespace PeterO.Mail {
           }
           // Media types that assume a default of UTF-8
           if (sub.Equals("vcard", StringComparison.Ordinal) ||
-            sub.Equals("jcr-cnd", StringComparison.Ordinal) ||
-            sub.Equals("n3", StringComparison.Ordinal) ||
-            sub.Equals("turtle", StringComparison.Ordinal) ||
-            sub.Equals("strings", StringComparison.Ordinal) ||
-            sub.Equals("vnd.debian.copyright",
-              StringComparison.Ordinal) ||
-            sub.Equals("provenance-notation",
-              StringComparison.Ordinal) ||
-            sub.Equals("vtt", StringComparison.Ordinal) ||
-            sub.Equals("vnd.ficlab.flt", StringComparison.Ordinal) ||
-            sub.Equals("csv", StringComparison.Ordinal) ||
-            sub.Equals("calendar", StringComparison.Ordinal) ||
-            sub.Equals("vnd.a", StringComparison.Ordinal) ||
-            sub.Equals("parameters", StringComparison.Ordinal) ||
-            sub.Equals("prs.fallenstein.rst",
-              StringComparison.Ordinal) ||
-            sub.Equals("vnd.esmertec.theme.descriptor",
-              StringComparison.Ordinal) ||
-            sub.Equals("vnd.trolltech.linguist",
-              StringComparison.Ordinal) ||
-            sub.Equals("csv-schema", StringComparison.Ordinal) ||
-            sub.Equals("vnd.graphviz", StringComparison.Ordinal) ||
-            sub.Equals("cache-manifest", StringComparison.Ordinal) ||
-            sub.Equals("vnd.sun.j2me.app-descriptor",
-              StringComparison.Ordinal)) {
+                     sub.Equals("jcr-cnd", StringComparison.Ordinal) ||
+                     sub.Equals("n3", StringComparison.Ordinal) ||
+                     sub.Equals("turtle", StringComparison.Ordinal) ||
+                     sub.Equals("strings", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.debian.copyright",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("provenance-notation",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("vtt", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.ficlab.flt", StringComparison.Ordinal) ||
+                     sub.Equals("csv", StringComparison.Ordinal) ||
+                     sub.Equals("calendar", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.a", StringComparison.Ordinal) ||
+                     sub.Equals("parameters", StringComparison.Ordinal) ||
+                     sub.Equals("prs.fallenstein.rst",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("vnd.esmertec.theme.descriptor",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("vnd.trolltech.linguist",
+                     StringComparison.Ordinal) ||
+                     sub.Equals("csv-schema", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.graphviz", StringComparison.Ordinal) ||
+                     sub.Equals("cache-manifest", StringComparison.Ordinal) ||
+                     sub.Equals("vnd.sun.j2me.app-descriptor",
+                     StringComparison.Ordinal)) {
             return "utf-8";
           }
         }
@@ -1448,8 +1448,8 @@ namespace PeterO.Mail {
         Justification = "This instance is immutable")]
     public static readonly MediaType TextPlainAscii =
       new MediaType.Builder(
-      "text",
-      "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
       "charset",
       "us-ascii").ToMediaType();
 
@@ -1466,8 +1466,8 @@ namespace PeterO.Mail {
     /// U+007F).</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaType.Builder(
-      "text",
-      "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
       "charset",
       "utf-8").ToMediaType();
 

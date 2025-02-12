@@ -192,10 +192,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseAtext (string str, int index, int endIndex,
       ITokener tokener) {
@@ -245,10 +244,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseBase64Terminal (string str, int index, int
       endIndex,
@@ -635,10 +633,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseDiagIdentity (string str, int index, int
       endIndex,
@@ -832,10 +829,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseDistName (string str, int index, int endIndex,
       ITokener tokener) {
@@ -1360,10 +1356,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseFWS (string str, int index, int endIndex,
       ITokener tokener) {
@@ -1404,10 +1399,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseFsarg (string str, int index, int endIndex,
       ITokener tokener) {
@@ -3053,10 +3047,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseHeaderControl (string str, int index, int
       endIndex,
@@ -3543,10 +3536,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseHeaderEdiintFeatures (string str, int
       index, int endIndex, ITokener tokener) {
@@ -4624,10 +4616,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseHeaderListUnsubscribePost (string str, int
       index, int endIndex, ITokener tokener) {
@@ -7648,10 +7639,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseLanguageRange (string str, int index, int
       endIndex,
@@ -7756,10 +7746,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseLdhStr (string str, int index, int
       endIndex, ITokener tokener) {
@@ -8297,10 +8286,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseMilitaryString (string str, int index, int
       endIndex,
@@ -8764,10 +8752,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseNodeid (string str, int index, int
       endIndex, ITokener tokener) {
@@ -8804,10 +8791,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseNonnegInteger (string str, int index, int
       endIndex,
@@ -9014,10 +9000,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseObsNOWSCTL (string str, int index, int
       endIndex,
@@ -9287,10 +9272,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParsePathIdentity (string str, int index, int
       endIndex,
@@ -9943,10 +9927,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParsePrintablestring (string str, int index, int
       endIndex,
@@ -9999,10 +9982,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseQuotedPair (string str, int index, int
       endIndex,
@@ -10089,10 +10071,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseQvalue (string str, int index, int
       endIndex, ITokener tokener) {
@@ -10221,10 +10202,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseRegName (string str, int index, int endIndex,
       ITokener tokener) {
@@ -10261,10 +10241,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseResid (string str, int index, int endIndex,
       ITokener tokener) {
@@ -10644,10 +10623,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseTextExceptOpeningParen (string str, int
       index, int endIndex, ITokener tokener) {
@@ -10666,10 +10644,9 @@ namespace PeterO.Mail {
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Microsoft.Usage",
-        "CA1801",
-        Justification =
-          "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      "Microsoft.Usage",
+      "CA1801",
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
     #endif
     public static int ParseTypeString (string str, int index, int
       endIndex,

@@ -556,7 +556,7 @@ import com.upokecenter.text.*;
       mt =
 
         ParseAndTestAspects(
-          "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+  "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       for (String str : NoParams) {

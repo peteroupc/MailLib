@@ -420,7 +420,7 @@ namespace MailLibTest {
       mt =
 
         ParseAndTestAspects(
-          "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+  "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       foreach (var str in ContentDispositionTest.NoParams) {

@@ -216,8 +216,7 @@ namespace PeterO.Mail {
               haveSpace = false;
             }
             break;
-          default:
-            throw new InvalidOperationException();
+          default: throw new InvalidOperationException();
         }
       }
       builder.Append(str.Substring(markStart, str.Length - markStart));
@@ -636,20 +635,20 @@ namespace PeterO.Mail {
             "nul",
             StringComparison.Ordinal) || strLower.Equals("clock$",
             StringComparison.Ordinal) || strLower.IndexOf(
-            "nul.",
-            StringComparison.Ordinal) == 0 || strLower.Equals(
+              "nul.",
+              StringComparison.Ordinal) == 0 || strLower.Equals(
             "prn",
             StringComparison.Ordinal) || strLower.IndexOf(
-            "prn.",
-            StringComparison.Ordinal) == 0 || strLower.IndexOf(
+              "prn.",
+              StringComparison.Ordinal) == 0 || strLower.IndexOf(
             "![",
             StringComparison.Ordinal) >= 0 || strLower.Equals(
-            "aux",
-            StringComparison.Ordinal) || strLower.IndexOf(
+              "aux",
+              StringComparison.Ordinal) || strLower.IndexOf(
             "aux.",
             StringComparison.Ordinal) == 0 || strLower.Equals(
-            "con",
-            StringComparison.Ordinal) || strLower.IndexOf(
+              "con",
+              StringComparison.Ordinal) || strLower.IndexOf(
             "con.",
             StringComparison.Ordinal) == 0;
         // LPTn, COMn

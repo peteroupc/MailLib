@@ -173,8 +173,8 @@ private HeaderFieldParsers() {
         domain = (Message.HasTextToEscape(domain) &&
           Idna.IsValidDomainName(domain, false)) ?
           Idna.EncodeDomainName(domain) : str.substring(
-          startIndex, (
-          startIndex)+(endIndex - startIndex));
+            startIndex, (
+            startIndex)+(endIndex - startIndex));
         return Message.HasTextToEscape(domain) ? null : domain;
       }
 

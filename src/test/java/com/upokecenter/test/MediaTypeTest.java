@@ -421,7 +421,7 @@ import com.upokecenter.mail.*;
       mt =
 
         ParseAndTestAspects(
-          "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+  "text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       for (String str : ContentDispositionTest.NoParams) {

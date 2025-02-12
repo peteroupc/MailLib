@@ -553,7 +553,7 @@ namespace MailLibTest {
       mt =
 
         ParseAndTestAspects(
-          "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+  "inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       foreach (var str in NoParams) {

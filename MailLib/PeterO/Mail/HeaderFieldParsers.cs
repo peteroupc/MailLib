@@ -171,8 +171,8 @@ namespace PeterO.Mail {
         domain = (Message.HasTextToEscape(domain) &&
           Idna.IsValidDomainName(domain, false)) ?
           Idna.EncodeDomainName(domain) : str.Substring(
-          startIndex,
-          endIndex - startIndex);
+            startIndex,
+            endIndex - startIndex);
         return Message.HasTextToEscape(domain) ? null : domain;
       }
 

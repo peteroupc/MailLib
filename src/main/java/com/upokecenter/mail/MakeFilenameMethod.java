@@ -217,8 +217,7 @@ private MakeFilenameMethod() {
               haveSpace = false;
             }
             break;
-          default:
-            throw new IllegalStateException();
+          default: throw new IllegalStateException();
         }
       }
       builder.append(str.substring(markStart, (markStart)+(str.length() - markStart)));
@@ -635,13 +634,13 @@ private MakeFilenameMethod() {
         // well as "!["
         boolean reservedFilename = strLower.equals(
             "nul") || strLower.equals("clock$") || strLower.indexOf(
-            "nul.") == 0 || strLower.equals(
+              "nul.") == 0 || strLower.equals(
             "prn") || strLower.indexOf(
-            "prn.") == 0 || strLower.indexOf(
+              "prn.") == 0 || strLower.indexOf(
             "![") >= 0 || strLower.equals(
-            "aux") || strLower.indexOf(
+              "aux") || strLower.indexOf(
             "aux.") == 0 || strLower.equals(
-            "con") || strLower.indexOf(
+              "con") || strLower.indexOf(
             "con.") == 0;
         // LPTn, COMn
         if (

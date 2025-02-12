@@ -974,25 +974,25 @@ private final String propVarsubtype;
           }
           // Media types that assume a default of UTF-8
           if (sub.equals("vcard") ||
-            sub.equals("jcr-cnd") ||
-            sub.equals("n3") ||
-            sub.equals("turtle") ||
-            sub.equals("strings") ||
-            sub.equals("vnd.debian.copyright") ||
-            sub.equals("provenance-notation") ||
-            sub.equals("vtt") ||
-            sub.equals("vnd.ficlab.flt") ||
-            sub.equals("csv") ||
-            sub.equals("calendar") ||
-            sub.equals("vnd.a") ||
-            sub.equals("parameters") ||
-            sub.equals("prs.fallenstein.rst") ||
-            sub.equals("vnd.esmertec.theme.descriptor") ||
-            sub.equals("vnd.trolltech.linguist") ||
-            sub.equals("csv-schema") ||
-            sub.equals("vnd.graphviz") ||
-            sub.equals("cache-manifest") ||
-            sub.equals("vnd.sun.j2me.app-descriptor")) {
+                     sub.equals("jcr-cnd") ||
+                     sub.equals("n3") ||
+                     sub.equals("turtle") ||
+                     sub.equals("strings") ||
+                     sub.equals("vnd.debian.copyright") ||
+                     sub.equals("provenance-notation") ||
+                     sub.equals("vtt") ||
+                     sub.equals("vnd.ficlab.flt") ||
+                     sub.equals("csv") ||
+                     sub.equals("calendar") ||
+                     sub.equals("vnd.a") ||
+                     sub.equals("parameters") ||
+                     sub.equals("prs.fallenstein.rst") ||
+                     sub.equals("vnd.esmertec.theme.descriptor") ||
+                     sub.equals("vnd.trolltech.linguist") ||
+                     sub.equals("csv-schema") ||
+                     sub.equals("vnd.graphviz") ||
+                     sub.equals("cache-manifest") ||
+                     sub.equals("vnd.sun.j2me.app-descriptor")) {
             return "utf-8";
           }
         }
@@ -1405,8 +1405,8 @@ private final String propVarsubtype;
 
     public static final MediaType TextPlainAscii =
       new MediaType.Builder(
-      "text",
-      "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
       "charset",
       "us-ascii").ToMediaType();
 
@@ -1417,8 +1417,8 @@ private final String propVarsubtype;
      */
     public static final MediaType TextPlainUtf8 =
       new MediaType.Builder(
-      "text",
-      "plain").SetParameter(
+        "text",
+        "plain").SetParameter(
       "charset",
       "utf-8").ToMediaType();
 

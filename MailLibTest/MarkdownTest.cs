@@ -118,7 +118,7 @@ namespace MailLibTest {
       {
         string objectTemp =
 
-          "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>";
+  "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>";
         string objectTemp2 = "* A\r\n\r\n\t> C\r\n\t> D\r\n* B";
         TestMarkdownOne(
           objectTemp,
@@ -135,7 +135,7 @@ namespace MailLibTest {
         "A\r\n\r\n\tC\r\n\t\tD");
       {
         string objectTemp = "<p><a" +
-          "\u0020href=\"http://www.example.com/\">http://www.example.com/</a></p>";
+  "\u0020href=\"http://www.example.com/\">http://www.example.com/</a></p>";
         string objectTemp2 = "<http://www.example.com/>";
         TestMarkdownOne(
           objectTemp,
@@ -601,11 +601,11 @@ namespace MailLibTest {
     [Test]
     public void TestMarkdown3() {
       TestMarkdownOne(
-        "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
-        "> A\r\n> > B\r\n> \r\n> C");
+  "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
+  "> A\r\n> > B\r\n> \r\n> C");
       {
         string objectTemp =
-          "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>";
+  "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>";
         string objectTemp2 = "> A\r\n> > B\r\n> C";
         TestMarkdownOne(
           objectTemp,

@@ -118,7 +118,7 @@ import com.upokecenter.mail.*;
       {
         String objectTemp =
 
-          "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>";
+  "<ul><li><p>A</p><blockquote><p>C\r\nD</p></blockquote></li><li>B</li></ul>";
         String objectTemp2 = "* A\r\n\r\n\t> C\r\n\t> D\r\n* B";
         TestMarkdownOne(
           objectTemp,
@@ -135,7 +135,7 @@ import com.upokecenter.mail.*;
         "A\r\n\r\n\tC\r\n\t\tD");
       {
         String objectTemp = "<p><a" +
-          "\u0020href=\"http://www.example.com/\">http://www.example.com/</a></p>";
+  "\u0020href=\"http://www.example.com/\">http://www.example.com/</a></p>";
         String objectTemp2 = "<http://www.example.com/>";
         TestMarkdownOne(
           objectTemp,
@@ -601,11 +601,11 @@ import com.upokecenter.mail.*;
     @Test
     public void TestMarkdown3() {
       TestMarkdownOne(
-        "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
-        "> A\r\n> > B\r\n> \r\n> C");
+  "<blockquote><p>A</p><blockquote><p>B</p></blockquote><p>C</p></blockquote>",
+  "> A\r\n> > B\r\n> \r\n> C");
       {
         String objectTemp =
-          "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>";
+  "<blockquote><p>A</p><blockquote><p>B\r\nC</p></blockquote></blockquote>";
         String objectTemp2 = "> A\r\n> > B\r\n> C";
         TestMarkdownOne(
           objectTemp,

@@ -927,8 +927,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "you@example.com").GetHeader(0).getKey();
+              0,
+              "you@example.com").GetHeader(0).getKey();
         Assert.assertEquals(
           "from",
           stringTemp);
@@ -936,8 +936,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "you@example.com").GetHeader(0).getValue();
+              0,
+              "you@example.com").GetHeader(0).getValue();
         Assert.assertEquals(
           "you@example.com",
           stringTemp);
@@ -945,9 +945,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "x-comment",
-            "comment").GetHeader(0).getKey();
+              0,
+              "x-comment",
+              "comment").GetHeader(0).getKey();
         Assert.assertEquals(
           "x-comment",
           stringTemp);
@@ -955,9 +955,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         String stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "x-comment",
-            "comment").GetHeader(0).getValue();
+              0,
+              "x-comment",
+              "comment").GetHeader(0).getValue();
         Assert.assertEquals(
           "comment",
           stringTemp);

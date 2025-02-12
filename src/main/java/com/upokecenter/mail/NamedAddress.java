@@ -140,8 +140,8 @@ import java.util.*;
           other.address == null :
           this.address.equals(other.address)) && this.isGroup ==
         other.isGroup && (!this.isGroup || CollectionUtilities.ListEquals(
-        this.groupAddresses,
-        other.groupAddresses));
+          this.groupAddresses,
+          other.groupAddresses));
     }
 
     /**

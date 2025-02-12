@@ -41,8 +41,7 @@ namespace PeterO.Mail {
             lastI = i + 1;
             sb.Append("&gt;");
             break;
-          default:
-            break;
+          default: break;
         }
       }
       if (lastI < str.Length) {

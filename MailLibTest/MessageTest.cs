@@ -908,8 +908,8 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "you@example.com").GetHeader(0).Key;
+              0,
+              "you@example.com").GetHeader(0).Key;
         Assert.AreEqual(
           "from",
           stringTemp);
@@ -917,8 +917,8 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "you@example.com").GetHeader(0).Value;
+              0,
+              "you@example.com").GetHeader(0).Value;
         Assert.AreEqual(
           "you@example.com",
           stringTemp);
@@ -926,9 +926,9 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "x-comment",
-            "comment").GetHeader(0).Key;
+              0,
+              "x-comment",
+              "comment").GetHeader(0).Key;
         Assert.AreEqual(
           "x-comment",
           stringTemp);
@@ -936,9 +936,9 @@ namespace MailLibTest {
       {
         string stringTemp = MessageFromString(
             "From: Me <me@example.com>\r\n\r\n").SetHeader(
-            0,
-            "x-comment",
-            "comment").GetHeader(0).Value;
+              0,
+              "x-comment",
+              "comment").GetHeader(0).Value;
         Assert.AreEqual(
           "comment",
           stringTemp);

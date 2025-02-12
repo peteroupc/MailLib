@@ -140,8 +140,8 @@ namespace PeterO.Mail {
           other.address == null :
           this.address.Equals(other.address)) && this.isGroup ==
         other.isGroup && (!this.isGroup || CollectionUtilities.ListEquals(
-        this.groupAddresses,
-        other.groupAddresses));
+          this.groupAddresses,
+          other.groupAddresses));
     }
 
     /// <summary>Determines whether the email addresses stored this object
