@@ -693,6 +693,32 @@ def jsbytes(name, arr)
   ret+=linebrokenjoin(arr)+"\n"
   ret+="];\n"
 end
+
+def getChunkedByteFunctions(arr, name, chunkSize)
+  j=0
+  ret=""
+  i=0; while i<arr.length
+    ret+=("    private static byte[] #{name}#{j}() {\n")
+    ret+=("      return new byte[] {\n")
+    ret+=("        "+linebrokenjoinbytes(arr[i,chunkSize]))+"\n"
+    ret+=("      };\n");
+    ret+=("    }\n");
+    i+=chunkSize
+    j+=1
+  end
+  ret+=("    private static byte[] #{name}() {\n")
+  ret+=("      byte[] ret = new byte[#{arr.length}];\n")
+  i=0; j=0; while i<arr.length
+    alen=[chunkSize,arr.length-i].min
+    ret+=("      Array.Copy(#{name}#{j}(), 0, ret, #{i}, #{alen});\n")
+    i+=chunkSize
+    j+=1
+  end
+  ret+=("      return ret;\n")
+  ret+=("    }\n");
+  return ret
+end
+
 def getChunkedFunctions(arr, name, chunkSize)
   j=0
   ret=""
@@ -1177,10 +1203,9 @@ for i in 0...0x110000
  fullHalfWidth[i]=(eaw[i]=="F" || eaw[i]=="H")
 end
 fjs.puts("var IdnaData = {};")
-f.puts("    public static #{final} byte[] IdnaCategories = new byte[] {")
+f.puts("    public static #{final} byte[] IdnaCategories = GetIdnaCategories();")
 bin=LZ4.compress(toByteArray(idnaCategories))
-f.puts("      "+linebrokenjoinbytes(bin))
-f.puts("    };")
+f.puts(getChunkedByteFunctions(bin, "GetIdnaCategories", 512))
 fjs.puts(jsbytes("IdnaData['IdnaCategories']",bin))
 f.puts("    public static #{final} byte[] PrecisCategories = GetPrecisCategories();")
 f.puts("    private static byte[] GetPrecisCategories() {")

@@ -1,11 +1,15 @@
 package com.upokecenter.text;
 
+  /**
+   * Not documented yet.
+   */
   final class ByteData {
     private final byte[] array;
 
     /**
      * Decompresses a byte array compressed using the LZ4 format (see "LZ4 Format
-     * Description" by Yann Collet for more information).
+     * Description" by Yann Collet for more information). Returns the decompressed
+     * version of the byte array.
      * @param input Input byte array.
      * @return Decompressed output byte array.
      * @throws NullPointerException The parameter "output" is null.
@@ -117,14 +121,32 @@ package com.upokecenter.text;
       return ret;
     }
 
+    /**
+     * Decompresses a byte array compressed using the LZ4 format (see "LZ4 Format
+     * Description" by Yann Collet for more information). Returns a ByteData
+     * object.
+     * @param data Input byte array.
+     * @return ByteData object holding the output byte array.
+     * @throws NullPointerException The parameter "output" is null.
+     * @throws IllegalArgumentException Invalid LZ4.
+     */
     public static ByteData Decompress(byte[] data) {
       return new ByteData(DecompressLz4(data));
     }
 
+    /**
+     * Initializes a new instance of the ByteData class.
+     * @param array
+     */
     public ByteData(byte[] array) {
       this.array = array;
     }
 
+    /**
+     * Not documented yet.
+     * @param cp Not documented yet.
+     * @return The return value is not documented yet.
+     */
     public boolean GetBoolean(int cp) {
       if (cp < 0) {
         throw new IllegalArgumentException("cp(" + cp + ") is less than " + "0");
@@ -146,6 +168,11 @@ package com.upokecenter.text;
       }
     }
 
+    /**
+     * Not documented yet.
+     * @param cp Not documented yet.
+     * @return The return value is not documented yet.
+     */
     public byte GetByte(int cp) {
       if (cp < 0) {
         throw new IllegalArgumentException("cp(" + cp + ") is less than " + "0");

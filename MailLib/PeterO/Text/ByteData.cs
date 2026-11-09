@@ -1,12 +1,13 @@
 using System;
 
 namespace PeterO.Text {
+  /// <summary>Not documented yet.</summary>
   internal sealed class ByteData {
     private readonly byte[] array;
 
     /// <summary>Decompresses a byte array compressed using the LZ4 format
-    /// (see "LZ4 Format Description" by Yann Collet for more
-    /// information).</summary>
+    /// (see "LZ4 Format Description" by Yann Collet for more information).
+    /// Returns the decompressed version of the byte array.</summary>
     /// <param name='input'>Input byte array.</param>
     /// <returns>Decompressed output byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter "output" is
@@ -118,14 +119,28 @@ namespace PeterO.Text {
       return ret;
     }
 
+    /// <summary>Decompresses a byte array compressed using the LZ4 format
+    /// (see "LZ4 Format Description" by Yann Collet for more information).
+    /// Returns a ByteData object.</summary>
+    /// <param name='data'>Input byte array.</param>
+    /// <returns>ByteData object holding the output byte array.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter "output" is
+    /// null.</exception>
+    /// <exception cref='ArgumentException'>Invalid LZ4.</exception>
     public static ByteData Decompress(byte[] data) {
       return new ByteData(DecompressLz4(data));
     }
 
+    /// <summary>Initializes a new instance of the ByteData
+    /// class.</summary>
+    /// <param name='array'/>
     public ByteData(byte[] array) {
       this.array = array;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>The return value is not documented yet.</returns>
+    /// <param name='cp'>Not documented yet.</param>
     public bool GetBoolean(int cp) {
       if (cp < 0) {
         throw new ArgumentException("cp(" + cp + ") is less than " + "0");
@@ -147,6 +162,9 @@ namespace PeterO.Text {
       }
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>The return value is not documented yet.</returns>
+    /// <param name='cp'>Not documented yet.</param>
     public byte GetByte(int cp) {
       if (cp < 0) {
         throw new ArgumentException("cp(" + cp + ") is less than " + "0");
