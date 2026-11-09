@@ -259,7 +259,7 @@ namespace PeterO.Mail {
     /// intended to be displayed for others to see. The returned string is
     /// not intended to be parsed by computer programs.</summary>
     /// <returns>A text string of this named-address object, intended for
-    /// display to end-users.</returns>
+    /// display to users.</returns>
     public string ToDisplayString() {
       if (this.IsGroup) {
         var sb = new StringBuilder();

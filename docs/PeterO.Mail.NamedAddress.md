@@ -297,7 +297,7 @@ Converts this named-address object to a text string intended to be displayed for
 
 <b>Return Value:</b>
 
-A text string of this named-address object, intended for display to end-users.
+A text string of this named-address object, intended for display to users.
 
 <a id="ToDisplayStringShort_System_Collections_Generic_IList"></a>
 ### ToDisplayStringShort

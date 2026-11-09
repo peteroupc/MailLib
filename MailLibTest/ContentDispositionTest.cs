@@ -379,11 +379,6 @@ namespace MailLibTest {
         AssertGoodFilename(RandomString(rnd));
       }
       string[] filenames = ResourceUtil.GetStrings("filenames");
-      // "d\ud800e", "d\ufffde",
-      // "d\udc00e", "d\ufffde",
-      // "my\ud800file\udc00name\ud800\udc00.txt",
-      // "my\ufffdfile\ufffdname\ud800\udc00.txt",
-      // "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
       for (var i = 0; i < filenames.Length; i += 2) {
         string str = ContentDisposition.MakeFilename(
             filenames[i]);

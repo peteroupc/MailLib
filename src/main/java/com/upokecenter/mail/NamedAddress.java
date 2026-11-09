@@ -259,7 +259,7 @@ import java.util.*;
      * for others to see. The returned string is not intended to be parsed by
      * computer programs.
      * @return A text string of this named-address object, intended for display to
-     * end-users.
+     * users.
      */
     public String ToDisplayString() {
       if (this.isGroup()) {

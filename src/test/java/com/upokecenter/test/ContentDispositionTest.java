@@ -381,11 +381,6 @@ import com.upokecenter.text.*;
         AssertGoodFilename(RandomString(rnd));
       }
       String[] filenames = ResourceUtil.GetStrings("filenames");
-      // "d\ud800e", "d\ufffde",
-      // "d\udc00e", "d\ufffde",
-      // "my\ud800file\udc00name\ud800\udc00.txt",
-      // "my\ufffdfile\ufffdname\ud800\udc00.txt",
-      // "=?x-unknown?Q?file\ud800name?=", "file\ufffdname",
       for (int i = 0; i < filenames.length; i += 2) {
         String str = ContentDisposition.MakeFilename(
             filenames[i]);
